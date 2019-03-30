@@ -38,6 +38,10 @@
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
+# Todo
+- [ ] 团队博客
+- [ ] 为知笔记转移
+
 # Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)

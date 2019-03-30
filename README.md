@@ -8,11 +8,11 @@
     <img src="https://img.shields.io/badge/Branch-master-green.svg?longCache=true"
         alt="Branch">
   </a>
-  <a href="https://github.com/CriseLYJ/awesome-python-login-model/stargazers">
+  <a href="https://github.com/No-Github/1earn/stargazers">
     <img src="https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social"
         alt="Stars">
   </a>
-    <a href="https://github.com/CriseLYJ/awesome-python-login-model/network/members">
+    <a href="https://github.com/No-Github/1earn/network/members">
     <img src="https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social"
         alt="Forks">
   </a>

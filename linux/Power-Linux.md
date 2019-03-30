@@ -3,6 +3,7 @@
 [TOC]
 
 ---
+
 # net🏀
 ```vim
 vi /etc/sysconfig/network-scripts/ifcfg-eth0
@@ -148,14 +149,14 @@ vi /etc/selinux/config
 
 **18-I**
 A
-配置http服务，以虚拟主机的方式创建web站点
-将/etc/httpd/conf.d/ssl.conf重命名为ssl.conf.bak
-配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-配置https功能，https所用的证书httpd.crt、私钥httpd.key放置在/etc/httpd/ssl目录中（目录需自己创建）；
-使用www.rj.com作为域名进行访问；
-网站根目录为/data/web_data；
-提供http、https服务，仅监听192.168.1XX.22的IP地址；（XX现场提供）
-index.html内容使用Welcome to 2018 Computer Network Application contest!；
+- 配置http服务，以虚拟主机的方式创建web站点
+- 将/etc/httpd/conf.d/ssl.conf重命名为ssl.conf.bak
+- 配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
+- 配置https功能，https所用的证书httpd.crt、私钥httpd.key放置在/etc/httpd/ssl目录中（目录需自己创建）；
+- 使用www.rj.com作为域名进行访问；
+- 网站根目录为/data/web_data；
+- 提供http、https服务，仅监听192.168.1XX.22的IP地址；（XX现场提供）
+- index.html内容使用Welcome to 2018 Computer Network Application contest!；
 
 安装
 > yum -y install httpd

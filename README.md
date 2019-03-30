@@ -1,3 +1,4 @@
+# 1earn
 <html xmlns="http://www.w3.org/1999/xhtml">
 <p align="center">
     <img src="https://i.imgur.com/G7hYY8N.png" 
@@ -23,8 +24,7 @@
 </div>
 </html>
 
-****
-# 1earn
+---
 
 ## 三板斧
 `收集、归纳、分享`我认为这是知识学习的"三板斧"

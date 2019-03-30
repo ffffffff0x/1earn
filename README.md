@@ -1,4 +1,5 @@
 # 1earn
+`完事开头难,然后一直开头一直难...`
 <html xmlns="http://www.w3.org/1999/xhtml">
 <p align="center">
     <img src="https://i.imgur.com/G7hYY8N.png" 
@@ -20,7 +21,7 @@
 
 <div align="center">
   <sub>Created by
-  <a href="https://www.fuck163.net/">语冰</a>
+  <a href="about:blank">语冰</a>
 </div>
 </html>
 
@@ -36,7 +37,6 @@
 分享,在博客上传一篇文章也好,在qq群帮助群友解决一个问题也好,都是分享
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
-
 
 # Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)

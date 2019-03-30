@@ -21,7 +21,7 @@
 
 <div align="center">
   <sub>Created by
-  <a href="about:blank">语冰</a>
+  <a href="https://no-github.github.io/1earn/">语冰</a>
 </div>
 </html>
 

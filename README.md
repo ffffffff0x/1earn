@@ -6,7 +6,7 @@
         alt="Master">
 </p>
 <p align="center">
-  <a href="https://github.com/CriseLYJ/awesome-python-login-model/tree/master">
+  <a href="https://github.com/No-Github/1earn/tree/master">
     <img src="https://img.shields.io/badge/Branch-master-green.svg?longCache=true"
         alt="Branch">
   </a>
@@ -72,7 +72,7 @@
 - [安全脉搏 | 分享技术,悦享品质](https://www.secpulse.com/)
 - [Linux中国开源社区](https://linux.cn/)
 - [Linux Commands](https://www.tecmint.com/category/linux-commands/)
-- [所有文章 - 文章 - 伯乐在线](http://blog.jobbole.com/all-posts/)
+- [伯乐在线](http://blog.jobbole.com/all-posts/)
 - [卡饭论坛](https://bbs.kafan.cn/index.php)
 - [阮一峰的网络日志](http://www.ruanyifeng.com/blog/)
 - [少数派 - 高品质数字消费指南](https://sspai.com/)

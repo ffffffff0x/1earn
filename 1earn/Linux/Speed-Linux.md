@@ -6,10 +6,9 @@
 
 # shell👍
 ## 环境变量
-`echo $PATH`  查看环境变量
-
 - **bash**
-```bash
+echo $PATH  #查看环境变量
+
 PATH=$PATH:/usr/local/python3/bin/ #新添加的路径     （关闭终端失效）
 
 vim ~/.bash_profile #永久修改变量
@@ -20,7 +19,7 @@ source ~/.bash_profile #立即生效
 - **fish**
 ```bash
 vim ~/.config/fish/config.fish
-set PATH （你想要加入的路径） $PATH
+	set PATH (你想要加入的路径) $PATH
 souce ~/.config/fish/config.fish
 ```
 
@@ -30,78 +29,82 @@ souce ~/.config/fish/config.fish
 
 ## 目录
 ```bash
-主要目录：
-root  存放root用户相关文件
-home  存放普通用户相关文件
-bin   存放普通命令
-sbin  存放需一定权限才能使用的命令
-mnt   默认挂载光驱软驱目录
-etc   存放配置相关文件
-var   存放经常变化文件
-boot  存放引导相关文件
-usr   存放软件默认安装目录
+cd
+~ #表示home目录
+. #表示当前目录
+.. #表示上级目录
+- #表示上一次目录 
+/ #表示根目录
+
+root  #存放root用户相关文件
+home  #存放普通用户相关文件
+bin   #存放普通命令
+sbin  #存放需一定权限才能使用的命令
+mnt   #默认挂载光驱软驱目录
+etc   #存放配置相关文件
+var   #存放经常变化文件
+boot  #存放引导相关文件
+usr   #存放软件默认安装目录
 ```
 
 ## 文件
 ### 压缩备份
 ```bash
-.tar
-解包:tar xvf FileName.tar
-打包:tar cvf FileName.tar DirName
-（注:tar是打包,不是压缩！）
-
-.gz
-解压1:gunzip FileName.gz
-解压2:gzip -d FileName.gz
-压缩:gzip FileName
+.tar	#注:tar是打包,不是压缩！
+tar -xvf FileName.tar	#解包
+tar -cvf FileName.tar DirName	#打包
+tar -tvf FileName.tar.gz	#不解压查看内容
+tar -xvf FileName.tar.gz	a.txt  #解压指定内容
+tar -uvf test.tar.bz2 test	#更新一个内容
+tar -rvf test.tar.bz2 test2  #追加一个内容
 
 .tar.gz 和 .tgz
-解压:tar zxvf FileName.tar.gz
-压缩:tar zcvf FileName.tar.gz DirName
+tar -zxvf FileName.tar.gz	#解压
+tar -zcvf FileName.tar.gz DirName	#压缩
 
-.bz2
-解压1:bzip2 -d FileName.bz2
-解压2:bunzip2 FileName.bz2
-压缩: bzip2 -z FileName
-
-.tar.bz2
-解压:tar jxvf FileName.tar.bz2
-压缩:tar jcvf FileName.tar.bz2 DirName
-
-.bz
-解压1:bzip2 -d FileName.bz
-解压2:bunzip2 FileName.bz
-压缩:未知
+.tar.Z
+tar -Zxvf FileName.tar.Z	#解压
+tar -Zcvf FileName.tar.Z DirName	#压缩
 
 .tar.bz
-解压:tar jxvf FileName.tar.bz
-压缩:未知
+tar -jxvf FileName.tar.bz	#解压
+tar -jcvf FileName.tar.bz DirName	#压缩
+
+.gz
+gunzip FileName.gz	#解压1
+gzip -dv FileName.gz	#解压2
+gzip FileName	#压缩
+gzip -l FileName.gz #不解压查看内容
+zcat FileName.gz #不解压查看内容
+
+.bz2
+bzip2 -dv FileName.bz2	#解压1
+bunzip2 FileName.bz2	#解压2
+bzip2 -zv FileName	#压缩
+bzcat	FileName.bz2 #不解压查看内容
 
 .Z
-解压:uncompress FileName.Z
-压缩:compress FileName
-.tar.Z
-
-解压:tar Zxvf FileName.tar.Z
-压缩:tar Zcvf FileName.tar.Z DirName
+uncompress FileName.Z	#解压
+compress FileName	#压缩
+compress -rvf /home/abc/	#强制压缩文件夹
 
 .zip
-解压:unzip FileName.zip
-压缩:zip FileName.zip DirName
+unzip FileName.zip	#解压
+zip FileName.zip DirName	#压缩
 
 .rar
-解压:rar x FileName.rar
-压缩:rar a FileName.rar DirName
+rar -x FileName.rar	#解压
+rar -a FileName.rar DirName	#压缩
 
 .lha
-解压:lha -e FileName.lha
-压缩:lha -a FileName.lha FileName
+lha -e FileName.lha	#解压
+lha -a FileName.lha FileName	#压缩
 
 .rpm
-解包:rpm2cpio FileName.rpm | cpio -div
+rpm2cpio FileName.rpm | cpio -div	#解包
 
 .deb
-解包:ar p FileName.deb data.tar.gz | tar zxf -
+ar -p FileName.deb data.tar.gz | tar zxf -	#解包
 ```
 
 ### 读写
@@ -159,13 +162,11 @@ locate passwd
 
 #### 改
 ```bash
-cd
 mv
-~ 表示home目录
-. 表示当前目录
-.. 表示上级目录
-- 表示上一次目录 
-/ 表示根目录
+vi
+vim
+nano
+gedit
 ```
 
 #### 复制

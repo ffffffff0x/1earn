@@ -30,7 +30,7 @@
 
 归纳,或者说是总结与分类,将自己学习过程中的心得体会记载下来,写成各种笔记,文章,将收集的资源整理归类
 
-分享,在博客上传一篇文章也好,在qq群帮助群友解决一个问题也好,都是分享
+分享,在博客上传一篇文章也好,在 qq 群帮助群友解决一个问题也好,都是分享
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
@@ -41,7 +41,7 @@
 
 
 ## 建议和吐槽
-由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接，导致阅读体验极不友好，因此建议还是clone到本地阅读,当然，有以下几种解决方案，不过还是感觉很麻烦，就此作罢
+由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
 - [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
@@ -69,7 +69,7 @@
 - [嘶吼 RoarTalk – 回归最本质的信息安全,互联网安全新媒体](http://www.4hou.com/)
 - [安全内参 | 网络安全首席知识官](https://www.secrss.com/)
 - [安全客 - 有思想的安全新媒体](http://bobao.360.cn/)
-- [安全脉搏 | 分享技术，悦享品质](https://www.secpulse.com/)
+- [安全脉搏 | 分享技术,悦享品质](https://www.secpulse.com/)
 - [Linux中国开源社区](https://linux.cn/)
 - [Linux Commands](https://www.tecmint.com/category/linux-commands/)
 - [所有文章 - 文章 - 伯乐在线](http://blog.jobbole.com/all-posts/)
@@ -78,7 +78,7 @@
 - [少数派 - 高品质数字消费指南](https://sspai.com/)
 - [小众软件](http://www.appinn.com/)
 - [反斗软件](http://www.apprcn.com/)
-- [免費資源網路社群 – 免費資源指南，每日網路資訊與科技新知](https://free.com.tw/)
+- [免費資源網路社群 – 免費資源指南,每日網路資訊與科技新知](https://free.com.tw/)
 - [异次元软件世界 - 软件改变生活！](http://www.iplaysoft.com/)
 - [V2EX](https://www.v2ex.com/)
 

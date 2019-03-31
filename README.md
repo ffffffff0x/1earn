@@ -47,8 +47,8 @@
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
 建议的阅读体验
-- VScode+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
-- Typora
+- [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+- [Typora](https://www.typora.io/)
 
 ## Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)

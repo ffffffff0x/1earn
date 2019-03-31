@@ -18,11 +18,6 @@
     <img src="https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social"
         alt="Forks">
   </a>
-
-<div align="center">
-  <sub>Created by
-  <a href="https://no-github.github.io/1earn/">语冰</a>
-</div>
 </html>
 
 ---
@@ -38,10 +33,17 @@
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
-# Todo
-- [ ] 团队博客
+## Todo
+- [ ] [团队博客](https://no-github.github.io/1earn/)
 - [ ] 为知笔记转移
 
-# Thank
+## 建议和吐槽
+由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接，导致阅读体验极不友好，因此建议还是clone到本地阅读
+当然，有以下几种解决方案，不过还是感觉很麻烦，就此作罢
+- [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
+- [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
+- [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
+
+## Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)

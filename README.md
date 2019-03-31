@@ -41,12 +41,14 @@
 
 
 ## 建议和吐槽
-由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接，导致阅读体验极不友好，因此建议还是clone到本地阅读
-当然，有以下几种解决方案，不过还是感觉很麻烦，就此作罢
+由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接，导致阅读体验极不友好，因此建议还是clone到本地阅读,当然，有以下几种解决方案，不过还是感觉很麻烦，就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
 - [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
+建议的阅读体验
+- VScode+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+- Typora
 
 ## Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)

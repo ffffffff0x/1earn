@@ -46,7 +46,18 @@ souce ~/.config/fish/config.fish
 
 ---
 
-## 通配符
+## 通配符/限制输出
+```bash
+head
+tail
+<
+>
+grep
+sort
+uniq
+awk
+&
+```
 
 ---
 

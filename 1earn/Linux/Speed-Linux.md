@@ -4,6 +4,26 @@
 
 ---
 
+# linux编程
+## 编译
+```bash
+mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译
+make -j	#并行编译
+ccache	#把编译的中间结果进行缓存，以便在再次编译的时候可以节省时间。
+	在/usr/local/bin下建立gcc，g++，c++，cc的symbolic link，链到/usr/bin/ccache上。总之确认系统在调用gcc等命令时会调用到ccache就可以了（通常情况下/usr/local /bin会在PATH中排在/usr/bin前面）。
+
+distcc	#多台机器一起编译
+	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 #默认的3632端口允许来自同一个网络的distcc连接。
+
+	export DISTCC_HOSTS="localhost 10.64.25.1 10.64.25.2 10.64.25.3"
+	把g++，gcc等常用的命令链接到/usr/bin/distcc上
+
+	make -j4	#	在make的时候，也必须用-j参数，一般是参数可以用所有参用编译的计算机CPU内核总数的两倍做为并行的任务数。
+	distccmon-text #查看编译任务的分配情况。
+```
+
+---
+
 # shell👍
 ## 环境变量
 - **bash**
@@ -24,9 +44,11 @@ vim ~/.config/fish/config.fish
 souce ~/.config/fish/config.fish
 ```
 
+---
+
 ## 通配符
 
-
+---
 
 ## 目录
 ```bash
@@ -47,6 +69,8 @@ var   #存放经常变化文件
 boot  #存放引导相关文件
 usr   #存放软件默认安装目录
 ```
+
+---
 
 ## 文件
 ### 压缩备份

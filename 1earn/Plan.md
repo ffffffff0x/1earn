@@ -75,6 +75,38 @@ nrm test
 npm config set proxy=http://127.0.0.1:8087
 ```
 
+### pip源
+常用的国内镜像包括：
+1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
+2. 豆瓣http://pypi.douban.com/simple/
+3. 清华大学 https://pypi.tuna.tsinghua.edu.cn/simple/
+4. 中国科学技术大学 http://pypi.mirrors.ustc.edu.cn/simple/
+5. 华中科技大学http://pypi.hustunique.com/
+
+- 临时使用：
+可以在使用pip的时候，加上参数-i和镜像地址`https://pypi.tuna.tsinghua.edu.cn/simple`
+例如：`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`，这样就会从清华镜像安装pandas库。
+
+- 永久修改，一劳永逸：
+    1. Linux下，修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件。文件夹要加“.”，表示是隐藏文件夹)
+    ```vim
+    mkdir -p ~/.pip/
+    vim ~/.pip/pip.conf
+        [global]
+        index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+        [install]
+        trusted-host = https://pypi.tuna.tsinghua.edu.cn
+    ```
+
+    2. windows下，直接在user目录中创建一个pip目录，如：C:\Users\xx\pip，然后新建文件pip.ini，即 %HOMEPATH%\pip\pip.ini，在pip.ini文件中输入以下内容（以豆瓣镜像为例）：
+    ```vim
+    [global]
+    index-url = http://pypi.douban.com/simple
+    [install]
+    trusted-host = pypi.douban.com
+    ```
+
+
 ---
 
 ## 搜索引擎语法

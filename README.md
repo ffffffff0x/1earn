@@ -6,6 +6,7 @@
         alt="Master">
 </p>
 <p align="center">
+
   <a href="https://github.com/No-Github/1earn/tree/master">
     <img src="https://img.shields.io/badge/Branch-master-green.svg?longCache=true"
         alt="Branch">
@@ -18,6 +19,7 @@
     <img src="https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social"
         alt="Forks">
   </a>
+
 </html>
 
 ---
@@ -87,3 +89,7 @@
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)
 - [To Find a Better Solution, Ask a Better Question – Member Feature Stories – Medium](https://medium.com/s/story/to-find-a-better-solution-ask-a-better-question-3be7fee5af65)
 - [The Magpie Developer](https://blog.codinghorror.com/the-magpie-developer/)
+
+---
+
+![IMAGE](https://licensebuttons.net/l/by/3.0/88x31.png)

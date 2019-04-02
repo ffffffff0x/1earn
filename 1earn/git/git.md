@@ -6,6 +6,8 @@ git init    #初始化仓库
 git config --list   #检查配置信息
 ```
 
+![image](https://i.loli.net/2019/04/02/5ca36a2b1f811.png)
+
 ---
 
 # 远程操作
@@ -72,6 +74,3 @@ git push origin master  #本地的 master 分支推送到 origin 主机的 maste
 git push --force origin 
 上面命令使用 --force选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用 --force 选项。
 ```
-
-
-

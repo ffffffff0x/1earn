@@ -451,8 +451,8 @@ https://caddyserver.com/download 进入到 caddy 官网的下载界面，选择�
 chown -R root:www-data /usr/local/bin     #设置目录数据权限
 vim /usr/local/bin/Caddyfile	#注.一般来说caddy路径都是这个,个别安装脚本可能有不同路径
 
-
 echo -e ":80 {
+	gzip	
 	root /usr/local/bin/www
 }" > /usr/local/bin/Caddyfile
 
@@ -476,6 +476,7 @@ caddy
 为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书，支持 HTTPS 协议访问，你只需要将绑定的 IP 换成 域名 即可
 ```bash
 echo -e "xxx.com {
+	gzip
     root /usr/local/bin/www
 	tls xxxx@xxx.com  #你的邮箱
 }" > /usr/local/bin/Caddyfile

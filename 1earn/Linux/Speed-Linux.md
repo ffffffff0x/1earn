@@ -545,6 +545,14 @@ kill -s STOP <PID>
 killall <PID>	
 
 处理进程
+service xxx start	#开服务
+service xxx stop	#关服务
+
+systemctl start xxx
+systemctl stop xxx
+systemctl enable xxx	#设置开机启动
+systemctl disable xxx
+
 ctrl+z #将前台运行的任务暂停,仅仅是暂停,而不是将任务终止。
 bg	#转后台运行
 fg	#转前台运行
@@ -743,6 +751,22 @@ sudo apt-get install jenkins
 
 查看密码
 `cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+## PHP
+```bash
+若之前安装过其他版本PHP，先删除
+yum remove php*
+
+rpm安装PHP7相应的yum源
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+yum install php70w
+
+php -v
+
+service php-fpm start #要运行PHP网页，要启动php-fpm解释器
+```
 
 ---
 
@@ -1022,3 +1046,6 @@ export PATH=$PATH:/usr/local/bin/
 不要忘了生效一下:
 source ~/.bash_profile
 ```
+
+# Thank
+太多了,就不一一列出来了

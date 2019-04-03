@@ -1,5 +1,5 @@
-[toc]
 # VSFTP
+[toc]
 服
 > yum install vsftpd  
 
@@ -7,7 +7,7 @@
 > yum install ftp
 ---
 
-##匿名访问
+#匿名访问
 |参数|作用|
 | :------------- | :------------- |
 |anonymous_enable=YES |	允许匿名访问模式 |
@@ -65,8 +65,7 @@ ftp> exit
 
 ---
 
-##本地用户
-
+#本地用户
 |参数 |	作用|
 | :------------- | :------------- |
 |anonymous_enable=NO 	|禁止匿名访问模式|
@@ -103,50 +102,15 @@ ftp>
 可见，在我们输入root管理员的密码之前，就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为“用户名单”的文件（ftpusers和user_list）。只要里面写有某位用户的名字，就不再允许这位用户登录到FTP服务器上。
 ```bash
 [root@linuxprobe ~]# cat /etc/vsftpd/user_list 
-1 # vsftpd userlist
-2 # If userlist_deny=NO, only allow users in this file
-3 # If userlist_deny=YES (default), never allow users in this file, and
-4 # do not even prompt for a password.
-5 # Note that the default vsftpd pam config also checks /etc/vsftpd/ftpusers
-6 # for users that are denied.
-7 root
-8 bin
-9 daemon
-10 adm
-11 lp
-12 sync
-13 shutdown
-14 halt
-15 mail
-16 news
-17 uucp
-18 operator
-19 games
-20 nobody
 
 [root@linuxprobe ~]# cat /etc/vsftpd/ftpusers 
-# Users that are not allowed to login via ftp
-1 root
-2 bin
-3 daemon
-4 adm
-5 lp
-6 sync
-7 shutdown
-8 halt
-9 mail
-10 news
-11 uucp
-12 operator
-13 games
-14 nobody
 ```
-如果您确认在生产环境中使用 root 管理员不会对系统安全产生影响，只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
+如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响，只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
 在采用本地用户模式登录FTP服务器后，默认访问的是该用户的家目录，也就是说，访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己，因此不存在写入权限不足的情况。
 
 ---
 
-##虚拟用户
+#虚拟用户
 1. 创建用于进行 FTP 认证的用户数据库文件，其中奇数行为账户名，偶数行为密码。例如，我们分别创建出 zhangsan 和 lisi 两个用户，密码均为 redhat
 ```vim
 cd /etc/vsftpd/
@@ -229,5 +193,265 @@ systemctl restart vsftpd
 systemctl enable vsftpd
 ```
 
+---
+
+# 实例
+**18 I**
+配置FTP服务，需求如下：
+使用虚拟用户认证方式，创建用户virtftp，该用户的家目录为/data/ftp_data，shell为/sbin/nologin，并将虚拟用户映射至virtftp用户；
+允许属主对/data/ftp_data有写权限；
+关闭PASV模式的安全检查；
+设置客户端最大连接数为100，每个IP允许3个连接数；
+ftpuser虚拟用户可以下载与上传文件；
+ftpadmin虚拟用户可以下载与上传文件以及删除重命名操作，上传文件的umask为022。
+配置文件要求:
+	以下文件除了vsftpd.conf文件其余文件均需要自行创建
+	/etc/vsftpd/vsftpd.conf(ftp配置文件)/etc/pam.d/vsftpd.vu，（pam配置文件）
+	/etc/vsftpd/vlogin.db,（用户数据库）
+	/etc/vsftpd/ftp_user（该目录下ftp用户权限配置目录）
+	ftpuser，ftpadmin用户权限相关配置文件均在/etc/vsftpd/ftp_user目录下。
+
+0. 安装服务,配置虚拟用户认证
+```vim
+yum install vsftpd
+
+cd /etc/vsftp
+vim vlogin.list
+	ftpuser
+	123456
+	ftpadmin
+	123456
+
+db_load -T -t hash -f vlogin.list vlogin.db	
+
+cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
+
+vim /etc/pam.d/vsftpd.vu
+	auth       required     pam_userdb.so db=/etc/vsftpd/vlogin
+	account    required     pam_userdb.so db=/etc/vsftpd/vlogin
+```
+
+1. 修改配置文件
+```vim
+vim /etc/vsftpd/vsftpd.conf
+	pam_service_name=vsftpd.vu  
+	guest_enable=YES      
+	guest_username=virtftp      
+	user_config_dir=/etc/vsftpd/ftp_user    
+	allow_writeable_chroot=YES
+
+	pasv_promiscuous=YES
+	max_clients=100
+	max_per_ip=3
+```
+
+2. 创建家目录为/data/ftp_data，shell为/sbin/nologin 的 virtftp 用户；
+>useradd -d /data/ftp_data -s /sbin/nologin virtftp
+>chmod -Rf 755 /data/ftp_data
+>cd /data/ftp_data 
+>touch testfile
+
+3. 配置权限文件
+```vim
+>mkdir /etc/vsftpd/ftp_user
+cd /etc/vsftpd/ftp_user
+vim ftpuser
+	anon_upload_enable=YES
+
+vim ftpadmin
+	anon_upload_enable=YES
+	anon_mkdir_wirte_enable=YES
+	anon_other_wirte_enable=YES
+	anon_umask=022
+```
+
+4. 起服务
+```bash
+setenforce 0
+firewall-cmd --zone=public --add-service=ftp
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
+```
+
+---
+
+**18 A0**
+配置FTP服务，实现WEB站点远程更新和文档下载的功能，需求如下：
+	- 创建用户tom，密码为ruijie。
+	- 为WEB网站创建FTP站点，具体要求如下：
+	- FTP普通用户主目录：/data/web_data
+	- FTP访问权限：通过扩展acl方式允许用户tom读取和写入
+	- FTP访问路径为：ftp://tom:ruijie@公网IP/
+	- 为产品资料下载创建FTP站点，具体要求如下：
+	- FTP匿名用户主目录：/data/instructions
+	- FTP访问权限：允许匿名用户读取
+	- FTP访问路径为：ftp://公网IP/
 
 
+1. 修改配置文件
+```vim
+vim /etc/vsftpd/vsftpd.conf
+	local_root=/data/web_data
+	anon_root=/data/instructions
+	anon_upload_enable=NO
+```
+
+2. 创建用户与acl；
+```bash
+useradd tom
+passwd tom 
+cd /data/web_data
+chmod -Rf 755 /data/web_data
+setfacl -R -m u:tom:rwx .
+touch success
+```
+
+3. 起服务
+```bash
+setenforce 0
+firewall-cmd --zone=public --add-service=ftp
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
+```
+
+---
+
+**18 B0**
+配置FTP服务，需求如下：
+	- 拒绝匿名访问，只允许本地系统用户登录；
+	- 使用被动模式，设置云主机B公网IP为被动模式数据传输地址
+	- 所有用户主目录为/data/ftp_data宿主为virtual用户；
+	- 将用户使用文件的方式记录账号以及密码；
+	- ftpuser1用户只能下载不能上传以及删除文件重命名操作；
+	- ftpuser2可以下载与上传文件以及删除重命名操作；
+	- ftpadmin可以下载与上传文件以及删除重命名操作，上传文件的umask为022；
+	- 配置文件要求:
+	以下文件除了vsftpd.conf文件其余文件均需要自行创建：
+	/etc/vsftpd/vsftpd.conf(ftp配置文件)/etc/pam.d/vsftpd.vu，（pam配置文件）
+	/etc/vsftpd/vlogin.db,（用户数据库）
+	/etc/vsftpd/user_conf（该目录下ftp用户权限配置目录）
+	ftpuser1，ftpuser2，ftpadmin用户权限相关配置文件均在/etc/vsftpd/user_conf目录下。
+
+0. 安装服务,配置虚拟用户认证
+```vim
+yum install vsftpd
+
+cd /etc/vsftp
+vim vlogin.list
+	ftpuser1
+	123456
+	ftpuser2
+	123456
+	ftpadmin
+	123456
+
+db_load -T -t hash -f vlogin.list vlogin.db	
+
+cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
+
+vim /etc/pam.d/vsftpd.vu
+	auth       required     pam_userdb.so db=/etc/vsftpd/vlogin
+	account    required     pam_userdb.so db=/etc/vsftpd/vlogin
+```
+
+1. 修改配置文件
+```vim
+vim /etc/vsftpd/vsftpd.conf
+	anonymous_enable=NO
+
+	pam_service_name=vsftpd.vu 
+
+	guest_enable=YES      
+	guest_username=virtual  
+	user_config_dir=/etc/vsftpd/ftp_user    
+	allow_writeable_chroot=YES
+
+	pasv_enable=YES         # 启用 pasv 模式
+	pasv_min_port=30000     # pasv 端口起始号
+	pasv_max_port=40000     # pasv 端口结束号
+
+	xferlog_enable=YES         # 启用上传和下载的日志功能，默认开启。
+	xferlog_file=/var/log/xferlog         # vsftpd的日志存放位置 
+```
+
+2. 创建家目录为/data/ftp_data 的 virtual 用户；
+```bash
+useradd -d /data/ftp_data -s /sbin/nologin virtual
+chmod -Rf 755 /data/ftp_data
+cd /home/ftp/
+touch testfile
+grep virtftp /etc/passwd
+```
+
+3. 配置权限文件
+```vim
+>mkdir /etc/vsftpd/ftp_user
+cd /etc/vsftpd/ftpuser1
+vim ftpuser
+
+vim ftpuser2
+	anon_upload_enable=YES
+	anon_mkdir_wirte_enable=YES
+	anon_other_wirte_enable=YES
+
+vim ftpadmin
+	anon_upload_enable=YES
+	anon_mkdir_wirte_enable=YES
+	anon_other_wirte_enable=YES
+	anon_umask=022
+```
+
+4. 起服务
+```bash
+setenforce 0
+firewall-cmd --zone=public --add-port=30000-40000/tcp --permanent
+firewall-cmd --zone=public --add-port=30000-40000/udp --permanent
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
+```
+
+---
+
+**18 I0**
+配置FTP服务，实现WEB站点远程更新和文档下载的功能，需求如下：
+	- 创建用户tom，密码为ruijie；
+	- 禁止匿名用户登录；
+	- 使用被动模式，设置云主机B公网IP为被动模式数据传输地址；
+	- 为mariadb数据库创建FTP站点，具体要求如下：
+	- FTP普通用户主目录：/data/mariadb_data；
+	- FTP访问权限：通过扩展acl方式设置用户tom拥有读、写、执行权限；
+	- FTP访问路径为：ftp://tom:ruijie@公网IP/。
+
+1. 修改配置文件
+```vim
+vim /etc/vsftpd/vsftpd.conf
+	anonymous_enable=NO
+	local_root=/data/mariadb_data
+
+	pasv_enable=YES         # 启用 pasv 模式
+	pasv_min_port=30000     # pasv 端口起始号
+	pasv_max_port=40000     # pasv 端口结束号
+```
+
+2. 创建用户与acl；
+```bash
+useradd tom
+passwd tom
+cd /data/mariadb_data
+chmod -Rf 755 /data/mariadb_data
+setfacl -R -m u:tom:rwx .
+touch success
+```
+
+4. 起服务
+```bash
+setenforce 0
+firewall-cmd --zone=public --add-port=30000-40000/tcp --permanent
+firewall-cmd --zone=public --add-port=30000-40000/udp --permanent
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
+```

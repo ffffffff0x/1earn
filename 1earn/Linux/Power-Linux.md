@@ -4,7 +4,8 @@
 
 ---
 
-# net🏀
+# 系统配置
+## net🏀
 ```vim
 vi /etc/sysconfig/network-scripts/ifcfg-eth0
 	DEVICE="enoXXXXXX"
@@ -25,7 +26,7 @@ vi /etc/hosts
 
 ---
 
-# 配置本地yum源,挂载,安装⚽
+## 配置本地yum源,挂载,安装⚽
 挂载到/mnt/cdrom
 
 >	mkdir /mnt/cdrom
@@ -70,9 +71,118 @@ yum -y install vim
 
 ---
 
-# Vim
+## RAID🏉
+- 创建RAID1阵列，设备文件名为md0；
+- 将新建的RAID1格式化为xfs文件系统，编辑/etc/fstab文件实现以UUID的形式开机自动挂载至/data/ftp_data目录。
+
+**安装**
+>yum remove mdadm	#建议先把原本的卸掉重装
+>yum install mdadm
+
+**分区**
+```bash
+fdisk /dev/sdb
+n 创建
+p 主分区
+接下来一路回车选默认值
+w 写入
+
+fdisk /dev/sdc
+n 创建
+p 主分区
+接下来一路回车选默认值
+w 写入
+```
+
+**创建阵列**
+- RAID1
+	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
+	- -Cv: 创建一个阵列并打印出详细信息。
+	- /dev/md0: 阵列名称。
+	-a　: 同意创建设备，如不加此参数时必须先使用mknod 命令来创建一个RAID设备，不过推荐使用-a yes参数一次性创建；
+	- -l1 (l as in “level”): 指定阵列类型为 RAID-1 。
+	- -n2: 指定我们将两个分区加入到阵列中去，分别为/dev/sdb1 和 /dev/sdc1
+
+- RAID5
+	`mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1`
+
+	可以使用以下命令查看进度：
+	`cat /proc/mdstat`
+
+	另外一个获取阵列信息的方法是：
+	`mdadm -D /dev/md0`
+
+格式化为xfs
+`mkfs.xfs /dev/md0`
+
+以UUID的形式开机自动挂载
+```vim
+mkdir /data/ftp_data
+blkid	/dev/md0 查UUID值
+
+vi /etc/fstab
+	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
+
+重启验证
+shutdown -r now 
+mount | grep '^/dev'
+```
+
+---
+
+## lvm物理卷🎳
+```bash
+fdisk ‐l		查看磁盘情况
+fdisk /dev/sdb	创建系统分区
+	n
+	p
+	1
+	后面都是默认，直接回车
+		
+	t	转换分区格式
+	8e
+
+	w	写入分区表
+```
+
+**卷组**
+创建一个名为 datastore 的卷组，卷组的PE尺寸为 16MB；
+>	pvcreate /dev/sdb1	创建物理卷
+>	vgcreate ‐s 16M datastore /dev/sdb1	
+
+**逻辑卷**
+逻辑卷的名称为 database 所属卷组为 datastore，该逻辑卷由 50 个 PE 组成；
+>	lvcreate ‐l 50 ‐n database datastore
+
+逻辑卷的名称为database所属卷组为datastore，该逻辑卷大小为8GB；
+>	lvcreate ‐L 8G ‐n database datastore
+>	lvdisplay
+
+**格式化**
+将新建的逻辑卷格式化为 XFS 文件系统，要求在系统启动时能够自动挂在到 /mnt/database 目录。	
+>	mkfs.xfs /dev/datastore/database
+>	mkdir /mnt/database
+```vim
+vi /etc/fstab
+	/dev/datastore/database /mnt/database/ xfs defaults 0 0
+```
+
+重启验证
+>shutdown -r now 
+>mount | grep '^/dev'
+
+**扩容**
+业务扩增，导致database逻辑卷空间不足，现需将database逻辑卷扩容至15GB空间大小，以满足业务需求。（注意扩容前后截图）
+>lvextend -L 15G /dev/datastore/database
+>lvs	#确认有足够空间
+>resize2fs /dev/datastore/database
+>lvdisplay
+
+---
+
+## Vim👀
 常用配置
-`sudo vim /etc/vim/vimrc `
+`sudo vim /etc/vim/vimrc`
 最后面直接添加你想添加的配置，下面是一些常用的（不建议直接复制这个货网上的，要理解每个的含义及有什么用，根据自己需要来调整）
 ```vim
 set number #显示行号
@@ -91,82 +201,173 @@ set ignorecase smartcase #搜索时忽略大小写，但在有一个或以上大
 
 ---
 
-# apache⚾
-配置 http 服务，建立一个 web 站点；
+# 网络服务
+## DNS🛶
+**安装**
+>yum -y install bind*
 
-0. 安装
-> yum -y install httpd
-> yum -y install mod_ssl
+**主配置文件**
+```vim
+vim /etc/named.conf
+options {
+    listen-on port 53 { any; };
+    listen-on-v6 port 53 { any; };
+    allow-query     { any; };
+```
 
-1. 使用www.abc.com作为域名进行访问；
->	nslookup www.abc.com
+**区域配置文件**
+```vim
+vim /etc/named.rfc1912.zones
+zone "abc.com" IN { 
+        type master;
+        file "abc.localhost";
+};
 
-2. 网站根目录为 /var/www/html；
+zone "1.1.1.in-addr.arpa" IN { 
+        type master;
+        file "abc.loopback";
+};
+
+zone "2.1.1.in-addr.arpa" IN { 
+        type master;
+        file "www.loopback";
+};
+```
+
+**创建区域数据文件**
+>cd /var/named/
+cp named.localhost abc.localhost
+cp named.loopback abc.loopback
+cp named.loopback www.loopback
+
+>chown named abc.localhost 
+chown named abc.loopback
+chown named www.loopback
+
+**域名正向反向解析配置文件**
+```vim
+vim /var/named/abc.localhost
+	$TTL 1D
+	@      IN SOA  @ rname.invalid. (
+                                        	0      ; serial
+                                        	1D      ; refresh
+                                        	1H      ; retry
+                                        	1W      ; expire
+                                        	3H )    ; minimum
+	       	NS     @
+       		A      127.0.0.1
+	    	AAAA   ::1
+	ftp    	A      1.1.1.1
+	www     A      1.1.2.1
+
+vim /var/named/abc.loopback 
+	$TTL 1D
+	@	IN SOA  @ rname.invalid. (
+    	                                    0 ; serial
+                                        	1D ; refresh
+                                        	1H ; retry
+                                        	1W ; expire
+                                        	3H ) ; minimum
+        	NS 		@
+        	A 		127.0.0.1
+        	AAAA	::1
+        	PTR 	localhost.
+	1 PTR ftp.abc.com.
+
+vim /var/named/www.loopback 
+	$TTL 1D
+	@ 		IN SOA  @ rname.invalid. (
+    	                                    0 ; serial
+                                        	1D ; refresh
+                                        	1H ; retry
+                                        	1W ; expire
+                                        	3H ) ; minimum
+        	NS 		@
+        	A 		127.0.0.1
+        	AAAA	::1
+        	PTR 	localhost.
+	1 PTR www.abc.com.
+```
+
+**启服务**
 ```bash
-vi /etc/httpd/conf/httpd.conf
+named-checkconf
+named-checkzone abc.com abc.localhost
+named-checkzone abc.com abc.loopback 
+named-checkzone abc.com www.loopback 
+service named restart
+
+setenforce 0
+firewall-cmd --zone=public --add-service=dns --permanent
+firewall-cmd --reload
+```
+
+---
+
+## DHCP🏏
+>yum install -y dhcp
+
+复制一份示例
+>cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
+
+```vim
+vim /etc/dhcp/dhcpd.conf
+	ddns-update-style interim;      # 设置DNS的动态更新方式为interim
+	option domain-name "abc.edu";
+	option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
+	default-lease-time  43200;                          # 指定默认租约的时间长度，单位为秒
+	max-lease-time  86400;  # 指定最大租约的时间长度
+```
+
+以下为某区域的 IP 地址范围
+```bash
+subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
+	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
+	option routers  192.168.1.254;                       # 指定该网段的默认网关
+}
+```
+
+>dhcpd -t    #检测语法有无错误
+>service dhcpd start    #开启 dhcp 服务
+
+记得防火墙放行
+
+查看租约文件，了解租用情况
+>cat /var/lib/dhcpd/dhcpd.leases
+
+---
+
+# web服务
+## apache⚾
+**安装**
+```bash
+yum -y install httpd
+yum -y install mod_ssl
+```
+
+**配置文件**
+```vim
+vim /etc/httpd/conf/httpd.conf
 		DocumentRoot "/var/www/html" 
 		ServerName  xx.xx.xx.xx:80     ////设置Web服务器的主机名和监听端口
 ```
 
-3. Index.html内容使用Welcome to 2017 Computer Network Application contest!；
+**启服务**
 ```vim
-vi var/www/html/index.html 
-	Welcome to 2017 Computer Network Application contest!
+vim var/www/html/index.html 
+	Hello World!
 
-service httpd restart或systemctl start httpd
+service httpd restart
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
 ```
-关防火墙
-			
-4. 配置 https 服务使原站点能使用 https 访问。
 
->查看证书密钥位置
->sed ‐n '/^SSLCertificateFile/p;/^SSLCertificateKeyFile/p '/etc/httpd/conf.d/ssl.conf
-
->删除原来的密钥
->cd /etc/pki/tls/private/
->rm ‐f localhost.key
-
->新建密钥文件
->openssl genrsa 1024 > localhost.key
-
->删除原来的证书
->cd ../certs
->rm ‐rf localhost.crt
-
->新建证书文件
->openssl req ‐new ‐x509 ‐days 365 ‐key ../private/localhost.key ‐out localhost.crt
-
->开下 https 防火墙，重启服务，测试
-
-
-设置 SELINUX 状态为 Disabled；	
->setenforce 0 
+### 虚拟主机
+**配置虚拟主机文件**
 ```vim
-vi /etc/selinux/config
-	SELINUX=disabled
-```
----
-
-**18-I**
-A
-- 配置http服务，以虚拟主机的方式创建web站点
-- 将/etc/httpd/conf.d/ssl.conf重命名为ssl.conf.bak
-- 配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-- 配置https功能，https所用的证书httpd.crt、私钥httpd.key放置在/etc/httpd/ssl目录中（目录需自己创建）；
-- 使用www.rj.com作为域名进行访问；
-- 网站根目录为/data/web_data；
-- 提供http、https服务，仅监听192.168.1XX.22的IP地址；（XX现场提供）
-- index.html内容使用Welcome to 2018 Computer Network Application contest!；
-
-安装
-> yum -y install httpd
-> yum -y install mod_ssl
-
-配置虚拟主机文件
-```bash
 vim /etc/httpd/conf.d/virthost.conf
 <VirtualHost 192.168.1xx.22:80>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     ////设置Web服务器的主机名和监听端口
 	DocumentRoot "/data/web_data" 
 	<Directory "/data/web_data">
 		Require all granted
@@ -175,7 +376,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443 
 <VirtualHost 192.168.1xx.22:443>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     ////设置Web服务器的主机名和监听端口
 	DocumentRoot "/data/web_data" 
 	
 	SSLEngine on
@@ -188,16 +389,19 @@ Listen 192.168.1XX.33:443
 </VirtualHost>
 ```
 
-!!!!注意，必须要改名，大坑
->mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
-
-index.html 内容使用 Welcome to 2018 Computer Network Application contest!	
+**启服务**
 ```vim
 mkdir -p /data/web_data
 vim /data/web_data/index.html 
-	Welcome to 2018 Computer Network Application contest!	
+	Hello World!	
+
+service httpd restart
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
 ```
 
+### mod_ssl
+**配置openssl，为linux提供web证书**
 创建证书
 ```bash
 >cd /etc/pki/CA/private
@@ -219,171 +423,7 @@ openssl ca -days 365 -in httpd.csr > httpd.crt
 cat /etc/pki/CA/index.txt
 ```
 
-```bash
-httpd -t 检查配置
-setenforce 0 
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --zone=public --add-service=https --permanent
-firewall-cmd --reload
-service httpd start 
-```
-
-curl http://www.rj.com
-curl https://www.rj.com
-
-
-B
-配置http服务，以虚拟主机的方式创建web站点
-将/etc/httpd/conf.d/ssl.conf重命名为ssl.conf.bak
-配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-配置https功能，https所用的证书httpd.crt、私钥httpd.key放置在/etc/httpd/ssl目录中（目录需自己创建，httpd.crt、httpd.key均文件从serverA复制）；
-使用www.rj.com作为域名进行访问；
-提供http、https服务，仅监听192.168.1XX.33的地址。（XX现场提供）
-
-安装
-> yum -y install httpd
-> yum -y install mod_ssl
-
-配置虚拟主机文件
-```bash
-vim /etc/httpd/conf.d/virthost.conf
-<VirtualHost 192.168.1xx.33:80>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
-	<Directory "/data/web_data">
-		Require all granted
-	</Directory>
-</VirtualHost>
-
-Listen 192.168.1XX.33:443 
-<VirtualHost 192.168.1xx.33:443>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
-	
-	SSLEngine on
-	SSLCertificateFile /etc/httpd/ssl/httpd.crt
-	SSLCertificateKeyFile /etc/httpd/ssl/httpd.key
-
-	<Directory "/data/web_data">
-		Require all granted
-	</Directory>
-</VirtualHost>
-```
-
->mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.bak
-
-index.html 内容使用 Welcome to 2018 Computer Network Application contest!	
-```vim
-mkdir -p /data/web_data
-vim /data/web_data/index.html 
-	Welcome to 2018 Computer Network Application contest! B
-```
-
-```bash
-mkdir /etc/httpd/ssl
-cd /etc/httpd/ssl
-
-scp root@192.168.1xx.22:/etc/httpd/ssl/httpd.key /etc/httpd/ssl/httpd.key
-scp root@192.168.1xx.22:/etc/httpd/ssl/httpd.crt /etc/httpd/ssl/httpd.crt
-```
-
-```bash
-httpd -t 检查配置
-setenforce 0 
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --zone=public --add-service=https --permanent
-firewall-cmd --reload
-service httpd start 
-```
-
----
-
-
-**18 B0**
-配置http服务，以虚拟主机的方式建立一个web站点。
-配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-使用www.rj.com作为域名进行访问；
-网站根目录为/data/web_data；
-index.html内容使用Welcome to 2018 Computer Network Application contest!
-
-安装
-> yum -y install httpd
-> yum -y install mod_ssl
-
-配置虚拟主机文件
-```bash
-vim /etc/httpd/conf.d/virthost.conf
-<VirtualHost 192.168.1xx.33:80>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
-	<Directory "/data/web_data">
-		Require all granted
-	</Directory>
-</VirtualHost>
-```
-
-index.html 内容使用 Welcome to 2018 Computer Network Application contest!	
-```vim
-mkdir -p /data/web_data
-vim /data/web_data/index.html 
-	Welcome to 2018 Computer Network Application contest! B
-```
-
-```bash
-httpd -t 检查配置
-setenforce 0 
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --reload
-service httpd start 
-```
-
----
-
-**18 J0**
-配置http服务，以虚拟主机的方式建立一个web站点；
-配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-仅监听192.168.2.22:8080端口；
-使用www.rj.com作为域名进行访问；
-网站根目录为/data/web_data；
-index.html内容使用Welcome to 2018 Computer Network Application contest!。
-
-安装
-> yum -y install httpd
-> yum -y install mod_ssl
-
-配置虚拟主机文件
-```bash
-vim /etc/httpd/conf.d/virthost.conf
-Listen 192.168.2.22:8080
-<VirtualHost 192.168.2.22:8080>
-	ServerName  www.rj.com     ////设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
-	<Directory "/data/web_data">
-		Require all granted
-	</Directory>
-</VirtualHost>
-```
-
-index.html 内容使用 Welcome to 2018 Computer Network Application contest!	
-```vim
-mkdir -p /data/web_data
-vim /data/web_data/index.html 
-	Welcome to 2018 Computer Network Application contest! B
-```
-
-```bash
-httpd -t 检查配置
-setenforce 0 
-firewall-cmd --zone=public --add-port=8080/tcp --permanent
-firewall-cmd --reload
-service httpd start 
-```
-
----
-
-**18 C0**
-配置openssl，为云主机A提供web证书。
-
+**配置openssl，为windows提供web证书**
 创建证书
 ```bash
 >cd /etc/pki/CA/private
@@ -404,30 +444,19 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 自己想办法把server.pfx导出给windows2008主机
 ```
 
----
-
-**2019 样**
-配置http服务，以虚拟主机的方式建立一个web站点。
-	- 将/etc/httpd/conf.d/ssl.conf重命名为ssl.conf.bak；
-	- 配置文件名为virthost.conf，放置在/etc/httpd/conf.d目录下；
-	- https所用的证书httpd.crt、私钥httpd.key、请求证书httpd.csr放置在/etc/httpd/ssl目录中（目录需自己创建）；
-	- 监听80、443端口，分别配置http和https功能；
-	- 使用www.rj.com作为域名进行访问；
-	- 网站根目录为/data/web_data,index.html内容使用Welcome to 2018 Computer Network Application contest!
-
-
+**向 windows CA 服务器申请证书**
 Openssl genrsa 2048 > httpd.key
 openssl req -new -key httpd.key -out httpd.csr
 通过这个csr文件在内部的windows CA服务器上申请证书
 
-## ab
+### ab
 安装
 `sudo apt install apache2-utils`
 `yum install httpd-tools`
 
 ---
 
-# Caddy
+## Caddy
 - 安装Caddy
 ```bash
 curl https://getcaddy.com | bash -s personal
@@ -480,14 +509,418 @@ echo -e "xxx.com {
     root /usr/local/bin/www
 	tls xxxx@xxx.com  #你的邮箱
 }" > /usr/local/bin/Caddyfile
-
-
 ```
-
 
 ---
 
-# Haproxy🏐
+## Wordpress
+**下载WordPress安装包并解压**
+```bash
+wget https://wordpress.org/latest.tar.gz
+
+tar -xzvf latest.tar.gz 
+```
+
+**创建WordPress数据库和一个用户**
+```bash
+yum install mariadb mariadb-server
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
+
+mysql -u root -p
+
+创建一个专给WordPress存数据的数据库
+MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
+
+创建用于WordPress对应用户
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##“idiota”对应创建的用户，“password”内填写用户的密码
+
+分别配置本地登录和远程登录权限
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
+
+刷新权限
+MariaDB [(none)]> flush privileges;
+```
+
+**配置 PHP**
+```bash
+# 安装PHP源
+rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
+rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+# 安装 PHP7.0
+yum install php70w
+yum install php70w-mysql
+yum install httpd
+
+# 重启Apache
+systemctl restart httpd
+
+# 查看PHP版本
+php -v
+```
+
+**设置wp-config.php文件**
+```bash
+cd wordpress
+vim wp-config-sample.php
+```
+
+在标有 
+> // ** MySQL settings - You can get this info from your web host ** //
+
+下输入你的数据库相关信息
+```php
+DB_NAME 
+    在第二步中为WordPress创建的数据库名称
+DB_USER 
+    在第二步中创建的WordPress用户名
+DB_PASSWORD 
+    第二步中为WordPress用户名设定的密码
+DB_HOST 
+    第二步中设定的hostname（通常是localhost，但总有例外；参见编辑wp-config.php文件中的“可能的DB_HOST值）。
+DB_CHARSET 
+    数据库字符串，通常不可更改（参见zh-cn:编辑wp-config.php）。
+DB_COLLATE 
+    留为空白的数据库排序（参见zh-cn:编辑wp-config.php）。
+```
+
+在标有
+>* Authentication Unique Keys.
+
+的版块下输入密钥的值，保存wp-config.php文件,也可以不管这个
+
+**上传文件**
+接下来需要决定将博客放在网站的什么位置上：
+    网站根目录下（如：http://example.com/）
+    网站子目录下（如：http://example.com/blog/
+
+根目录
+如果需要将文件上传到web服务器，可用FTP客户端将wordpress目录下所有内容（无需上传目录本身）上传至网站根目录
+如果文件已经在web服务器中且希望通过shell访问来安装wordpress，可将wordpress目录下所有内容（无需转移目录本身）转移到网站根目录
+
+子目录
+如果需要将文件上传到web服务器，需将wordpress目录重命名，之后用FTP客户端将重命名后的目录上传到网站根目录下某一位置
+如果文件已经在web服务器中且希望通过shell访问来安装wordpress，可将wordpress目录转移到网站根目录下某一位置，之后重命名 wordpress目录
+
+```bash
+mv wordpress/* /var/www/html
+
+setenforce 0
+service httpd start
+service firewalld stop
+```
+
+**运行安装脚本**
+在常用的web浏览器中运行安装脚本。
+将WordPress文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
+将WordPress文件放在子目录（假设子目录名为blog）下的用户请访问：http://example.com/blog/wp-admin/install.php
+
+访问`http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php`
+下面就略了,自己照着页面上显示的来
+
+---
+
+## mijisou
+[TOC]
+
+### build
+**依赖**
+自行安装python3 pip redis
+
+**安装**
+```bash
+systemctl start redis
+systemctl enable redis
+git clone https://github.com/entropage/mijisou.git
+cd mijisou && pip install -r requirements.txt
+```
+
+**配置**
+```yml
+vim searx/settings_et_dev.yml
+general:
+    debug : False # Debug mode, only for development
+    instance_name : "123搜索" # displayed name
+
+search:
+    safe_search : 0 # Filter results. 0: None, 1: Moderate, 2: Strict
+    autocomplete : "" # Existing autocomplete backends: "baidu", "dbpedia", "duckduckgo", "google", "startpage", "wikipedia" - leave blank to turn it off by default
+    language : "zh-CN"
+    ban_time_on_fail : 5 # ban time in seconds after engine errors
+    max_ban_time_on_fail : 120 # max ban time in seconds after engine errors
+
+server:
+    port : 8888
+    bind_address : "0.0.0.0" # address to listen on
+    secret_key : "123" # change this!
+    base_url : False # Set custom base_url. Possible values: False or "https://your.custom.host/location/"
+    image_proxy : False # Proxying image results through searx
+    http_protocol_version : "1.0"  # 1.0 and 1.1 are supported
+
+cache:
+    cache_server : "127.0.0.1" # redis cache server ip address
+    cache_port : 6379 # redis cache server port
+    cache_time : 86400 # cache 1 day
+    cache_type : "redis" # cache type
+    cache_db : 0 # we use db 0 in dev env
+
+ui:
+    static_path : "" # Custom static path - leave it blank if you didn't change
+    templates_path : "" # Custom templates path - leave it blank if you didn't change
+    default_theme : entropage # ui theme
+    default_locale : "" # Default interface locale - leave blank to detect from browser information or use codes from the 'locales' config section
+    theme_args :
+        oscar_style : logicodev # default style of oscar
+
+# searx supports result proxification using an external service: https://github.com/asciimoo/morty
+# uncomment below section if you have running morty proxy
+result_proxy:
+    url : ""  #morty proxy service
+    key : Your_result_proxy_key
+    server_name : ""
+
+outgoing: # communication with search engines
+    request_timeout : 2.0 # seconds
+    useragent_suffix : "" # suffix of searx_useragent, could contain informations like an email address to the administrator
+    pool_connections : 100 # Number of different hosts
+    pool_maxsize : 10 # Number of simultaneous requests by host
+# uncomment below section if you want to use a proxy
+# see http://docs.python-requests.org/en/latest/user/advanced/#proxies
+# SOCKS proxies are also supported: see http://docs.python-requests.org/en/master/user/advanced/#socks
+#    proxies :
+#        http : http://192.168.199.5:24000
+#        http : http://192.168.199.5:3128
+#        https: http://127.0.0.1:8080
+# uncomment below section only if you have more than one network interface
+# which can be the source of outgoing search requests
+#    source_ips:
+#        - 1.1.1.1
+#        - 1.1.1.2
+    haipproxy_redis:
+      #host: 192.168.199.5
+      #port: 6379
+      #password: kckdkkdkdkddk
+      #db: 0
+
+engines:
+  - name : google
+    engine : google
+    shortcut : go
+
+  - name : google images
+    engine : google_images
+    shortcut : goi
+
+  - name : baidu
+    engine : baidu
+    shortcut : bd
+  
+  - name : baidu images
+    engine : baidu_images
+    shortcut : bdi
+
+  - name : baidu videos
+    engine : baidu_videos
+    shortcut : bdv
+
+  - name : sogou
+    engine : sogou
+    shortcut : sg
+
+  - name : sogou images
+    engine : sogou_images
+    shortcut : sgi
+
+  - name : sogou videos
+    engine : sogou_videos
+    shortcut : sgv
+
+  - name : 360sousuo
+    engine : so
+    shortcut : 360
+
+  - name : 360 images
+    engine : so_images
+    shortcut : 360i
+
+  - name : bing
+    engine : bing
+    shortcut : bi
+
+  - name : bing images
+    engine : bing_images
+    shortcut : bii
+
+  - name : bing videos
+    engine : bing_videos
+    shortcut : biv
+
+  - name : bitbucket
+    engine : xpath
+    paging : True
+    search_url : https://bitbucket.org/repo/all/{pageno}?name={query}
+    url_xpath : //article[@class="repo-summary"]//a[@class="repo-link"]/@href
+    title_xpath : //article[@class="repo-summary"]//a[@class="repo-link"]
+    content_xpath : //article[@class="repo-summary"]/p
+    categories : it
+    timeout : 4.0
+    shortcut : bb
+
+  - name : free software directory
+    engine : mediawiki
+    shortcut : fsd
+    categories : it
+    base_url : https://directory.fsf.org/
+    number_of_results : 5
+# what part of a page matches the query string: title, text, nearmatch
+# title - query matches title, text - query matches the text of page, nearmatch - nearmatch in title
+    search_type : title
+    timeout : 5.0
+
+  - name : gentoo
+    engine : gentoo
+    shortcut : ge
+
+  - name : gitlab
+    engine : json_engine
+    paging : True
+    search_url : https://gitlab.com/api/v4/projects?search={query}&page={pageno}
+    url_query : web_url
+    title_query : name_with_namespace
+    content_query : description
+    page_size : 20
+    categories : it
+    shortcut : gl
+    timeout : 10.0
+
+  - name : github
+    engine : github
+    shortcut : gh
+
+  - name : stackoverflow
+    engine : stackoverflow
+    shortcut : st
+
+  - name : wikipedia
+    engine : wikipedia
+    shortcut : wp
+    base_url : 'https://en.wikipedia.org/'
+
+locales:
+    en : English
+    ar : العَرَبِيَّة (Arabic)
+    bg : Български (Bulgarian)
+    cs : Čeština (Czech)
+    da : Dansk (Danish)
+    de : Deutsch (German)
+    el_GR : Ελληνικά (Greek_Greece)
+    eo : Esperanto (Esperanto)
+    es : Español (Spanish)
+    fi : Suomi (Finnish)
+    fil : Wikang Filipino (Filipino)
+    fr : Français (French)
+    he : עברית (Hebrew)
+    hr : Hrvatski (Croatian)
+    hu : Magyar (Hungarian)
+    it : Italiano (Italian)
+    ja : 日本語 (Japanese)
+    nl : Nederlands (Dutch)
+    pl : Polski (Polish)
+    pt : Português (Portuguese)
+    pt_BR : Português (Portuguese_Brazil)
+    ro : Română (Romanian)
+    ru : Русский (Russian)
+    sk : Slovenčina (Slovak)
+    sl : Slovenski (Slovene)
+    sr : српски (Serbian)
+    sv : Svenska (Swedish)
+    tr : Türkçe (Turkish)
+    uk : українська мова (Ukrainian)
+    zh : 简体中文 (Chinese, Simplified)
+    zh_TW : 繁體中文 (Chinese, Traditional)
+
+doi_resolvers :
+  oadoi.org : 'https://oadoi.org/'
+  doi.org : 'https://doi.org/'
+  doai.io  : 'http://doai.io/'
+  sci-hub.tw : 'http://sci-hub.tw/'
+
+default_doi_resolver : 'oadoi.org'
+
+sentry:
+  dsn: https://xkdkkdkdkdkdkdkdk@sentry.xxx.com/2
+```
+
+**运行+caddy反代**
+```bash
+mv searx/settings_et_dev.yml searx/settings.yml
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	#一定要在mijisou目录下运行
+
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
+
+echo "www.fuck163.net {
+ gzip
+ tls xxxx@xxx.com
+ proxy / 127.0.0.1:8888
+}" >> /usr/local/caddy/Caddyfile
+
+/etc/init.d/caddy start
+```
+
+### opensearch
+```xml
+vim /root/mijisou/searx/templates/__common__/opensearch.xml
+  <?xml version="1.0" encoding="utf-8"?>
+  <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>{{ instance_name }}</ShortName>
+    <Description>a privacy-respecting, hackable metasearch engine</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image>{{ urljoin(host, url_for('static', filename='img/favicon.png')) }}</Image>
+    <LongName>searx metasearch</LongName>
+    {% if opensearch_method == 'get' %}
+      <Url type="text/html" method="get" template="https://www.你的域名.net/?q={searchTerms}"/>
+      {% if autocomplete %}
+      <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
+          <Param name="format" value="x-suggestions" />
+          <Param name="q" value="{searchTerms}" />
+      </Url>
+      {% endif %}
+    {% else %}
+      <Url type="text/html" method="post" template="{{ host }}">
+          <Param name="q" value="{searchTerms}" />
+      </Url>
+      {% if autocomplete %}
+      <!-- TODO, POST REQUEST doesn't work -->
+      <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
+          <Param name="format" value="x-suggestions" />
+          <Param name="q" value="{searchTerms}" />
+      </Url>
+      {% endif %}
+    {% endif %}
+  </OpenSearchDescription>
+```
+
+**管理**
+```bash
+ps -aux
+看一下哪个是gunicorn进程
+kill 杀掉
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
+```
+
+### Thank
+- [asciimoo/searx](https://github.com/asciimoo/searx)
+- [entropage/mijisou: Privacy-respecting metasearch engine](https://github.com/entropage/mijisou)
+- [一个可以保护个人隐私的网络搜索服务：秘迹搜索搭建教程 - Rat's Blog](https://www.moerats.com/archives/922/)
+- [OpenSearch description format | MDN](https://developer.mozilla.org/en-US/docs/Web/OpenSearch)
+- [Add or remove a search engine in Firefox | Firefox Help](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
+
+---
+
+## Haproxy🏐
 **18-I**
 配置Haproxy，使用listen实现http代理，使用frontend、backend实现https代理，具体要求如下：
 	- listen的配置需求如下：
@@ -533,22 +966,14 @@ backend web_server  #后端服务web_server
 
 ---
 
-# mariadb🏈
-**18 I0**
-配置mariadb服务，修改/etc/my.cnf配置文件，实现以下需求：
-服务仅监听在192.168.XX+1.33的IP地址上；
-关闭数据库域名解析功能；
-开启独立表空间模式；
-数据库存储位置为/data/database；
-Mariadb数据库授权root用户能够通过192.168.XX+1.0网段远程访问。
-
-安装
+# 数据库
+## mariadb🏈
+**安装**
 >yum install mariadb mariadb-server
 
-数据库初始化的操作
+**数据库初始化**
 >systemctl start mariadb
 >mysql_secure_installation
-
 
 |配置流程 	|说明 |操作
 ------------ | ------------- | ------------
@@ -561,9 +986,7 @@ Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 
 Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本题y
 Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本题y
 
-
-
-修改/etc/my.cnf配置文件
+**修改配置文件**
 cp /usr/share/mysql/my-medium.cnf /etc/my.cnf
 ```vim
 vim /etc/my.cnf
@@ -577,7 +1000,7 @@ bind-address = 192.168.XX+1.33　　#监听的ip地址，就是自己的另一�
 #skip-networking  #没有的话不管他，有的话注释掉
 ```
 
-Mariadb数据库授权root用户能够通过192.168.XX+1.0网段远程访问。
+Mariadb数据库授权root用户能够通过192.168.XX+1.0网段远程访问
 ```sql
 systemctl start mariadb
 
@@ -594,155 +1017,118 @@ firewall-cmd --reload
 systemctl enable mariadb
 ```
 
+---
 
-**修改数据库存储位置为/data/database**
-***注：这一小问坑较多，建议放弃***
+# 文件服务
+## VSFTP🎱
+###匿名访问
+|参数|作用|
+| :------------- | :------------- |
+|anonymous_enable=YES |	允许匿名访问模式 |
+|anon_umask=022 |	匿名用户上传文件的umask值|
+|anon_upload_enable=YES |	允许匿名用户上传文件|
+|anon_mkdir_write_enable=YES |	允许匿名用户创建目录|
+|anon_other_write_enable=YES |	允许匿名用户修改目录名称或删除目录|
+
 ```vim
-systemctl stop mariadb
-mkdir -p /data/database
-cp -r /var/lib/mysql/*　/data/database/
-chown -R mysql:mysql /data/database
-
-``vim
-vim /etc/my.cnf
-[client]
-port = 3306　　#监听端口　　
-socket=/data/database/mysql.sock
-
-[mysqld]
-port = 3306　　#监听端口　　
-socket=/data/database/mysql.sock
-datadir =  /data/database　 #数据库存储位置
+vim /etc/vsftpd/vsftpd.conf
+1 anonymous_enable=YES
+2 anon_umask=022
+3 anon_upload_enable=YES
+4 anon_mkdir_write_enable=YES
+5 anon_other_write_enable=YES
 ```
-
----
-
-/# nginx
-**18 J0**
-配置nginx服务，利用upstream模块实现负载均衡功能
-- 定义负载均衡后端主机为云主机A和云主机B；
-- 权重：云主机A=30，云主机B=60；
-- 名称为web；
-- 将访问192.168.1.22的所有流量反代至web。
-
----
-
-/# phpmyadmin
-pass
-
----
-
-# RAID🏉
-**18-I**
-- 新建两个10G的云硬盘，名称分别为B-10-1、B-10-2，挂载到serverB；
-- 使用mdadm将两块云硬盘创建RAID1阵列，设备文件名为md0；
-- 将新建的RAID1格式化为xfs文件系统，编辑/etc/fstab文件实现以UUID的形式开机自动挂载至/data/ftp_data目录。
-
-安装
->yum remove mdadm	#这个软件有点问题，建议先把原本的卸掉在装
->yum install mdadm
-
-把两块盘分区
 ```bash
-fdisk /dev/sdb
-n 创建
-p 主分区
-接下来一路回车选默认值
-w 写入
-
-fdisk /dev/sdc
-n 创建
-p 主分区
-接下来一路回车选默认值
-w 写入
+setenforce 0
+firewall-cmd --permanent --zone=public --add-service=ftp
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
 ```
 
-创建 RAID1 阵列
->mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1
-
-- -Cv: 创建一个阵列并打印出详细信息。
-- /dev/md0: 阵列名称。
--a　: 同意创建设备，如不加此参数时必须先使用mknod 命令来创建一个RAID设备，不过推荐使用-a yes参数一次性创建；
-- -l1 (l as in “level”): 指定阵列类型为 RAID-1 。
-- -n2: 指定我们将两个分区加入到阵列中去，分别为/dev/sdb1 和 /dev/sdc1
-
-可以使用以下命令查看进度：
->cat /proc/mdstat 
-
-另外一个获取阵列信息的方法是：
->mdadm -D /dev/md0)
-
-
-格式化为xfs
- mkfs.xfs /dev/md0 
-
-以UUID的形式开机自动挂载
->	mkdir /data/ftp_data
->	blkid	/dev/md0 查UUID值
-```vim
-vi /etc/fstab
-	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
-```
-
-重启验证
->shutdown -r now 
->mount | grep '^/dev'
-
----
-
-**18 B0**
-- 新建三个5G的云硬盘，名称分别为A-10-1、A-10-2、A-10-3，挂载到云主机A；
-- 使用mdadm将三块云硬盘创建RAID5阵列，设备文件名为md0；
-- 将新建的RAID5格式化为XFS文件系统，编辑/etc/fstab文件通过UUID的方式实现系统启动时能够自动挂载到/data/web_data目录。
-
-安装
->yum install mdadm
-
-把两块盘分区
+现在就可以在客户端执行ftp命令连接到远程的 FTP 服务器了。
+在 vsftpd 服务程序的匿名开放认证模式下，其账户统一为 anonymous，密码为空。而且在连接到 FTP 服务器后，默认访问的是 /var/ftp 目录。
+我们可以切换到该目录下的 pub 目录中，然后尝试创建一个新的目录文件，以检验是否拥有写入权限：
 ```bash
-fdisk /dev/sdb
-n 创建
-p 主分区
-接下来一路回车选默认值
-w 写入
+[root@linuxprobe ~]# ftp 192.168.10.10
+Connected to 192.168.10.10 (192.168.10.10).
+220 (vsFTPd 3.0.2)
+Name (192.168.10.10:root): anonymous
+331 Please specify the password.
+Password:此处敲击回车即可
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
 
-fdisk /dev/sdc
-n 创建
-p 主分区
-接下来一路回车选默认值
-w 写入
+ftp> cd pub
+250 Directory successfully changed.
 
-fdisk /dev/sdd
-n 创建
-p 主分区
-接下来一路回车选默认值
-w 写入
+ftp> mkdir files
+257 "/pub/files" created
+
+ftp> rename files database
+350 Ready for RNTO.
+250 Rename successful.
+
+ftp> rmdir database
+250 Remove directory operation successful.
+
+ftp> exit
+221 Goodbye.
 ```
-
-创建 RAID5 阵列
->mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1
-
-格式化为xfs
- mkfs.xfs /dev/md0 
-
-以UUID的形式开机自动挂载
->	mkdir /data/web_data
->	blkid	查UUID值
-```vim
-vi /etc/fstab
-	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/web_data  xfs defaults 0 0
-```
-
-重启验证
->shutdown -r now 
->mount | grep '^/dev'
 
 ---
 
-# VSFTP🎱
-0. 安装服务
+###本地用户
+|参数 |	作用|
+| :------------- | :------------- |
+|anonymous_enable=NO 	|禁止匿名访问模式|
+|local_enable=YES |	允许本地用户模式|
+|write_enable=YES |	设置可写权限|
+|local_umask=022 |	本地用户模式创建文件的umask值|
+|userlist_deny=YES 	|启用“禁止用户名单”，名单文件为ftpusers和user_list|
+|userlist_enable=YES |	开启用户作用名单文件功能|
+
+```vim
+vim /etc/vsftpd/vsftpd.conf
+1 anonymous_enable=NO
+2 local_enable=YES
+3 write_enable=YES
+4 local_umask=022
+```
+```bash
+setenforce 0
+firewall-cmd --permanent --zone=public --add-service=ftp
+firewall-cmd --reload
+systemctl restart vsftpd
+systemctl enable vsftpd
+```
+按理来讲，现在已经完全可以本地用户的身份登录FTP服务器了。但是在使用root管理员登录后，系统提示如下的错误信息：
+```bash
+[root@linuxprobe ~]# ftp 192.168.10.10
+Connected to 192.168.10.10 (192.168.10.10).
+220 (vsFTPd 3.0.2)
+Name (192.168.10.10:root): root
+530 Permission denied.
+Login failed.
+ftp>
+```
+可见，在我们输入root管理员的密码之前，就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为“用户名单”的文件（ftpusers和user_list）。只要里面写有某位用户的名字，就不再允许这位用户登录到FTP服务器上。
+```bash
+[root@linuxprobe ~]# cat /etc/vsftpd/user_list 
+
+[root@linuxprobe ~]# cat /etc/vsftpd/ftpusers 
+```
+如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响，只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
+在采用本地用户模式登录FTP服务器后，默认访问的是该用户的家目录，也就是说，访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己，因此不存在写入权限不足的情况。
+
+---
+
+###虚拟用户
+**安装**
 >yum install vsftpd
 
+**认证**
 创建虚拟用户文件，把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行，密码占一行。
 ```vim
 cd /etc/vsftp
@@ -768,17 +1154,31 @@ cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
 vim /etc/pam.d/vsftpd.vu
 	auth       required     pam_userdb.so db=/etc/vsftpd/login
 	account    required     pam_userdb.so db=/etc/vsftpd/login
+#注意：格式是db=/etc/vsftpd/login这样的，一定不要去掉源文件的.db后缀
 ```
-**注意：格式是db=/etc/vsftpd/login这样的，一定不要去掉源文件的.db后缀。**
 
-1. 拒绝匿名访问，只允许本地系统用户登录；
+**配置文件**
 ```vim
 vim /etc/vsftpd/vsftpd.conf
-	anonymous_enable=NO        # 不允许匿名访问，禁用匿名登录
-	local_enable=YES           # 允许使用本地帐户进行FTP用户登录验证
+1 anonymous_enable=NO
+2 local_enable=YES
+3 guest_enable=YES
+4 guest_username=virtual
+5 pam_service_name=vsftpd.vu
+6 allow_writeable_chroot=YES
 ```
 
-2. 所有用户主目录为 /home/ftp 宿主为 virtual 用户；
+|参数 |	作用|
+| :------------- | :------------- |
+|anonymous_enable=NO 	|禁止匿名开放模式|
+|local_enable=YES |	允许本地用户模式|
+|guest_enable=YES |	开启虚拟用户模式|
+|guest_username=virtual |	指定虚拟用户账户|
+|pam_service_name=vsftpd.vu |	指定PAM文件|
+|allow_writeable_chroot=YES |	允许对禁锢的FTP根目录执行写入操作，而且不拒绝用户的登录请求|
+
+**用户配置权限文件**
+所有用户主目录为 /home/ftp 宿主为 virtual 用户；
 >useradd -d /home/ftp -s /sbin/nologin virtual  
 >chmod -Rf 755 /home/ftp/
 >cd /home/ftp/
@@ -792,31 +1192,7 @@ vim /etc/vsftpd/vsftpd.conf
 	allow_writeable_chroot=YES
 ```
 
-3. 将用户使用文件的方式记录账号以及密码；
-```vim
-vim /etc/vsftpd/vsftpd.conf 
-	xferlog_enable=YES         # 启用上传和下载的日志功能，默认开启。
-	xferlog_file=/var/log/xferlog         # vsftpd的日志存放位置 
-```
-
-4. Ftpuser1 用户只能下载不能上传以及删除文件重命名操作；
-```vim
->mkdir /etc/vsftpd/user_conf
-cd /etc/vsftpd/user_conf/
-vim Ftpuser1
-	#默认虚拟用户只能下载文件，无其他权限
-```
-
-5. Ftpuser2 可以下载与上传文件以及删除重命名操作
-```vim
-vim Ftpuser2
-	anon_upload_enable=YES
-	anon_mkdir_wirte_enable=YES
-	anon_other_wirte_enable=YES
-```
-
-
-6. Ftpadmin 可以下载与上传文件以及删除重命名操作，并且权限为 755
+**编辑用户权限配置文件**
 ```vim
 vim Ftpadmin
 	anon_upload_enable=YES
@@ -836,12 +1212,7 @@ vim Ftpadmin
 	#则要修改配置文件中的 anon_umask 的值
 ```
 
-
-7. 配置文件要求:			
-/etc/pam.d/vsftpd.vu，（pam 配置文件）
-/etc/vsftpd/user_conf （该目录下 ftp 用户权限配置目录）
-Ftpuser1，Ftpuser2，Ftpadmin 用户权限相关配置文件均在 /etc/vsftpd/user_conf 目录下。
-
+**启服务**
 ```bash
 setenforce 0
 firewall-cmd --zone=public --add-service=ftp
@@ -852,755 +1223,21 @@ systemctl enable vsftpd
 
 ---
 
-**18 I**
-配置FTP服务，需求如下：
-使用虚拟用户认证方式，创建用户virtftp，该用户的家目录为/data/ftp_data，shell为/sbin/nologin，并将虚拟用户映射至virtftp用户；
-允许属主对/data/ftp_data有写权限；
-关闭PASV模式的安全检查；
-设置客户端最大连接数为100，每个IP允许3个连接数；
-ftpuser虚拟用户可以下载与上传文件；
-ftpadmin虚拟用户可以下载与上传文件以及删除重命名操作，上传文件的umask为022。
-配置文件要求:
-	以下文件除了vsftpd.conf文件其余文件均需要自行创建
-	/etc/vsftpd/vsftpd.conf(ftp配置文件)/etc/pam.d/vsftpd.vu，（pam配置文件）
-	/etc/vsftpd/vlogin.db,（用户数据库）
-	/etc/vsftpd/ftp_user（该目录下ftp用户权限配置目录）
-	ftpuser，ftpadmin用户权限相关配置文件均在/etc/vsftpd/ftp_user目录下。
-
-0. 安装服务,配置虚拟用户认证
-```vim
-yum install vsftpd
-
-cd /etc/vsftp
-vim vlogin.list
-	ftpuser
-	123456
-	ftpadmin
-	123456
-
-db_load -T -t hash -f vlogin.list vlogin.db	
-
-cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
-
-vim /etc/pam.d/vsftpd.vu
-	auth       required     pam_userdb.so db=/etc/vsftpd/vlogin
-	account    required     pam_userdb.so db=/etc/vsftpd/vlogin
-```
-
-1. 修改配置文件
-```vim
-vim /etc/vsftpd/vsftpd.conf
-	pam_service_name=vsftpd.vu  
-	guest_enable=YES      
-	guest_username=virtftp      
-	user_config_dir=/etc/vsftpd/ftp_user    
-	allow_writeable_chroot=YES
-
-	pasv_promiscuous=YES
-	max_clients=100
-	max_per_ip=3
-```
-
-2. 创建家目录为/data/ftp_data，shell为/sbin/nologin 的 virtftp 用户；
->useradd -d /data/ftp_data -s /sbin/nologin virtftp
->chmod -Rf 755 /data/ftp_data
->cd /data/ftp_data 
->touch testfile
-
-3. 配置权限文件
-```vim
->mkdir /etc/vsftpd/ftp_user
-cd /etc/vsftpd/ftp_user
-vim ftpuser
-	anon_upload_enable=YES
-
-vim ftpadmin
-	anon_upload_enable=YES
-	anon_mkdir_wirte_enable=YES
-	anon_other_wirte_enable=YES
-	anon_umask=022
-```
-
-4. 起服务
-```bash
-setenforce 0
-firewall-cmd --zone=public --add-service=ftp
-firewall-cmd --reload
-systemctl restart vsftpd
-systemctl enable vsftpd
-```
-
----
-
-**18 A0**
-配置FTP服务，实现WEB站点远程更新和文档下载的功能，需求如下：
-	- 创建用户tom，密码为ruijie。
-	- 为WEB网站创建FTP站点，具体要求如下：
-	- FTP普通用户主目录：/data/web_data
-	- FTP访问权限：通过扩展acl方式允许用户tom读取和写入
-	- FTP访问路径为：ftp://tom:ruijie@公网IP/
-	- 为产品资料下载创建FTP站点，具体要求如下：
-	- FTP匿名用户主目录：/data/instructions
-	- FTP访问权限：允许匿名用户读取
-	- FTP访问路径为：ftp://公网IP/
-
-
-1. 修改配置文件
-```vim
-vim /etc/vsftpd/vsftpd.conf
-	local_root=/data/web_data
-	anon_root=/data/instructions
-	anon_upload_enable=NO
-```
-
-2. 创建用户与acl；
-```bash
-useradd tom
-passwd tom 
-cd /data/web_data
-chmod -Rf 755 /data/web_data
-setfacl -R -m u:tom:rwx .
-touch success
-```
-
-3. 起服务
-```bash
-setenforce 0
-firewall-cmd --zone=public --add-service=ftp
-firewall-cmd --reload
-systemctl restart vsftpd
-systemctl enable vsftpd
-```
-
----
-
-**18 B0**
-配置FTP服务，需求如下：
-	- 拒绝匿名访问，只允许本地系统用户登录；
-	- 使用被动模式，设置云主机B公网IP为被动模式数据传输地址
-	- 所有用户主目录为/data/ftp_data宿主为virtual用户；
-	- 将用户使用文件的方式记录账号以及密码；
-	- ftpuser1用户只能下载不能上传以及删除文件重命名操作；
-	- ftpuser2可以下载与上传文件以及删除重命名操作；
-	- ftpadmin可以下载与上传文件以及删除重命名操作，上传文件的umask为022；
-	- 配置文件要求:
-	以下文件除了vsftpd.conf文件其余文件均需要自行创建：
-	/etc/vsftpd/vsftpd.conf(ftp配置文件)/etc/pam.d/vsftpd.vu，（pam配置文件）
-	/etc/vsftpd/vlogin.db,（用户数据库）
-	/etc/vsftpd/user_conf（该目录下ftp用户权限配置目录）
-	ftpuser1，ftpuser2，ftpadmin用户权限相关配置文件均在/etc/vsftpd/user_conf目录下。
-
-0. 安装服务,配置虚拟用户认证
-```vim
-yum install vsftpd
-
-cd /etc/vsftp
-vim vlogin.list
-	ftpuser1
-	123456
-	ftpuser2
-	123456
-	ftpadmin
-	123456
-
-db_load -T -t hash -f vlogin.list vlogin.db	
-
-cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
-
-vim /etc/pam.d/vsftpd.vu
-	auth       required     pam_userdb.so db=/etc/vsftpd/vlogin
-	account    required     pam_userdb.so db=/etc/vsftpd/vlogin
-```
-
-1. 修改配置文件
-```vim
-vim /etc/vsftpd/vsftpd.conf
-	anonymous_enable=NO
-
-	pam_service_name=vsftpd.vu 
-
-	guest_enable=YES      
-	guest_username=virtual  
-	user_config_dir=/etc/vsftpd/ftp_user    
-	allow_writeable_chroot=YES
-
-	pasv_enable=YES         # 启用 pasv 模式
-	pasv_min_port=30000     # pasv 端口起始号
-	pasv_max_port=40000     # pasv 端口结束号
-
-	xferlog_enable=YES         # 启用上传和下载的日志功能，默认开启。
-	xferlog_file=/var/log/xferlog         # vsftpd的日志存放位置 
-```
-
-2. 创建家目录为/data/ftp_data 的 virtual 用户；
-```bash
-useradd -d /data/ftp_data -s /sbin/nologin virtual
-chmod -Rf 755 /data/ftp_data
-cd /home/ftp/
-touch testfile
-grep virtftp /etc/passwd
-```
-
-3. 配置权限文件
-```vim
->mkdir /etc/vsftpd/ftp_user
-cd /etc/vsftpd/ftpuser1
-vim ftpuser
-
-vim ftpuser2
-	anon_upload_enable=YES
-	anon_mkdir_wirte_enable=YES
-	anon_other_wirte_enable=YES
-
-vim ftpadmin
-	anon_upload_enable=YES
-	anon_mkdir_wirte_enable=YES
-	anon_other_wirte_enable=YES
-	anon_umask=022
-```
-
-4. 起服务
-```bash
-setenforce 0
-firewall-cmd --zone=public --add-port=30000-40000/tcp --permanent
-firewall-cmd --zone=public --add-port=30000-40000/udp --permanent
-firewall-cmd --reload
-systemctl restart vsftpd
-systemctl enable vsftpd
-```
-
----
-
-**18 I0**
-配置FTP服务，实现WEB站点远程更新和文档下载的功能，需求如下：
-	- 创建用户tom，密码为ruijie；
-	- 禁止匿名用户登录；
-	- 使用被动模式，设置云主机B公网IP为被动模式数据传输地址；
-	- 为mariadb数据库创建FTP站点，具体要求如下：
-	- FTP普通用户主目录：/data/mariadb_data；
-	- FTP访问权限：通过扩展acl方式设置用户tom拥有读、写、执行权限；
-	- FTP访问路径为：ftp://tom:ruijie@公网IP/。
-
-1. 修改配置文件
-```vim
-vim /etc/vsftpd/vsftpd.conf
-	anonymous_enable=NO
-	local_root=/data/mariadb_data
-
-	pasv_enable=YES         # 启用 pasv 模式
-	pasv_min_port=30000     # pasv 端口起始号
-	pasv_max_port=40000     # pasv 端口结束号
-```
-
-2. 创建用户与acl；
-```bash
-useradd tom
-passwd tom
-cd /data/mariadb_data
-chmod -Rf 755 /data/mariadb_data
-setfacl -R -m u:tom:rwx .
-touch success
-```
-
-4. 起服务
-```bash
-setenforce 0
-firewall-cmd --zone=public --add-port=30000-40000/tcp --permanent
-firewall-cmd --zone=public --add-port=30000-40000/udp --permanent
-firewall-cmd --reload
-systemctl restart vsftpd
-systemctl enable vsftpd
-```
-
----
-
-# lvm物理卷🎳
-```bash
-fdisk ‐l		查看磁盘情况
-fdisk /dev/sdb	创建系统分区
-	n
-	p
-	1
-	后面都是默认，直接回车
-		
-	t	转换分区格式
-	8e
-
-	w	写入分区表
-```
-
-1.创建一个名为 datastore 的卷组，卷组的PE尺寸为 16MB；
->	pvcreate /dev/sdb1	创建物理卷
->	vgcreate ‐s 16M datastore /dev/sdb1	
-
-2.逻辑卷的名称为 database 所属卷组为 datastore，该逻辑卷由 50 个 PE 组成；
->	lvcreate ‐l 50 ‐n database datastore
-
-3.将新建的逻辑卷格式化为 XFS 文件系统，要求在系统启动时能够自动挂在到 /mnt/database 目录。	
->	mkfs.xfs /dev/datastore/database
->	mkdir /mnt/database
-```vim
-vi /etc/fstab
-	/dev/datastore/database /mnt/database/ xfs defaults 0 0
-```
-
-重启验证
->shutdown -r now 
->mount | grep '^/dev'
-
-
-逻辑卷的名称为web_data所属卷组为datastore，该逻辑卷大小为10G；
->	lvcreate ‐L 10G ‐n web_data datastore
-
-将新建的逻辑卷格式化为XFS文件系统，编辑/etc/fstab文件通过UUID的方式实现系统启动时能够自动挂载到/data/web_data目录。
->	mkfs.xfs /dev/datastore/web_data		
->	mkdir /data/web_data
->	blkid	查UUID值
-```vim
-vi /etc/fstab
-	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX     /data/web_data/ xfs defaults 0 0
-```
-
-重启验证
->shutdown -r now 
->mount | grep '^/dev'
-
----
-
-
-新建一个20GB的云硬盘
-分区
-```bash
-fdisk ‐l		查看磁盘情况
-fdisk /dev/sdb	创建系统分区
-	n
-	p
-	1
-	后面都是默认，直接回车
-	t	转换分区格式
-	8e
-	w	写入分区表
-```
-
-创建一个名为datastore的卷组，卷组的PE尺寸为16MB；
->	pvcreate /dev/sdb1	创建物理卷
->	vgcreate ‐s 16M datastore /dev/sdb1	
-
-逻辑卷的名称为database所属卷组为datastore，该逻辑卷大小为8GB；
->	lvcreate ‐L 8G ‐n database datastore
->	lvdisplay
-
-将新建的逻辑卷database格式化为XFS文件系统，编辑配置文件实现以UUID的形式将逻辑卷开机自动挂载至/data/web_data目录；
->	mkfs.xfs /dev/datastore/database
->	mkdir /data/web_data
->	blkid	查UUID值
-```vim
-vi /etc/fstab
-	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX     /data/web_data/ xfs defaults 0 0
-```
-
-业务扩增，导致database逻辑卷空间不足，现需将database逻辑卷扩容至15GB空间大小，以满足业务需求。（注意扩容前后截图）
->lvextend -L 15G /dev/datastore/database
->lvs	#确认有足够空间
->resize2fs /dev/datastore/database
->lvdisplay
-
----
-
-# firewall🥌
-配置基于WEB、FTP的firewall防火墙
-```bash
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --zone=public --add-service=https --permanent
-firewall-cmd --zone=public --add-service=ftp --permanent
-firewall-cmd --reload
-```
-
----
-
-# 归档备份⛳
-将 /etc/sysconfig 目录打包备份至 /home 目录下文件名为 sysconfig.tar.bz2。
-
->yum install -y bzip2
->tar jcvf /home/sysconfig.tar.bz2 /etc/sysconfig 
-j:bzip2
-c:创建一个压缩包
-v:显示详情
-f:指定文件
-
----
-
-
-# DNS🛶
-配置DNS服务，将相关主机名添加A记录，分别为www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com；
-
-0. 安装
->yum -y install bind*
-
-1. 修改主配置文件
-```vim
-vim /etc/named.conf
-options {
-# 找到以下三个语句，将其括号中的内容修改为any
-    listen-on port 53 { any; };
-    listen-on-v6 port 53 { any; };
-    allow-query     { any; };
-```
-
-2. 区域配置文件
-```vim
-vim /etc/named.rfc1912.zones
-zone "abc.com." IN {        
-        type master;
-        file "www.localhost";
-};
-
-zone "1.192.168.192.in-addr.arpa" IN {       
-        type master;
-        file "www.loopback";
-};
-```
-
-3. 分别复制 named.localhost 和 named.loopback 为 www.localhost 和 www.loopback
->cd /var/named/
-cp named.localhost www.localhost
-cp named.loopback www.loopback
-
->chown named www.localhost 
-chown named www.loopback
-**因为配置文件是在 root 用户下建立的，所以启动 BIND 进程的 named 用户无法读取，会造成不能解析。**
-
-4. 域名正向反向解析配置文件
-```vim
-vim /var/named/www.localhost
-	$TTL 1D
-	@      IN SOA  @ rname.invalid. (
-                                        	0      ; serial
-                                        	1D      ; refresh
-                                        	1H      ; retry
-                                        	1W      ; expire
-                                        	3H )    ; minimum
-	       	NS     @
-       		A      127.0.0.1
-	    	AAAA   ::1
-	www    	A      192.168.192.1
-	ftp    	A      192.168.192.1
-	vpn     A      192.168.192.1
-	web     A      192.168.192.1
-
-！！！注意域名后面的 ”点号“
-
-vim /var/named/www.loopback 
-	$TTL 1D
-	@ 		IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS	@
-        	A 	127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-
-	1 PTR www.abc.com.
-	1 PTR ftp.abc.com.
-	1 PTR vpn.abc.com.
-	1 PTR web.abc.com.
-```
-
-配置文件语法检查
-```
-named-checkconf  #检查配置文件中的语法/etc/named.conf /etc/named.rfc1912.zones
-named-checkzone abc.com www.localhost #解析库文件语法检查
-named-checkzone abc.com www.loopback 
-```
-
-
-5.关闭安全措施
->setenforce 0
-firewall-cmd --zone=public --add-service=dns --permanent
-firewall-cmd --reload
-service named start
-
----
-
-监听所有地址；
-允许所有机器查询；		
-将ftp.abc.com解析至云主机B公网IP:1.1.1.1；
-将www.abc.com解析至云主机A公网IP:1.1.2.1；
-建立反向简析区域完成ftp.abc.com，www.abc.com，域名的反向解析；
-只允许云主机B 192.168.XX+1.22 的 ip 进行区域传送。
-
-0. 安装
->yum -y install bind*
-
-1. 修改主配置文件
-```vim
-vim /etc/named.conf
-options {
-# 找到以下三个语句，将其括号中的内容修改为any
-    listen-on port 53 { any; };
-    listen-on-v6 port 53 { any; };
-    allow-query     { any; };
-```
-
-2. 区域配置文件
-```vim
-vim /etc/named.rfc1912.zones
-zone "abc.com" IN { 
-        type master;
-        file "abc.localhost";
-        allow-transfer{192.168.37.22;};
-};
-
-zone "1.1.1.in-addr.arpa" IN { 
-        type master;
-        file "abc.loopback";
-        allow-transfer{192.168.37.22;};
-};
-
-zone "2.1.1.in-addr.arpa" IN { 
-        type master;
-        file "www.loopback";
-        allow-transfer{192.168.37.22;};
-};
-```
-
-3. 分别复制 named.localhost 和 named.loopback 为 abc.localhost 和 abc.loopback 和 www.loopback
->cd /var/named/
-cp named.localhost abc.localhost
-cp named.loopback abc.loopback
-cp named.loopback www.loopback
-
->chown named abc.localhost 
-chown named abc.loopback
-chown named www.loopback
-
-4. 域名正向反向解析配置文件
-```vim
-vim /var/named/abc.localhost
-	$TTL 1D
-	@      IN SOA  @ rname.invalid. (
-                                        	0      ; serial
-                                        	1D      ; refresh
-                                        	1H      ; retry
-                                        	1W      ; expire
-                                        	3H )    ; minimum
-	       	NS     @
-       		A      127.0.0.1
-	    	AAAA   ::1
-	ftp    	A      1.1.1.1
-	www     A      1.1.2.1
-
-vim /var/named/abc.loopback 
-	$TTL 1D
-	@	IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS 		@
-        	A 		127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-	1 PTR ftp.abc.com.
-
-vim /var/named/www.loopback 
-	$TTL 1D
-	@ 		IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS 		@
-        	A 		127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-	1 PTR www.abc.com.
-```
-
-```bash
-named-checkconf
-named-checkzone abc.com abc.localhost
-named-checkzone abc.com abc.loopback 
-named-checkzone abc.com www.loopback 
-service named restart
-```
-关闭安全措施
->setenforce 0
-firewall-cmd --zone=public --add-service=dns --permanent
-firewall-cmd --reload
-
----
-
-**18 I**
-监听当前主机的所有地址；
-允许所有主机查询和递归查询；
-区域定义均配置在/etc/named.conf文件中；
-rj.com的区域数据文件名为rj.com.zone；
-配置反向域数据文件名为172.16.0.zone
-为www.rj.com添加A记录解析，解析至serverA的公网IP；
-为ftp.rj.com添加A记录解析，解析至serverB的公网IP。
-为serverA、serverB的公网IP添加www、ftp的PTR解析记录
-
-0. 安装
->yum -y install bind*
-
-1. 修改主配置文件,顺便加上区域
-```vim
-vim /etc/named.conf
-options {
-    listen-on port 53 { any; };
-    allow-query     { any; };
-	recursion	yes;
-}
-
-zone "rj.com" IN { 
-        type master;
-        file "rj.com.zone";
-};
-
-zone "0.16.172.in-addr.arpa" IN { 
-        type master;
-        file "172.16.0.zone";
-};
-```
-
-2. 复制 named.localhost 和 named.loopback 为 rj.com.zone 和 172.16.0.zone
->cd /var/named/
-cp named.localhost rj.com.zone
-cp named.loopback 172.16.0.zone
-
->chown named rj.com.zone
-chown named 172.16.0.zone
-
-4. 域名正向反向解析配置文件
-```vim
-vim /var/named/rj.com.zone
-	$TTL 1D
-	@      IN SOA  @ rname.invalid. (
-                                        	0      ; serial
-                                        	1D      ; refresh
-                                        	1H      ; retry
-                                        	1W      ; expire
-                                        	3H )    ; minimum
-	       	NS     @
-       		A      127.0.0.1
-	    	AAAA   ::1
-	ftp    	A      172.16.0.2
-	www     A      172.16.0.1
-
-vim /var/named/172.16.0.zone
-	$TTL 1D
-	@	IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS 		@
-        	A 		127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-	2 PTR ftp.rj.com.
-	1 PTR www.rj.com.
-```
-```bash
-named-checkconf
-named-checkzone rj.com rj.com.zone
-named-checkzone rj.com 172.16.0.zone
-service named restart
-```
-关闭安全措施
->setenforce 0
-firewall-cmd --zone=public --add-service=dns --permanent
-firewall-cmd --reload
-
-如果没有dig命令就用`yum install bind-utils`装一下
-使用dig www.rj.com命令解析A记录
-使用dig -x 公网IP 命令解析PTR记录
-
----
-
-
-**18 C0**
-配置DNS服务：
-	- 配置rj.com域的从DNS服务，主DNS为云主机A；
-	- 配置0.16.172反向域的从DNS服务，主DNS为云主机A；
-	- 监听所有地址；
-	- 允许所有机器查询。
-
-0. 安装
->yum -y install bind*
-
-1. 修改主配置文件
-```vim
-vim /etc/named.conf
-options {
-# 找到以下三个语句，将其括号中的内容修改为any
-    listen-on port 53 { any; };
-    listen-on-v6 port 53 { any; };
-    allow-query     { any; };
-```
-
-2. 区域配置文件
-```vim
-vim /etc/named.rfc1912.zones
-zone "rj.com" IN { 
-        type slave;
-        file "slaves/rj.com.zone";
-        masters {192.168.xx.xx;};
-};
-
-zone "0.16.172.in-addr.arpa" IN { 
-        type slave;
-        file "slaves/172.16.0.zone";
-        masters {192.168.xx.xx;};
-};
-```
-
-3. 给权限
-```bash
-cd /var/named/
-chown named:named slaves
-chmod 770 slaves
-```
-
-4. 起服务
-```bash
-service named start
-setenforce 0
-firewall-cmd --zone=public --add-service=dns --permanent
-firewall-cmd --reload
-```
-
-5. 主DNS也重启下服务
->service named restart
-
----
-
-
-# smb🏓
-配置 smb 服务，共享目录为 /smbshare，
-共享名必须为 smbshare，
-只有本网段内的所有主机可以访问，
-smbshare 必须是可以浏览的，
-用户 smb1 必须能够读取共享中的内容，
-（用户名需要自己创建，密码为 smb123456）；
-
+## smb🏓
+### 服务端
+安装
 >yum -y install samba 
 
+修改配置文件
 ```vim	
 vim /etc/samba/smb.conf
 [smbshare]
-	path = /smbshare
+	path = /smbshare	#共享目录
 	public = yes
 	writeable=yes
-	hosts allow = 192.168.xx.
+	hosts allow = 192.168.1xx.33/32	#允许主机
 	hosts deny = all
+	create mask = 0770	#创建文件的权限为0770；
 ```
 
 验证配置文件有没有错误
@@ -1631,146 +1268,38 @@ firewall-cmd --reload
 systemctl restart smb
 ```
 
----
-
-**18-I**
-配置samba服务
-A
-- 修改工作组为WORKGROUP
-- 注释[homes]和[printers]相关的所有内容
-- 共享名为webdata
-- webdata可以浏览且webdata可写
-- 共享目录为/data/web_data，且apache用户对该目录有读写执行权限，用setfacl命令配置目录权限。
-- 只有192.168.1XX.33的主机可以访问。（XX现场提供）
-- 添加一个apache用户（密码自定义）对外提供Samba服务。
-
->yum -y install samba 
-
-```vim
-vim /etc/samba/smb.conf
-[global]
-	workgroup = WORKGROUP
-
-[webdata]
-	path = /data/web_data
-	public = yes
-	writable=yes
-	hosts allow = 192.168.1xx.33/32
-	hosts deny = all
-```
-
-```bash
-testparm
-useradd -s /sbin/nologin apache
-smbpasswd ‐a apache(密码：smb123456)
-pdbedit ‐a apache(密码：smb123456)
-pdbedit ‐L
-
-mkdir /data/web_data
-cd /data/web_data/
-setfacl -m u:apache:rwx .
-getfacl /deta/web_data/
-```
-
-```vim
-setenforce 0
-
-firewall-cmd --zone=public --add-service=samba --permanent
-firewall-cmd --reload
-
-systemctl start smb
-```
-
-
-B
-- 配置smb，使用apache用户挂载serverA共享的目录至/data/web_data目录下，作为http服务网站根目录使用。
-
+### 客户端
 ```bash
 yum -y install samba 
 
 mkdir /data/web_data
-mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata 
+mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata 
 /data/web_data
 ```
 
 ---
 
-**18 J0**
-A
-配置smb服务
-- 修改工作组为WORKGROUP；
-- 注释[homes]和[printers]的内容；
-- 共享目录为/data/web_data；
-- 共享名必须为webdata；
-- 只有192.168.XX+1.0/24网段内的所有主机可以访问；
-- webdata必须是可以浏览的；
-- webdata必须是可写的；
-- 创建文件的权限为0770；
-- 仅允许用户apache访问且apache是该共享的管理者（用户名需要自己创建，密码为ruijie）。
-
->yum -y install samba 
-
-```vim
-vim /etc/samba/smb.conf
-[global]
-	workgroup = WORKGROUP
-
-[webdata]
-	path = /data/web_data
-	public = yes
-	writable=yes
-	hosts allow = 192.168.xx+1.
-	hosts deny = all
-	create mask = 0770
-```
-
-```bash
-testparm
-useradd apache
-smbpasswd ‐a apache(密码：ruijie)
-pdbedit ‐a apache(密码：ruijie)
-pdbedit ‐L
-
-mkdir /data/web_data
-cd /data/web_data/
-
-```
-
-```vim
-setenforce 0
-firewall-cmd --zone=public --add-service=samba --permanent
-firewall-cmd --reload
-systemctl start smb
-```
-
-
-B
-- 配置smb，使用apache用户挂载云主机A共享的目录至/data/web_data目录下。
-
-```bash
-yum -y install samba 
-
-mkdir /data/web_data
-mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata 
-/data/web_data
-```
-
----
-
-
-# nfs🏸
-1. 在Centos上配置nfs服务以只读的形式方式共享目录／public（目录需要自己创建）。
+## nfs🏸
+### 服务端
+安装
 ```bash
 yum ‐y install nfs‐utils
+```
+
+修改配置文件
+```bash
 vim /etc/exports
 	/public 192.168.xxx.xxx(ro)
-		
+```
+
+启服务
+```bash
 mkdir /public
 
 vi /etc/selinux/config
 	SELINUX=disabled
 		
-firewall-cmd --zone=public --add-service=rpc-bind	--permanent
+firewall-cmd --zone=public --add-service=rpc-bind --permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
@@ -1780,10 +1309,8 @@ service rpcbind start
 service nfs start	
 ```
 
-
-客户端挂载 nfs；
-1. 访问使用 nfsuser1 进行访问（用户需要自己创建）；				
-2. 在 Centos 上挂载来自 Centos 的 nfs 共享,将共享目录挂载到 /mnt/nfsfiles，修改 rpc 版本号改为 4.2,启动时自动挂载。
+### 客户端
+安装，创建用户
 ```bash
 yum ‐y install nfs‐utils
 mkdir /mnt/nfsfiles
@@ -1814,191 +1341,3 @@ vim /etc/fstab
 [nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
 [nfsuser1@localhost nfsfiles]$ cat hello.txt
 ```
-
----
-
-1. 将云主机 1 配置为 nfs 服务器，把 /var/www/html 作为共享目录，
-```bash
-yum ‐y install nfs‐utils
-vim /etc/exports
-	/var/www/html 192.168.xxx.xxx(rw)
-
-firewall-cmd --zone=public --add-service=rpc-bind	--permanent
-firewall-cmd --zone=public --add-service=mountd --permanent
-firewall-cmd --zone=public --add-port=2049/tcp --permanent
-firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-systemctl enable rpcbind.service
-systemctl enable nfs-server.service
-```
-
-2. 将云主机 2 配置为 nfs 客户端，并在其上查看共享目录，并挂载到本地目录/test
-```bash
-mount.nfs 192.168.xxx.xxx:/var/www/html /test
-```
-
-3. 同时将 /test 文件夹内容拷贝到云主机2下的 /home/www，并创建一个归档备份
-```bash
-cp /test /home/www
-```
-
-4. 将云主机2的 /home/www 目录打包备份至 /home 目录下文件名为 www.tar.bz2，备份周期为每天凌晨2点开始。
-```bash
-cd /
-yum install -y bzip2
-
-vim back.sh		#编写备份脚本文件
-	tar jcvf /home/www.tar.bz2 /home/www
-
-chmod -x back.sh	#编辑脚本文件为可执行文件
-
-crontab -e	#编写定时任务crontab脚本
-0 2 * * * /back.sh
-#每天的02点00分自动执行脚本文件
-
-#跟踪执行结果
-tail -f /var/log/cron  #跟踪查询定时任务是否执行
-cat /var/spool/cron/root #查询root下有那些定时任务
-```
-
----
-
-
-1. 启动 nfs 服务和设置开机启动；
-```bash
-firewall-cmd --zone=public --add-service=rpc-bind	--permanent
-firewall-cmd --zone=public --add-service=mountd --permanent
-firewall-cmd --zone=public --add-port=2049/tcp --permanent
-firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-systemctl enable rpcbind.service
-systemctl enable nfs-server.service
-```
-
-2. 将以上挂载的云硬盘格式化为 ext4 格式并挂载到 /mnt 目录上；
-```bash
-fdisk ‐l		查看磁盘情况
-fdisk /dev/sdb	创建系统分区
-	n
-	p
-	1
-	后面都是默认，直接回车
-
-	w	写入分区表
-
-mkfs.ext4 /dev/sdb1
-mkdir /mnt/sdb1
-mount /dev/sdd1 /mnt/sdb1
-```
-
-3. 在云主机2上发布共享 /public 目录（需自行创建）和 /mnt 目录，/mnt 目录允许所有用户访问，但不能写入，/public 目录允许 192.168.11.0/24 网段的用户读写。
-```bash
-yum ‐y install nfs‐utils
-
-vim /etc/exports
-	/mnt *(ro)
-	/public 192.168.11.*(rw)
-		
-mkdir /public
-
-firewall-cmd --zone=public --add-service=rpc-bind	--permanent
-firewall-cmd --zone=public --add-service=mountd --permanent
-firewall-cmd --zone=public --add-port=2049/tcp --permanent
-firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-systemctl enable rpcbind.service
-systemctl enable nfs-server.service
-```
-
----
-
-**18 E0**
-A
-配置NFS服务，以读写访问方式将/data/web_data目录仅共享给192.168.XX+1.0/24网段的所有用户，且不挤压root用户的权限。
-
-```bash
-yum ‐y install nfs‐utils
-
-vim /etc/exports
-	/data/web_data 192.168.XX+1.*(rw,no_root_squash)
-		
-mkdir -p /data/web_data
-
-firewall-cmd --zone=public --add-service=rpc-bind	--permanent
-firewall-cmd --zone=public --add-service=mountd --permanent
-firewall-cmd --zone=public --add-port=2049/tcp --permanent
-firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-systemctl enable rpcbind.service
-systemctl enable nfs-server.service
-```
-
-
-B
-配置NFS服务，将云主机A共享的目录挂载至/data/web_data目录下。
-```bash
-yum ‐y install nfs‐utils
-
-firewall-cmd --zone=public --add-service=nfs --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-systemctl enable rpcbind.service
-systemctl enable nfs-server.service
-```
-
-验证共享是否成功
->showmount ‐e 192.168.xxx.xxx
-
-```
-mkdir -p /data/web_data
-mount.nfs 192.168.xxx.xxx:/data/web_data /data/web_data
-```
-
----
-
-
-# DHCP🏏
->yum install -y dhcp
-
-复制一份示例
->cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
-
-```vim
-vim /etc/dhcp/dhcpd.conf
-	ddns-update-style interim;      # 设置DNS的动态更新方式为interim
-	option domain-name "abc.edu";
-	option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
-	default-lease-time  43200;                          # 指定默认租约的时间长度，单位为秒
-	max-lease-time  86400;  # 指定最大租约的时间长度
-```
-
-以下为某区域的 IP 地址范围
-```bash
-subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
-	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
-	option routers  192.168.1.254;                       # 指定该网段的默认网关
-}
-```
-
->dhcpd -t    #检测语法有无错误
->service dhcpd start    #开启 dhcp 服务
-
-记得防火墙放行
-
-查看租约文件，了解租用情况
->cat /var/lib/dhcpd/dhcpd.leases
-

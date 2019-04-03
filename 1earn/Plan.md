@@ -3,7 +3,7 @@
 
 ---
 
-## 激活
+# 激活
 注意：Windows系统和Micrsoft Office软件都必须是VOL版本。
 **激活Windows**
 用管理员权限运行CMD或PowerShell，输入如下命令：
@@ -28,7 +28,7 @@ cscript ospp.vbs /act
 CSCRIPT OSPP.VBS /DSTATUS
 ```
 
-## DNS
+# DNS
 **软件方案**
 - DnsJumper（windows下快速配置DNS）
 - Pcap_DNSProxy（本地自定义分割DNS解析请求）
@@ -49,8 +49,8 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 ---
 
-## 各种代理/源
-### git
+# 各种代理/源
+## git
 ```git
 // 查看当前代理设置
 git config --global http.proxy
@@ -65,7 +65,7 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 git config --global --unset https.proxy
 ```
 
-### node&js
+## node&js
 ```bash
 npm install -g nrm
 nrm ls
@@ -75,7 +75,7 @@ nrm test
 npm config set proxy=http://127.0.0.1:8087
 ```
 
-### pip源
+## pip源
 常用的国内镜像包括：
 1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
 2. 豆瓣http://pypi.douban.com/simple/
@@ -109,10 +109,21 @@ npm config set proxy=http://127.0.0.1:8087
 
 ---
 
-## 搜索引擎语法
+# 搜索引擎语法
 - 包含关键字:`intitle:关键字`
 - 包含多个关键字:`allintitle:关键字 关键字2`
 - 搜索特定类型的文件:`关键字 filetype:扩展名` 例如`人类简史 filetype:pdf`
 - 搜索特定网站的内容:`关键字 site:网址`
 - 排除不想要的结果:`关键字 - 排查条件`,例如搜索 “运动相机”，但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
 - 双引号的用处:例如：`"how to write a code"` 如果没有引号，搜索的大部分结果是以 `write code` 为关键字。包含引号后，会确保将完整的字符串做为期望的检索结果提交给搜索引擎。
+
+---
+
+# Thank
+- [Wind4/vlmcsd: KMS Emulator in C (currently runs on Linux including Android, FreeBSD, Solaris, Minix, Mac OS, iOS, Windows with or without Cygwin)](https://github.com/Wind4/vlmcsd)
+- [基于vlmcsd搭建KMS服务器 - 简书](https://www.jianshu.com/p/11d51983852e)
+- [chengr28/Pcap_DNSProxy: Pcap_DNSProxy, a local DNS server based on packet capturing](https://github.com/chengr28/Pcap_DNSProxy)
+- [git配置代理命令 - 阿兴的平凡世界 - 博客园](https://www.cnblogs.com/gx1069/p/6840413.html)
+- [npm配置镜像、设置代理 - MockingBird 博客 - SegmentFault 思否](https://segmentfault.com/a/1190000002589144)
+- [将pip源更换到国内镜像 - LittleBee的博客 - CSDN博客](https://blog.csdn.net/sinat_21591675/article/details/82770360)
+- [你真的会使用搜索引擎吗？](https://mp.weixin.qq.com/s/le_zYcDfhSLvbuu99LprMQ)

@@ -387,10 +387,7 @@ Listen 192.168.1XX.33:443
 		Require all granted
 	</Directory>
 </VirtualHost>
-```
 
-**启服务**
-```vim
 mkdir -p /data/web_data
 vim /data/web_data/index.html 
 	Hello World!	
@@ -445,14 +442,168 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 ```
 
 **向 windows CA 服务器申请证书**
-Openssl genrsa 2048 > httpd.key
-openssl req -new -key httpd.key -out httpd.csr
+`Openssl genrsa 2048 > httpd.key`
+`openssl req -new -key httpd.key -out httpd.csr`
 通过这个csr文件在内部的windows CA服务器上申请证书
 
 ### ab
 安装
 `sudo apt install apache2-utils`
 `yum install httpd-tools`
+
+---
+
+## nginx
+**安装**
+```bash
+yum install nginx
+systemctl start nginx.service
+firewall-cmd --permanent --zone=public --add-service=http 
+firewall-cmd --reload
+```
+
+**虚拟主机**
+在/etc/nginx/conf.d/目录下新建一个站点的配置文件，列如：test.com.conf
+```vim
+vim /etc/nginx/conf.d/test.com.conf
+  server {
+          listen 80;
+          server_name www.test.com test.com;
+          root /usr/share/nginx/test.com;
+          index index.html;
+
+          location / {
+          }
+  }
+
+nginx -t  #检测文件是否有误  
+```
+
+```bash
+mkdir /usr/share/nginx/test.com
+echo "hello world!" > /usr/share/nginx/test.com/index.html
+firewall-cmd --permanent --zone=public --add-service=http 
+firewall-cmd --reload
+systemctl start nginx.service
+```
+
+如果服务器网址没有注册，那么应该在本机电脑的/etc/hosts添加设置：
+`192.168.1.112   www.test.com test.com`
+`curl www.test.com`
+
+**https**
+```vim
+openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key #生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
+
+mv httpd.crt /etc/nginx
+mv httpd.key /etc/nginx
+
+vim /etc/nginx/conf.d/test.com.conf
+  server {
+          listen       443 ssl http2;
+          server_name  www.test.com test.com;
+          root         /usr/share/nginx/test.com;
+          index index.html;
+
+          ssl_certificate "/etc/nginx/httpd.crt";
+          ssl_certificate_key "/etc/nginx/httpd.key";
+          location / {
+          }
+
+          error_page 404 /404.html;
+              location = /40x.html {
+          }
+
+          error_page 500 502 503 504 /50x.html;
+              location = /50x.html {
+          }
+      }
+
+systemctl restart nginx
+```
+
+### 添加PHP/PHP-FPM环境支持
+**安装**
+```bash
+# 安装PHP源
+rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
+rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+# 安装 PHP7.0
+yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
+
+systemctl start php-fpm.service
+netstat -tnlp #检查php-fpm默认监听端口：9000
+```
+
+**修改配置**
+```vim
+vim /etc/nginx/conf.d/test.com.conf
+          # php-fpm  (新增)
+          location ~\.php$ {
+                  fastcgi_pass 127.0.0.1:9000;
+                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                  fastcgi_param PATH_INFO $fastcgi_script_name;
+                  include fastcgi_params;
+          }
+  }
+
+systemctl restart nginx
+systemctl restart php-fpm
+```
+
+**php测试**
+```vim
+vim /usr/share/nginx/test.com/info.php
+  <?php 
+      phpinfo(); 
+  ?>
+
+curl http://www.test.com/info.php
+```
+
+---
+
+## phpMyAdmin
+**建议搭配上面的nginx+php扩展**
+
+**创建数据库和一个用户**
+```bash
+yum install mariadb mariadb-server
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
+
+mysql -u root -p
+
+创建一个专给WordPress存数据的数据库
+MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
+
+创建用于WordPress对应用户
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##“idiota”对应创建的用户，“password”内填写用户的密码
+
+分别配置本地登录和远程登录权限
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
+
+刷新权限
+MariaDB [(none)]> flush privileges;
+```
+
+**下载**
+```bash
+wget https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.zip
+unzip phpMyAdmin-4.8.5-all-languages.zip
+mv phpMyAdmin-4.8.5-all-languages phpMyAdmin
+cp phpMyAdmin /usr/share/nginx/test.com/
+cd /usr/share/nginx/test.com/phpMyAdmin
+
+cp config.sample.inc.php config.inc.php
+
+systemctl restart nginx
+```
+
+访问 `https://www.test.com/phpMyAdmin/index.php`
 
 ---
 

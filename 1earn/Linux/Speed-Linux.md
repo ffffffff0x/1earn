@@ -495,6 +495,14 @@ vim /etc/locale.conf
 source   /etc/locale.conf
 ```
 
+### 启动项
+```bash
+chkconfig --list        #列出所有的系统服务
+chkconfig --add httpd        #增加httpd服务
+chkconfig --del httpd        #删除httpd服务
+chkconfig --level httpd 2345 on        #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态
+```
+
 ### 账号管控
 #### 账号
 ```bash

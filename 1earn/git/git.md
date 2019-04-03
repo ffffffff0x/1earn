@@ -26,23 +26,80 @@
 git config --global user.name "username"
 git config --global user.email user@aaa.com
 # 如果使用了 –global 选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git 都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有 –global 选项的命令来配置。
+
+git config --global http.proxy  #查看当前代理设置
+git config --global http.proxy 'socks5://127.0.0.1:1080'    #设置当前代理
+git config --global https.proxy 'socks5://127.0.0.1:1080'   #设置当前代理
+git config --global --unset https.proxy #删除 proxy
+
+
 git init    #初始化仓库
 git config --list   #检查配置信息
 
 git status  #查看状态
 git diff    #查看已暂存和未暂存的修改
+git diff --cached   #查看暂存区和本地仓库之间的差异
+
 git log     #查看提交历史
-git reflog  #记录你的每一次命令
+git reflog  #显示当前分支的最近几次提交
 
 
 git commit -m "Input your commit message"   #提交更新
 git commit -a -m "Commit message"   #跳过使用暂存区
 git rm <finame> 
-git checkout -- test.txt  #git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以 “一键还原”。
-git reset HEAD file    #把暂存区的修改撤销掉（unstage），重新放回工作区
 git mv file_from file_to
 
 
+已修改，未暂存
+#如果我们只是在编辑器里修改了文件，但还没有执行 git add .，这时候我们的文件还在工作区，并没有进入暂存区，我们可以用
+git checkout -- test.txt  #git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以 “一键还原”。
+git reset HEAD file    #把暂存区的修改撤销掉（unstage），重新放回工作区
+
+已暂存，未提交
+#你已经执行了 git add .，但还没有执行 git commit -m "comment"。这时候你意识到了错误，想要撤销，你可以执行：
+git reset
+git checkout .
+
+已提交，未推送
+#你的手太快，你既执行了 git add .，又执行了 git commit，这时候你的代码已经进入了你的本地仓库，然而你后悔了，怎么办？不要着急，还有办法。
+git reset --hard origin/master
+#还是这个 git reset --hard 命令，只不过这次多了一个参数 origin/master，正如我们上面讲过的，origin/master 代表远程仓库，既然你已经污染了你的本地仓库，那么就从远程仓库把代码取回来吧。
+
+已推送
+#很不幸，你的手实在是太快了，你既 git add 了，又 git commit 了，并且还 git push 了，这时你的代码已经进入远程仓库。如果你想恢复的话，还好，由于你的本地仓库和远程仓库是等价的，你只需要先恢复本地仓库，再强制 push 到远程仓库就好了：
+git reset --hard HEAD^
+git push -f
+```
+
+## 分支管理
+![image](https://i.loli.net/2019/04/03/5ca41e96e528e.png)
+```bash
+git branch  #查看分支
+git branch -r #查看远程分支
+git branch -a #查看所有分支
+git branch <name>   #创建分支
+git checkout <name> #切换分支
+git checkout -b <name>  #创建 + 切换分支
+git merge <name>    #合并某分支到当前分支
+git branch -d <name>    #删除分支
+
+git stash   #储藏分支
+git stash list
+git stash pop   #恢复的同时把 stash 内容也删了
+```
+
+## 标签管理
+```bash
+#注意，标签不是按时间顺序列出，而是按字母排序的。可以用 git show <tagname> 查看标签信息
+
+git tag <name> 用于新建一个标签，默认为 HEAD，也可以指定一个 commit id；
+git tag -a <tagname> -m "blablabla..." 可以指定标签信息；
+git tag -s <tagname> -m "blablabla..." 可以用 PGP 签名标签；
+git tag 可以查看所有标签。
+git push origin <tagname> 可以推送一个本地标签；
+git push origin --tags 可以推送全部未推送过的本地标签；
+git tag -d <tagname> 可以删除一个本地标签；
+git push origin :refs/tags/<tagname> 可以删除一个远程标签。
 ```
 
 ## 忽略文件
@@ -69,7 +126,6 @@ git mv file_from file_to
 git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --"
 
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
-
 ```
 ---
 
@@ -164,3 +220,5 @@ git push --force origin
 - [Git教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 - [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
 - [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
+- [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
+

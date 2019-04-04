@@ -1,10 +1,10 @@
 # Secure-Linux👨🏻‍💻
-`linux安全加固+应急响应的tips`
+`Linux安全加固+应急响应参考`
 [TOC]
 
 ---
 
-## shell
+## Shell
 ### 会话
 ```bash
 who  #查看当前登录用户
@@ -18,15 +18,25 @@ kill -9 pid #安全剔除用户
 
 ## 系统管理
 ### 进程
+**进程限制**
 ```bash
 ulimit -u 20 #临时性允许用户最多创建 20 个进程,预防类似fork炸弹
 vim /etc/security/limits.conf
     user1 - nproc 20       #退出后重新登录，就会发现最大进程数已经更改为 20 了
 ```
 
+**清理缓存**
+```bash
+sync    #sync命令做同步，以确保文件系统的完整性，将所有未写的系统缓冲区写到磁盘中，包含已修改的 i-node、已延迟的块 I/O 和读写映射文件。否则在释放缓存的过程中，可能会丢失未保存的文件。
+echo 1 > /proc/sys/vm/drop_caches   #清理pagecache（页面缓存）
+echo 2 > /proc/sys/vm/drop_caches   #清理dentries（目录缓存）和inodes
+echo 3 > /proc/sys/vm/drop_caches   #清理pagecache、dentries和inodes
+sync
+```
+
 ---
 
-## net
+## Net
 ### 端口🕵🏻‍
 ```bash
 lsof -i:22  #查22端口
@@ -64,3 +74,4 @@ firewall-cmd --reload
 下一次 3.3.3.3 尝试去访问你的网站，firewalld 将转发请求到源区域（drop）。因为目标是 DROP，请求将被拒绝，并且它不会被转发到接口区域（public）。
 
 
+`真正的人，真正的事，往往不及心中所想的那么好。（金庸《倚天屠龙记》）`

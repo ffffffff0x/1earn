@@ -1,11 +1,11 @@
 # Power-Linux🎓
-`一起释放linux的巨大能量`
+`Linux 下各种常见服务的配置指南`
 [TOC]
 
 ---
 
 # 系统配置
-## net🏀
+## Net🏀
 ```vim
 vi /etc/sysconfig/network-scripts/ifcfg-eth0
 	DEVICE="enoXXXXXX"
@@ -130,7 +130,7 @@ mount | grep '^/dev'
 
 ---
 
-## lvm物理卷🎳
+## Lvm物理卷🎳
 ```bash
 fdisk ‐l		查看磁盘情况
 fdisk /dev/sdb	创建系统分区
@@ -453,7 +453,7 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ---
 
-## nginx
+## Nginx
 **安装**
 ```bash
 yum install nginx
@@ -775,7 +775,8 @@ service firewalld stop
 ---
 
 ## mijisou
-[TOC]
+基于开源项目 Searx 二次开发的操作引擎
+项目地址:https://github.com/entropage/mijisou
 
 ### build
 **依赖**
@@ -877,10 +878,6 @@ engines:
     engine : baidu_videos
     shortcut : bdv
 
-  - name : sogou
-    engine : sogou
-    shortcut : sg
-
   - name : sogou images
     engine : sogou_images
     shortcut : sgi
@@ -888,10 +885,6 @@ engines:
   - name : sogou videos
     engine : sogou_videos
     shortcut : sgv
-
-  - name : 360sousuo
-    engine : so
-    shortcut : 360
 
   - name : 360 images
     engine : so_images
@@ -1061,6 +1054,11 @@ ps -aux
 kill 杀掉
 gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ```
+
+**后话**
+`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标，任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计，否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
+配置文件中改下名字
+`mijisou\searx\static\themes\entropage\img`中的logo图标自己换一下
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
@@ -1430,7 +1428,7 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 
 ---
 
-## nfs🏸
+## NFS🏸
 ### 服务端
 安装
 ```bash
@@ -1492,3 +1490,5 @@ vim /etc/fstab
 [nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
 [nfsuser1@localhost nfsfiles]$ cat hello.txt
 ```
+
+`“朋友的疏远大致分为两种。天各一方的两个人，慢慢的失掉了联系，彼此不再知道近况，多年之后再聚首往往就只是相对无言了。另一种就令人唏嘘的多了，两个朝夕得见的人，彼此的境遇竟因着造化相去渐远，这时心里也许会慢慢生出一种无力感来，因为无论怎么说怎么做也只能感觉心的距离越来越远了。——吴念真《这些人，那些事》`

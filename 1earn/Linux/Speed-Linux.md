@@ -1,10 +1,10 @@
 # Speed-Linux😋
-`"大多数人都好像一片落叶，在空中飘舞、翻卷，摇摇摆摆地落到地面上。可是也有一些人，为数不多的一些人，却像沿着一条固定轨道运行的星星，没有风吹到它们，它们有自身的规律和轨道。"——赫尔曼·黑塞 `
+`基础 Linux 命令、操作指南`
 [TOC]
 
 ---
 
-# linux编程
+# Linux编程
 ## 编译
 ```bash
 mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译
@@ -24,10 +24,10 @@ distcc	#多台机器一起编译
 
 ---
 
-# shell👍
+# Shell👍
 ## 环境变量
 - **bash**
-```
+```bash
 echo $PATH  #查看环境变量
 
 PATH=$PATH:/usr/local/python3/bin/ #新添加的路径     （关闭终端失效）
@@ -307,7 +307,7 @@ firewall-cmd --reload   #重新加载
 firewall-cmd --list-services  #查看防火墙设置
 ```
 
-### iptables
+### Iptables
 ```bash
 iptables-save > /root/firewall_rules.backup		#备份一下策略
 iptables -A OUTPUT -p tcp -d bigmart.com -j ACCEPT
@@ -345,7 +345,7 @@ vi CentOS-Base.repo
     enabled=1    ##开启本地源
 ```
 
-#### alibaba源
+#### Alibaba源
 进入 /etc/yum.repos.d 目录,将其中三个改名或者剩下所有都移走留下 CentOS-Base.repo
 ```bash
 cd /etc/yum.repos.d
@@ -359,7 +359,26 @@ rm  CentOS-Vault.repo
 >yum clean all
 >yum makecache
 
-#### kali源
+#### Ub源
+```vim
+lsb_release -c	#查看系统版号
+
+cd /etc/apt/
+mv sources.list sources.list.bak
+vim sources.list
+	deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse 
+	deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse 
+	deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse 
+	deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse 
+	deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse 
+	deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse 
+	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse 
+	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse 
+	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse 
+	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+```
+
+#### Kali源
 ```vim
 vim /etc/apt/sources.list
 	deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
@@ -368,14 +387,14 @@ vim /etc/apt/sources.list
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 ```
 
-#### pacman源
+#### Pacman源
 ```vim
 sudo pacman-mirrors -i -c China -m rank //更新镜像排名
 sudo pacman -Syy //更新数据源
 sudo pacman -S archlinux-keyring 
 ```
 
-### binary
+### Binary
 ```bash
 yum install make
 yum install gcc
@@ -392,7 +411,7 @@ dpkg -R /usr/local/src	#安装路径下所有包
 dpkg -L #查看软件安装位置
 ```
 
-### pacman
+### Pacman
 ```bash
 sudo pacman -S vim
 sudo pacman -S fish 
@@ -439,13 +458,13 @@ apt install fish
 ```
 
 ### 常用软件
-#### fish
+#### Fish
 ```bash
 echo /usr/bin/fish | sudo tee -a /etc/shells	#加默认
 usermod -s /usr/bin/fish USERNAME
 ```
 
-#### powerline-shell
+#### Powerline-shell
 ```bash
 pip install powerline-shell
 vim ~/.config/fish/config.fish
@@ -454,7 +473,7 @@ vim ~/.config/fish/config.fish
 	end
 ```
 
-#### vim❤
+#### Vim❤
 Normal 模式下`i`进入 insert模式
 `:wq`存盘+退出
 `dd`删除当前行,并存入剪切板
@@ -501,6 +520,12 @@ chkconfig --list        #列出所有的系统服务
 chkconfig --add httpd        #增加httpd服务
 chkconfig --del httpd        #删除httpd服务
 chkconfig --level httpd 2345 on        #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态
+
+vim /etc/crontab	#系统任务调度的配置文件
+#前5个星号分别代表:分钟,小时,几号,月份,星期几
+	* * * * * command	#每1分钟执行一次command
+	3,15 * * * * command	#每小时的第3和第15分钟执行
+	@reboot	command #开机启动
 ```
 
 ### 账号管控
@@ -622,7 +647,7 @@ exec /sbin/init
 一般主机安装完毕后 SSH 是默认开启的
 使用`/etc/init.d/ssh status`查看主机SSH状态
 
-**kali/manjaro**
+**Kali/Manjaro**
 安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
 ```vim
 vim /etc/ssh/sshd_config
@@ -653,7 +678,7 @@ apt install ssh
 
 ---
 
-## docker🐋
+## Docker🐋
 **centos**
 `curl -sSL https://get.docker.com/ | sh`
 
@@ -704,7 +729,7 @@ sudo apt install docker.io
 ```
 
 
-## rpm&node✔
+## Rpm&Node✔
 **包管理器方式**
 `apt-get install nodejs npm`	讲道理apt不好用
 
@@ -780,6 +805,7 @@ service php-fpm start #要运行PHP网页，要启动php-fpm解释器
 
 # 数据库
 ## MySQL📦
+和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
 sudo apt install mysql-server mysql-clien
 sudo service mysql restart
@@ -858,7 +884,7 @@ vim /etc/mongod.conf
 service mongod restart	
 ```
 
-## postgresql
+## Postgresql
 安装
 `yum install postgresql-server`
 
@@ -886,7 +912,7 @@ vim /var/lib/pgsql/9.5/data/postgresql.conf
 防火墙记得放行
 ```
 
-## redis 🔺🔴⭐
+## Redis 🔺🔴⭐
 **包管理器方式**
 在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
 `yum install epel-release`
@@ -1033,7 +1059,7 @@ pip3 -V
 ```
 ---
 
-## ruby💎
+## Ruby💎
 **源代码编译方式安装**
 注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
 下载ruby安装包,并进行编译安装
@@ -1056,4 +1082,6 @@ source ~/.bash_profile
 ```
 
 # Thank
-太多了,就不一一列出来了
+`为了自己想过的生活，勇于放弃一些东西。这个世界没有公正之处，你也永远得不到两全之计。若要自由，就得牺牲安全。若要闲散，就不能获得别人评价中的成就。若要愉悦，就无需计较身边人给予的态度。若要前行，就得离开你现在停留的地方。——《托斯卡纳艳阳下》`
+
+reference太多了,就不一一列出来了

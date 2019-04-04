@@ -1062,7 +1062,7 @@ kill 杀掉
 gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ```
 
-### Thank
+**Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
 - [entropage/mijisou: Privacy-respecting metasearch engine](https://github.com/entropage/mijisou)
 - [一个可以保护个人隐私的网络搜索服务：秘迹搜索搭建教程 - Rat's Blog](https://www.moerats.com/archives/922/)

@@ -1,27 +1,11 @@
-# 1earn
+# 1earn👁
+![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social)
+
 `完事开头难,然后一直开头一直难...`
-<html xmlns="http://www.w3.org/1999/xhtml">
+
 <p align="center">
-    <img src="https://i.imgur.com/G7hYY8N.png" 
-        alt="Master">
+    <img src="https://i.imgur.com/G7hYY8N.png">
 </p>
-<p align="center">
-
-  <a href="https://github.com/No-Github/1earn/tree/master">
-    <img src="https://img.shields.io/badge/Branch-master-green.svg?longCache=true"
-        alt="Branch">
-  </a>
-  <a href="https://github.com/No-Github/1earn/stargazers">
-    <img src="https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social"
-        alt="Stars">
-  </a>
-    <a href="https://github.com/No-Github/1earn/network/members">
-    <img src="https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social"
-        alt="Forks">
-  </a>
-
-</html>
-
 
 ---
 

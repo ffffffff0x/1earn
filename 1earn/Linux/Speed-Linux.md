@@ -61,6 +61,22 @@ awk
 
 ---
 
+## 会话
+```bash
+who
+w
+last
+
+yum -y install screen
+apt-get -y install screen
+screen -S name
+screen -ls
+screen -r	name #重新连接
+ctrl+d #终止会话
+```
+
+---
+
 ## 目录
 ```bash
 cd

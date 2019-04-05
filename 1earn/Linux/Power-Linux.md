@@ -362,9 +362,9 @@ firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
 
-### 虚拟主机
-**配置虚拟主机文件**
+**虚拟主机**
 ```vim
+配置虚拟主机文件
 vim /etc/httpd/conf.d/virthost.conf
 <VirtualHost 192.168.1xx.22:80>
 	ServerName  www.abc.com     ////设置Web服务器的主机名和监听端口
@@ -397,9 +397,8 @@ firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
 
-### mod_ssl
-**配置openssl，为linux提供web证书**
-创建证书
+**mod_ssl**
+- 为linux提供web证书
 ```bash
 >cd /etc/pki/CA/private
 >openssl genrsa 2048 > cakey.pem 
@@ -420,8 +419,7 @@ openssl ca -days 365 -in httpd.csr > httpd.crt
 cat /etc/pki/CA/index.txt
 ```
 
-**配置openssl，为windows提供web证书**
-创建证书
+- 为windows提供web证书
 ```bash
 >cd /etc/pki/CA/private
 >openssl genrsa 2048 > cakey.pem 
@@ -441,12 +439,12 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 自己想办法把server.pfx导出给windows2008主机
 ```
 
-**向 windows CA 服务器申请证书**
+- 向 windows CA 服务器申请证书
 `Openssl genrsa 2048 > httpd.key`
 `openssl req -new -key httpd.key -out httpd.csr`
 通过这个csr文件在内部的windows CA服务器上申请证书
 
-### ab
+**ab**
 安装
 `sudo apt install apache2-utils`
 `yum install httpd-tools`
@@ -522,9 +520,8 @@ vim /etc/nginx/conf.d/test.com.conf
 systemctl restart nginx
 ```
 
-### 添加PHP/PHP-FPM环境支持
-**安装**
-```bash
+**添加PHP/PHP-FPM环境支持**
+```vim
 # 安装PHP源
 rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
@@ -534,10 +531,8 @@ yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
 
 systemctl start php-fpm.service
 netstat -tnlp #检查php-fpm默认监听端口：9000
-```
 
-**修改配置**
-```vim
+添加配置
 vim /etc/nginx/conf.d/test.com.conf
           # php-fpm  (新增)
           location ~\.php$ {
@@ -550,10 +545,8 @@ vim /etc/nginx/conf.d/test.com.conf
 
 systemctl restart nginx
 systemctl restart php-fpm
-```
 
-**php测试**
-```vim
+测试
 vim /usr/share/nginx/test.com/info.php
   <?php 
       phpinfo(); 
@@ -778,7 +771,6 @@ service firewalld stop
 基于开源项目 Searx 二次开发的操作引擎
 项目地址:https://github.com/entropage/mijisou
 
-### build
 **依赖**
 自行安装python3 pip redis
 
@@ -1014,7 +1006,7 @@ echo "www.fuck163.net {
 /etc/init.d/caddy start
 ```
 
-### opensearch
+**opensearch**
 ```xml
 vim /root/mijisou/searx/templates/__common__/opensearch.xml
   <?xml version="1.0" encoding="utf-8"?>
@@ -1170,7 +1162,7 @@ systemctl enable mariadb
 
 # 文件服务
 ## VSFTP🎱
-###匿名访问
+**匿名访问**
 |参数|作用|
 | :------------- | :------------- |
 |anonymous_enable=YES |	允许匿名访问模式 |
@@ -1228,7 +1220,7 @@ ftp> exit
 
 ---
 
-###本地用户
+**本地用户**
 |参数 |	作用|
 | :------------- | :------------- |
 |anonymous_enable=NO 	|禁止匿名访问模式|
@@ -1273,11 +1265,11 @@ ftp>
 
 ---
 
-###虚拟用户
-**安装**
->yum install vsftpd
+**虚拟用户**
+安装
+`yum install vsftpd`
 
-**认证**
+认证
 创建虚拟用户文件，把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行，密码占一行。
 ```vim
 cd /etc/vsftp
@@ -1306,7 +1298,7 @@ vim /etc/pam.d/vsftpd.vu
 #注意：格式是db=/etc/vsftpd/login这样的，一定不要去掉源文件的.db后缀
 ```
 
-**配置文件**
+配置文件
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 1 anonymous_enable=NO
@@ -1326,7 +1318,7 @@ vim /etc/vsftpd/vsftpd.conf
 |pam_service_name=vsftpd.vu |	指定PAM文件|
 |allow_writeable_chroot=YES |	允许对禁锢的FTP根目录执行写入操作，而且不拒绝用户的登录请求|
 
-**用户配置权限文件**
+用户配置权限文件
 所有用户主目录为 /home/ftp 宿主为 virtual 用户；
 >useradd -d /home/ftp -s /sbin/nologin virtual  
 >chmod -Rf 755 /home/ftp/
@@ -1341,7 +1333,7 @@ vim /etc/vsftpd/vsftpd.conf
 	allow_writeable_chroot=YES
 ```
 
-**编辑用户权限配置文件**
+编辑用户权限配置文件
 ```vim
 vim Ftpadmin
 	anon_upload_enable=YES
@@ -1361,7 +1353,7 @@ vim Ftpadmin
 	#则要修改配置文件中的 anon_umask 的值
 ```
 
-**启服务**
+启服务
 ```bash
 setenforce 0
 firewall-cmd --zone=public --add-service=ftp
@@ -1373,7 +1365,7 @@ systemctl enable vsftpd
 ---
 
 ## smb🏓
-### 服务端
+**服务端**
 安装
 >yum -y install samba 
 
@@ -1417,7 +1409,7 @@ firewall-cmd --reload
 systemctl restart smb
 ```
 
-### 客户端
+**客户端**
 ```bash
 yum -y install samba 
 
@@ -1429,7 +1421,7 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 ---
 
 ## NFS🏸
-### 服务端
+**服务端**
 安装
 ```bash
 yum ‐y install nfs‐utils
@@ -1458,7 +1450,7 @@ service rpcbind start
 service nfs start	
 ```
 
-### 客户端
+**客户端**
 安装，创建用户
 ```bash
 yum ‐y install nfs‐utils

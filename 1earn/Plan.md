@@ -116,6 +116,8 @@ npm config set proxy=http://127.0.0.1:8087
 - 排除不想要的结果:`关键字 - 排查条件`,例如搜索 “运动相机”，但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
 - 双引号的用处:例如：`"how to write a code"` 如果没有引号，搜索的大部分结果是以 `write code` 为关键字。包含引号后，会确保将完整的字符串做为期望的检索结果提交给搜索引擎。
 
+---
+
 # vscode 配置
 ```yml
 "editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black"
@@ -133,5 +135,4 @@ npm config set proxy=http://127.0.0.1:8087
 - [将pip源更换到国内镜像 - LittleBee的博客 - CSDN博客](https://blog.csdn.net/sinat_21591675/article/details/82770360)
 - [你真的会使用搜索引擎吗？](https://mp.weixin.qq.com/s/le_zYcDfhSLvbuu99LprMQ)
 - [VSCode好看字体](https://blog.csdn.net/s1124yy/article/details/82315988)
-- [ tonsky/FiraCode
-](https://github.com/tonsky/FiraCode)
+- [tonsky/FiraCode](https://github.com/tonsky/FiraCode)

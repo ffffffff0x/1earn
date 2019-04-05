@@ -34,9 +34,10 @@
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
 建议的阅读体验
-- [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+- [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)+[FiraCode](https://github.com/tonsky/FiraCode)
 - [Typora](https://www.typora.io/)
 
+>2019-4-5:本来是分享写的笔记的，但是现在发现越来越像在写手册了。。。
 
 ## List
 以下是我平日收集知识与资源的渠道(部分)

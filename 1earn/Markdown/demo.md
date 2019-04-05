@@ -19,9 +19,6 @@
 - [ ] this is an incomplete item
 
 
-
-
-
 正如 Kanye West 所说：
 > We're living the future so
 > the present is our past.

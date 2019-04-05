@@ -181,7 +181,7 @@ b(){ b|b& };b  #清理内存
 ```
 
 #### 查
-##### 查看
+**查看**
 ```bash
 pwd -P #目录链接时,显示实际路径而非link路径
 ls #第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
@@ -203,7 +203,7 @@ file #文件类型
 id
 ```
 
-##### 查找
+**查找**
 fd
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
@@ -339,7 +339,7 @@ iptables-restore </root/firewall_rules.backup	#规则恢复一下
 
 ## 软件包管理📜
 ### 源,挂载🐱‍🐉
-#### 本地yum源
+**本地yum源**
 挂载到/mnt/cdrom
 ```bash
 mkdir /mnt/cdrom
@@ -361,7 +361,7 @@ vi CentOS-Base.repo
     enabled=1    ##开启本地源
 ```
 
-#### Alibaba源
+**Alibaba源**
 进入 /etc/yum.repos.d 目录,将其中三个改名或者剩下所有都移走留下 CentOS-Base.repo
 ```bash
 cd /etc/yum.repos.d
@@ -375,7 +375,7 @@ rm  CentOS-Vault.repo
 >yum clean all
 >yum makecache
 
-#### Ub源
+**Ub源**
 ```vim
 lsb_release -c	#查看系统版号
 
@@ -394,7 +394,7 @@ vim sources.list
 	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
 ```
 
-#### Kali源
+**Kali源**
 ```vim
 vim /etc/apt/sources.list
 	deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
@@ -403,7 +403,7 @@ vim /etc/apt/sources.list
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 ```
 
-#### Pacman源
+**Pacman源**
 ```vim
 sudo pacman-mirrors -i -c China -m rank //更新镜像排名
 sudo pacman -Syy //更新数据源
@@ -474,13 +474,13 @@ apt install fish
 ```
 
 ### 常用软件
-#### Fish
+**Fish**
 ```bash
 echo /usr/bin/fish | sudo tee -a /etc/shells	#加默认
 usermod -s /usr/bin/fish USERNAME
 ```
 
-#### Powerline-shell
+**Powerline-shell**
 ```bash
 pip install powerline-shell
 vim ~/.config/fish/config.fish
@@ -489,7 +489,7 @@ vim ~/.config/fish/config.fish
 	end
 ```
 
-#### Vim❤
+**Vim**
 Normal 模式下`i`进入 insert模式
 `:wq`存盘+退出
 `dd`删除当前行,并存入剪切板
@@ -545,7 +545,7 @@ vim /etc/crontab	#系统任务调度的配置文件
 ```
 
 ### 账号管控
-#### 账号
+**账号**
 ```bash
 useradd -d /home/user1 -s /sbin/nologin user1  #创建用户user1
 passwd user1 #设置密码
@@ -561,7 +561,7 @@ userdel -f user1 #强制删除,即使用户还在登陆中
 sudo passwd   #配置 su 密码
 ```
 
-#### 权限
+**权限**
 ```bash
 chown named.named aaa.txt 	#将文件给指定用户及组
 chmod 777 a.txt 		#给文件权限
@@ -580,6 +580,7 @@ adduser user1 sudo	#将user1加到sudo组中
 deluser user1 sudo	#将user1从sudo组中删除
 ```
 
+---
 
 ## 系统信息
 ```vim
@@ -588,6 +589,7 @@ cat /etc/os-release
 ```
 
 ### 进程管理
+**进程处理**
 ```bash
 杀进程
 kill -s STOP <PID>
@@ -607,16 +609,18 @@ bg	#转后台运行
 fg	#转前台运行
 
 查进程
-ps -aux 
+pidof program	#找出program程序的进程PID
+pidof -x script #找出shell脚本script的进程PID
 service xxx status
 systemctl status xxx
+```
 
-关闭 selinux👁
-vim /etc/selinux/config
-    SELINUX=disabled
-    （需要重启）
-
-setenforce 0 (不需要重启)
+**查询负载、进程监控**
+```bash
+top
+free
+vmstat
+ps -aux 
 ```
 
 ---
@@ -629,6 +633,7 @@ blkid
 fdisk -l
 ```
 
+---
 
 # 安全😎
 ## 密码恢复
@@ -654,6 +659,16 @@ touch /.autorelabel
 exec /sbin/init
 
 现在可以使用新设置的root密码登录了。
+```
+
+## selinux
+```bash
+关闭 selinux👁
+vim /etc/selinux/config
+    SELINUX=disabled
+    （需要重启）
+
+setenforce 0 (不需要重启)
 ```
 
 ---

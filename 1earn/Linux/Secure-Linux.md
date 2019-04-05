@@ -4,8 +4,8 @@
 
 ---
 
-## Shell
-### 会话
+# Shell👮🏻‍
+## 会话
 ```bash
 who  #查看当前登录用户
 w    #查看登录用户行为
@@ -18,6 +18,7 @@ kill -9 pid #安全剔除用户
 
 ---
 
+# 系统管理👨‍🎓
 ## 进程管理
 **进程定位**
 ```bash
@@ -32,7 +33,7 @@ vim /etc/security/limits.conf
     user1 - nproc 20       #退出后重新登录，就会发现最大进程数已经更改为 20 了    
 ```
 
-### 负载
+## 负载
 **查询负载、进程监控**
 ```bash
 top
@@ -54,8 +55,8 @@ sync
 
 ---
 
-## Net
-### 端口🕵🏻‍
+# Net🕵🏻
+## 端口
 ```bash
 lsof -i -P #显示进程使用端口使用情况
 lsof -i:22  #只查22端口
@@ -70,7 +71,7 @@ netstat -tnlp | grep ssh
 nmap -sV -p 22 localhost
 ```
 
-### Firewall👮🏻‍
+## Firewall
 ```bash
 firewall-cmd --permanent --zone=public --remove-service=ssh
 firewall-cmd --permanent --zone=public --add-service=http

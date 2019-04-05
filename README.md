@@ -1,14 +1,13 @@
 # 1earn👁
 ![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social)
 
-`完事开头难,然后一直开头一直难...`
+完事开头难,然后一直开头一直难...
 
 <p align="center">
     <img src="https://i.imgur.com/G7hYY8N.png">
 </p>
 
 ---
-
 
 ## 三板斧
 `收集、归纳、分享`我认为这是知识学习的"三板斧"
@@ -21,11 +20,9 @@
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
-
 ## Todo
 - [ ] [团队博客](https://no-github.github.io/1earn/)
-- [ ] 为知笔记转移
-
+- [ ] 为知笔记转移>network计划
 
 ## 建议和吐槽
 由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
@@ -37,7 +34,8 @@
 - [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)+[FiraCode](https://github.com/tonsky/FiraCode)
 - [Typora](https://www.typora.io/)
 
->2019-4-5:本来是分享写的笔记的，但是现在发现越来越像在写手册了。。。
+**NOTE:**
+- 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了。。。
 
 ## List
 以下是我平日收集知识与资源的渠道(部分)
@@ -74,13 +72,8 @@
 - [异次元软件世界 - 软件改变生活！](http://www.iplaysoft.com/)
 - [V2EX](https://www.v2ex.com/)
 
-
 ## Thank
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)
 - [To Find a Better Solution, Ask a Better Question – Member Feature Stories – Medium](https://medium.com/s/story/to-find-a-better-solution-ask-a-better-question-3be7fee5af65)
 - [The Magpie Developer](https://blog.codinghorror.com/the-magpie-developer/)
-
----
-
-![IMAGE](https://licensebuttons.net/l/by/3.0/88x31.png)

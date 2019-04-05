@@ -4,7 +4,7 @@
 
 ---
 
-# Linux编程
+# Linux编程🚬
 ## 编译
 ```bash
 mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译
@@ -292,7 +292,7 @@ vim /etc/rc.conf
 
 ---
 
-## 传输/下载🐱‍💻
+## 传输/下载
 - **scp**
 >scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
 >scp -r //带文件夹
@@ -311,7 +311,7 @@ wget -r example.com	#递归下载
 
 ---
 
-## Firewall🔥
+## Firewall
 ### Firewalld
 ```bash
 firewall-cmd --zone=public --add-port=12345/tcp --permanent  #开放端口
@@ -337,8 +337,8 @@ iptables-restore </root/firewall_rules.backup	#规则恢复一下
 
 ---
 
-## 软件包管理📜
-### 源,挂载🐱‍🐉
+## 软件包管理
+### 源,挂载
 **本地yum源**
 挂载到/mnt/cdrom
 ```bash
@@ -625,7 +625,7 @@ ps -aux
 
 ---
 
-# 设备管理
+# 设备管理⚙
 ## 硬盘/数据恢复
 ```bash
 df
@@ -915,7 +915,7 @@ vim /etc/mongod.conf
 service mongod restart	
 ```
 
-## Postgresql
+## Postgresql🐘
 安装
 `yum install postgresql-server`
 

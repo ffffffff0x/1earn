@@ -210,7 +210,7 @@ git push --force origin
     login your-usernmae
     password your-password
     ```
-
+    
 ---
 
 # Thank

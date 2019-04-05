@@ -55,20 +55,6 @@ vi CentOS-Base.repo
 yum list  #看一下包
 ```
 
-```bash
-安装httpd、mod_ssl、vsftpd
-yum -y install httpd
-yum -y install mod_ssl
-yum -y install vsftpd
-
-安装bind、bind-utils、httpd、mod_ssl、ftp、bzip2软件包的安装
-yum -y install bind
-yum -y install bind-utils
-yum -y install ftp
-yum -y install bzip2	
-yum -y install vim
-```
-
 ---
 
 ## RAID🏉
@@ -204,7 +190,7 @@ set ignorecase smartcase #搜索时忽略大小写，但在有一个或以上大
 # 网络服务
 ## DNS🛶
 **安装**
->yum -y install bind*
+>yum install bind*
 
 **主配置文件**
 ```vim
@@ -213,6 +199,7 @@ options {
     listen-on port 53 { any; };
     listen-on-v6 port 53 { any; };
     allow-query     { any; };
+}
 ```
 
 **区域配置文件**
@@ -305,7 +292,7 @@ firewall-cmd --reload
 ---
 
 ## DHCP🏏
->yum install -y dhcp
+>yum install dhcp
 
 复制一份示例
 >cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
@@ -337,19 +324,66 @@ subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
 
 ---
 
+## Chrony
+它由两个程序组成：chronyd和chronyc。
+chronyd是一个后台运行的守护进程，用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率，并对此进行补偿。
+chronyc是用来监控chronyd性能和配置其参数程序
+
+**安装**
+```bash
+yum install chrony
+```
+
+**配置文件**
+```vim
+vim /etc/chrony.conf
+  server time1.aliyun.com iburst  
+  server time2.aliyun.com iburst 
+  server time3.aliyun.com iburst 
+  server time4.aliyun.com iburst 
+  server time5.aliyun.com iburst 
+  server time6.aliyun.com iburst 
+  server time7.aliyun.com iburst 
+  或
+  server time1.google.com iburst 
+  server time2.google.com iburst 
+  server time3.google.com iburst 
+  server time4.google.com iburst
+```
+
+**启服务**
+```vim
+systemctl stop ntpd
+systemctl disable ntpd
+
+systemctl enable chronyd.service
+systemctl start chronyd.service
+```
+
+**查看同步状态**
+```bash
+chronyc sourcestats #检查ntp源服务器状态
+chronyc sources -v  #检查ntp详细同步状态
+
+chronyc #进入交互模式
+  activity
+```
+
+---
+
 # web服务
 ## apache⚾
 **安装**
 ```bash
-yum -y install httpd
-yum -y install mod_ssl
+yum install httpd
+yum install mod_ssl
 ```
 
 **配置文件**
 ```vim
 vim /etc/httpd/conf/httpd.conf
 		DocumentRoot "/var/www/html" 
-		ServerName  xx.xx.xx.xx:80     ////设置Web服务器的主机名和监听端口
+		ServerName  xx.xx.xx.xx:80   ////设置Web服务器的主机名和监听端口
 ```
 
 **启服务**
@@ -451,7 +485,7 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ---
 
-## Nginx
+## Nginx🎣
 **安装**
 ```bash
 yum install nginx
@@ -557,7 +591,7 @@ curl http://www.test.com/info.php
 
 ---
 
-## phpMyAdmin
+## phpMyAdmin⛸
 **建议搭配上面的nginx+php扩展**
 
 **创建数据库和一个用户**
@@ -600,7 +634,7 @@ systemctl restart nginx
 
 ---
 
-## Caddy
+## Caddy⛳
 - 安装Caddy
 ```bash
 curl https://getcaddy.com | bash -s personal
@@ -657,7 +691,7 @@ echo -e "xxx.com {
 
 ---
 
-## Wordpress
+## Wordpress🥌
 **下载WordPress安装包并解压**
 ```bash
 wget https://wordpress.org/latest.tar.gz
@@ -767,7 +801,7 @@ service firewalld stop
 
 ---
 
-## mijisou
+## mijisou🎯
 基于开源项目 Searx 二次开发的操作引擎
 项目地址:https://github.com/entropage/mijisou
 
@@ -1080,7 +1114,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 	- 后端server：serverA和serverB。
 
 1. 安装
->yum install -y haproxy
+>yum install haproxy
 
 2. 创建HAProxy配置文件
 ```vim
@@ -1367,7 +1401,7 @@ systemctl enable vsftpd
 ## smb🏓
 **服务端**
 安装
->yum -y install samba 
+>yum install samba 
 
 修改配置文件
 ```vim	
@@ -1411,7 +1445,7 @@ systemctl restart smb
 
 **客户端**
 ```bash
-yum -y install samba 
+yum install samba 
 
 mkdir /data/web_data
 mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata 

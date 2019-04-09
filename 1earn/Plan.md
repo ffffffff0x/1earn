@@ -106,6 +106,9 @@ npm config set proxy=http://127.0.0.1:8087
     trusted-host = https://pypi.tuna.tsinghua.edu.cn
     ```
 
+## 终端
+先鸽着
+
 ---
 
 # 搜索引擎语法
@@ -126,13 +129,129 @@ npm config set proxy=http://127.0.0.1:8087
 
 ---
 
+# 虚拟机定制
+linux虚拟机定制
+- Centos
+- Kali-xfce
+- Manjaro-kde
+
+windows虚拟机定制
+- Win7-渗透
+- Win10-日用
+
+## linux虚拟机定制规则
+1.统一账号:
+账号 root 密码 略
+账号 略 密码 略
+
+2.预装软件(持续更新)
+```bash
+bzip2
+vim
+python2
+python3
+make
+gcc*gcc-c++
+curl
+git
+SSH
+lrzsz
+
+Centos
+  "Development Tools"
+```
+
+3.桌面需求
+```bash
+设定屏幕超时时间永不超时
+换个不辣眼睛的壁纸(然并卵,反正日常在ssh下使用)
+默认终端 fish 或 on my zsh
+终端配置 powerline-shell
+```
+
+4.网络设置
+```bash
+dns:208.67.222.222 114.114.114.114
+软件包换源:aliyun源或163、tuna源
+python换源
+终端看情况走代理
+```
+
+5.硬件设施
+```bash
+CPU:1-2核
+mem:1-2-4G
+disk:40G
+```
+
+## windows定制规则
+1.统一账号:
+```bash
+账号 administrator
+密码 略
+```
+
+2.预装软件(持续更新)
+```bash
+Dism+
+7zip
+notepad++
+chrome
+Clover
+geek
+aio-runtimes
+java
+
+win7
+  burpsuite
+  fiddler
+  awvs12（暂定）
+  CTFtools
+  python2
+  python3
+
+win10 2019 Ltsc
+  TIM
+  GlassWire
+  360杀毒
+```
+
+3.桌面需求
+```bash
+屏幕超时时间永不超时
+换个不辣眼睛的壁纸
+```
+
+4.网络设置
+```bash
+dns:208.67.222.222 114.114.114.114
+```
+
+5.硬件设施
+```bash
+CPU:1-2-4核
+mem:2-4-8G
+disk:60G
+```
+
+6.功能要求
+```bash
+开启 RDP
+开启 ssh，telnet 功能(客户端、服务端)
+
+win10
+  更新到最新版本，打好补丁
+```
+
+---
+
 # Thank
 - [Wind4/vlmcsd: KMS Emulator in C (currently runs on Linux including Android, FreeBSD, Solaris, Minix, Mac OS, iOS, Windows with or without Cygwin)](https://github.com/Wind4/vlmcsd)
-- [基于vlmcsd搭建KMS服务器 - 简书](https://www.jianshu.com/p/11d51983852e)
+- [基于 vlmcsd 搭建 KMS 服务器 - 简书](https://www.jianshu.com/p/11d51983852e)
 - [chengr28/Pcap_DNSProxy: Pcap_DNSProxy, a local DNS server based on packet capturing](https://github.com/chengr28/Pcap_DNSProxy)
-- [git配置代理命令 - 阿兴的平凡世界 - 博客园](https://www.cnblogs.com/gx1069/p/6840413.html)
-- [npm配置镜像、设置代理 - MockingBird 博客 - SegmentFault 思否](https://segmentfault.com/a/1190000002589144)
-- [将pip源更换到国内镜像 - LittleBee的博客 - CSDN博客](https://blog.csdn.net/sinat_21591675/article/details/82770360)
+- [git 配置代理命令 - 阿兴的平凡世界 - 博客园](https://www.cnblogs.com/gx1069/p/6840413.html)
+- [npm 配置镜像、设置代理 - MockingBird 博客 - SegmentFault 思否](https://segmentfault.com/a/1190000002589144)
+- [将 pip 源更换到国内镜像 - LittleBee的博客 - CSDN博客](https://blog.csdn.net/sinat_21591675/article/details/82770360)
 - [你真的会使用搜索引擎吗？](https://mp.weixin.qq.com/s/le_zYcDfhSLvbuu99LprMQ)
-- [VSCode好看字体](https://blog.csdn.net/s1124yy/article/details/82315988)
+- [VSCode 好看字体](https://blog.csdn.net/s1124yy/article/details/82315988)
 - [tonsky/FiraCode](https://github.com/tonsky/FiraCode)

@@ -204,6 +204,7 @@ id
 ```
 
 **查找**
+```bash
 fd
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
@@ -211,6 +212,7 @@ fd
 find / -name conf*
 which passwd
 locate passwd
+```
 
 #### 改
 ```bash
@@ -547,6 +549,9 @@ vim /etc/crontab	#系统任务调度的配置文件
 ### 账号管控
 **账号**
 ```bash
+whoami	#当前用户
+groups	#当前组
+
 useradd -d /home/user1 -s /sbin/nologin user1  #创建用户user1
 passwd user1 #设置密码
 addgroup group1 #创建组
@@ -567,11 +572,12 @@ chown named.named aaa.txt 	#将文件给指定用户及组
 chmod 777 a.txt 		#给文件权限
 chmod 777  #用户rwx、组rwx、其他用户rwx  4.2.1分别代表读,写,执行
 chmod o=rw a.txt  #代表只给其他用户分配读写权限
+chmod u=rw,g=r,o= a.txt
 chown -R u+x test  #对test及其子目录所有文件的所有者增加执行权限
 chgrp user1 file.txt	#Change the owning group of the file file.txt to the group named user1.
 chgrp -hR staff /office/files	#Change the owning group of /office/files, and all subdirectories, to the group staff.
 umask 002	#配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认0022
-
+#umask值002 所对应的文件和目录创建缺省权限分别为6 6 4和7 7 5
 visudo	#加sudo权限
 	user1 ALL=(ALL)     ALL
 
@@ -752,13 +758,18 @@ $ sudo yum upgrade python*
 
 To verify a successful Docker Compose installation, run:
 $ docker-compose version
+
+docker login
 ```
 
 **debian**
 ```bash
+sudo apt update
 sudo apt install docker.io
+docker login	#讲道理，按官方文档说法并不需要账户并且登录，但实际上还是需要你登陆
 ```
 
+---
 
 ## Rpm&Node✔
 **包管理器方式**
@@ -788,6 +799,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ```
 
+---
 
 ## Jenkins🤵🏻
 注,Jenkins需要jdk环境

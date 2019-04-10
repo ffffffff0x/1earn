@@ -129,17 +129,17 @@ npm config set proxy=http://127.0.0.1:8087
 
 ---
 
-# 虚拟机定制
-linux虚拟机定制
+# 虚拟机建议
+linux虚拟机建议
 - Centos
 - Kali-xfce
 - Manjaro-kde
 
-windows虚拟机定制
-- Win7-渗透
+windows虚拟机建议
+- [commando-vm](https://github.com/fireeye/commando-vm)
 - Win10-日用
 
-## linux虚拟机定制规则
+## linux虚拟机定制建议
 1.统一账号:
 账号 root 密码 略
 账号 略 密码 略
@@ -184,7 +184,7 @@ mem:1-2-4G
 disk:40G
 ```
 
-## windows定制规则
+## windows定制建议
 1.统一账号:
 ```bash
 账号 administrator
@@ -201,14 +201,6 @@ Clover
 geek
 aio-runtimes
 java
-
-win7
-  burpsuite
-  fiddler
-  awvs12（暂定）
-  CTFtools
-  python2
-  python3
 
 win10 2019 Ltsc
   TIM

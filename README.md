@@ -11,9 +11,9 @@
 
 ## Manual
 - Linux
-    >Speed-Linux:命令速查手册,记录各种基本命令操作,
-    Power-Linux:配置指南,记录各种服务搭建过程
-    Secure-Linux:记录自己优化linux服务器性能与问题排查时用到的那些命令
+    >Speed-Linux:命令速查手册,记录各种基本命令操作
+    >Power-Linux:配置指南,记录各种服务搭建过程
+    >Secure-Linux:记录自己优化linux服务器性能与问题排查时用到的那些命令
 
 - Markdown
     >学习写Markdown时参考的Markdown示例

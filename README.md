@@ -9,6 +9,25 @@
 
 ---
 
+## Manual
+- Linux
+    >Speed-Linux:命令速查手册,记录各种基本命令操作,
+    Power-Linux:配置指南,记录各种服务搭建过程
+    Secure-Linux:记录自己优化linux服务器性能与问题排查时用到的那些命令
+
+- Markdown
+    >学习写Markdown时参考的Markdown示例
+
+- Network
+    >在学校期间记录的做过的实验的记录
+
+- Pentest
+    >Speed-PentTest:平日工作生活中用到的渗透知识记录
+
+- Python
+- git
+- Tools
+
 ## 三板斧
 `收集、归纳、分享`我认为这是知识学习的"三板斧"
 
@@ -35,7 +54,7 @@
 - [Typora](https://www.typora.io/)
 
 **NOTE:**
-- 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了。。。
+- 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了
 
 ## List
 以下是我平日收集知识与资源的渠道(部分)

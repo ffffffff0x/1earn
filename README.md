@@ -13,13 +13,13 @@
 ### Linux
 - Speed-Linux:命令速查手册,记录各种基本命令操作
 - Power-Linux:配置指南,记录各种服务搭建过程
-- Secure-Linux:记录自己优化linux服务器性能与问题排查时用到的那些命令
+- Secure-Linux:记录自己优化 linux 服务器性能与问题排查时用到的那些命令
 
 ### Markdown
-- 学习写Markdown时参考的Markdown示例
+- 学习写 Markdown 时参考的 Markdown 示例
 
 ### Network
-- 在学校期间记录的做过的实验的记录
+- 在学校期间做过的实验的记录
 
 ### Pentest
 - Speed-PentTest:平日工作生活中用到的渗透知识记录
@@ -28,10 +28,10 @@
 - 自己编写的一些功能模块,学习过的模块例子
 
 ### git
-- 方便git命令速查
+- 方便 git 命令速查
 
 ### Tools
-- win-tools:windows下的软件使用方案
+- Win-Tools:windows 下的软件使用方案
 
 ## 三板斧
 `收集、归纳、分享`我认为这是知识学习的"三板斧"
@@ -46,7 +46,7 @@
 
 ## Todo
 - [ ] [团队博客](https://no-github.github.io/1earn/)
-- [ ] 为知笔记转移>network计划
+- [ ] 为知笔记转移>network 计划
 
 ## 建议和吐槽
 由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢

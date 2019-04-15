@@ -213,7 +213,7 @@ git push --force origin
     
 ---
 
-# Thank
+# Reference
 - [Git Push 避免用户名和密码方法](https://www.cnblogs.com/ballwql/p/3462104.html)
 - [Git初始配置和基本使用](https://blog.csdn.net/daily886/article/details/80140720)
 - [Git远程操作详解 - 阮一峰的网络日志](www.ruanyifeng.com/blog/2014/06/git_remote.html)

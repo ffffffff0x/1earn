@@ -4,7 +4,7 @@
 完事开头难,然后一直开头一直难...
 
 <p align="center">
-    <img src="https://i.imgur.com/G7hYY8N.png">
+    <img src="https://i.imgur.com/cNqsoGM.jpg">
 </p>
 
 ---
@@ -101,3 +101,7 @@
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)
 - [To Find a Better Solution, Ask a Better Question – Member Feature Stories – Medium](https://medium.com/s/story/to-find-a-better-solution-ask-a-better-question-3be7fee5af65)
 - [The Magpie Developer](https://blog.codinghorror.com/the-magpie-developer/)
+
+---
+
+`本人撰写的手册，仅供学习和研究使用，请勿使用文中的技术源码用于非法用途，任何人造成的任何负面影响，与本人无关。`

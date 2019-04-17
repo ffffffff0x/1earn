@@ -5,6 +5,10 @@
 ---
 
 # Linux编程🚬
+很多脚本第一行用来指定本脚本用什么解释器来执行
+例如`#!/usr/bin/python`相当于写死了 python 路径。
+而`#!/usr/bin/env python`会去环境设置寻找 python 目录，可以增强代码的可移植性，推荐这种写法。
+
 ## 编译
 ```bash
 mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译

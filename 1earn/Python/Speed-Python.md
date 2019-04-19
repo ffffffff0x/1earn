@@ -2,6 +2,9 @@
 `主要总结基础的语法和操作`
 [TOC]
 
+**Todo**
+- [ ] 语法分类 python2  python3
+
 # 安装/配置
 ## 打包
 安装Pyinstaller
@@ -239,5 +242,13 @@ from sys import argv,path  #  导入特定的成员
 print('================python from import===================================')
 print('path:',path) # 因为已经导入path成员，所以此处引用时不需要加sys.path
 ```
+
+---
+
+# 版本问题
+## input()
+python2中的`input()`函数：获取当前输入的内容，并将其作为指令来处理
+python3中的`input()`函数：获取当前输入的内容，并将其作为字符串来处理
+如果想在python2让`input`函数实现python3中相同的功能，就需要使用`raw_input()`函数
 
 `花代价所换来的一点才智，抵过别人传授的数倍不止。`

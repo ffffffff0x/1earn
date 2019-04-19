@@ -2,6 +2,10 @@
 `Linux 下各种常见服务的配置指南`
 [TOC]
 
+**Todo**
+- [ ] oracle 11e
+- [ ] zabbix
+
 ---
 
 # 系统配置

@@ -13,7 +13,7 @@ pip install PyInstaller
 ```
 
 使用Pyinstaller
-```
+```bash
 python pyinstaller.py -F myfile.py
 或
 pyinstaller -F myfile.py
@@ -242,6 +242,10 @@ from sys import argv,path  #  导入特定的成员
 print('================python from import===================================')
 print('path:',path) # 因为已经导入path成员，所以此处引用时不需要加sys.path
 ```
+
+## pip指定版本安装
+在linux安装了多版本python时（例如python2.6和2.7），pip安装的包不一定是用户想要的位置，此时可以用 -t 选项来指定位置
+`pip install -t /usr/local/lib/python2.7/site-packages/ xlrd`
 
 ---
 

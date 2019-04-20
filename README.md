@@ -22,10 +22,10 @@
 - 在学校期间做过的实验的记录
 
 ### Pentest
-- Speed-PentTest:平日工作生活中用到的渗透知识记录
+- [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
 
 ### Python
-- 自己编写的一些功能模块,学习过的模块例子
+- 自己收藏/编写的一些模块实例，各种小工具
 
 ### git
 - 方便 git 命令速查

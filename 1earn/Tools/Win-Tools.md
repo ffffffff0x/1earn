@@ -7,6 +7,7 @@
 
 **Todo**
 - [ ] 工具描述
+- [ ] VSCode
 
 **Thank**
 没有他们就不会有这篇记录,感谢
@@ -277,6 +278,9 @@ start explorer
 
 **Ditto**
 剪贴板增强
+
+**DeskPin**
+将窗口钉在最上层
 
 **QuickLook**
 空格预览文件

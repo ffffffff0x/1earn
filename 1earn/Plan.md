@@ -7,7 +7,7 @@
 注意：Windows系统和Micrsoft Office软件都必须是VOL版本。
 **激活Windows**
 用管理员权限运行CMD或PowerShell，输入如下命令：
-```
+```powershell
 slmgr /skms xxx.xxx.xxx.xxx
 slmgr /ato
 slmgr /xpr
@@ -17,9 +17,9 @@ slmgr /xpr
 
 **激活Office**
 用管理员权限运行CMD或PowerShell，输入如下命令：
-```
+```powershell
 # 进入office安装目录
-cd “C:\Program Files\Microsoft Office\Office16”
+cd “C:\Program Files(x86)\Microsoft Office\Office16”
 # 注册kms服务器地址
 cscript ospp.vbs /sethst:xxx.xxx.xxx.xxx
 # 执行激活

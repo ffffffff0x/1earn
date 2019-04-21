@@ -4,7 +4,7 @@
 完事开头难,然后一直开头一直难...
 
 <p align="center">
-    <img src="https://i.imgur.com/cNqsoGM.jpg">
+    <img src=".//img/readme.jpg">
 </p>
 
 ---

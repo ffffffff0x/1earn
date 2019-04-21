@@ -670,6 +670,7 @@ echo -e ":80 {
 echo "<h1>first</h1>" >> /usr/local/bin/www/index.html
 
 caddy
+# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
 ```
 
 - 反向代理
@@ -1035,13 +1036,14 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	#一定要在mijisou目录下运�
 
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 
-echo "www.fuck163.net {
+echo "www.你的域名.net {
  gzip
  tls xxxx@xxx.com
  proxy / 127.0.0.1:8888
 }" >> /usr/local/caddy/Caddyfile
 
 /etc/init.d/caddy start
+# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
 ```
 
 **opensearch**
@@ -1088,7 +1090,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 **后话**
 `秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标，任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计，否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
 配置文件中改下名字
-`mijisou\searx\static\themes\entropage\img`中的logo图标自己换一下
+`mijisou/searx/static/themes/entropage/img`中的logo图标自己换一下
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)

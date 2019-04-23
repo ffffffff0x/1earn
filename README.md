@@ -10,29 +10,41 @@
 ---
 
 ## Manual
-### Linux
-- Speed-Linux:命令速查手册,记录各种基本命令操作
-- Power-Linux:配置指南,记录各种服务搭建过程
-- Secure-Linux:记录自己优化 linux 服务器性能与问题排查时用到的那些命令
+### Misc
+各种杂项
+**Life**
+- 简直就像磕了药之后写的玩意
 
-### Markdown
+**Markdown**
 - 学习写 Markdown 时参考的 Markdown 示例
 
-### Network
-- 在学校期间做过的实验的记录
-
-### Pentest
-- [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
-
-### Python
-- 自己收藏/编写的一些模块实例，各种小工具
-
-### git
-- 方便 git 命令速查
-
-### Tools
+**Tools**
 - Win-Tools:windows 下的软件使用方案
 - Web-Tools:在线 web 工具集合
+
+### 开发
+**Python**
+- 自己收藏/编写的一些模块实例，各种小工具
+
+**Git**
+- Git-Help:记录 git 命令理解与速查
+
+### 渗透
+在渗透测试的道路上不断摸索
+- [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
+
+### 运维
+你说我一个干网络安全的，怎么运维学的比渗透还好呢？
+**Linux**
+- Speed-Linux:命令速查手册,记录各种基本命令操作
+- Power-Linux:配置指南,记录各种服务搭建过程
+- Secure-Linux:记录自己优化 linux 服务器性能与问题排查时用到的命令
+
+**Network**
+- 在学校期间做过的实验的记录
+
+**Windows**
+- 客户的需求搭建过程(关键部分)
 
 ## 三板斧
 `收集、归纳、分享`我认为这是知识学习的"三板斧"

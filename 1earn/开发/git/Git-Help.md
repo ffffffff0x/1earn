@@ -221,4 +221,3 @@ git push --force origin
 - [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
 - [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
 - [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
-

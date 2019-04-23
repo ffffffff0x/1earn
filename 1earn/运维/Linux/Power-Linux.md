@@ -1,26 +1,29 @@
 # Power-Linux🎓
-`Linux 下各种常见服务的配置指南`
+`Linux 下各种常见服务的搭建/配置指南`
 [TOC]
 
 **Todo**
 - [ ] oracle 11e
 - [ ] zabbix
+- [ ] 按字母排列
+
+`目前主要以安装搭建为主，更深一步的配置这个请自行研究`
 
 ---
 
 # 系统配置
-## Net🏀
+## Net
 ```vim
 vi /etc/sysconfig/network-scripts/ifcfg-eth0
 	DEVICE="enoXXXXXX"
-	BOOTPROTO=static　　　　　　　#使用静态IP，而不是由DHCP分配IP
+	BOOTPROTO=static　　　　　　　#使用静态IP,而不是由DHCP分配IP
 	IPADDR=172.16.102.61
 	PREFIX=24
 	GATEWAY=172.16.102.254
 	HOSTNAME=dns1.abc.com
 
 vi /etc/hosts
-	127.0.0.1  test localhost  #修改localhost.localdomain为test，shutdown -r now重启使修改生效
+	127.0.0.1  test localhost  #修改localhost.localdomain为test,shutdown -r now重启使修改生效
 
 	修改DNS
 		vim /etc/resolv.conf
@@ -30,7 +33,7 @@ vi /etc/hosts
 
 ---
 
-## 配置本地yum源,挂载,安装⚽
+## 配置本地yum源,挂载,安装
 挂载到/mnt/cdrom
 
 >	mkdir /mnt/cdrom
@@ -61,9 +64,9 @@ yum list  #看一下包
 
 ---
 
-## RAID🏉
-- 创建RAID1阵列，设备文件名为md0；
-- 将新建的RAID1格式化为xfs文件系统，编辑/etc/fstab文件实现以UUID的形式开机自动挂载至/data/ftp_data目录。
+## RAID
+- 创建RAID1阵列,设备文件名为md0；
+- 将新建的RAID1格式化为xfs文件系统,编辑/etc/fstab文件实现以UUID的形式开机自动挂载至/data/ftp_data目录。
 
 **安装**
 >yum remove mdadm	#建议先把原本的卸掉重装
@@ -89,9 +92,9 @@ w 写入
 	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
 	- -Cv: 创建一个阵列并打印出详细信息。
 	- /dev/md0: 阵列名称。
-	-a　: 同意创建设备，如不加此参数时必须先使用mknod 命令来创建一个RAID设备，不过推荐使用-a yes参数一次性创建；
-	- -l1 (l as in “level”): 指定阵列类型为 RAID-1 。
-	- -n2: 指定我们将两个分区加入到阵列中去，分别为/dev/sdb1 和 /dev/sdc1
+	-a　: 同意创建设备,如不加此参数时必须先使用mknod 命令来创建一个RAID设备,不过推荐使用-a yes参数一次性创建；
+	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 。
+	- -n2: 指定我们将两个分区加入到阵列中去,分别为/dev/sdb1 和 /dev/sdc1
 
 - RAID5
 	`mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1`
@@ -120,14 +123,14 @@ mount | grep '^/dev'
 
 ---
 
-## Lvm物理卷🎳
+## Lvm物理卷
 ```bash
 fdisk ‐l		查看磁盘情况
 fdisk /dev/sdb	创建系统分区
 	n
 	p
 	1
-	后面都是默认，直接回车
+	后面都是默认,直接回车
 		
 	t	转换分区格式
 	8e
@@ -136,20 +139,20 @@ fdisk /dev/sdb	创建系统分区
 ```
 
 **卷组**
-创建一个名为 datastore 的卷组，卷组的PE尺寸为 16MB；
+创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
 >	pvcreate /dev/sdb1	创建物理卷
 >	vgcreate ‐s 16M datastore /dev/sdb1	
 
 **逻辑卷**
-逻辑卷的名称为 database 所属卷组为 datastore，该逻辑卷由 50 个 PE 组成；
+逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
 >	lvcreate ‐l 50 ‐n database datastore
 
-逻辑卷的名称为database所属卷组为datastore，该逻辑卷大小为8GB；
+逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
 >	lvcreate ‐L 8G ‐n database datastore
 >	lvdisplay
 
 **格式化**
-将新建的逻辑卷格式化为 XFS 文件系统，要求在系统启动时能够自动挂在到 /mnt/database 目录。	
+将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。	
 >	mkfs.xfs /dev/datastore/database
 >	mkdir /mnt/database
 ```vim
@@ -162,7 +165,7 @@ vi /etc/fstab
 >mount | grep '^/dev'
 
 **扩容**
-业务扩增，导致database逻辑卷空间不足，现需将database逻辑卷扩容至15GB空间大小，以满足业务需求。（注意扩容前后截图）
+业务扩增,导致database逻辑卷空间不足,现需将database逻辑卷扩容至15GB空间大小,以满足业务需求。（注意扩容前后截图）
 >lvextend -L 15G /dev/datastore/database
 >lvs	#确认有足够空间
 >resize2fs /dev/datastore/database
@@ -170,10 +173,10 @@ vi /etc/fstab
 
 ---
 
-## Vim👀
+## Vim
 常用配置
 `sudo vim /etc/vim/vimrc`
-最后面直接添加你想添加的配置，下面是一些常用的（不建议直接复制这个货网上的，要理解每个的含义及有什么用，根据自己需要来调整）
+最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
 ```vim
 set number #显示行号
 set nobackup #覆盖文件时不备份
@@ -183,16 +186,96 @@ set shiftwidth=4 #设定 > 命令移动时的宽度为 4
 set softtabstop=4 #使得按退格键时可以一次删掉 4 个空格
 set tabstop=4 #设定 tab 长度为 4(可以改）
 set smartindent #开启新行时使用智能自动缩进
-set ignorecase smartcase #搜索时忽略大小写，但在有一个或以上大写字母时仍 保持对大小写敏感
-下面这个没觉得很有用，在代码多的时候会比较好
-#set showmatch #插入括号时，短暂地跳转到匹配的对应括号
+set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+下面这个没觉得很有用,在代码多的时候会比较好
+#set showmatch #插入括号时,短暂地跳转到匹配的对应括号
 #set matchtime=2 #短暂跳转到匹配括号的时间
 ```
 
 ---
 
 # 网络服务
-## DNS🛶
+## Chrony
+它由两个程序组成：chronyd和chronyc。
+chronyd是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
+chronyc是用来监控chronyd性能和配置其参数程序
+
+**安装**
+```bash
+yum install chrony
+```
+
+**配置文件**
+```vim
+vim /etc/chrony.conf
+  server time1.aliyun.com iburst  
+  server time2.aliyun.com iburst 
+  server time3.aliyun.com iburst 
+  server time4.aliyun.com iburst 
+  server time5.aliyun.com iburst 
+  server time6.aliyun.com iburst 
+  server time7.aliyun.com iburst 
+  或
+  server time1.google.com iburst 
+  server time2.google.com iburst 
+  server time3.google.com iburst 
+  server time4.google.com iburst
+```
+
+**启服务**
+```vim
+systemctl stop ntpd
+systemctl disable ntpd
+
+systemctl enable chronyd.service
+systemctl start chronyd.service
+```
+
+**查看同步状态**
+```bash
+chronyc sourcestats #检查ntp源服务器状态
+chronyc sources -v  #检查ntp详细同步状态
+
+chronyc #进入交互模式
+  activity
+```
+
+---
+
+## DHCP
+>yum install dhcp
+
+复制一份示例
+>cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
+
+```vim
+vim /etc/dhcp/dhcpd.conf
+	ddns-update-style interim;      # 设置DNS的动态更新方式为interim
+	option domain-name "abc.edu";
+	option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
+	default-lease-time  43200;                          # 指定默认租约的时间长度,单位为秒
+	max-lease-time  86400;  # 指定最大租约的时间长度
+```
+
+以下为某区域的 IP 地址范围
+```bash
+subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
+	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
+	option routers  192.168.1.254;                       # 指定该网段的默认网关
+}
+```
+
+>dhcpd -t    #检测语法有无错误
+>service dhcpd start    #开启 dhcp 服务
+
+记得防火墙放行
+
+查看租约文件,了解租用情况
+>cat /var/lib/dhcpd/dhcpd.leases
+
+---
+
+## DNS
 **安装**
 >yum install bind*
 
@@ -295,88 +378,43 @@ firewall-cmd --reload
 
 ---
 
-## DHCP🏏
->yum install dhcp
+## SSH🔑
+一般主机安装完毕后 SSH 是默认开启的
+使用`/etc/init.d/ssh status`查看主机SSH状态
 
-复制一份示例
->cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
-
+**Kali/Manjaro**
+安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
 ```vim
-vim /etc/dhcp/dhcpd.conf
-	ddns-update-style interim;      # 设置DNS的动态更新方式为interim
-	option domain-name "abc.edu";
-	option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
-	default-lease-time  43200;                          # 指定默认租约的时间长度，单位为秒
-	max-lease-time  86400;  # 指定最大租约的时间长度
-```
+vim /etc/ssh/sshd_config
+	PasswordAuthentication yes
+	PermitRootLogin yes
 
-以下为某区域的 IP 地址范围
+service ssh restart
+systemctl enable ssh
+```
+若在使用工具登录时,当输完用户名密码后提示SSH服务器拒绝了密码,请再试一遍。
+这时请不要着急,只需要在Kali控制端口重新生成两个秘钥即可。
 ```bash
-subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
-	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
-	option routers  192.168.1.254;                       # 指定该网段的默认网关
-}
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 ```
 
->dhcpd -t    #检测语法有无错误
->service dhcpd start    #开启 dhcp 服务
-
-记得防火墙放行
-
-查看租约文件，了解租用情况
->cat /var/lib/dhcpd/dhcpd.leases
-
----
-
-## Chrony
-它由两个程序组成：chronyd和chronyc。
-chronyd是一个后台运行的守护进程，用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率，并对此进行补偿。
-chronyc是用来监控chronyd性能和配置其参数程序
-
-**安装**
+**Ubuntu**
+如果没有就装一下
+如果你只是想登陆别的机器的SSH只需要安装openssh-client（ubuntu有默认安装,如果没有则sudo
+apt-get install openssh-client）,如果要使本机开放SSH服务就需要安装openssh-server
 ```bash
-yum install chrony
+apt install openssh-client=1:7.2p2-4ubuntu2.8
+apt install openssh-server=1:7.2p2-4ubuntu2.8
+apt install ssh
 ```
-
-**配置文件**
-```vim
-vim /etc/chrony.conf
-  server time1.aliyun.com iburst  
-  server time2.aliyun.com iburst 
-  server time3.aliyun.com iburst 
-  server time4.aliyun.com iburst 
-  server time5.aliyun.com iburst 
-  server time6.aliyun.com iburst 
-  server time7.aliyun.com iburst 
-  或
-  server time1.google.com iburst 
-  server time2.google.com iburst 
-  server time3.google.com iburst 
-  server time4.google.com iburst
-```
-
-**启服务**
-```vim
-systemctl stop ntpd
-systemctl disable ntpd
-
-systemctl enable chronyd.service
-systemctl start chronyd.service
-```
-
-**查看同步状态**
-```bash
-chronyc sourcestats #检查ntp源服务器状态
-chronyc sources -v  #检查ntp详细同步状态
-
-chronyc #进入交互模式
-  activity
-```
+然后重启SSH服务
+`service ssh restart`
 
 ---
 
 # web服务
-## apache⚾
+## Apache
 **安装**
 ```bash
 yum install httpd
@@ -489,7 +527,55 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ---
 
-## Nginx🎣
+## Rpm&Node✔
+**包管理器方式**
+`apt-get install nodejs npm`	讲道理apt不好用
+
+`yum install epel-release`
+`yum install nodejs npm`
+
+**源文件方式安装**
+首先下载NodeJS的二进制文件,http://nodejs.org/download/ 。在 Linux Binaries (.tar.gz)行处根据自己系统的位数选择
+```bash
+#解压到当前文件夹下运行
+tar zxvf node-v0.10.26-linux-x64.tar.gz
+
+进入解压后的目录bin目录下,执行ls会看到两个文件node,npm. 然后执行./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的。 依次运行如下三条命令
+cd node-v0.10.26-linux-x64/bin
+ls
+./node -v
+```
+因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin这个目录是不在环境变量中的,所以只能到该目录下才能node的程序。如果在其他的目录下执行node命令的话 ,必须通过绝对路径访问才可以的
+
+如果要在任意目录可以访问的话,需要将node 所在的目录,添加PATH环境变量里面,或者通过软连接的形式将node和npm链接到系统默认的PATH目录下的一个
+在终端执行echo $PATH可以获取PATH变量包含的内容,系统默认的PATH环境变量包括/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符。所以我们可以将node和npm链接到/usr/local/bin 目录下如下执行
+
+```bash
+ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
+ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
+```
+
+---
+
+## PHP
+```bash
+若之前安装过其他版本PHP,先删除
+yum remove php*
+
+rpm安装PHP7相应的yum源
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+yum install php70w
+
+php -v
+
+service php-fpm start #要运行PHP网页,要启动php-fpm解释器
+```
+
+---
+
+## Nginx
 **安装**
 ```bash
 yum install nginx
@@ -499,7 +585,7 @@ firewall-cmd --reload
 ```
 
 **虚拟主机**
-在/etc/nginx/conf.d/目录下新建一个站点的配置文件，列如：test.com.conf
+在/etc/nginx/conf.d/目录下新建一个站点的配置文件,列如：test.com.conf
 ```vim
 vim /etc/nginx/conf.d/test.com.conf
   server {
@@ -523,7 +609,7 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册，那么应该在本机电脑的/etc/hosts添加设置：
+如果服务器网址没有注册,那么应该在本机电脑的/etc/hosts添加设置：
 `192.168.1.112   www.test.com test.com`
 `curl www.test.com`
 
@@ -595,7 +681,7 @@ curl http://www.test.com/info.php
 
 ---
 
-## phpMyAdmin⛸
+## phpMyAdmin
 **建议搭配上面的nginx+php扩展**
 
 **创建数据库和一个用户**
@@ -611,7 +697,7 @@ mysql -u root -p
 MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
 
 创建用于WordPress对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##“idiota”对应创建的用户，“password”内填写用户的密码
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##"idiota"对应创建的用户,"password"内填写用户的密码
 
 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
@@ -638,21 +724,21 @@ systemctl restart nginx
 
 ---
 
-## Caddy⛳
+## Caddy
 - 安装Caddy
 ```bash
 curl https://getcaddy.com | bash -s personal
 或
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 或
-https://caddyserver.com/download 进入到 caddy 官网的下载界面，选择平台和插件
+https://caddyserver.com/download 进入到 caddy 官网的下载界面,选择平台和插件
 下载后用 cp 命令放到 /usr/local/bin/caddy ,解压
 ```
 
 - 运行
-`caddy`然后打开浏览器输入： http://ip:2015 ，得到了一个404页面，Caddy 已经成功运行了
+`caddy`然后打开浏览器输入： http://ip:2015 ,得到了一个404页面,Caddy 已经成功运行了
 
-在无配置文件的情况下，Caddy 默认是映射当前程序执行的目录所有文件(即/usr/local/bin)，因此可以创建一个文件
+在无配置文件的情况下,Caddy 默认是映射当前程序执行的目录所有文件(即/usr/local/bin),因此可以创建一个文件
 `echo "<h1>Hello Caddy</h1>" >> index.html`
 
 `caddy -port 80`改为运行在80端口
@@ -685,7 +771,7 @@ caddy
 ```
 
 - HTTPS
-为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书，支持 HTTPS 协议访问，你只需要将绑定的 IP 换成 域名 即可
+为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书,支持 HTTPS 协议访问,你只需要将绑定的 IP 换成 域名 即可
 ```bash
 echo -e "xxx.com {
 	gzip
@@ -696,7 +782,7 @@ echo -e "xxx.com {
 
 ---
 
-## Wordpress🥌
+## Wordpress
 **下载WordPress安装包并解压**
 ```bash
 wget https://wordpress.org/latest.tar.gz
@@ -717,7 +803,7 @@ mysql -u root -p
 MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
 
 创建用于WordPress对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##“idiota”对应创建的用户，“password”内填写用户的密码
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##"idiota"对应创建的用户,"password"内填写用户的密码
 
 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
@@ -763,9 +849,9 @@ DB_USER
 DB_PASSWORD 
     第二步中为WordPress用户名设定的密码
 DB_HOST 
-    第二步中设定的hostname（通常是localhost，但总有例外；参见编辑wp-config.php文件中的“可能的DB_HOST值）。
+    第二步中设定的hostname（通常是localhost,但总有例外；参见编辑wp-config.php文件中的"可能的DB_HOST值）。
 DB_CHARSET 
-    数据库字符串，通常不可更改（参见zh-cn:编辑wp-config.php）。
+    数据库字符串,通常不可更改（参见zh-cn:编辑wp-config.php）。
 DB_COLLATE 
     留为空白的数据库排序（参见zh-cn:编辑wp-config.php）。
 ```
@@ -773,7 +859,7 @@ DB_COLLATE
 在标有
 >* Authentication Unique Keys.
 
-的版块下输入密钥的值，保存wp-config.php文件,也可以不管这个
+的版块下输入密钥的值,保存wp-config.php文件,也可以不管这个
 
 **上传文件**
 接下来需要决定将博客放在网站的什么位置上：
@@ -781,12 +867,12 @@ DB_COLLATE
     网站子目录下（如：http://example.com/blog/
 
 根目录
-如果需要将文件上传到web服务器，可用FTP客户端将wordpress目录下所有内容（无需上传目录本身）上传至网站根目录
-如果文件已经在web服务器中且希望通过shell访问来安装wordpress，可将wordpress目录下所有内容（无需转移目录本身）转移到网站根目录
+如果需要将文件上传到web服务器,可用FTP客户端将wordpress目录下所有内容（无需上传目录本身）上传至网站根目录
+如果文件已经在web服务器中且希望通过shell访问来安装wordpress,可将wordpress目录下所有内容（无需转移目录本身）转移到网站根目录
 
 子目录
-如果需要将文件上传到web服务器，需将wordpress目录重命名，之后用FTP客户端将重命名后的目录上传到网站根目录下某一位置
-如果文件已经在web服务器中且希望通过shell访问来安装wordpress，可将wordpress目录转移到网站根目录下某一位置，之后重命名 wordpress目录
+如果需要将文件上传到web服务器,需将wordpress目录重命名,之后用FTP客户端将重命名后的目录上传到网站根目录下某一位置
+如果文件已经在web服务器中且希望通过shell访问来安装wordpress,可将wordpress目录转移到网站根目录下某一位置,之后重命名 wordpress目录
 
 ```bash
 mv wordpress/* /var/www/html
@@ -806,7 +892,7 @@ service firewalld stop
 
 ---
 
-## mijisou🎯
+## Mijisou
 基于开源项目 Searx 二次开发的操作引擎
 项目地址:https://github.com/entropage/mijisou
 
@@ -1088,7 +1174,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ```
 
 **后话**
-`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标，任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计，否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
+`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
 配置文件中改下名字
 `mijisou/searx/static/themes/entropage/img`中的logo图标自己换一下
 
@@ -1101,54 +1187,13 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 
 ---
 
-## Haproxy🏐
-**18-I**
-配置Haproxy，使用listen实现http代理，使用frontend、backend实现https代理，具体要求如下：
-	- listen的配置需求如下：
-	- 名称：http
-	- 监听地址：172.16.1XX.22:80（XX现场提供）
-	- 后端server：serverA和serverB
-	- frontend的配置需求如下：
-	- 名称：https
-	- 监听地址：172.16.1XX.22:443（XX现场提供）
-	- 模式：tcp
-	- 默认后端：web_server
-	- backend的配置需求如下：
-	- 名称：web_server
-	- 模式：tcp
-	- 负载均衡算法：roundrobin
-	- 后端server：serverA和serverB。
-
-1. 安装
->yum install haproxy
-
-2. 创建HAProxy配置文件
-```vim
-vim /etc/haproxy/haproxy.cfg
-
-listen http
-    bind 172.16.101.22:80
-    server a 192.168.101.22:80
-    server b 192.168.101.33:80
-
-frontend https
-	bind 172.16.101.22:443
-	mode tcp
-	default_backend web_server	#请求转发至名为 "web_server" 的后端服务
-
-backend web_server  #后端服务web_server 
-	mode tcp
-	balance roundrobin
-	server a 192.168.101.22:443
-    server b 192.168.101.33:443
-```
-
->service haproxy start
+## Haproxy
+原来写的太烂了，准备重写
 
 ---
 
 # 数据库
-## mariadb🏈
+## Mariadb
 **安装**
 >yum install mariadb mariadb-server
 
@@ -1167,27 +1212,13 @@ Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 
 Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本题y
 Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本题y
 
-**修改配置文件**
-cp /usr/share/mysql/my-medium.cnf /etc/my.cnf
-```vim
-vim /etc/my.cnf
-
-[mysqld]
-skip-name-resolve  #关闭数据库域名解析功能
-innodb_file_per_table = 1	#开启独立表空间模式
-
-bind-address = 192.168.XX+1.33　　#监听的ip地址，就是自己的另一个网卡IP，要确保有这个ip，不然启动会报错
-
-#skip-networking  #没有的话不管他，有的话注释掉
-```
-
-Mariadb数据库授权root用户能够通过192.168.XX+1.0网段远程访问
+**配置远程访问**
+Mariadb数据库授权root用户能够远程访问
 ```sql
 systemctl start mariadb
-
 mysql -u root -p <password>
 select User, host from mysql.user;
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.XX+1.%' IDENTIFIED BY 'passwd123' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 
@@ -1200,8 +1231,160 @@ systemctl enable mariadb
 
 ---
 
+## MongoDB🍃
+**安装**
+```vim
+vim /etc/yum.repos.d/mongodb-org-4.0.repo
+	[mongodb-org-4.0]
+	name=MongoDB Repository
+	baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+	gpgcheck=1
+	enabled=1
+	gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
+
+yum install -y mongodb-org
+```
+
+**配置远程访问**
+```vim
+vim /etc/mongod.conf
+	# Listen to all ip address
+	bind_ip = 0.0.0.0
+```
+
+`service mongod start`
+
+**创建管理员用户**
+```sql
+mongo
+>use admin
+ db.createUser(
+  {
+    user: "myUserAdmin",
+    pwd: "abc123",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
+  }
+ )
+
+> show dbs;	# 查看数据库
+> db.version();	# 查看数据库版本
+```
+
+**启用权限管理**
+```vim
+vim /etc/mongod.conf
+	#security 
+	security:
+	authorization: enabled
+
+service mongod restart	
+```
+
+---
+
+## MySQL📦
+和 Mariadb 差不多,看 Mariadb 的就行了
+```bash
+sudo apt install mysql-server mysql-clien
+sudo service mysql start
+```
+
+---
+
+## Oracle
+鸽
+
+---
+## Postgresql🐘
+**安装**
+```bash
+yum install postgresql-server
+postgresql-setup initdb #初始化数据库
+service postgresql start #启动服务
+```
+
+PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
+
+**修改用户密码**
+```sql
+ sudo -u postgres psql postgres
+\l #查看当前的数据库列表  
+\password postgres  #给postgres用户设置密码
+\q  #退出数据库
+```
+
+**开启远程访问**
+```vim
+vim /var/lib/pgsql/data/postgresql.conf
+	listen_addresses='*'
+
+vim /var/lib/pgsql/data/pg_hba.conf
+  # IPv4 local connections:
+  host    all             all             127.0.0.1/32            md5
+  host    all             all             0.0.0.0/0               md5       
+
+其中0.0.0.0/0表示运行任意ip地址访问。
+若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
+
+service postgresql restart
+防火墙记得放行
+```
+
+---
+
+## Redis 🔺🔴⭐
+**安装**
+- **包管理器方式**
+  在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
+  `yum install epel-release`
+  `yum install redis`
+  安装好后启动Redis服务即可
+  `systemctl start redis`
+
+- **源代码编译方式安装**
+  在官网下载tar.gz的安装包,或者通过wget的方式下载　　
+  `wget http://download.redis.io/releases/redis-4.0.1.tar.gz`
+
+  安装
+  ```bash
+  tar -zxvf redis-4.0.1.tar.gz
+  cd redis-4.0.1
+  make
+  make test
+  make install
+  ```
+  ```bash
+  ./usr/local/bin/redis-server
+  ctrl+z
+  bg
+  redis-cli
+  ```
+  
+使用redis-cli进入Redis命令行模式操作
+```bash
+redis-cli
+127.0.0.1:6379> ping
+PONG
+127.0.0.1:6379> exit
+```
+
+**开启远程访问**
+为了可以使Redis能被远程连接,需要修改配置文件,路径为/etc/redis.conf
+```vim
+vim /etc/redis.conf
+	#bind 127.0.0.1
+	requirepass 密码	#设置redis密码
+
+service redis restart
+当然还要记得开防火墙  
+
+redis-cli -h <ip> -p 6379 -a <PASSWORD>
+```
+
+---
+
 # 文件服务
-## VSFTP🎱
+## Vsftp
 **匿名访问**
 |参数|作用|
 | :------------- | :------------- |
@@ -1228,8 +1411,8 @@ systemctl enable vsftpd
 ```
 
 现在就可以在客户端执行ftp命令连接到远程的 FTP 服务器了。
-在 vsftpd 服务程序的匿名开放认证模式下，其账户统一为 anonymous，密码为空。而且在连接到 FTP 服务器后，默认访问的是 /var/ftp 目录。
-我们可以切换到该目录下的 pub 目录中，然后尝试创建一个新的目录文件，以检验是否拥有写入权限：
+在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空。而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录。
+我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限：
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -1267,7 +1450,7 @@ ftp> exit
 |local_enable=YES |	允许本地用户模式|
 |write_enable=YES |	设置可写权限|
 |local_umask=022 |	本地用户模式创建文件的umask值|
-|userlist_deny=YES 	|启用“禁止用户名单”，名单文件为ftpusers和user_list|
+|userlist_deny=YES 	|启用"禁止用户名单",名单文件为ftpusers和user_list|
 |userlist_enable=YES |	开启用户作用名单文件功能|
 
 ```vim
@@ -1284,7 +1467,7 @@ firewall-cmd --reload
 systemctl restart vsftpd
 systemctl enable vsftpd
 ```
-按理来讲，现在已经完全可以本地用户的身份登录FTP服务器了。但是在使用root管理员登录后，系统提示如下的错误信息：
+按理来讲,现在已经完全可以本地用户的身份登录FTP服务器了。但是在使用root管理员登录后,系统提示如下的错误信息：
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -1294,14 +1477,14 @@ Name (192.168.10.10:root): root
 Login failed.
 ftp>
 ```
-可见，在我们输入root管理员的密码之前，就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为“用户名单”的文件（ftpusers和user_list）。只要里面写有某位用户的名字，就不再允许这位用户登录到FTP服务器上。
+可见,在我们输入root管理员的密码之前,就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为"用户名单"的文件（ftpusers和user_list）。只要里面写有某位用户的名字,就不再允许这位用户登录到FTP服务器上。
 ```bash
 [root@linuxprobe ~]# cat /etc/vsftpd/user_list 
 
 [root@linuxprobe ~]# cat /etc/vsftpd/ftpusers 
 ```
-如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响，只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
-在采用本地用户模式登录FTP服务器后，默认访问的是该用户的家目录，也就是说，访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己，因此不存在写入权限不足的情况。
+如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
+在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况。
 
 ---
 
@@ -1310,7 +1493,7 @@ ftp>
 `yum install vsftpd`
 
 认证
-创建虚拟用户文件，把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行，密码占一行。
+创建虚拟用户文件,把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行,密码占一行。
 ```vim
 cd /etc/vsftp
 vim login.list
@@ -1325,7 +1508,7 @@ vim login.list
 使用 db_load 命令生成 db 口令login数据库文件
 >db_load -T -t hash -f login.list login.db
 
-通过修改指定的配置文件，调整对该程序的认证方式
+通过修改指定的配置文件,调整对该程序的认证方式
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 	pam_service_name=vsftpd.vu  #设置PAM使用的名称,该名称就是/etc/pam.d/目录下vsfptd文件的文件名
@@ -1335,7 +1518,7 @@ cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
 vim /etc/pam.d/vsftpd.vu
 	auth       required     pam_userdb.so db=/etc/vsftpd/login
 	account    required     pam_userdb.so db=/etc/vsftpd/login
-#注意：格式是db=/etc/vsftpd/login这样的，一定不要去掉源文件的.db后缀
+#注意：格式是db=/etc/vsftpd/login这样的,一定不要去掉源文件的.db后缀
 ```
 
 配置文件
@@ -1356,7 +1539,7 @@ vim /etc/vsftpd/vsftpd.conf
 |guest_enable=YES |	开启虚拟用户模式|
 |guest_username=virtual |	指定虚拟用户账户|
 |pam_service_name=vsftpd.vu |	指定PAM文件|
-|allow_writeable_chroot=YES |	允许对禁锢的FTP根目录执行写入操作，而且不拒绝用户的登录请求|
+|allow_writeable_chroot=YES |	允许对禁锢的FTP根目录执行写入操作,而且不拒绝用户的登录请求|
 
 用户配置权限文件
 所有用户主目录为 /home/ftp 宿主为 virtual 用户；
@@ -1367,7 +1550,7 @@ vim /etc/vsftpd/vsftpd.conf
 
 ```vim
 vim /etc/vsftpd/vsftpd.conf  
-	guest_enable=YES      #表示是否开启vsftpd虚拟用户的功能，yes表示开启，no表示不开启。
+	guest_enable=YES      #表示是否开启vsftpd虚拟用户的功能,yes表示开启,no表示不开启。
 	guest_username=virtual       # 指定虚拟用户的宿主用户  
 	user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人vsftpd服务文件存放路径
 	allow_writeable_chroot=YES
@@ -1382,11 +1565,11 @@ vim Ftpadmin
 	anon_umask=022
 	虚拟用户具有写权限（上传、下载、删除、重命名）
 
-	#umask = 022 时，新建的目录 权限是755，文件的权限是 644
-	#umask = 077 时，新建的目录 权限是700，文件的权限时 600
+	#umask = 022 时,新建的目录 权限是755,文件的权限是 644
+	#umask = 077 时,新建的目录 权限是700,文件的权限时 600
 	#vsftpd的local_umask和anon_umask借鉴了它
-	#默认情况下vsftp上传之后文件的权限是600，目录权限是700
-	#想要修改上传之后文件的权限，有两种情况
+	#默认情况下vsftp上传之后文件的权限是600,目录权限是700
+	#想要修改上传之后文件的权限,有两种情况
 	#如果使用vsftp的是本地用户
 	#则要修改配置文件中的 local_umask 的值
 	#如果使用vsftp的是虚拟用户
@@ -1404,7 +1587,7 @@ systemctl enable vsftpd
 
 ---
 
-## smb🏓
+## Samba
 **服务端**
 安装
 >yum install samba 
@@ -1428,13 +1611,13 @@ vim /etc/samba/smb.conf
 >	useradd smb1
 >	smbpasswd ‐a smb1(密码：smb123456)
 
-将用户添加到 samba 服务器中，并设置密码
+将用户添加到 samba 服务器中,并设置密码
 >	pdbedit ‐a smb1(密码：smb123456)
 
 查看 samba 数据库用户
 >	pdbedit ‐L
 
-创建共享目录，设置所有者和所属组
+创建共享目录,设置所有者和所属组
 >	mkdir /smbshare
 >	chown smb1:smb1 /smbshare
 
@@ -1460,7 +1643,7 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 
 ---
 
-## NFS🏸
+## NFS
 **服务端**
 安装
 ```bash
@@ -1491,7 +1674,7 @@ service nfs start
 ```
 
 **客户端**
-安装，创建用户
+安装,创建用户
 ```bash
 yum ‐y install nfs‐utils
 mkdir /mnt/nfsfiles
@@ -1523,4 +1706,216 @@ vim /etc/fstab
 [nfsuser1@localhost nfsfiles]$ cat hello.txt
 ```
 
-`“朋友的疏远大致分为两种。天各一方的两个人，慢慢的失掉了联系，彼此不再知道近况，多年之后再聚首往往就只是相对无言了。另一种就令人唏嘘的多了，两个朝夕得见的人，彼此的境遇竟因着造化相去渐远，这时心里也许会慢慢生出一种无力感来，因为无论怎么说怎么做也只能感觉心的距离越来越远了。——吴念真《这些人，那些事》`
+---
+
+# 编程语言
+## C
+```vim
+vim world.c
+	#include <stdio.h>
+	int main(void){
+					printf("Hello World");
+					return 0;
+	}
+
+gcc helloworld.c -o execFile
+./execFlie
+```
+
+---
+
+## Go🐹
+**源文件方式安装**
+```bash
+wget -c https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
+tar -C /usr/local/ -zxvf go1.8.3.linux-amd64.tar.gz
+
+PATH=$PATH:/usr/local/go/bin/
+source ~/.bash_profile	
+go version
+```
+
+---
+## JDK☕
+**rpm包方式安装**
+下载
+https://www.oracle.com/technetwork/java/javase/downloads/
+```bash
+chmod +x jdk-****.rpm
+yum localinstall jdk-****.rpm
+也可以
+rpm -ivh jdk-****.rpm
+```
+
+**使用ppa/源方式安装**
+1. 添加ppa
+`sudo add-apt-repository ppa:webupd8team/java`
+`sudo apt-get update`
+
+2. 安装oracle-java-installer
+	jdk7
+	`sudo apt-get install oracle-java7-installer`
+
+	jdk8
+	`sudo apt-get install oracle-java8-installer`
+
+---
+
+## Python🐍
+**yum安装**
+```bash
+yum install python36
+
+ln -s /usr/bin/python3.6 /usr/bin/python3 #配置Python3软链接
+wget https://bootstrap.pypa.io/get-pip.py	#安装pip3
+python3 get-pip.py
+```
+
+
+**源代码编译方式安装**
+安装依赖环境
+```bash
+yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+```
+
+下载Python3
+`wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz`
+
+安装python3
+```bash
+mkdir -p /usr/local/python3
+tar zxvf Python-3.6.1.tgz
+cd Python-3.6.1
+./configure --prefix=/usr/local/python3
+make
+make install    或者 make && make install
+```
+
+添加到环境变量
+```bash
+ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+
+vim ~/.bash_profile #永久修改变量
+	PATH=$PATH:/usr/local/python3/bin/
+source ~/.bash_profile	
+
+```
+
+检查Python3及pip3是否正常可用
+```bash
+python3 -V
+pip3 -V
+```
+---
+
+## Ruby💎
+**源代码编译方式安装**
+注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
+下载ruby安装包,并进行编译安装
+```bash
+wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.2.tar.gz
+tar xvfvz ruby-2.6.2.tar.gz
+cd ruby-2.6.2
+./configure
+make
+make install
+```
+
+将ruby添加到环境变量,ruby安装在/usr/local/bin/目录下,因此编辑 ~/.bash_profile文件,添加一下内容:
+```bash
+vim ~/.bash_profile
+export PATH=$PATH:/usr/local/bin/
+
+不要忘了生效一下:
+source ~/.bash_profile
+```
+
+---
+
+# 虚拟化+CI
+## Docker🐋
+**centos**
+`curl -sSL https://get.docker.com/ | sh`
+
+or
+
+Step 1 — Install Docker
+```bash
+Install needed packages:
+$ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+
+Configure the docker-ce repo:
+$ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+Install docker-ce:
+$ sudo yum install docker-ce
+
+Add your user to the docker group with the following command.
+$ sudo usermod -aG docker $(whoami)
+
+Set Docker to start automatically at boot time:
+$ sudo systemctl enable docker.service
+
+Finally, start the Docker service:
+$ sudo systemctl start docker.service
+```
+
+Step 2 — Install Docker Compose
+```bash
+Install Extra Packages for Enterprise Linux
+$ sudo yum install epel-release
+
+Install python-pip
+$ sudo yum install -y python-pip
+
+Then install Docker Compose:
+$ sudo pip install docker-compose
+
+You will also need to upgrade your Python packages on CentOS 7 to get docker-compose to run successfully:
+$ sudo yum upgrade python*
+
+To verify a successful Docker Compose installation, run:
+$ docker-compose version
+
+docker login
+```
+
+**debian**
+```bash
+sudo apt update
+sudo apt install docker.io
+docker login	#讲道理,按官方文档说法并不需要账户并且登录,但实际上还是需要你登陆
+```
+
+---
+
+## Jenkins🤵🏻
+注,Jenkins需要jdk环境
+**rpm包方式安装**
+添加Jenkins源:
+```bash
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+```
+
+使用yum命令安装Jenkins:
+`yum install jenkins`
+
+**使用ppa/源方式安装**
+```bash
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+sed -i "1ideb https://pkg.jenkins.io/debian binary/" /etc/apt/sources.list
+
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+安装后默认服务是启动的,默认是8080端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
+
+查看密码
+`cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+---
+
+`"朋友的疏远大致分为两种。天各一方的两个人,慢慢的失掉了联系,彼此不再知道近况,多年之后再聚首往往就只是相对无言了。另一种就令人唏嘘的多了,两个朝夕得见的人,彼此的境遇竟因着造化相去渐远,这时心里也许会慢慢生出一种无力感来,因为无论怎么说怎么做也只能感觉心的距离越来越远了。——吴念真《这些人,那些事》`

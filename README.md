@@ -37,7 +37,7 @@
 你说我一个干网络安全的，怎么运维学的比渗透还好呢？
 **Linux**
 - Speed-Linux:命令速查手册,记录各种基本命令操作
-- Power-Linux:配置指南,记录各种服务搭建过程
+- Power-Linux:配置指南,记录各种服务搭建与配置过程
 - Secure-Linux:记录自己优化 linux 服务器性能与问题排查时用到的命令
 
 **Network**

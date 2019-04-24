@@ -458,6 +458,7 @@ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ```bash
 yum update && yum upgrade
 rm -f /var/run/yum.pid	#强制解锁占用
+yum repolist	#看下仓库列表
 yum groupinstall "Development Tools"
 yum install openssl-devel
 yum install git

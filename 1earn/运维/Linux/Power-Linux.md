@@ -3,11 +3,11 @@
 [TOC]
 
 **Todo**
-- [ ] oracle 11e
 - [ ] zabbix
-- [ ] 按字母排列
+- [ ] oracle 11e
+- [ ] 加上软件链接 
 
-`目前主要以安装搭建为主，更深一步的配置这个请自行研究`
+`目前主要以安装搭建为主，更深一步的配置请自行研究`
 
 ---
 
@@ -1925,6 +1925,7 @@ sudo apt-get install jenkins
 ## Jumpserver
 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)写的很详细了,在此我只把重点记录
 
+`注:鉴于国内环境,下面步骤运行中还是会出现docker pull镜像超时的问题,你懂的,不要问我怎么解决`
 ```bash
 echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
   && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
@@ -1989,6 +1990,91 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
   && echo -e "\033[31m 你的服务器IP是 $Server_IP \033[0m" \
   && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
 ```
+
+# 杀毒
+## [ClamAV](https://www.clamav.net)
+**安装**
+```bash
+yum -y install epel-release
+yum -y install clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
+
+#在两个配置文件/etc/freshclam.conf和/etc/clamd.d/scan.conf中移除“Example”字符
+cp /etc/freshclam.conf /etc/freshclam.conf.bak
+sed -i -e "s/^Example/#Example/" /etc/freshclam.conf
+
+cp /etc/clamd.d/scan.conf /etc/clamd.d/scan.conf.bak
+sed -i -e "s/^Example/#Example/" /etc/clamd.d/scan.conf
+```
+
+**病毒库操作**
+关闭自动更新
+```bash
+freshclam命令通过文件/etc/cron.d/clamav-update来自动运行
+vim /etc/cron.d/clamav-update
+
+但默认情况下是禁止了自动更新功能，需要移除文件/etc/sysconfig/freshclam最后一行的配置才能启用
+vim /etc/cron.d/clamav-update
+  # FRESHCLAM_DELAY=
+
+定义服务器类型（本地或者TCP），在这里定义为使用本地socket，将文件/etc/clam.d/scan.conf中的这一行前面的注释符号去掉：
+vim /etc/clamd.d/scan.conf
+  LocalSocket /var/run/clamd.scan/clamd.sock
+```
+
+下载病毒库
+https://www.clamav.net/downloads
+将main.cvd\daily.cvd\bytecode.cvd三个文件下载后上传到/var/lib/clamav目录下
+```bash
+vim /etc/freshclam.conf
+  DatabaseDirectory /var/lib/clamav
+
+systemctl enable clamd@scan.service
+ln -s '/usr/lib/systemd/system/clamd@scan.service' '/etc/systemd/system/multi-user.target.wants/clamd@scan.service'
+```
+
+更新病毒库
+```bash
+vim /usr/lib/systemd/system/clam-freshclam.service
+  # Run the freshclam as daemon 
+  [Unit] 
+  Description = freshclam scanner 
+  After = network.target 
+
+  [Service] 
+  Type = forking 
+  ExecStart = /usr/bin/freshclam -d -c 4 
+  Restart = on-failure 
+  PrivateTmp = true 
+
+  [Install] 
+  WantedBy=multi-user.target
+
+systemctl start clam-freshclam.service
+systemctl status clam-freshclam.service
+freshclam
+systemctl enable clam-freshclam.service
+cp /usr/share/clamav/template/clamd.conf /etc/clamd.conf
+
+vim /etc/clamd.conf
+  TCPSocket 3310
+  TCPAddr 127.0.0.1
+
+/usr/sbin/clamd restart  
+clamdscan -V
+
+systemctl start clamd@scan.service
+systemctl status clamd@scan.service
+```
+
+查杀病毒
+```bash
+clamscan -r /home #扫描所有用户的主目录就使用
+clamscan -r --bell -i / #扫描所有文件并且显示有问题的文件的扫描结果
+clamscan -r --remove  #查杀当前目录并删除感染的文件
+```
+
+**Reference**
+- [Centos7安装和使用ClamAV杀毒软件](https://blog.51cto.com/11199460/2083697)
 
 ---
 

@@ -609,6 +609,7 @@ cat /etc/os-release
 ```bash
 杀进程
 kill -s STOP <PID>
+kill -HUP <pid>	#更改配置而不需停止并重新启动服务
 killall <PID>	
 
 处理进程

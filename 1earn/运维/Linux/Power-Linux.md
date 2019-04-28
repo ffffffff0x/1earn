@@ -3,9 +3,22 @@
 [TOC]
 
 **Todo**
-- [ ] oracle 11e
+- [ ] oracle 19c(https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html)
+(http://blog.itpub.net/29785807/viewspace-2633720/)
+- [ ] [CouchDB](https://couchdb.apache.org/)
+- [ ] [RavenDB](https://ravendb.net)
+- [ ] [LiteDB](http://www.litedb.org/)
+- [ ] [CockroachDB](https://www.cockroachlabs.com/)
+- [ ] [cassandra](https://cassandra.apache.org/)
+- [ ] [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+- [ ] [Splunk](https://www.splunk.com/)
+- [ ] [Teradata](https://www.teradata.com/)
+- [ ] [IBM DB2](https://www.ibm.com/analytics/us/en/db2/)
+`都不要拦着我，我和数据库杠上了`
 
+`大部分适用于Centos7`
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
+`虽然很多都是copy了网上的文章，但起码每一个服务我都是确保自己能在本地虚拟机搭建成功才会写入指南里`
 
 ---
 

@@ -3,9 +3,7 @@
 [TOC]
 
 **Todo**
-- [ ] zabbix
 - [ ] oracle 11e
-- [ ] 加上软件链接 
 
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
 
@@ -195,7 +193,7 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 ---
 
 # 网络服务
-## Chrony
+## [Chrony](https://chrony.tuxfamily.org/)
 它由两个程序组成：chronyd和chronyc。
 chronyd是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
 chronyc是用来监控chronyd性能和配置其参数程序
@@ -378,7 +376,7 @@ firewall-cmd --reload
 
 ---
 
-## SSH🔑
+## [SSH🔑](https://www.ssh.com)
 一般主机安装完毕后 SSH 是默认开启的
 使用`/etc/init.d/ssh status`查看主机SSH状态
 
@@ -414,7 +412,7 @@ apt install ssh
 ---
 
 # web服务
-## Apache
+## [Apache](https://www.apache.org/)
 **安装**
 ```bash
 yum install httpd
@@ -527,7 +525,7 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ---
 
-## Rpm&Node✔
+## [Rpm](https://rpm.org/)&[Node✔](https://nodejs.org)
 **包管理器方式**
 `apt-get install nodejs npm`	讲道理apt不好用
 
@@ -557,7 +555,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 ---
 
-## PHP
+## [PHP](https://www.php.net/)
 ```bash
 若之前安装过其他版本PHP,先删除
 yum remove php*
@@ -575,7 +573,7 @@ service php-fpm start #要运行PHP网页,要启动php-fpm解释器
 
 ---
 
-## Nginx
+## [Nginx](https://nginx.org/)
 **安装**
 ```bash
 yum install nginx
@@ -681,7 +679,7 @@ curl http://www.test.com/info.php
 
 ---
 
-## phpMyAdmin
+## [phpMyAdmin](https://www.phpmyadmin.net/)
 **建议搭配上面的nginx+php扩展**
 
 **创建数据库和一个用户**
@@ -724,7 +722,7 @@ systemctl restart nginx
 
 ---
 
-## Caddy
+## [Caddy](https://caddyserver.com/)
 - 安装Caddy
 ```bash
 curl https://getcaddy.com | bash -s personal
@@ -782,7 +780,7 @@ echo -e "xxx.com {
 
 ---
 
-## Wordpress
+## [Wordpress](https://wordpress.org/)
 **下载WordPress安装包并解压**
 ```bash
 wget https://wordpress.org/latest.tar.gz
@@ -892,7 +890,7 @@ service firewalld stop
 
 ---
 
-## Mijisou
+## [Mijisou](https://mijisou.com/)
 基于开源项目 Searx 二次开发的操作引擎
 项目地址:https://github.com/entropage/mijisou
 
@@ -1193,7 +1191,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ---
 
 # 数据库
-## Mariadb
+## [Mariadb](https://mariadb.org/)
 **安装**
 >yum install mariadb mariadb-server
 
@@ -1231,7 +1229,7 @@ systemctl enable mariadb
 
 ---
 
-## MongoDB🍃
+## [MongoDB🍃](https://www.mongodb.com/)
 **安装**
 ```vim
 vim /etc/yum.repos.d/mongodb-org-4.0.repo
@@ -1282,7 +1280,7 @@ service mongod restart
 
 ---
 
-## MySQL📦
+## [MySQL📦](https://www.mysql.com)
 和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
 sudo apt install mysql-server mysql-clien
@@ -1291,11 +1289,11 @@ sudo service mysql start
 
 ---
 
-## Oracle
+## [Oracle](https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html)
 鸽
 
 ---
-## Postgresql🐘
+## [Postgresql🐘](https://www.postgresql.org)
 **安装**
 ```bash
 yum install postgresql-server
@@ -1332,7 +1330,7 @@ service postgresql restart
 
 ---
 
-## Redis 🔺🔴⭐
+## [Redis🔺🔴⭐](https://redis.io/)
 **安装**
 - **包管理器方式**
   在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
@@ -1383,8 +1381,40 @@ redis-cli -h <ip> -p 6379 -a <PASSWORD>
 
 ---
 
+## [Memcached](https://memcached.org/)
+**安装**
+- **软件包安装**
+  ```bash
+  yum -y install memcached
+  cat /etc/sysconfig/memcached
+  ```
+
+- **源代码编译方式安装**
+  在官网下载tar.gz的安装包,或者通过wget的方式下载　　
+  `wget http://memcached.org/latest`
+
+  安装
+  ```bash
+  tar -zxvf memcached-1.x.x.tar.gz
+  cd memcached-1.x.x
+  ./configure --prefix=/usr/local/memcached
+  make && make test
+  make install
+  ```
+
+**运行**
+```bash
+systemctl start memcached 
+systemctl enable memcached
+
+firewall-cmd --add-port=11211/tcp --permanent
+firewall-cmd --reload
+```
+
+---
+
 # 文件服务
-## Vsftp
+## [Vsftp](https://security.appspot.com/vsftpd.html)
 **匿名访问**
 |参数|作用|
 | :------------- | :------------- |
@@ -1587,7 +1617,7 @@ systemctl enable vsftpd
 
 ---
 
-## Samba
+## [Samba](https://www.samba.org)
 **服务端**
 安装
 >yum install samba 
@@ -1724,7 +1754,7 @@ gcc helloworld.c -o execFile
 
 ---
 
-## Go🐹
+## [Go🐹](https://golang.org/)
 **源文件方式安装**
 ```bash
 wget -c https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
@@ -1736,8 +1766,8 @@ go version
 ```
 
 ---
-## JDK☕
-**rpm包方式安装**
+## [JDK☕](https://www.oracle.com/technetwork/java/javase/downloads/)
+**rpm 包方式安装**
 下载
 https://www.oracle.com/technetwork/java/javase/downloads/
 ```bash
@@ -1761,8 +1791,8 @@ rpm -ivh jdk-****.rpm
 
 ---
 
-## Python3🐍
-**yum安装**
+## [Python3🐍](https://www.python.org/)
+**yum 安装**
 ```bash
 yum install epel-release
 或
@@ -1810,7 +1840,7 @@ pip3 -V
 ```
 ---
 
-## Ruby💎
+## [Ruby💎](https://www.ruby-lang.org)
 **安装**
 注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
 下载ruby安装包,并进行编译安装
@@ -1834,8 +1864,125 @@ source ~/.bash_profile
 
 ---
 
+# 监控服务
+## [Zabbix](https://www.zabbix.com/)
+**安装依赖**
+```bash
+yum install mysql
+yum install httpd
+yum install php
+yum install php-mysqlnd php-gd libjpeg* php-snmp php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash php-common php-ctype php-xml php-xmlreader php-xmlwriter php-session php-mbstring php-gettext php-ldap php-mysqli --skip-broken
+yum install wget telnet net-tools python-paramiko gcc gcc-c++ dejavu-sans-fonts python-setuptools python-devel sendmail mailx net-snmp net-snmp-devel net-snmp-utils freetype-devel libpng-devel perl unbound libtasn1-devel p11-kit-devel OpenIPMI unixODBC
+```
+
+**设置 mysql**
+```vim
+vim /etc/my.cnf
+  innodb_file_per_table = 1
+  innodb_status_file = 1
+  innodb_buffer_pool_size = 6G
+  innodb_flush_log_at_trx_commit = 2
+  innodb_log_buffer_size = 16M
+  innodb_log_file_size = 64M
+  innodb_support_xa = 0
+  default-storage-engine = innodb
+  bulk_insert_buffer_size = 8M
+  join_buffer_size = 16M
+  max_heap_table_size = 32M
+  tmp_table_size = 32M
+  max_tmp_tables = 48
+  read_buffer_size = 32M
+  read_rnd_buffer_size = 16M
+  key_buffer_size = 32M
+  thread_cache_size = 32
+  innodb_thread_concurrency = 8
+  innodb_flush_method = O_DIRECT
+  innodb_rollback_on_timeout = 1
+  query_cache_size = 16M
+  query_cache_limit = 16M
+  collation_server = utf8_bin
+  character_set_server = utf8
+```
+原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意innodb_buffer_pool_size的值必须是整数，例如主机内存是4G，那么innodb_buffer_pool_size可以设置为3G，而不能设置为3.2G  
+```bash
+systemctl enable mysqld && systemctl start mysqld  
+grep 'temporary password' /var/log/mysqld.log #获取 MySQL 的 root 初始密码 
+mysql_secure_installation #初始化，改下密码
+systemctl restart mysqld
+mysql -u root -p
+  create database zabbix character set utf8;
+  exit;
+mysql_upgrade -u root -p
+mysql -u root -p
+  create user zabbix@'%' identified by '{mysql_zabbix_password}';
+  grant all privileges on zabbix.* to zabbix@'%';
+  flush privileges;
+  exit;
+```
+
+**安装 zabbix**
+```bash
+rpm -ivh https://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-1.el7.noarch.rpm
+yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-java-gateway zabbix-web
+cd /usr/share/doc/zabbix-server-mysql-4.2.1
+zcat create.sql.gz | mysql -uroot zabbix -p 
+```
+
+- 配置 zabbix 参数
+  ```vim
+  vim /etc/zabbix/zabbix_server.conf
+    DBPassword={mysql_zabbix_password}
+    CacheSize=512M
+    HistoryCacheSize=128M
+    HistoryIndexCacheSize=128M
+    TrendCacheSize=128M
+    ValueCacheSize=256M
+    Timeout=30
+  ```
+  如果需要监控VMware虚拟机，则还需要设置以下选项参数：
+  ```vim
+    StartVMwareCollectors=2
+    VMwareCacheSize=256M
+    VMwareTimeout=300
+  ```
+
+**配置 Apache 中的 PHP 参数**
+```vim
+vim /etc/httpd/conf.d/zabbix.conf
+  php_value max_execution_time 600
+  php_value memory_limit 256M
+  php_value post_max_size 32M
+  php_value upload_max_filesize 32M
+  php_value max_input_time 600
+  php_value always_populate_raw_post_data -1
+  date.timezone Asia/Shanghai
+```
+
+**配置 PHP 参数**
+```vim
+vim /etc/php.ini
+  php_value post_max_size 32M
+  max_execution_time 300
+  max_input_time 300
+  date.timezone Asia/Shanghai
+```
+
+**重启&起服务**
+```bash
+systemctl stop mysqld && reboot
+systemctl start httpd && systemctl start zabbix-server
+systemctl stop firewalld
+setenforce 0
+```
+访问`http://{ip地址}/zabbix/setup.php`
+
+**Reference**
+- [CentOS 7安装Zabbix 3.4](https://www.centos.bz/2017/11/centos-7%E5%AE%89%E8%A3%85zabbix-3-4/)
+
+---
+
 # 虚拟化
-## Docker🐋
+## [Docker🐋](https://www.docker.com)
 **centos**
 `curl -sSL https://get.docker.com/ | sh`
 
@@ -1892,7 +2039,7 @@ docker login	#讲道理,按官方文档说法并不需要账户并且登录,但�
 ---
 
 # CI
-## Jenkins🤵🏻
+## [Jenkins🤵🏻](https://jenkins.io/)
 注,Jenkins需要jdk环境
 **rpm包方式安装**
 添加Jenkins源:
@@ -1922,7 +2069,7 @@ sudo apt-get install jenkins
 ---
 
 # 堡垒机
-## Jumpserver
+## [Jumpserver](http://www.jumpserver.org/)
 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)写的很详细了,在此我只把重点记录
 
 `注:鉴于国内环境,下面步骤运行中还是会出现docker pull镜像超时的问题,你懂的,不要问我怎么解决`

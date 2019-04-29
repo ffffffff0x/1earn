@@ -130,14 +130,15 @@ npm config set proxy=http://127.0.0.1:8087
 ---
 
 # 虚拟机建议
-linux虚拟机建议
-- Centos
-- Kali-xfce
-- Manjaro-kde
+**linux虚拟机建议**
+- [Centos](https://www.centos.org/)
+- [Kali-xfce](https://www.kali.org/)
+- [Manjaro-kde](https://manjaro.org)
+- [Parrot-kde](https://www.parrotsec.org/)
 
-windows虚拟机建议
-- [commando-vm](https://github.com/fireeye/commando-vm)
-- Win10-日用
+**windows虚拟机建议**
+- 渗透-[commando-vm](https://github.com/fireeye/commando-vm)
+- 日用-Win10 2019 Ltsc
 
 ## linux虚拟机定制建议
 1.统一账号:
@@ -203,10 +204,11 @@ aio-runtimes
 java
 
 win10 2019 Ltsc
+  微信
   TIM
-  GlassWire
+  钉钉
   360杀毒(虚拟机运行,就当养蛊了)
-  360浏览器(为了兼容IE、flash)
+  360浏览器(为了兼容部分IE、flash网页)
 ```
 
 3.桌面需求

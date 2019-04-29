@@ -13,9 +13,6 @@
 ### Misc
 各种杂项
 
-**Life**
-- 憋说了,简直就像磕了药之后写的玩意
-
 **Markdown**
 - 学习写 Markdown 时参考的 Markdown 示例
 

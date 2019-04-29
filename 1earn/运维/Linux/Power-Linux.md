@@ -14,11 +14,14 @@
 - [ ] [Splunk](https://www.splunk.com/)
 - [ ] [Teradata](https://www.teradata.com/)
 - [ ] [IBM DB2](https://www.ibm.com/analytics/us/en/db2/)
+- [ ] [HBase](https://hbase.apache.org/)
+- [ ] [Hive](https://hive.apache.org/)
+- [ ] [Solr](https://lucene.apache.org/solr/)
 `都不要拦着我，我和数据库杠上了`
 
 `大部分适用于Centos7`
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
-`虽然很多都是copy了网上的文章，但起码每一个服务我都是确保自己能在本地虚拟机搭建成功才会写入指南里`
+`虽然很多都是copy了网上的文章，但起码每一个服务我都是确保自己能在本地虚拟机搭建成功才会写入指南`
 
 ---
 
@@ -176,7 +179,7 @@ vi /etc/fstab
 >mount | grep '^/dev'
 
 **扩容**
-业务扩增,导致database逻辑卷空间不足,现需将database逻辑卷扩容至15GB空间大小,以满足业务需求。（注意扩容前后截图）
+将database逻辑卷扩容至15GB空间大小,以满足业务需求。
 >lvextend -L 15G /dev/datastore/database
 >lvs	#确认有足够空间
 >resize2fs /dev/datastore/database
@@ -736,7 +739,7 @@ systemctl restart nginx
 ---
 
 ## [Caddy](https://caddyserver.com/)
-- 安装Caddy
+**安装Caddy**
 ```bash
 curl https://getcaddy.com | bash -s personal
 或
@@ -746,7 +749,7 @@ https://caddyserver.com/download 进入到 caddy 官网的下载界面,选择平
 下载后用 cp 命令放到 /usr/local/bin/caddy ,解压
 ```
 
-- 运行
+**运行**
 `caddy`然后打开浏览器输入： http://ip:2015 ,得到了一个404页面,Caddy 已经成功运行了
 
 在无配置文件的情况下,Caddy 默认是映射当前程序执行的目录所有文件(即/usr/local/bin),因此可以创建一个文件
@@ -754,7 +757,7 @@ https://caddyserver.com/download 进入到 caddy 官网的下载界面,选择平
 
 `caddy -port 80`改为运行在80端口
 
-- 配置文件
+**配置文件**
 ```bash
 chown -R root:www-data /usr/local/bin     #设置目录数据权限
 vim /usr/local/bin/Caddyfile	#注.一般来说caddy路径都是这个,个别安装脚本可能有不同路径
@@ -770,7 +773,7 @@ caddy
 # 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
 ```
 
-- 反向代理
+**反向代理**
 做一个ip跳转
 ```bash
 echo ":80 {
@@ -781,7 +784,7 @@ echo ":80 {
 caddy
 ```
 
-- HTTPS
+**HTTPS**
 为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书,支持 HTTPS 协议访问,你只需要将绑定的 IP 换成 域名 即可
 ```bash
 echo -e "xxx.com {
@@ -1204,7 +1207,10 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ---
 
 # 数据库
-## [Mariadb](https://mariadb.org/)
+## Relational
+### Oracle
+
+### [Mariadb](https://mariadb.org/)
 **安装**
 >yum install mariadb mariadb-server
 
@@ -1242,7 +1248,54 @@ systemctl enable mariadb
 
 ---
 
-## [MongoDB🍃](https://www.mongodb.com/)
+### [MySQL📦](https://www.mysql.com)
+和 Mariadb 差不多,看 Mariadb 的就行了
+```bash
+sudo apt install mysql-server mysql-clien
+sudo service mysql start
+```
+
+---
+
+### [Postgresql🐘](https://www.postgresql.org)
+**安装**
+```bash
+yum install postgresql-server
+postgresql-setup initdb #初始化数据库
+service postgresql start #启动服务
+```
+
+PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
+
+**修改用户密码**
+```sql
+ sudo -u postgres psql postgres
+\l #查看当前的数据库列表  
+\password postgres  #给postgres用户设置密码
+\q  #退出数据库
+```
+
+**开启远程访问**
+```vim
+vim /var/lib/pgsql/data/postgresql.conf
+	listen_addresses='*'
+
+vim /var/lib/pgsql/data/pg_hba.conf
+  # IPv4 local connections:
+  host    all             all             127.0.0.1/32            md5
+  host    all             all             0.0.0.0/0               md5       
+
+其中0.0.0.0/0表示运行任意ip地址访问。
+若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
+
+service postgresql restart
+防火墙记得放行
+```
+
+---
+
+## Document
+### [MongoDB🍃](https://www.mongodb.com/)
 **安装**
 ```vim
 vim /etc/yum.repos.d/mongodb-org-4.0.repo
@@ -1293,57 +1346,8 @@ service mongod restart
 
 ---
 
-## [MySQL📦](https://www.mysql.com)
-和 Mariadb 差不多,看 Mariadb 的就行了
-```bash
-sudo apt install mysql-server mysql-clien
-sudo service mysql start
-```
-
----
-
-## [Oracle](https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html)
-鸽
-
----
-## [Postgresql🐘](https://www.postgresql.org)
-**安装**
-```bash
-yum install postgresql-server
-postgresql-setup initdb #初始化数据库
-service postgresql start #启动服务
-```
-
-PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
-
-**修改用户密码**
-```sql
- sudo -u postgres psql postgres
-\l #查看当前的数据库列表  
-\password postgres  #给postgres用户设置密码
-\q  #退出数据库
-```
-
-**开启远程访问**
-```vim
-vim /var/lib/pgsql/data/postgresql.conf
-	listen_addresses='*'
-
-vim /var/lib/pgsql/data/pg_hba.conf
-  # IPv4 local connections:
-  host    all             all             127.0.0.1/32            md5
-  host    all             all             0.0.0.0/0               md5       
-
-其中0.0.0.0/0表示运行任意ip地址访问。
-若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
-
-service postgresql restart
-防火墙记得放行
-```
-
----
-
-## [Redis🔺🔴⭐](https://redis.io/)
+## Key-value
+### [Redis🔺🔴⭐](https://redis.io/)
 **安装**
 - **包管理器方式**
   在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
@@ -1394,7 +1398,7 @@ redis-cli -h <ip> -p 6379 -a <PASSWORD>
 
 ---
 
-## [Memcached](https://memcached.org/)
+### [Memcached](https://memcached.org/)
 **安装**
 - **软件包安装**
   ```bash

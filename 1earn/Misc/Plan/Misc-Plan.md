@@ -1,4 +1,4 @@
-# Plan
+# Misc-Plan
 [TOC]
 
 ---
@@ -107,7 +107,11 @@ npm config set proxy=http://127.0.0.1:8087
     ```
 
 ## 终端
-先鸽着
+**proxychains**
+详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../../运维/Linux/Power-Linux.md)
+- 使用方法:
+    在需要代理的命令前加上 proxychains4,如:
+    `proxychains4 wget http://xxx.com/xxx.zip`
 
 ---
 
@@ -125,117 +129,6 @@ npm config set proxy=http://127.0.0.1:8087
 ```yml
 "editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black"
 "editor.fontLigatures": true
-```
-
----
-
-# 虚拟机建议
-**linux虚拟机建议**
-- [Centos](https://www.centos.org/)
-- [Kali-xfce](https://www.kali.org/)
-- [Manjaro-kde](https://manjaro.org)
-- [Parrot-kde](https://www.parrotsec.org/)
-
-**windows虚拟机建议**
-- 渗透-[commando-vm](https://github.com/fireeye/commando-vm)
-- 日用-Win10 2019 Ltsc
-
-## linux虚拟机定制建议
-1.统一账号:
-账号 root 密码 略
-账号 略 密码 略
-
-2.预装软件(持续更新)
-```bash
-bzip2
-vim
-python2
-python3
-make
-gcc*gcc-c++
-curl
-git
-SSH
-lrzsz
-
-Centos
-  "Development Tools"
-```
-
-3.桌面需求
-```bash
-设定屏幕超时时间永不超时
-换个不辣眼睛的壁纸(然并卵,反正日常在ssh下使用)
-默认终端 fish 或 on my zsh
-终端配置 powerline-shell
-```
-
-4.网络设置
-```bash
-dns:208.67.222.222 114.114.114.114
-软件包换源:aliyun源或163、tuna源
-pip换源
-终端看情况走代理
-```
-
-5.硬件设施
-```bash
-CPU:1-2核
-mem:1-2-4G
-disk:40G
-```
-
-## windows定制建议
-1.统一账号:
-```bash
-账号 administrator
-密码 略
-```
-
-2.预装软件(持续更新)
-```bash
-Dism+
-7zip
-notepad++
-chrome
-Clover
-geek
-aio-runtimes
-java
-
-win10 2019 Ltsc
-  微信
-  TIM
-  钉钉
-  360杀毒(虚拟机运行,就当养蛊了)
-  360浏览器(为了兼容部分IE、flash网页)
-```
-
-3.桌面需求
-```bash
-屏幕超时时间永不超时
-换个不辣眼睛的壁纸
-```
-
-4.网络设置
-```bash
-dns:208.67.222.222 114.114.114.114
-```
-
-5.硬件设施
-```bash
-CPU:1-2-4核
-mem:2-4-8G
-disk:60G
-```
-
-6.功能要求
-```bash
-开启 RDP
-开启 ssh，telnet 功能(客户端、服务端)
-
-win10
-  更新到最新版本，打好补丁
 ```
 
 ---

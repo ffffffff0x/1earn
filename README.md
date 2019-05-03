@@ -1,4 +1,7 @@
-# 1earn👁
+<p align="center">
+    <img src=".//img/logo.png">
+</p>
+
 ![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social)
 
 完事开头难,然后一直开头一直难...
@@ -11,10 +14,11 @@
 
 ## Manual
 ### Misc
-各种杂项
+各种奇思妙想
 
-**Markdown**
-- 学习写 Markdown 时参考的 Markdown 示例
+**Plan**
+- Misc-Plan:各种小技巧
+- VM-Plan:虚拟机定制规划、VMWare常见问题记录
 
 **Tools**
 - Win-Tools:windows 下的软件使用方案
@@ -56,10 +60,6 @@
 
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
-## Todo
-- [ ] [团队博客](https://no-github.github.io/1earn/)
-- [ ] 为知笔记转移>network 计划
-
 ## 建议和吐槽
 由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
@@ -72,6 +72,7 @@
 
 **NOTE:**
 - 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了
+- 2019-5-2:快要坚持一个月每天更新了
 
 ## List
 以下是我平日收集知识与资源的渠道(部分)

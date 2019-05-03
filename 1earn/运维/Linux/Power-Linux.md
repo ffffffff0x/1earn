@@ -392,6 +392,35 @@ firewall-cmd --reload
 
 ---
 
+## [OpenVPN](https://openvpn.net/)
+
+
+
+---
+
+## [proxychains](https://github.com/rofl0r/proxychains-ng)
+**安装**
+```bash
+git clone https://github.com/rofl0r/proxychains-ng.git
+cd proxychains-ng
+./configure
+make && make install
+cp ./src/proxychains.conf /etc/proxychains.conf
+cd .. && rm -rf proxychains-ng
+```
+
+**编辑配置**
+```bash
+vim /etc/proxychains.conf
+  socks5 127.0.0.1 1080 #改成你懂的
+```
+
+**使用**
+在需要代理的命令前加上 proxychains4 ，如：
+`proxychains4 wget http://xxx.com/xxx.zip`
+
+---
+
 ## [SSH🔑](https://www.ssh.com)
 一般主机安装完毕后 SSH 是默认开启的
 使用`/etc/init.d/ssh status`查看主机SSH状态
@@ -1136,7 +1165,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	#一定要在mijisou目录下运�
 
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 
-echo "www.你的域名.net {
+echo "www.你的域名.com {
  gzip
  tls xxxx@xxx.com
  proxy / 127.0.0.1:8888
@@ -1157,7 +1186,7 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
     <Image>{{ urljoin(host, url_for('static', filename='img/favicon.png')) }}</Image>
     <LongName>searx metasearch</LongName>
     {% if opensearch_method == 'get' %}
-      <Url type="text/html" method="get" template="https://www.你的域名.net/?q={searchTerms}"/>
+      <Url type="text/html" method="get" template="https://www.你的域名.com/?q={searchTerms}"/>
       {% if autocomplete %}
       <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
           <Param name="format" value="x-suggestions" />
@@ -1179,6 +1208,11 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
   </OpenSearchDescription>
 ```
 
+**修改**
+`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
+配置文件中改下名字
+`mijisou/searx/static/themes/entropage/img`中的logo图标自己换一下
+
 **管理**
 ```bash
 ps -aux
@@ -1187,10 +1221,16 @@ kill 杀掉
 gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 ```
 
-**后话**
-`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
-配置文件中改下名字
-`mijisou/searx/static/themes/entropage/img`中的logo图标自己换一下
+**配合Cloudflare的CDN**
+1. Cloudflare创建site
+2. 域名商改nameserver
+3. 修改Caddy配置
+  ```bash
+  echo "www.你的域名.com:80 {
+  gzip
+  proxy / 127.0.0.1:8888
+  }" >> /usr/local/caddy/Caddyfile
+  ```
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)

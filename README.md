@@ -4,15 +4,15 @@
 
 ![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social)
 
+---
+
+## Manual
 完事开头难,然后一直开头一直难...
 
 <p align="center">
     <img src=".//img/readme.jpg">
 </p>
 
----
-
-## Manual
 ### Misc
 各种奇思妙想
 

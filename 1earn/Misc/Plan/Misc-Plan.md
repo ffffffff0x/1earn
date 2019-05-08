@@ -133,6 +133,52 @@ npm config set proxy=http://127.0.0.1:8087
 
 ---
 
+# ffmpeg
+**视频合并**
+```bash
+file '0.flv'
+file '1.flv'
+file '2.flv'
+file '3.flv'
+ffmpeg -f concat -i filelist.txt -c copy output.mkv
+```
+
+**视频压缩**
+`ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"`常规用法
+`ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4`优秀用法
+
+```bash
+`ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
+in.mp4是960 x 540，H.264 / AVC，30fps，大小为149.3 MB。
+转出来的out.mp4是176 x 144，H.264 / AVC，30fps，大小为21.0 MB。
+
+y: 当已存在out.mp4是，不提示是否覆盖。
+-i in.mp4: 输入文件名。
+-s 176x144: 输出分辨率。 
+-vcodec -libx264: 输出文件使用的编解码器。
+-vpre fast: 使用libx264做为编解码器时，需要带上这个参数。
+-b 800000: 码率，单位是字节，不是k字节。
+out.mp4: 输出文件名。
+以上参数的使用细节，ffmpeg的help里有更详细的描述。 
+```
+
+```bash
+ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4
+-r 29.97 帧数 (一般用25就可以了)
+-b 1500 视频数据流量，用-b xxx表示使用固定码率，数字可更改；还可以用动态码率如：-qscale 4和-qscale 6，4的质量比6高（一般用800就可以了，否则文件会很大）
+-acodec aac 音频编码用AAC
+-ac 2 声道数1或2
+-ar 48000 声音的采样频率
+-ab 128 音频数据流量，一般选择32、64、96、128#-vol 200 200%的音量，可更改（如果源文件声音很小，可以提升10到20倍(1000%~2000%)，我试过，效果还行！但不能太大，200000%我也试验过，但嘈杂声太大了）
+```
+
+**Reference**
+- [使用ffmpeg合并视频文件的三种方法](https://blog.csdn.net/u012587637/article/details/51670975)
+- [FFmpeg压缩MP4视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
+- [怎样用ffmpeg 压缩视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
+
+---
+
 # Reference
 - [Wind4/vlmcsd: KMS Emulator in C (currently runs on Linux including Android, FreeBSD, Solaris, Minix, Mac OS, iOS, Windows with or without Cygwin)](https://github.com/Wind4/vlmcsd)
 - [基于 vlmcsd 搭建 KMS 服务器 - 简书](https://www.jianshu.com/p/11d51983852e)

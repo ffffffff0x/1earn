@@ -3,13 +3,9 @@
 
 ---
 
-## bash
+# bash
 ``` bash
 !$：上一个命令的最后一个参数。例如：上一条命令（vim test.txt），cat !$ = cat test.txt
-cat !$
-
-cat !$代替方案
-cat [组合键："esc"+"."]
 
 一个命令创建项目的目录结构
 mkdir -vp scf/{lib/,bin/,doc/{info,product},logs/{info,product},service/deploy/{info,product}}
@@ -19,11 +15,29 @@ yum list 1 > /dev/null
 
 查看自己的外网地址
 curl ifconfig.me
+```
 
-fork炸弹
+## shell
+**fork炸弹**
+```bash
 :(){:|:&};:
 ```
 
+**[Thanos](https://github.com/hotvulcan/Thanos.sh)**
+This command could delete half your files randomly
+```bash
+#!/bin/sh
+let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xargs -0 -- cat 
+
+# Explaination
+## Step 1: Get the count of files in current path divided by two.
+## Step 2: Get all the files in current path and print in one line.
+## Step 3: Turn half of the second step output into standard input randomly.
+## Step 4: Show half of the files in terminal.
+
+# Key Point
+## If you want to make delete, what you need to do is turn 'cat' into 'rm'.
+```
 
 ## VIM
 ``` bash
@@ -33,4 +47,4 @@ fork炸弹
 
 ---
 
-`每个人都能学会雕塑：米开朗基罗这样的人反倒需要学习如何不去雕塑。伟大的程序员也是如此`
+`真实的、永恒的、最高级的快乐，只能从三样东西中取得：工作、自我克制和爱。(罗曼·罗兰《托尔斯泰传》) `

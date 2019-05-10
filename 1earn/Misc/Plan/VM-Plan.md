@@ -99,6 +99,8 @@ commando-vm
 CTFtools
 目录扫工具
 burp?(破解版)
+  JPython(为了运行插件)
+  JRuby(同上)
 ```
 
 2.桌面需求

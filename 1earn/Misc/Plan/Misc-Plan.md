@@ -65,6 +65,37 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 git config --global --unset https.proxy
 ```
 
+## Docker镜像加速
+阿里云：https://cr.console.aliyun.com/#/accelerator
+DaoCloud：https://www.daocloud.io/mirror#accelerator-doc
+
+**linux**
+```bash
+sudo mkdir -p /etc/docker
+```
+```vim
+vim /etc/docker/daemon.json
+{
+  "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
+}
+```
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+`docker info` 检查加速器是否生效
+
+**windows**
+对于Windows 10以上的用户 推荐使用Docker for Windows
+Windows安装文件：http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/
+
+在系统右下角托盘图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Docker Daemon。编辑窗口内的JSON串，填写下方加速器地址：
+{
+  "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
+}
+编辑完成后点击 Apply 保存按钮，等待Docker重启并应用配置的镜像加速器。
+
 ## node&js
 ```bash
 npm install -g nrm

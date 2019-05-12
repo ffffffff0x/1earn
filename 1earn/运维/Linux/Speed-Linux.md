@@ -218,6 +218,7 @@ fd
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
 	fd aaa.txt
+
 find / -name conf*
 which passwd
 locate passwd
@@ -304,21 +305,44 @@ vim /etc/rc.conf
 ---
 
 ## 传输/下载
-- **scp**
->scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
->scp -r //带文件夹
+**scp**
+```bash
+scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
+scp -r //带文件夹
+```
 
-- **lrzsz**
->yum install lrzsz
+**lrzsz**
+```bash
+yum install lrzsz
 sz:将选定的文件发送（send）到本地机器
 rz:运行该命令会弹出一个文件选择窗口,从本地选择文件上传到服务器(receive)
+```
 
-- **wget**
->wget http://example.com/file.iso
+**wget**
+```bash
+wget http://example.com/file.iso
 wget --output-document=filename.html example.com	#另行命名
 wget -c example.com/big.file.iso	#恢复之前的下载
 wget --i list.txt	#下载文件中的url
 wget -r example.com	#递归下载
+wget --no-check-certificate #不检查https证书
+```
+
+### bt
+- Transmission
+- rtorrent
+
+- **[peerflix](https://github.com/mafintosh/peerflix)**
+```bash
+npm install -g peerflix
+peerflix "magnet:?xt=urn:btih:ef330b39f4801d25b4245212e75a38634bfc856e"
+```
+
+- **[tget](https://github.com/jeffjose/tget)**
+```bash
+npm install -g t-get
+tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
+```
 
 ---
 

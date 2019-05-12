@@ -27,36 +27,45 @@
 
 # 系统配置
 ## Net
+**配置网卡**
 ```vim
-vi /etc/sysconfig/network-scripts/ifcfg-eth0
-	DEVICE="enoXXXXXX"
-	BOOTPROTO=static　　　　　　　#使用静态IP,而不是由DHCP分配IP
-	IPADDR=172.16.102.61
-	PREFIX=24
-	GATEWAY=172.16.102.254
-	HOSTNAME=dns1.abc.com
+vim /etc/sysconfig/network-scripts/ifcfg-eth0
 
-vi /etc/hosts
-	127.0.0.1  test localhost  #修改localhost.localdomain为test,shutdown -r now重启使修改生效
-
-	修改DNS
-		vim /etc/resolv.conf
-			nameserver 8.8.8.8
+DEVICE="enoXXXXXX"
+BOOTPROTO=static　　　　　　　# 使用静态IP,而不是由DHCP分配IP
+IPADDR=172.16.102.61
+PREFIX=24
+GATEWAY=172.16.102.254
+HOSTNAME=dns1.abc.com
 ```
->service network restart
+
+**修改主机名**
+```vim
+vim /etc/hosts
+
+127.0.0.1  test localhost  # 修改localhost.localdomain为test,shutdown -r now重启使修改生效
+```
+
+**修改DNS**
+```vim
+vim /etc/resolv.conf
+
+nameserver 8.8.8.8
+```
+`service network restart`
 
 ---
 
 ## 配置本地yum源,挂载,安装
-挂载到/mnt/cdrom
+**挂载**
+`mkdir /mnt/cdrom`
+`mount /dev/cdrom /mnt/cdrom/`
 
->	mkdir /mnt/cdrom
->	mount /dev/cdrom /mnt/cdrom/
-
-设置一下自动挂载
+**自动挂载**
 ```vim
 vim /etc/fstab
-	/dev/cdrom /mnt/cdrom iso9660 defaults 0 0
+
+/dev/cdrom /mnt/cdrom iso9660 defaults 0 0
 ```
 
 进入 /etc/yum.repos.d 目录,将其中三个改名或者移走留下 CentOS-Base.repo
@@ -68,23 +77,20 @@ rm  CentOS-Vault.repo
 
 编辑 CentOS-Base.repo
 ```vim
-vi CentOS-Base.repo
-	baseurl=file:///mnt/cdrom/  #这里为本地源路径
-	gpgcheck=0	
-	enabled=1    #开启本地源
+vim CentOS-Base.repo
 
-yum list  #看一下包
+baseurl=file:///mnt/cdrom/  # 这里为本地源路径
+gpgcheck=0	
+enabled=1    # 开启本地源
 ```
+`yum list` 看一下包
 
 ---
 
 ## RAID
-- 创建RAID1阵列,设备文件名为md0；
-- 将新建的RAID1格式化为xfs文件系统,编辑/etc/fstab文件实现以UUID的形式开机自动挂载至/data/ftp_data目录。
-
 **安装**
->yum remove mdadm	#建议先把原本的卸掉重装
->yum install mdadm
+`yum remove mdadm`	# 建议先把原本的卸掉重装
+`yum install mdadm`
 
 **分区**
 ```bash
@@ -119,19 +125,20 @@ w 写入
 	另外一个获取阵列信息的方法是：
 	`mdadm -D /dev/md0`
 
-格式化为xfs
+**格式化为xfs**
 `mkfs.xfs /dev/md0`
 
-以UUID的形式开机自动挂载
-```vim
+**以UUID的形式开机自动挂载**
+```bash
 mkdir /data/ftp_data
-blkid	/dev/md0 查UUID值
-
-vi /etc/fstab
-	UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
-
-重启验证
-shutdown -r now 
+blkid	/dev/md0 # 查UUID值
+```
+```vim
+vim /etc/fstab
+UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
+```
+```bash
+shutdown -r now # 重启验证
 mount | grep '^/dev'
 ```
 
@@ -139,51 +146,63 @@ mount | grep '^/dev'
 
 ## Lvm物理卷
 ```bash
-fdisk ‐l		查看磁盘情况
-fdisk /dev/sdb	创建系统分区
+fdisk ‐l		# 查看磁盘情况
+fdisk /dev/sdb	# 创建系统分区
 	n
 	p
 	1
 	后面都是默认,直接回车
 		
-	t	转换分区格式
+	t	# 转换分区格式
 	8e
 
-	w	写入分区表
+	w	# 写入分区表
 ```
 
 **卷组**
 创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
->	pvcreate /dev/sdb1	创建物理卷
->	vgcreate ‐s 16M datastore /dev/sdb1	
+```bash
+pvcreate /dev/sdb1	# 创建物理卷
+vgcreate ‐s 16M datastore /dev/sdb1	
+```
 
 **逻辑卷**
 逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
->	lvcreate ‐l 50 ‐n database datastore
+```bash
+lvcreate ‐l 50 ‐n database datastore
+```
 
 逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
->	lvcreate ‐L 8G ‐n database datastore
->	lvdisplay
+```bash
+lvcreate ‐L 8G ‐n database datastore
+lvdisplay
+```
 
 **格式化**
 将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。	
->	mkfs.xfs /dev/datastore/database
->	mkdir /mnt/database
+```bash
+mkfs.xfs /dev/datastore/database
+mkdir /mnt/database
+```
 ```vim
 vi /etc/fstab
-	/dev/datastore/database /mnt/database/ xfs defaults 0 0
+/dev/datastore/database /mnt/database/ xfs defaults 0 0
 ```
 
 重启验证
->shutdown -r now 
->mount | grep '^/dev'
+```bash
+shutdown -r now 
+mount | grep '^/dev'
+```
 
 **扩容**
 将database逻辑卷扩容至15GB空间大小,以满足业务需求。
->lvextend -L 15G /dev/datastore/database
->lvs	#确认有足够空间
->resize2fs /dev/datastore/database
->lvdisplay
+```bash
+lvextend -L 15G /dev/datastore/database
+lvs	# 确认有足够空间
+resize2fs /dev/datastore/database
+lvdisplay
+```
 
 ---
 
@@ -209,6 +228,30 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 ---
 
 # 网络服务
+## [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)
+**安装**
+```bash
+mkdir -p /opt/adguard && cd /opt/adguard
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.95-hotfix/AdGuardHome_v0.95-hotfix_linux_amd64.tar.gz
+tar -xzvf AdGuardHome_v0.94_linux_amd64.tar.gz
+cd AdGuardHome
+./AdGuardHome -s install
+
+systemctl stop firewalld
+```
+
+**其他管理命令**
+```bash
+./AdGuardHome -s uninstall
+./AdGuardHome -s start
+./AdGuardHome -s stop
+./AdGuardHome -s restart
+./AdGuardHome -s status
+```
+无误的话访问服务器IP+端口3000就可以看到管理页面了
+
+---
+
 ## [Chrony](https://chrony.tuxfamily.org/)
 它由两个程序组成：chronyd和chronyc。
 chronyd是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
@@ -222,22 +265,23 @@ yum install chrony
 **配置文件**
 ```vim
 vim /etc/chrony.conf
-  server time1.aliyun.com iburst  
-  server time2.aliyun.com iburst 
-  server time3.aliyun.com iburst 
-  server time4.aliyun.com iburst 
-  server time5.aliyun.com iburst 
-  server time6.aliyun.com iburst 
-  server time7.aliyun.com iburst 
+
+server time1.aliyun.com iburst  
+server time2.aliyun.com iburst 
+server time3.aliyun.com iburst 
+server time4.aliyun.com iburst 
+server time5.aliyun.com iburst 
+server time6.aliyun.com iburst 
+server time7.aliyun.com iburst 
   或
-  server time1.google.com iburst 
-  server time2.google.com iburst 
-  server time3.google.com iburst 
-  server time4.google.com iburst
+server time1.google.com iburst 
+server time2.google.com iburst 
+server time3.google.com iburst 
+server time4.google.com iburst
 ```
 
 **启服务**
-```vim
+```bash
 systemctl stop ntpd
 systemctl disable ntpd
 
@@ -256,46 +300,60 @@ chronyc #进入交互模式
 
 ---
 
+## cloud-torrent
+**安装**
+`curl https://i.jpillora.com/cloud-torrent! | bash`
+
+**运行**
+`cloud-torrent -o`
+
+`我日，这么短啊`
+
+---
+
 ## DHCP
->yum install dhcp
+**安装**
+`yum install dhcp`
 
-复制一份示例
->cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf 
+**复制一份示例**
+`cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf `
 
+**修改配置文件**
 ```vim
 vim /etc/dhcp/dhcpd.conf
-	ddns-update-style interim;      # 设置DNS的动态更新方式为interim
-	option domain-name "abc.edu";
-	option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
-	default-lease-time  43200;                          # 指定默认租约的时间长度,单位为秒
-	max-lease-time  86400;  # 指定最大租约的时间长度
-```
 
-以下为某区域的 IP 地址范围
-```bash
+ddns-update-style interim;      # 设置DNS的动态更新方式为interim
+option domain-name "abc.edu";
+option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
+default-lease-time  43200;                          # 指定默认租约的时间长度,单位为秒
+max-lease-time  86400;  # 指定最大租约的时间长度
+
+# 以下为某区域的 IP 地址范围
+
 subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
 	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
 	option routers  192.168.1.254;                       # 指定该网段的默认网关
 }
 ```
+```bash
+dhcpd -t    #检测语法有无错误
+service dhcpd start    #开启 dhcp 服务
 
->dhcpd -t    #检测语法有无错误
->service dhcpd start    #开启 dhcp 服务
+firewall-cmd --zone=public --add-service=dhcp --permanent
+firewall-cmd --reload # 记得防火墙放行
 
-记得防火墙放行
-
-查看租约文件,了解租用情况
->cat /var/lib/dhcpd/dhcpd.leases
-
+cat /var/lib/dhcpd/dhcpd.leases # 查看租约文件,了解租用情况
+```
 ---
 
 ## DNS
 **安装**
->yum install bind*
+`yum install bind*`
 
 **主配置文件**
 ```vim
 vim /etc/named.conf
+
 options {
     listen-on port 53 { any; };
     listen-on-v6 port 53 { any; };
@@ -306,6 +364,7 @@ options {
 **区域配置文件**
 ```vim
 vim /etc/named.rfc1912.zones
+
 zone "abc.com" IN { 
         type master;
         file "abc.localhost";
@@ -323,58 +382,65 @@ zone "2.1.1.in-addr.arpa" IN {
 ```
 
 **创建区域数据文件**
->cd /var/named/
+```bash
+cd /var/named/
 cp named.localhost abc.localhost
 cp named.loopback abc.loopback
 cp named.loopback www.loopback
 
->chown named abc.localhost 
+chown named abc.localhost 
 chown named abc.loopback
 chown named www.loopback
+```
 
 **域名正向反向解析配置文件**
 ```vim
 vim /var/named/abc.localhost
-	$TTL 1D
-	@      IN SOA  @ rname.invalid. (
-                                        	0      ; serial
-                                        	1D      ; refresh
-                                        	1H      ; retry
-                                        	1W      ; expire
-                                        	3H )    ; minimum
-	       	NS     @
-       		A      127.0.0.1
+
+$TTL 1D
+@      IN SOA  @ rname.invalid. (
+                                      	0      ; serial
+                                      	1D      ; refresh
+                                      	1H      ; retry
+                                      	1W      ; expire
+                                      	3H )    ; minimum
+      	NS     @
+     		A      127.0.0.1
 	    	AAAA   ::1
-	ftp    	A      1.1.1.1
-	www     A      1.1.2.1
-
+ftp    	A      1.1.1.1
+www     A      1.1.2.1
+```
+```vim
 vim /var/named/abc.loopback 
-	$TTL 1D
-	@	IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS 		@
-        	A 		127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-	1 PTR ftp.abc.com.
 
+$TTL 1D
+@	IN SOA  @ rname.invalid. (
+  	                                    0 ; serial
+                                      	1D ; refresh
+                                      	1H ; retry
+                                      	1W ; expire
+                                      	3H ) ; minimum
+      	NS 		@
+      	A 		127.0.0.1
+      	AAAA	::1
+      	PTR 	localhost.
+1 PTR ftp.abc.com.
+```
+```vim
 vim /var/named/www.loopback 
-	$TTL 1D
-	@ 		IN SOA  @ rname.invalid. (
-    	                                    0 ; serial
-                                        	1D ; refresh
-                                        	1H ; retry
-                                        	1W ; expire
-                                        	3H ) ; minimum
-        	NS 		@
-        	A 		127.0.0.1
-        	AAAA	::1
-        	PTR 	localhost.
-	1 PTR www.abc.com.
+
+$TTL 1D
+@ 		IN SOA  @ rname.invalid. (
+  	                                    0 ; serial
+                                      	1D ; refresh
+                                      	1H ; retry
+                                      	1W ; expire
+                                      	3H ) ; minimum
+      	NS 		@
+      	A 		127.0.0.1
+      	AAAA	::1
+      	PTR 	localhost.
+1 PTR www.abc.com.
 ```
 
 **启服务**
@@ -392,9 +458,183 @@ firewall-cmd --reload
 
 ---
 
+## Kicktart
+- 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
+- 环境:VMWARE
+- 1台无人值守系统——RHEL 7——192.168.10.10
+- 1台客户端——未安装操作系统
+
+注：vmware中做实验需要在虚拟网络编辑器中将dhcp服务关闭
+
+**配置 DHCP**
+DHCP 服务程序用于为客户端主机分配可用的 IP 地址，而且这是服务器与客户端主机进行文件传输的基础
+`yum -y install dhcp`
+```vim
+# 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议，旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0（这个文件会在下面的步骤中创建），其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件，自行进入下一步的安装过程。
+vim /etc/dhcp/dhcpd.conf
+
+allow booting;
+allow bootp;
+ddns-update-style interim;
+ignore client-updates;
+subnet 192.168.0.0 netmask 255.255.255.0 {
+        option subnet-mask 255.255.255.0;
+        option domain-name-servers 192.168.10.10;
+        range dynamic-bootp 192.168.10.100 192.168.10.200;
+        default-lease-time 21600;
+        max-lease-time 43200;
+        next-server 192.168.10.10;
+        filename "pxelinux.0";
+}
+```
+```bash
+systemctl restart dhcpd
+systemctl enable dhcpd
+```
+
+**配置 TFTP 服务**
+配置 TFTP 服务程序，为客户端主机提供引导及驱动文件。当客户端主机有了基本的驱动程序之后，再通过 vsftpd 服务程序将完整的光盘镜像文件传输过去。
+```bash
+yum -y install tftp-server xinetd
+```
+```vim
+vim /etc/xinetd.d/tftp
+
+service tftp
+{
+        socket_type = dgram
+        protocol = udp
+        wait = yes
+        user = root
+        server = /usr/sbin/in.tftpd
+        server_args = -s /var/lib/tftpboot
+        disable = no
+        per_source = 11
+        cps = 100 2
+        flags = IPv4
+}
+```
+```bash
+systemctl restart xinetd
+systemctl enable xinetd
+firewall-cmd --permanent --add-port=69/udp  #放行tftp
+firewall-cmd --reload 
+```
+
+**配置 SYSLinux 服务**
+SYSLinux 是一个用于提供引导加载的服务程序。与其说 SYSLinux 是一个服务程序，不如说更需要里面的引导文件，在安装好 SYSLinux 服务程序软件包后，/usr/share/syslinux 目录中会出现很多引导文件。
+```bash
+yum -y install syslinux
+
+#首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中，也就是 pxelinux.0，这样客户端主机就能够顺利地获取到引导文件。另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件。
+cd /var/lib/tftpboot
+cp /usr/share/syslinux/pxelinux.0 .
+mkdir /media/cdrom
+mount /dev/cdrom /media/cdrom
+#确认光盘镜像已经被挂载到 /media/cdrom 目录后，使用复制命令将光盘镜像中自带的一些引导文件也复制到 TFTP 服务程序的默认目录中。
+cp /media/cdrom/images/pxeboot/{vmlinuz,initrd.img} .
+cp /media/cdrom/isolinux/{vesamenu.c32,boot.msg} .
+
+#在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录，虽然该目录的名字带有后缀，但依然也是目录，而非文件！将系统光盘中的开机选项菜单复制到该目录中，并命名为 default。这个 default 文件就是开机时的选项菜单。
+mkdir pxelinux.cfg
+cp /media/cdrom/isolinux/isolinux.cfg pxelinux.cfg/default
+```
+```vim
+# 默认的开机菜单中有两个选项，要么是安装系统，要么是对安装介质进行检验。既然我们已经确定采用无人值守的方式安装系统，还需要为每台主机手动选择相应的选项，未免与我们的主旨（无人值守安装）相悖。现在我们编辑这个 default 文件，把第 1 行的 default 参数修改为 linux，这样系统在开机时就会默认执行那个名称为 linux 的选项了。对应的 linux 选项大约在 64 行，我们将默认的光盘镜像安装方式修改成 FTP 文件传输方式，并指定好光盘镜像的获取网址以及 Kickstart 应答文件的获取路径
+
+# 修改第 1 行和第 64 行
+vim pxelinux.cfg/default
+
+1 default linux
+64 append initrd=initrd.img inst.stage2=ftp://192.168.10.10 ks=ftp://192.168.10.10/pub/ks.cfg quiet
+```
+
+**配置 VSftpd 服务**
+```bash
+yum -y install vsftpd
+
+systemctl restart vsftpd
+systemctl enable vsftpd
+ln -s '/usr/lib/systemd/system/vsftpd.service' '/etc/systemd/system/multi-user.target.wants/vsftpd.service'
+
+cp -rvf /media/cdrom/* /var/ftp
+firewall-cmd --permanent --add-service=ftp
+firewall-cmd --reload 
+setsebool -P ftpd_connect_all_unreserved=on
+```
+
+**创建 KickStart 应答文件**
+```bash
+cp ~/anaconda-ks.cfg /var/ftp/pub/ks.cfg
+chmod +r /var/ftp/pub/ks.cfg
+```
+```vim
+#修改第 7、27、35 行
+vim /var/ftp/pub/ks.cfg
+
+url --url=ftp://192.168.0.105
+timezone Asia/Shanghai --isUtc
+clearpart --all --initlabel
+#如果觉得系统默认自带的应答文件参数较少，不能满足生产环境的需求，则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包。这是一款图形化的 Kickstart 应答文件生成工具，可以根据自己的需求生成自定义的应答文件，然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可。
+```
+
+**Reference**
+- [第19章 使用PXE+Kickstart无人值守安装服务。](https://www.linuxprobe.com/chapter-19.html)
+
+---
+
 ## [OpenVPN](https://openvpn.net/)
+```
+systemctl start docker
+docker pull kylemanna/openvpn:2.4
+mkdir -p /data/openvpn
+docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_genconfig -u udp://<你的IP>
+```
 
+**生成密钥文件**
+```bash
+docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_initpki
+输入私钥密码（输入时是看不见的）：
+Enter PEM pass phrase:12345678
+再输入一遍
+Verifying - Enter PEM pass phrase:12345678
+输入一个CA名称（我这里直接回车）
+Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
+输入刚才设置的私钥密码（输入完成后会再让输入一次）
+Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
+```
 
+**生成客户端证书（这里的user改成你想要的名字）**
+```bash
+docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
+
+输入刚才设置的密码
+Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
+```
+
+**导出客户端配置**
+```bash
+mkdir -p /data/openvpn/conf
+docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_getclient user > /data/openvpn/conf/user.ovpn
+```
+
+**启动OpenVPN服务**
+```bash
+docker run --name openvpn -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn:2.4
+
+service firewalld stop
+```
+
+**将登录的证书下载到本地**
+```bash
+yum install lrzsz -y
+sz /data/openvpn/conf/whsir.ovpn
+```
+
+在openvpn的安装目录下，有个config目录，将服务器上的user.ovpn，放在该目录下，运行OpenVPN GUI，右键whsir连接connect
+
+**Reference**
+- [通过docker搭建openvpn](https://blog.whsir.com/post-2809.html)
 
 ---
 
@@ -412,7 +652,8 @@ cd .. && rm -rf proxychains-ng
 **编辑配置**
 ```bash
 vim /etc/proxychains.conf
-  socks5 127.0.0.1 1080 #改成你懂的
+
+socks5 127.0.0.1 1080 #改成你懂的
 ```
 
 **使用**
@@ -429,9 +670,11 @@ vim /etc/proxychains.conf
 安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
 ```vim
 vim /etc/ssh/sshd_config
-	PasswordAuthentication yes
-	PermitRootLogin yes
 
+PasswordAuthentication yes
+PermitRootLogin yes
+```
+```bash
 service ssh restart
 systemctl enable ssh
 ```
@@ -451,8 +694,7 @@ apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
 apt install ssh
 ```
-然后重启SSH服务
-`service ssh restart`
+`service ssh restart` 然后重启SSH服务
 
 ---
 
@@ -467,15 +709,18 @@ yum install mod_ssl
 **配置文件**
 ```vim
 vim /etc/httpd/conf/httpd.conf
-		DocumentRoot "/var/www/html" 
-		ServerName  xx.xx.xx.xx:80   ////设置Web服务器的主机名和监听端口
+
+DocumentRoot "/var/www/html" 
+ServerName  xx.xx.xx.xx:80   # 设置Web服务器的主机名和监听端口
 ```
 
 **启服务**
 ```vim
 vim var/www/html/index.html 
-	Hello World!
 
+Hello World!
+```
+```bash
 service httpd restart
 firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
@@ -483,10 +728,11 @@ firewall-cmd --reload
 
 **虚拟主机**
 ```vim
-配置虚拟主机文件
+#配置虚拟主机文件
 vim /etc/httpd/conf.d/virthost.conf
+
 <VirtualHost 192.168.1xx.22:80>
-	ServerName  www.abc.com     ////设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
 	DocumentRoot "/data/web_data" 
 	<Directory "/data/web_data">
 		Require all granted
@@ -495,7 +741,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443 
 <VirtualHost 192.168.1xx.22:443>
-	ServerName  www.abc.com     ////设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
 	DocumentRoot "/data/web_data" 
 	
 	SSLEngine on
@@ -506,10 +752,10 @@ Listen 192.168.1XX.33:443
 		Require all granted
 	</Directory>
 </VirtualHost>
-
+```
+```bash
 mkdir -p /data/web_data
-vim /data/web_data/index.html 
-	Hello World!	
+echo 'Hello World!' >/data/web_data/index.html 
 
 service httpd restart
 firewall-cmd --zone=public --add-service=http --permanent
@@ -517,15 +763,15 @@ firewall-cmd --reload
 ```
 
 **mod_ssl**
-- 为linux提供web证书
+- **为linux提供web证书**
 ```bash
->cd /etc/pki/CA/private
->openssl genrsa 2048 > cakey.pem 
->openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+cd /etc/pki/CA/private
+openssl genrsa 2048 > cakey.pem 
+openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
 cd /etc/pki/CA
-touch index.txt  #索引问文件
-touch serial    #给客户发证编号存放文件
+touch index.txt  # 索引问文件
+touch serial    # 给客户发证编号存放文件
 echo 01 > serial
 
 mkdir /etc/httpd/ssl
@@ -534,19 +780,19 @@ openssl genrsa 1024 > httpd.key
 openssl req -new -key httpd.key > httpd.csr
 openssl ca -days 365 -in httpd.csr > httpd.crt 
 
-使用cat /etc/pki/CA/index.txt查看openssl证书数据库文件
+# 使用cat /etc/pki/CA/index.txt查看openssl证书数据库文件
 cat /etc/pki/CA/index.txt
 ```
 
-- 为windows提供web证书
+- **为windows提供web证书**
 ```bash
->cd /etc/pki/CA/private
->openssl genrsa 2048 > cakey.pem 
->openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+cd /etc/pki/CA/private
+openssl genrsa 2048 > cakey.pem 
+openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
 cd /etc/pki/CA
-touch index.txt  #索引问文件
-touch serial    #给客户发证编号存放文件
+touch index.txt  # 索引问文件
+touch serial    # 给客户发证编号存放文件
 echo 01 > serial
 
 cd 
@@ -555,10 +801,10 @@ openssl req -new -key httpd.key > httpd.csr
 openssl ca -days 365 -in httpd.csr > httpd.crt 
 
 openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
-自己想办法把server.pfx导出给windows2008主机
+# 自己把server.pfx导出给windows2008主机
 ```
 
-- 向 windows CA 服务器申请证书
+- **向 windows CA 服务器申请证书**
 `Openssl genrsa 2048 > httpd.key`
 `openssl req -new -key httpd.key -out httpd.csr`
 通过这个csr文件在内部的windows CA服务器上申请证书
@@ -570,12 +816,62 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ---
 
+## [Caddy](https://caddyserver.com/)
+**安装Caddy**
+```bash
+wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
+```
+
+**配置文件**
+```bash
+chown -R root:www-data /usr/local/bin     #设置目录数据权限
+touch /usr/local/caddy/Caddyfile	
+
+echo -e ":80 {
+	gzip	
+	root /usr/local/caddy/www/
+}" > /usr/local/caddy/Caddyfile
+
+mkdir /usr/local/caddy/www
+echo "<h1>first</h1>" >> /usr/local/caddy/www/index.html
+
+/etc/init.d/caddy start
+# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
+```
+
+**反向代理**
+做一个ip跳转
+```bash
+echo ":80 {
+	gzip
+	proxy / http://www.baidu.com
+}" > /usr/local/caddy/Caddyfile
+
+/etc/init.d/caddy start
+```
+
+**HTTPS**
+为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书,支持 HTTPS 协议访问,你只需要将绑定的 IP 换成 域名 即可
+```bash
+echo -e "xxx.com {
+	gzip
+    root /usr/local/bin/www
+	tls xxxx@xxx.com  #你的邮箱
+}" > /usr/local/caddy/Caddyfile
+
+/etc/init.d/caddy start
+```
+
+---
+
 ## [Rpm](https://rpm.org/)&[Node✔](https://nodejs.org)
 **包管理器方式**
-`apt-get install nodejs npm`	讲道理apt不好用
+- apt
+  `apt-get install nodejs npm` 讲道理apt安装不太好使
 
-`yum install epel-release`
-`yum install nodejs npm`
+- yum
+  `yum install epel-release`
+  `yum install nodejs npm`
 
 **源文件方式安装**
 首先下载NodeJS的二进制文件,http://nodejs.org/download/ 。在 Linux Binaries (.tar.gz)行处根据自己系统的位数选择
@@ -592,7 +888,6 @@ ls
 
 如果要在任意目录可以访问的话,需要将node 所在的目录,添加PATH环境变量里面,或者通过软连接的形式将node和npm链接到系统默认的PATH目录下的一个
 在终端执行echo $PATH可以获取PATH变量包含的内容,系统默认的PATH环境变量包括/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符。所以我们可以将node和npm链接到/usr/local/bin 目录下如下执行
-
 ```bash
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
@@ -608,9 +903,7 @@ yum remove php*
 rpm安装PHP7相应的yum源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-
 yum install php70w
-
 php -v
 
 service php-fpm start #要运行PHP网页,要启动php-fpm解释器
@@ -631,18 +924,19 @@ firewall-cmd --reload
 在/etc/nginx/conf.d/目录下新建一个站点的配置文件,列如：test.com.conf
 ```vim
 vim /etc/nginx/conf.d/test.com.conf
-  server {
-          listen 80;
-          server_name www.test.com test.com;
-          root /usr/share/nginx/test.com;
-          index index.html;
 
-          location / {
-          }
-  }
+server {
+        listen 80;
+        server_name www.test.com test.com;
+        root /usr/share/nginx/test.com;
+        index index.html;
 
-nginx -t  #检测文件是否有误  
+        location / {
+        }
+}
 ```
+`nginx -t ` 检测文件是否有误
+
 
 ```bash
 mkdir /usr/share/nginx/test.com
@@ -657,38 +951,40 @@ systemctl start nginx.service
 `curl www.test.com`
 
 **https**
-```vim
+```bash
 openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key #生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
 
 mv httpd.crt /etc/nginx
 mv httpd.key /etc/nginx
-
-vim /etc/nginx/conf.d/test.com.conf
-  server {
-          listen       443 ssl http2;
-          server_name  www.test.com test.com;
-          root         /usr/share/nginx/test.com;
-          index index.html;
-
-          ssl_certificate "/etc/nginx/httpd.crt";
-          ssl_certificate_key "/etc/nginx/httpd.key";
-          location / {
-          }
-
-          error_page 404 /404.html;
-              location = /40x.html {
-          }
-
-          error_page 500 502 503 504 /50x.html;
-              location = /50x.html {
-          }
-      }
-
-systemctl restart nginx
 ```
+```vim
+vim /etc/nginx/conf.d/test.com.conf
+
+server {
+        listen       443 ssl http2;
+        server_name  www.test.com test.com;
+        root         /usr/share/nginx/test.com;
+        index index.html;
+
+        ssl_certificate "/etc/nginx/httpd.crt";
+        ssl_certificate_key "/etc/nginx/httpd.key";
+        location / {
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+```
+`systemctl restart nginx`
+
 
 **添加PHP/PHP-FPM环境支持**
-```vim
+```bash
 # 安装PHP源
 rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
@@ -697,30 +993,32 @@ rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
 
 systemctl start php-fpm.service
-netstat -tnlp #检查php-fpm默认监听端口：9000
-
-添加配置
+netstat -tnlp # 检查php-fpm默认监听端口：9000
+```
+```vim
+# 添加配置
 vim /etc/nginx/conf.d/test.com.conf
-          # php-fpm  (新增)
-          location ~\.php$ {
-                  fastcgi_pass 127.0.0.1:9000;
-                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                  fastcgi_param PATH_INFO $fastcgi_script_name;
-                  include fastcgi_params;
-          }
-  }
 
+        # php-fpm  (新增)
+        location ~\.php$ {
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_param SCRIPT_FILENAME$document_root$fastcgi_script_name;
+                fastcgi_param PATH_INFO $fastcgi_script_name;
+                include fastcgi_params;
+          }
+```
+```bash
 systemctl restart nginx
 systemctl restart php-fpm
-
-测试
-vim /usr/share/nginx/test.com/info.php
-  <?php 
-      phpinfo(); 
-  ?>
-
-curl http://www.test.com/info.php
 ```
+```vim
+vim /usr/share/nginx/test.com/info.php
+
+<?php 
+     phpinfo(); 
+ ?>
+```
+`curl http://www.test.com/info.php`测试
 
 ---
 
@@ -764,64 +1062,6 @@ systemctl restart nginx
 ```
 
 访问 `https://www.test.com/phpMyAdmin/index.php`
-
----
-
-## [Caddy](https://caddyserver.com/)
-**安装Caddy**
-```bash
-curl https://getcaddy.com | bash -s personal
-或
-wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
-或
-https://caddyserver.com/download 进入到 caddy 官网的下载界面,选择平台和插件
-下载后用 cp 命令放到 /usr/local/bin/caddy ,解压
-```
-
-**运行**
-`caddy`然后打开浏览器输入： http://ip:2015 ,得到了一个404页面,Caddy 已经成功运行了
-
-在无配置文件的情况下,Caddy 默认是映射当前程序执行的目录所有文件(即/usr/local/bin),因此可以创建一个文件
-`echo "<h1>Hello Caddy</h1>" >> index.html`
-
-`caddy -port 80`改为运行在80端口
-
-**配置文件**
-```bash
-chown -R root:www-data /usr/local/bin     #设置目录数据权限
-vim /usr/local/bin/Caddyfile	#注.一般来说caddy路径都是这个,个别安装脚本可能有不同路径
-
-echo -e ":80 {
-	gzip	
-	root /usr/local/bin/www
-}" > /usr/local/bin/Caddyfile
-
-echo "<h1>first</h1>" >> /usr/local/bin/www/index.html
-
-caddy
-# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
-```
-
-**反向代理**
-做一个ip跳转
-```bash
-echo ":80 {
-	gzip
-	proxy / http://www.baidu.com
-}" > /usr/local/bin/Caddyfile
-
-caddy
-```
-
-**HTTPS**
-为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书,支持 HTTPS 协议访问,你只需要将绑定的 IP 换成 域名 即可
-```bash
-echo -e "xxx.com {
-	gzip
-    root /usr/local/bin/www
-	tls xxxx@xxx.com  #你的邮箱
-}" > /usr/local/bin/Caddyfile
-```
 
 ---
 
@@ -879,11 +1119,8 @@ php -v
 cd wordpress
 vim wp-config-sample.php
 ```
-
 在标有 
-> // ** MySQL settings - You can get this info from your web host ** //
-
-下输入你的数据库相关信息
+`// ** MySQL settings - You can get this info from your web host ** //`下输入你的数据库相关信息
 ```php
 DB_NAME 
     在第二步中为WordPress创建的数据库名称
@@ -900,9 +1137,7 @@ DB_COLLATE
 ```
 
 在标有
->* Authentication Unique Keys.
-
-的版块下输入密钥的值,保存wp-config.php文件,也可以不管这个
+`* Authentication Unique Keys.`的版块下输入密钥的值,保存wp-config.php文件,也可以不管这个
 
 **上传文件**
 接下来需要决定将博客放在网站的什么位置上：
@@ -953,6 +1188,7 @@ cd mijisou && pip install -r requirements.txt
 **配置**
 ```yml
 vim searx/settings_et_dev.yml
+
 general:
     debug : False # Debug mode, only for development
     instance_name : "123搜索" # displayed name
@@ -1178,34 +1414,35 @@ echo "www.你的域名.com {
 **opensearch**
 ```xml
 vim /root/mijisou/searx/templates/__common__/opensearch.xml
-  <?xml version="1.0" encoding="utf-8"?>
-  <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-    <ShortName>{{ instance_name }}</ShortName>
-    <Description>a privacy-respecting, hackable metasearch engine</Description>
-    <InputEncoding>UTF-8</InputEncoding>
-    <Image>{{ urljoin(host, url_for('static', filename='img/favicon.png')) }}</Image>
-    <LongName>searx metasearch</LongName>
-    {% if opensearch_method == 'get' %}
-      <Url type="text/html" method="get" template="https://www.你的域名.com/?q={searchTerms}"/>
-      {% if autocomplete %}
-      <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
-          <Param name="format" value="x-suggestions" />
-          <Param name="q" value="{searchTerms}" />
-      </Url>
-      {% endif %}
-    {% else %}
-      <Url type="text/html" method="post" template="{{ host }}">
-          <Param name="q" value="{searchTerms}" />
-      </Url>
-      {% if autocomplete %}
-      <!-- TODO, POST REQUEST doesn't work -->
-      <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
-          <Param name="format" value="x-suggestions" />
-          <Param name="q" value="{searchTerms}" />
-      </Url>
-      {% endif %}
-    {% endif %}
-  </OpenSearchDescription>
+
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>{{ instance_name }}</ShortName>
+  <Description>a privacy-respecting, hackable metasearch engine</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image>{{ urljoin(host, url_for('static', filename='img/favicon.png')) }}</Image>
+   <LongName>searx metasearch</LongName>
+  {% if opensearch_method == 'get' %}
+     <Url type="text/html" method="get" template="https://www.你的域名.com/?q={searchTerms}"/>
+  {% if autocomplete %}
+  <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
+      <Param name="format" value="x-suggestions" />
+      <Param name="q" value="{searchTerms}" />
+  </Url>
+  {% endif %}
+  {% else %}
+  <Url type="text/html" method="post" template="{{ host }}">
+    <Param name="q" value="{searchTerms}" />
+  </Url>
+  {% if autocomplete %}
+  <!-- TODO, POST REQUEST doesn't work -->
+  <Url type="application/x-suggestions+json" method="get" template="{{ host }}autocompleter">
+  <Param name="format" value="x-suggestions" />
+  <Param name="q" value="{searchTerms}" />
+  </Url>
+  {% endif %}
+  {% endif %}
+</OpenSearchDescription>
 ```
 
 **修改**
@@ -1252,11 +1489,12 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
 
 ### [Mariadb](https://mariadb.org/)
 **安装**
->yum install mariadb mariadb-server
+`yum install mariadb mariadb-server`
 
 **数据库初始化**
->systemctl start mariadb
->mysql_secure_installation
+```bash
+systemctl start mariadb
+mysql_secure_installation
 
 |配置流程 	|说明 |操作
 ------------ | ------------- | ------------
@@ -1268,6 +1506,7 @@ Remove anonymous users? [Y/n] |	是否删除匿名用户 | 可以 y 或者回车
 Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 y 或者回车 本题n
 Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本题y
 Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本题y
+```
 
 **配置远程访问**
 Mariadb数据库授权root用户能够远程访问
@@ -1318,19 +1557,21 @@ PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行Postg
 **开启远程访问**
 ```vim
 vim /var/lib/pgsql/data/postgresql.conf
-	listen_addresses='*'
 
-vim /var/lib/pgsql/data/pg_hba.conf
-  # IPv4 local connections:
-  host    all             all             127.0.0.1/32            md5
-  host    all             all             0.0.0.0/0               md5       
-
-其中0.0.0.0/0表示运行任意ip地址访问。
-若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
-
-service postgresql restart
-防火墙记得放行
+listen_addresses='*'
 ```
+```vim
+vim /var/lib/pgsql/data/pg_hba.conf
+
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+host    all             all             0.0.0.0/0               md5       
+
+# 其中0.0.0.0/0表示运行任意ip地址访问。
+# 若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
+```
+
+`service postgresql restart`防火墙记得放行
 
 ---
 
@@ -1339,21 +1580,22 @@ service postgresql restart
 **安装**
 ```vim
 vim /etc/yum.repos.d/mongodb-org-4.0.repo
-	[mongodb-org-4.0]
-	name=MongoDB Repository
-	baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
-	gpgcheck=1
-	enabled=1
-	gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 
-yum install -y mongodb-org
+[mongodb-org-4.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 ```
+`yum install -y mongodb-org`
 
 **配置远程访问**
 ```vim
 vim /etc/mongod.conf
-	# Listen to all ip address
-	bind_ip = 0.0.0.0
+
+# Listen to all ip address
+bind_ip = 0.0.0.0
 ```
 
 `service mongod start`
@@ -1377,12 +1619,12 @@ mongo
 **启用权限管理**
 ```vim
 vim /etc/mongod.conf
-	#security 
-	security:
-	authorization: enabled
 
-service mongod restart	
+#security 
+security:
+authorization: enabled
 ```
+`service mongod restart	`
 
 ---
 
@@ -1427,14 +1669,12 @@ PONG
 为了可以使Redis能被远程连接,需要修改配置文件,路径为/etc/redis.conf
 ```vim
 vim /etc/redis.conf
-	#bind 127.0.0.1
-	requirepass 密码	#设置redis密码
 
-service redis restart
-当然还要记得开防火墙  
-
-redis-cli -h <ip> -p 6379 -a <PASSWORD>
+#bind 127.0.0.1
+requirepass 密码	#设置redis密码
 ```
+`service redis restart`当然还要记得开防火墙  
+`redis-cli -h <ip> -p 6379 -a <PASSWORD>`
 
 ---
 
@@ -1483,11 +1723,12 @@ firewall-cmd --reload
 
 ```vim
 vim /etc/vsftpd/vsftpd.conf
-1 anonymous_enable=YES
-2 anon_umask=022
-3 anon_upload_enable=YES
-4 anon_mkdir_write_enable=YES
-5 anon_other_write_enable=YES
+
+anonymous_enable=YES
+anon_umask=022
+anon_upload_enable=YES
+anon_mkdir_write_enable=YES
+anon_other_write_enable=YES
 ```
 ```bash
 setenforce 0
@@ -1542,10 +1783,11 @@ ftp> exit
 
 ```vim
 vim /etc/vsftpd/vsftpd.conf
-1 anonymous_enable=NO
-2 local_enable=YES
-3 write_enable=YES
-4 local_umask=022
+
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
 ```
 ```bash
 setenforce 0
@@ -1581,42 +1823,46 @@ ftp>
 
 认证
 创建虚拟用户文件,把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行,密码占一行。
+`cd /etc/vsftp`
 ```vim
-cd /etc/vsftp
 vim login.list
-	Ftpuser1
-	123456
-	Ftpuser2
-	123456
-	Ftpadmin
-	123456
+
+Ftpuser1
+123456
+Ftpuser2
+123456
+Ftpadmin
+123456
 ```
 
 使用 db_load 命令生成 db 口令login数据库文件
->db_load -T -t hash -f login.list login.db
+`db_load -T -t hash -f login.list login.db`
 
 通过修改指定的配置文件,调整对该程序的认证方式
 ```vim
 vim /etc/vsftpd/vsftpd.conf
-	pam_service_name=vsftpd.vu  #设置PAM使用的名称,该名称就是/etc/pam.d/目录下vsfptd文件的文件名
 
-cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
-
+pam_service_name=vsftpd.vu  # 设置PAM使用的名称,该名称就是/etc/pam.d/目录下vsfptd文件的文件名
+```
+`cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu`
+```vim
 vim /etc/pam.d/vsftpd.vu
-	auth       required     pam_userdb.so db=/etc/vsftpd/login
-	account    required     pam_userdb.so db=/etc/vsftpd/login
-#注意：格式是db=/etc/vsftpd/login这样的,一定不要去掉源文件的.db后缀
+
+auth       required     pam_userdb.so db=/etc/vsftpd/login
+account    required     pam_userdb.so db=/etc/vsftpd/login
+# 注意：格式是db=/etc/vsftpd/login这样的,一定不要去掉源文件的.db后缀
 ```
 
 配置文件
 ```vim
 vim /etc/vsftpd/vsftpd.conf
-1 anonymous_enable=NO
-2 local_enable=YES
-3 guest_enable=YES
-4 guest_username=virtual
-5 pam_service_name=vsftpd.vu
-6 allow_writeable_chroot=YES
+
+anonymous_enable=NO
+local_enable=YES
+guest_enable=YES
+guest_username=virtual
+pam_service_name=vsftpd.vu
+allow_writeable_chroot=YES
 ```
 
 |参数 |	作用|
@@ -1630,40 +1876,43 @@ vim /etc/vsftpd/vsftpd.conf
 
 用户配置权限文件
 所有用户主目录为 /home/ftp 宿主为 virtual 用户；
->useradd -d /home/ftp -s /sbin/nologin virtual  
->chmod -Rf 755 /home/ftp/
->cd /home/ftp/
->touch testfile
-
+```bash
+useradd -d /home/ftp -s /sbin/nologin virtual  
+chmod -Rf 755 /home/ftp/
+cd /home/ftp/
+touch testfile
+```
 ```vim
 vim /etc/vsftpd/vsftpd.conf  
-	guest_enable=YES      #表示是否开启vsftpd虚拟用户的功能,yes表示开启,no表示不开启。
-	guest_username=virtual       # 指定虚拟用户的宿主用户  
-	user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人vsftpd服务文件存放路径
-	allow_writeable_chroot=YES
+
+guest_enable=YES      # 表示是否开启vsftpd虚拟用户的功能,yes表示开启,no表示不开启。
+guest_username=virtual       # 指定虚拟用户的宿主用户  
+user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人vsftpd服务文件存放路径
+allow_writeable_chroot=YES
 ```
 
 编辑用户权限配置文件
 ```vim
 vim Ftpadmin
-	anon_upload_enable=YES
-	anon_mkdir_wirte_enable=YES
-	anon_other_wirte_enable=YES
-	anon_umask=022
-	虚拟用户具有写权限（上传、下载、删除、重命名）
 
-	#umask = 022 时,新建的目录 权限是755,文件的权限是 644
-	#umask = 077 时,新建的目录 权限是700,文件的权限时 600
-	#vsftpd的local_umask和anon_umask借鉴了它
-	#默认情况下vsftp上传之后文件的权限是600,目录权限是700
-	#想要修改上传之后文件的权限,有两种情况
-	#如果使用vsftp的是本地用户
-	#则要修改配置文件中的 local_umask 的值
-	#如果使用vsftp的是虚拟用户
-	#则要修改配置文件中的 anon_umask 的值
+anon_upload_enable=YES
+anon_mkdir_wirte_enable=YES
+anon_other_wirte_enable=YES
+anon_umask=022
+# 虚拟用户具有写权限（上传、下载、删除、重命名）
+
+# umask = 022 时,新建的目录 权限是755,文件的权限是 644
+# umask = 077 时,新建的目录 权限是700,文件的权限时 600
+# vsftpd的local_umask和anon_umask借鉴了它
+# 默认情况下vsftp上传之后文件的权限是600,目录权限是700
+# 想要修改上传之后文件的权限,有两种情况
+# 如果使用vsftp的是本地用户
+# 则要修改配置文件中的 local_umask 的值
+# 如果使用vsftp的是虚拟用户
+# 则要修改配置文件中的 anon_umask 的值
 ```
 
-启服务
+**启服务**
 ```bash
 setenforce 0
 firewall-cmd --zone=public --add-service=ftp
@@ -1672,47 +1921,56 @@ systemctl restart vsftpd
 systemctl enable vsftpd
 ```
 
+**Reference**
+- [第11章 使用Vsftpd服务传输文件。](https://www.linuxprobe.com/chapter-11.html)
+
 ---
 
 ## [Samba](https://www.samba.org)
 **服务端**
 安装
->yum install samba 
+`yum install samba `
 
 修改配置文件
 ```vim	
 vim /etc/samba/smb.conf
 [smbshare]
-	path = /smbshare	#共享目录
-	public = yes
-	writeable=yes
-	hosts allow = 192.168.1xx.33/32	#允许主机
-	hosts deny = all
-	create mask = 0770	#创建文件的权限为0770；
+path = /smbshare	# 共享目录
+public = yes
+writeable=yes
+hosts allow = 192.168.1xx.33/32	# 允许主机
+hosts deny = all
+create mask = 0770	# 创建文件的权限为0770；
 ```
 
 验证配置文件有没有错误
->	testparm
+`testparm`
 
-添加用户,设置密码
->	useradd smb1
->	smbpasswd ‐a smb1(密码：smb123456)
+**用户配置**
+```bash
+# 添加用户,设置密码
+useradd smb1
+smbpasswd ‐a smb1(密码：smb123456)
 
-将用户添加到 samba 服务器中,并设置密码
->	pdbedit ‐a smb1(密码：smb123456)
+# 将用户添加到 samba 服务器中,并设置密码
+pdbedit ‐a smb1(密码：smb123456)
 
-查看 samba 数据库用户
->	pdbedit ‐L
+# 查看 samba 数据库用户
+pdbedit ‐L
+```
 
 创建共享目录,设置所有者和所属组
->	mkdir /smbshare
->	chown smb1:smb1 /smbshare
+```bash
+mkdir /smbshare
+chown smb1:smb1 /smbshare
+```
 
 关闭 selinux（需要重启）
 ```vim
 vim /etc/selinux/config
 SELINUX=disabled
-
+```
+```bash
 firewall-cmd --zone=public --add-service=samba --permanent
 firewall-cmd --reload
 
@@ -1738,9 +1996,9 @@ yum ‐y install nfs‐utils
 ```
 
 修改配置文件
-```bash
+```vim
 vim /etc/exports
-	/public 192.168.xxx.xxx(ro)
+/public 192.168.xxx.xxx(ro)
 ```
 
 启服务
@@ -1771,15 +2029,16 @@ passwd nfsuser1
 ```
 
 验证共享是否成功
->showmount ‐e 192.168.xxx.xxx
+`showmount ‐e 192.168.xxx.xxx`
 
 挂载共享目录
 ```vim
 vim /etc/fstab
-	192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
+
+192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
 ```
 
->su ‐l nfsuser1
+`su ‐l nfsuser1`
 
 **验证**
 服务器
@@ -1797,14 +2056,16 @@ vim /etc/fstab
 
 # 编程语言
 ## C
-```vim
+```c
 vim world.c
-	#include <stdio.h>
-	int main(void){
-					printf("Hello World");
-					return 0;
-	}
 
+#include <stdio.h>
+int main(void){
+				printf("Hello World");
+				return 0;
+}
+```
+```bash
 gcc helloworld.c -o execFile
 ./execFlie
 ```
@@ -1856,7 +2117,6 @@ yum install epel-release
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 yum -y install python36 python36-devel
 
-ln -s /usr/bin/python3.6 /usr/bin/python3 #配置Python3软链接
 wget https://bootstrap.pypa.io/get-pip.py	#安装pip3
 python3 get-pip.py
 ```
@@ -1883,12 +2143,13 @@ make install    或者 make && make install
 添加到环境变量
 ```bash
 ln -s /usr/local/python3/bin/python3 /usr/bin/python3
-
-vim ~/.bash_profile #永久修改变量
-	PATH=$PATH:/usr/local/python3/bin/
-source ~/.bash_profile	
-
 ```
+```vim
+vim ~/.bash_profile #永久修改变量
+
+PATH=$PATH:/usr/local/python3/bin/
+```
+`source ~/.bash_profile	`
 
 检查Python3及pip3是否正常可用
 ```bash
@@ -1913,15 +2174,64 @@ make install
 将ruby添加到环境变量,ruby安装在/usr/local/bin/目录下,因此编辑 ~/.bash_profile文件,添加一下内容:
 ```bash
 vim ~/.bash_profile
-export PATH=$PATH:/usr/local/bin/
 
-不要忘了生效一下:
-source ~/.bash_profile
+export PATH=$PATH:/usr/local/bin/
 ```
+`source ~/.bash_profile`不要忘了生效一下
 
 ---
 
-# 监控服务
+# 管理工具
+##[Supervisor](http://supervisord.org/)
+因为Supervisor是Python开发的，安装前先检查一下系统否安装了Python2.4以上版本。
+**安装**
+`pip install supervisor`
+
+安装完成后，我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
+`echo_supervisord_conf > /etc/supervisord.conf`
+
+**配置**
+接着在 /etc/supervisord.conf 文件最下方加入目标程序的启动项目
+```conf
+vim /etc/supervisord.conf
+
+; [program:xx]是被管理的进程配置参数，xx是进程的名称
+[program:xx]  
+command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令 
+autostart=true       ; 在supervisord启动的时候也自动启动 
+startsecs=10         ; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒 
+autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启 
+startretries=3       ; 启动失败自动重试次数，默认是3 
+user=tomcat          ; 用哪个用户启动进程，默认是root 
+priority=999         ; 进程启动优先级，默认999，值小的优先启动 
+redirect_stderr=true ; 把stderr重定向到stdout，默认false 
+stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小，默认50MB s
+tdout_logfile_backups = 20   ; stdout 日志文件备份数，默认是10 
+; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件） 
+stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out 
+stopasgroup=false     ;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程 
+killasgroup=false     ;默认为false，向进程组发送kill信号，包括子进程
+```
+
+注意修改 user = tomcat
+接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时，需要指定supervisor配置文件
+`supervisord -c /etc/supervisord.conf`
+
+```bash
+supervisorctl status
+supervisorctl stop tomcat
+supervisorctl start tomcat
+supervisorctl restart tomcat
+supervisorctl reread
+supervisorctl update
+```
+
+**Reference**
+- [Supervisor安装与配置（Linux/Unix进程管理工具）](https://blog.csdn.net/xyang81/article/details/51555473)
+
+---
+
+# 系统监控
 ## [Zabbix](https://www.zabbix.com/)
 **安装依赖**
 ```bash
@@ -1935,30 +2245,31 @@ yum install wget telnet net-tools python-paramiko gcc gcc-c++ dejavu-sans-fonts 
 **设置 mysql**
 ```vim
 vim /etc/my.cnf
-  innodb_file_per_table = 1
-  innodb_status_file = 1
-  innodb_buffer_pool_size = 6G
-  innodb_flush_log_at_trx_commit = 2
-  innodb_log_buffer_size = 16M
-  innodb_log_file_size = 64M
-  innodb_support_xa = 0
-  default-storage-engine = innodb
-  bulk_insert_buffer_size = 8M
-  join_buffer_size = 16M
-  max_heap_table_size = 32M
-  tmp_table_size = 32M
-  max_tmp_tables = 48
-  read_buffer_size = 32M
-  read_rnd_buffer_size = 16M
-  key_buffer_size = 32M
-  thread_cache_size = 32
-  innodb_thread_concurrency = 8
-  innodb_flush_method = O_DIRECT
-  innodb_rollback_on_timeout = 1
-  query_cache_size = 16M
-  query_cache_limit = 16M
-  collation_server = utf8_bin
-  character_set_server = utf8
+
+innodb_file_per_table = 1
+innodb_status_file = 1
+innodb_buffer_pool_size = 6G
+innodb_flush_log_at_trx_commit = 2
+innodb_log_buffer_size = 16M
+innodb_log_file_size = 64M
+innodb_support_xa = 0
+default-storage-engine = innodb
+bulk_insert_buffer_size = 8M
+join_buffer_size = 16M
+max_heap_table_size = 32M
+tmp_table_size = 32M
+max_tmp_tables = 48
+read_buffer_size = 32M
+read_rnd_buffer_size = 16M
+key_buffer_size = 32M
+thread_cache_size = 32
+innodb_thread_concurrency = 8
+innodb_flush_method = O_DIRECT
+innodb_rollback_on_timeout = 1
+query_cache_size = 16M
+query_cache_limit = 16M
+collation_server = utf8_bin
+character_set_server = utf8
 ```
 原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意innodb_buffer_pool_size的值必须是整数，例如主机内存是4G，那么innodb_buffer_pool_size可以设置为3G，而不能设置为3.2G  
 ```bash
@@ -1988,40 +2299,43 @@ zcat create.sql.gz | mysql -uroot zabbix -p
 - 配置 zabbix 参数
   ```vim
   vim /etc/zabbix/zabbix_server.conf
-    DBPassword={mysql_zabbix_password}
-    CacheSize=512M
-    HistoryCacheSize=128M
-    HistoryIndexCacheSize=128M
-    TrendCacheSize=128M
-    ValueCacheSize=256M
-    Timeout=30
+
+  DBPassword={mysql_zabbix_password}
+  CacheSize=512M
+  HistoryCacheSize=128M
+  HistoryIndexCacheSize=128M
+  TrendCacheSize=128M
+  ValueCacheSize=256M
+  Timeout=30
   ```
   如果需要监控VMware虚拟机，则还需要设置以下选项参数：
   ```vim
-    StartVMwareCollectors=2
-    VMwareCacheSize=256M
-    VMwareTimeout=300
+  StartVMwareCollectors=2
+  VMwareCacheSize=256M
+  VMwareTimeout=300
   ```
 
 **配置 Apache 中的 PHP 参数**
 ```vim
 vim /etc/httpd/conf.d/zabbix.conf
-  php_value max_execution_time 600
-  php_value memory_limit 256M
-  php_value post_max_size 32M
-  php_value upload_max_filesize 32M
-  php_value max_input_time 600
-  php_value always_populate_raw_post_data -1
-  date.timezone Asia/Shanghai
+
+php_value max_execution_time 600
+php_value memory_limit 256M
+php_value post_max_size 32M
+php_value upload_max_filesize 32M
+php_value max_input_time 600
+php_value always_populate_raw_post_data -1
+date.timezone Asia/Shanghai
 ```
 
 **配置 PHP 参数**
 ```vim
 vim /etc/php.ini
-  php_value post_max_size 32M
-  max_execution_time 300
-  max_input_time 300
-  date.timezone Asia/Shanghai
+
+php_value post_max_size 32M
+max_execution_time 300
+max_input_time 300
+date.timezone Asia/Shanghai
 ```
 
 **重启&起服务**
@@ -2041,47 +2355,37 @@ setenforce 0
 # 虚拟化
 ## [Docker🐋](https://www.docker.com)
 **centos**
+```bash
+yum install -y yum-utils device-mapper-persistent-data lvm2
+wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+yum makecache fast
+yum install -y docker
+```
+
+or
+
 `curl -sSL https://get.docker.com/ | sh`
 
 or
 
 Step 1 — Install Docker
 ```bash
-Install needed packages:
-$ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-
-Configure the docker-ce repo:
-$ sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-Install docker-ce:
-$ sudo yum install docker-ce
-
-Add your user to the docker group with the following command.
-$ sudo usermod -aG docker $(whoami)
-
-Set Docker to start automatically at boot time:
-$ sudo systemctl enable docker.service
-
-Finally, start the Docker service:
-$ sudo systemctl start docker.service
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install docker-ce
+sudo usermod -aG docker $(whoami)
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
 ```
 
 Step 2 — Install Docker Compose
 ```bash
-Install Extra Packages for Enterprise Linux
-$ sudo yum install epel-release
-
-Install python-pip
-$ sudo yum install -y python-pip
-
-Then install Docker Compose:
-$ sudo pip install docker-compose
-
-You will also need to upgrade your Python packages on CentOS 7 to get docker-compose to run successfully:
-$ sudo yum upgrade python*
-
-To verify a successful Docker Compose installation, run:
-$ docker-compose version
+sudo yum install epel-release
+sudo yum install -y python-pip
+sudo pip install docker-compose
+sudo yum upgrade python*
+docker-compose version
 
 docker login
 ```
@@ -2090,7 +2394,7 @@ docker login
 ```bash
 sudo apt update
 sudo apt install docker.io
-docker login	#讲道理,按官方文档说法并不需要账户并且登录,但实际上还是需要你登陆
+docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但实际上还是需要你登陆
 ```
 
 ---
@@ -2212,26 +2516,34 @@ sed -i -e "s/^Example/#Example/" /etc/clamd.d/scan.conf
 
 **病毒库操作**
 关闭自动更新
-```bash
 freshclam命令通过文件/etc/cron.d/clamav-update来自动运行
+```vim
 vim /etc/cron.d/clamav-update
+```
 
 但默认情况下是禁止了自动更新功能，需要移除文件/etc/sysconfig/freshclam最后一行的配置才能启用
+```vim
 vim /etc/cron.d/clamav-update
-  # FRESHCLAM_DELAY=
+
+# FRESHCLAM_DELAY=
+```
 
 定义服务器类型（本地或者TCP），在这里定义为使用本地socket，将文件/etc/clam.d/scan.conf中的这一行前面的注释符号去掉：
+```vim
 vim /etc/clamd.d/scan.conf
-  LocalSocket /var/run/clamd.scan/clamd.sock
+
+LocalSocket /var/run/clamd.scan/clamd.sock
 ```
 
 下载病毒库
 https://www.clamav.net/downloads
 将main.cvd\daily.cvd\bytecode.cvd三个文件下载后上传到/var/lib/clamav目录下
-```bash
+```vim
 vim /etc/freshclam.conf
-  DatabaseDirectory /var/lib/clamav
 
+DatabaseDirectory /var/lib/clamav
+```
+```bash
 systemctl enable clamd@scan.service
 ln -s '/usr/lib/systemd/system/clamd@scan.service' '/etc/systemd/system/multi-user.target.wants/clamd@scan.service'
 ```
@@ -2239,30 +2551,35 @@ ln -s '/usr/lib/systemd/system/clamd@scan.service' '/etc/systemd/system/multi-us
 更新病毒库
 ```bash
 vim /usr/lib/systemd/system/clam-freshclam.service
-  # Run the freshclam as daemon 
-  [Unit] 
-  Description = freshclam scanner 
-  After = network.target 
 
-  [Service] 
-  Type = forking 
-  ExecStart = /usr/bin/freshclam -d -c 4 
-  Restart = on-failure 
-  PrivateTmp = true 
+# Run the freshclam as daemon 
+[Unit] 
+Description = freshclam scanner 
+After = network.target 
 
-  [Install] 
-  WantedBy=multi-user.target
+[Service] 
+Type = forking 
+ExecStart = /usr/bin/freshclam -d -c 4 
+Restart = on-failure 
+PrivateTmp = true 
 
+[Install] 
+WantedBy=multi-user.target
+```
+```bash
 systemctl start clam-freshclam.service
 systemctl status clam-freshclam.service
 freshclam
 systemctl enable clam-freshclam.service
 cp /usr/share/clamav/template/clamd.conf /etc/clamd.conf
-
+```
+```vim
 vim /etc/clamd.conf
-  TCPSocket 3310
-  TCPAddr 127.0.0.1
 
+TCPSocket 3310
+TCPAddr 127.0.0.1
+```
+```bash
 /usr/sbin/clamd restart  
 clamdscan -V
 

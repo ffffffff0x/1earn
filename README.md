@@ -2,8 +2,7 @@
     <img src=".//img/logo.png">
 </p>
 
-![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=social) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=social)
-
+![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=popout) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=popout) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/No-Github/1earn.svg?style=popout) ![GitHub last commit](https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout)
 ---
 
 ## Manual
@@ -32,7 +31,7 @@
 - Git-Help:记录 git 命令理解与速查
 
 ### 渗透
-在渗透测试的道路上不断摸索
+在学习渗透的道路上不断摸索
 - [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
 
 ### 运维
@@ -73,6 +72,7 @@
 **NOTE:**
 - 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了
 - 2019-5-2:快要坚持一个月每天更新了
+- 2019-5-13:定个小目标，10月前，所有md文档加起来50W字(目前总字数23W)
 
 ## List
 以下是我平日收集知识与资源的渠道(部分)

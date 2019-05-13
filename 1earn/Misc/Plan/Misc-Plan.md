@@ -76,7 +76,7 @@ sudo mkdir -p /etc/docker
 ```vim
 vim /etc/docker/daemon.json
 {
-  "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://<你自己的>.mirror.aliyuncs.com"]
 }
 ```
 ```bash

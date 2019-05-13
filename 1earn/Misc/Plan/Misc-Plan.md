@@ -65,7 +65,7 @@ git config --global https.proxy 'socks5://127.0.0.1:1080'
 git config --global --unset https.proxy
 ```
 
-## Docker镜像加速
+## Docker 镜像加速
 阿里云：https://cr.console.aliyun.com/#/accelerator
 DaoCloud：https://www.daocloud.io/mirror#accelerator-doc
 
@@ -106,7 +106,7 @@ nrm test
 npm config set proxy=http://127.0.0.1:8087
 ```
 
-## pip源
+## pip 源
 常用的国内镜像包括：
 1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
 2. 豆瓣http://pypi.douban.com/simple/

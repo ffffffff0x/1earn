@@ -2,28 +2,56 @@
 项目暂存地，这里的内容会被加入到各md文档中
 
 
-Microsoft SQL Server SA登录口令为空
 
-远程主机存在Linux FTP后门
 
-MySQL远程代码执行及权限提升漏洞(CVE-2016-6662)
-GNU Bash 远程代码执行漏洞(CVE-2014-6271)
-GNU Bash 环境变量远程命令执行漏洞(CVE-2014-6271)
-Samba未初始化指针释放远程代码执行漏洞(CVE-2015-0240)
-Samba 远程执行代码漏洞(CVE-2017-7494)
-SystemTap stat-server远程任意命令注入漏洞(CVE-2009-4273)
 
-Logwatch logwatch.pl任意命令执行漏洞(CVE-2011-1018)
-Microsoft Secure Channel 远程代码执行漏洞(CVE-2014-6321)(MS14-066)
-Microsoft远程桌面协议RDP远程代码可执行漏洞(CVE-2012-0002)(MS12-020)
-Microsoft SQL Server默认及易猜测账号存在弱口令
-Serv-U FTP Server目录遍历漏洞
-Microsoft SQL Server磁盘数据结构整数溢出漏洞(MS08-040)
-MIT Kerberos 5 'kadmind'后台程序远程代码执行漏洞(CVE-2014-9421)
-RhinoSoft Serv-U FTP Server远程目录遍历漏洞
-SNMP服务存在可写口令(CVE-1999-0516)
-海康威视(Hikvision)设备默认口令、弱口令检测
-猜测出远程TELNET服务存在可登录的用户名口令
+
+
+
+
+http://www.91ri.org/15441.html
+
+https://www.cnblogs.com/KevinGeorge/category/1145166.html
+https://www.anquanke.com/post/id/85043
+https://hellohxk.com/blog/php-deserialization/
+
+
+docker
+    CVE-2019-5736
+
+CouchDB漏洞 	 CVE–2017–12635 CVE–2017–12636 
+Jenkins Java反序列化远程代码执行漏洞 	CVE-2017-1000353
+
+PHP-CGI Argument Injection Remote Code Execution 
+JBoss反序列化命令执行漏洞 	CVE-2017-12149 	8220挖矿团伙
+
+Drupal Drupalgeddon 2远程代码执行 	CVE-2018-7600 	8220挖矿团伙
+ CVE-2018-7602 
+
+VBScript引擎远程代码执行漏洞 	CVE-2018-8174 	
+Rig Exploit Kit利用该漏洞分发门罗比挖矿代码
+
+Hadoop Yarn REST API未授权漏洞利用
+
+远程桌面协议远程代码执行漏洞 	 CVE-2017-0176
+
+LNK代码执行漏洞 	 CVE–2017–8464
+
+
+
+
+
+**Todo**
+- [ ] badusb
+- [ ] Vegile
+- [ ] ssrf
+- [ ] ASWCrypter
+- [ ] VENOM
+- [ ] namp脚本
+- [ ] xunfeng
+
+
+
 
 Apache
 
@@ -59,3 +87,23 @@ IIS
 Nginx
 
 
+
+
+
+
+**Todo**
+- [ ] oracle 19c(https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html)
+(http://blog.itpub.net/29785807/viewspace-2633720/)
+- [ ] [CouchDB](https://couchdb.apache.org/)
+- [ ] [RavenDB](https://ravendb.net)
+- [ ] [LiteDB](http://www.litedb.org/)
+- [ ] [CockroachDB](https://www.cockroachlabs.com/)
+- [ ] [cassandra](https://cassandra.apache.org/)
+- [ ] [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+- [ ] [Splunk](https://www.splunk.com/)
+- [ ] [Teradata](https://www.teradata.com/)
+- [ ] [IBM DB2](https://www.ibm.com/analytics/us/en/db2/)
+- [ ] [HBase](https://hbase.apache.org/)
+- [ ] [Hive](https://hive.apache.org/)
+- [ ] [Solr](https://lucene.apache.org/solr/)
+`都不要拦着我，我和数据库杠上了`

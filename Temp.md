@@ -5,8 +5,8 @@
 
 
 
-
-
+https://www.secpulse.com/archives/61101.html
+https://www.cnblogs.com/pannengzhi/p/2017-09-23-web-file-disclosure.html
 
 
 http://www.91ri.org/15441.html

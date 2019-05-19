@@ -174,7 +174,7 @@ vi /etc/fstab
 
 重启验证
 ```bash
-shutdown -r now 
+shutdown -r now
 mount | grep '^/dev'
 ```
 
@@ -185,27 +185,6 @@ lvextend -L 15G /dev/datastore/database
 lvs	# 确认有足够空间
 resize2fs /dev/datastore/database
 lvdisplay
-```
-
----
-
-## Vim
-常用配置
-`sudo vim /etc/vim/vimrc`
-最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
-```vim
-set number #显示行号
-set nobackup #覆盖文件时不备份
-set cursorline #突出显示当前行
-set ruler #在右下角显示光标位置的状态行
-set shiftwidth=4 #设定 > 命令移动时的宽度为 4
-set softtabstop=4 #使得按退格键时可以一次删掉 4 个空格
-set tabstop=4 #设定 tab 长度为 4(可以改）
-set smartindent #开启新行时使用智能自动缩进
-set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
-下面这个没觉得很有用,在代码多的时候会比较好
-#set showmatch #插入括号时,短暂地跳转到匹配的对应括号
-#set matchtime=2 #短暂跳转到匹配括号的时间
 ```
 
 ---
@@ -1656,7 +1635,7 @@ vim /etc/redis.conf
 #bind 127.0.0.1
 requirepass 密码	#设置redis密码
 ```
-`service redis restart`当然还要记得开防火墙  
+`service redis restart`当然还要记得开防火墙
 `redis-cli -h <ip> -p 6379 -a <PASSWORD>`
 
 ---
@@ -1684,7 +1663,7 @@ requirepass 密码	#设置redis密码
 
 **运行**
 ```bash
-systemctl start memcached 
+systemctl start memcached
 systemctl enable memcached
 
 firewall-cmd --add-port=11211/tcp --permanent
@@ -1693,7 +1672,180 @@ firewall-cmd --reload
 
 ---
 
+# 文本工具
+## Vim
+**常用配置**
+`sudo vim /etc/vim/vimrc`
+最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
+```vim
+set number #显示行号
+set nobackup #覆盖文件时不备份
+set cursorline #突出显示当前行
+set ruler #在右下角显示光标位置的状态行
+set shiftwidth=4 #设定 > 命令移动时的宽度为 4
+set softtabstop=4 #使得按退格键时可以一次删掉 4 个空格
+set tabstop=4 #设定 tab 长度为 4(可以改）
+set smartindent #开启新行时使用智能自动缩进
+set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+下面这个没觉得很有用,在代码多的时候会比较好
+#set showmatch #插入括号时,短暂地跳转到匹配的对应括号
+#set matchtime=2 #短暂跳转到匹配括号的时间
+```
+
+**解决ssh后vim中不能使用小键盘的问题**
+- xshell
+  更改的方法:
+  在终端设置中选择终端类型为linux
+
+- ubuntu
+  ```bash
+  sudo apt-get remove vim-common
+  sudo apt-get install vim
+  ```
+
+---
+
 # 文件服务
+## [filebrowser](https://github.com/filebrowser/filebrowser)
+**安装**
+`curl -fsSL https://filebrowser.xyz/get.sh | bash`
+
+**使用**
+filebrowser -a <你自己的IP> -r <文件夹路径>
+默认账号密码admin
+
+`只能在线看图片,在线看视频是不支持的,^w^`
+
+---
+
+## NFS
+**服务端**
+安装
+```bash
+yum ‐y install nfs‐utils
+```
+
+修改配置文件
+```vim
+vim /etc/exports
+/public 192.168.xxx.xxx(ro)
+```
+
+启服务
+```bash
+mkdir /public
+
+vi /etc/selinux/config
+	SELINUX=disabled
+
+firewall-cmd --zone=public --add-service=rpc-bind --permanent
+firewall-cmd --zone=public --add-service=mountd --permanent
+firewall-cmd --zone=public --add-port=2049/tcp --permanent
+firewall-cmd --zone=public --add-port=2049/udp --permanent
+firewall-cmd --reload
+
+service rpcbind start
+service nfs start
+```
+
+**客户端**
+安装,创建用户
+```bash
+yum ‐y install nfs‐utils
+mkdir /mnt/nfsfiles
+
+useradd nfsuser1
+passwd nfsuser1
+```
+
+验证共享是否成功
+`showmount ‐e 192.168.xxx.xxx`
+
+挂载共享目录
+```vim
+vim /etc/fstab
+
+192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
+```
+
+`su ‐l nfsuser1`
+
+**验证**
+服务器
+```bash
+[root@localhost ~]# cd /public/
+[root@localhost public]# echo "hello" > hello.txt
+```
+客户端
+```bash
+[nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
+[nfsuser1@localhost nfsfiles]$ cat hello.txt
+```
+
+---
+
+## [Samba](https://www.samba.org)
+**服务端**
+安装
+`yum install samba `
+
+修改配置文件
+```vim
+vim /etc/samba/smb.conf
+[smbshare]
+path = /smbshare	# 共享目录
+public = yes
+writeable=yes
+hosts allow = 192.168.1xx.33/32	# 允许主机
+hosts deny = all
+create mask = 0770	# 创建文件的权限为0770；
+```
+
+验证配置文件有没有错误
+`testparm`
+
+**用户配置**
+```bash
+# 添加用户,设置密码
+useradd smb1
+smbpasswd ‐a smb1(密码：smb123456)
+
+# 将用户添加到 samba 服务器中,并设置密码
+pdbedit ‐a smb1(密码：smb123456)
+
+# 查看 samba 数据库用户
+pdbedit ‐L
+```
+
+创建共享目录,设置所有者和所属组
+```bash
+mkdir /smbshare
+chown smb1:smb1 /smbshare
+```
+
+关闭 selinux（需要重启）
+```vim
+vim /etc/selinux/config
+SELINUX=disabled
+```
+```bash
+firewall-cmd --zone=public --add-service=samba --permanent
+firewall-cmd --reload
+
+systemctl restart smb
+```
+
+**客户端**
+```bash
+yum install samba
+
+mkdir /data/web_data
+mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
+/data/web_data
+```
+
+---
+
 ## [Vsftp](https://security.appspot.com/vsftpd.html)
 **匿名访问**
 |参数|作用|
@@ -1860,16 +2012,16 @@ allow_writeable_chroot=YES
 用户配置权限文件
 所有用户主目录为 /home/ftp 宿主为 virtual 用户；
 ```bash
-useradd -d /home/ftp -s /sbin/nologin virtual  
+useradd -d /home/ftp -s /sbin/nologin virtual
 chmod -Rf 755 /home/ftp/
 cd /home/ftp/
 touch testfile
 ```
 ```vim
-vim /etc/vsftpd/vsftpd.conf  
+vim /etc/vsftpd/vsftpd.conf
 
 guest_enable=YES      # 表示是否开启vsftpd虚拟用户的功能,yes表示开启,no表示不开启。
-guest_username=virtual       # 指定虚拟用户的宿主用户  
+guest_username=virtual       # 指定虚拟用户的宿主用户
 user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人vsftpd服务文件存放路径
 allow_writeable_chroot=YES
 ```
@@ -1906,134 +2058,6 @@ systemctl enable vsftpd
 
 **Reference**
 - [第11章 使用Vsftpd服务传输文件。](https://www.linuxprobe.com/chapter-11.html)
-
----
-
-## [Samba](https://www.samba.org)
-**服务端**
-安装
-`yum install samba `
-
-修改配置文件
-```vim	
-vim /etc/samba/smb.conf
-[smbshare]
-path = /smbshare	# 共享目录
-public = yes
-writeable=yes
-hosts allow = 192.168.1xx.33/32	# 允许主机
-hosts deny = all
-create mask = 0770	# 创建文件的权限为0770；
-```
-
-验证配置文件有没有错误
-`testparm`
-
-**用户配置**
-```bash
-# 添加用户,设置密码
-useradd smb1
-smbpasswd ‐a smb1(密码：smb123456)
-
-# 将用户添加到 samba 服务器中,并设置密码
-pdbedit ‐a smb1(密码：smb123456)
-
-# 查看 samba 数据库用户
-pdbedit ‐L
-```
-
-创建共享目录,设置所有者和所属组
-```bash
-mkdir /smbshare
-chown smb1:smb1 /smbshare
-```
-
-关闭 selinux（需要重启）
-```vim
-vim /etc/selinux/config
-SELINUX=disabled
-```
-```bash
-firewall-cmd --zone=public --add-service=samba --permanent
-firewall-cmd --reload
-
-systemctl restart smb
-```
-
-**客户端**
-```bash
-yum install samba 
-
-mkdir /data/web_data
-mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata 
-/data/web_data
-```
-
----
-
-## NFS
-**服务端**
-安装
-```bash
-yum ‐y install nfs‐utils
-```
-
-修改配置文件
-```vim
-vim /etc/exports
-/public 192.168.xxx.xxx(ro)
-```
-
-启服务
-```bash
-mkdir /public
-
-vi /etc/selinux/config
-	SELINUX=disabled
-		
-firewall-cmd --zone=public --add-service=rpc-bind --permanent
-firewall-cmd --zone=public --add-service=mountd --permanent
-firewall-cmd --zone=public --add-port=2049/tcp --permanent
-firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
-
-service rpcbind start
-service nfs start	
-```
-
-**客户端**
-安装,创建用户
-```bash
-yum ‐y install nfs‐utils
-mkdir /mnt/nfsfiles
-
-useradd nfsuser1
-passwd nfsuser1
-```
-
-验证共享是否成功
-`showmount ‐e 192.168.xxx.xxx`
-
-挂载共享目录
-```vim
-vim /etc/fstab
-
-192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
-```
-
-`su ‐l nfsuser1`
-
-**验证**
-服务器
-```bash
-[root@localhost ~]# cd /public/
-[root@localhost public]# echo "hello" > hello.txt
-```
-客户端
-```bash
-[nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
-[nfsuser1@localhost nfsfiles]$ cat hello.txt
-```
 
 ---
 

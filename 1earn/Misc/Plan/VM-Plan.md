@@ -21,6 +21,15 @@
 **VMTools**
 如果没有装，一定要装.如果装不了，可以尝试这个方案[open-vm-tools](https://github.com/vmware/open-vm-tools)
 
+**Centos 共享文件夹**
+1. 需要vm tool
+2. 不能用mount工具挂载，而是得用vmhgfs-fuse，需要安装工具包
+```bash
+yum install open-vm-tools-devel -y
+有的源的名字并不一定为open-vm-tools-devel(centos) ，而是open-vm-dkms(unbuntu)
+执行：vmhgfs-fuse .host:/ /mnt/hgfs
+```
+
 **常见报错**
 - **该虚拟机似乎正在使用中。如果该虚拟机未在使用，请按“获取所有权(T)**
     将虚拟机路径下后缀为.lck的文件夹删除
@@ -137,3 +146,4 @@ disk:60G
 - [无法将 Ethernet0 连接到虚拟网络"VMnet0" 详细信息可以在 vmware.log](https://blog.csdn.net/qq_26479655/article/details/51794520)
 - [关于VMware问题：无法获得 VMCI 驱动程序的版本: 句柄无效。驱动程序“vmci.sys”的版本不正确......](https://blog.csdn.net/mononoke111/article/details/79010700)
 - [未通过ovf规范一致性或虚拟硬件合规性检查](https://blog.51cto.com/joket/1790244)
+- [Vmware10 Centos7 共享文件夹设置方法](https://www.cnblogs.com/zejin2008/p/7144514.html)

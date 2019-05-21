@@ -614,7 +614,6 @@ cd .. && rm -rf proxychains-ng
 **编辑配置**
 ```bash
 vim /etc/proxychains.conf
-
 socks5 127.0.0.1 1080 #改成你懂的
 ```
 

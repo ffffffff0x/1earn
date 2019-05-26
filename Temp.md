@@ -2,6 +2,9 @@
 项目暂存地，这里的内容会被加入到各md文档中
 
 
+
+frp
+
 如何知道自己网站使用了哪些http方法？
 nmap -p 80 --script http-methods
 
@@ -66,8 +69,8 @@ Tomcat
 
 Elasticsearch
 
-
-
+Apache Solr
+https://github.com/mpgn/CVE-2019-0192/
 
 
 Fastcgi
@@ -88,7 +91,8 @@ IIS
 Nginx
 
 
-
+jenkins
+https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-via-jenkins-credentials-plugin-vulnerability-cve-2019-10320/
 
 
 

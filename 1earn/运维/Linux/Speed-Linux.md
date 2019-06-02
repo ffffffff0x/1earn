@@ -40,18 +40,23 @@ distcc	#多台机器一起编译
 echo $PATH  #查看环境变量
 
 PATH=$PATH:/usr/local/python3/bin/ #新添加的路径     （关闭终端失效）
-
-vim ~/.bash_profile #永久修改变量
-	PATH=$PATH:/usr/local/bin/
-source ~/.bash_profile #立即生效
 ```
+```vim
+vim ~/.bash_profile #永久修改变量
+
+PATH=$PATH:/usr/local/bin/
+```
+`source ~/.bash_profile`立即生效
+
 
 - **fish**
-```bash
+```vim
 vim ~/.config/fish/config.fish
-	set PATH (你想要加入的路径) $PATH
-souce ~/.config/fish/config.fish
+
+set PATH (你想要加入的路径) $PATH
 ```
+`souce ~/.config/fish/config.fish`
+
 
 ---
 
@@ -92,7 +97,7 @@ cd
 ~ #表示home目录
 . #表示当前目录
 .. #表示上级目录
-- #表示上一次目录 
+- #表示上一次目录
 / #表示根目录
 
 root  #存放root用户相关文件
@@ -241,13 +246,15 @@ gedit	#图形化的编辑器
 **Ubuntu**
 ```vim
 vim /etc/network/interfaces
-	auto enp7s0	 #使用的网络接口	
-	iface enp7s0 inet static	#静态ip设置
-	address 10.0.208.222
-	netmask 255.255.240.0
-	gateway 10.0.208.1
-	dns-nameservers 10.0.208.1
 
+auto enp7s0	 # 使用的网络接口
+iface enp7s0 inet static	# 静态ip设置
+address 10.0.208.222
+netmask 255.255.240.0
+gateway 10.0.208.1
+dns-nameservers 10.0.208.1
+```
+```bash
 sudo ip addr flush enp7s0
 sudo systemctl restart networking.service
 
@@ -257,28 +264,34 @@ systemctl enable NetworkManager
 
 **Centos**
 ```vim
-vim /etc/sysconfig/network-scripts/ifcfg-eth0    #是不是eth0要看自己的网卡,使用ip a
-	HWADDR=00:0C:29:F1:2E:7B
-	BOOTPROTO=static　　　　　　　#使用静态IP,而不是由DHCP分配IP
-	IPADDR=172.16.102.61
-	PREFIX=24
-	GATEWAY=172.16.102.254
-	HOSTNAME=test
-	onboot=yes
+vim /etc/sysconfig/network-scripts/ifcfg-eth0    # 是不是eth0要看自己的网卡,使用ip a
 
+HWADDR=00:0C:29:F1:2E:7B
+BOOTPROTO=static　　　　　　　# 使用静态IP,而不是由DHCP分配IP
+IPADDR=172.16.102.61
+PREFIX=24
+GATEWAY=172.16.102.254
+HOSTNAME=test
+onboot=yes
+```
+```vim
 vim /etc/hosts
-	127.0.0.1  test localhost  #修改localhost.localdomain为test,shutdown -r now重启使修改生效
 
-systemctl restart NetworkManager	重启网络管理
-systemctl enable NetworkManager 
+127.0.0.1  test localhost  # 修改localhost.localdomain为test,shutdown -r now重启使修改生效
+```
+```bash
+systemctl restart NetworkManager	# 重启网络管理
+systemctl enable NetworkManager
 ```
 
 修改DNS
 ```vim
 vim /etc/resolv.conf
-	nameserver 8.8.8.8
 
-chattr +i /etc/resolv.conf	#限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置
+nameserver 8.8.8.8
+```
+```bash
+chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置
 service network restart
 ```
 
@@ -287,20 +300,21 @@ service network restart
 ifconfig eth0 up	#启动网卡
 dhcpcd  eth0	#获取ip
 ```
-```bash
-ifconfig -a	#查看下可用的网卡
+`ifconfig -a`查看下可用的网卡
+```vim
 vim /etc/rc.conf
-	interface=eth0
-	eth0="dhcp"
-	lo="lo 127.0.0.1"
-	eth0="eth0 192.168.0.2 netmask 255.255.255.0 broadcast 192.168.0.255"
 
-	INTERFACES=(eth0)
-	gateway="default gw 192.168.0.1"
-	ROUTES=(gateway)
+interface=eth0
+eth0="dhcp"
+lo="lo 127.0.0.1"
+eth0="eth0 192.168.0.2 netmask 255.255.255.0 broadcast 192.168.0.255"
 
-/etc/rc.d/network restart	
+INTERFACES=(eth0)
+gateway="default gw 192.168.0.1"
+ROUTES=(gateway)
 ```
+`/etc/rc.d/network restart`
+
 
 ---
 
@@ -384,24 +398,25 @@ mount /dev/cdrom /mnt/cdrom/
 进入 /etc/yum.repos.d 目录,将其中三个改名或者剩下所有都移走留下 CentOS-Base.repo
 ```bash
 cd /etc/yum.repos.d
-rm  CentOS-Media.repo    
-rm  CentOS-Vault.repo     
+rm  CentOS-Media.repo
+rm  CentOS-Vault.repo
 ```
 
 编辑 CentOS-Base.repo
 ```vim
-vi CentOS-Base.repo
-    baseurl=file:///mnt/cdrom/  #这里为本地源路径
-    gpgcheck=0	
-    enabled=1    ##开启本地源
+vim CentOS-Base.repo
+
+baseurl=file:///mnt/cdrom/  # 这里为本地源路径
+gpgcheck=0
+enabled=1    # 开启本地源
 ```
 
 **Alibaba源**
 进入 /etc/yum.repos.d 目录,将其中三个改名或者剩下所有都移走留下 CentOS-Base.repo
 ```bash
 cd /etc/yum.repos.d
-rm  CentOS-Media.repo    
-rm  CentOS-Vault.repo     
+rm  CentOS-Media.repo
+rm  CentOS-Vault.repo
 ```
 直接下载源
 >wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
@@ -416,33 +431,37 @@ lsb_release -c	#查看系统版号
 
 cd /etc/apt/
 mv sources.list sources.list.bak
+```
+```vim
 vim sources.list
-	deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse 
-	deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse 
-	deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse 
-	deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse 
-	deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse 
-	deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse 
-	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse 
-	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse 
-	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse 
-	deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
 ```
 
 **Kali源**
 ```vim
 vim /etc/apt/sources.list
-	deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-	deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
 
-apt-get update && apt-get upgrade && apt-get dist-upgrade
+deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
 ```
+`apt-get update && apt-get upgrade && apt-get dist-upgrade`
+
 
 **Pacman源**
-```vim
+```bash
 sudo pacman-mirrors -i -c China -m rank //更新镜像排名
 sudo pacman -Syy //更新数据源
-sudo pacman -S archlinux-keyring 
+sudo pacman -S archlinux-keyring
 ```
 
 ### Binary
@@ -465,7 +484,7 @@ dpkg -L #查看软件安装位置
 ### Pacman
 ```bash
 sudo pacman -S vim
-sudo pacman -S fish 
+sudo pacman -S fish
 sudo pacman -Syy
 ```
 
@@ -517,12 +536,13 @@ usermod -s /usr/bin/fish USERNAME
 ```
 
 **Powerline-shell**
-```bash
-pip install powerline-shell
+`pip install powerline-shell`
+```vim
 vim ~/.config/fish/config.fish
-	function fish_prompt
-			powerline-shell --shell bare $status
-	end
+
+function fish_prompt
+	powerline-shell --shell bare $status
+end
 ```
 
 **Vim**
@@ -533,7 +553,7 @@ Normal 模式下`i`进入 insert模式
 `:q！`强制退出
 `:wq！`强制保存退出
 `:w !sudo tee %`无 root 权限,保存编辑的文件
-`:saveas <path/to/file> `→ 另存为 
+`:saveas <path/to/file> `→ 另存为
 按下`/`即可进入查找模式,输入要查找的字符串并按下回车。 Vim会跳转到第一个匹配。按下`n`查找下一个,按下`N`查找上一个。
 
 `:%s/foo/bar`代表替换foo为bar
@@ -549,75 +569,83 @@ insert模式按`ESC`键,返回 Normal 模式
 ## 系统设置
 ### 时间
 ```bash
-data -s "2019-03-31 13:12:29"   #修改系统时间
-hwclock	#clock和hwclock是一样的
-ntpdate 0.rhel.pool.ntp.org   #网络同步时间
-hwclock –w #将系统时钟同步到硬件时钟
+data -s "2019-03-31 13:12:29"   # 修改系统时间
+hwclock	# clock和hwclock是一样的
+ntpdate 0.rhel.pool.ntp.org   # 网络同步时间
+hwclock –w # 将系统时钟同步到硬件时钟
 hwclock -s # 将硬件时钟同步到系统时钟
-cal	2019	#2019日历
+cal	2019	# 2019日历
 ```
 
 ### 语言
-```bash
-echo  $LANG   查看当前操作系统的语言
+`echo  $LANG`查看当前操作系统的语言
+```vim
 vim /etc/locale.conf
-	set LANG en_US.UTF-8	#更改默认语言
-					 zh_CN.UTF-8
-source   /etc/locale.conf
+
+set LANG en_US.UTF-8	# 更改默认语言
+	 zh_CN.UTF-8
 ```
+`source   /etc/locale.conf`
+
 
 ### 启动项
 ```bash
-chkconfig --list        #列出所有的系统服务
-chkconfig --add httpd        #增加httpd服务
-chkconfig --del httpd        #删除httpd服务
-chkconfig --level httpd 2345 on        #设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态
+chkconfig --list        # 列出所有的系统服务
+chkconfig --add httpd        # 增加httpd服务
+chkconfig --del httpd        # 删除httpd服务
+chkconfig --level httpd 2345 on        # 设置httpd在运行级别为2、3、4、5的情况下都是on（开启）的状态
+```
+```vim
+vim /etc/crontab	# 系统任务调度的配置文件
 
-vim /etc/crontab	#系统任务调度的配置文件
-#前5个星号分别代表:分钟,小时,几号,月份,星期几
-	* * * * * command	#每1分钟执行一次command
-	3,15 * * * * command	#每小时的第3和第15分钟执行
-	@reboot	command #开机启动
+# 前5个星号分别代表:分钟,小时,几号,月份,星期几
+* * * * * command	# 每1分钟执行一次command
+3,15 * * * * command	# 每小时的第3和第15分钟执行
+@reboot	command # 开机启动
 ```
 
 ### 账号管控
 **账号**
 ```bash
-whoami	#当前用户
-groups	#当前组
+whoami	# 当前用户
+groups	# 当前组
 
-useradd -d /home/user1 -s /sbin/nologin user1  #创建用户user1
-passwd user1 #设置密码
-addgroup group1 #创建组
-addgroup user1 group1 #移动用户到组
-newgrp group1	#创建组
+useradd -d /home/user1 -s /sbin/nologin user1  # 创建用户user1
+passwd user1 # 设置密码
+addgroup group1 # 创建组
+addgroup user1 group1 # 移动用户到组
+newgrp group1	# 创建组
 usermod -g 组名 用户名　# 修改用户的主组
-usermod -G 附加组 用户名　#修改用户的附加组
+usermod -G 附加组 用户名　# 修改用户的附加组
 usermod -s /bin/bash 用户名　# 修改用户登录的Shell
-userdel user1 #只删除用户不删除家目录
-userdel -r user1 #同时删除家目录
-userdel -f user1 #强制删除,即使用户还在登陆中
-sudo passwd   #配置 su 密码
+userdel user1 # 只删除用户不删除家目录
+userdel -r user1 # 同时删除家目录
+userdel -f user1 # 强制删除,即使用户还在登陆中
+sudo passwd   # 配置 su 密码
 ```
 
 **权限**
 ```bash
-chown named.named aaa.txt 	#将文件给指定用户及组
-chmod 777 a.txt 		#给文件权限
-chmod 777  #用户rwx、组rwx、其他用户rwx  4.2.1分别代表读,写,执行
-chmod o=rw a.txt  #代表只给其他用户分配读写权限
+chown named.named aaa.txt 	# 将文件给指定用户及组
+chmod 777 a.txt 		# 给文件权限
+chmod 777  # 用户rwx、组rwx、其他用户rwx  4.2.1分别代表读,写,执行
+chmod o=rw a.txt  # 代表只给其他用户分配读写权限
 chmod u=rw,g=r,o= a.txt
-chown -R u+x test  #对test及其子目录所有文件的所有者增加执行权限
-chgrp user1 file.txt	#Change the owning group of the file file.txt to the group named user1.
-chgrp -hR staff /office/files	#Change the owning group of /office/files, and all subdirectories, to the group staff.
-umask 002	#配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认0022
-#umask值002 所对应的文件和目录创建缺省权限分别为6 6 4和7 7 5
-visudo	#加sudo权限
-	user1 ALL=(ALL)     ALL
+chown -R u+x test  # 对test及其子目录所有文件的所有者增加执行权限
+chgrp user1 file.txt	# Change the owning group of the file file.txt to the group named user1.
+chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
+umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认0022
+# umask值002 所对应的文件和目录创建缺省权限分别为6 6 4和7 7 5
+```
+```vim
+visudo	# 加sudo权限
 
+user1 ALL=(ALL)     ALL
+```
 加sudo权限(仅限Ubuntu)
-adduser user1 sudo	#将user1加到sudo组中
-deluser user1 sudo	#将user1从sudo组中删除
+```bash
+adduser user1 sudo	# 将user1加到sudo组中
+deluser user1 sudo	# 将user1从sudo组中删除
 ```
 
 ---
@@ -633,25 +661,25 @@ cat /etc/os-release
 ```bash
 杀进程
 kill -s STOP <PID>
-kill -HUP <pid>	#更改配置而不需停止并重新启动服务
-killall <PID>	
+kill -HUP <pid>	# 更改配置而不需停止并重新启动服务
+killall <PID>
 
 处理进程
-service xxx start	#开服务
-service xxx stop	#关服务
+service xxx start	# 开服务
+service xxx stop	# 关服务
 
 systemctl start xxx
 systemctl stop xxx
-systemctl enable xxx	#设置开机启动
+systemctl enable xxx	# 设置开机启动
 systemctl disable xxx
 
-ctrl+z #将前台运行的任务暂停,仅仅是暂停,而不是将任务终止。
-bg	#转后台运行
-fg	#转前台运行
+ctrl+z # 将前台运行的任务暂停,仅仅是暂停,而不是将任务终止。
+bg	# 转后台运行
+fg	# 转前台运行
 
 查进程
-pidof program	#找出program程序的进程PID
-pidof -x script #找出shell脚本script的进程PID
+pidof program	# 找出program程序的进程PID
+pidof -x script # 找出shell脚本script的进程PID
 service xxx status
 systemctl status xxx
 ```
@@ -661,7 +689,7 @@ systemctl status xxx
 top
 free
 vmstat
-ps -aux 
+ps -aux
 ```
 
 ---
@@ -670,7 +698,7 @@ ps -aux
 ## 硬盘/数据恢复
 ```bash
 df
-blkid 
+blkid
 fdisk -l
 ```
 
@@ -685,32 +713,34 @@ fdisk -l
 把rhgb quiet替换为init=/bin/bash（临时生效）
 按CTRL+X进入单用户模式
 
-挂载根文件系统:	
+挂载根文件系统:
 mount -o remount,rw /
 
 使用passwd命令直接设置root密码:
 passwd root
-	
+
 输入两次新密码。
 
 最后,执行如下命令更新SELinux:
 touch /.autorelabel
 
-进入正常模式:	
+进入正常模式:
 exec /sbin/init
 
 现在可以使用新设置的root密码登录了。
 ```
 
 ## selinux
-```bash
-关闭 selinux👁
-vim /etc/selinux/config
-    SELINUX=disabled
-    （需要重启）
+**关闭 selinux**
+- 需要重启
+	```vim
+	vim /etc/selinux/config
 
-setenforce 0 (不需要重启)
-```
+	SELINUX=disabled
+	```
+
+- 不需要重启
+	`setenforce 0`
 
 ---
 

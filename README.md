@@ -3,6 +3,7 @@
 </p>
 
 ![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=popout) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=popout) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/No-Github/1earn.svg?style=popout) ![GitHub last commit](https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout)
+
 ---
 
 ## Manual
@@ -77,22 +78,22 @@
 ## List
 以下是我平日收集知识与资源的渠道(部分)
 - [每日一文](https://meiriyiwen.com/)
-- [360CERT - 每日安全简报](https://cert.360.cn/daily)
+- [360CERT](https://cert.360.cn/daily)
 - [Tuisec安全热点](https://paper.tuisec.win/)
-- [HackerNews | 最及时的国际威胁情报](http://hackernews.cc/)
+- [HackerNews](http://hackernews.cc/)
 - [Sec-News 安全文摘](http://wiki.ioin.in/)
 - [SecWiki-安全维基,汇集国内外优秀安全资讯、工具和网站](https://www.sec-wiki.com/)
 - [BleepingComputer](https://www.bleepingcomputer.com/)
-- [HackRead | Latest Cyber Crime - InfoSec- Tech - Hacking News](https://www.hackread.com/)
+- [HackRead](https://www.hackread.com/)
 - [backup](https://4hou.win/wordpress/)
-- [FreeBuf.COM | 关注黑客与极客](https://www.freebuf.com/)
+- [FreeBuf.COM](https://www.freebuf.com/)
 - [吾爱破解](https://www.52pojie.cn/)
 - [MottoIN](http://www.mottoin.com/)
 - [i春秋论坛](https://bbs.ichunqiu.com/portal.php)
 - [嘶吼 RoarTalk – 回归最本质的信息安全,互联网安全新媒体](http://www.4hou.com/)
-- [安全内参 | 网络安全首席知识官](https://www.secrss.com/)
+- [安全内参](https://www.secrss.com/)
 - [安全客 - 有思想的安全新媒体](http://bobao.360.cn/)
-- [安全脉搏 | 分享技术,悦享品质](https://www.secpulse.com/)
+- [安全脉搏](https://www.secpulse.com/)
 - [Linux中国开源社区](https://linux.cn/)
 - [T00LS - 低调求发展 - 潜心习安全](https://www.t00ls.net/)
 - [看雪安全论坛 - www.pediy.com](http://bbs.pediy.com/)

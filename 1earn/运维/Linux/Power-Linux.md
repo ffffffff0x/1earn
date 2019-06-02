@@ -1215,18 +1215,46 @@ outgoing: # communication with search engines
       #db: 0
 
 engines:
-  - name : google
-    engine : google
-    shortcut : go
+  - name : duckduckgo
+    engine : duckduckgo
+    shortcut : ddg
 
-  - name : google images
-    engine : google_images
-    shortcut : goi
+  - name : duckduckgo images
+    engine : duckduckgo_images
+    shortcut : ddi
+
+  - name : twitter
+    engine : twitter
+    shortcut : tw
+
+  - name : mojeek
+    shortcut: mjk
+    engine: xpath
+    paging : True
+    search_url : https://www.mojeek.com/search?q={query}&s={pageno}
+    results_xpath: /html/body//div[@class="results"]/ul[@class="results-standard"]/li
+    url_xpath : ./h2/a/@href
+    title_xpath : ./h2
+    content_xpath : ./p[@class="s"]
+    suggestion_xpath : /html/body//div[@class="top-info"]/p[@class="top-info spell"]/a
+    first_page_num : 1
+    page_size : 10
+
+  - name : torrentz
+    engine : torrentz
+    shortcut : tor
+    url: https://torrentz2.eu/
+    timeout : 3.0
+
+  - name : startpage
+    engine : startpage
+    shortcut : sp
+    timeout : 6.0
 
   - name : baidu
     engine : baidu
     shortcut : bd
-  
+
   - name : baidu images
     engine : baidu_images
     shortcut : bdi
@@ -1358,7 +1386,7 @@ sentry:
 **运行+caddy反代**
 ```bash
 mv searx/settings_et_dev.yml searx/settings.yml
-gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	#一定要在mijisou目录下运行
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	# 一定要在mijisou目录下运行
 
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 
@@ -1416,7 +1444,7 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 ps -aux
 看一下哪个是gunicorn进程
 kill 杀掉
-gunicorn searx.webapp:app -b 127.0.0.1:8888 -D
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录下运行
 ```
 
 **配合Cloudflare的CDN**

@@ -76,7 +76,7 @@ pidof -x name #定位脚本的pid
 ```bash
 ulimit -u 20 #临时性允许用户最多创建 20 个进程,预防类似fork炸弹
 vim /etc/security/limits.conf
-    user1 - nproc 20       #退出后重新登录，就会发现最大进程数已经更改为 20 了    
+    user1 - nproc 20       #退出后重新登录，就会发现最大进程数已经更改为 20 了
 ```
 
 ## 负载
@@ -85,7 +85,7 @@ vim /etc/security/limits.conf
 top
 free
 vmstat
-ps -aux 
+ps -aux
 
 ps aux | grep Z #列出进程表中所有僵尸进程
 ```

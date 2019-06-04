@@ -54,8 +54,8 @@ vim /etc/fstab
 进入 /etc/yum.repos.d 目录,将其中三个改名或者移走留下 CentOS-Base.repo
 ```bash
 cd /etc/yum.repos.d
-rm  CentOS-Media.repo    
-rm  CentOS-Vault.repo     
+rm  CentOS-Media.repo
+rm  CentOS-Vault.repo
 ```
 
 编辑 CentOS-Base.repo
@@ -63,7 +63,7 @@ rm  CentOS-Vault.repo
 vim CentOS-Base.repo
 
 baseurl=file:///mnt/cdrom/  # 这里为本地源路径
-gpgcheck=0	
+gpgcheck=0
 enabled=1    # 开启本地源
 ```
 `yum list` 看一下包
@@ -135,7 +135,7 @@ fdisk /dev/sdb	# 创建系统分区
 	p
 	1
 	后面都是默认,直接回车
-		
+
 	t	# 转换分区格式
 	8e
 
@@ -146,7 +146,7 @@ fdisk /dev/sdb	# 创建系统分区
 创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
 ```bash
 pvcreate /dev/sdb1	# 创建物理卷
-vgcreate ‐s 16M datastore /dev/sdb1	
+vgcreate ‐s 16M datastore /dev/sdb1
 ```
 
 **逻辑卷**
@@ -162,7 +162,7 @@ lvdisplay
 ```
 
 **格式化**
-将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。	
+将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。
 ```bash
 mkfs.xfs /dev/datastore/database
 mkdir /mnt/database
@@ -228,17 +228,17 @@ yum install chrony
 ```vim
 vim /etc/chrony.conf
 
-server time1.aliyun.com iburst  
-server time2.aliyun.com iburst 
-server time3.aliyun.com iburst 
-server time4.aliyun.com iburst 
-server time5.aliyun.com iburst 
-server time6.aliyun.com iburst 
-server time7.aliyun.com iburst 
+server time1.aliyun.com iburst
+server time2.aliyun.com iburst
+server time3.aliyun.com iburst
+server time4.aliyun.com iburst
+server time5.aliyun.com iburst
+server time6.aliyun.com iburst
+server time7.aliyun.com iburst
   或
-server time1.google.com iburst 
-server time2.google.com iburst 
-server time3.google.com iburst 
+server time1.google.com iburst
+server time2.google.com iburst
+server time3.google.com iburst
 server time4.google.com iburst
 ```
 
@@ -310,7 +310,7 @@ cat /var/lib/dhcpd/dhcpd.leases # 查看租约文件,了解租用情况
 
 ## DNS
 **安装**
-`yum install bind*`
+`yum install bind-*`
 
 **主配置文件**
 ```vim
@@ -327,17 +327,17 @@ options {
 ```vim
 vim /etc/named.rfc1912.zones
 
-zone "abc.com" IN { 
+zone "abc.com" IN {
         type master;
         file "abc.localhost";
 };
 
-zone "1.1.1.in-addr.arpa" IN { 
+zone "1.1.1.in-addr.arpa" IN {
         type master;
         file "abc.loopback";
 };
 
-zone "2.1.1.in-addr.arpa" IN { 
+zone "2.1.1.in-addr.arpa" IN {
         type master;
         file "www.loopback";
 };
@@ -350,7 +350,7 @@ cp named.localhost abc.localhost
 cp named.loopback abc.loopback
 cp named.loopback www.loopback
 
-chown named abc.localhost 
+chown named abc.localhost
 chown named abc.loopback
 chown named www.loopback
 ```
@@ -373,7 +373,7 @@ ftp    	A      1.1.1.1
 www     A      1.1.2.1
 ```
 ```vim
-vim /var/named/abc.loopback 
+vim /var/named/abc.loopback
 
 $TTL 1D
 @	IN SOA  @ rname.invalid. (
@@ -389,7 +389,7 @@ $TTL 1D
 1 PTR ftp.abc.com.
 ```
 ```vim
-vim /var/named/www.loopback 
+vim /var/named/www.loopback
 
 $TTL 1D
 @ 		IN SOA  @ rname.invalid. (
@@ -409,8 +409,8 @@ $TTL 1D
 ```bash
 named-checkconf
 named-checkzone abc.com abc.localhost
-named-checkzone abc.com abc.loopback 
-named-checkzone abc.com www.loopback 
+named-checkzone abc.com abc.loopback
+named-checkzone abc.com www.loopback
 service named restart
 
 setenforce 0
@@ -480,7 +480,7 @@ service tftp
 systemctl restart xinetd
 systemctl enable xinetd
 firewall-cmd --permanent --add-port=69/udp  #放行tftp
-firewall-cmd --reload 
+firewall-cmd --reload
 ```
 
 **配置 SYSLinux 服务**
@@ -521,7 +521,7 @@ ln -s '/usr/lib/systemd/system/vsftpd.service' '/etc/systemd/system/multi-user.t
 
 cp -rvf /media/cdrom/* /var/ftp
 firewall-cmd --permanent --add-service=ftp
-firewall-cmd --reload 
+firewall-cmd --reload
 setsebool -P ftpd_connect_all_unreserved=on
 ```
 
@@ -671,13 +671,13 @@ yum install mod_ssl
 ```vim
 vim /etc/httpd/conf/httpd.conf
 
-DocumentRoot "/var/www/html" 
+DocumentRoot "/var/www/html"
 ServerName  xx.xx.xx.xx:80   # 设置Web服务器的主机名和监听端口
 ```
 
 **启服务**
 ```vim
-vim var/www/html/index.html 
+vim var/www/html/index.html
 
 Hello World!
 ```
@@ -694,17 +694,17 @@ vim /etc/httpd/conf.d/virthost.conf
 
 <VirtualHost 192.168.1xx.22:80>
 	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
+	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
 	</Directory>
 </VirtualHost>
 
-Listen 192.168.1XX.33:443 
+Listen 192.168.1XX.33:443
 <VirtualHost 192.168.1xx.22:443>
 	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
-	DocumentRoot "/data/web_data" 
-	
+	DocumentRoot "/data/web_data"
+
 	SSLEngine on
 	SSLCertificateFile /etc/httpd/ssl/httpd.crt
 	SSLCertificateKeyFile /etc/httpd/ssl/httpd.key
@@ -716,7 +716,7 @@ Listen 192.168.1XX.33:443
 ```
 ```bash
 mkdir -p /data/web_data
-echo 'Hello World!' >/data/web_data/index.html 
+echo 'Hello World!' >/data/web_data/index.html
 
 service httpd restart
 firewall-cmd --zone=public --add-service=http --permanent
@@ -727,7 +727,7 @@ firewall-cmd --reload
 - **为linux提供web证书**
 ```bash
 cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem 
+openssl genrsa 2048 > cakey.pem
 openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
 cd /etc/pki/CA
@@ -737,9 +737,9 @@ echo 01 > serial
 
 mkdir /etc/httpd/ssl
 cd /etc/httpd/ssl
-openssl genrsa 1024 > httpd.key 
+openssl genrsa 1024 > httpd.key
 openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt 
+openssl ca -days 365 -in httpd.csr > httpd.crt
 
 # 使用cat /etc/pki/CA/index.txt查看openssl证书数据库文件
 cat /etc/pki/CA/index.txt
@@ -748,7 +748,7 @@ cat /etc/pki/CA/index.txt
 - **为windows提供web证书**
 ```bash
 cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem 
+openssl genrsa 2048 > cakey.pem
 openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
 cd /etc/pki/CA
@@ -756,10 +756,10 @@ touch index.txt  # 索引问文件
 touch serial    # 给客户发证编号存放文件
 echo 01 > serial
 
-cd 
-openssl genrsa 1024 > httpd.key 
+cd
+openssl genrsa 1024 > httpd.key
 openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt 
+openssl ca -days 365 -in httpd.csr > httpd.crt
 
 openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 # 自己把server.pfx导出给windows2008主机
@@ -786,10 +786,10 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBack
 **配置文件**
 ```bash
 chown -R root:www-data /usr/local/bin     #设置目录数据权限
-touch /usr/local/caddy/Caddyfile	
+touch /usr/local/caddy/Caddyfile
 
 echo -e ":80 {
-	gzip	
+	gzip
 	root /usr/local/caddy/www/
 }" > /usr/local/caddy/Caddyfile
 
@@ -877,7 +877,7 @@ service php-fpm start #要运行PHP网页,要启动php-fpm解释器
 ```bash
 yum install nginx
 systemctl start nginx.service
-firewall-cmd --permanent --zone=public --add-service=http 
+firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --reload
 ```
 
@@ -902,7 +902,7 @@ server {
 ```bash
 mkdir /usr/share/nginx/test.com
 echo "hello world!" > /usr/share/nginx/test.com/index.html
-firewall-cmd --permanent --zone=public --add-service=http 
+firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --reload
 systemctl start nginx.service
 ```
@@ -975,8 +975,8 @@ systemctl restart php-fpm
 ```vim
 vim /usr/share/nginx/test.com/info.php
 
-<?php 
-     phpinfo(); 
+<?php
+     phpinfo();
  ?>
 ```
 `curl http://www.test.com/info.php`测试
@@ -1031,7 +1031,7 @@ systemctl restart nginx
 ```bash
 wget https://wordpress.org/latest.tar.gz
 
-tar -xzvf latest.tar.gz 
+tar -xzvf latest.tar.gz
 ```
 
 **创建WordPress数据库和一个用户**
@@ -1080,20 +1080,20 @@ php -v
 cd wordpress
 vim wp-config-sample.php
 ```
-在标有 
+在标有
 `// ** MySQL settings - You can get this info from your web host ** //`下输入你的数据库相关信息
 ```php
-DB_NAME 
+DB_NAME
     在第二步中为WordPress创建的数据库名称
-DB_USER 
+DB_USER
     在第二步中创建的WordPress用户名
-DB_PASSWORD 
+DB_PASSWORD
     第二步中为WordPress用户名设定的密码
-DB_HOST 
+DB_HOST
     第二步中设定的hostname（通常是localhost,但总有例外；参见编辑wp-config.php文件中的"可能的DB_HOST值）。
-DB_CHARSET 
+DB_CHARSET
     数据库字符串,通常不可更改（参见zh-cn:编辑wp-config.php）。
-DB_COLLATE 
+DB_COLLATE
     留为空白的数据库排序（参见zh-cn:编辑wp-config.php）。
 ```
 
@@ -1489,7 +1489,7 @@ mysql_secure_installation
 ------------ | ------------- | ------------
 Enter current password for root (enter for none) |	输入 root 密码 	| 初次运行直接回车
 Set root password? [Y/n] |	是设置 root 密码 |	可以 y 或者 回车
-New password |	输入新密码 	
+New password |	输入新密码
 Re-enter new password |	再次输入新密码
 Remove anonymous users? [Y/n] |	是否删除匿名用户 | 可以 y 或者回车 本题y
 Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 y 或者回车 本题n
@@ -1538,7 +1538,7 @@ PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行Postg
 **修改用户密码**
 ```sql
  sudo -u postgres psql postgres
-\l #查看当前的数据库列表  
+\l #查看当前的数据库列表 
 \password postgres  #给postgres用户设置密码
 \q  #退出数据库
 ```
@@ -1554,7 +1554,7 @@ vim /var/lib/pgsql/data/pg_hba.conf
 
 # IPv4 local connections:
 host    all             all             127.0.0.1/32            md5
-host    all             all             0.0.0.0/0               md5       
+host    all             all             0.0.0.0/0               md5
 
 # 其中0.0.0.0/0表示运行任意ip地址访问。
 # 若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
@@ -1609,7 +1609,7 @@ mongo
 ```vim
 vim /etc/mongod.conf
 
-#security 
+#security
 security:
 authorization: enabled
 ```
@@ -1645,7 +1645,7 @@ authorization: enabled
   bg
   redis-cli
   ```
-  
+
 使用redis-cli进入Redis命令行模式操作
 ```bash
 redis-cli
@@ -1970,9 +1970,9 @@ ftp>
 ```
 可见,在我们输入root管理员的密码之前,就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为"用户名单"的文件（ftpusers和user_list）。只要里面写有某位用户的名字,就不再允许这位用户登录到FTP服务器上。
 ```bash
-[root@linuxprobe ~]# cat /etc/vsftpd/user_list 
+[root@linuxprobe ~]# cat /etc/vsftpd/user_list
 
-[root@linuxprobe ~]# cat /etc/vsftpd/ftpusers 
+[root@linuxprobe ~]# cat /etc/vsftpd/ftpusers
 ```
 如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
 在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况。
@@ -2113,7 +2113,7 @@ wget -c https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
 tar -C /usr/local/ -zxvf go1.8.3.linux-amd64.tar.gz
 
 PATH=$PATH:/usr/local/go/bin/
-source ~/.bash_profile	
+source ~/.bash_profile
 go version
 ```
 
@@ -2230,20 +2230,20 @@ export PATH=$PATH:/usr/local/bin/
 vim /etc/supervisord.conf
 
 ; [program:xx]是被管理的进程配置参数，xx是进程的名称
-[program:xx]  
-command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令 
-autostart=true       ; 在supervisord启动的时候也自动启动 
-startsecs=10         ; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒 
-autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启 
-startretries=3       ; 启动失败自动重试次数，默认是3 
-user=tomcat          ; 用哪个用户启动进程，默认是root 
-priority=999         ; 进程启动优先级，默认999，值小的优先启动 
-redirect_stderr=true ; 把stderr重定向到stdout，默认false 
+[program:xx]
+command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令
+autostart=true       ; 在supervisord启动的时候也自动启动
+startsecs=10         ; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒
+autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启
+startretries=3       ; 启动失败自动重试次数，默认是3
+user=tomcat          ; 用哪个用户启动进程，默认是root
+priority=999         ; 进程启动优先级，默认999，值小的优先启动
+redirect_stderr=true ; 把stderr重定向到stdout，默认false
 stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小，默认50MB s
-tdout_logfile_backups = 20   ; stdout 日志文件备份数，默认是10 
-; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件） 
-stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out 
-stopasgroup=false     ;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程 
+tdout_logfile_backups = 20   ; stdout 日志文件备份数，默认是10
+; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）
+stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out
+stopasgroup=false     ;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程
 killasgroup=false     ;默认为false，向进程组发送kill信号，包括子进程
 ```
 
@@ -2305,10 +2305,10 @@ query_cache_limit = 16M
 collation_server = utf8_bin
 character_set_server = utf8
 ```
-原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意innodb_buffer_pool_size的值必须是整数，例如主机内存是4G，那么innodb_buffer_pool_size可以设置为3G，而不能设置为3.2G  
+原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意innodb_buffer_pool_size的值必须是整数，例如主机内存是4G，那么innodb_buffer_pool_size可以设置为3G，而不能设置为3.2G
 ```bash
-systemctl enable mysqld && systemctl start mysqld  
-grep 'temporary password' /var/log/mysqld.log #获取 MySQL 的 root 初始密码 
+systemctl enable mysqld && systemctl start mysqld
+grep 'temporary password' /var/log/mysqld.log #获取 MySQL 的 root 初始密码
 mysql_secure_installation #初始化，改下密码
 systemctl restart mysqld
 mysql -u root -p
@@ -2327,7 +2327,7 @@ mysql -u root -p
 rpm -ivh https://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-1.el7.noarch.rpm
 yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-java-gateway zabbix-web
 cd /usr/share/doc/zabbix-server-mysql-4.2.1
-zcat create.sql.gz | mysql -uroot zabbix -p 
+zcat create.sql.gz | mysql -uroot zabbix -p
 ```
 
 - 配置 zabbix 参数
@@ -2586,18 +2586,18 @@ ln -s '/usr/lib/systemd/system/clamd@scan.service' '/etc/systemd/system/multi-us
 ```bash
 vim /usr/lib/systemd/system/clam-freshclam.service
 
-# Run the freshclam as daemon 
-[Unit] 
-Description = freshclam scanner 
-After = network.target 
+# Run the freshclam as daemon
+[Unit]
+Description = freshclam scanner
+After = network.target
 
-[Service] 
-Type = forking 
-ExecStart = /usr/bin/freshclam -d -c 4 
-Restart = on-failure 
-PrivateTmp = true 
+[Service]
+Type = forking
+ExecStart = /usr/bin/freshclam -d -c 4
+Restart = on-failure
+PrivateTmp = true
 
-[Install] 
+[Install]
 WantedBy=multi-user.target
 ```
 ```bash
@@ -2614,7 +2614,7 @@ TCPSocket 3310
 TCPAddr 127.0.0.1
 ```
 ```bash
-/usr/sbin/clamd restart  
+/usr/sbin/clamd restart
 clamdscan -V
 
 systemctl start clamd@scan.service

@@ -3,18 +3,48 @@
 
 
 
+**Todo**
+- [ ] 语法分类 python2  python3
 
-pthon虚拟环境env
-pip install virtualenv
-创建一个文件夹
-进入上一步创建的文件夹virtualenv envtest
+https://www.cnblogs.com/ssooking/p/6155025.html
+## 虚拟环境 virtualenv
+**安装virtualenv**
+`pip install virtualenv`
+**创建环境**
+创建虚拟环境`virtualenv envtest`或指定版本`virtualenv -p /usr/bin/python3  envtestv3`
+进入虚拟环境的script路径，并执行`activate`就可以安装模块了
+如果你的虚拟环境安装库的时候出问题，比如python3环境,需要安装pip3
 
-进入虚拟环境的script文件夹，并执行activate
-安装模块
+默认情况下,virtualenv会引用系统python环境中 site-­packages 中的库，并将其复制到虚拟python环境的库中。我们可以设置 --no-site-packages 参数取消对系统Python库的引用，以此来创建一个完全纯净的python环境。
 
 
 
 
+
+
+
+
+
+创建任何在线网站的欺骗证书，并给可执行文件签名，达到规避AV
+https://github.com/paranoidninja/CarbonCopy
+
+
+https://sensepost.com/blog/2019/recreating-known-universal-windows-password-backdoors-with-frida/
+利用Frida注入LSASS.exe在Windows上创建通用密码后门
+https://github.com/sensepost/frida-windows-playground/tree/master/passback
+
+
+
+https://beanstack.io/
+https://github.com/x41sec/beanstack
+
+https://rhinosecuritylabs.com/application-security/nvidia-rce-cve-2019-5678/
+https://github.com/RhinoSecurityLabs/CVEs/tree/master/CVE-2019-5678
+
+
+
+
+https://github.com/Arvanaghi/CheckPlease?tdsourcetag=s_pctim_aiomsg
 
 
 VMware vCenter Server Struts组件安全漏洞(CVE-2014-0114)(VMSA-2014-0008.2)
@@ -94,7 +124,7 @@ JBoss反序列化命令执行漏洞 	CVE-2017-12149 	8220挖矿团伙
 Drupal Drupalgeddon 2远程代码执行 	CVE-2018-7600 	8220挖矿团伙
  CVE-2018-7602 
 
-VBScript引擎远程代码执行漏洞 	CVE-2018-8174 	
+VBScript引擎远程代码执行漏洞 	CVE-2018-8174
 Rig Exploit Kit利用该漏洞分发门罗比挖矿代码
 
 Hadoop Yarn REST API未授权漏洞利用

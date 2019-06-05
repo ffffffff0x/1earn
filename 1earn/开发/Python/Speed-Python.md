@@ -2,9 +2,6 @@
 `主要总结基础的语法和操作`
 [TOC]
 
-**Todo**
-- [ ] 语法分类 python2  python3
-
 # 安装/配置
 ## 打包
 安装Pyinstaller

@@ -46,7 +46,7 @@ git reflog  #显示当前分支的最近几次提交
 
 git commit -m "Input your commit message"   #提交更新
 git commit -a -m "Commit message"   #跳过使用暂存区
-git rm <finame> 
+git rm <finame>
 git mv file_from file_to
 
 
@@ -191,7 +191,7 @@ git push <远程主机名> <本地分支名>:<远程分支名> #将本地分支�
 git push origin master  #本地的 master 分支推送到 origin 主机的 master 分支。如果后者不存在，则会被新建。
 
 如果远程主机的版本比本地版本更新，推送时 Git 会报错，要求先在本地做 git pull 合并差异，然后再推送到远程主机。这时，如果你一定要推送，可以使用 --force 选项。
-git push --force origin 
+git push --force origin
 上面命令使用 --force选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用 --force 选项。
 ```
 
@@ -201,7 +201,7 @@ git push --force origin
 
 - **Git Push 避免用户名和密码方法**
     在windows中添加一个用户变量，变量名:HOME,变量值：%USERPROFILE%
-    
+
     ![image](https://i.imgur.com/TWEi10z.jpg)
 
     进入%HOME%目录，新建一个名为"_netrc"的文件，文件中内容格式如下：
@@ -210,7 +210,7 @@ git push --force origin
     login your-usernmae
     password your-password
     ```
-    
+
 ---
 
 # Reference

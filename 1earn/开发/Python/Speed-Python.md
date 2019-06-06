@@ -194,13 +194,13 @@ else :
 print 默认输出是换行的，如果要实现不换行需要在变量末尾加上 end=""：
 ```py
 #!/usr/bin/python3
- 
+
 x="a"
 y="b"
 # 换行输出
 print( x )
 print( y )
- 
+
 print('---------')
 # 不换行输出
 print( x, end=" " )
@@ -215,7 +215,7 @@ b
 ---------
 a b
 ```
- 
+
 ---
 
 # 包/模块管理
@@ -243,6 +243,16 @@ print('path:',path) # 因为已经导入path成员，所以此处引用时不需
 ## pip指定版本安装
 在linux安装了多版本python时（例如python2.6和2.7），pip安装的包不一定是用户想要的位置，此时可以用 -t 选项来指定位置
 `pip install -t /usr/local/lib/python2.7/site-packages/ xlrd`
+
+## 虚拟环境 virtualenv
+**安装virtualenv**
+`pip install virtualenv`
+**创建环境**
+创建虚拟环境`virtualenv envtest`或指定版本`virtualenv -p /usr/bin/python3  envtestv3`
+进入虚拟环境的script路径，并执行`activate`就可以安装模块了
+如果你的虚拟环境安装库的时候出问题，比如python3环境,需要安装pip3
+
+默认情况下,virtualenv会引用系统python环境中 site-­packages 中的库，并将其复制到虚拟python环境的库中。我们可以设置 --no-site-packages 参数取消对系统Python库的引用，以此来创建一个完全纯净的python环境。
 
 ---
 

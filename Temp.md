@@ -6,24 +6,9 @@
 **Todo**
 - [ ] 语法分类 python2  python3
 
-https://www.cnblogs.com/ssooking/p/6155025.html
-## 虚拟环境 virtualenv
-**安装virtualenv**
-`pip install virtualenv`
-**创建环境**
-创建虚拟环境`virtualenv envtest`或指定版本`virtualenv -p /usr/bin/python3  envtestv3`
-进入虚拟环境的script路径，并执行`activate`就可以安装模块了
-如果你的虚拟环境安装库的时候出问题，比如python3环境,需要安装pip3
-
-默认情况下,virtualenv会引用系统python环境中 site-­packages 中的库，并将其复制到虚拟python环境的库中。我们可以设置 --no-site-packages 参数取消对系统Python库的引用，以此来创建一个完全纯净的python环境。
 
 
-
-
-
-
-
-
+docker remote API未授权访问
 
 创建任何在线网站的欺骗证书，并给可执行文件签名，达到规避AV
 https://github.com/paranoidninja/CarbonCopy
@@ -172,7 +157,7 @@ Fastcgi
 
 PHPCGI
 
-
+websphere反序列化命令执行
 
 
 IIS
@@ -197,7 +182,7 @@ https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-vi
 
 解析漏洞
 IIS解析漏洞一般存在两种情况，一种是.asa和.asp目录下任意文件被当做asp文件来执行，另外一种是.asp;.jpg在IIS6中会被当做asp脚本来执行。
-Apache解析漏洞是当遇到不认识的扩展名时，将会从后向前解析，直到碰到认识的扩展名为止，如果都不认识，则直接暴露文件源代码。 
+Apache解析漏洞是当遇到不认识的扩展名时，将会从后向前解析，直到碰到认识的扩展名为止，如果都不认识，则直接暴露文件源代码。
 
 上传漏洞
 绕过客户端检测、绕过服务端检测、文本编辑器上传

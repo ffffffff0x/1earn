@@ -104,6 +104,7 @@ nrm use taobao
 nrm test
 或
 npm config set proxy=http://127.0.0.1:8087
+npm config delete proxy  # 取消代理
 ```
 
 ## pip 源

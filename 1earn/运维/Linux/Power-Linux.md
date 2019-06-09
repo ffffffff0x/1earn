@@ -145,8 +145,8 @@ fdisk /dev/sdb	# 创建系统分区
 **卷组**
 创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
 ```bash
-pvcreate /dev/sdb1	# 创建物理卷
-vgcreate ‐s 16M datastore /dev/sdb1
+pvcreate /dev/sdb1	# 初始化物理卷
+vgcreate ‐s 16M datastore /dev/sdb1 # 创建物理卷
 ```
 
 **逻辑卷**
@@ -1458,6 +1458,9 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录�
   }" >> /usr/local/caddy/Caddyfile
   ```
 
+**磁盘占用**
+服务运行一段时间后，`/var/lib/redis`路径下会有一些缓存文件(貌似)，直接删了就行
+
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
 - [entropage/mijisou: Privacy-respecting metasearch engine](https://github.com/entropage/mijisou)
@@ -2109,10 +2112,10 @@ gcc helloworld.c -o execFile
 ## [Go🐹](https://golang.org/)
 **源文件方式安装**
 ```bash
-wget -c https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz
-tar -C /usr/local/ -zxvf go1.8.3.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
+tar -xzvf go1.12.5.linux-amd64.tar.gz -C /usr/bin
 
-PATH=$PATH:/usr/local/go/bin/
+echo "export PATH=$PATH:/usr/bin/go/bin" >> ~/.bash_profile
 source ~/.bash_profile
 go version
 ```
@@ -2216,7 +2219,7 @@ export PATH=$PATH:/usr/local/bin/
 ---
 
 # 管理工具
-##[Supervisor](http://supervisord.org/)
+## [Supervisor](http://supervisord.org/)
 因为Supervisor是Python开发的，安装前先检查一下系统否安装了Python2.4以上版本。
 **安装**
 `pip install supervisor`

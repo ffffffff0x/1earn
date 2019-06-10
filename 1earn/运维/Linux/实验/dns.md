@@ -68,7 +68,7 @@ systemctl restart named
 配置DNS服务，将相关主机名添加A记录，分别为www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com；
 
 0. 安装
->yum -y install bind*
+>yum -y install bind-*
 
 1. 修改主配置文件
 ```vim
@@ -158,14 +158,14 @@ service named start
 ---
 
 监听所有地址；
-允许所有机器查询；		
+允许所有机器查询；
 将ftp.abc.com解析至云主机B公网IP:1.1.1.1；
 将www.abc.com解析至云主机A公网IP:1.1.2.1；
 建立反向简析区域完成ftp.abc.com，www.abc.com，域名的反向解析；
 只允许云主机B 192.168.XX+1.22 的 ip 进行区域传送。
 
 0. 安装
->yum -y install bind*
+>yum -y install bind-*
 
 1. 修改主配置文件
 ```vim
@@ -279,7 +279,7 @@ abc.com的区域数据文件名为abc.com.zone；
 为serverA、serverB的公网IP添加www、ftp的PTR解析记录
 
 0. 安装
->yum -y install bind*
+>yum -y install bind-*
 
 1. 修改主配置文件,顺便加上区域
 ```vim
@@ -366,7 +366,7 @@ firewall-cmd --reload
 	- 允许所有机器查询。
 
 0. 安装
->yum -y install bind*
+>yum -y install bind-*
 
 1. 修改主配置文件
 ```vim
@@ -381,13 +381,13 @@ options {
 2. 区域配置文件
 ```vim
 vim /etc/named.rfc1912.zones
-zone "abc.com" IN { 
+zone "abc.com" IN {
         type slave;
         file "slaves/abc.com.zone";
         masters {192.168.xx.xx;};
 };
 
-zone "0.16.172.in-addr.arpa" IN { 
+zone "0.16.172.in-addr.arpa" IN {
         type slave;
         file "slaves/172.16.0.zone";
         masters {192.168.xx.xx;};

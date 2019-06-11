@@ -1,4 +1,5 @@
 # Secure-Linux👨🏻‍💻
+
 `Linux加固+维护+应急响应参考`
 [TOC]
 
@@ -10,6 +11,7 @@
 
 # Shell👮🏻‍
 ## 会话
+
 ```bash
 who  #查看当前登录用户
 w    #查看登录用户行为
@@ -24,6 +26,7 @@ kill -9 pid #安全剔除用户
 
 # Net🕵🏻
 ## 端口
+
 ```bash
 lsof -i -P #显示进程使用端口使用情况
 lsof -i:22  #只查22端口
@@ -39,6 +42,7 @@ nmap -sV -p 22 localhost
 ```
 
 ## Firewall
+
 ```bash
 firewall-cmd --permanent --zone=public --remove-service=ssh
 firewall-cmd --permanent --zone=public --add-service=http
@@ -66,6 +70,7 @@ firewall-cmd --reload
 
 # 系统管理👨‍🎓
 ## 进程管理
+
 **进程定位**
 ```bash
 pidof name #定位程序的pid
@@ -80,6 +85,7 @@ vim /etc/security/limits.conf
 ```
 
 ## 负载
+
 **查询负载、进程监控**
 ```bash
 top
@@ -106,6 +112,7 @@ sync
 
 # 安全
 ## 加固
+
 **查后门**
 ```
 添加root权限后门用户

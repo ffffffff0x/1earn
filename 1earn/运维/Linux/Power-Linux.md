@@ -1,4 +1,5 @@
 # Power-Linux🎓
+
 `Linux 下各种常见服务的搭建/配置指南`
 [TOC]
 
@@ -10,6 +11,7 @@
 
 # 系统配置
 ## Net
+
 **配置网卡**
 ```vim
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
@@ -40,6 +42,7 @@ nameserver 8.8.8.8
 ---
 
 ## 配置本地yum源,挂载,安装
+
 **挂载**
 `mkdir /mnt/cdrom`
 `mount /dev/cdrom /mnt/cdrom/`
@@ -71,6 +74,7 @@ enabled=1    # 开启本地源
 ---
 
 ## RAID
+
 **安装**
 `yum remove mdadm`	# 建议先把原本的卸掉重装
 `yum install mdadm`
@@ -128,6 +132,7 @@ mount | grep '^/dev'
 ---
 
 ## Lvm物理卷
+
 ```bash
 fdisk ‐l		# 查看磁盘情况
 fdisk /dev/sdb	# 创建系统分区
@@ -191,6 +196,9 @@ lvdisplay
 
 # 网络服务
 ## [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)
+
+`一个DNS去广告、去跟踪的服务`
+
 **安装**
 ```bash
 mkdir -p /opt/adguard && cd /opt/adguard
@@ -215,6 +223,9 @@ systemctl stop firewalld
 ---
 
 ## [Chrony](https://chrony.tuxfamily.org/)
+
+`一个时间同步软件，可用于搭建类NTP时间服务`
+
 它由两个程序组成：chronyd和chronyc。
 chronyd是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
 chronyc是用来监控chronyd性能和配置其参数程序
@@ -262,18 +273,22 @@ chronyc #进入交互模式
 
 ---
 
-## cloud-torrent
+## [cloud-torrent](https://github.com/jpillora/cloud-torrent)
+
+`web torrent 下载服务，懂得都懂，还用我说嘛`
+
 **安装**
 `curl https://i.jpillora.com/cloud-torrent! | bash`
 
 **运行**
 `cloud-torrent -o`
 
-`我日，这么短啊`
+`我日，就这么简单`
 
 ---
 
 ## DHCP
+
 **安装**
 `yum install dhcp`
 
@@ -309,6 +324,7 @@ cat /var/lib/dhcpd/dhcpd.leases # 查看租约文件,了解租用情况
 ---
 
 ## DNS
+
 **安装**
 `yum install bind-*`
 
@@ -421,6 +437,9 @@ firewall-cmd --reload
 ---
 
 ## Kicktart
+
+`是Kicktart不是kickstarter，这玩意不能众筹，这是用于联网安装系统时给PXE服务提供应答文件的`
+
 - 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
 - 环境:VMWARE
 - 1台无人值守系统——RHEL 7——192.168.10.10
@@ -546,6 +565,7 @@ clearpart --all --initlabel
 ---
 
 ## [OpenVPN](https://openvpn.net/)
+
 ```
 systemctl start docker
 docker pull kylemanna/openvpn:2.4
@@ -601,6 +621,9 @@ sz /data/openvpn/conf/whsir.ovpn
 ---
 
 ## [proxychains](https://github.com/rofl0r/proxychains-ng)
+
+`通过DLL注入，使目标程序走代理`
+
 **安装**
 ```bash
 git clone https://github.com/rofl0r/proxychains-ng.git
@@ -624,6 +647,7 @@ socks5 127.0.0.1 1080 #改成你懂的
 ---
 
 ## [SSH🔑](https://www.ssh.com)
+
 一般主机安装完毕后 SSH 是默认开启的
 使用`/etc/init.d/ssh status`查看主机SSH状态
 
@@ -661,6 +685,7 @@ apt install ssh
 
 # web服务
 ## [Apache](https://www.apache.org/)
+
 **安装**
 ```bash
 yum install httpd
@@ -778,6 +803,7 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 ---
 
 ## [Caddy](https://caddyserver.com/)
+
 **安装Caddy**
 ```bash
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
@@ -826,6 +852,7 @@ echo -e "xxx.com {
 ---
 
 ## [Rpm](https://rpm.org/)&[Node✔](https://nodejs.org)
+
 **包管理器方式**
 - apt
   `apt-get install nodejs npm` 讲道理apt安装不太好使
@@ -857,6 +884,8 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ---
 
 ## [PHP](https://www.php.net/)
+
+**安装**
 ```bash
 若之前安装过其他版本PHP,先删除
 yum remove php*
@@ -873,6 +902,7 @@ service php-fpm start #要运行PHP网页,要启动php-fpm解释器
 ---
 
 ## [Nginx](https://nginx.org/)
+
 **安装**
 ```bash
 yum install nginx
@@ -984,6 +1014,7 @@ vim /usr/share/nginx/test.com/info.php
 ---
 
 ## [phpMyAdmin](https://www.phpmyadmin.net/)
+
 **建议搭配上面的nginx+php扩展**
 
 **创建数据库和一个用户**
@@ -1027,6 +1058,7 @@ systemctl restart nginx
 ---
 
 ## [Wordpress](https://wordpress.org/)
+
 **下载WordPress安装包并解压**
 ```bash
 wget https://wordpress.org/latest.tar.gz
@@ -1132,8 +1164,8 @@ service firewalld stop
 ---
 
 ## [Mijisou](https://mijisou.com/)
-基于开源项目 Searx 二次开发的操作引擎
-项目地址:https://github.com/entropage/mijisou
+
+`基于开源项目 Searx 二次开发的操作引擎`
 
 **依赖**
 自行安装python3 pip redis
@@ -1470,16 +1502,12 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录�
 
 ---
 
-## Haproxy
-原来写的太烂了，准备重写
-
----
-
 # 数据库
 ## Relational
 ### Oracle
 
 ### [Mariadb](https://mariadb.org/)
+
 **安装**
 `yum install mariadb mariadb-server`
 
@@ -1520,6 +1548,7 @@ systemctl enable mariadb
 ---
 
 ### [MySQL📦](https://www.mysql.com)
+
 和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
 sudo apt install mysql-server mysql-clien
@@ -1529,6 +1558,7 @@ sudo service mysql start
 ---
 
 ### [Postgresql🐘](https://www.postgresql.org)
+
 **安装**
 ```bash
 yum install postgresql-server
@@ -1569,6 +1599,7 @@ host    all             all             0.0.0.0/0               md5
 
 ## Document
 ### [MongoDB🍃](https://www.mongodb.com/)
+
 **安装**
 ```vim
 vim /etc/yum.repos.d/mongodb-org-4.0.repo
@@ -1622,6 +1653,7 @@ authorization: enabled
 
 ## Key-value
 ### [Redis🔺🔴⭐](https://redis.io/)
+
 **安装**
 - **包管理器方式**
   在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
@@ -1671,6 +1703,7 @@ requirepass 密码	#设置redis密码
 ---
 
 ### [Memcached](https://memcached.org/)
+
 **安装**
 - **软件包安装**
   ```bash
@@ -1704,8 +1737,9 @@ firewall-cmd --reload
 
 # 文本工具
 ## Vim
+
 **常用配置**
-`sudo vim /etc/vim/vimrc`
+`sudo vim /etc/vim/vimrc`或`sudo vim /etc/vimrc`
 最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
 ```vim
 set number #显示行号
@@ -1737,6 +1771,9 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 
 # 文件服务
 ## [filebrowser](https://github.com/filebrowser/filebrowser)
+
+`一个在线网盘服务，只能在线看图片,在线看片是不支持的 ^w^`
+
 **安装**
 `curl -fsSL https://filebrowser.xyz/get.sh | bash`
 
@@ -1744,11 +1781,10 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 filebrowser -a <你自己的IP> -r <文件夹路径>
 默认账号密码admin
 
-`只能在线看图片,在线看视频是不支持的,^w^`
-
 ---
 
 ## NFS
+
 **服务端**
 安装
 ```bash
@@ -1815,6 +1851,7 @@ vim /etc/fstab
 ---
 
 ## [Samba](https://www.samba.org)
+
 **服务端**
 安装
 `yum install samba `
@@ -1877,6 +1914,7 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 ---
 
 ## [Vsftp](https://security.appspot.com/vsftpd.html)
+
 **匿名访问**
 |参数|作用|
 | :------------- | :------------- |
@@ -2093,6 +2131,7 @@ systemctl enable vsftpd
 
 # 编程语言
 ## C
+
 ```c
 vim world.c
 
@@ -2110,6 +2149,7 @@ gcc helloworld.c -o execFile
 ---
 
 ## [Go🐹](https://golang.org/)
+
 **源文件方式安装**
 ```bash
 wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
@@ -2122,6 +2162,7 @@ go version
 
 ---
 ## [JDK☕](https://www.oracle.com/technetwork/java/javase/downloads/)
+
 **rpm 包方式安装**
 下载
 https://www.oracle.com/technetwork/java/javase/downloads/
@@ -2147,6 +2188,7 @@ rpm -ivh jdk-****.rpm
 ---
 
 ## [Python3🐍](https://www.python.org/)
+
 **yum 安装**
 ```bash
 yum install epel-release
@@ -2196,6 +2238,7 @@ pip3 -V
 ---
 
 ## [Ruby💎](https://www.ruby-lang.org)
+
 **安装**
 注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
 下载ruby安装包,并进行编译安装
@@ -2220,6 +2263,7 @@ export PATH=$PATH:/usr/local/bin/
 
 # 管理工具
 ## [Supervisor](http://supervisord.org/)
+
 因为Supervisor是Python开发的，安装前先检查一下系统否安装了Python2.4以上版本。
 **安装**
 `pip install supervisor`
@@ -2270,6 +2314,7 @@ supervisorctl update
 
 # 系统监控
 ## [Zabbix](https://www.zabbix.com/)
+
 **安装依赖**
 ```bash
 yum install mysql
@@ -2391,6 +2436,7 @@ setenforce 0
 
 # 虚拟化
 ## [Docker🐋](https://www.docker.com)
+
 **centos**
 ```bash
 yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -2438,7 +2484,9 @@ docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但
 
 # CI
 ## [Jenkins🤵🏻](https://jenkins.io/)
-注,Jenkins需要jdk环境
+
+`注,Jenkins需要jdk环境，请先行安装`
+
 **rpm包方式安装**
 添加Jenkins源:
 ```bash
@@ -2468,6 +2516,7 @@ sudo apt-get install jenkins
 
 # 堡垒机
 ## [Jumpserver](http://www.jumpserver.org/)
+
 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)写的很详细了,在此我只把重点记录
 
 `注:鉴于国内环境,下面步骤运行中还是会出现docker pull镜像超时的问题,你懂的,不要问我怎么解决`
@@ -2538,6 +2587,7 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 
 # 杀毒
 ## [ClamAV](https://www.clamav.net)
+
 **安装**
 ```bash
 yum -y install epel-release

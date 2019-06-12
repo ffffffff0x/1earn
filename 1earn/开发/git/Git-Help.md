@@ -185,6 +185,29 @@ git pull <远程主机名> <远程分支名>:<本地分支名> #取回远程主�
 git pull origin next:master #取回 origin 主机的 next 分支，与本地的 master 分支合并
 ```
 
+**pull文件时和本地文件冲突**
+`git stash`先将本地修改存储起来
+这样本地的所有修改就都被暂时存储起来 。是用`git stash list`可以看到保存的信息：
+```
+stash@{0}: WIP on master: xxxxxxx <commit>
+```
+
+暂存了本地修改之后，就可以`git pull`了。
+
+还原暂存的内容`git stash pop stash@{0}`
+提示如下信息
+```
+Auto-merging c/environ.c
+CONFLICT (content): Merge conflict in c/environ.c
+```
+意思就是系统自动合并修改的内容，但是其中有冲突，需要解决其中的冲突。
+
+也可以放弃本地修改，直接覆盖之
+```
+git reset --hard
+git pull
+```
+
 ## git push
 ```bash
 git push <远程主机名> <本地分支名>:<远程分支名> #将本地分支的更新，推送到远程主机
@@ -221,3 +244,4 @@ git push --force origin
 - [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
 - [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
 - [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
+- [Git冲突：commit your changes or stash them before you can merge.](https://blog.csdn.net/lincyang/article/details/21519333)

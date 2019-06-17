@@ -7,6 +7,7 @@
 ---
 
 ## Manual
+
 完事开头难,然后一直开头一直难...
 
 <p align="center">
@@ -14,6 +15,7 @@
 </p>
 
 ### Misc
+
 各种奇思妙想
 
 **Plan**
@@ -25,6 +27,7 @@
 - Web-Tools:在线 web 工具集合
 
 ### 开发
+
 **Python**
 - 自己收藏/编写的一些模块实例，各种小工具
 
@@ -32,10 +35,12 @@
 - Git-Help:记录 git 命令理解与速查
 
 ### 渗透
+
 在学习渗透的道路上不断摸索
 - [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
 
 ### 运维
+
 你说我一个干网络安全的，怎么运维学的比渗透还好呢？
 
 **Linux**
@@ -50,6 +55,7 @@
 - 客户的需求搭建过程(关键部分)
 
 ## 三板斧
+
 `收集、归纳、分享`我认为这是知识学习的"三板斧"
 
 收集,很好理解,比如收集各种学习的资源,看过的论文、文章,和各种工具
@@ -61,6 +67,7 @@
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
 ## 建议和吐槽
+
 由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
 - [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
@@ -74,8 +81,10 @@
 - 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了
 - 2019-5-2:快要坚持一个月每天更新了
 - 2019-5-13:定个小目标，10月前，所有自己写的md文档加起来50W字(目前总字数23W)
+- 2019-6-17:这段时间放松了。自我反省。
 
 ## List
+
 以下是我平日收集知识与资源的渠道(部分)
 - [每日一文](https://meiriyiwen.com/)
 - [360CERT](https://cert.360.cn/daily)
@@ -111,6 +120,7 @@
 - [V2EX](https://www.v2ex.com/)
 
 ## Thank
+
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)
 - [To Find a Better Solution, Ask a Better Question – Member Feature Stories – Medium](https://medium.com/s/story/to-find-a-better-solution-ask-a-better-question-3be7fee5af65)

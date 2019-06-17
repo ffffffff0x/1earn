@@ -7,13 +7,13 @@ ftp.abc.com 解析为 192.168.192.2
 
 ```vim
 vim /etc/named.rfc1912.zones
-zone "abc.com." IN {        
+zone "abc.com." IN {
         type master;
         file "z";
         allow-update { none; };
 };
 
-zone "192.168.192.in-addr.arpa" IN {       
+zone "192.168.192.in-addr.arpa" IN {
         type master;
         file "f";
         allow-update { none; };
@@ -26,7 +26,7 @@ cp named.loopback f
 
 >chown named z
 chown named f
-	
+
 ```vim
 vim /var/named/z
 	$TTL 1D
@@ -41,7 +41,7 @@ vim /var/named/z
 	    	AAAA   ::1
 	www    	A      192.168.192.1
 	ftp    	A      192.168.192.2
-	
+
 
 vim /var/named/f
 	$TTL 1D
@@ -58,10 +58,8 @@ vim /var/named/f
 
 	1 PTR www.abc.com.
 	2 PTR ftp.abc.com.
-	
 
 systemctl restart named
-
 ```
 
 # 案例
@@ -83,12 +81,12 @@ options {
 2. 区域配置文件
 ```vim
 vim /etc/named.rfc1912.zones
-zone "abc.com." IN {        
+zone "abc.com." IN {
         type master;
         file "www.localhost";
 };
 
-zone "1.192.168.192.in-addr.arpa" IN {       
+zone "1.192.168.192.in-addr.arpa" IN {
         type master;
         file "www.loopback";
 };
@@ -99,7 +97,7 @@ zone "1.192.168.192.in-addr.arpa" IN {
 cp named.localhost www.localhost
 cp named.loopback www.loopback
 
->chown named www.localhost 
+>chown named www.localhost
 chown named www.loopback
 **因为配置文件是在 root 用户下建立的，所以启动 BIND 进程的 named 用户无法读取，会造成不能解析。**
 
@@ -123,7 +121,7 @@ vim /var/named/www.localhost
 
 ！！！注意域名后面的 ”点号“
 
-vim /var/named/www.loopback 
+vim /var/named/www.loopback
 	$TTL 1D
 	@ 		IN SOA  @ rname.invalid. (
     	                                    0 ; serial
@@ -146,7 +144,7 @@ vim /var/named/www.loopback
 ```
 named-checkconf  #检查配置文件中的语法/etc/named.conf /etc/named.rfc1912.zones
 named-checkzone abc.com www.localhost #解析库文件语法检查
-named-checkzone abc.com www.loopback 
+named-checkzone abc.com www.loopback
 ```
 
 5.关闭安全措施
@@ -180,19 +178,19 @@ options {
 2. 区域配置文件
 ```vim
 vim /etc/named.rfc1912.zones
-zone "abc.com" IN { 
+zone "abc.com" IN {
         type master;
         file "abc.localhost";
         allow-transfer{192.168.37.22;};
 };
 
-zone "1.1.1.in-addr.arpa" IN { 
+zone "1.1.1.in-addr.arpa" IN {
         type master;
         file "abc.loopback";
         allow-transfer{192.168.37.22;};
 };
 
-zone "2.1.1.in-addr.arpa" IN { 
+zone "2.1.1.in-addr.arpa" IN {
         type master;
         file "www.loopback";
         allow-transfer{192.168.37.22;};
@@ -205,7 +203,7 @@ cp named.localhost abc.localhost
 cp named.loopback abc.loopback
 cp named.loopback www.loopback
 
->chown named abc.localhost 
+>chown named abc.localhost
 chown named abc.loopback
 chown named www.loopback
 
@@ -225,7 +223,7 @@ vim /var/named/abc.localhost
 	ftp    	A      1.1.1.1
 	www     A      1.1.2.1
 
-vim /var/named/abc.loopback 
+vim /var/named/abc.loopback
 	$TTL 1D
 	@	IN SOA  @ rname.invalid. (
     	                                    0 ; serial
@@ -239,7 +237,7 @@ vim /var/named/abc.loopback
         	PTR 	localhost.
 	1 PTR ftp.abc.com.
 
-vim /var/named/www.loopback 
+vim /var/named/www.loopback
 	$TTL 1D
 	@ 		IN SOA  @ rname.invalid. (
     	                                    0 ; serial
@@ -257,8 +255,8 @@ vim /var/named/www.loopback
 ```bash
 named-checkconf
 named-checkzone abc.com abc.localhost
-named-checkzone abc.com abc.loopback 
-named-checkzone abc.com www.loopback 
+named-checkzone abc.com abc.loopback
+named-checkzone abc.com www.loopback
 service named restart
 ```
 关闭安全措施
@@ -290,12 +288,12 @@ options {
 	recursion	yes;
 }
 
-zone "abc.com" IN { 
+zone "abc.com" IN {
         type master;
         file "abc.com.zone";
 };
 
-zone "0.16.172.in-addr.arpa" IN { 
+zone "0.16.172.in-addr.arpa" IN {
         type master;
         file "172.16.0.zone";
 };

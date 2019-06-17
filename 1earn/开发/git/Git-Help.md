@@ -1,4 +1,5 @@
 # Git 使用指南
+
 [TOC]
 
 ---
@@ -6,9 +7,11 @@
 # 原理
 ![image](https://i.loli.net/2019/04/03/5ca4175e156b4.jpg)
 - **工作区（Working Directory）**
+
     就是你在电脑里能看到的目录，比如我的 gitcode 文件夹就是一个工作区。
 
 - **版本库（Repository）**
+
     工作区有一个隐藏目录.git，这个不算工作区，而是 Git 的版本库。
     Git 的版本库里存了很多东西，其中最重要的就是称为 stage（或者叫 index）的暂存区，还有 Git 为我们自动创建的第一个分支 master，以及指向master 的一个指针叫 HEAD 。
 
@@ -46,9 +49,10 @@ git reflog  #显示当前分支的最近几次提交
 
 git commit -m "Input your commit message"   #提交更新
 git commit -a -m "Commit message"   #跳过使用暂存区
+git commit --allow-empty-message --no-edit # 懒得什么message都不想写
+
 git rm <finame>
 git mv file_from file_to
-
 
 已修改，未暂存
 #如果我们只是在编辑器里修改了文件，但还没有执行 git add .，这时候我们的文件还在工作区，并没有进入暂存区，我们可以用
@@ -186,6 +190,7 @@ git pull origin next:master #取回 origin 主机的 next 分支，与本地的 
 ```
 
 **pull文件时和本地文件冲突**
+
 `git stash`先将本地修改存储起来
 这样本地的所有修改就都被暂时存储起来 。是用`git stash list`可以看到保存的信息：
 ```
@@ -220,9 +225,11 @@ git push --force origin
 
 ## github
 - **github开启二次验证后后，git push验证权限失败**
+
     github开启二次验证后，提交时密码用个人设置里的Personal Access Token，不是账号密码
 
 - **Git Push 避免用户名和密码方法**
+
     在windows中添加一个用户变量，变量名:HOME,变量值：%USERPROFILE%
 
     ![image](https://i.imgur.com/TWEi10z.jpg)

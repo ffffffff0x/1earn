@@ -1,4 +1,5 @@
 # smb🏓
+
 配置 smb 服务，共享目录为 /smbshare，
 共享名必须为 smbshare，
 只有本网段内的所有主机可以访问，
@@ -6,9 +7,9 @@ smbshare 必须是可以浏览的，
 用户 smb1 必须能够读取共享中的内容，
 （用户名需要自己创建，密码为 smb123456）；
 
->yum -y install samba 
+>yum -y install samba
 
-```vim	
+```vim
 vim /etc/samba/smb.conf
 [smbshare]
 	path = /smbshare
@@ -49,7 +50,9 @@ systemctl restart smb
 ---
 
 **18-I**
+
 配置samba服务
+
 A
 - 修改工作组为WORKGROUP
 - 注释[homes]和[printers]相关的所有内容
@@ -59,7 +62,7 @@ A
 - 只有192.168.1XX.33的主机可以访问。（XX现场提供）
 - 添加一个apache用户（密码自定义）对外提供Samba服务。
 
->yum -y install samba 
+>yum -y install samba
 
 ```vim
 vim /etc/samba/smb.conf
@@ -98,19 +101,21 @@ systemctl start smb
 
 
 B
+
 - 配置smb，使用apache用户挂载serverA共享的目录至/data/web_data目录下，作为http服务网站根目录使用。
 
 ```bash
-yum -y install samba 
+yum -y install samba
 
 mkdir /data/web_data
-mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata 
+mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata
 /data/web_data
 ```
 
 ---
 
 **18 J0**
+
 A
 配置smb服务
 - 修改工作组为WORKGROUP；
@@ -123,7 +128,7 @@ A
 - 创建文件的权限为0770；
 - 仅允许用户apache访问且apache是该共享的管理者（用户名需要自己创建，密码为ruijie）。
 
->yum -y install samba 
+>yum -y install samba
 
 ```vim
 vim /etc/samba/smb.conf
@@ -163,9 +168,9 @@ B
 - 配置smb，使用apache用户挂载云主机A共享的目录至/data/web_data目录下。
 
 ```bash
-yum -y install samba 
+yum -y install samba
 
 mkdir /data/web_data
-mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata 
+mount -t cifs -o username=apache,password='ruijie' //192.168.xx+1.xx/webdata
 /data/web_data
 ```

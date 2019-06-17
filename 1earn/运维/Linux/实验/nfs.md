@@ -4,25 +4,25 @@
 yum ‐y install nfs‐utils
 vim /etc/exports
 	/public 192.168.xxx.xxx(ro)
-		
+
 mkdir /public
 
 vi /etc/selinux/config
 	SELINUX=disabled
-		
+
 firewall-cmd --zone=public --add-service=rpc-bind	--permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 ```
 
 
 客户端挂载 nfs；
-1. 访问使用 nfsuser1 进行访问（用户需要自己创建）；				
+1. 访问使用 nfsuser1 进行访问（用户需要自己创建）；
 2. 在 Centos 上挂载来自 Centos 的 nfs 共享,将共享目录挂载到 /mnt/nfsfiles,启动时自动挂载。
 ```bash
 yum ‐y install nfs‐utils
@@ -67,10 +67,10 @@ firewall-cmd --zone=public --add-service=rpc-bind	--permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 systemctl enable rpcbind.service
 systemctl enable nfs-server.service
 ```
@@ -113,10 +113,10 @@ firewall-cmd --zone=public --add-service=rpc-bind	--permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 systemctl enable rpcbind.service
 systemctl enable nfs-server.service
 ```
@@ -144,17 +144,17 @@ yum ‐y install nfs‐utils
 vim /etc/exports
 	/mnt *(ro)
 	/public 192.168.11.*(rw)
-		
+
 mkdir /public
 
 firewall-cmd --zone=public --add-service=rpc-bind	--permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 systemctl enable rpcbind.service
 systemctl enable nfs-server.service
 ```
@@ -170,17 +170,17 @@ yum ‐y install nfs‐utils
 
 vim /etc/exports
 	/data/web_data 192.168.XX+1.*(rw,no_root_squash)
-		
+
 mkdir -p /data/web_data
 
 firewall-cmd --zone=public --add-service=rpc-bind	--permanent
 firewall-cmd --zone=public --add-service=mountd --permanent
 firewall-cmd --zone=public --add-port=2049/tcp --permanent
 firewall-cmd --zone=public --add-port=2049/udp --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 systemctl enable rpcbind.service
 systemctl enable nfs-server.service
 ```
@@ -192,10 +192,10 @@ B
 yum ‐y install nfs‐utils
 
 firewall-cmd --zone=public --add-service=nfs --permanent
-firewall-cmd --reload 
+firewall-cmd --reload
 
 service rpcbind start
-service nfs start	
+service nfs start
 systemctl enable rpcbind.service
 systemctl enable nfs-server.service
 ```

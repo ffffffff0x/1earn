@@ -68,7 +68,7 @@
 
 ## 建议和吐槽
 
-由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题,导致阅读体验极不友好,因此建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
+~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
 - [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)

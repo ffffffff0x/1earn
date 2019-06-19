@@ -6,27 +6,26 @@
 ---
 
 # Linux编程🚬
-
 很多脚本第一行用来指定本脚本用什么解释器来执行
 例如`#!/usr/bin/python`相当于写死了 python 路径。
 而`#!/usr/bin/env python`会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
 
 ## 编译
-
 ```bash
-mount -t tmpfs tmpfs ~/build -o size=1G	#把文件放到内存上做编译
-make -j	#并行编译
-ccache	#把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间。
-	在/usr/local/bin下建立gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用gcc等命令时会调用到ccache就可以了（通常情况下/usr/local /bin会在PATH中排在/usr/bin前面）。
+mount -t tmpfs tmpfs ~/build -o size=1G	# 把文件放到内存上做编译
+make -j	# 并行编译
+ccache	# 把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间。
 
-distcc	#多台机器一起编译
-	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 #默认的3632端口允许来自同一个网络的distcc连接。
+# 在/usr/local/bin下建立gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用gcc等命令时会调用到ccache就可以了（通常情况下/usr/local /bin会在PATH中排在/usr/bin前面）。
+
+distcc	# 多台机器一起编译
+	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 # 默认的3632端口允许来自同一个网络的distcc连接。
 
 	export DISTCC_HOSTS="localhost 10.64.25.1 10.64.25.2 10.64.25.3"
 	把g++,gcc等常用的命令链接到/usr/bin/distcc上
 
-	make -j4	#	在make的时候,也必须用-j参数,一般是参数可以用所有参用编译的计算机CPU内核总数的两倍做为并行的任务数。
-	distccmon-text #查看编译任务的分配情况。
+	make -j4	# 在make的时候,也必须用-j参数,一般是参数可以用所有参用编译的计算机CPU内核总数的两倍做为并行的任务数。
+	distccmon-text # 查看编译任务的分配情况。
 ```
 
 ---
@@ -36,16 +35,16 @@ distcc	#多台机器一起编译
 
 - **bash**
 ```bash
-echo $PATH  #查看环境变量
+echo $PATH  # 查看环境变量
 
-PATH=$PATH:/usr/local/python3/bin/ #新添加的路径     （关闭终端失效）
+PATH=$PATH:/usr/local/python3/bin/ # 新添加的路径（关闭终端失效）
 ```
 ```vim
-vim ~/.bash_profile #永久修改变量
+vim ~/.bash_profile # 永久修改变量
 
 PATH=$PATH:/usr/local/bin/
 ```
-`source ~/.bash_profile`立即生效
+`source ~/.bash_profile` 立即生效
 
 
 - **fish**
@@ -60,7 +59,6 @@ set PATH (你想要加入的路径) $PATH
 ---
 
 ## 通配符/限制输出
-
 ```bash
 head
 tail
@@ -76,7 +74,6 @@ awk
 ---
 
 ## 会话
-
 ```bash
 who
 w
@@ -86,140 +83,135 @@ yum -y install screen
 apt-get -y install screen
 screen -S name
 screen -ls
-screen -r	name #重新连接
-ctrl+d #终止会话
+screen -r	name # 重新连接
+ctrl+d # 终止会话
 ```
 
 ---
 
 ## 目录
-
 ```bash
 cd
-~ #表示home目录
-. #表示当前目录
-.. #表示上级目录
-- #表示上一次目录
-/ #表示根目录
+~ # 表示home目录
+. # 表示当前目录
+.. # 表示上级目录
+- # 表示上一次目录
+/ # 表示根目录
 
-root  #存放root用户相关文件
-home  #存放普通用户相关文件
-bin   #存放普通命令
-sbin  #存放需一定权限才能使用的命令
-mnt   #默认挂载光驱软驱目录
-etc   #存放配置相关文件
-var   #存放经常变化文件
-boot  #存放引导相关文件
-usr   #存放软件默认安装目录
+root  # 存放root用户相关文件
+home  # 存放普通用户相关文件
+bin   # 存放普通命令
+sbin  # 存放需一定权限才能使用的命令
+mnt   # 默认挂载光驱软驱目录
+etc   # 存放配置相关文件
+var   # 存放经常变化文件
+boot  # 存放引导相关文件
+usr   # 存放软件默认安装目录
 ```
 
 ---
 
 ## 文件
 ### 压缩备份
-
 ```bash
-.tar	#注:tar是打包,不是压缩！
-tar -xvf FileName.tar	#解包
-tar -cvf FileName.tar DirName	#打包
-tar -tvf FileName.tar.gz	#不解压查看内容
-tar -xvf FileName.tar.gz	a.txt  #解压指定内容
-tar -uvf test.tar.bz2 test	#更新一个内容
-tar -rvf test.tar.bz2 test2  #追加一个内容
+.tar	# 注:tar是打包,不是压缩！
+tar -xvf FileName.tar	# 解包
+tar -cvf FileName.tar DirName	# 打包
+tar -tvf FileName.tar.gz	# 不解压查看内容
+tar -xvf FileName.tar.gz	a.txt  # 解压指定内容
+tar -uvf test.tar.bz2 test	# 更新一个内容
+tar -rvf test.tar.bz2 test2  # 追加一个内容
 
 .tar.gz 和 .tgz
-tar -zxvf FileName.tar.gz	#解压
-tar -zcvf FileName.tar.gz DirName	#压缩
+tar -zxvf FileName.tar.gz	# 解压
+tar -zcvf FileName.tar.gz DirName	# 压缩
 
 .tar.Z
-tar -Zxvf FileName.tar.Z	#解压
-tar -Zcvf FileName.tar.Z DirName	#压缩
+tar -Zxvf FileName.tar.Z	# 解压
+tar -Zcvf FileName.tar.Z DirName	# 压缩
 
 .tar.bz
-tar -jxvf FileName.tar.bz	#解压
-tar -jcvf FileName.tar.bz DirName	#压缩
+tar -jxvf FileName.tar.bz	# 解压
+tar -jcvf FileName.tar.bz DirName	# 压缩
 
 .gz
-gunzip FileName.gz	#解压1
-gzip -dv FileName.gz	#解压2
-gzip FileName	#压缩
-gzip -l FileName.gz #不解压查看内容
-zcat FileName.gz #不解压查看内容
+gunzip FileName.gz	# 解压1
+gzip -dv FileName.gz	# 解压2
+gzip FileName	# 压缩
+gzip -l FileName.gz # 不解压查看内容
+zcat FileName.gz # 不解压查看内容
 
 .bz2
-bzip2 -dv FileName.bz2	#解压1
-bunzip2 FileName.bz2	#解压2
-bzip2 -zv FileName	#压缩
-bzcat	FileName.bz2 #不解压查看内容
+bzip2 -dv FileName.bz2	# 解压1
+bunzip2 FileName.bz2	# 解压2
+bzip2 -zv FileName	# 压缩
+bzcat	FileName.bz2 # 不解压查看内容
 
 .Z
-uncompress FileName.Z	#解压
-compress FileName	#压缩
-compress -rvf /home/abc/	#强制压缩文件夹
+uncompress FileName.Z	# 解压
+compress FileName	# 压缩
+compress -rvf /home/abc/	# 强制压缩文件夹
 
 .zip
-unzip FileName.zip	#解压
-zip FileName.zip DirName	#压缩
+unzip FileName.zip	# 解压
+zip FileName.zip DirName	# 压缩
 
 .rar
-rar -x FileName.rar	#解压
-rar -a FileName.rar DirName	#压缩
+rar -x FileName.rar	# 解压
+rar -a FileName.rar DirName	# 压缩
 
 .lha
-lha -e FileName.lha	#解压
-lha -a FileName.lha FileName	#压缩
+lha -e FileName.lha	# 解压
+lha -a FileName.lha FileName	# 压缩
 
 .rpm
-rpm2cpio FileName.rpm | cpio -div	#解包
+rpm2cpio FileName.rpm | cpio -div	# 解包
 
 .deb
-ar -p FileName.deb data.tar.gz | tar zxf -	#解包
+ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
 ```
 
 ### 读写
 #### 增
-
 ```bash
-touch -r test1.txt test2.txt #更新test2.txt时间戳与test1.txt时间戳相同
-touch -c -t 202510191820 a.txt #更改时间
-truncate -s 100k aaa.txt 	 #创建指定大小文件
+touch -r test1.txt test2.txt # 更新test2.txt时间戳与test1.txt时间戳相同
+touch -c -t 202510191820 a.txt # 更改时间
+truncate -s 100k aaa.txt 	 # 创建指定大小文件
 
-mkdir -p /mnt/aaa/aaa/aaa 	#创建指定路径一系列文件夹
-mkdir -m 777 /test	#创建时指定权限
+mkdir -p /mnt/aaa/aaa/aaa 	# 创建指定路径一系列文件夹
+mkdir -m 777 /test	# 创建时指定权限
 ```
 
 #### 删
-
 ```bash
-rm -i	#确认
-rm -rf --no-preserve-root /	#电脑加速
-rmdir #删除空目录
+rm -i	# 确认
+rm -rf --no-preserve-root /	# 电脑加速
+rmdir # 删除空目录
 
-:(){:|:&};:	 #清理内存
-b(){ b|b& };b  #清理内存
+:(){:|:&};:	 # 清理内存
+b(){ b|b& };b  # 清理内存
 ```
 
 #### 查
-
 **查看**
 ```bash
-pwd -P #目录链接时,显示实际路径而非link路径
-ls #第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
-ls -a #查看隐藏文件
-tac #倒着读
-od #二进制读
-cat -n #带行号读
-cat -b #带行号,越过空白行
+pwd -P # 目录链接时,显示实际路径而非link路径
+ls # 第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
+ls -a # 查看隐藏文件
+tac # 倒着读
+od # 二进制读
+cat -n # 带行号读
+cat -b # 带行号,越过空白行
 less
-more +10 a.txt #从第10行读起
-more -10 f1.txt #每次显示10行读取文件
-head -n 1 文件名	 #读文件第一行
-head -5 /etc/passwd	#读取文件前5行
-tail -10 /etc/passwd #读取文件后10行
-sed -n '5,10p' /etc/passwd  #读取文件第5-10行
-du	#文件大小
-stat #文件属性
-file #文件类型
+more +10 a.txt # 从第10行读起
+more -10 f1.txt # 每次显示10行读取文件
+head -n 1 文件名	 # 读文件第一行
+head -5 /etc/passwd	# 读取文件前5行
+tail -10 /etc/passwd # 读取文件后10行
+sed -n '5,10p' /etc/passwd  # 读取文件第5-10行
+du	# 文件大小
+stat # 文件属性
+file # 文件类型
 id
 ```
 
@@ -236,21 +228,19 @@ locate passwd
 ```
 
 #### 改
-
 ```bash
-cp -r #带目录复制
+cp -r # 带目录复制
 mv
 vi
 vim
 nano
-gedit	#图形化的编辑器
+gedit	# 图形化的编辑器
 ```
 
 ---
 
 # net📶
 ## 配置
-
 **Ubuntu**
 ```vim
 vim /etc/network/interfaces
@@ -305,10 +295,10 @@ service network restart
 
 **Arch**
 ```bash
-ifconfig eth0 up	#启动网卡
-dhcpcd  eth0	#获取ip
+ifconfig eth0 up	# 启动网卡
+dhcpcd  eth0	# 获取ip
 ```
-`ifconfig -a`查看下可用的网卡
+`ifconfig -a` 查看下可用的网卡
 ```vim
 vim /etc/rc.conf
 
@@ -330,28 +320,27 @@ ROUTES=(gateway)
 **scp**
 ```bash
 scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
-scp -r //带文件夹
+scp -r # 文件夹传输
 ```
 
 **lrzsz**
 ```bash
 yum install lrzsz
-sz:将选定的文件发送（send）到本地机器
-rz:运行该命令会弹出一个文件选择窗口,从本地选择文件上传到服务器(receive)
+sz xxx   # 将选定的文件发送（send）到本地机器
+rz # 运行该命令会弹出一个文件选择窗口,从本地选择文件上传到服务器(receive),需要远程软件支持
 ```
 
 **wget**
 ```bash
 wget http://example.com/file.iso
-wget --output-document=filename.html example.com	#另行命名
-wget -c example.com/big.file.iso	#恢复之前的下载
-wget --i list.txt	#下载文件中的url
-wget -r example.com	#递归下载
-wget --no-check-certificate #不检查https证书
+wget --output-document=filename.html example.com   # 另行命名
+wget -c example.com/big.file.iso	# 恢复之前的下载
+wget --i list.txt	# 下载文件中的url
+wget -r example.com	# 递归下载
+wget --no-check-certificate # 不检查https证书
 ```
 
 ### bt
-
 - Transmission
 - rtorrent
 
@@ -371,36 +360,34 @@ tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
 
 ## Firewall
 ### Firewalld
-
 ```bash
-firewall-cmd --zone=public --add-port=12345/tcp --permanent  #开放端口
-firewall-cmd --zone=public --add-service=http --permanent   #开放服务
-firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" accept' --permanent #允许192.168.1.10所有访问所有端口
+firewall-cmd --zone=public --add-port=12345/tcp --permanent  # 开放端口
+firewall-cmd --zone=public --add-service=http --permanent   # 开放服务
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" accept' --permanent # 允许192.168.1.10所有访问所有端口
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" port port=22 protocol=tcp reject' --permanent #拒绝192.168.1.10所有访问TCP协议的22端口
 
-firewall-cmd --reload   #重新加载
-firewall-cmd --list-services  #查看防火墙设置
+firewall-cmd --reload   # 重新加载
+firewall-cmd --list-services  # 查看防火墙设置
 ```
 
 ### Iptables
-
 ```bash
-iptables-save > /root/firewall_rules.backup		#备份一下策略
+iptables-save > /root/firewall_rules.backup		# 备份一下策略
 iptables -A OUTPUT -p tcp -d bigmart.com -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -j DROP
 iptables -A INPUT -p tcp -s 10.0.3.1 --dport 22 -j ACCEPT
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
-iptables -L		#查看防火墙规则
-iptables-restore </root/firewall_rules.backup	#规则恢复一下
+iptables -L		# 查看防火墙规则
+iptables-restore </root/firewall_rules.backup	# 规则恢复一下
 ```
 
 ---
 
 ## 软件包管理
 ### 源
-
 **本地yum源**
+
 挂载到/mnt/cdrom
 ```bash
 mkdir /mnt/cdrom
@@ -424,22 +411,17 @@ enabled=1    # 开启本地源
 ```
 
 **Alibaba源**
-进入 /etc/yum.repos.d 目录,将其中三个改名或者剩下所有都移走留下 CentOS-Base.repo
-```bash
-cd /etc/yum.repos.d
-rm  CentOS-Media.repo
-rm  CentOS-Vault.repo
-```
+
 直接下载源
 >wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
-刷新YUM的缓存状态:
+刷新 YUM 的缓存状态:
 >yum clean all
 >yum makecache
 
 **Ub源**
 ```vim
-lsb_release -c	#查看系统版号
+lsb_release -c	# 查看系统版号
 
 cd /etc/apt/
 mv sources.list sources.list.bak
@@ -471,13 +453,12 @@ deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-
 
 **Pacman源**
 ```bash
-sudo pacman-mirrors -i -c China -m rank //更新镜像排名
-sudo pacman -Syy //更新数据源
+sudo pacman-mirrors -i -c China -m rank # 更新镜像排名
+sudo pacman -Syy # 更新数据源
 sudo pacman -S archlinux-keyring
 ```
 
 ### Binary
-
 ```bash
 yum install make
 yum install gcc
@@ -488,7 +469,6 @@ make install	#安装
 ```
 
 ### dpkg
-
 ```bash
 dpkg -i xxxxx.deb  #安装软件
 dpkg -R /usr/local/src	#安装路径下所有包
@@ -496,7 +476,6 @@ dpkg -L #查看软件安装位置
 ```
 
 ### Pacman
-
 ```bash
 sudo pacman -S vim
 sudo pacman -S fish
@@ -504,7 +483,6 @@ sudo pacman -Syy
 ```
 
 ### rpm
-
 ```bash
 rom -qa 		#搜索
 rpm -qf /etc/my.conf	#查询文件来自哪个包
@@ -514,7 +492,6 @@ rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ```
 
 ### yum
-
 ```bash
 yum update && yum upgrade
 rm -f /var/run/yum.pid	#强制解锁占用
@@ -526,7 +503,6 @@ yum install python
 ```
 
 ### apt
-
 ```bash
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 rm -rf /var/lib/dpkg/lock
@@ -550,11 +526,12 @@ apt install fish
 
 **Fish**
 ```bash
-echo /usr/bin/fish | sudo tee -a /etc/shells	#加默认
+echo /usr/bin/fish | sudo tee -a /etc/shells	# 加默认
 usermod -s /usr/bin/fish USERNAME
 ```
 
 **Powerline-shell**
+
 `pip install powerline-shell`
 ```vim
 vim ~/.config/fish/config.fish
@@ -565,21 +542,23 @@ end
 ```
 
 **Vim**
-Normal 模式下`i`进入 insert模式
-`:wq`存盘+退出
-`dd`删除当前行,并存入剪切板
-`p`粘贴
-`:q！`强制退出
-`:wq！`强制保存退出
-`:w !sudo tee %`无 root 权限,保存编辑的文件
-`:saveas <path/to/file> `→ 另存为
-按下`/`即可进入查找模式,输入要查找的字符串并按下回车。 Vim会跳转到第一个匹配。按下`n`查找下一个,按下`N`查找上一个。
 
-`:%s/foo/bar`代表替换foo为bar
+常用操作
+```
+Normal 模式下 i 进入 insert 模式
+:wq 存盘+退出
+dd 删除当前行,并存入剪切板
+p 粘贴
+:q！强制退出
+:wq！强制保存退出
+:w !sudo tee %  无 root 权限,保存编辑的文件
+:saveas <path/to/file> 另存为
+按下 / 即可进入查找模式,输入要查找的字符串并按下回车。 Vim会跳转到第一个匹配。按下n 查找下一个,按下 N 查找上一个。
+:%s/foo/bar 代表替换foo为bar
+insert 模式按 ESC 键,返回 Normal 模式
+```
 
-insert模式按`ESC`键,返回 Normal 模式
-
-使用vim对比文件
+使用 vim 对比文件
 >vimdiff  FILE_LEFT  FILE_RIGHT
 
 ---
@@ -599,7 +578,7 @@ cal	2019	# 2019日历
 
 ### 语言
 
-`echo  $LANG`查看当前操作系统的语言
+`echo  $LANG` 查看当前操作系统的语言
 ```vim
 vim /etc/locale.conf
 
@@ -765,6 +744,7 @@ shred -zvu -n  5 passwords.list
 ```
 
 **数据恢复**
+
 一点建议:业务系统,rm删除后，没有立即关机，运行的系统会持续覆盖误删数据。对于重要数据,误删后请立即关机
 - [foremost](http://foremost.sourceforge.net/)
 ```bash
@@ -839,48 +819,6 @@ blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 blkid -po udev /dev/sda1 # 获取更多详细信息
 blkid -g    # 清理 blkid 的缓存
 ```
-
----
-
-# 安全😎
-## 密码恢复
-
-- **centos7**
-```vim
-在启动菜单选择启动内核
-按e编辑,找到rhgb quiet一行
-把rhgb quiet替换为init=/bin/bash（临时生效）
-按CTRL+X进入单用户模式
-
-挂载根文件系统:
-mount -o remount,rw /
-
-使用passwd命令直接设置root密码:
-passwd root
-
-输入两次新密码。
-
-最后,执行如下命令更新SELinux:
-touch /.autorelabel
-
-进入正常模式:
-exec /sbin/init
-
-现在可以使用新设置的root密码登录了。
-```
-
-## selinux
-
-**关闭 selinux**
-- 需要重启
-	```vim
-	vim /etc/selinux/config
-
-	SELINUX=disabled
-	```
-
-- 不需要重启
-	`setenforce 0`
 
 ---
 

@@ -124,9 +124,9 @@ paragraph = """这是一个段落，
 ```
 ```python
 #!/usr/bin/python3
- 
+
 str='Runoob'
- 
+
 print(str)                 # 输出字符串
 print(str[0:-1])           # 输出第一个到倒数第二个的所有字符
 print(str[0])              # 输出字符串第一个字符
@@ -134,9 +134,9 @@ print(str[2:5])            # 输出从第三个开始到第五个的字符
 print(str[2:])             # 输出从第三个开始的后的所有字符
 print(str * 2)             # 输出字符串两次
 print(str + '你好')        # 连接字符串
- 
+
 print('------------------------------')
- 
+
 print('hello\nrunoob')      # 使用反斜杠(\)+n转义特殊字符
 print(r'hello\nrunoob')     # 在字符串前面添加一个 r，表示原始字符串，不会发生转义
 Runoob
@@ -161,7 +161,7 @@ hello\nrunoob
 执行下面的程序在按回车键后就会等待用户输入：
 ```py
 #!/usr/bin/python3
- 
+
 input("\n\n按下 enter 键后退出。")
 ```
 以上代码中 ，"\n\n"在结果输出前会输出两个新的空行。一旦用户按下 enter 键时，程序将退出。
@@ -170,7 +170,7 @@ input("\n\n按下 enter 键后退出。")
 Python 可以在同一行中使用多条语句，语句之间使用分号(;)分割，以下是一个简单的实例：
 ```python
 #!/usr/bin/python3
- 
+
 import sys; x = 'runoob'; sys.stdout.write(x + '\n')
 ```
 执行以上代码，输出结果为：
@@ -182,11 +182,11 @@ runoob
 我们将首行及后面的代码组称为一个子句(clause)。
 如下实例：
 ```python
-if expression : 
+if expression :
    suite
-elif expression : 
-   suite 
-else : 
+elif expression :
+   suite
+else :
    suite
 ```
 

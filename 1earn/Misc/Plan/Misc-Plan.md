@@ -157,11 +157,26 @@ npm config delete proxy  # 取消代理
 
 ---
 
-# vscode 配置
+# vscode
+`谁和我一起吹 vscode 我们就是永远的好朋友🤞`
+
+**配置**
 ```yml
 "editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black"
 "editor.fontLigatures": true
 ```
+
+**插件**
+- [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2)
+- [Chinese (Simplified)](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans)
+- [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+- [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+- [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
+- [filesize](https://marketplace.visualstudio.com/items?itemName=mkxml.vscode-filesize)
+- [Trailing Spaces](https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces)
+- [background](https://marketplace.visualstudio.com/items?itemName=shalldie.background)
+- [background-cover](https://marketplace.visualstudio.com/items?itemName=manasxx.background-cover)
+- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
 
 ---
 
@@ -204,11 +219,6 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 -ab 128 音频数据流量，一般选择32、64、96、128#-vol 200 200%的音量，可更改（如果源文件声音很小，可以提升10到20倍(1000%~2000%)，我试过，效果还行！但不能太大，200000%我也试验过，但嘈杂声太大了）
 ```
 
-**Reference**
-- [使用ffmpeg合并视频文件的三种方法](https://blog.csdn.net/u012587637/article/details/51670975)
-- [FFmpeg压缩MP4视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
-- [怎样用ffmpeg 压缩视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
-
 ---
 
 # Reference
@@ -221,3 +231,6 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 - [你真的会使用搜索引擎吗？](https://mp.weixin.qq.com/s/le_zYcDfhSLvbuu99LprMQ)
 - [VSCode 好看字体](https://blog.csdn.net/s1124yy/article/details/82315988)
 - [tonsky/FiraCode](https://github.com/tonsky/FiraCode)
+- [使用ffmpeg合并视频文件的三种方法](https://blog.csdn.net/u012587637/article/details/51670975)
+- [FFmpeg压缩MP4视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
+- [怎样用ffmpeg 压缩视频](https://blog.csdn.net/lakeheart879/article/details/78736634)

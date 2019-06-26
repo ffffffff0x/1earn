@@ -99,7 +99,7 @@ disk:40G
 
 ## Windows定制建议
 
-1.预装软件(持续更新)
+1.预装软件
 ```bash
 Dism+
 7zip
@@ -115,14 +115,14 @@ win10 2019 Ltsc
   360浏览器(为了兼容部分IE、flash网页)
 
 commando-vm
-  痛苦,在线下载安装速度惨不忍睹,只能在路由器代理加速了
 
 部分渗透/CTF工具补充
-CTFtools
-目录扫工具
-burp?(破解版)
-  JPython(为了运行插件)
-  JRuby(同上)
+  CTFtools
+  各类扫描工具(exe/python/go)
+  burp?(破解版)
+    JPython(为了运行插件)
+    JRuby(同上)
+  phpstudy(为了方便搭建)
 ```
 
 2.桌面需求

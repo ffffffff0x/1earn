@@ -33,7 +33,8 @@
 
 ### 渗透
 
-- **Speed-PentTest** : 记录渗透资源/知识点
+- **Power-PentTest** : 记录渗透资源/知识点
+- **Speed-Linux** : 渗透思路与想法
 
 ### 运维
 

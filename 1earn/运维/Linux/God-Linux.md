@@ -1,5 +1,4 @@
 # God-Linux🎭
-[TOC]
 
 ---
 

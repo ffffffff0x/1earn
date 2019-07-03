@@ -1,7 +1,6 @@
 # Speed-Linux😋
 
 `基础 Linux 命令、操作指南`
-[TOC]
 
 ---
 

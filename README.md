@@ -8,7 +8,7 @@
 
 ## Manual
 
-完事开头难,然后一直开头一直难...
+> 完事开头难,然后一直开头一直难...
 
 <p align="center">
     <img src=".//img/readme.jpg">
@@ -16,43 +16,42 @@
 
 ### Misc
 
-各种奇思妙想
+> 全部内容不一一列举,建议 clone 下来自己翻一遍
 
 **Plan**
-- Misc-Plan:各种小技巧
-- VM-Plan:虚拟机定制规划、VMWare常见问题记录
+- **Misc-Plan** : 各种小技巧
+- **VM-Plan** : 虚拟机定制规划、VMWare 常见问题记录
 
 **Tools**
-- Win-Tools:windows 下的软件使用方案
-- Web-Tools:在线 web 工具集合
+- **Web-Tools** : 在线 web 工具集合
+- **Win-Tools** : windows 下的软件使用方案
 
 ### 开发
 
-**Python**
-- 自己收藏/编写的一些模块实例，各种小工具
-
 **Git**
-- Git-Help:记录 git 命令理解与速查
+- **Git-Help** : 记录 git 命令理解与速查
 
 ### 渗透
 
-在学习渗透的道路上不断摸索
-- [Speed-PentTest](https://github.com/No-Github/1earn/wiki/Speed-PenTest%F0%9F%95%B6):平日工作生活中用到的渗透知识记录
+- **Speed-PentTest** : 记录渗透资源/知识点
 
 ### 运维
 
-你说我一个干网络安全的，怎么运维学的比渗透还好呢？
-
 **Linux**
-- Speed-Linux:命令速查手册,记录各种基本命令操作
-- Power-Linux:配置指南,记录各种服务搭建与配置过程
-- Secure-Linux:记录自己优化 linux 服务器性能与问题排查时用到的命令
+- **God-Linux** : 记录一些 linux 下的骚操作,收集的较少，后面会慢慢添加
+- **Power-Linux** : 配置指南,记录各种服务搭建与配置过程
+- **Secure-Linu**x : 记录自己优化 linux 服务器性能与问题排查时用到的命令
+- **Speed-Linux** : 命令速查手册,记录各种基本命令操作
 
 **Network**
-- 在学校期间做过的实验的记录
+- **不同厂商** : 记录不同厂商配置服务命令的区别
+- **方向实验** : 按方向分类记录配置
+- **理论模型** : 以科来网络通讯协议图为参照记录知识点
 
 **Windows**
-- 客户的需求搭建过程(关键部分)
+- 记录按客户需求搭建服务的过程(关键部分)
+
+---
 
 ## 三板斧
 
@@ -82,6 +81,7 @@
 - 2019-5-2:快要坚持一个月每天更新了
 - 2019-5-13:定个小目标，10月前，所有自己写的md文档加起来50W字(目前总字数23W)
 - 2019-6-17:这段时间放松了。自我反省。
+- 2019-7-3:鸽了好久的网络部分开始更新,那什么时候开始学学开发呢(自问)
 
 ## List
 
@@ -118,6 +118,9 @@
 - [免費資源網路社群 – 免費資源指南,每日網路資訊與科技新知](https://free.com.tw/)
 - [异次元软件世界 - 软件改变生活！](http://www.iplaysoft.com/)
 - [V2EX](https://www.v2ex.com/)
+- [SecQuan 汇聚新锐白帽](https://www.secquan.org/)
+- [T00LS](https://www.t00ls.net/)
+- [看雪安全论坛](http://bbs.pediy.com/)
 
 ## Thank
 

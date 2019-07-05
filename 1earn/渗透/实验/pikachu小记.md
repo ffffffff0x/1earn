@@ -1020,7 +1020,7 @@ if(array_key_exists('id', $_GET)){
 
 参数 id 可以尝试 sql 报错注入，构造 payload
 
-`1 or updatexml(1,concat(Ox7e,database()),0)`
+`1 or updatexml(1,concat(0x7e,database()),0)`
 
 通过Burp Suite中自带的URL转换编码来转换替换ID
 

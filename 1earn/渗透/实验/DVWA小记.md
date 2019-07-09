@@ -317,6 +317,8 @@ for key in open("password.txt"):
 ```
 ![image](../../../img/渗透/实验/dvwa/dvwa11.png)
 
+代码写的烂，不要笑话其实用这个匹配是最关键的 `user_token = re.findall(r"name='user_token' value='(.+?)'",content)[0]`
+
 注: 使用 urllib3 的 ProxyManager 可以让 python 产生的 http 请求流量通过 burpsutie 的 proxy
 
 ```python

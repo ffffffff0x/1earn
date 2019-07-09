@@ -4,7 +4,6 @@
 
 `大部分适用于Centos7`
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
-`虽然很多都是copy了网上的文章，但起码每一个服务我都是确保自己能在本地虚拟机搭建成功才会写入指南`
 
 ---
 
@@ -641,11 +640,11 @@ socks5 127.0.0.1 1080 #改成你懂的
 
 **使用**
 在需要代理的命令前加上 proxychains4 ，如：
-`proxychains4 wget http://xxx.com/xxx.zip`
+`proxychains4 wget https://www.google.com/`
 
 ---
 
-## [SSH🔑](https://www.ssh.com)
+## [🔑SSH](https://www.ssh.com)
 
 一般主机安装完毕后 SSH 是默认开启的
 使用`/etc/init.d/ssh status`查看主机SSH状态
@@ -1546,7 +1545,7 @@ systemctl enable mariadb
 
 ---
 
-### [MySQL📦](https://www.mysql.com)
+### [📦MySQL](https://www.mysql.com)
 
 和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
@@ -1556,7 +1555,7 @@ sudo service mysql start
 
 ---
 
-### [Postgresql🐘](https://www.postgresql.org)
+### [🐘Postgresql](https://www.postgresql.org)
 
 **安装**
 ```bash
@@ -1597,7 +1596,7 @@ host    all             all             0.0.0.0/0               md5
 ---
 
 ## Document
-### [MongoDB🍃](https://www.mongodb.com/)
+### [🍃MongoDB](https://www.mongodb.com/)
 
 **安装**
 ```vim
@@ -1651,7 +1650,7 @@ authorization: enabled
 ---
 
 ## Key-value
-### [Redis🔺🔴⭐](https://redis.io/)
+### [🔺🔴⭐Redis](https://redis.io/)
 
 **安装**
 - **包管理器方式**
@@ -2147,7 +2146,7 @@ gcc helloworld.c -o execFile
 
 ---
 
-## [Go🐹](https://golang.org/)
+## [🐹Go](https://golang.org/)
 
 **源文件方式安装**
 ```bash
@@ -2160,7 +2159,7 @@ go version
 ```
 
 ---
-## [JDK☕](https://www.oracle.com/technetwork/java/javase/downloads/)
+## [☕JDK](https://www.oracle.com/technetwork/java/javase/downloads/)
 
 **rpm 包方式安装**
 下载
@@ -2186,7 +2185,7 @@ rpm -ivh jdk-****.rpm
 
 ---
 
-## [Python3🐍](https://www.python.org/)
+## [🐍Python3](https://www.python.org/)
 
 **yum 安装**
 ```bash
@@ -2236,7 +2235,7 @@ pip3 -V
 ```
 ---
 
-## [Ruby💎](https://www.ruby-lang.org)
+## [💎Ruby](https://www.ruby-lang.org)
 
 **安装**
 注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
@@ -2434,7 +2433,7 @@ setenforce 0
 ---
 
 # 虚拟化
-## [Docker🐋](https://www.docker.com)
+## [🐋Docker](https://www.docker.com)
 
 **centos**
 ```bash
@@ -2482,7 +2481,7 @@ docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但
 ---
 
 # CI
-## [Jenkins🤵🏻](https://jenkins.io/)
+## [🤵🏻Jenkins](https://jenkins.io/)
 
 `注,Jenkins需要jdk环境，请先行安装`
 

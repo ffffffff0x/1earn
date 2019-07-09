@@ -67,6 +67,7 @@ curl
 git
 SSH
 lrzsz
+proxychains
 
 Centos
   "Development Tools"

@@ -11,7 +11,7 @@
 # 系统配置
 ## Net
 
-**配置网卡**
+**centos配置网卡**
 ```vim
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
 

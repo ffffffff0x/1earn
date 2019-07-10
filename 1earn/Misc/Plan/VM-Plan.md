@@ -11,7 +11,7 @@
 - [Parrot-kde](https://www.parrotsec.org/)
 
 **Windows虚拟机建议**
-- 渗透-[commando-vm](https://github.com/fireeye/commando-vm)
+- 渗透/靶机-[commando-vm](https://github.com/fireeye/commando-vm)
 - 日用-Win10 2019 Ltsc
 
 **关闭虚拟内存**
@@ -108,22 +108,23 @@ notepad++
 geek
 chrome
 
-win10 2019 Ltsc
+日用
   微信
   TIM
   钉钉
   360杀毒(虚拟机运行,就当养蛊了)
   360浏览器(为了兼容部分IE、flash网页)
 
-commando-vm
-
-部分渗透/CTF工具补充
-  CTFtools
+渗透/靶机
+  python
+  java
+  CTF工具
+    ctftools
   各类扫描工具(exe/python/go)
-  burp?(破解版)
+  burp
     JPython(为了运行插件)
     JRuby(同上)
-  phpstudy(为了方便搭建)
+  phpstudy(为了方便搭建环境)
 ```
 
 2.桌面需求

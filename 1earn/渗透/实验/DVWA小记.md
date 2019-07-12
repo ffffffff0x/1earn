@@ -329,6 +329,8 @@ import urllib3.request
 ```
 ![image](../../../img/渗透/实验/dvwa/dvwa12.png)
 
+另外，可以使用burp的插件CSRF Token Tracker捕捉token，请自行研究
+
 ### Impossible
 **服务器端核心代码**
 ```php

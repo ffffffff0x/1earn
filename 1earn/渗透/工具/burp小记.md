@@ -1,5 +1,63 @@
 # [Burp Suite](https://portswigger.net/)
 
+---
+
+## Reference
+- [kali 安装新版本burp 以及不能使用重新安装jdk的解决方法](https://blog.csdn.net/nzjdsds/article/details/81205184)
+
+---
+
+## 安装
+**windows**
+
+太简单，略
+
+**linux**
+
+这里以kali举例，kali自带的是openjdk不支持新版burp，自行下载[oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+文件名类似 `jdk-8u212-linux-x64.tar.gz`
+
+```bash
+bash
+tar -xzvf jdk-8u212-linux-x64.tar.gz
+mv jdk1.8.0_212/ /usr/local/lib/jvm/
+cd /usr/local/lib/
+mv jvm jdk
+mv jdk jdk1.8
+export JAVA_HOME=/usr/local/lib/jdk1.8/
+
+export JRE_HOME=JAVAHOME/jreexportCLASSPATH=.:{JAVA_HOME}/lib:JREHOME/libexportPATH={JAVA_HOME}/bin:$PATH
+update-alternatives --install /usr/bin/java java /usr/local/lib/jdk1.8/bin/java 1
+update-alternatives --install /usr/bin/javac javac /usr/local/lib/jdk1.8/bin/javac 1
+
+update-alternatives --set java /usr/local/lib/jdk1.8/bin/java
+
+update-alternatives --set javac /usr/local/lib/jdk1.8/bin/javac
+```
+
+输两条命令测试
+```bash
+java
+javac
+```
+
+没问题就直接运行注册机即可 `java -jar burp-loader-keygen-jas502n.jar
+`
+
+---
+
+## 配置
+**代理配置**
+
+略
+
+**证书**
+
+浏览器访问 burp/ ,下载cacert.der证书，一路下一步安装，证书存储选择存储在 `受信任的根证书颁发机构`，firefox需要到 隐私与安全->证书->查看证书->导入->全部勾选信任
+
+---
+
 ## Target
 
 
@@ -48,7 +106,7 @@ Payload Encoding 配置字典进行 URL 编码
 
 
 
-
+---
 
 ## Extender 插件模块
 
@@ -57,13 +115,6 @@ Payload Encoding 配置字典进行 URL 编码
 官方插件商店 https://portswigger.net/bappstore
 
 大部分插件运行需要 [Jython](https://www.jython.org/downloads.html)、[JRuby](https://www.jruby.org/download) 环境
-
-
-
-
-
-
-
 
 
 

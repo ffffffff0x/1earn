@@ -1,6 +1,18 @@
 # Git 使用指南
 
-[TOC]
+---
+
+## Reference
+- [Git Push 避免用户名和密码方法](https://www.cnblogs.com/ballwql/p/3462104.html)
+- [Git初始配置和基本使用](https://blog.csdn.net/daily886/article/details/80140720)
+- [Git远程操作详解 - 阮一峰的网络日志](www.ruanyifeng.com/blog/2014/06/git_remote.html)
+- [Git教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
+- [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
+- [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
+- [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
+- [Git冲突：commit your changes or stash them before you can merge.](https://blog.csdn.net/lincyang/article/details/21519333)
+- [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
+- [git commit 提交多行message](https://blog.csdn.net/sinat_29891353/article/details/76674798)
 
 ---
 
@@ -46,10 +58,14 @@ git diff --cached   #查看暂存区和本地仓库之间的差异
 git log     #查看提交历史
 git reflog  #显示当前分支的最近几次提交
 
-
 git commit -m "Input your commit message"   #提交更新
 git commit -a -m "Commit message"   #跳过使用暂存区
 git commit --allow-empty-message --no-edit # 懒得什么message都不想写
+
+git commit -m 'test1
+test2
+test3
+'   # 提交多行massage
 
 git rm <finame>
 git mv file_from file_to
@@ -240,15 +256,3 @@ git push --force origin
     login your-usernmae
     password your-password
     ```
-
----
-
-# Reference
-- [Git Push 避免用户名和密码方法](https://www.cnblogs.com/ballwql/p/3462104.html)
-- [Git初始配置和基本使用](https://blog.csdn.net/daily886/article/details/80140720)
-- [Git远程操作详解 - 阮一峰的网络日志](www.ruanyifeng.com/blog/2014/06/git_remote.html)
-- [Git教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
-- [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
-- [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
-- [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
-- [Git冲突：commit your changes or stash them before you can merge.](https://blog.csdn.net/lincyang/article/details/21519333)

@@ -122,6 +122,7 @@ chrome
     ctftools
   各类扫描工具(exe/python/go)
   burp
+    常见插件
     JPython(为了运行插件)
     JRuby(同上)
   phpstudy(为了方便搭建环境)

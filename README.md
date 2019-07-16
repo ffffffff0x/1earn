@@ -16,7 +16,7 @@
 
 ### Misc
 
-> 全部内容不一一列举,建议 clone 下来自己翻一遍
+> 全部内容不一一列举,杂项太多
 
 **Plan**
 - **Misc-Plan** : 各种小技巧
@@ -83,6 +83,7 @@
 - 2019-5-13:定个小目标，10月前，所有自己写的md文档加起来50W字(目前总字数23W)
 - 2019-6-17:这段时间放松了。自我反省。
 - 2019-7-3:鸽了好久的网络部分开始更新,那什么时候开始学学开发呢(自问)
+- 2019-7-17:最近事情比较多,写的少了,不过我承诺,这个项目会一直更新下去
 
 ## List
 
@@ -110,7 +111,6 @@
 - [先知社区](https://xz.aliyun.com/)
 - [My Digital Life Forums](https://forums.mydigitallife.net/)
 - [Linux Commands](https://www.tecmint.com/category/linux-commands/)
-- [伯乐在线](http://blog.jobbole.com/all-posts/)
 - [卡饭论坛](https://bbs.kafan.cn/index.php)
 - [阮一峰的网络日志](http://www.ruanyifeng.com/blog/)
 - [少数派 - 高品质数字消费指南](https://sspai.com/)

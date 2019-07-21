@@ -1,5 +1,5 @@
 # Benchmark🐱‍👤
-`应用于vps 的linux跑分脚本`
+`应用于 vps 性能判断`
 
 ## 版本信息🐶
 
@@ -59,27 +59,3 @@ df -h # 查看硬盘分区以及占用情况命令
 du -sh [指定路径] # 查看指定路径文件或目录大小命令
 fdisk -l # 查看硬盘大小，数量，类型命令
 ```
-
-
-
-
-
-CPU核数（从/proc/cpuinfo读取）。
-
-CPU速度（从/proc/cpuinfo读取）。
-
-CPU使用（从/proc/stat读取）。
-
-Gate'a的 IP（从/proc/net/route读取）。
-
-Gate'a的MAC地址（从/proc/net/arp读取）。
-
-网络接口信息（从/proc/net/dev读取）。
-
-网络设备的MAC地址。
-
-内存（使用/proc/meminfo中的MemTotal参数）。
-
-发送和接收的数据量（从/proc/net/dev读取）。
-
-操作系统名称和版本（通过调用uname命令）。

@@ -1,6 +1,6 @@
 # SDN
 
-[TOC]
+---
 
 ## ODL虚拟机基础配置
 
@@ -16,6 +16,8 @@ vi /etc/network/interface
 建议虚拟机开NAT模式
 然后IP配置同网段vmnet网卡IP
 再用SecureCRT开3个窗口SSH上去，一个窗口开 Opendaylight，一个窗口开 Mininet,一个配置流表
+
+---
 
 ## OpenDaylight
 
@@ -56,11 +58,10 @@ bg      //后台运行，不然不好访问web
 输出所有节点的信息：
 >mininet> dump
 
+### 示例
 
-
-**以下实例**
-**18 A0**
-### 单交换机(Single switch)
+**例1**
+#### 单交换机(Single switch)
 
 >sudo mn --arp --topo single,3 --mac --switch ovsk --controller remote
 - mac：自动设置MAC地址，MAC地址与IP地址的最后一个字节相同
@@ -74,9 +75,9 @@ bg      //后台运行，不然不好访问web
 （注意：如果没有指定控制器的话，是ping不通的）
 
 
-**19 样题A卷**
+**例2**
 使用Mininet和OpenVswitch构建拓扑，采用采用OVS交换机格式，连接ODL的6653端口Openflow1.3协议
-### 深度2，扇出系数2
+#### 深度2，扇出系数2
 
 >sudo mn --topo tree,2,2 --switch ovs,protocols=OpenFlow13 --controller remote,ip=127.0.0.1,port=6653
 
@@ -89,7 +90,7 @@ h1  h2           h3 h4
 
 ---
 
-**18 I卷**
+**例3**
 使用Mininet构建拓扑，采用ovsk交换格式，连接ODL的远程地址为192.168.10.128:6653,协议类型是Openflow1.30
 >sudo mn --topo tree,2,2 --switch ovsk,protocols=OpenFlow13 --controller remote,ip=192.168.10.128,port=6653
 
@@ -102,8 +103,8 @@ h1  h2           h3 h4
 
 ---
 
-**18 C0**
-### 两个线性连接的交换机
+**例4**
+#### 两个线性连接的交换机
 
 使用Mininet和OpenVswitch构建拓扑，连接ODL的6633端口采用Openflow1.3协议
 
@@ -120,14 +121,15 @@ h1  h2
 ---
 
 ## 流表
-### 样题
+### 示例
 
 流表操作在第三个窗口上进行，当然在 mininet 中可以在命令前加上 sh 运行
 
 ***再提醒一下，流表操作在第三个窗口上进行,前面加 sudo***
+
 ***如果在 mininet 中可以在命令前加上 sh 运行***
 
-**19 样题A卷**
+**例1**
 通过 OVS 下发流表，H1 与 H2 可以互通，H1 与 H3 不能互通，但 H3 和 H4 之间可以互通。
 
 >ovs-vsctl show
@@ -158,7 +160,7 @@ h4 -> h1 h2 h3
 
 ---
 
-**18 I卷**
+**例2**
 ```
     s2 --- s1 ---  s3
 h1  h2           h3 h4
@@ -177,7 +179,7 @@ H1启动HTTP-Server功能，WEB端口为80，H2作为HTTP-Client，获取H1的ht
 
 ---
 
-**18 A0**
+**例3**
 ```
     s1
 h1  h2  h3
@@ -188,7 +190,7 @@ h1  h2  h3
 
 ---
 
-**18 B0**
+**例4**
 ```
   s1
 h1  h2
@@ -203,7 +205,7 @@ h1  h2
 
 ---
 
-**18 C0**
+**例5**
 ```
   c0
 s1--s2

@@ -54,7 +54,6 @@ set PATH (你想要加入的路径) $PATH
 ```
 `souce ~/.config/fish/config.fish`
 
-
 ---
 
 ## 通配符/限制输出

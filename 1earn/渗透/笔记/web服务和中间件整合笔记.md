@@ -170,6 +170,8 @@
 ---
 
 ## Apache Tomcat
+Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路径为 `/manager/html`，后台默认弱口令 admin/admin、tomcat/tomcat 等，若果配置不当，可通过”Tomcat Manager”连接部署 war 包的方式获取 webshell。
+
 - **文章**
     - [Tomcat漏洞详解](http://www.mottoin.com/detail/389.html)
 

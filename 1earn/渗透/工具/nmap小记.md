@@ -1,4 +1,4 @@
-# nmap小记
+# nmap 小记
 
 ---
 
@@ -9,36 +9,36 @@
 ---
 
 # 用法
-`nmap -T5 -A -vv xx.xx.xx.xx` 这条命令的意思是往死里扫，管TM封不封地址
+`nmap -T5 -A -vv xx.xx.xx.xx` 这条命令的意思是往死里扫，管 TM 封不封地址
 
 ## 常用参数
 
 ```
 -F             端口扫描
--sT            tcp端口扫描
--sU            udp扫描
+-sT            tcp 端口扫描
+-sU            udp 扫描
 -A             综合扫描
 -O             系统扫描
 -p             指定端口扫描
--T             优化时间1-5强度
+-T             优化时间 1-5 强度
 -sV            端口对应的服务探测
 -sP            发现扫描网络存活主机
 -sS            半隐藏式隐蔽扫描
 --iL           从主机/网络列表输入
 --tr           路由跟踪模式
--P0            (无ping)
--sP            (Ping扫描)
+-P0            (无 ping)
+-sP            (Ping 扫描)
 
 --script=vuln  利用脚本漏洞探测
 --script=>>>>>>>   调用一个脚本
--oG  nmap.txt  将结果保存到nmap.txt
+-oG  nmap.txt  将结果保存到 nmap.txt
 ```
 
 ---
 
 ## 基本操作
 
-nmap默认发送一个ARP的PING数据包，来探测目标主机1-10000范围内所开放的所有端口
+nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 范围内所开放的所有端口
 
 `nmap <target ip>`
 
@@ -48,11 +48,11 @@ nmap默认发送一个ARP的PING数据包，来探测目标主机1-10000范围�
 
 **自定义扫描**
 
-`nmap -p(range) <target IP>`
+`nmap -p (range) <target IP>`
 
 **指定端口扫描**
 
-`nmap -p(port1,port2,…) <target IP>`
+`nmap -p (port1,port2,…) <target IP>`
 
 **ping 扫描**
 
@@ -83,7 +83,7 @@ nmap默认发送一个ARP的PING数据包，来探测目标主机1-10000范围�
 
 **伪装 MAC 地址**
 
-`nmap --spoof-mac <伪造MAC IP地址> <target ip>`
+`nmap --spoof-mac <伪造 MAC IP地址> <target ip>`
 
 **指定网卡进行扫描**
 

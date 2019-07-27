@@ -28,7 +28,7 @@ curl ifconfig.me
 This command could delete half your files randomly
 ```bash
 #!/bin/sh
-let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xargs -0 -- cat 
+let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xargs -0 -- cat
 
 # Explaination
 ## Step 1: Get the count of files in current path divided by two.

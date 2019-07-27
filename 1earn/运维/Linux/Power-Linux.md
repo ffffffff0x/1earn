@@ -2,7 +2,8 @@
 
 `Linux 下各种常见服务的搭建/配置指南`
 
-`大部分适用于Centos7`
+`大部分适用于 Centos7`
+
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
 
 ---
@@ -10,12 +11,12 @@
 # 系统配置
 ## Net
 
-**centos配置网卡**
+**centos 配置网卡**
 ```vim
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
 
 DEVICE="enoXXXXXX"
-BOOTPROTO=static　　　　　　　# 使用静态IP,而不是由DHCP分配IP
+BOOTPROTO=static　　　　　　　# 使用静态 IP,而不是由 DHCP 分配 IP
 IPADDR=172.16.102.61
 PREFIX=24
 GATEWAY=172.16.102.254
@@ -26,10 +27,10 @@ HOSTNAME=dns1.abc.com
 ```vim
 vim /etc/hosts
 
-127.0.0.1  test localhost  # 修改localhost.localdomain为test,shutdown -r now重启使修改生效
+127.0.0.1  test localhost  # 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
 ```
 
-**修改DNS**
+**修改 DNS**
 ```vim
 vim /etc/resolv.conf
 
@@ -42,7 +43,9 @@ nameserver 8.8.8.8
 ## 配置本地yum源,挂载,安装
 
 **挂载**
+
 `mkdir /mnt/cdrom`
+
 `mount /dev/cdrom /mnt/cdrom/`
 
 **自动挂载**
@@ -110,10 +113,10 @@ w 写入
 	另外一个获取阵列信息的方法是：
 	`mdadm -D /dev/md0`
 
-**格式化为xfs**
+**格式化为 xfs**
 `mkfs.xfs /dev/md0`
 
-**以UUID的形式开机自动挂载**
+**以 UUID 的形式开机自动挂载**
 ```bash
 mkdir /data/ftp_data
 blkid	/dev/md0 # 查UUID值
@@ -146,6 +149,7 @@ fdisk /dev/sdb	# 创建系统分区
 ```
 
 **卷组**
+
 创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
 ```bash
 pvcreate /dev/sdb1	# 初始化物理卷
@@ -153,6 +157,7 @@ vgcreate ‐s 16M datastore /dev/sdb1 # 创建物理卷
 ```
 
 **逻辑卷**
+
 逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
 ```bash
 lvcreate ‐l 50 ‐n database datastore
@@ -165,6 +170,7 @@ lvdisplay
 ```
 
 **格式化**
+
 将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。
 ```bash
 mkfs.xfs /dev/datastore/database
@@ -182,7 +188,8 @@ mount | grep '^/dev'
 ```
 
 **扩容**
-将database逻辑卷扩容至15GB空间大小,以满足业务需求。
+
+将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求。
 ```bash
 lvextend -L 15G /dev/datastore/database
 lvs	# 确认有足够空间
@@ -195,7 +202,7 @@ lvdisplay
 # 网络服务
 ## [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)
 
-`一个DNS去广告、去跟踪的服务`
+`一个 DNS 去广告、去跟踪的服务`
 
 **安装**
 ```bash
@@ -222,11 +229,13 @@ systemctl stop firewalld
 
 ## [Chrony](https://chrony.tuxfamily.org/)
 
-`一个时间同步软件，可用于搭建类NTP时间服务`
+`一个时间同步软件，可用于搭建类 NTP 时间服务`
 
-它由两个程序组成：chronyd和chronyc。
-chronyd是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
-chronyc是用来监控chronyd性能和配置其参数程序
+它由两个程序组成：chronyd 和 chronyc。
+
+chronyd 是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
+
+chronyc 是用来监控 chronyd 性能和配置其参数程序
 
 **安装**
 ```bash
@@ -262,10 +271,10 @@ systemctl start chronyd.service
 
 **查看同步状态**
 ```bash
-chronyc sourcestats #检查ntp源服务器状态
-chronyc sources -v  #检查ntp详细同步状态
+chronyc sourcestats # 检查ntp源服务器状态
+chronyc sources -v  # 检查ntp详细同步状态
 
-chronyc #进入交互模式
+chronyc # 进入交互模式
   activity
 ```
 
@@ -288,31 +297,33 @@ chronyc #进入交互模式
 ## DHCP
 
 **安装**
+
 `yum install dhcp`
 
 **复制一份示例**
+
 `cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf `
 
 **修改配置文件**
 ```vim
 vim /etc/dhcp/dhcpd.conf
 
-ddns-update-style interim;      # 设置DNS的动态更新方式为interim
+ddns-update-style interim;      # 设置 DNS 的动态更新方式为 interim
 option domain-name "abc.edu";
-option domain-name-servers  8.8.8.8;           # 指定DNS服务器地址
+option domain-name-servers  8.8.8.8;           # 指定 DNS 服务器地址
 default-lease-time  43200;                          # 指定默认租约的时间长度,单位为秒
 max-lease-time  86400;  # 指定最大租约的时间长度
 
 # 以下为某区域的 IP 地址范围
 
-subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义DHCP作用域
-	range  192.168.1.20 192.168.1.100;                # 指定可分配的IP地址范围
+subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义 DHCP 作用域
+	range  192.168.1.20 192.168.1.100;                # 指定可分配的 IP 地址范围
 	option routers  192.168.1.254;                       # 指定该网段的默认网关
 }
 ```
 ```bash
-dhcpd -t    #检测语法有无错误
-service dhcpd start    #开启 dhcp 服务
+dhcpd -t    # 检测语法有无错误
+service dhcpd start    # 开启 dhcp 服务
 
 firewall-cmd --zone=public --add-service=dhcp --permanent
 firewall-cmd --reload # 记得防火墙放行
@@ -436,16 +447,17 @@ firewall-cmd --reload
 
 ## Kicktart
 
-`是Kicktart不是kickstarter，这玩意不能众筹，这是用于联网安装系统时给PXE服务提供应答文件的`
+`是 Kicktart 不是 kickstarter，这玩意不能众筹，这是用于联网安装系统时给 PXE 服务提供应答文件的`
 
 - 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
 - 环境:VMWARE
 - 1台无人值守系统——RHEL 7——192.168.10.10
 - 1台客户端——未安装操作系统
 
-注：vmware中做实验需要在虚拟网络编辑器中将dhcp服务关闭
+注：vmware 中做实验需要在虚拟网络编辑器中将 dhcp 服务关闭
 
 **配置 DHCP**
+
 DHCP 服务程序用于为客户端主机分配可用的 IP 地址，而且这是服务器与客户端主机进行文件传输的基础
 `yum -y install dhcp`
 ```vim
@@ -472,6 +484,7 @@ systemctl enable dhcpd
 ```
 
 **配置 TFTP 服务**
+
 配置 TFTP 服务程序，为客户端主机提供引导及驱动文件。当客户端主机有了基本的驱动程序之后，再通过 vsftpd 服务程序将完整的光盘镜像文件传输过去。
 ```bash
 yum -y install tftp-server xinetd
@@ -496,25 +509,26 @@ service tftp
 ```bash
 systemctl restart xinetd
 systemctl enable xinetd
-firewall-cmd --permanent --add-port=69/udp  #放行tftp
+firewall-cmd --permanent --add-port=69/udp  # 放行tftp
 firewall-cmd --reload
 ```
 
 **配置 SYSLinux 服务**
+
 SYSLinux 是一个用于提供引导加载的服务程序。与其说 SYSLinux 是一个服务程序，不如说更需要里面的引导文件，在安装好 SYSLinux 服务程序软件包后，/usr/share/syslinux 目录中会出现很多引导文件。
 ```bash
 yum -y install syslinux
 
-#首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中，也就是 pxelinux.0，这样客户端主机就能够顺利地获取到引导文件。另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件。
+# 首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中，也就是 pxelinux.0，这样客户端主机就能够顺利地获取到引导文件。另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件。
 cd /var/lib/tftpboot
 cp /usr/share/syslinux/pxelinux.0 .
 mkdir /media/cdrom
 mount /dev/cdrom /media/cdrom
-#确认光盘镜像已经被挂载到 /media/cdrom 目录后，使用复制命令将光盘镜像中自带的一些引导文件也复制到 TFTP 服务程序的默认目录中。
+# 确认光盘镜像已经被挂载到 /media/cdrom 目录后，使用复制命令将光盘镜像中自带的一些引导文件也复制到 TFTP 服务程序的默认目录中。
 cp /media/cdrom/images/pxeboot/{vmlinuz,initrd.img} .
 cp /media/cdrom/isolinux/{vesamenu.c32,boot.msg} .
 
-#在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录，虽然该目录的名字带有后缀，但依然也是目录，而非文件！将系统光盘中的开机选项菜单复制到该目录中，并命名为 default。这个 default 文件就是开机时的选项菜单。
+# 在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录，虽然该目录的名字带有后缀，但依然也是目录，而非文件！将系统光盘中的开机选项菜单复制到该目录中，并命名为 default。这个 default 文件就是开机时的选项菜单。
 mkdir pxelinux.cfg
 cp /media/cdrom/isolinux/isolinux.cfg pxelinux.cfg/default
 ```
@@ -578,13 +592,13 @@ docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_ini
 Enter PEM pass phrase:12345678
 再输入一遍
 Verifying - Enter PEM pass phrase:12345678
-输入一个CA名称（我这里直接回车）
+输入一个 CA 名称（我这里直接回车）
 Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
 输入刚才设置的私钥密码（输入完成后会再让输入一次）
 Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
 ```
 
-**生成客户端证书（这里的user改成你想要的名字）**
+**生成客户端证书（这里的 user 改成你想要的名字）**
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
 
@@ -598,7 +612,7 @@ mkdir -p /data/openvpn/conf
 docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_getclient user > /data/openvpn/conf/user.ovpn
 ```
 
-**启动OpenVPN服务**
+**启动 OpenVPN 服务**
 ```bash
 docker run --name openvpn -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn:2.4
 
@@ -611,7 +625,7 @@ yum install lrzsz -y
 sz /data/openvpn/conf/whsir.ovpn
 ```
 
-在openvpn的安装目录下，有个config目录，将服务器上的user.ovpn，放在该目录下，运行OpenVPN GUI，右键whsir连接connect
+在 openvpn 的安装目录下，有个 config 目录，将服务器上的 user.ovpn，放在该目录下，运行 OpenVPN GUI，右键 whsir 连接 connect
 
 **Reference**
 - [通过docker搭建openvpn](https://blog.whsir.com/post-2809.html)
@@ -620,7 +634,7 @@ sz /data/openvpn/conf/whsir.ovpn
 
 ## [proxychains](https://github.com/rofl0r/proxychains-ng)
 
-`通过DLL注入，使目标程序走代理`
+`通过 DLL 注入，使目标程序走代理`
 
 **安装**
 ```bash
@@ -635,10 +649,11 @@ cd .. && rm -rf proxychains-ng
 **编辑配置**
 ```bash
 vim /etc/proxychains.conf
-socks5 127.0.0.1 1080 #改成你懂的
+socks5 127.0.0.1 1080 # 改成你懂的
 ```
 
 **使用**
+
 在需要代理的命令前加上 proxychains4 ，如：
 `proxychains4 wget https://www.google.com/`
 
@@ -647,9 +662,10 @@ socks5 127.0.0.1 1080 #改成你懂的
 ## [🔑SSH](https://www.ssh.com)
 
 一般主机安装完毕后 SSH 是默认开启的
-使用`/etc/init.d/ssh status`查看主机SSH状态
+使用 `/etc/init.d/ssh status` 查看主机 SSH 状态
 
 **Kali/Manjaro**
+
 安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
 ```vim
 vim /etc/ssh/sshd_config
@@ -661,23 +677,24 @@ PermitRootLogin yes
 service ssh restart
 systemctl enable ssh
 ```
-若在使用工具登录时,当输完用户名密码后提示SSH服务器拒绝了密码,请再试一遍。
-这时请不要着急,只需要在Kali控制端口重新生成两个秘钥即可。
+若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,请再试一遍。
+这时请不要着急,只需要在 Kali 控制端口重新生成两个秘钥即可。
 ```bash
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 ```
 
 **Ubuntu**
+
 如果没有就装一下
-如果你只是想登陆别的机器的SSH只需要安装openssh-client（ubuntu有默认安装,如果没有则sudo
-apt-get install openssh-client）,如果要使本机开放SSH服务就需要安装openssh-server
+如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client（ubuntu 有默认安装,如果没有则 sudo
+apt-get install openssh-client）,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
 apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
 apt install ssh
 ```
-`service ssh restart` 然后重启SSH服务
+`service ssh restart` 然后重启 SSH 服务
 
 ---
 
@@ -695,7 +712,7 @@ yum install mod_ssl
 vim /etc/httpd/conf/httpd.conf
 
 DocumentRoot "/var/www/html"
-ServerName  xx.xx.xx.xx:80   # 设置Web服务器的主机名和监听端口
+ServerName  xx.xx.xx.xx:80   # 设置 Web 服务器的主机名和监听端口
 ```
 
 **启服务**
@@ -711,12 +728,13 @@ firewall-cmd --reload
 ```
 
 **虚拟主机**
+
+配置虚拟主机文件
 ```vim
-#配置虚拟主机文件
 vim /etc/httpd/conf.d/virthost.conf
 
 <VirtualHost 192.168.1xx.22:80>
-	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
 	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
@@ -725,7 +743,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443
 <VirtualHost 192.168.1xx.22:443>
-	ServerName  www.abc.com     # 设置Web服务器的主机名和监听端口
+	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
 	DocumentRoot "/data/web_data"
 
 	SSLEngine on
@@ -747,7 +765,7 @@ firewall-cmd --reload
 ```
 
 **mod_ssl**
-- **为linux提供web证书**
+- **为 linux 提供 web 证书**
 ```bash
 cd /etc/pki/CA/private
 openssl genrsa 2048 > cakey.pem
@@ -764,11 +782,11 @@ openssl genrsa 1024 > httpd.key
 openssl req -new -key httpd.key > httpd.csr
 openssl ca -days 365 -in httpd.csr > httpd.crt
 
-# 使用cat /etc/pki/CA/index.txt查看openssl证书数据库文件
+# 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
 cat /etc/pki/CA/index.txt
 ```
 
-- **为windows提供web证书**
+- **为 windows 提供 web 证书**
 ```bash
 cd /etc/pki/CA/private
 openssl genrsa 2048 > cakey.pem
@@ -785,15 +803,16 @@ openssl req -new -key httpd.key > httpd.csr
 openssl ca -days 365 -in httpd.csr > httpd.crt
 
 openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
-# 自己把server.pfx导出给windows2008主机
+# 自己把 server.pfx 导出给 windows2008 主机
 ```
 
 - **向 windows CA 服务器申请证书**
 `Openssl genrsa 2048 > httpd.key`
 `openssl req -new -key httpd.key -out httpd.csr`
-通过这个csr文件在内部的windows CA服务器上申请证书
+通过这个 csr 文件在内部的 windows CA 服务器上申请证书
 
 **ab**
+
 安装
 `sudo apt install apache2-utils`
 `yum install httpd-tools`
@@ -802,14 +821,14 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 
 ## [Caddy](https://caddyserver.com/)
 
-**安装Caddy**
+**安装 Caddy**
 ```bash
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 ```
 
 **配置文件**
 ```bash
-chown -R root:www-data /usr/local/bin     #设置目录数据权限
+chown -R root:www-data /usr/local/bin     # 设置目录数据权限
 touch /usr/local/caddy/Caddyfile
 
 echo -e ":80 {
@@ -825,7 +844,8 @@ echo "<h1>first</h1>" >> /usr/local/caddy/www/index.html
 ```
 
 **反向代理**
-做一个ip跳转
+
+做一个 ip 跳转
 ```bash
 echo ":80 {
 	gzip
@@ -836,6 +856,7 @@ echo ":80 {
 ```
 
 **HTTPS**
+
 为已经绑定域名的服务器自动从 Let’s Encrypt 生成和下载 HTTPS 证书,支持 HTTPS 协议访问,你只需要将绑定的 IP 换成 域名 即可
 ```bash
 echo -e "xxx.com {
@@ -853,27 +874,28 @@ echo -e "xxx.com {
 
 **包管理器方式**
 - apt
-  `apt-get install nodejs npm` 讲道理apt安装不太好使
+  `apt-get install nodejs npm` 讲道理 apt 安装不太好使
 
 - yum
   `yum install epel-release`
   `yum install nodejs npm`
 
 **源文件方式安装**
-首先下载NodeJS的二进制文件,http://nodejs.org/download/ 。在 Linux Binaries (.tar.gz)行处根据自己系统的位数选择
+
+首先下载 NodeJS 的二进制文件,http://nodejs.org/download/ 。在 Linux Binaries (.tar.gz) 行处根据自己系统的位数选择
 ```bash
-#解压到当前文件夹下运行
+# 解压到当前文件夹下运行
 tar zxvf node-v0.10.26-linux-x64.tar.gz
 
-进入解压后的目录bin目录下,执行ls会看到两个文件node,npm. 然后执行./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的。 依次运行如下三条命令
+进入解压后的目录 bin 目录下,执行 ls 会看到两个文件 node,npm. 然后执行 ./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的。依次运行如下三条命令
 cd node-v0.10.26-linux-x64/bin
 ls
 ./node -v
 ```
-因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin这个目录是不在环境变量中的,所以只能到该目录下才能node的程序。如果在其他的目录下执行node命令的话 ,必须通过绝对路径访问才可以的
+因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin 这个目录是不在环境变量中的,所以只能到该目录下才能 node 的程序。如果在其他的目录下执行 node 命令的话 ,必须通过绝对路径访问才可以的
 
-如果要在任意目录可以访问的话,需要将node 所在的目录,添加PATH环境变量里面,或者通过软连接的形式将node和npm链接到系统默认的PATH目录下的一个
-在终端执行echo $PATH可以获取PATH变量包含的内容,系统默认的PATH环境变量包括/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符。所以我们可以将node和npm链接到/usr/local/bin 目录下如下执行
+如果要在任意目录可以访问的话,需要将 node 所在的目录,添加 PATH 环境变量里面,或者通过软连接的形式将 node 和 npm 链接到系统默认的 PATH 目录下的一个
+在终端执行 echo $PATH 可以获取 PATH 变量包含的内容,系统默认的 PATH 环境变量包括 /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符。所以我们可以将 node 和 npm 链接到 /usr/local/bin 目录下如下执行
 ```bash
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
@@ -885,16 +907,16 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 **安装**
 ```bash
-若之前安装过其他版本PHP,先删除
+若之前安装过其他版本 PHP,先删除
 yum remove php*
 
-rpm安装PHP7相应的yum源
+rpm 安装 PHP7 相应的 yum 源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w
 php -v
 
-service php-fpm start #要运行PHP网页,要启动php-fpm解释器
+service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 ```
 
 ---
@@ -910,7 +932,8 @@ firewall-cmd --reload
 ```
 
 **虚拟主机**
-在/etc/nginx/conf.d/目录下新建一个站点的配置文件,列如：test.com.conf
+
+在 /etc/nginx/conf.d/ 目录下新建一个站点的配置文件,列如：test.com.conf
 ```vim
 vim /etc/nginx/conf.d/test.com.conf
 
@@ -935,13 +958,13 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册,那么应该在本机电脑的/etc/hosts添加设置：
+如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置：
 `192.168.1.112   www.test.com test.com`
 `curl www.test.com`
 
 **https**
 ```bash
-openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key #生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
+openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
 
 mv httpd.crt /etc/nginx
 mv httpd.key /etc/nginx
@@ -972,7 +995,7 @@ server {
 `systemctl restart nginx`
 
 
-**添加PHP/PHP-FPM环境支持**
+**添加 PHP/PHP-FPM 环境支持**
 ```bash
 # 安装PHP源
 rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
@@ -1007,13 +1030,13 @@ vim /usr/share/nginx/test.com/info.php
      phpinfo();
  ?>
 ```
-`curl http://www.test.com/info.php`测试
+`curl http://www.test.com/info.php` 测试
 
 ---
 
 ## [phpMyAdmin](https://www.phpmyadmin.net/)
 
-**建议搭配上面的nginx+php扩展**
+**建议搭配上面的 nginx+php 扩展**
 
 **创建数据库和一个用户**
 ```bash
@@ -1024,11 +1047,11 @@ mysql_secure_installation
 
 mysql -u root -p
 
-创建一个专给WordPress存数据的数据库
-MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
+创建一个专给 WordPress 存数据的数据库
+MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
 
-创建用于WordPress对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##"idiota"对应创建的用户,"password"内填写用户的密码
+创建用于 WordPress 对应用户
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
 
 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
@@ -1057,14 +1080,14 @@ systemctl restart nginx
 
 ## [Wordpress](https://wordpress.org/)
 
-**下载WordPress安装包并解压**
+**下载 WordPress 安装包并解压**
 ```bash
 wget https://wordpress.org/latest.tar.gz
 
 tar -xzvf latest.tar.gz
 ```
 
-**创建WordPress数据库和一个用户**
+**创建 WordPress 数据库和一个用户**
 ```bash
 yum install mariadb mariadb-server
 systemctl start mariadb
@@ -1074,10 +1097,10 @@ mysql_secure_installation
 mysql -u root -p
 
 创建一个专给WordPress存数据的数据库
-MariaDB [(none)]> create database idiota_info;  ##最后的"idiota_info"为数据库名
+MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
 
 创建用于WordPress对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   ##"idiota"对应创建的用户,"password"内填写用户的密码
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
 
 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
@@ -1105,13 +1128,12 @@ systemctl restart httpd
 php -v
 ```
 
-**设置wp-config.php文件**
+**设置 wp-config.php 文件**
 ```bash
 cd wordpress
 vim wp-config-sample.php
 ```
-在标有
-`// ** MySQL settings - You can get this info from your web host ** //`下输入你的数据库相关信息
+在标有 `// ** MySQL settings - You can get this info from your web host ** //` 下输入你的数据库相关信息
 ```php
 DB_NAME
     在第二步中为WordPress创建的数据库名称
@@ -1127,21 +1149,21 @@ DB_COLLATE
     留为空白的数据库排序（参见zh-cn:编辑wp-config.php）。
 ```
 
-在标有
-`* Authentication Unique Keys.`的版块下输入密钥的值,保存wp-config.php文件,也可以不管这个
+在标有 `* Authentication Unique Keys.` 的版块下输入密钥的值,保存 wp-config.php 文件,也可以不管这个
 
 **上传文件**
+
 接下来需要决定将博客放在网站的什么位置上：
     网站根目录下（如：http://example.com/）
     网站子目录下（如：http://example.com/blog/
 
 根目录
-如果需要将文件上传到web服务器,可用FTP客户端将wordpress目录下所有内容（无需上传目录本身）上传至网站根目录
-如果文件已经在web服务器中且希望通过shell访问来安装wordpress,可将wordpress目录下所有内容（无需转移目录本身）转移到网站根目录
+如果需要将文件上传到 web 服务器,可用 FTP 客户端将 wordpress 目录下所有内容（无需上传目录本身）上传至网站根目录
+如果文件已经在 web 服务器中且希望通过 shell 访问来安装 wordpress,可将 wordpress 目录下所有内容（无需转移目录本身）转移到网站根目录
 
 子目录
-如果需要将文件上传到web服务器,需将wordpress目录重命名,之后用FTP客户端将重命名后的目录上传到网站根目录下某一位置
-如果文件已经在web服务器中且希望通过shell访问来安装wordpress,可将wordpress目录转移到网站根目录下某一位置,之后重命名 wordpress目录
+如果需要将文件上传到 web 服务器,需将 wordpress 目录重命名,之后用 FTP 客户端将重命名后的目录上传到网站根目录下某一位置
+如果文件已经在 web 服务器中且希望通过shell访问来安装 wordpress,可将 wordpress 目录转移到网站根目录下某一位置,之后重命名 wordpress 目录
 
 ```bash
 mv wordpress/* /var/www/html
@@ -1152,12 +1174,12 @@ service firewalld stop
 ```
 
 **运行安装脚本**
-在常用的web浏览器中运行安装脚本。
-将WordPress文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
-将WordPress文件放在子目录（假设子目录名为blog）下的用户请访问：http://example.com/blog/wp-admin/install.php
 
-访问`http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php`
-下面就略了,自己照着页面上显示的来
+在常用的 web 浏览器中运行安装脚本。
+将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
+将 WordPress 文件放在子目录（假设子目录名为 blog）下的用户请访问：http://example.com/blog/wp-admin/install.php
+
+访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
 
 ---
 
@@ -1166,7 +1188,8 @@ service firewalld stop
 `基于开源项目 Searx 二次开发的操作引擎`
 
 **依赖**
-自行安装python3 pip redis
+
+自行安装 python3 pip redis
 
 **安装**
 ```bash
@@ -1413,7 +1436,7 @@ sentry:
   dsn: https://xkdkkdkdkdkdkdkdk@sentry.xxx.com/2
 ```
 
-**运行+caddy反代**
+**运行+caddy 反代**
 ```bash
 mv searx/settings_et_dev.yml searx/settings.yml
 gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	# 一定要在mijisou目录下运行
@@ -1427,7 +1450,7 @@ echo "www.你的域名.com {
 }" >> /usr/local/caddy/Caddyfile
 
 /etc/init.d/caddy start
-# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
+# 如果启动失败可以看 Caddy 日志： tail -f /tmp/caddy.log
 ```
 
 **opensearch**
@@ -1465,9 +1488,11 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 ```
 
 **修改**
+
 `秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
+
 配置文件中改下名字
-`mijisou/searx/static/themes/entropage/img`中的logo图标自己换一下
+`mijisou/searx/static/themes/entropage/img` 中的 logo 图标自己换一下
 
 **管理**
 ```bash
@@ -1477,10 +1502,10 @@ kill 杀掉
 gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录下运行
 ```
 
-**配合Cloudflare的CDN**
-1. Cloudflare创建site
-2. 域名商改nameserver
-3. 修改Caddy配置
+**配合 Cloudflare 的 CDN**
+1. Cloudflare 创建 site
+2. 域名商改 nameserver
+3. 修改 Caddy 配置
   ```bash
   echo "www.你的域名.com:80 {
   gzip
@@ -1489,7 +1514,8 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录�
   ```
 
 **磁盘占用**
-服务运行一段时间后，`/var/lib/redis`路径下会有一些缓存文件(貌似)，直接删了就行
+
+服务运行一段时间后，`/var/lib/redis` 路径下会有一些缓存文件(貌似)，直接删了就行
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
@@ -1513,9 +1539,10 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录�
 ```bash
 systemctl start mariadb
 mysql_secure_installation
+```
 
-|配置流程 	|说明 |操作
------------- | ------------- | ------------
+|配置流程 	|说明 |操作|
+|------------ | ------------- | ------------|
 Enter current password for root (enter for none) |	输入 root 密码 	| 初次运行直接回车
 Set root password? [Y/n] |	是设置 root 密码 |	可以 y 或者 回车
 New password |	输入新密码
@@ -1524,10 +1551,10 @@ Remove anonymous users? [Y/n] |	是否删除匿名用户 | 可以 y 或者回车
 Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 y 或者回车 本题n
 Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本题y
 Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本题y
-```
 
 **配置远程访问**
-Mariadb数据库授权root用户能够远程访问
+
+Mariadb 数据库授权root用户能够远程访问
 ```sql
 systemctl start mariadb
 mysql -u root -p <password>
@@ -1560,18 +1587,18 @@ sudo service mysql start
 **安装**
 ```bash
 yum install postgresql-server
-postgresql-setup initdb #初始化数据库
-service postgresql start #启动服务
+postgresql-setup initdb # 初始化数据库
+service postgresql start # 启动服务
 ```
 
-PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
+PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行 PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
 
 **修改用户密码**
 ```sql
  sudo -u postgres psql postgres
-\l #查看当前的数据库列表 
-\password postgres  #给postgres用户设置密码
-\q  #退出数据库
+\l # 查看当前的数据库列表 
+\password postgres  # 给 postgres 用户设置密码
+\q  # 退出数据库
 ```
 
 **开启远程访问**
@@ -1587,11 +1614,11 @@ vim /var/lib/pgsql/data/pg_hba.conf
 host    all             all             127.0.0.1/32            md5
 host    all             all             0.0.0.0/0               md5
 
-# 其中0.0.0.0/0表示运行任意ip地址访问。
-# 若设置为 192.168.1.0/24 则表示允许来自ip为192.168.1.0 ~ 192.168.1.255之间的访问。
+# 其中 0.0.0.0/0 表示运行任意 ip 地址访问。
+# 若设置为 192.168.1.0/24 则表示允许来自 ip 为 192.168.1.0 ~ 192.168.1.255 之间的访问。
 ```
 
-`service postgresql restart`防火墙记得放行
+`service postgresql restart` 防火墙记得放行
 
 ---
 
@@ -1654,14 +1681,14 @@ authorization: enabled
 
 **安装**
 - **包管理器方式**
-  在CentOS和Red Hat系统中,首先添加EPEL仓库,然后更新yum源:
+  在 CentOS 和 Red Hat 系统中,首先添加 EPEL 仓库,然后更新 yum 源:
   `yum install epel-release`
   `yum install redis`
-  安装好后启动Redis服务即可
+  安装好后启动 Redis 服务即可
   `systemctl start redis`
 
 - **源代码编译方式安装**
-  在官网下载tar.gz的安装包,或者通过wget的方式下载　　
+  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载　　
   `wget http://download.redis.io/releases/redis-4.0.1.tar.gz`
 
   安装
@@ -1679,7 +1706,7 @@ authorization: enabled
   redis-cli
   ```
 
-使用redis-cli进入Redis命令行模式操作
+使用 redis-cli 进入 Redis 命令行模式操作
 ```bash
 redis-cli
 127.0.0.1:6379> ping
@@ -1688,12 +1715,13 @@ PONG
 ```
 
 **开启远程访问**
-为了可以使Redis能被远程连接,需要修改配置文件,路径为/etc/redis.conf
+
+为了可以使 Redis 能被远程连接,需要修改配置文件,路径为 /etc/redis.conf
 ```vim
 vim /etc/redis.conf
 
 #bind 127.0.0.1
-requirepass 密码	#设置redis密码
+requirepass 密码	#设置 redis 密码
 ```
 `service redis restart`当然还要记得开防火墙
 `redis-cli -h <ip> -p 6379 -a <PASSWORD>`
@@ -1710,7 +1738,8 @@ requirepass 密码	#设置redis密码
   ```
 
 - **源代码编译方式安装**
-  在官网下载tar.gz的安装包,或者通过wget的方式下载　　
+
+  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载　　
   `wget http://memcached.org/latest`
 
   安装
@@ -1737,6 +1766,7 @@ firewall-cmd --reload
 ## Vim
 
 **常用配置**
+
 `sudo vim /etc/vim/vimrc`或`sudo vim /etc/vimrc`
 最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
 ```vim
@@ -1754,10 +1784,11 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 #set matchtime=2 #短暂跳转到匹配括号的时间
 ```
 
-**解决ssh后vim中不能使用小键盘的问题**
+**解决 ssh 后 vim 中不能使用小键盘的问题**
 - xshell
+
   更改的方法:
-  在终端设置中选择终端类型为linux
+  在终端设置中选择终端类型为 linux
 
 - ubuntu
   ```bash
@@ -1776,14 +1807,16 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 `curl -fsSL https://filebrowser.xyz/get.sh | bash`
 
 **使用**
+
 filebrowser -a <你自己的IP> -r <文件夹路径>
-默认账号密码admin
+默认账号密码 admin
 
 ---
 
 ## NFS
 
 **服务端**
+
 安装
 ```bash
 yum ‐y install nfs‐utils
@@ -1813,6 +1846,7 @@ service nfs start
 ```
 
 **客户端**
+
 安装,创建用户
 ```bash
 yum ‐y install nfs‐utils
@@ -1835,6 +1869,7 @@ vim /etc/fstab
 `su ‐l nfsuser1`
 
 **验证**
+
 服务器
 ```bash
 [root@localhost ~]# cd /public/
@@ -1851,6 +1886,7 @@ vim /etc/fstab
 ## [Samba](https://www.samba.org)
 
 **服务端**
+
 安装
 `yum install samba `
 
@@ -1863,7 +1899,7 @@ public = yes
 writeable=yes
 hosts allow = 192.168.1xx.33/32	# 允许主机
 hosts deny = all
-create mask = 0770	# 创建文件的权限为0770；
+create mask = 0770	# 创建文件的权限为 0770；
 ```
 
 验证配置文件有没有错误
@@ -1914,6 +1950,7 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 ## [Vsftp](https://security.appspot.com/vsftpd.html)
 
 **匿名访问**
+
 |参数|作用|
 | :------------- | :------------- |
 |anonymous_enable=YES |	允许匿名访问模式 |
@@ -1973,13 +2010,14 @@ ftp> exit
 ---
 
 **本地用户**
+
 |参数 |	作用|
 | :------------- | :------------- |
 |anonymous_enable=NO 	|禁止匿名访问模式|
 |local_enable=YES |	允许本地用户模式|
 |write_enable=YES |	设置可写权限|
 |local_umask=022 |	本地用户模式创建文件的umask值|
-|userlist_deny=YES 	|启用"禁止用户名单",名单文件为ftpusers和user_list|
+|userlist_deny=YES 	|启用"禁止用户名单",名单文件为 ftpusers 和 user_list|
 |userlist_enable=YES |	开启用户作用名单文件功能|
 
 ```vim
@@ -1997,7 +2035,7 @@ firewall-cmd --reload
 systemctl restart vsftpd
 systemctl enable vsftpd
 ```
-按理来讲,现在已经完全可以本地用户的身份登录FTP服务器了。但是在使用root管理员登录后,系统提示如下的错误信息：
+按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了。但是在使用 root 管理员登录后,系统提示如下的错误信息：
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -2007,18 +2045,19 @@ Name (192.168.10.10:root): root
 Login failed.
 ftp>
 ```
-可见,在我们输入root管理员的密码之前,就已经被系统拒绝访问了。这是因为vsftpd服务程序所在的目录中默认存放着两个名为"用户名单"的文件（ftpusers和user_list）。只要里面写有某位用户的名字,就不再允许这位用户登录到FTP服务器上。
+可见,在我们输入 root 管理员的密码之前,就已经被系统拒绝访问了。这是因为 vsftpd 服务程序所在的目录中默认存放着两个名为"用户名单"的文件（ftpusers 和 user_list）。只要里面写有某位用户的名字,就不再允许这位用户登录到 FTP 服务器上。
 ```bash
 [root@linuxprobe ~]# cat /etc/vsftpd/user_list
 
 [root@linuxprobe ~]# cat /etc/vsftpd/ftpusers
 ```
-如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录FTP服务器
-在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是/home/username目录。而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况。
+如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录 FTP 服务器
+在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是 /home/username 目录。而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况。
 
 ---
 
 **虚拟用户**
+
 安装
 `yum install vsftpd`
 
@@ -2036,14 +2075,14 @@ Ftpadmin
 123456
 ```
 
-使用 db_load 命令生成 db 口令login数据库文件
+使用 db_load 命令生成 db 口令 login 数据库文件
 `db_load -T -t hash -f login.list login.db`
 
 通过修改指定的配置文件,调整对该程序的认证方式
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 
-pam_service_name=vsftpd.vu  # 设置PAM使用的名称,该名称就是/etc/pam.d/目录下vsfptd文件的文件名
+pam_service_name=vsftpd.vu  # 设置 PAM 使用的名称,该名称就是 /etc/pam.d/ 目录下 vsfptd 文件的文件名
 ```
 `cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu`
 ```vim
@@ -2051,7 +2090,7 @@ vim /etc/pam.d/vsftpd.vu
 
 auth       required     pam_userdb.so db=/etc/vsftpd/login
 account    required     pam_userdb.so db=/etc/vsftpd/login
-# 注意：格式是db=/etc/vsftpd/login这样的,一定不要去掉源文件的.db后缀
+# 注意：格式是 db=/etc/vsftpd/login 这样的,一定不要去掉源文件的 .db 后缀
 ```
 
 配置文件
@@ -2086,21 +2125,23 @@ touch testfile
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 
-guest_enable=YES      # 表示是否开启vsftpd虚拟用户的功能,yes表示开启,no表示不开启。
+guest_enable=YES      # 表示是否开启 vsftpd 虚拟用户的功能,yes 表示开启,no 表示不开启。
 guest_username=virtual       # 指定虚拟用户的宿主用户
-user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人vsftpd服务文件存放路径
+user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人 vsftpd 服务文件存放路径
 allow_writeable_chroot=YES
 ```
 
 编辑用户权限配置文件
 ```vim
-vim Ftpadmin
+vim Ftpadmin  # 创建 Ftpadmin 这个用户的配置文件
 
 anon_upload_enable=YES
 anon_mkdir_wirte_enable=YES
 anon_other_wirte_enable=YES
 anon_umask=022
-# 虚拟用户具有写权限（上传、下载、删除、重命名）
+
+
+# 要求虚拟用户具有写权限（上传、下载、删除、重命名）
 
 # umask = 022 时,新建的目录 权限是755,文件的权限是 644
 # umask = 077 时,新建的目录 权限是700,文件的权限时 600
@@ -2162,6 +2203,7 @@ go version
 ## [☕JDK](https://www.oracle.com/technetwork/java/javase/downloads/)
 
 **rpm 包方式安装**
+
 下载
 https://www.oracle.com/technetwork/java/javase/downloads/
 ```bash
@@ -2194,11 +2236,12 @@ yum install epel-release
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 yum -y install python36 python36-devel
 
-wget https://bootstrap.pypa.io/get-pip.py	#安装pip3
+wget https://bootstrap.pypa.io/get-pip.py	# 安装pip3
 python3 get-pip.py
 ```
 
 **源代码编译方式安装**
+
 安装依赖环境
 ```bash
 yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
@@ -2214,7 +2257,7 @@ tar zxvf Python-3.6.1.tgz
 cd Python-3.6.1
 ./configure --prefix=/usr/local/python3
 make
-make install    或者 make && make install
+make install 或者 make && make install
 ```
 
 添加到环境变量
@@ -2222,13 +2265,13 @@ make install    或者 make && make install
 ln -s /usr/local/python3/bin/python3 /usr/bin/python3
 ```
 ```vim
-vim ~/.bash_profile #永久修改变量
+vim ~/.bash_profile # 永久修改变量
 
 PATH=$PATH:/usr/local/python3/bin/
 ```
 `source ~/.bash_profile	`
 
-检查Python3及pip3是否正常可用
+检查 Python3 及 pip3 是否正常可用
 ```bash
 python3 -V
 pip3 -V
@@ -2238,8 +2281,9 @@ pip3 -V
 ## [💎Ruby](https://www.ruby-lang.org)
 
 **安装**
-注:在Ubuntu下有点问题,不建议用Ubuntu做运维环境
-下载ruby安装包,并进行编译安装
+
+注:在 Ubuntu 下有点问题,不建议用 Ubuntu 做运维环境
+下载 ruby 安装包,并进行编译安装
 ```bash
 wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.2.tar.gz
 tar xvfvz ruby-2.6.2.tar.gz
@@ -2249,27 +2293,30 @@ make
 make install
 ```
 
-将ruby添加到环境变量,ruby安装在/usr/local/bin/目录下,因此编辑 ~/.bash_profile文件,添加一下内容:
+将 ruby 添加到环境变量,ruby 安装在/usr/local/bin/目录下,因此编辑 ~/.bash_profile文件,添加一下内容:
 ```bash
 vim ~/.bash_profile
 
 export PATH=$PATH:/usr/local/bin/
 ```
-`source ~/.bash_profile`不要忘了生效一下
+`source ~/.bash_profile` 不要忘了生效一下
 
 ---
 
 # 管理工具
 ## [Supervisor](http://supervisord.org/)
 
-因为Supervisor是Python开发的，安装前先检查一下系统否安装了Python2.4以上版本。
+因为 Supervisor 是 Python 开发的，安装前先检查一下系统否安装了 Python2.4 以上版本。
+
 **安装**
+
 `pip install supervisor`
 
 安装完成后，我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
 `echo_supervisord_conf > /etc/supervisord.conf`
 
 **配置**
+
 接着在 /etc/supervisord.conf 文件最下方加入目标程序的启动项目
 ```conf
 vim /etc/supervisord.conf
@@ -2388,7 +2435,7 @@ zcat create.sql.gz | mysql -uroot zabbix -p
   ValueCacheSize=256M
   Timeout=30
   ```
-  如果需要监控VMware虚拟机，则还需要设置以下选项参数：
+  如果需要监控 VMware 虚拟机，则还需要设置以下选项参数：
   ```vim
   StartVMwareCollectors=2
   VMwareCacheSize=256M
@@ -2425,7 +2472,7 @@ systemctl start httpd && systemctl start zabbix-server
 systemctl stop firewalld
 setenforce 0
 ```
-访问`http://{ip地址}/zabbix/setup.php`
+访问 `http://{ip地址}/zabbix/setup.php`
 
 **Reference**
 - [CentOS 7安装Zabbix 3.4](https://www.centos.bz/2017/11/centos-7%E5%AE%89%E8%A3%85zabbix-3-4/)
@@ -2483,19 +2530,20 @@ docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但
 # CI
 ## [🤵🏻Jenkins](https://jenkins.io/)
 
-`注,Jenkins需要jdk环境，请先行安装`
+`注,Jenkins 需要 jdk 环境，请先行安装`
 
-**rpm包方式安装**
-添加Jenkins源:
+**rpm 包方式安装**
+
+添加 Jenkins 源:
 ```bash
 sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
 sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 ```
 
-使用yum命令安装Jenkins:
+使用 yum 命令安装 Jenkins:
 `yum install jenkins`
 
-**使用ppa/源方式安装**
+**使用 ppa/源方式安装**
 ```bash
 wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
 
@@ -2505,7 +2553,7 @@ sudo apt-get update
 sudo apt-get install jenkins
 ```
 
-安装后默认服务是启动的,默认是8080端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
+安装后默认服务是启动的,默认是 8080 端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
 
 查看密码
 `cat /var/lib/jenkins/secrets/initialAdminPassword`
@@ -2517,7 +2565,7 @@ sudo apt-get install jenkins
 
 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)写的很详细了,在此我只把重点记录
 
-`注:鉴于国内环境,下面步骤运行中还是会出现docker pull镜像超时的问题,你懂的,不要问我怎么解决`
+`注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
 ```bash
 echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
   && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
@@ -2583,15 +2631,17 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
   && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
 ```
 
-# 杀毒
+# 安全服务
 ## [ClamAV](https://www.clamav.net)
+
+`本部分来自 https://blog.51cto.com/11199460/2083697，在此仅作排版调整`
 
 **安装**
 ```bash
 yum -y install epel-release
 yum -y install clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
 
-#在两个配置文件/etc/freshclam.conf和/etc/clamd.d/scan.conf中移除“Example”字符
+#在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除“Example”字符
 cp /etc/freshclam.conf /etc/freshclam.conf.bak
 sed -i -e "s/^Example/#Example/" /etc/freshclam.conf
 
@@ -2600,29 +2650,28 @@ sed -i -e "s/^Example/#Example/" /etc/clamd.d/scan.conf
 ```
 
 **病毒库操作**
+
 关闭自动更新
-freshclam命令通过文件/etc/cron.d/clamav-update来自动运行
+freshclam 命令通过文件 /etc/cron.d/clamav-update 来自动运行
 ```vim
 vim /etc/cron.d/clamav-update
 ```
 
-但默认情况下是禁止了自动更新功能，需要移除文件/etc/sysconfig/freshclam最后一行的配置才能启用
+但默认情况下是禁止了自动更新功能，需要移除文件 /etc/sysconfig/freshclam 最后一行的配置才能启用
 ```vim
 vim /etc/cron.d/clamav-update
 
 # FRESHCLAM_DELAY=
 ```
 
-定义服务器类型（本地或者TCP），在这里定义为使用本地socket，将文件/etc/clam.d/scan.conf中的这一行前面的注释符号去掉：
+定义服务器类型（本地或者 TCP），在这里定义为使用本地 socket，将文件 /etc/clam.d/scan.conf 中的这一行前面的注释符号去掉：
 ```vim
 vim /etc/clamd.d/scan.conf
 
 LocalSocket /var/run/clamd.scan/clamd.sock
 ```
 
-下载病毒库
-https://www.clamav.net/downloads
-将main.cvd\daily.cvd\bytecode.cvd三个文件下载后上传到/var/lib/clamav目录下
+下载病毒库 https://www.clamav.net/downloads 将 main.cvd\daily.cvd\bytecode.cvd 三个文件下载后上传到 /var/lib/clamav 目录下
 ```vim
 vim /etc/freshclam.conf
 
@@ -2674,13 +2723,105 @@ systemctl status clamd@scan.service
 
 查杀病毒
 ```bash
-clamscan -r /home #扫描所有用户的主目录就使用
-clamscan -r --bell -i / #扫描所有文件并且显示有问题的文件的扫描结果
-clamscan -r --remove  #查杀当前目录并删除感染的文件
+clamscan -r /home # 扫描所有用户的主目录就使用
+clamscan -r --bell -i / # 扫描所有文件并且显示有问题的文件的扫描结果
+clamscan -r --remove  # 查杀当前目录并删除感染的文件
 ```
 
-**Reference**
-- [Centos7安装和使用ClamAV杀毒软件](https://blog.51cto.com/11199460/2083697)
+## [Fail2ban](https://github.com/fail2ban/fail2ban)
+
+`本部分来自 https://linux.cn/article-5067-1.html，在此仅作排版调整`
+
+**安装**
+
+RHEL: `yum install fail2ban`
+
+Debian: `apt install fail2ban`
+
+**编辑配置文件**
+```vim
+vim /etc/fail2ban/jail.conf
+
+[DEFAULT]
+# 以空格分隔的列表，可以是 IP 地址、CIDR 前缀或者 DNS 主机名
+# 用于指定哪些地址可以忽略 fail2ban 防御
+ignoreip = 127.0.0.1 172.31.0.0/24 10.10.0.0/24 192.168.0.0/24
+
+# 客户端主机被禁止的时长
+bantime = 10m
+
+# 客户端主机被禁止前允许失败的次数
+maxretry = 5
+
+# 查找失败次数的时长
+findtime = 10m
+
+mta = sendmail
+
+[ssh-iptables]
+enabled = true
+filter = sshd
+action = iptables[name=SSH, port=ssh, protocol=tcp]
+sendmail-whois[name=SSH, dest=your@email.com, sender=fail2ban@email.com]
+# Debian 系的发行版
+logpath = /var/log/auth.log
+# Red Hat 系的发行版
+logpath = /var/log/secure
+# ssh 服务的最大尝试次数
+maxretry = 3
+```
+
+根据上述配置，fail2ban 会自动禁止在最近 10 分钟内有超过 3 次访问尝试失败的任意 IP 地址。一旦被禁，这个 IP 地址将会在 24 小时内一直被禁止访问 SSH 服务。这个事件也会通过 sendemail 发送邮件通知。
+
+**测试**
+```bash
+service fail2ban restart
+
+# 为了验证 fail2ban 成功运行，使用参数'ping'来运行 fail2ban-client 命令。 如果 fail2ban 服务正常运行，你可以看到“pong（嘭）”作为响应。
+fail2ban-client ping
+```
+
+为了测试 fail2ban 是否能正常工作，尝试通过使用错误的密码来用 SSH 连接到服务器模拟一个暴力破解攻击。与此同时，监控 `/var/log/fail2ban.log` ，该文件记录在 fail2ban 中发生的任何敏感事件。
+
+```bash
+tail -f /var/log/fail2ban.log
+2019-07-24 23:33:34,369 fail2ban.jail           [14760]: INFO    Initiated 'pyinotify' backend
+2019-07-24 23:33:34,370 fail2ban.filter         [14760]: INFO      maxLines: 1
+2019-07-24 23:33:34,372 fail2ban.server         [14760]: INFO    Jail ssh-iptables is not a JournalFilter instance
+2019-07-24 23:33:34,373 fail2ban.filter         [14760]: INFO    Added logfile: '/var/log/auth.log' (pos = 0, hash = de62b1aacfb0f9a9082c515fe3cdb77214101d93)
+2019-07-24 23:33:34,377 fail2ban.filter         [14760]: INFO      encoding: UTF-8
+2019-07-24 23:33:34,378 fail2ban.filter         [14760]: INFO      maxRetry: 3
+2019-07-24 23:33:34,378 fail2ban.filter         [14760]: INFO      findtime: 600
+2019-07-24 23:33:34,378 fail2ban.actions        [14760]: INFO      banTime: 600
+2019-07-24 23:33:34,381 fail2ban.jail           [14760]: INFO    Jail 'sshd' started
+2019-07-24 23:33:34,382 fail2ban.jail           [14760]: INFO    Jail 'ssh-iptables' started
+2019-07-24 23:35:58,780 fail2ban.filter         [14760]: INFO    [ssh-iptables] Found 192.168.72.130 - 2019-07-24 23:35:58
+2019-07-24 23:36:00,397 fail2ban.filter         [14760]: INFO    [ssh-iptables] Found 192.168.72.130 - 2019-07-24 23:36:00
+2019-07-24 23:36:03,811 fail2ban.filter         [14760]: INFO    [sshd] Found 192.168.72.130 - 2019-07-24 23:35:58
+2019-07-24 23:36:03,812 fail2ban.filter         [14760]: INFO    [sshd] Found 192.168.72.130 - 2019-07-24 23:36:00
+2019-07-24 23:36:04,266 fail2ban.filter         [14760]: INFO    [sshd] Found 192.168.72.130 - 2019-07-24 23:36:04
+2019-07-24 23:36:04,310 fail2ban.filter         [14760]: INFO    [ssh-iptables] Found 192.168.72.130 - 2019-07-24 23:36:04
+2019-07-24 23:36:04,778 fail2ban.actions        [14760]: NOTICE  [ssh-iptables] Ban 192.168.72.130
+```
+
+根据上述的日志文件，Fail2ban 通过检测 IP 地址的多次失败登录尝试，禁止了一个 IP 地址 192.168.72.130
+
+**解禁 IP**
+
+由于 fail2ban 的“ssh-iptables”监狱使用 iptables 来阻塞问题 IP 地址，你可以通过以下方式来检测当前 iptables 来验证禁止规则。
+```bash
+iptables --list -n
+iptables -D fail2ban-SSH -s 192.168.72.130 -j DROP
+```
+当然你可以使用上述的 iptables 命令手动地检验和管理 fail2ban 的 IP 阻塞列表，但实际上有一个适当的方法就是使用 fail2ban-client 命令行工具。这个命令不仅允许你对"ssh-iptables"监狱进行管理，同时也是一个标准的命令行接口，可以管理其他类型的 fail2ban 监狱。
+```bash
+fail2ban-client status  # 检验fail2ban状态
+
+fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
+
+fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地址
+```
+注意，如果你停止了 Fail2ban 服务，那么所有的 IP 地址都会被解锁。当你重启 Fail2ban，它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表，如果这些异常地址的发生时间仍然在禁止时间内，那么 Fail2ban 会重新将这些 IP 地址禁止。
 
 ---
 

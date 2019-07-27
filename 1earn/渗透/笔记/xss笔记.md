@@ -1,21 +1,26 @@
+# XSS 笔记
+
+---
+
+## Reference
+
+- [XSS插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
+- [XSS总结](https://xz.aliyun.com/t/4067)
+- [WAF的XSS绕过姿势](https://www.freebuf.com/articles/web/81959.html)
+- [他山之石 | 对 XSS 的一次深入分析认识](https://www.freebuf.com/articles/web/195507.html)
+- [minimaxir/big-list-of-naughty-strings](https://github.com/minimaxir/big-list-of-naughty-strings)
+- [深入理解浏览器解析机制和XSS向量编码](http://bobao.360.cn/learning/detail/292.html)
+- [csp与bypass的探讨(译文)](http://wutongyu.info/csp-2015/)
 
 
 
 
 
 
-宽字节编码类型的XSS
-https://blog.csdn.net/u013648937/article/details/46629827
 
 
 
-
-
-
-
-
-
-
+---
 
 ## payload示例
 ```html

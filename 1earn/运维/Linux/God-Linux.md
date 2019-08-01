@@ -19,7 +19,7 @@ curl ifconfig.me
 
 ## shell
 
-**fork炸弹**
+**fork 炸弹**
 ```bash
 :(){:|:&};:
 ```

@@ -13,9 +13,9 @@ vi /etc/network/interface
     netmask 255.255.255.0 ---- 修订成自己的掩码地址
     gateway 172.16.9.254 ---- 修订成自己的网关地址
 ```
-建议虚拟机开NAT模式
-然后IP配置同网段vmnet网卡IP
-再用SecureCRT开3个窗口SSH上去，一个窗口开 Opendaylight，一个窗口开 Mininet,一个配置流表
+建议虚拟机开 NAT 模式
+然后 IP 配置同网段 vmnet 网卡 IP
+再用 SecureCRT 开3个窗口 SSH 上去，一个窗口开 Opendaylight，一个窗口开 Mininet,一个配置流表
 
 ---
 
@@ -30,53 +30,54 @@ opendaylight-user@root>feature:install odl-l2switch-switch-ui
 opendaylight-user@root>feature:install odl-mdsal-apidocs
 opendaylight-user@root>feature:install odl-dluxapps-applications
 
-//组件安装完成后，可以通过浏览器访问 OpenDaylight WEB 控制台，访问的 url 为：http://{controller_ip}:8181/index.html
-登录用户名和密码都是 admin
-//其中{controller_ip}为 OpenDaylight 控制器的 IP 地址，如果是本机，则 ip 地址可以为 127.0.0.1。
+# 组件安装完成后，可以通过浏览器访问 OpenDaylight WEB 控制台，访问的 url 为：http://{controller_ip}:8181/index.html
+# 登录用户名和密码都是 admin
+# 其中{controller_ip}为 OpenDaylight 控制器的 IP 地址，如果是本机，则 ip 地址可以为 127.0.0.1。
 
 //如果是SSH开2窗口的就不用挂起后台运行了，下面2步仅针对单session操作
-Ctrl+z  //后台挂起
-bg      //后台运行，不然不好访问web
+Ctrl+z  # 后台挂起
+bg      # 后台运行，不然不好访问web
 ```
 
 ---
 
 ## Mininet
 
-使用mininet生成网络拓扑
->sudo mn --controller=remote,ip=xxx,xxx,xxx,xxx
+使用 mininet 生成网络拓扑
+> sudo mn --controller=remote,ip=xxx,xxx,xxx,xxx
 
-显示Mininet CLI命令：
->mininet> help
+显示 Mininet CLI 命令：
+> mininet> help
 
 显示节点：
->mininet> nodes
+> mininet> nodes
 
 显示网络链接：
->mininet> net
+> mininet> net
 
 输出所有节点的信息：
->mininet> dump
+> mininet> dump
 
 ### 示例
 
 **例1**
 #### 单交换机(Single switch)
 
->sudo mn --arp --topo single,3 --mac --switch ovsk --controller remote
-- mac：自动设置MAC地址，MAC地址与IP地址的最后一个字节相同
-- arp：为每个主机设置静态ARP表，例如：主机1中有主机2和主机3的IP地址和MAC地址ARP表项，主机2和主机3依次类推。
-- switch：使用OVS的核心模式
-- controller：使用远程控制器，可以指定远程控制器的IP地址和端口号，如果不指定则默认为127.0.0.1和6633
+> sudo mn --arp --topo single,3 --mac --switch ovsk --controller remote
+- mac：自动设置 MAC 地址，MAC 地址与 IP 地址的最后一个字节相同
+- arp：为每个主机设置静态ARP表，例如：主机1中有主机2和主机3的 IP 地址和 MAC 地址 ARP 表项，主机2和主机3依次类推。
+- switch：使用 OVS 的核心模式
+- controller：使用远程控制器，可以指定远程控制器的 IP 地址和端口号，如果不指定则默认为 127.0.0.1 和 6633
 
 ![image](https://upload-images.jianshu.io/upload_images/9361574-4743de5a33ccaad2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
 
-创建完拓扑后即可使用ping命令进行测试：h1 ping h2
-（注意：如果没有指定控制器的话，是ping不通的）
-
+创建完拓扑后即可使用 ping 命令进行测试：h1 ping h2
+（注意：如果没有指定控制器的话，是 ping 不通的）
 
 **例2**
-使用Mininet和OpenVswitch构建拓扑，采用采用OVS交换机格式，连接ODL的6653端口Openflow1.3协议
+
+使用 Mininet 和 OpenVswitch 构建拓扑，采用采用 OVS 交换机格式，连接 ODL 的 6653 端口 Openflow1.3 协议
+
 #### 深度2，扇出系数2
 
 >sudo mn --topo tree,2,2 --switch ovs,protocols=OpenFlow13 --controller remote,ip=127.0.0.1,port=6653
@@ -91,7 +92,9 @@ h1  h2           h3 h4
 ---
 
 **例3**
-使用Mininet构建拓扑，采用ovsk交换格式，连接ODL的远程地址为192.168.10.128:6653,协议类型是Openflow1.30
+
+使用 Mininet 构建拓扑，采用 ovsk 交换格式，连接 ODL 的远程地址为 192.168.10.128:6653,协议类型是 Openflow1.30
+
 >sudo mn --topo tree,2,2 --switch ovsk,protocols=OpenFlow13 --controller remote,ip=192.168.10.128,port=6653
 
 ```
@@ -104,11 +107,13 @@ h1  h2           h3 h4
 ---
 
 **例4**
+
 #### 两个线性连接的交换机
 
-使用Mininet和OpenVswitch构建拓扑，连接ODL的6633端口采用Openflow1.3协议
+使用 Mininet 和 OpenVswitch 构建拓扑，连接 ODL 的 6633 端口采用 Openflow1.3 协议
 
 *下面的命令创建具有2个交换机，两个交换机下面个连一个主机，交换机之间再互连起来。*
+
 >sudo mn --topo linear --protocols=OpenFlow13  --controller remote,ip=127.0.0.1,port=6633
 
 ```
@@ -130,6 +135,7 @@ h1  h2
 ***如果在 mininet 中可以在命令前加上 sh 运行***
 
 **例1**
+
 通过 OVS 下发流表，H1 与 H2 可以互通，H1 与 H3 不能互通，但 H3 和 H4 之间可以互通。
 
 >ovs-vsctl show
@@ -141,9 +147,9 @@ h1  h2
 dl_type=0x0800（MAC帧上一层为IP协议）
 nw_src=10.0.0.1（源IP地址为10.0.0.1）
 nw_dst=10.0.0.3（目的IP地址为10.0.0.3)
-优先级priority设为27，高于其他流表，故优先执行；
-table id为0，即将该流表项下发到table 0中。
-该流表项表示：从主机10.0.0.1发往主机10.0.0.3的IP包将被抛弃。
+优先级 priority 设为27，高于其他流表，故优先执行；
+table id 为0，即将该流表项下发到table 0中。
+该流表项表示：从主机 10.0.0.1 发往主机 10.0.0.3 的IP包将被抛弃。
 
 查看控制器下发的流表项
 >ovs-ofctl dump-flows s2
@@ -165,15 +171,15 @@ h4 -> h1 h2 h3
     s2 --- s1 ---  s3
 h1  h2           h3 h4
 ```
-H1启动HTTP-Server功能，WEB端口为80，H2作为HTTP-Client，获取H1的html网页文件。
+H1 启动 HTTP-Server 功能，WEB 端口为 80，H2 作为 HTTP-Client，获取 H1 的 html 网页文件。
 >HTTPSERVER : h1 python -m SimpleHTTPServer 80 &
 >HTTPCLIENT: h2 curl h1
 
-通过OVS手工命令在openflow:1虚拟交换机下发流表，只允许下发一条流表，优先级为priority=50实现如下需求：H1与H2可以互通，H1与H3不能互通，但H3和H4之间可以互通。
+通过 OVS 手工命令在 openflow:1 虚拟交换机下发流表，只允许下发一条流表，优先级为 priority=50 实现如下需求：H1与H2可以互通，H1与H3不能互通，但H3和H4之间可以互通。
 >ovs-ofctl  -O Openflow13 add-flow s1 'dl_type=0x0800,nw_src=10.0.0.1,nw_dst=10.0.0.3, priority=50,table=0,actions=drop'
 将主机1发给主机3的数据包丢弃
 
-用iperf工具测试H3和H4的带宽。
+用 iperf 工具测试H3和H4的带宽。
 >iperf h3 h4
 
 
@@ -184,7 +190,7 @@ H1启动HTTP-Server功能，WEB端口为80，H2作为HTTP-Client，获取H1的ht
     s1
 h1  h2  h3
 ```
-- 通过OVS手工下发流表，H1可以ping通H3，H1无法ping通H2。
+- 通过 OVS 手工下发流表，H1 可以 ping 通 H3，H1 无法 ping 通 H2。
 >ovs-ofctl  -O Openflow13 add-flow s1 'dl_type=0x0800,nw_src=10.0.0.1,nw_dst=10.0.0.2, priority=27,table=0,actions=drop'
 将主机1发给主机2的数据包丢弃
 
@@ -195,11 +201,11 @@ h1  h2  h3
   s1
 h1  h2
 ```
-- 通过OVS手工下发流表，H1和H2互通。H1启动HTTPSERVER功能，WEB端口为4330，H2作为HTTPCLIENT，获取H1的html网页文件。
+- 通过 OVS 手工下发流表，H1 和 H2 互通。H1 启动 HTTPSERVER 功能，WEB 端口为 4330，H2 作为 HTTPCLIENT，获取 H1 的 html 网页文件。
 >HTTPSERVER : h1 python -m SimpleHTTPServer 4330 &
 >HTTPCLIENT: h2 curl h1
 
-- 下发流表使得H1和H2不通
+- 下发流表使得 H1 和 H2 不通
 >ovs-ofctl  -O Openflow13 add-flow s1 'dl_type=0x0800,nw_src=10.0.0.1,nw_dst=10.0.0.2, priority=27,table=0,actions=drop'
 将主机1发给主机2的数据包丢弃
 
@@ -211,7 +217,7 @@ h1  h2
 s1--s2
 h1  h2
 ```
-- 通过OVS给S2下发流表，使得H1与H2无法互通。
+- 通过 OVS 给S2下发流表，使得 H1 与 H2 无法互通。
 >ovs-ofctl  -O Openflow13 add-flow s2 'dl_type=0x0800,nw_src=10.0.0.1,nw_dst=10.0.0.2, priority=27,table=0,actions=drop'
 将主机1发给主机2的数据包丢弃
 
@@ -220,11 +226,15 @@ h1  h2
 ### 控制管理类
 
 1. 查看网桥和端口
->ovs-vsctl show
+```
+ovs-vsctl show
+```
 
 2. 创建一个网桥
->ovs-vsctl add-br br0
->ovs-vsctl set bridge br0 datapath_type=netdev
+```
+ovs-vsctl add-br br0
+ovs-vsctl set bridge br0 datapath_type=netdev
+```
 
 3. 添加/删除一个端口
 ```bash
@@ -241,56 +251,74 @@ ovs-vsctl add-bond br0 dpdkbond0 dpdk1 dpdk2 \
 ```
 
 4. 设置/清除网桥的 openflow 协议版本
->ovs-vsctl set bridge br0 protocols=OpenFlow13
+```
+ovs-vsctl set bridge br0 protocols=OpenFlow13
 ovs-vsctl clear bridge br0 protocols
+```
 
 5. 查看某网桥当前流表
->ovs-ofctl dump-flows br0
+```
+ovs-ofctl dump-flows br0
 ovs-ofctl -O OpenFlow13 dump-flows br0
 ovs-appctl bridge/dump-flows br0
+```
 
 6. 设置/删除控制器
->ovs-vsctl set-controller br0 tcp:1.2.3.4:6633
+```
+ovs-vsctl set-controller br0 tcp:1.2.3.4:6633
 ovs-vsctl del-controller br0
+```
 
 7. 查看控制器列表
->ovs-vsctl list controller
+```
+ovs-vsctl list controller
+```
 
 8. 设置/删除被动连接控制器
->ovs-vsctl set-manager tcp:1.2.3.4:6640
+```
+ovs-vsctl set-manager tcp:1.2.3.4:6640
 ovs-vsctl get-manager
 ovs-vsctl del-manager
+```
 
 9. 设置/移除可选选项
->ovs-vsctl set Interface eth0 options:link_speed=1G
+```
+ovs-vsctl set Interface eth0 options:link_speed=1G
 ovs-vsctl remove Interface eth0 options link_speed
+```
 
 10. 设置 fail 模式，支持 standalone 或者 secure
-standalone(default)：清除所有控制器下发的流表，ovs 自己接管
-secure：按照原来流表继续转发
->ovs-vsctl del-fail-mode br0
+
+- standalone(default)：清除所有控制器下发的流表，ovs 自己接管
+- secure：按照原来流表继续转发
+
+```
+ovs-vsctl del-fail-mode br0
 ovs-vsctl set-fail-mode br0 secure
 ovs-vsctl get-fail-mode br0
+```
 
 11. 查看接口 id 等
->ovs-appctl dpif/show
+```
+ovs-appctl dpif/show
+```
 
 12. 查看接口统计
->ovs-ofctl dump-ports br0
-
+```
+ovs-ofctl dump-ports br0
+```
 
 ### 流表类
 #### 流表操作
 
 1. 添加普通流表
-ovs-ofctl add-flow br0 in_port=1,actions=output:2
+> ovs-ofctl add-flow br0 in_port=1,actions=output:2
 
 2. 删除所有流表
-ovs-ofctl del-flows br0
+> ovs-ofctl del-flows br0
 
 3. 按匹配项来删除流表
-ovs-ofctl del-flows br0 "in_port=1"
-
+> ovs-ofctl del-flows br0 "in_port=1"
 
 #### 匹配项
 
@@ -532,4 +560,3 @@ ovs-ofctl add-flow br0 in_port=1,actions=load:0x001122334455-\>OXM_OF_ETH_DST[],
 28. 动作为 pop_vlan
 弹出报文最外层 vlan tag
 >ovs-ofctl add-flow br0 in_port=1,dl_type=0x8100,dl_vlan=777,actions=pop_vlan,output:2
-

@@ -4,9 +4,11 @@
 
 ---
 
-# Linux编程🚬
+# 🚬Linux 编程
 很多脚本第一行用来指定本脚本用什么解释器来执行
+
 例如 `#!/usr/bin/python` 相当于写死了 python 路径。
+
 而 `#!/usr/bin/env python` 会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
 
 ## 编译
@@ -29,7 +31,7 @@ distcc	# 多台机器一起编译
 
 ---
 
-# Shell👍
+# 👍Shell/Base
 ## 环境变量
 
 - **bash**
@@ -58,13 +60,13 @@ set PATH (你想要加入的路径) $PATH
 
 ## 通配符/限制输出
 ```bash
-head
-tail
+head	# 显示文件的开头的内容。默认下，显示文件的头10行内容。
+tail	# 显示文件中的尾部内容。默认下，显示文件的末尾10行内容。
 <
 >
-grep
-sort
-uniq
+grep	# 文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。
+sort	# 将文件进行排序，并将排序结果标准输出。
+uniq	# 用于报告或忽略文件中的重复行
 awk
 &
 ```
@@ -73,38 +75,42 @@ awk
 
 ## 会话
 ```bash
-who
-w
-last
+who	# 显示目前登录系统的用户信息。
+w	# 显示已经登陆系统的用户列表，并显示用户正在执行的指令。
+last	# 显示用户最近登录信息
 
-yum -y install screen
-apt-get -y install screen
-screen -S name
-screen -ls
-screen -r	name # 重新连接
-ctrl+d # 终止会话
+screen	# 会话管理软件
+	yum -y install screen
+	apt-get -y install screen
+	screen -S name
+	screen -ls
+	screen -r name	# 重新连接
+	ctrl+d	# 终止会话
 ```
 
 ---
 
 ## 目录
 ```bash
-cd
-~ # 表示 home 目录
-. # 表示当前目录
-.. # 表示上级目录
-- # 表示上一次目录
-/ # 表示根目录
+cd	# 切换工作目录
+~	# 表示 home 目录
+.	# 表示当前目录
+..	# 表示上级目录
+-	# 表示上一次目录
 
-root  # 存放 root 用户相关文件
-home  # 存放普通用户相关文件
-bin   # 存放普通命令
-sbin  # 存放需一定权限才能使用的命令
-mnt   # 默认挂载光驱软驱目录
-etc   # 存放配置相关文件
-var   # 存放经常变化文件
-boot  # 存放引导相关文件
-usr   # 存放软件默认安装目录
+/	# 表示根目录
+	root	# 超级用户目录，存放 root 用户相关文件
+	home	# 存放普通用户相关文件
+	bin	# (binaries)存放二进制可执行文件
+	sbin	# (super user binaries)存放二进制可执行文件，只有root才能访问
+	mnt	# (mount)系统管理员安装临时文件系统的安装点
+	etc	# (etcetera)存放系统配置文件
+	var	# (variable)用于存放运行时需要改变数据的文件
+	boot	# 存放用于系统引导时使用的各种文件
+	usr	# (unix shared resources)用于存放共享的系统资源
+	dev	# (devices)用于存放设备文件
+	lib	# (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
+	tmp	# (temporary)用于存放各种临时文件
 ```
 
 ---
@@ -193,52 +199,63 @@ b(){ b|b& };b  # 清理内存
 #### 查
 **查看**
 ```bash
-pwd -P # 目录链接时,显示实际路径而非 link 路径
-ls # 第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
-ls -a # 查看隐藏文件
-tac # 倒着读
-od # 二进制读
-cat -n # 带行号读
-cat -b # 带行号,越过空白行
-less
-more +10 a.txt # 从第10行读起
-more -10 f1.txt # 每次显示10行读取文件
-head -n 1 文件名	 # 读文件第一行
+pwd -P	# 目录链接时,显示实际路径而非 link 路径
+ls	# 第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
+ls -a	# 查看隐藏文件
+tac	# 倒着读
+od	# 二进制读
+cat -n	# 带行号读
+cat -b	# 带行号,越过空白行
+less	# 允许用户向前或向后浏览文件
+more +10 a.txt	# 从第10行读起
+more -10 f1.txt	# 每次显示10行读取文件
+head -n 1 文件名	# 读文件第一行
 head -5 /etc/passwd	# 读取文件前5行
-tail -10 /etc/passwd # 读取文件后10行
-sed -n '5,10p' /etc/passwd  # 读取文件第5-10行
+tail -10 /etc/passwd	# 读取文件后10行
+sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
 du	# 文件大小
-stat # 文件属性
-file # 文件类型
-id
+stat	# 文件属性
+file	# 文件类型
+id	# 显示真实有效的用户ID(UID)和组ID(GID)
 ```
 
 **查找**
 ```bash
-fd
+fd	# 文件查找工具
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
-	fd aaa.txt
+	fd <文件>
 
-find / -name conf*
-which passwd
-locate passwd
+find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
+locate <文件>	# 查找文件或目录
+
+which <命令>	# 查找并显示给定命令的绝对路径
 ```
 
 #### 改
 ```bash
-cp -r # 带目录复制
-mv
-vi
-vim
-nano
+cp <源文件> <目标文件/目标路径>	# 复制
+	cp -r <源目录> <目标目录/目标路径> # 带目录复制
+
+mv <源文件> <目标文件/目标路径>	# 对文件或目录重命名，或移动
+
+vi 	# 编辑器
+vim	# 编辑器
+nano	# 编辑器
 gedit	# 图形化的编辑器
 ```
 
 ---
 
-# net📶
+# 📶net
 ## 配置
+**ip**
+```bash
+ip a	# 显示网络设备的运行状态
+ip route	# 显示核心路由表
+ip neigh	# 显示邻居表
+```
+
 **Ubuntu**
 ```vim
 vim /etc/network/interfaces
@@ -251,6 +268,9 @@ gateway 10.0.208.1
 dns-nameservers 10.0.208.1
 ```
 ```bash
+iface enp7s0 inet dhcp	# dhcp 配置
+```
+```bash
 sudo ip addr flush enp7s0
 sudo systemctl restart networking.service
 
@@ -260,27 +280,28 @@ systemctl enable NetworkManager
 
 **Centos**
 ```vim
-vim /etc/sysconfig/network-scripts/ifcfg-eth0    # 是不是 eth0 要看自己的网卡,使用 ip a
+vim /etc/sysconfig/network-scripts/ifcfg-eth0	# 是不是 eth0 要看自己的网卡,使用 ip a
 
+HOSTNAME=test
+onboot=yes
 HWADDR=00:0C:29:F1:2E:7B
-BOOTPROTO=static　　　　　　　# 使用静态 IP,而不是由 DHCP 分配 IP
+BOOTPROTO=static	# 使用静态 IP,而不是由 DHCP 分配 IP
+# BOOTPROTO=dhcp 这个是 DHCP 的配置，如果配这个那下面的就不需要配置了
 IPADDR=172.16.102.61
 PREFIX=24
 GATEWAY=172.16.102.254
-HOSTNAME=test
-onboot=yes
 ```
 ```vim
 vim /etc/hosts
 
-127.0.0.1  test localhost  # 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
+127.0.0.1  test localhost	# 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
 ```
 ```bash
 systemctl restart NetworkManager	# 重启网络管理
 systemctl enable NetworkManager
 ```
 
-修改DNS
+修改 DNS
 ```vim
 vim /etc/resolv.conf
 
@@ -317,7 +338,7 @@ ROUTES=(gateway)
 
 **scp**
 ```bash
-scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt
+scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt	# 文件传输
 scp -r # 文件夹传输
 ```
 
@@ -330,12 +351,12 @@ rz # 运行该命令会弹出一个文件选择窗口,从本地选择文件上�
 
 **wget**
 ```bash
-wget http://example.com/file.iso
-wget --output-document=filename.html example.com   # 另行命名
+wget example.com/big.file.iso	# 下载目标文件
+wget --output-document=filename.html example.com	# 另行命名
 wget -c example.com/big.file.iso	# 恢复之前的下载
 wget --i list.txt	# 下载文件中的 url
 wget -r example.com	# 递归下载
-wget --no-check-certificate # 不检查 https 证书
+wget --no-check-certificate	# 不检查 https 证书
 ```
 
 ### bt
@@ -343,40 +364,40 @@ wget --no-check-certificate # 不检查 https 证书
 - rtorrent
 
 - **[peerflix](https://github.com/mafintosh/peerflix)**
-```bash
-npm install -g peerflix
-peerflix "magnet:?xt=urn:btih:ef330b39f4801d25b4245212e75a38634bfc856e"
-```
+	```bash
+	npm install -g peerflix
+	peerflix "magnet:?xt=urn:btih:ef330b39f4801d25b4245212e75a38634bfc856e"
+	```
 
 - **[tget](https://github.com/jeffjose/tget)**
-```bash
-npm install -g t-get
-tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
-```
+	```bash
+	npm install -g t-get
+	tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
+	```
 
 ---
 
 ## Firewall
 ### Firewalld
 ```bash
-firewall-cmd --zone=public --add-port=12345/tcp --permanent  # 开放端口
-firewall-cmd --zone=public --add-service=http --permanent   # 开放服务
-firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" accept' --permanent # 允许192.168.1.10所有访问所有端口
-firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" port port=22 protocol=tcp reject' --permanent #拒绝192.168.1.10所有访问TCP协议的22端口
+firewall-cmd --zone=public --add-port=12345/tcp --permanent	# 开放端口
+firewall-cmd --zone=public --add-service=http --permanent	# 开放服务
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" accept' --permanent	# 允许192.168.1.10所有访问所有端口
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="192.168.1.10" port port=22 protocol=tcp reject' --permanent	# 拒绝192.168.1.10所有访问TCP协议的22端口
 
-firewall-cmd --reload   # 重新加载
-firewall-cmd --list-services  # 查看防火墙设置
+firewall-cmd --reload	# 重新加载
+firewall-cmd --list-services	# 查看防火墙设置
 ```
 
 ### Iptables
 ```bash
-iptables-save > /root/firewall_rules.backup		# 备份一下策略
+iptables-save > /root/firewall_rules.backup	# 先备份一下策略
 iptables -A OUTPUT -p tcp -d bigmart.com -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -j DROP
 iptables -A INPUT -p tcp -s 10.0.3.1 --dport 22 -j ACCEPT
 iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
-iptables -L		# 查看防火墙规则
+iptables -L	# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 规则恢复一下
 ```
 
@@ -403,19 +424,23 @@ rm  CentOS-Vault.repo
 ```vim
 vim CentOS-Base.repo
 
-baseurl=file:///mnt/cdrom/  # 这里为本地源路径
+baseurl=file:///mnt/cdrom/	# 这里为本地源路径
 gpgcheck=0
-enabled=1    # 开启本地源
+enabled=1	# 开启本地源
 ```
 
-**Alibaba 源**
+**Alibaba yum 源**
 
 直接下载源
->wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+```bash
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+```
 
 刷新 YUM 的缓存状态:
->yum clean all
->yum makecache
+```bash
+yum clean all
+yum makecache
+```
 
 **ubuntu 源**
 ```vim
@@ -457,6 +482,7 @@ sudo pacman -S archlinux-keyring
 ```
 
 ### Binary
+
 ```bash
 yum install make
 yum install gcc
@@ -467,6 +493,8 @@ make install	# 安装
 ```
 
 ### dpkg
+
+> dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具。
 ```bash
 dpkg -i xxxxx.deb  # 安装软件
 dpkg -R /usr/local/src	# 安装路径下所有包
@@ -474,26 +502,38 @@ dpkg -L # 查看软件安装位置
 ```
 
 ### Pacman
+
+> pacman 是 Arch 的包管理工具。
 ```bash
-sudo pacman -S vim
-sudo pacman -S fish
-sudo pacman -Syy
+pacman -S <package>	# 安装或者升级单个软件包
+pacman -R <package>	# 删除单个软件包，保留其全部已经安装的依赖关系
+pacman -Ss <package>	# 查询软件包
+
+# 常用软件
+pacman -S vim
+pacman -S fish
 ```
 
 ### rpm
+
+> rpm 命令是 RPM 软件包的管理工具。
 ```bash
-rom -qa 		# 搜索
+rpm -qa 		# 搜索 rpm 包
 rpm -qf /etc/my.conf	# 查询文件来自哪个包
 rpm –ivh xxxx.rpm	# 安装本地包
 rpm -e xxx	# 卸载
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ```
 
 ### yum
+
+> yum 命令是在 Fedora 和 RedHat 以及 SUSE 中基于 rpm 的软件包管理器
 ```bash
-yum update && yum upgrade
+yum update && yum upgrade # 更新和升级 rpm 软件包
+yum repolist	# 查看仓库列表
 rm -f /var/run/yum.pid	# 强制解锁占用
-yum repolist	# 看下仓库列表
+yum provides ifconfig # 查看哪个包提供 ifconfig
+
+# 常用软件
 yum groupinstall "Development Tools"
 yum install openssl-devel
 yum install git
@@ -501,9 +541,13 @@ yum install python
 ```
 
 ### apt
+
+> apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具。
 ```bash
 apt-get update && apt-get upgrade && apt-get dist-upgrade
-rm -rf /var/lib/dpkg/lock
+rm -rf /var/lib/dpkg/lock	# 强制解锁占用
+
+# 常用软件
 apt install vim
 apt install python
 apt install gcc
@@ -556,22 +600,25 @@ p 粘贴
 insert 模式按 ESC 键,返回 Normal 模式
 ```
 
-使用 vim 对比文件
->vimdiff  FILE_LEFT  FILE_RIGHT
+使用 vim 对比文件 `vimdiff  FILE_LEFT  FILE_RIGHT`
 
 ---
 
-# 系统管理🦋
+# 🦋系统管理
 ## 系统设置
 ### 时间
 
 ```bash
-data -s "2019-03-31 13:12:29"   # 修改系统时间
-hwclock	   # clock 和 hwclock 是一样的
-ntpdate 0.rhel.pool.ntp.org   # 网络同步时间
-hwclock –w # 将系统时钟同步到硬件时钟
-hwclock -s # 将硬件时钟同步到系统时钟
-cal	2019	# 2019 日历
+data -s "2019-03-31 13:12:29"	# 修改系统时间
+
+ntpdate	# 设置本地日期和时间
+	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
+
+hwclock	   # 硬件时钟访问工具
+	hwclock –w # 将系统时钟同步到硬件时钟
+	hwclock -s # 将硬件时钟同步到系统时钟
+
+cal 2019	# 2019 日历
 ```
 
 ### 语言
@@ -585,21 +632,28 @@ set LANG en_US.UTF-8	# 更改默认语言
 ```
 `source   /etc/locale.conf`
 
-### 启动项
+### 启动项/计划任务
 
-```bash
-chkconfig --list        # 列出所有的系统服务
-chkconfig --add httpd        # 增加 httpd 服务
-chkconfig --del httpd        # 删除 httpd 服务
-chkconfig --level httpd 2345 on        # 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on（开启）的状态
-```
+**crontab**
 ```vim
 vim /etc/crontab	# 系统任务调度的配置文件
 
 # 前5个星号分别代表:分钟,小时,几号,月份,星期几
-* * * * * command	# 每1分钟执行一次command
+* * * * * command	# 每1分钟执行一次 command
 3,15 * * * * command	# 每小时的第3和第15分钟执行
-@reboot	command # 开机启动
+@reboot	command	# 开机启动
+```
+
+**at**
+
+> 在特定的时间执行一次性的任务
+```bash
+at now +1 minutes
+echo "test" > test.txt
+<ctrl+d>
+
+atq：列出用户的计划任务，如果是超级用户将列出所有用户的任务，结果的输出格式为：作业号、日期、小时、队列和用户名
+atrm：根据Job number删除at任务
 ```
 
 ### 账号管控
@@ -609,93 +663,126 @@ vim /etc/crontab	# 系统任务调度的配置文件
 whoami	# 当前用户
 groups	# 当前组
 
-useradd -d /home/user1 -s /sbin/nologin user1  # 创建用户 user1
-passwd user1 # 设置密码
-addgroup group1 # 创建组
-addgroup user1 group1 # 移动用户到组
-newgrp group1	# 创建组
-usermod -g 组名 用户名　# 修改用户的主组
-usermod -G 附加组 用户名　# 修改用户的附加组
-usermod -s /bin/bash 用户名　# 修改用户登录的 Shell
-userdel user1 # 只删除用户不删除家目录
-userdel -r user1 # 同时删除家目录
-userdel -f user1 # 强制删除,即使用户还在登陆中
-sudo passwd   # 配置 su 密码
+useradd -d /home/<用户名> -s /sbin/nologin <用户名>  # 创建用户
+passwd <密码>	# 设置密码
+
+addgroup <组名>	# 创建组
+addgroup <用户名> <组名>	# 移动用户到组
+
+newgrp <组名>	# 创建组
+
+usermod -g <组名> <用户名>	# 修改用户的主组
+usermod -G <附加组> <用户名>	# 修改用户的附加组
+usermod -s /bin/bash <用户名>	# 修改用户登录的 Shell
+
+userdel <用户名>	# 只删除用户不删除家目录
+userdel -r <用户名>	# 同时删除家目录
+userdel -f <用户名>	# 强制删除,即使用户还在登陆中
+sudo passwd	# 配置 su 密码
+
+chage	# 修改帐号和密码的有效期限
+	chage -l <用户> # 查看一下用户密码状态
+	chage -d <用户> # 把密码修改曰期归零了，这样用户一登录就要修改密码
 ```
 
 **权限**
 ```bash
-chown named.named aaa.txt 	# 将文件给指定用户及组
-chmod 777 a.txt 		# 给文件权限
-chmod 777  # 用户 rwx、组 rwx、其他用户 rwx  4.2.1 分别代表读,写,执行
-chmod o=rw a.txt  # 代表只给其他用户分配读写权限
-chmod u=rw,g=r,o= a.txt
-chown -R u+x test  # 对 test 及其子目录所有文件的所有者增加执行权限
-chgrp user1 file.txt	# Change the owning group of the file file.txt to the group named user1.
-chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
+chown named.named <文件/文件夹>	# 将文件给指定用户及组
+
+chmod <数字> <文件>	# 给文件权限
+# 用户 rwx、组 rwx、其他用户 rwx  4.2.1 分别代表读,写,执行
+	chmod 777 <文件>
+	chmod o=rw <文件>	# 代表只给其他用户分配读写权限
+	chmod u=rw,g=r,o= <文件>
+	chown -R u+x <文件夹>	# 对文件夹及其子目录所有文件的所有者增加执行权限
+
+chgrp	# 改变文件或目录所属的用户组
+	chgrp user1 file.txt	# Change the owning group of the file file.txt to the group named user1.
+	chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
+
 umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022
 # umask 值 002 所对应的文件和目录创建缺省权限分别为 6 6 4 和 7 7 5
+
+chattr # 用于改变文件属性
+	chattr +i <文件>	# 用chattr命令防止系统中某个关键文件被修改
+    lsattr <文件>
+	chattr +a <文件>	# 让某个文件只能往里面追加数据，但不能删除
 ```
 ```vim
-visudo	# 加sudo权限
+visudo	# 加 sudo 权限
 
 user1 ALL=(ALL)     ALL
 ```
-加sudo权限(仅限Ubuntu)
+加 sudo 权限(仅限 Ubuntu)
 ```bash
 adduser user1 sudo	# 将 user1 加到 sudo 组中
 deluser user1 sudo	# 将 user1 从 sudo 组中删除
+```
+
+**ACL**
+```bash
+setfacl -m u:apache:rwx <文件/文件夹>	# 配置 ACL
+getfacl <文件/文件夹>	# 查看 ACL 权限
+setfacl -b <文件/文件夹>	# 删除 ACL
 ```
 
 ---
 
 ## 系统信息
 
-```vim
-uname -a
+```bash
+uname -a	# 打印当前系统相关信息
 cat /etc/os-release
+cat /proc/version
+
+lshw	# 查看硬件信息
 ```
 
 ### 进程管理
 
 **进程处理**
 ```bash
-杀进程
-kill -s STOP <PID>
-kill -HUP <pid>	  # 更改配置而不需停止并重新启动服务
-killall <PID>
+# 杀进程
+kill -s STOP <PID>	# 删除执行中的程序或工作
+	kill -HUP <pid>	# 更改配置而不需停止并重新启动服务
+	kill -KILL <pid> # 信号(SIGKILL)无条件终止进程
+killall <PID>	# 使用进程的名称来杀死进程
 
-处理进程
-service xxx start	# 开服务
-service xxx stop	# 关服务
+# 处理进程
+service <程序> status/start/restart/stop	# 控制系统服务的实用工具
+systemctl enable/disable/status/start/restart/stop <程序>	# 系统服务管理器指令
 
-systemctl start xxx
-systemctl stop xxx
-systemctl enable xxx	# 设置开机启动
-systemctl disable xxx
+chkconfig	# 检查、设置系统的各种服务
+	chkconfig --list	# 列出所有的系统服务
+	chkconfig --add httpd	# 增加 httpd 服务
+	chkconfig --del httpd	# 删除 httpd 服务
+	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on（开启）的状态
 
 ctrl+z # 将前台运行的任务暂停,仅仅是暂停,而不是将任务终止。
 bg	# 转后台运行
 fg	# 转前台运行
 
-查进程
+# 查进程
+jobs	# 显示Linux中的任务列表及任务状态
+	jobs -l	# 显示进程号
+
 pidof program	# 找出 program 程序的进程 PID
 pidof -x script # 找出 shell 脚本 script 的进程 PID
-service xxx status
-systemctl status xxx
 ```
 
 **查询负载、进程监控**
 ```bash
-top
-free
-vmstat
-ps -aux
+top	# 实时动态地查看系统的整体运行情况
+free	# 显示当前系统未使用的和已使用的内存数目
+vmstat	# 显示虚拟内存状态
+ps	# 报告当前系统的进程状态
+	ps -aux #显示现在所有用户所有程序
+	# 由于ps命令能够支持的系统类型相当的多，所以选项多的离谱，这里略
 ```
 
 ---
 
-# 设备管理🛠
+# 🛠设备管理
 ## 硬盘/数据
 
 **磁盘配额**
@@ -705,13 +792,13 @@ ps -aux
 ```bash
 fdisk ‐l		# 查看磁盘情况
 fdisk /dev/sdb	# 创建系统分区
-	n
-	p
-	1
+	n	# 添加一个分区
+	p	# 建立主分区
+	1	# 分区号
 	后面都是默认,直接回车
 
 	t	# 转换分区格式
-	8e
+	8e	# LVM 格式
 
 	w	# 写入分区表
 ```
@@ -727,27 +814,28 @@ vi /etc/fstab	# 自动挂载
 
 **删除**
 ```bash
-rm test.txt	# 删除 test.txt
-rm -r test	# 删除文件夹
-rm -i test.txt	# 删除前确认
-rm -f test.txt	# 强制删除
-rm -v test.txt # 显示详细信息
+rm <文件>	# 删除指定文件
+	rm -r <文件夹>	# 删除文件夹
+	rm -i <文件>	# 删除前确认
+	rm -f <文件>	# 强制删除
+	rm -v <文件>	# 显示详细信息
 
-主要用于文件覆盖内容,也可以删除
-shred -zvu -n  5 passwords.list
-# -z - 用零添加最后的覆盖以隐藏碎化
-# -v - 显示操作进度
-# -u - 覆盖后截断并删除文件
-# -n - 指定覆盖文件内容的次数（默认值为3）
+shred -zvu -n  5 <文件>	# 主要用于文件覆盖内容,也可以删除
+	# -z - 用零添加最后的覆盖以隐藏碎化
+	# -v - 显示操作进度
+	# -u - 覆盖后截断并删除文件
+	# -n - 指定覆盖文件内容的次数（默认值为3）
 ```
 
 **数据恢复**
 
-一点建议:业务系统,rm 删除后，没有立即关机，运行的系统会持续覆盖误删数据。对于重要数据,误删后请立即关机
+*一点建议 : 业务系统,rm 删除后，没有立即关机，运行的系统会持续覆盖误删数据。所以对于重要数据,误删后请立即关机*
+
 - [foremost](http://foremost.sourceforge.net/)
 ```bash
 apt-get install foremost
 rm -f /dev/sdb1/photo1.png
+
 foremost -t png -i /dev/sdb1
 # 恢复完成后会在当前目录建立一个 output 目录，在 output 目录下会建立 png 子目录下会包括所有可以恢复的 png 格式的文件。
 # 需要说明的是 png 子目录下会包括的 png 格式的文件名称已经改变，另外 output 目录下的 audit.txt 文件是恢复文件列表。
@@ -766,6 +854,7 @@ md5sum del1.txt # 获取文件校验码
 66fb6627dbaa37721048e4549db3224d  del1.txt
 rm -fr /backupdate/*
 umount /backupdate # 卸载文件系统或者挂载为只读
+
 extundelete /dev/sdd1 --inode 2 #查询恢复数据信息，注意这里的 --inode 2 这里会扫描分区 ：
 extundelete /dev/sdd1 --restore-file del1.txt # 如果恢复一个目录
 extundelete /dev/sdd1 --restore-directory /backupdate/deldate # 恢复所有文件
@@ -776,26 +865,27 @@ md5sum RECOVERED_FILES/ del1.txt
 
 **占用**
 ```bash
-df      # 报告驱动器的空间使用情况
-df -H   # 以人类可读的格式进行显示
-df -ah  # 查看磁盘占用大的文件夹
-du --max-depth=1 -h #查看文件夹下各个文件夹的磁盘占用
+df	# 报告驱动器的空间使用情况
+	df -H	# 以人类可读的格式进行显示
+	df -ah	# 查看磁盘占用大的文件夹
 
-du      # 报告目录的空间使用情况
-du -h /etc/yum | sort # 以人类可读的格式进行显示,排序显示
-du -sh /etc/yum # 特定目录的总使用量
+du	# 报告目录的空间使用情况
+	du -h /etc/yum | sort	# 以人类可读的格式进行显示,排序显示
+	du -sh /etc/yum	# 特定目录的总使用量
+	du --max-depth=1 -h	# 查看文件夹下各个文件夹的磁盘占用
 ```
 
 **dd**
 ```bash
-dd if=/dev/zero of=sun.txt bs=1M count=1
-# if 代表输入文件。如果不指定 if，默认就会从 stdin 中读取输入。
-# of 代表输出文件。如果不指定 of，默认就会将 stdout 作为默认输出。
-# ibs=bytes：一次读入 bytes 个字节，即指定一个块大小为 bytes 个字节。
-# obs=bytes：一次输出 bytes 个字节，即指定一个块大小为 bytes 个字节。
-# bs 代表字节为单位的块大小。
-# count 代表被复制的块数。
-# /dev/zero 是一个字符设备，会不断返回 0 值字节（\0）。
+dd
+	dd if=/dev/zero of=sun.txt bs=1M count=1
+	# if 代表输入文件。如果不指定 if，默认就会从 stdin 中读取输入。
+	# of 代表输出文件。如果不指定 of，默认就会将 stdout 作为默认输出。
+	# ibs=bytes：一次读入 bytes 个字节，即指定一个块大小为 bytes 个字节。
+	# obs=bytes：一次输出 bytes 个字节，即指定一个块大小为 bytes 个字节。
+	# bs 代表字节为单位的块大小。
+	# count 代表被复制的块数。
+	# /dev/zero 是一个字符设备，会不断返回 0 值字节（\0）。
 ```
 
 **LVM**
@@ -808,14 +898,14 @@ lvdisplay # 查看逻辑卷的属性
 
 **块设备信息**
 ```bash
-lsblk   # 显示所有可用块设备的信息
-lsblk -m    # 显示设备所有者相关的信息，包括文件的所属用户、所属组以及文件系统挂载的模式
+lsblk	# 显示所有可用块设备的信息
+	lsblk -m	# 显示设备所有者相关的信息，包括文件的所属用户、所属组以及文件系统挂载的模式
 
 blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
-blkid /dev/sda1
-blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
-blkid -po udev /dev/sda1 # 获取更多详细信息
-blkid -g    # 清理 blkid 的缓存
+	blkid /dev/sda1
+	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
+	blkid -po udev /dev/sda1	# 获取更多详细信息
+	blkid -g	# 清理 blkid 的缓存
 ```
 
 ---

@@ -42,24 +42,24 @@ git config --global user.name "username"
 git config --global user.email user@aaa.com
 # 如果使用了 –global 选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git 都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有 –global 选项的命令来配置。
 
-git config --global http.proxy  #查看当前代理设置
-git config --global http.proxy 'socks5://127.0.0.1:1080'    #设置当前代理
-git config --global https.proxy 'socks5://127.0.0.1:1080'   #设置当前代理
-git config --global --unset https.proxy #删除 proxy
+git config --global http.proxy  # 查看当前代理设置
+git config --global http.proxy 'socks5://127.0.0.1:1080'    # 设置当前代理
+git config --global https.proxy 'socks5://127.0.0.1:1080'   # 设置当前代理
+git config --global --unset https.proxy # 删除 proxy
 
 
-git init    #初始化仓库
-git config --list   #检查配置信息
+git init    # 初始化仓库
+git config --list   # 检查配置信息
 
-git status  #查看状态
-git diff    #查看已暂存和未暂存的修改
-git diff --cached   #查看暂存区和本地仓库之间的差异
+git status  # 查看状态
+git diff    # 查看已暂存和未暂存的修改
+git diff --cached   # 查看暂存区和本地仓库之间的差异
 
-git log     #查看提交历史
-git reflog  #显示当前分支的最近几次提交
+git log     # 查看提交历史
+git reflog  # 显示当前分支的最近几次提交
 
-git commit -m "Input your commit message"   #提交更新
-git commit -a -m "Commit message"   #跳过使用暂存区
+git commit -m "Input your commit message"   # 提交更新
+git commit -a -m "Commit message"   # 跳过使用暂存区
 git commit --allow-empty-message --no-edit # 懒得什么message都不想写
 
 git commit -m 'test1
@@ -71,22 +71,22 @@ git rm <finame>
 git mv file_from file_to
 
 已修改，未暂存
-#如果我们只是在编辑器里修改了文件，但还没有执行 git add .，这时候我们的文件还在工作区，并没有进入暂存区，我们可以用
-git checkout -- test.txt  #git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以 “一键还原”。
-git reset HEAD file    #把暂存区的修改撤销掉（unstage），重新放回工作区
+# 如果我们只是在编辑器里修改了文件，但还没有执行 git add .，这时候我们的文件还在工作区，并没有进入暂存区，我们可以用
+git checkout -- test.txt  # git checkout其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以 “一键还原”。
+git reset HEAD file    # 把暂存区的修改撤销掉（unstage），重新放回工作区
 
 已暂存，未提交
-#你已经执行了 git add .，但还没有执行 git commit -m "comment"。这时候你意识到了错误，想要撤销，你可以执行：
+# 你已经执行了 git add .，但还没有执行 git commit -m "comment"。这时候你意识到了错误，想要撤销，你可以执行：
 git reset
 git checkout .
 
 已提交，未推送
-#你的手太快，你既执行了 git add .，又执行了 git commit，这时候你的代码已经进入了你的本地仓库，然而你后悔了，怎么办？不要着急，还有办法。
+# 你的手太快，你既执行了 git add .，又执行了 git commit，这时候你的代码已经进入了你的本地仓库，然而你后悔了，怎么办？不要着急，还有办法。
 git reset --hard origin/master
-#还是这个 git reset --hard 命令，只不过这次多了一个参数 origin/master，正如我们上面讲过的，origin/master 代表远程仓库，既然你已经污染了你的本地仓库，那么就从远程仓库把代码取回来吧。
+# 还是这个 git reset --hard 命令，只不过这次多了一个参数 origin/master，正如我们上面讲过的，origin/master 代表远程仓库，既然你已经污染了你的本地仓库，那么就从远程仓库把代码取回来吧。
 
 已推送
-#很不幸，你的手实在是太快了，你既 git add 了，又 git commit 了，并且还 git push 了，这时你的代码已经进入远程仓库。如果你想恢复的话，还好，由于你的本地仓库和远程仓库是等价的，你只需要先恢复本地仓库，再强制 push 到远程仓库就好了：
+# 很不幸，你的手实在是太快了，你既 git add 了，又 git commit 了，并且还 git push 了，这时你的代码已经进入远程仓库。如果你想恢复的话，还好，由于你的本地仓库和远程仓库是等价的，你只需要先恢复本地仓库，再强制 push 到远程仓库就好了：
 git reset --hard HEAD^
 git push -f
 ```
@@ -94,23 +94,23 @@ git push -f
 ## 分支管理
 ![image](https://i.loli.net/2019/04/03/5ca41e96e528e.png)
 ```bash
-git branch  #查看分支
-git branch -r #查看远程分支
-git branch -a #查看所有分支
-git branch <name>   #创建分支
-git checkout <name> #切换分支
-git checkout -b <name>  #创建 + 切换分支
-git merge <name>    #合并某分支到当前分支
-git branch -d <name>    #删除分支
+git branch  # 查看分支
+git branch -r # 查看远程分支
+git branch -a # 查看所有分支
+git branch <name>   # 创建分支
+git checkout <name> # 切换分支
+git checkout -b <name>  # 创建 + 切换分支
+git merge <name>    # 合并某分支到当前分支
+git branch -d <name>    # 删除分支
 
-git stash   #储藏分支
+git stash   # 储藏分支
 git stash list
-git stash pop   #恢复的同时把 stash 内容也删了
+git stash pop   # 恢复的同时把 stash 内容也删了
 ```
 
 ## 标签管理
 ```bash
-#注意，标签不是按时间顺序列出，而是按字母排序的。可以用 git show <tagname> 查看标签信息
+# 注意，标签不是按时间顺序列出，而是按字母排序的。可以用 git show <tagname> 查看标签信息
 
 git tag <name> 用于新建一个标签，默认为 HEAD，也可以指定一个 commit id；
 git tag -a <tagname> -m "blablabla..." 可以指定标签信息；
@@ -163,23 +163,23 @@ git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(ye
 
 ## git remote
 ```bash
-git remote #命令列出所有远程主机
+git remote # 命令列出所有远程主机
 
-git remote -v #参看远程主机的网址
+git remote -v # 参看远程主机的网址
 origin  git@github.com:jquery/jquery.git (fetch)
 origin  git@github.com:jquery/jquery.git (push)
 
-git remote add <主机名> <网址>    #用于添加远程主机
-git remote rm <主机名>  #用于删除远程主机
-git remote rename <原主机名> <新主机名> #用于远程主机的改名
+git remote add <主机名> <网址>    # 用于添加远程主机
+git remote rm <主机名>  # 用于删除远程主机
+git remote rename <原主机名> <新主机名> # 用于远程主机的改名
 ```
 
 ## git fetch
 git fetch 会使你与另一仓库同步，提取你本地所没有的数据，为你在同步时的该远端的每一分支提供书签。 这些分支被叫做 “远端分支”，除了 Git 不允许你检出（切换到该分支）之外，跟本地分支没区别 —— 你可以将它们合并到当前分支，与其他分支作比较差异，查看那些分支的历史日志，等等。同步之后你就可以在本地操作这些。
 ```bash
-git fetch <远程主机名>  #将某个远程主机的更新，全部取回本地
+git fetch <远程主机名>  # 将某个远程主机的更新，全部取回本地
 
-it branch 命令的 -r 选项，可以用来查看远程分支，-a 选项查看所有分支。
+git branch 命令的 -r 选项，可以用来查看远程分支，-a 选项查看所有分支。
 git branch -r
 
 git branch -a
@@ -201,21 +201,21 @@ git rebase origin/master
 ## git pull
 基本上，该命令就是在 `git fetch` 之后紧接着 `git merge` 远端分支到你所在的任意分支。
 ```bash
-git pull <远程主机名> <远程分支名>:<本地分支名> #取回远程主机某个分支的更新，再与本地的指定分支合并。
-git pull origin next:master #取回 origin 主机的 next 分支，与本地的 master 分支合并
+git pull <远程主机名> <远程分支名>:<本地分支名> # 取回远程主机某个分支的更新，再与本地的指定分支合并。
+git pull origin next:master # 取回 origin 主机的 next 分支，与本地的 master 分支合并
 ```
 
-**pull文件时和本地文件冲突**
+**pull 文件时和本地文件冲突**
 
-`git stash`先将本地修改存储起来
-这样本地的所有修改就都被暂时存储起来 。是用`git stash list`可以看到保存的信息：
+`git stash` 先将本地修改存储起来
+这样本地的所有修改就都被暂时存储起来 。是用 `git stash list` 可以看到保存的信息：
 ```
 stash@{0}: WIP on master: xxxxxxx <commit>
 ```
 
-暂存了本地修改之后，就可以`git pull`了。
+暂存了本地修改之后，就可以 `git pull` 了。
 
-还原暂存的内容`git stash pop stash@{0}`
+还原暂存的内容 `git stash pop stash@{0}`
 提示如下信息
 ```
 Auto-merging c/environ.c
@@ -231,26 +231,26 @@ git pull
 
 ## git push
 ```bash
-git push <远程主机名> <本地分支名>:<远程分支名> #将本地分支的更新，推送到远程主机
-git push origin master  #本地的 master 分支推送到 origin 主机的 master 分支。如果后者不存在，则会被新建。
+git push <远程主机名> <本地分支名>:<远程分支名> # 将本地分支的更新，推送到远程主机
+git push origin master  # 本地的 master 分支推送到 origin 主机的 master 分支。如果后者不存在，则会被新建。
 
 如果远程主机的版本比本地版本更新，推送时 Git 会报错，要求先在本地做 git pull 合并差异，然后再推送到远程主机。这时，如果你一定要推送，可以使用 --force 选项。
 git push --force origin
-上面命令使用 --force选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用 --force 选项。
+上面命令使用 --force 选项，结果导致远程主机上更新的版本被覆盖。除非你很确定要这样做，否则应该尽量避免使用 --force 选项。
 ```
 
 ## github
-- **github开启二次验证后后，git push验证权限失败**
+- **github 开启二次验证后后，git push 验证权限失败**
 
-    github开启二次验证后，提交时密码用个人设置里的Personal Access Token，不是账号密码
+    github 开启二次验证后，提交时密码用个人设置里的 Personal Access Token，不是账号密码
 
 - **Git Push 避免用户名和密码方法**
 
-    在windows中添加一个用户变量，变量名:HOME,变量值：%USERPROFILE%
+    在 windows 中添加一个用户变量，变量名:HOME,变量值：%USERPROFILE%
 
     ![image](https://i.imgur.com/TWEi10z.jpg)
 
-    进入%HOME%目录，新建一个名为"_netrc"的文件，文件中内容格式如下：
+    进入 %HOME% 目录，新建一个名为"_netrc"的文件，文件中内容格式如下：
     ```bash
     machine github.com
     login your-usernmae

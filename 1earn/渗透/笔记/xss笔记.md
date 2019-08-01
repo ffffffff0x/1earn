@@ -12,14 +12,6 @@
 - [深入理解浏览器解析机制和XSS向量编码](http://bobao.360.cn/learning/detail/292.html)
 - [csp与bypass的探讨(译文)](http://wutongyu.info/csp-2015/)
 
-
-
-
-
-
-
-
-
 ---
 
 ## payload示例

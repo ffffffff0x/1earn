@@ -12,7 +12,7 @@
 - **CVE-2018-13024**
     - 简介
 
-        远程攻击者可通过向 admin/column/save.php文件发送‘module’参数利用该漏洞向.php文件写入代码并执行该代码。
+        远程攻击者可通过向 admin/column/save.php 文件发送 `module` 参数利用该漏洞向 .php 文件写入代码并执行该代码。
 
     - 文章
         - [CVE-2018-13024复现及一次简单的内网渗透](https://www.freebuf.com/news/193748.html)
@@ -32,13 +32,13 @@
         ```
         `python rogue_mysql_server.py`
 
-        打开目标phpMyAdmin的登录页面，地址输入db:3307、用户名、密码，提交登录。
-        回到db的终端，如果文件读取成功会将文件内容记录到mysql.log文件中
+        打开目标 phpMyAdmin 的登录页面，地址输入 db:3307、用户名、密码，提交登录。
+        回到db的终端，如果文件读取成功会将文件内容记录到 mysql.log 文件中
 
 - **4.8.x 本地文件包含漏洞利用**
 
     [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/)
-    可以通过这个线上靶场实验,不过docker镜像可能有点问题,mysql进程起不起来,我的解决方式是直接卸了重装mysql-server,而且他默认的apt源无法访问,还要换一下apt源
+    可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
 
 **[YxCMS](http://www.yxcms.net/index.html)**
 - **常见路径**
@@ -60,7 +60,7 @@
 
 **ewebeditor**
 - 文章
-    - [ewebeditor编辑器漏洞总结](https://www.0dayhack.com/post-426.html)
+    - [ewebeditor 编辑器漏洞总结](https://www.0dayhack.com/post-426.html)
 
 - 常用路径
     ```
@@ -96,13 +96,13 @@
     ```
 
 **kindeditor**
-- **kindeditor<=4.1.5上传漏洞**
+- **kindeditor<=4.1.5 上传漏洞**
     - 文章
         - [kindeditor<=4.1.5上传漏洞复现](https://www.cnblogs.com/backlion/p/10421405.html)
 
     - 漏洞修复
-        1. 直接删除upload_json.*和file_manager_json.*
-        2. 升级kindeditor到最新版本
+        1. 直接删除 `upload_json.*` 和 `file_manager_json.*`
+        2. 升级 kindeditor 到最新版本
 
 ---
 
@@ -125,8 +125,8 @@
 
 ## [Apache Struts](https://cwiki.apache.org/confluence/display/WW/Security+Bulletins)
 - **工具**
-    - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的struts2漏洞全版本检测和利用工具
-    - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2全漏洞扫描利用工具
+    - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
+    - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
 
 - **环境收集**
     - [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
@@ -147,14 +147,14 @@
 
     - 简介
 
-        该漏洞是由于上传功能的异常处理函数没有正确处理用户输入的错误信息，导致远程攻击者可通过修改HTTP请求头中的Content-Type值，构造发送恶意的数据包，利用该漏洞进而在受影响服务器上执行任意系统命令。
+        该漏洞是由于上传功能的异常处理函数没有正确处理用户输入的错误信息，导致远程攻击者可通过修改 HTTP 请求头中的 Content-Type 值，构造发送恶意的数据包，利用该漏洞进而在受影响服务器上执行任意系统命令。
 
     - 修复方案
-        1. 官方已经发布版本更新，尽快升级到不受影响的版本(Struts 2.3.32或Struts 2.5.10.1)，建议在升级前做好数据备份。
+        1. 官方已经发布版本更新，尽快升级到不受影响的版本(Struts 2.3.32 或 Struts 2.5.10.1)，建议在升级前做好数据备份。
         2. 临时修复方案
-        在用户不便进行升级的情况下，作为临时的解决方案，用户可以进行以下操作来规避风险：在WEB-INF/classes目录下的struts.xml 中的struts 标签下添加
+        在用户不便进行升级的情况下，作为临时的解决方案，用户可以进行以下操作来规避风险：在 WEB-INF/classes 目录下的 struts.xml 中的 struts 标签下添加
         `<constant name="struts.custom.i18n.resources" value="global" />`
-        在WEB-INF/classes/ 目录下添加 global.properties，文件内容如下：
+        在 WEB-INF/classes/ 目录下添加 global.properties，文件内容如下：
         `struts.messages.upload.error.InvalidContentTypeException=1`
 
     - POC | Payload | exp
@@ -184,7 +184,7 @@
 
     - 简介
 
-        该漏洞由Semmle Security Research team的安全研究员Man YueMo发现。该漏洞是由于在Struts2开发框架中使用namespace功能定义XML配置时，namespace值未被设置且在上层动作配置(Action Configuration)中未设置或用通配符namespace，可能导致远程代码执行。
+        该漏洞由 Semmle Security Research team 的安全研究员 Man YueMo 发现。该漏洞是由于在 Struts2 开发框架中使用 namespace 功能定义 XML 配置时，namespace 值未被设置且在上层动作配置(Action Configuration)中未设置或用通配符 namespace，可能导致远程代码执行。
 
     - POC | Payload | exp
         - [Ivan1ee/struts2-057-exp](https://github.com/Ivan1ee/struts2-057-exp)
@@ -212,7 +212,7 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
     - POC | Payload | exp
         - [cyberheartmi9/CVE-2017-12617](https://github.com/cyberheartmi9/CVE-2017-12617)
 
-    - msf模块
+    - msf 模块
         ```
         use exploit/multi/http/tomcat_jsp_upload_bypass
         ```
@@ -237,7 +237,7 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 ## IIS
 - **IIS shortname**
 
-    windows在创建一个新文件时，操作系统还会生成 8.3 格式的兼容 MS-DOS 的(短)文件名，以允许基于 MS-DOS 或16位 windows 的程序访问这些文件。
+    windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼容 MS-DOS 的(短)文件名，以允许基于 MS-DOS 或16位 windows 的程序访问这些文件。
 
     - 文章
         - [IIS短文件名漏洞](http://www.lonelyor.org/lonelyorWiki/15446866501207.html)
@@ -246,7 +246,8 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
     - 修复方案
         1. 升级 .net framework 至 4.0 版本或以上
-        2. 修改HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem 修改NtfsDisable8dot3NameCreation为1
+        2. 修改 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+        值 NtfsDisable8dot3NameCreation 为 1
 
     - 示例
         ```bash
@@ -285,12 +286,14 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
     ```
     如果我们请求的文件/文件夹名同时存在大小写时，这个请求会被请求两次，一次是原封不动的请求，一次是全部使用小写的请求。
 
-    下表显示了每个请求的FS调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-    ![image](../../img/渗透/1.jpg)
+    下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
+    ![image](../../../img/渗透/1.jpg)
 
 - **CVE-2017-7269** IIS6.0 RCE
     - POC | Payload | exp
-
+        - [zcgonvh/cve-2017-7269](https://github.com/zcgonvh/cve-2017-7269)
+        - [zcgonvh/cve-2017-7269-tool](https://github.com/zcgonvh/cve-2017-7269-tool)
+        - [lcatro/CVE-2017-7269-Echo-PoC](https://github.com/lcatro/CVE-2017-7269-Echo-PoC)
 
     - MSF模块
 
@@ -367,8 +370,8 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
     - POC | Payload | exp
 
-        `http://127.0.0.1:8338/ws_utc/begin.do`
         - [hackping/XXEpayload](https://github.com/hackping/XXEpayload/tree/master/xxe)
+        - `http://127.0.0.1:8338/ws_utc/begin.do`
 
 - **CVE-2019-2725 && CNVD-C-2019-48814**
     - 文章
@@ -376,12 +379,11 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
     - 检测方法
         ```bash
-        <目标IP:端口>/_async/AsyncResponseService
-        <目标IP:端口>/wls-wsat/CoordinatorPortType
+        <目标 IP:端口>/_async/AsyncResponseService
+        <目标 IP:端口>/wls-wsat/CoordinatorPortType
         ```
 
     - POC | Payload | exp
         - [MyTools/CVE-2019-2725](https://github.com/No4l/MyTools/tree/master/CVE-2019-2725)
         - [skytina/CNVD-C-2019-48814-COMMON](https://github.com/skytina/CNVD-C-2019-48814-COMMON)
         - [lufeirider/CVE-2019-2725](https://github.com/lufeirider/CVE-2019-2725)
-

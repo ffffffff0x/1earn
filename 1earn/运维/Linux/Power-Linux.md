@@ -16,7 +16,7 @@
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
 
 DEVICE="enoXXXXXX"
-BOOTPROTO=static　　　　　　　# 使用静态 IP,而不是由 DHCP 分配 IP
+BOOTPROTO=static  # 使用静态 IP,而不是由 DHCP 分配 IP
 IPADDR=172.16.102.61
 PREFIX=24
 GATEWAY=172.16.102.254
@@ -27,7 +27,7 @@ HOSTNAME=dns1.abc.com
 ```vim
 vim /etc/hosts
 
-127.0.0.1  test localhost  # 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
+127.0.0.1  test localhost # 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
 ```
 
 **修改 DNS**
@@ -40,7 +40,7 @@ nameserver 8.8.8.8
 
 ---
 
-## 配置本地yum源,挂载,安装
+## 配置本地 yum 源,挂载,安装
 
 **挂载**
 
@@ -77,7 +77,9 @@ enabled=1    # 开启本地源
 ## RAID
 
 **安装**
+
 `yum remove mdadm`	# 建议先把原本的卸掉重装
+
 `yum install mdadm`
 
 **分区**
@@ -97,29 +99,34 @@ w 写入
 
 **创建阵列**
 - RAID1
+
 	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
 	- -Cv: 创建一个阵列并打印出详细信息。
 	- /dev/md0: 阵列名称。
-	-a　: 同意创建设备,如不加此参数时必须先使用mknod 命令来创建一个RAID设备,不过推荐使用-a yes参数一次性创建；
+	-a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建；
 	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 。
 	- -n2: 指定我们将两个分区加入到阵列中去,分别为/dev/sdb1 和 /dev/sdc1
 
 - RAID5
+
 	`mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1`
 
 	可以使用以下命令查看进度：
+
 	`cat /proc/mdstat`
 
 	另外一个获取阵列信息的方法是：
+
 	`mdadm -D /dev/md0`
 
 **格式化为 xfs**
+
 `mkfs.xfs /dev/md0`
 
 **以 UUID 的形式开机自动挂载**
 ```bash
 mkdir /data/ftp_data
-blkid	/dev/md0 # 查UUID值
+blkid	/dev/md0 # 查 UUID 值
 ```
 ```vim
 vim /etc/fstab
@@ -132,7 +139,7 @@ mount | grep '^/dev'
 
 ---
 
-## Lvm物理卷
+## Lvm 物理卷
 
 ```bash
 fdisk ‐l		# 查看磁盘情况
@@ -223,7 +230,7 @@ systemctl stop firewalld
 ./AdGuardHome -s restart
 ./AdGuardHome -s status
 ```
-无误的话访问服务器IP+端口3000就可以看到管理页面了
+无误的话访问服务器 IP+端口 3000 就可以看到管理页面了
 
 ---
 
@@ -271,8 +278,8 @@ systemctl start chronyd.service
 
 **查看同步状态**
 ```bash
-chronyc sourcestats # 检查ntp源服务器状态
-chronyc sources -v  # 检查ntp详细同步状态
+chronyc sourcestats # 检查 ntp 源服务器状态
+chronyc sources -v  # 检查 ntp 详细同步状态
 
 chronyc # 进入交互模式
   activity
@@ -285,9 +292,11 @@ chronyc # 进入交互模式
 `web torrent 下载服务，懂得都懂，还用我说嘛`
 
 **安装**
+
 `curl https://i.jpillora.com/cloud-torrent! | bash`
 
 **运行**
+
 `cloud-torrent -o`
 
 `我日，就这么简单`
@@ -335,6 +344,7 @@ cat /var/lib/dhcpd/dhcpd.leases # 查看租约文件,了解租用情况
 ## DNS
 
 **安装**
+
 `yum install bind-*`
 
 **主配置文件**
@@ -568,7 +578,7 @@ vim /var/ftp/pub/ks.cfg
 url --url=ftp://192.168.0.105
 timezone Asia/Shanghai --isUtc
 clearpart --all --initlabel
-#如果觉得系统默认自带的应答文件参数较少，不能满足生产环境的需求，则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包。这是一款图形化的 Kickstart 应答文件生成工具，可以根据自己的需求生成自定义的应答文件，然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可。
+# 如果觉得系统默认自带的应答文件参数较少，不能满足生产环境的需求，则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包。这是一款图形化的 Kickstart 应答文件生成工具，可以根据自己的需求生成自定义的应答文件，然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可。
 ```
 
 **Reference**
@@ -654,15 +664,13 @@ socks5 127.0.0.1 1080 # 改成你懂的
 
 **使用**
 
-在需要代理的命令前加上 proxychains4 ，如：
-`proxychains4 wget https://www.google.com/`
+在需要代理的命令前加上 proxychains4 ，如：`proxychains4 wget https://www.google.com/`
 
 ---
 
 ## [🔑SSH](https://www.ssh.com)
 
-一般主机安装完毕后 SSH 是默认开启的
-使用 `/etc/init.d/ssh status` 查看主机 SSH 状态
+一般主机安装完毕后 SSH 是默认开启的,使用 `/etc/init.d/ssh status` 查看主机 SSH 状态
 
 **Kali/Manjaro**
 
@@ -677,8 +685,9 @@ PermitRootLogin yes
 service ssh restart
 systemctl enable ssh
 ```
-若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,请再试一遍。
-这时请不要着急,只需要在 Kali 控制端口重新生成两个秘钥即可。
+若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍。
+
+这时不要着急,只需要在 Kali 控制端口重新生成两个秘钥即可。
 ```bash
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
@@ -686,9 +695,8 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 
 **Ubuntu**
 
-如果没有就装一下
-如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client（ubuntu 有默认安装,如果没有则 sudo
-apt-get install openssh-client）,如果要使本机开放 SSH 服务就需要安装 openssh-server
+如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client（ubuntu 有默认安装,如果没有则 `sudo
+apt-get install openssh-client`）,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
 apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
@@ -698,7 +706,7 @@ apt install ssh
 
 ---
 
-# web服务
+# web 服务
 ## [Apache](https://www.apache.org/)
 
 **安装**
@@ -807,15 +815,20 @@ openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
 ```
 
 - **向 windows CA 服务器申请证书**
-`Openssl genrsa 2048 > httpd.key`
-`openssl req -new -key httpd.key -out httpd.csr`
-通过这个 csr 文件在内部的 windows CA 服务器上申请证书
+
+  `Openssl genrsa 2048 > httpd.key`
+
+  `openssl req -new -key httpd.key -out httpd.csr`
+
+  通过这个 csr 文件在内部的 windows CA 服务器上申请证书
 
 **ab**
 
 安装
-`sudo apt install apache2-utils`
-`yum install httpd-tools`
+```bash
+sudo apt install apache2-utils
+yum install httpd-tools
+```
 
 ---
 
@@ -840,7 +853,7 @@ mkdir /usr/local/caddy/www
 echo "<h1>first</h1>" >> /usr/local/caddy/www/index.html
 
 /etc/init.d/caddy start
-# 如果启动失败可以看Caddy日志： tail -f /tmp/caddy.log
+# 如果启动失败可以看 Caddy 日志： tail -f /tmp/caddy.log
 ```
 
 **反向代理**
@@ -874,10 +887,13 @@ echo -e "xxx.com {
 
 **包管理器方式**
 - apt
+
   `apt-get install nodejs npm` 讲道理 apt 安装不太好使
 
 - yum
+
   `yum install epel-release`
+
   `yum install nodejs npm`
 
 **源文件方式安装**
@@ -958,8 +974,8 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置：
-`192.168.1.112   www.test.com test.com`
+如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置：`192.168.1.112   www.test.com test.com`
+
 `curl www.test.com`
 
 **https**
@@ -994,7 +1010,6 @@ server {
 ```
 `systemctl restart nginx`
 
-
 **添加 PHP/PHP-FPM 环境支持**
 ```bash
 # 安装PHP源
@@ -1005,7 +1020,7 @@ rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
 
 systemctl start php-fpm.service
-netstat -tnlp # 检查php-fpm默认监听端口：9000
+netstat -tnlp # 检查 php-fpm 默认监听端口：9000
 ```
 ```vim
 # 添加配置
@@ -1134,7 +1149,7 @@ cd wordpress
 vim wp-config-sample.php
 ```
 在标有 `// ** MySQL settings - You can get this info from your web host ** //` 下输入你的数据库相关信息
-```php
+```
 DB_NAME
     在第二步中为WordPress创建的数据库名称
 DB_USER
@@ -1158,11 +1173,15 @@ DB_COLLATE
     网站子目录下（如：http://example.com/blog/
 
 根目录
+
 如果需要将文件上传到 web 服务器,可用 FTP 客户端将 wordpress 目录下所有内容（无需上传目录本身）上传至网站根目录
+
 如果文件已经在 web 服务器中且希望通过 shell 访问来安装 wordpress,可将 wordpress 目录下所有内容（无需转移目录本身）转移到网站根目录
 
 子目录
+
 如果需要将文件上传到 web 服务器,需将 wordpress 目录重命名,之后用 FTP 客户端将重命名后的目录上传到网站根目录下某一位置
+
 如果文件已经在 web 服务器中且希望通过shell访问来安装 wordpress,可将 wordpress 目录转移到网站根目录下某一位置,之后重命名 wordpress 目录
 
 ```bash
@@ -1176,7 +1195,9 @@ service firewalld stop
 **运行安装脚本**
 
 在常用的 web 浏览器中运行安装脚本。
+
 将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
+
 将 WordPress 文件放在子目录（假设子目录名为 blog）下的用户请访问：http://example.com/blog/wp-admin/install.php
 
 访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
@@ -1450,7 +1471,7 @@ echo "www.你的域名.com {
 }" >> /usr/local/caddy/Caddyfile
 
 /etc/init.d/caddy start
-# 如果启动失败可以看 Caddy 日志： tail -f /tmp/caddy.log
+# 如果启动失败可以看 Caddy 日志：tail -f /tmp/caddy.log
 ```
 
 **opensearch**
@@ -1499,7 +1520,7 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 ps -aux
 看一下哪个是gunicorn进程
 kill 杀掉
-gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录下运行
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在 /mijisou 目录下运行
 ```
 
 **配合 Cloudflare 的 CDN**
@@ -1533,6 +1554,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在/mijisou目录�
 ### [Mariadb](https://mariadb.org/)
 
 **安装**
+
 `yum install mariadb mariadb-server`
 
 **数据库初始化**
@@ -1554,7 +1576,7 @@ Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回�
 
 **配置远程访问**
 
-Mariadb 数据库授权root用户能够远程访问
+Mariadb 数据库授权 root 用户能够远程访问
 ```sql
 systemctl start mariadb
 mysql -u root -p <password>
@@ -1587,15 +1609,15 @@ sudo service mysql start
 **安装**
 ```bash
 yum install postgresql-server
-postgresql-setup initdb # 初始化数据库
+postgresql-setup initdb  # 初始化数据库
 service postgresql start # 启动服务
 ```
 
-PostgreSQL 安装完成后,会建立一下‘postgres’用户,用于执行 PostgreSQL,数据库中也会建立一个'postgres'用户,默认密码为自动生成,需要在系统中改一下。
+PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下。
 
 **修改用户密码**
 ```sql
- sudo -u postgres psql postgres
+sudo -u postgres psql postgres
 \l # 查看当前的数据库列表 
 \password postgres  # 给 postgres 用户设置密码
 \q  # 退出数据库
@@ -1636,6 +1658,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 ```
+
 `yum install -y mongodb-org`
 
 **配置远程访问**
@@ -1672,6 +1695,7 @@ vim /etc/mongod.conf
 security:
 authorization: enabled
 ```
+
 `service mongod restart	`
 
 ---
@@ -1681,14 +1705,21 @@ authorization: enabled
 
 **安装**
 - **包管理器方式**
+
   在 CentOS 和 Red Hat 系统中,首先添加 EPEL 仓库,然后更新 yum 源:
+
   `yum install epel-release`
+
   `yum install redis`
+
   安装好后启动 Redis 服务即可
+
   `systemctl start redis`
 
 - **源代码编译方式安装**
-  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载　　
+
+  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载
+
   `wget http://download.redis.io/releases/redis-4.0.1.tar.gz`
 
   安装
@@ -1723,7 +1754,8 @@ vim /etc/redis.conf
 #bind 127.0.0.1
 requirepass 密码	#设置 redis 密码
 ```
-`service redis restart`当然还要记得开防火墙
+`service redis restart` 当然还要记得开防火墙
+
 `redis-cli -h <ip> -p 6379 -a <PASSWORD>`
 
 ---
@@ -1739,7 +1771,8 @@ requirepass 密码	#设置 redis 密码
 
 - **源代码编译方式安装**
 
-  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载　　
+  在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载
+
   `wget http://memcached.org/latest`
 
   安装
@@ -1767,28 +1800,28 @@ firewall-cmd --reload
 
 **常用配置**
 
-`sudo vim /etc/vim/vimrc`或`sudo vim /etc/vimrc`
+`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
 最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
 ```vim
-set number #显示行号
-set nobackup #覆盖文件时不备份
-set cursorline #突出显示当前行
-set ruler #在右下角显示光标位置的状态行
-set shiftwidth=4 #设定 > 命令移动时的宽度为 4
-set softtabstop=4 #使得按退格键时可以一次删掉 4 个空格
-set tabstop=4 #设定 tab 长度为 4(可以改）
-set smartindent #开启新行时使用智能自动缩进
-set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+set number # 显示行号
+set nobackup # 覆盖文件时不备份
+set cursorline # 突出显示当前行
+set ruler # 在右下角显示光标位置的状态行
+set shiftwidth=4 # 设定 > 命令移动时的宽度为 4
+set softtabstop=4 # 使得按退格键时可以一次删掉 4 个空格
+set tabstop=4 # 设定 tab 长度为 4(可以改）
+set smartindent # 开启新行时使用智能自动缩进
+set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+
 下面这个没觉得很有用,在代码多的时候会比较好
-#set showmatch #插入括号时,短暂地跳转到匹配的对应括号
-#set matchtime=2 #短暂跳转到匹配括号的时间
+#set showmatch # 插入括号时,短暂地跳转到匹配的对应括号
+#set matchtime=2 # 短暂跳转到匹配括号的时间
 ```
 
 **解决 ssh 后 vim 中不能使用小键盘的问题**
 - xshell
 
-  更改的方法:
-  在终端设置中选择终端类型为 linux
+  更改的方法: 在终端设置中选择终端类型为 linux
 
 - ubuntu
   ```bash
@@ -1801,14 +1834,16 @@ set ignorecase smartcase #搜索时忽略大小写,但在有一个或以上大�
 # 文件服务
 ## [filebrowser](https://github.com/filebrowser/filebrowser)
 
-`一个在线网盘服务，只能在线看图片,在线看片是不支持的 ^w^`
+`一个在线网盘服务，只能在线看图片,在线看视频是不支持的 ^w^`
 
 **安装**
+
 `curl -fsSL https://filebrowser.xyz/get.sh | bash`
 
 **使用**
 
 filebrowser -a <你自己的IP> -r <文件夹路径>
+
 默认账号密码 admin
 
 ---
@@ -1857,6 +1892,7 @@ passwd nfsuser1
 ```
 
 验证共享是否成功
+
 `showmount ‐e 192.168.xxx.xxx`
 
 挂载共享目录
@@ -1888,6 +1924,7 @@ vim /etc/fstab
 **服务端**
 
 安装
+
 `yum install samba `
 
 修改配置文件
@@ -1903,6 +1940,7 @@ create mask = 0770	# 创建文件的权限为 0770；
 ```
 
 验证配置文件有没有错误
+
 `testparm`
 
 **用户配置**
@@ -1976,7 +2014,7 @@ systemctl restart vsftpd
 systemctl enable vsftpd
 ```
 
-现在就可以在客户端执行ftp命令连接到远程的 FTP 服务器了。
+现在就可以在客户端执行 ftp 命令连接到远程的 FTP 服务器了。
 在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空。而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录。
 我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限：
 ```bash
@@ -2059,11 +2097,15 @@ ftp>
 **虚拟用户**
 
 安装
+
 `yum install vsftpd`
 
 认证
+
 创建虚拟用户文件,把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行,密码占一行。
+
 `cd /etc/vsftp`
+
 ```vim
 vim login.list
 
@@ -2076,6 +2118,7 @@ Ftpadmin
 ```
 
 使用 db_load 命令生成 db 口令 login 数据库文件
+
 `db_load -T -t hash -f login.list login.db`
 
 通过修改指定的配置文件,调整对该程序的认证方式
@@ -2213,16 +2256,21 @@ yum localinstall jdk-****.rpm
 rpm -ivh jdk-****.rpm
 ```
 
-**使用ppa/源方式安装**
+**使用 ppa/源方式安装**
 1. 添加ppa
-`sudo add-apt-repository ppa:webupd8team/java`
-`sudo apt-get update`
+
+    `sudo add-apt-repository ppa:webupd8team/java`
+
+    `sudo apt-get update`
 
 2. 安装oracle-java-installer
+
 	jdk7
+
 	`sudo apt-get install oracle-java7-installer`
 
 	jdk8
+
 	`sudo apt-get install oracle-java8-installer`
 
 ---
@@ -2248,6 +2296,7 @@ yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel r
 ```
 
 下载Python3
+
 `wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz`
 
 安装python3
@@ -2313,6 +2362,7 @@ export PATH=$PATH:/usr/local/bin/
 `pip install supervisor`
 
 安装完成后，我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
+
 `echo_supervisord_conf > /etc/supervisord.conf`
 
 **配置**
@@ -2324,23 +2374,25 @@ vim /etc/supervisord.conf
 ; [program:xx]是被管理的进程配置参数，xx是进程的名称
 [program:xx]
 command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令
-autostart=true       ; 在supervisord启动的时候也自动启动
+autostart=true       ; 在 supervisord 启动的时候也自动启动
 startsecs=10         ; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒
-autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启
+autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为 unexpected，表示进程意外杀死后才重启
 startretries=3       ; 启动失败自动重试次数，默认是3
 user=tomcat          ; 用哪个用户启动进程，默认是root
 priority=999         ; 进程启动优先级，默认999，值小的优先启动
-redirect_stderr=true ; 把stderr重定向到stdout，默认false
-stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小，默认50MB s
+redirect_stderr=true ; 把 stderr 重定向到 stdout，默认 false
+stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小，默认 50MB s
 tdout_logfile_backups = 20   ; stdout 日志文件备份数，默认是10
 ; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）
 stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out
-stopasgroup=false     ;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程
-killasgroup=false     ;默认为false，向进程组发送kill信号，包括子进程
+stopasgroup=false     ;默认为 false,进程被杀死时，是否向这个进程组发送 stop 信号，包括子进程
+killasgroup=false     ;默认为 false，向进程组发送 kill 信号，包括子进程
 ```
 
 注意修改 user = tomcat
-接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时，需要指定supervisor配置文件
+
+接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时，需要指定 supervisor 配置文件
+
 `supervisord -c /etc/supervisord.conf`
 
 ```bash
@@ -2398,11 +2450,11 @@ query_cache_limit = 16M
 collation_server = utf8_bin
 character_set_server = utf8
 ```
-原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意innodb_buffer_pool_size的值必须是整数，例如主机内存是4G，那么innodb_buffer_pool_size可以设置为3G，而不能设置为3.2G
+原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意 innodb_buffer_pool_size 的值必须是整数，例如主机内存是4G，那么 innodb_buffer_pool_size 可以设置为 3G，而不能设置为 3.2G
 ```bash
 systemctl enable mysqld && systemctl start mysqld
-grep 'temporary password' /var/log/mysqld.log #获取 MySQL 的 root 初始密码
-mysql_secure_installation #初始化，改下密码
+grep 'temporary password' /var/log/mysqld.log # 获取 MySQL 的 root 初始密码
+mysql_secure_installation # 初始化，改下密码
 systemctl restart mysqld
 mysql -u root -p
   create database zabbix character set utf8;
@@ -2541,6 +2593,7 @@ sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 ```
 
 使用 yum 命令安装 Jenkins:
+
 `yum install jenkins`
 
 **使用 ppa/源方式安装**
@@ -2556,6 +2609,7 @@ sudo apt-get install jenkins
 安装后默认服务是启动的,默认是 8080 端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
 
 查看密码
+
 `cat /var/lib/jenkins/secrets/initialAdminPassword`
 
 ---
@@ -2563,9 +2617,10 @@ sudo apt-get install jenkins
 # 堡垒机
 ## [Jumpserver](http://www.jumpserver.org/)
 
-[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)写的很详细了,在此我只把重点记录
+[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 写的很详细了,在此我只记录重点
 
 `注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
+
 ```bash
 echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
   && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
@@ -2641,7 +2696,7 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 yum -y install epel-release
 yum -y install clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
 
-#在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除“Example”字符
+# 在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除“Example”字符
 cp /etc/freshclam.conf /etc/freshclam.conf.bak
 sed -i -e "s/^Example/#Example/" /etc/freshclam.conf
 

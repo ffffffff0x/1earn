@@ -212,7 +212,7 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
     - POC | Payload | exp
         - [cyberheartmi9/CVE-2017-12617](https://github.com/cyberheartmi9/CVE-2017-12617)
 
-    - msf 模块
+    - MSF 模块
         ```
         use exploit/multi/http/tomcat_jsp_upload_bypass
         ```
@@ -294,8 +294,9 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
         - [zcgonvh/cve-2017-7269](https://github.com/zcgonvh/cve-2017-7269)
         - [zcgonvh/cve-2017-7269-tool](https://github.com/zcgonvh/cve-2017-7269-tool)
         - [lcatro/CVE-2017-7269-Echo-PoC](https://github.com/lcatro/CVE-2017-7269-Echo-PoC)
+        - [edwardz246003/IIS_exploit](https://github.com/edwardz246003/IIS_exploit)
 
-    - MSF模块
+    - MSF 模块
 
         `use exploit/windows/iis/cve-2017-7269`
 

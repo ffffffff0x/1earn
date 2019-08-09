@@ -1,3 +1,7 @@
+# DNS
+
+---
+
 # 基本配置
 www.abc.com 解析为 192.168.192.1
 192.168.192.1 解析为 www.abc.com
@@ -61,6 +65,8 @@ vim /var/named/f
 
 systemctl restart named
 ```
+
+---
 
 # 案例
 配置DNS服务，将相关主机名添加A记录，分别为www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com；
@@ -408,4 +414,4 @@ firewall-cmd --reload
 ```
 
 5. 主DNS也重启下服务
->service named restart
+> service named restart

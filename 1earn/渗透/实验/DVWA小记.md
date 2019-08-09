@@ -104,25 +104,25 @@ if( isset( $_GET[ 'Login' ] ) ) {
 ```
 可以看到，服务器只是验证了参数 Login 是否被设置(isset 函数在 php 中用来检测变量是否设置，该函数返回的是布尔类型的值，即 true/false)，没有任何的防爆破机制，且对参数 username、password 没有做任何过滤，存在明显的 sql 注入漏洞。
 
-**利用爆破burpsuite**
+**利用爆破 burpsuite**
 
-0. burp的安装过程略
+0. burp 的安装过程略
 1. 抓包
-2. ctrl+I将包复制到intruder模块，因为要对password参数进行爆破，所以在password参数的内容两边加$
+2. ctrl+I 将包复制到 intruder 模块，因为要对 password 参数进行爆破，所以在 password 参数的内容两边加 $
 ![image](../../../img/渗透/实验/dvwa/dvwa5.png)
 
-3. 选中Payloads，载入字典，点击Start attack进行爆破
+3. 选中 Payloads，载入字典，点击 Start attack 进行爆破
 ![image](../../../img/渗透/实验/dvwa/dvwa6.png)
 ![image](../../../img/渗透/实验/dvwa/dvwa7.png)
 
-4. 最后，尝试在爆破结果中找到正确的密码，可以看到password的响应包长度(length)“与众不同”，可推测password为正确密码，手工验证登陆成功。
+4. 最后，尝试在爆破结果中找到正确的密码，可以看到 password 的响应包长度(length)“与众不同”，可推测 password 为正确密码，手工验证登陆成功。
 
-**手工sql注入**
+**手工 sql 注入**
 
-1. Username : admin' or '1'='1 Password :(空),此时sql语句如下图:
+1. Username : admin' or '1'='1 Password :(空),此时 sql 语句如下图:
 ![image](../../../img/渗透/实验/dvwa/dvwa8.png)
 
-2. Username :admin' # Password :(空),此时sql语句如下图:
+2. Username :admin' # Password :(空),此时 sql 语句如下图:
 ![image](../../../img/渗透/实验/dvwa/dvwa9.png)
 
 ### Medium
@@ -227,9 +227,9 @@ High级别的代码加入了 Token，可以抵御 CSRF 攻击，同时也增加�
 
 同时，High 级别的代码中，使用了 stripslashes(去除字符串中的反斜线字符,如果有两个连续的反斜线,则只去掉一个)、 mysql_real_escape_string 对参数 username、password 进行过滤、转义，进一步抵御 sql 注入。
 
-**使用python脚本爆破**
+**使用 python 脚本爆破**
 
-`适用于老版本dvwa环境`
+`适用于老版本 dvwa 环境`
 ```python
 from bs4 import BeautifulSoup
 import urllib2
@@ -449,7 +449,7 @@ generateSessionToken();
 ---
 
 ## Command Injection
-Command Injection，即命令注入，是指通过提交恶意构造的参数破坏命令语句结构，从而达到执行恶意命令的目的。PHP命令注入攻击漏洞是PHP应用程序中常见的脚本漏洞之一，国内著名的Web应用程序Discuz!、DedeCMS等都曾经存在过该类型漏洞。
+Command Injection，即命令注入，是指通过提交恶意构造的参数破坏命令语句结构，从而达到执行恶意命令的目的。PHP 命令注入攻击漏洞是 PHP 应用程序中常见的脚本漏洞之一，国内著名的 Web 应用程序 Discuz!、DedeCMS 等都曾经存在过该类型漏洞。
 
 ### Low
 **服务器端核心代码**
@@ -480,7 +480,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 **相关函数介绍**
 - **stristr(string,search,before_search)**
 
-	stristr函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分(从匹配点)，如果未找到所搜索的字符串，则返回 FALSE。详细如下：
+	stristr 函数搜索字符串在另一字符串中的第一次出现，返回字符串的剩余部分(从匹配点)，如果未找到所搜索的字符串，则返回 FALSE。详细如下：
 	```
 	string	必需。规定被搜索的字符串。
 	search	必需。规定要搜索的字符串。如果该参数是数字，则搜索匹配该数字对应的 ASCII 值的字符。
@@ -492,7 +492,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 
 - **php_uname(mode)**
 
-	这个函数会返回运行php的操作系统的相关描述，参数mode可取值”a” (此为默认，包含序列”s n r v m”里的所有模式)，”s ”(返回操作系统名称)，”n”(返回主机名)，” r”(返回版本名称)，”v”(返回版本信息)， ”m”(返回机器类型)。
+	这个函数会返回运行php的操作系统的相关描述，参数 mode 可取值”a” (此为默认，包含序列”s n r v m”里的所有模式)，”s ”(返回操作系统名称)，”n”(返回主机名)，” r”(返回版本名称)，”v”(返回版本信息)， ”m”(返回机器类型)。
 
 	可以看到，服务器通过判断操作系统执行不同ping命令，但是对ip参数并未做任何的过滤，导致了严重的命令注入漏洞。
 
@@ -538,7 +538,7 @@ if( isset( $_POST[ 'Submit' ]  ) ) {
 
 ?>
 ```
-可以看到，相比Low级别的代码，服务器端对ip参数做了一定过滤，即把”&&” 、”;”删除，本质上采用的是黑名单机制，因此依旧存在安全问题。
+可以看到，相比 Low 级别的代码，服务器端对 ip 参数做了一定过滤，即把”&&” 、”;”删除，本质上采用的是黑名单机制，因此依旧存在安全问题。
 
 **漏洞利用**
 
@@ -1775,7 +1775,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 
 可以看到，Medium 级别的代码在第二步验证时，参加了对参数 passed_captcha 的检查，如果参数值为 true，则认为用户已经通过了验证码检查，然而用户依然可以通过伪造参数绕过验证，本质上来说，这与 Low 级别的验证没有任何区别。
 
-**可以通过抓包，更改step参数，增加passed_captcha参数，绕过验证码。**
+**可以通过抓包，更改 step 参数，增加 passed_captcha 参数，绕过验证码。**
 
 ![image](../../../img/渗透/实验/dvwa/dvwa39.png)
 

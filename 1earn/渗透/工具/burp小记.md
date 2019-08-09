@@ -14,7 +14,7 @@
 
 **linux**
 
-这里以kali举例，kali自带的是openjdk不支持新版burp，自行下载[oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+这里以 kali 举例，kali 自带的是 openjdk 不支持新版 burp，自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
 文件名类似 `jdk-8u212-linux-x64.tar.gz`
 
@@ -54,7 +54,7 @@ javac
 
 **证书**
 
-浏览器访问 burp/ ,下载cacert.der证书，一路下一步安装，证书存储选择存储在 `受信任的根证书颁发机构`，firefox需要到 隐私与安全->证书->查看证书->导入->全部勾选信任
+浏览器访问 burp/ ,下载 cacert.der 证书，一路下一步安装，证书存储选择存储在 `受信任的根证书颁发机构`，firefox 需要到 隐私与安全->证书->查看证书->导入->全部勾选信任
 
 ---
 
@@ -110,7 +110,7 @@ Payload Encoding 配置字典进行 URL 编码
 
 ## Extender 插件模块
 
-下载、管理burp的插件
+下载、管理 burp 的插件
 
 官方插件商店 https://portswigger.net/bappstore
 

@@ -21,6 +21,8 @@ netstat -v 查看正在进行的工作
 netstat -p 协议名 例:netstat -p tcq/ip 查看某协议使用情况
 netstat -s 查看正在使用的所有协议使用情况
 netstat -A ip 对方136到139其中一个端口开了的话，就可查看对方最近登陆的用户名
+
+netstat -bn 查看每个程序的连接
 ```
 
 **ping**

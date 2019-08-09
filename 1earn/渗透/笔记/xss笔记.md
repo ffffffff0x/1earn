@@ -14,7 +14,7 @@
 
 ---
 
-## payload示例
+## payload 示例
 ```html
 <script>alert(123)</script>
 <script>prompt(1);</script>

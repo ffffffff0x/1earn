@@ -1,15 +1,13 @@
 # Win-Tools
+
 `天下苦阿三久矣`
-[TOC]
 
 **注:下列所有软件默认以名称顺序排列,不分先后高低**
+
 **注:工具用的再出神入化也是工具,真正重要的还是人(使用者、开发者)**
 
-**Todo**
-- [ ] 工具描述
-- [ ] VSCode
-
 **Thank**
+
 没有他们就不会有这篇记录,感谢
 - [Awesome-Windows](https://github.com/Awesome-Windows/Awesome/blob/master/README-cn.md#windows-10-%E8%AE%BE%E7%BD%AE)
 - [AmazingApps/Amazing-Windows-Apps](https://github.com/AmazingApps/Amazing-Windows-Apps/blob/master/zh-CN/README.md)
@@ -26,6 +24,7 @@
 一部分软件由于平时使用频率过高,为了方便寻找,特地单独列出这一部分
 
 **clover**
+
 仅纪念,综合考虑,现在(2019年至以后)不推荐使用
 
 **DuktoR6**
@@ -168,6 +167,7 @@
 **JPEGview**
 
 **HONEYVIEW**
+
 配合油猴脚本可以查看pixiv动图
 
 **ImageGlass**
@@ -268,39 +268,51 @@ start explorer
 
 ## 增强功能
 **Switcheroo**
+
 文件夹互换姓名
 
 **FastCopy & FastCopy-M**
+
 加速文件复制
 
 **Textify**
+
 复制无法选中的文本
 
 **Ditto**
+
 剪贴板增强
 
 **DeskPin**
+
 将窗口钉在最上层
 
 **QuickLook**
+
 空格预览文件
 
 **Seer**
+
 空格预览文件
 
 **Renamer**
+
 批量更名
 
 **FileLocator Pro**
+
 搜索文件的内容
 
 **SpaceSniffer**
+
 图形显示硬盘文件
 
 **TreeSizeFree**
+
 图形显示硬盘文件
 
 **AltTabTer**
+
 增强Alt+Tab时的效果
 
 **rolan2**
@@ -383,6 +395,7 @@ start explorer
 **DDU**
 
 **EasyDrv系列**
+
 itsk出品的驱动安装包,安装前记住装个火绒,帮你拦截下捆绑
 
 ### 系统
@@ -475,11 +488,14 @@ itsk出品的驱动安装包,安装前记住装个火绒,帮你拦截下捆绑
 **Metanull**
 
 **Ulead GIF Animator**
+
 #### ASCII
 **Ascgen2**
+
 图片像素化
 
 **Textaizer Pro**
+
 制作文字和 ASCII 拼图
 
 #### ico图标制作

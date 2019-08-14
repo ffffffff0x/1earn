@@ -2,6 +2,10 @@
 
 `Linux 加固+维护+应急响应参考`
 
+<p align="center">
+    <a href="https://www.flickr.com/photos/sofi01/6333240782"><img src="../../../img/运维/Linux/Secure-Linux.jpg" width="70%"></a>
+</p>
+
 ---
 
 # 本地👮🏻‍

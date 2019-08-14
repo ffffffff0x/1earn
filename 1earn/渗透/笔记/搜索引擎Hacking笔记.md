@@ -12,7 +12,7 @@
 
 # github
 **例子**
-```bash
+```
 create user identified by
 create user zabbix@'%' identified by
 ```
@@ -21,7 +21,9 @@ create user zabbix@'%' identified by
 
 # google
 **例子**
-```bash
+
+常见
+```
 inurl:tw
 inurl:jp
 
@@ -52,33 +54,54 @@ intitle:"index of" spwd
 intitle:"index of" master.passwd
 intitle:"index of" htpasswd
 inurl:service.pwd
+```
 
-inurl:老虎机 site:*.gov
+黑产
+```
+老虎机 site:*.gov.cn
+澳门银行 site:*.gov.cn
+万博亚洲官网 site:*.gov.cn
+狗万app site:*.gov.cn
+新万博官网 site:*.gov.cn
+ylg9999 site:*.gov.cn
+九州娱乐 site:*.gov.cn
+```
 
-目录遍历漏洞 语法为: site:xxx.com intitle:index.of
+漏洞
+```
+目录遍历漏洞
+    site:xxx.com intitle:index.of
 
-配置文件泄露 语法为: site:xxx.com ext:xml | ext:conf | ext:cnf | ext:reg | ext:inf | ext:rdp | ext:cfg | ext:txt | extra | ext:ini
+配置文件泄露
+    site:xxx.com ext:xml | ext:conf | ext:cnf | ext:reg | ext:inf | ext:rdp | ext:cfg | ext:txt | extra | ext:ini
 
-数据库文件泄露  site:xxx.com ext:sql | ext:dbf | ext:mdb
+数据库文件泄露
+    site:xxx.com ext:sql | ext:dbf | ext:mdb
 
-日志文件泄露 site:xxx.com ext:log
+日志文件泄露
+    site:xxx.com ext:log
 
-备份和历史文件 site:xxx.com ext:bkf | ext:bkp | ext:bak | extld | ext:backup
+备份和历史文件
+    site:xxx.com ext:bkf | ext:bkp | ext:bak | extld | ext:backup
 
-SQL错误  site:xxx.com intext:”sql syntax near” | intext:”syntax error has occurred” | intext:”incorrect syntax near” | intext:”unexpected end of SQL command” | intext:”Warning: mysql_connect()” | intext:”Warning: mysql_query()” | intext:”Warning: pg_connect()”
+SQL错误
+    site:xxx.com intext:”sql syntax near” | intext:”syntax error has occurred” | intext:”incorrect syntax near” | intext:”unexpected end of SQL command” | intext:”Warning: mysql_connect()” | intext:”Warning: mysql_query()” | intext:”Warning: pg_connect()”
 
-公开文件信息  site:xxx.com ext:doc | ext:docx | extdt | ext:pdf | ext:rtf | ext:sxw | ext:psw | ext:ppt | ext:pptx | ext:pps | ext:csv
+公开文件信息
+    site:xxx.com ext:doc | ext:docx | extdt | ext:pdf | ext:rtf | ext:sxw | ext:psw | ext:ppt | ext:pptx | ext:pps | ext:csv
 
-phpinfo()  site:xxx.com ext:php intitle:phpinfo “published by the PHP Group”
+phpinfo()
+    site:xxx.com ext:php intitle:phpinfo “published by the PHP Group”
 
-配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
-此查询列出了其URI中具有“UserPickerBrowser”的所有URL，以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能。
+JIRA
+    配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
+    此查询列出了其URI中具有“UserPickerBrowser”的所有URL，以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能。
 
-inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
-此查询列出了所有在其URI中具有“Managefilters”并且文本为“Public”的URL，以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器。
+    inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
+    此查询列出了所有在其URI中具有“Managefilters”并且文本为“Public”的URL，以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器。
 
-inurl:/ConfigurePortalPages!default.jspa?view=popular
-此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
+    inurl:/ConfigurePortalPages!default.jspa?view=popular
+    此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
 ```
 
 ---

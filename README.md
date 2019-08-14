@@ -89,11 +89,15 @@
 - 2019-7-3:鸽了好久的网络部分开始更新,那什么时候开始学学开发呢(自问)
 - 2019-7-17:最近事情比较多,写的少了,不过我承诺,这个项目会一直更新下去
 - 2019-7-21 02:16:04:半夜失眠,索性爬起来写点东西,发现power-pentest写下去字数可能会越来越少,因为会越来越精简,所有的细化内容会被拆分成各个小的笔记,怎么说呢?我不知道这算好算坏,我自认为没有能力写出一套网络安全的百科全书,不过凡事在于坚持嘛,说不定呢
+- 2019-8-14:之后的学习重点会放在渗透方面,运维内容只能说随缘更新了.
 
 ## List
 
 以下是我平日收集知识与资源的渠道(部分)
 - [每日一文](https://meiriyiwen.com/)
+- [喷嚏网----阅读、发现和分享：8小时外的健康生活！](https://www.dapenti.com/blog/index.asp)
+- [Nicolas Krassas](https://twitter.com/Dinosn)
+- [Binni Shah](https://twitter.com/binitamshah)
 - [360CERT](https://cert.360.cn/daily)
 - [Tuisec安全热点](https://paper.tuisec.win/)
 - [HackerNews](http://hackernews.cc/)
@@ -136,5 +140,7 @@
 - [The Magpie Developer](https://blog.codinghorror.com/the-magpie-developer/)
 
 ---
+
+## 免责声明
 
 `本人撰写的手册，仅供学习和研究使用，请勿使用文中的技术源码用于非法用途，任何人造成的任何负面影响，与本人无关。`

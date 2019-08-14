@@ -112,3 +112,8 @@ nmap --script smb-enum-users.nse -p445 <host>
 sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <host>
 ```
 
+用于知道自己网站使用了哪些 http 方法
+```
+nmap -p 80 --script http-methods
+```
+

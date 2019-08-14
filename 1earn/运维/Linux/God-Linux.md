@@ -1,5 +1,9 @@
 # God-Linux🎭
 
+<p align="center">
+    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../img/运维/Linux/God-Linux.jpg" width="70%"></a>
+</p>
+
 ---
 
 # bash

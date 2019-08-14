@@ -2,6 +2,56 @@
 
 `基础 Linux 命令、操作指南`
 
+<p align="center">
+    <a href="https://en.wikipedia.org/wiki/Pablo_Picasso"><img src="../../../img/运维/Linux/Speed-Linux.jpg"></a>
+</p>
+
+---
+
+## 大纲
+```markdown
+1. Linux 编程
+	- 编译
+2. Shell/Base
+	- 环境变量
+	- 通配符/限制输出
+	- 会话
+	- 目录
+	- 文件
+		- 压缩备份
+		- 读写
+			- 增
+			- 删
+			- 查
+			- 改
+3. net
+	- 配置
+	- 传输/下载
+		- bt
+	- Firewall
+		- Firewalld
+		- Iptables
+	- 软件包管理
+		- 源
+		- Binary
+		- dpkg
+		- Pacman
+		- rpm
+		- yum
+		- apt
+		- 常用软件
+4. 系统管理
+	- 系统设置
+		- 时间
+		- 语言
+		- 启动项/计划任务
+		- 账号管控
+	- 系统信息
+		- 进程管理
+5. 设备管理
+		- 硬盘/数据
+```
+
 ---
 
 # 🚬Linux 编程
@@ -464,11 +514,15 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 ```vim
 vim /etc/apt/sources.list
 
+# 清华源
 deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
 deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+
+# 官方源
+# deb http://http.kali.org/kali kali-rolling main non-free contrib
+# deb-src http://http.kali.org/kali kali-rolling main non-free contrib
 ```
 `apt-get update && apt-get upgrade && apt-get dist-upgrade`
-
 
 **Pacman 源**
 ```bash

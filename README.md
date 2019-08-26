@@ -2,7 +2,12 @@
     <img src=".//img/logo.png">
 </p>
 
-![image](https://img.shields.io/badge/Branch-master-green.svg?longCache=true) ![image](https://img.shields.io/github/stars/No-Github/1earn.svg?label=Stars&style=popout) ![image](https://img.shields.io/github/forks/No-Github/1earn.svg?label=Forks&style=popout) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/No-Github/1earn.svg?style=popout) ![GitHub last commit](https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout)
+<p align="center">
+    <img src="https://img.shields.io/badge/Category-knowledge-red.svg">
+    <img src="https://img.shields.io/badge/Branch-master-yellow.svg?longCache=true">
+    <img src="https://img.shields.io/github/commit-activity/w/No-Github/1earn.svg?style=popout">
+    <img src="https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout">
+</p>
 
 ---
 

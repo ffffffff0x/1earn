@@ -5,6 +5,7 @@
 ## Reference
 
 - [Nmap参考指南(Man Page)](https://nmap.org/man/zh/)
+- Nmap渗透测试思维导图 [png](../文件/Nmap渗透测试思维导图.png)
 
 ---
 
@@ -79,7 +80,7 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 `nmap -vv -p1-100 -O <target ip>`
 
 **用一组 IP 地址掩盖真实地址**
-`namp -D <IP地址1,IP地址2... IP地址> <target ip>`
+`namp -D <IP地址1,IP地址2... IP地址,ME> <target ip>`
 
 **伪装 MAC 地址**
 
@@ -88,9 +89,6 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 **指定网卡进行扫描**
 
 `nmap -e <iface> <target ip>`
-
-**伪装成其他 IP 地址**
-`nmap -S <伪造IP地址> <target ip>`
 
 **指定源端口**
 

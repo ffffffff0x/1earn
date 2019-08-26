@@ -3,7 +3,7 @@
 `Linux 加固+维护+应急响应参考`
 
 <p align="center">
-    <a href="https://www.flickr.com/photos/sofi01/6333240782"><img src="../../../img/运维/Linux/Secure-Linux.jpg" width="70%"></a>
+    <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../img/运维/Linux/Secure-Linux.png" width="90%"></a>
 </p>
 
 ---
@@ -26,13 +26,13 @@
 **查**
 ```bash
 who  # 查看当前登录用户
-w    # 查看登录用户行为
+w   # 查看登录用户行为
 last # 查看登陆用户历史
 ```
 
 **防**
 ```bash
-pkill -u linfengfeiye # 直接剔除用户
+pkill -u linfengfeiye   # 直接剔除用户
 ps -ef| grep pts/0  # 得到用户登录相应的进程号 pid 后执行
 kill -9 pid # 安全剔除用户
 ```
@@ -105,13 +105,13 @@ kill -9 pid # 安全剔除用户
 
 **进程定位**
 ```bash
-pidof name # 定位程序的 pid
-pidof -x name # 定位脚本的 pid
+pidof name  # 定位程序的 pid
+pidof -x name   # 定位脚本的 pid
 ```
 
 **进程限制**
 ```bash
-ulimit -u 20 # 临时性允许用户最多创建 20 个进程,预防类似 fork 炸弹
+ulimit -u 20    # 临时性允许用户最多创建 20 个进程,预防类似 fork 炸弹
 ```
 
 ```vim
@@ -152,7 +152,7 @@ vim /etc/security/limits.conf
 
 **查**
 ```bash
-lsof -i -P # 显示进程使用端口使用情况
+lsof -i -P  # 显示进程使用端口使用情况
 lsof -i:22  # 只查 22 端口
 
 ss -tnlp

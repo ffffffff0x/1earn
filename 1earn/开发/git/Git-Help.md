@@ -254,5 +254,5 @@ git push --force origin
     ```bash
     machine github.com
     login your-usernmae
-    password your-password
+    password Personal Access Token
     ```

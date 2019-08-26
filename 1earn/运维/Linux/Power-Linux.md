@@ -90,6 +90,7 @@ DEVICE="enoXXXXXX"
 BOOTPROTO=static  # 使用静态 IP,而不是由 DHCP 分配 IP
 IPADDR=172.16.102.61
 PREFIX=24
+ONBOOT=yes
 GATEWAY=172.16.102.254
 HOSTNAME=dns1.abc.com
 ```
@@ -2972,7 +2973,7 @@ iptables -D fail2ban-SSH -s 192.168.72.130 -j DROP
 ```
 当然你可以使用上述的 iptables 命令手动地检验和管理 fail2ban 的 IP 阻塞列表，但实际上有一个适当的方法就是使用 fail2ban-client 命令行工具。这个命令不仅允许你对"ssh-iptables"监狱进行管理，同时也是一个标准的命令行接口，可以管理其他类型的 fail2ban 监狱。
 ```bash
-fail2ban-client status  # 检验fail2ban状态
+fail2ban-client status  # 检验 fail2ban 状态
 
 fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
 

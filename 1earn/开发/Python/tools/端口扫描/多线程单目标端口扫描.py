@@ -31,7 +31,7 @@ def thread():
         print('Server %s Port %d Open OK!' % (ip, myPort))
         sk.close()
 
-        # 结果保存在文件中
+        # save file
         f = open("IP_Port_%s.txt" % ip, 'a')
         f.write(ip + ':' + str(myPort) + '\n')
         f.close()

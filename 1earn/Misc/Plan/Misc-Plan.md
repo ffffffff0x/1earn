@@ -1,5 +1,8 @@
 # Misc-Plan
-[TOC]
+
+<p align="center">
+    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../../img/Misc/Misc-Plan.jpg" width="65%"></a>
+</p>
 
 ---
 
@@ -16,6 +19,7 @@ slmgr /xpr
 `slmgr.vbs -dlv`
 
 **激活Office**
+
 用管理员权限运行CMD或PowerShell，输入如下命令：
 ```powershell
 # 进入office安装目录
@@ -31,7 +35,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 # DNS
 **软件方案**
 - DnsJumper（windows下快速配置DNS）
-- Pcap_DNSProxy（本地自定义分割DNS解析请求）
+- [chengr28/Pcap_DNSProxy](https://github.com/chengr28/pcap_dnsproxy)（DNS 代理）
     ```ini
     [DNS]
     Outgoing Protocol = IPv4 + TCP
@@ -42,6 +46,8 @@ CSCRIPT OSPP.VBS /DSTATUS
     IPv4 Local Main DNS Address = 119.29.29.29:53
     IPv4 Local Alternate DNS Address = 114.114.115.115:53
     ```
+- [jedisct1/dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)（DNS 代理）
+    - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
 
 **服务器推荐**
 - 国内:110.6.6.6、14.114.114.114
@@ -87,6 +93,7 @@ sudo systemctl restart docker
 `docker info` 检查加速器是否生效
 
 **windows**
+
 对于Windows 10以上的用户 推荐使用Docker for Windows
 Windows安装文件：http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/
 
@@ -140,6 +147,7 @@ npm config delete proxy  # 取消代理
 
 ## 终端
 **proxychains**
+
 详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../../运维/Linux/Power-Linux.md)
 - 使用方法:
     在需要代理的命令前加上 proxychains4,如:
@@ -191,8 +199,10 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ```
 
 **视频压缩**
-`ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"`常规用法
-`ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4`优秀用法
+
+`ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"` 常规用法
+
+`ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4` 优秀用法
 
 ```bash
 `ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
@@ -216,7 +226,7 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 -acodec aac 音频编码用AAC
 -ac 2 声道数1或2
 -ar 48000 声音的采样频率
--ab 128 音频数据流量，一般选择32、64、96、128#-vol 200 200%的音量，可更改（如果源文件声音很小，可以提升10到20倍(1000%~2000%)，我试过，效果还行！但不能太大，200000%我也试验过，但嘈杂声太大了）
+-ab 128 音频数据流量，一般选择32、64、96、128 # -vol 200 200%的音量，可更改（如果源文件声音很小，可以提升10到20倍(1000%~2000%)，我试过，效果还行！但不能太大，200000%我也试验过，但嘈杂声太大了）
 ```
 
 ---

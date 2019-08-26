@@ -1,6 +1,10 @@
 # VM-Plan
 
-[TOC]
+<p align="center">
+    <a href="https://www.flickr.com/photos/sofi01/4667759854"><img src="../../../img/Misc/VM-Plan.jpg" width="70%"></a>
+</p>
+
+---
 
 ## VMware
 

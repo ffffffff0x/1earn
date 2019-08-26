@@ -19,6 +19,9 @@ yum list 1 > /dev/null
 
 查看自己的外网地址
 curl ifconfig.me
+
+优雅的使用 linux
+alias please="sudo"
 ```
 
 ## shell

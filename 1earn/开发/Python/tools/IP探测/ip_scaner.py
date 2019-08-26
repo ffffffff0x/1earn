@@ -1,6 +1,6 @@
-#-*- coding: utf-8 -*-  
-#author: orangleliu  date: 2014-11-12  
-#python2.7.x ip_scaner.py 
+#-*- coding: utf-8 -*-
+#author: orangleliu  date: 2014-11-12
+#python2.7.x ip_scaner.py
 #from http://www.jb51.net/article/65048.htm
 
 import platform
@@ -43,10 +43,10 @@ if __name__ == "__main__":
         print "start time %s"%time.ctime()
         commandargs = sys.argv[1:]
         args = "".join(commandargs)
-                
+
         ip_prefix = '.'.join(args.split('.')[:-1])
         find_ip(ip_prefix)
         print "end time %s"%time.ctime()
-    except KeyboardInterrupt:                                                                                                                                                             
+    except KeyboardInterrupt:
         print "You pressed Ctrl+C"
         sys.exit()

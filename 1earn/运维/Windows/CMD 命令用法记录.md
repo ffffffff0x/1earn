@@ -122,7 +122,7 @@ net password 密码 更改系统登陆密码
 ---
 
 # 系统信息
-`ver` windows版本
+`ver` windows 版本
 
 `msinfo32`  系统信息面板
 
@@ -188,5 +188,4 @@ SCHTASKS /Create /SC MONTHLY /MO first /D SUN /TN gametime /TR c:\windows\system
 - /D    days         指定该周内运行任务的日期。有效值:MON、TUE、WED、THU、FRI、SAT、SUN和对 MONTHLY 计划的 1 - 31(某月中的日期)。通配符“*”指定所有日期。
 - /TN   taskname     以路径\名称形式指定对此计划任务进行唯一标识的字符串。
 - /TR   taskrun      指定在这个计划时间运行的程序的路径和文件名。例如: C:\windows\system32\calc.exe
-
 ```

@@ -68,7 +68,7 @@ compile()方法：
 
 s5="abc123eeee"
 obj = re.compile('\d{3}')               #将正则表达式编译成为一个 正则表达式对象，规则要匹配的是3个数字
-print((obj.search(s5)).group())         #正则表达式对象调用search，参数为待匹配的字符串
+print((obj.search(s5)).group())         #正则表达式对象调用 search，参数为待匹配的字符串
 
 
 print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
@@ -80,7 +80,7 @@ finditer()方法：
 """
 
 s6="ds3sy4784a"
-ret = re.finditer('\d', s6)   #finditer返回一个存放匹配结果的迭代器
+ret = re.finditer('\d', s6)   #finditer 返回一个存放匹配结果的迭代器
 print(ret)                              # <callable_iterator object at 0x10195f940>
 print(next(ret).group())                #查看第一个结果
 print(next(ret).group())                #查看第二个结果

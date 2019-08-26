@@ -14,7 +14,7 @@ print ('''
  ___/ / / /__  / /_/ /  / / / /        / ____/ / /_/ / / /    / /_  
 /____/  \___/  \__,_/  /_/ /_/        /_/      \____/ /_/     \__/  
 
-                          Python3.4                     
+                          Python3.4
 
 ''')
 
@@ -28,11 +28,11 @@ def main():
         ip_end=input('Please End IP:')
         if ip_end=='':
             ip_end=ip_start
-        
+
     s=input('Please Input Port Start:(default All PORT:)')
     if s=='':
         portList=[21, 22, 23, 25, 80, 135, 137, 139, 445, 1433, 1502, 3306, 3389, 8080, 9015]   #常用端口
-        #portList =range(1,65534) 所有端口
+        #portList =range(1,65534) ALL Port
     else:
         startport=int(s)
         s=input('Please Input End PORT:(default:65535)')
@@ -45,12 +45,12 @@ def main():
 
     while 1:
         #ip_start<ip_end
-        x1=ip_start.rfind('.');                      
+        x1=ip_start.rfind('.');
         x2=ip_end.rfind('.')
         if int(ip_start[x1+1:])>int(ip_end[x2+1:]):
             break;
-        
-        #开始扫描端口
+
+        #start scan port
         for port in portList:
             print('Now Scaning %s:%d' %(ip_start,port))
             try:
@@ -61,18 +61,18 @@ def main():
                 print('Server %s Port %d Open OK!\n' % (ip_start,port))
                 sk.close()
 
-                #结果保存在文件中
+                #save file
                 f=open("IP_Port_%s.txt" % ip_start ,'a')
                 f.write(ip_start+':'+str(port)+'\n')
-                f.close()               
+                f.close()
             except Exception:
                 print('Server %s Port %d Close!\n' % (ip_start,port))
-            
-        #更新ip_start
+
+        #update ip_start
         i=ip_start.rfind('.')
         x=int(ip_start[i+1:])+1
         ip_start=ip_start[:i+1]+str(x)
-        
+
     print('Scan comple, Save In IP_Port.txt')
 
 if __name__ == '__main__':

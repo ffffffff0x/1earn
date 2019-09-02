@@ -2,6 +2,12 @@
 
 ---
 
+## 免责声明
+
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+
+---
+
 ## Reference
 - [linux - Metasploit: Module database cache not built yet, using slow search - Server Fault](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
 - [Metasploit入门用法(主动攻击) - CSDN博客](https://blog.csdn.net/wsh19930305/article/details/72855660)
@@ -249,3 +255,11 @@ sniffer_interfaces  # 查看网卡信息
 sniffer_start 1 # 开始在序号为1的网卡上抓包
 sniffer_dump 1 xpsp1.cap    # 下载抓取到的数据包
 ```
+
+### 清理痕迹
+```bash
+clearev # 入侵痕迹擦除
+```
+
+
+

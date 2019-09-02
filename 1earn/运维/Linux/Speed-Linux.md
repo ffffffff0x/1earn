@@ -324,6 +324,27 @@ systemctl restart NetworkManager
 systemctl enable NetworkManager
 ```
 
+- **修改 DNS**
+
+	方法一
+	```vim
+	vim /etc/network/interfaces
+
+	dns-nameservers 8.8.8.8
+	```
+	重启后DNS就生效了，这时候再看/etc/resolv.conf，最下面就多了一行
+
+	方法二
+	```vim
+	vim /etc/resolv.conf
+
+	nameserver 8.8.8.8
+	```
+	```bash
+	chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
+	service network restart
+	```
+
 **Centos**
 ```vim
 vim /etc/sysconfig/network-scripts/ifcfg-eth0	# 是不是 eth0 要看自己的网卡,使用 ip a
@@ -347,16 +368,16 @@ systemctl restart NetworkManager	# 重启网络管理
 systemctl enable NetworkManager
 ```
 
-修改 DNS
-```vim
-vim /etc/resolv.conf
+- **修改 DNS**
+	```vim
+	vim /etc/resolv.conf
 
-nameserver 8.8.8.8
-```
-```bash
-chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置
-service network restart
-```
+	nameserver 8.8.8.8
+	```
+	```bash
+	chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
+	service network restart
+	```
 
 **Arch**
 ```bash

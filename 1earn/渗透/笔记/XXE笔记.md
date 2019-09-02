@@ -2,6 +2,12 @@
 
 ---
 
+## 免责声明
+
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+
+---
+
 ## Refence
 - [XXE漏洞的学习与利用总结](https://www.cnblogs.com/r00tuser/p/7255939.html)
 - [XXE漏洞利用技巧：从XML到远程代码执行](https://www.freebuf.com/articles/web/177979.html)

@@ -48,6 +48,7 @@ CSCRIPT OSPP.VBS /DSTATUS
     ```
 - [jedisct1/dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)（DNS 代理）
     - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
+- [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的DNS 代理,感觉没上面两个好用)
 
 **服务器推荐**
 - 国内:110.6.6.6、14.114.114.114

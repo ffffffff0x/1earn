@@ -2,6 +2,12 @@
 
 ---
 
+## 免责声明
+
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+
+---
+
 ## Reference
 - [【渗透神器系列】搜索引擎](https://thief.one/2017/05/19/1/)
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
@@ -65,6 +71,8 @@ inurl:service.pwd
 新万博官网 site:*.gov.cn
 ylg9999 site:*.gov.cn
 九州娱乐 site:*.gov.cn
+澳门威尼斯人 site:*.gov.cn
+威尼斯人 site:*.gov.cn
 ```
 
 漏洞

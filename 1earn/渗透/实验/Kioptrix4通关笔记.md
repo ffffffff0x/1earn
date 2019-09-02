@@ -1,8 +1,12 @@
 # Kioptrix4 通关笔记
 
+- 笔记内容由 [xidaner](https://github.com/xidaner) 提供，我仅作部分内容修改
+
 ---
 
-- 笔记内容由 [xidaner](https://github.com/xidaner) 提供，我仅作部分内容修改
+## 免责声明
+
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 

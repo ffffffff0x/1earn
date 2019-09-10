@@ -249,7 +249,6 @@ exif_imagetype() 读取一个图像的第一个字节并检查其签名。
 
 ## Pass-16-二次渲染绕过
 
-
 判断了后缀名、content-type，以及利用 imagecreatefromgif 判断是否为 gif 图片，最后再做了一次二次渲染，绕过方法可以参考先知的文章，写的很详细：https://xz.aliyun.com/t/2657 jpg 和 png 很麻烦，gif 只需要找到渲染前后没有变化的位置,然后将 php 代码写进去,就可以了。
 
 ### 上传 gif

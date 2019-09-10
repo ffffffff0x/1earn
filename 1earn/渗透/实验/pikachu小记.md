@@ -398,7 +398,7 @@ if(array_key_exists('id', $_GET) && is_numeric($_GET['id'])){
 
 再刷新一次，还是会返回设置的 payload 中输入的内容，说明会将插入的内容会被存到数据库中，会造成持续性的攻击。再源代码里也能看到被插入进的 payload。
 
-### DOM型xss
+### DOM 型 xss
 **什么是 DOM**
 
 DOM 全称是 Document Object Model，也就是文档对象模型。我们可以将 DOM 理解为，一个与系统平台和编程语言无关的接口，程序和脚本可以通过这个接口动态地访问和修改文档内容、结构和样式。当创建好一个页面并加载到浏览器时，DOM 就悄然而生，它会把网页文档转换为一个文档对象，主要功能是处理网页内容。故可以使用 Javascript 语言来操作 DOM 以达到网页的目的。
@@ -435,7 +435,7 @@ payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</m
 
 ![image](../../../img/渗透/实验/pikachu/10.png)
 
-### DOM型xss-x
+### DOM 型 xss-x
 **核心代码**
 ```html
 <div id="xssd_main">
@@ -466,7 +466,7 @@ payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</m
 
 payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</marquee>`
 
-### xss之盲打
+### xss 之盲打
 **服务器端核心代码**
 ```php
 if(array_key_exists("content",$_POST) && $_POST['content']!=null){
@@ -500,7 +500,7 @@ XSS盲打就是攻击者在不知道后台是否存在 xss 漏洞的情况下，
 
 ![image](../../../img/渗透/实验/pikachu/12.png)
 
-### xss之过滤
+### xss 之过滤
 **服务器端核心代码**
 ```php
 if(isset($_GET['submit']) && $_GET['message'] != null){
@@ -525,7 +525,7 @@ if(isset($_GET['submit']) && $_GET['message'] != null){
 
 - payload: `<ScrIpT>alert('老铁，欧里给!')</sCriPt>`
 
-### xss之htmlspecialchars
+### xss 之 htmlspecialchars
 **服务器端核心代码**
 ```php
 if(isset($_GET['submit'])){
@@ -560,7 +560,7 @@ if(isset($_GET['submit'])){
 
 ![image](../../../img/渗透/实验/pikachu/14.png)
 
-### xss之href输出
+### xss 之 href 输出
 **服务器端核心代码**
 ```php
 if(isset($_GET['submit'])){
@@ -588,7 +588,7 @@ if(isset($_GET['submit'])){
 
 ![image](../../../img/渗透/实验/pikachu/16.png)
 
-### xss之js输出
+### xss 之 js 输出
 **服务器端核心代码**
 ```php
 if(isset($_GET['submit']) && $_GET['message'] !=null){
@@ -889,7 +889,7 @@ select/insert/update/delete 都可以使用报错来获取信息.
 
 ![image](../../../img/渗透/实验/pikachu/44.png)
 
-### xx型注入
+### xx 型注入
 **服务器端核心代码**
 ```php
 if(isset($_GET['submit']) && $_GET['name']!=null){
@@ -917,7 +917,7 @@ if(isset($_GET['submit']) && $_GET['name']!=null){
 
 payload: `' or '1' = '1 #`
 
-### "insert/update"注入
+### "insert/update" 注入
 
 insert 注入，就是前端注册的信息最终会被后台通过 insert 这个操作插入数据库，后台在接受前端的注册数据时没有做防 SQL 注入的处理，导致前端的输入可以直接拼接 SQL 到后端的 insert 相关内容中，导致了 insert 注入。
 
@@ -1007,7 +1007,7 @@ if(isset($_POST['submit'])){
 
 后面爆剩下的略，累了
 
-### "delete"注入
+### "delete" 注入
 **服务器端核心代码**
 ```php
 // if(array_key_exists('id', $_GET) && is_numeric($_GET['id'])){
@@ -1039,7 +1039,7 @@ if(array_key_exists('id', $_GET)){
 
 后面略
 
-### "http header"注入
+### "http header" 注入
 **服务器端核心代码**
 ```php
 if(isset($_GET['logout']) && $_GET['logout'] == 1){
@@ -1502,7 +1502,7 @@ linux payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../..
 
 ---
 
-## PHP反序列化
+## PHP 反序列化
 
 在理解这个漏洞前,你需要先搞清楚 php 中 `serialize()` ，`unserialize()` 这两个函数。
 
@@ -1675,7 +1675,7 @@ payload,请先确定目标路径有这个文件
 
 ---
 
-## URL重定向
+## URL 重定向
 
 不安全的 url 跳转问题可能发生在一切执行了 url 地址跳转的地方。
 如果后端采用了前端传进来的(可能是用户传参,或者之前预埋在前端页面的 url 地址)参数作为了跳转的目的地,而又没有做判断的话

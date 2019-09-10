@@ -337,7 +337,7 @@ import urllib3.request
 ```
 ![image](../../../img/渗透/实验/dvwa/dvwa12.png)
 
-另外，可以使用burp的插件CSRF Token Tracker捕捉token，请自行研究
+另外，可以使用 burp 的插件 CSRF Token Tracker 捕捉 token，请自行研究
 
 ### Impossible
 **服务器端核心代码**
@@ -449,7 +449,7 @@ generateSessionToken();
 
 同时采用了更为安全的 PDO(PHP Data Object)机制防御 sql 注入，这是因为不能使用 PDO 扩展本身执行任何数据库操作，而 sql 注入的关键就是通过破坏 sql 语句结构执行恶意的 sql 命令。
 
-关于PDO
+关于 PDO
 - [PHP学习笔记之PDO](https://www.cnblogs.com/pinocchioatbeijing/archive/2012/03/20/2407869.html)
 
 ---

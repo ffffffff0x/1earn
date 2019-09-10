@@ -2,6 +2,8 @@
 
 `Linux 加固+维护+应急响应参考`
 
+`文档内容和` [加固笔记](../../渗透/笔记/加固笔记.md) `难免有重复的部分，建议2个都看看`
+
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../img/运维/Linux/Secure-Linux.png" width="90%"></a>
 </p>

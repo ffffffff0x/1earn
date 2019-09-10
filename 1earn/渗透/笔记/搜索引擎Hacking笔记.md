@@ -23,6 +23,9 @@ create user identified by
 create user zabbix@'%' identified by
 ```
 
+**工具**
+- [BishopFox/GitGot](https://github.com/BishopFox/GitGot)
+
 ---
 
 # google
@@ -152,31 +155,36 @@ vnc
 port:5900 screenshot.label:loggedin # 无认证vnc
 ```
 
-**外部工具**
-```bash
-Shodan cli
-https://cli.shodan.io/
+**外部工具/脚本**
 
-浏览器插件
-https://chrome.google.com/webstore/detail/shodan/jjalcfnidlmpjhdfepjhjbhnhkbgleap
-https://addons.mozilla.org/en-US/firefox/addon/shodan_io/
+- **Shodan cli**
+    - [Shodan Command-Line Interface](https://cli.shodan.io/)
 
-Metasploit
-use auxiliary/gather/shodan_search
-set SHODAN_APIKEY ********************
-set QUERY ****
+- **浏览器插件**
+    - [Shodan](https://chrome.google.com/webstore/detail/shodan/jjalcfnidlmpjhdfepjhjbhnhkbgleap)
+    - [Shodan.io](https://addons.mozilla.org/en-US/firefox/addon/shodan_io/)
 
-use auxiliary/gather/shodan_honeyscore  # 蜜罐检测
-set SHODAN_APIKEY ********************
-set TARGET your_target
+- **Metasploit**
+    ```bash
+    use auxiliary/gather/shodan_search
+    set SHODAN_APIKEY ********************
+    set QUERY ****
 
-Recon-ng
-keys add shodan_api ********************
-use recon/domains-hosts/shodan_hostname
-show options
-set SOURCE google
-set LIMIT 1
-```
+    use auxiliary/gather/shodan_honeyscore  # 蜜罐检测
+    set SHODAN_APIKEY ********************
+    set TARGET your_target
+
+    Recon-ng
+    keys add shodan_api ********************
+    use recon/domains-hosts/shodan_hostname
+    show options
+    set SOURCE google
+    set LIMIT 1
+    ```
+
+- **脚本**
+    - [random-robbie/My-Shodan-Scripts](https://github.com/random-robbie/My-Shodan-Scripts)
+    - [woj-ciech/LeakLooker](https://github.com/woj-ciech/LeakLooker) - 利用 shodan 寻找开放的数据库/服务
 
 ---
 

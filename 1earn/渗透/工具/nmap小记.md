@@ -107,17 +107,48 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 ---
 
 ## 脚本
-**[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)**
+- **[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)** - 用于枚举SMB用户
+    ```
+    nmap --script smb-enum-users.nse -p445 <host>
+    sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <host>
+    ```
 
-用于枚举SMB用户
+- 用于知道自己网站使用了哪些 http 方法
 
-```
-nmap --script smb-enum-users.nse -p445 <host>
-sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <host>
-```
+    `nmap -p 80 --script http-methods www.xxx.com`
 
-用于知道自己网站使用了哪些 http 方法
-```
-nmap -p 80 --script http-methods
-```
+- 寻找登录授权页面
 
+    `nmap -p 80 --script http-auth-finder www.xxx.com`
+
+- 启用所有和授权有关的脚本对目标主机进行探测
+
+    `nmap -p-80 --script=auth www.xxx.com`
+
+- SSH 爆破
+
+    `nmap -p22 --script ssh-brute www.xxx.com`
+
+- FTP 服务信息
+
+    `nmap -p21 --script ftp-syst xxx.xxx.xxx.xxx`
+
+    爆破
+
+    `nmap -p21 xxx.xxx.xxx.xxx --script ftp-brute --script-args userdb=/root/user.txt,passdb=/root/pass.txt`
+
+- MySQL 信息
+
+    `nmap -p3306 --script mysql-enum xxx.xxx.xxx.xxx`
+
+- SNMP
+
+    ```bash
+    nmap –sU –p161 –script=snmp-brute <target ip>   # 查找 snmp 弱口令
+    nmap -sU -p161 --script=snmp-netstat <target ip>    # 获取网络端口状态
+    nmap –sU –p161 –script=snmp-sysdescr <target ip>    # 获取系统信息
+    nmap -sU -p161 --script=snmp-win32-user <target ip> # 获取用户信息
+    ```
+
+- 截图
+    - [Nmap-Tools/NSE/http-screenshot.nse](https://github.com/SpiderLabs/Nmap-Tools/blob/master/NSE/http-screenshot.nse)

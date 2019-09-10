@@ -80,7 +80,7 @@ Centos
 2.桌面需求
 ```bash
 设定屏幕超时时间永不超时
-换个不辣眼睛的壁纸(然并卵,反正日常在ssh下使用)
+换个不辣眼睛的壁纸(然并卵,反正日常在 ssh 下使用)
 默认终端 fish 或 on my zsh
 终端配置 powerline-shell
 ```
@@ -88,10 +88,10 @@ Centos
 3.网络设置
 ```bash
 dns:208.67.222.222 114.114.114.114
-软件包换源:aliyun源或163、tuna源
-pip换源
-docker换源
-终端看情况走代理，预先配置好proxychains
+软件包换源:aliyun 源或 163、tuna 源
+pip 换源
+docker 换源
+终端看情况走代理，预先配置好 proxychains
 ```
 
 4.硬件设施
@@ -117,8 +117,8 @@ chrome
   微信
   TIM
   钉钉
-  360杀毒(虚拟机运行,就当养蛊了)
-  360浏览器(为了兼容部分IE、flash网页)
+  360杀毒(虚拟机运行,用来测免杀)
+  360浏览器(为了兼容部分 IE、flash 网页)
 
 渗透/靶机
   python

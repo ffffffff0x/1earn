@@ -9,16 +9,17 @@
     <img src="https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout">
 </p>
 
----
-
-## Manual
-
 > 完事开头难,然后一直开头一直难...
 
 <p align="center">
     <img src=".//img/readme.jpg">
 </p>
 
+本项目的初衷是分享知识资源，内容涉及运维、渗透、开发等领域，目前主攻渗透部分，对于内容中有疑问或建议请提 issue，处理时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+
+---
+
+## Manual
 ### Misc
 
 > 全部内容不一一列举,杂项太多
@@ -76,6 +77,8 @@
 没有收集和归纳的能力,整个学习的过程就像是在用一个菜篮子接水,留不住的,同样,如果不愿意分享,就像是在闭门造车,无法接触到不同的观点,没人指正你的问题,久而久之有可能想法变得偏执,并且固步自封
 
 ## 建议和吐槽
+
+`本项目所有文档均在 VScode 编辑器中编写，故只兼容 VScode 侧边预览的 markdown 语法，未来也不会考虑兼容其他编辑器的md语法`
 
 ~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)

@@ -261,6 +261,30 @@ power-pentest.md 修改逻辑类漏洞部分内容，移步到逻辑类漏洞笔
 10. sqlmap小记
     ~ 照着文章把命令分了个类
 
+2019.9.11~14
+0. readme
+    ~ 调整排版，加超链接
+1. 搜索引擎Hacking笔记
+    ++ google-->Google Hacking Database
+2. Power-Pentest
+    + web渗透-->常见漏洞-->jsonp 信息泄露
+    + 业务/协议类 vul-->SNMP
+    + 业务/协议类 vul-->ipv6
+    ++ WAF-->2篇文章
+    ++ exp/poc/tool 合集-->hackbar
+3. nmap小记
+    ++ SMTP 枚举用户名脚本
+
+
+
+
+
+
+
+
+
+
+
 
 
 

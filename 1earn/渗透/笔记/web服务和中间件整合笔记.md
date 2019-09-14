@@ -313,7 +313,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 如果我们请求的文件/文件夹名同时存在大小写时，这个请求会被请求两次，一次是原封不动的请求，一次是全部使用小写的请求。
 
 下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-![image](../../../img/渗透/1.jpg)
+![image](../../../assets/img/渗透/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
 - POC | Payload | exp

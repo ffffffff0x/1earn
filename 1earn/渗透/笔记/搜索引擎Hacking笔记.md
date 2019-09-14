@@ -24,11 +24,16 @@ create user zabbix@'%' identified by
 ```
 
 **工具**
-- [BishopFox/GitGot](https://github.com/BishopFox/GitGot)
+- [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
+- [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具，例如密码，私钥
 
 ---
 
 # google
+**资源**
+- [Google Hacking Database](https://www.exploit-db.com/google-hacking-database)
+- [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
+
 **例子**
 
 常见

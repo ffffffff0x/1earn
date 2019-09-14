@@ -3,7 +3,7 @@
 `基础 Linux 命令、操作指南`
 
 <p align="center">
-    <a href="https://en.wikipedia.org/wiki/Pablo_Picasso"><img src="../../../img/运维/Linux/Speed-Linux.jpg"></a>
+    <a href="https://en.wikipedia.org/wiki/Pablo_Picasso"><img src="../../../assets/img/运维/Linux/Speed-Linux.jpg"></a>
 </p>
 
 ---

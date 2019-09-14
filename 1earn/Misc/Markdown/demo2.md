@@ -43,7 +43,7 @@ This is an H2
 -------------
 
 ### 字符效果和横线等
-                
+
 ----
 
 ~~删除线~~ <s>删除线（开启识别HTML标签时）</s>
@@ -64,7 +64,7 @@ The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is mainta
 > 引用文本 Blockquotes
 
 引用的行内混合 Blockquotes
-                    
+
 > 引用：如果想要插入空白换行`即<br />标签`，在插入处先键入两个以上的空格然后回车即可，[普通链接](http://localhost/)。
 
 ### 锚点与链接 Links
@@ -75,7 +75,7 @@ The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is mainta
 
 直接链接：<https://github.com>
 
-[锚点链接][anchor-id] 
+[锚点链接][anchor-id]
 
 [anchor-id]: http://www.this-anchor-link.com/
 
@@ -96,7 +96,7 @@ GFM a-tail link @pandao
     <?php
         echo "Hello world!";
     ?>
-    
+
 预格式化文本：
 
     | First Header  | Second Header |
@@ -110,7 +110,7 @@ GFM a-tail link @pandao
 function test(){
     console.log("Hello world!");
 }
- 
+
 (function(){
     var box = function(){
         return box.fn.init();
@@ -135,9 +135,9 @@ function test(){
             return this;
         }
     };
-    
+
     box.fn.init.prototype = box.fn;
-    
+
     window.box =box;
 })();
 
@@ -177,17 +177,17 @@ Image:
 [![](https://pandao.github.io/editor.md/examples/images/7.jpg)](https://pandao.github.io/editor.md/examples/images/7.jpg "李健首张专辑《似水流年》封面")
 
 > 图为：李健首张专辑《似水流年》封面
-                
+
 ----
 
 ### 列表 Lists
 
 #### 无序列表（减号）Unordered Lists (-)
-                
+
 - 列表一
 - 列表二
 - 列表三
-     
+
 #### 无序列表（星号）Unordered Lists (*)
 
 * 列表一
@@ -195,7 +195,7 @@ Image:
 * 列表三
 
 #### 无序列表（加号和嵌套）Unordered Lists (+)
-                
+
 + 列表一
 + 列表二
     + 列表二-1
@@ -207,7 +207,7 @@ Image:
     * 列表三
 
 #### 有序列表 Ordered Lists (-)
-                
+
 1. 第一行
 2. 第二行
 3. 第三行
@@ -223,9 +223,9 @@ Image:
 - [ ] GFM task list 4
     - [ ] GFM task list 4-1
     - [ ] GFM task list 4-2
-                
+
 ----
-                    
+
 ### 绘制表格 Tables
 
 | 项目        | 价格   |  数量  |
@@ -233,11 +233,11 @@ Image:
 | 计算机      | $1600   |   5     |
 | 手机        |   $12   |   12   |
 | 管线        |    $1    |  234  |
-                    
+
 First Header  | Second Header
 ------------- | -------------
 Content Cell  | Content Cell
-Content Cell  | Content Cell 
+Content Cell  | Content Cell
 
 | First Header  | Second Header |
 | ------------- | ------------- |
@@ -260,13 +260,13 @@ Content Cell  | Content Cell
 | Computer  | $1600 |
 | Phone     |   $12 |
 | Pipe      |    $1 |
-                
+
 ----
 
 #### 特殊符号 HTML Entities Codes
 
 &copy; &  &uml; &trade; &iexcl; &pound;
-&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot; 
+&amp; &lt; &gt; &yen; &euro; &reg; &plusmn; &para; &sect; &brvbar; &macr; &laquo; &middot;
 
 X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
 
@@ -285,19 +285,19 @@ X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
 - [ ] [ ]this is an incomplete item :fa-star: :fa-gear:;
     - [ ] :smiley: this is an incomplete item [test link](#) :fa-star: :fa-gear:;
     - [ ] :smiley: this is  :fa-star: :fa-gear: an incomplete item [test link](#);
- 
+
 #### 反斜杠 Escape
 
 \*literal asterisks\*
-            
+
 ### 科学公式 TeX(KaTeX)
-                    
+
 $$E=mc^2$$
 
 行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
 
 $$\(\sqrt{3x-1}+(1+x)^2\)$$
-                    
+
 $$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
 
 多行公式：
@@ -311,14 +311,14 @@ $$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
 ```
 
 ```katex
-\displaystyle 
+\displaystyle
     \frac{1}{
         \Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{
         \frac25 \pi}} = 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {
         1+\frac{e^{-6\pi}}
         {1+\frac{e^{-8\pi}}
          {1+\cdots} }
-        } 
+        }
     }
 ```
 
@@ -327,7 +327,7 @@ f(x) = \int_{-\infty}^\infty
     \hat f(\xi)\,e^{2 \pi i \xi x}
     \,d\xi
 ```
-                
+
 ### 绘制流程图 Flowchart
 
 ```flow
@@ -340,13 +340,13 @@ st->op->cond
 cond(yes)->e
 cond(no)->op
 ```
-                    
+
 ### 绘制序列图 Sequence Diagram
-                    
+
 ```seq
-Andrew->China: Says Hello 
-Note right of China: China thinks\nabout it 
-China-->Andrew: How are you? 
+Andrew->China: Says Hello
+Note right of China: China thinks\nabout it
+China-->Andrew: How are you?
 Andrew->>China: I am good thanks!
 ```
 

@@ -69,7 +69,7 @@ bg      # 后台运行，不然不好访问web
 - switch：使用 OVS 的核心模式
 - controller：使用远程控制器，可以指定远程控制器的 IP 地址和端口号，如果不指定则默认为 127.0.0.1 和 6633
 
-![image](https://upload-images.jianshu.io/upload_images/9361574-4743de5a33ccaad2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/300)
+![image](../../../../assets/img/运维/Network/sdn/1.png)
 
 创建完拓扑后即可使用 ping 命令进行测试：h1 ping h2
 （注意：如果没有指定控制器的话，是 ping 不通的）

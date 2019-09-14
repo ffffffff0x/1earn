@@ -7,7 +7,7 @@
 `目前主要以安装搭建为主，更深一步的配置请自行研究`
 
 <p align="center">
-     <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../img/运维/Linux/Power-Linux.jpg" width="70%"></a>
+     <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="70%"></a>
 </p>
 
 ---

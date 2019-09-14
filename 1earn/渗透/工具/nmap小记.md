@@ -150,5 +150,9 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
     nmap -sU -p161 --script=snmp-win32-user <target ip> # 获取用户信息
     ```
 
+- SMTP 枚举用户名
+
+    `nmap -p 25 --script smtp-enum-users.nse xxx.xxx.xxx.xxx`
+
 - 截图
     - [Nmap-Tools/NSE/http-screenshot.nse](https://github.com/SpiderLabs/Nmap-Tools/blob/master/NSE/http-screenshot.nse)

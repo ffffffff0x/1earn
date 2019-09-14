@@ -1,30 +1,31 @@
 # Misc-Plan
 
 <p align="center">
-    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../../img/Misc/Misc-Plan.jpg" width="65%"></a>
+    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../../assets/img/Misc/Misc-Plan.jpg" width="65%"></a>
 </p>
 
 ---
 
 # 激活
-注意：Windows系统和Micrsoft Office软件都必须是VOL版本。
-**激活Windows**
-用管理员权限运行CMD或PowerShell，输入如下命令：
+注意：Windows 系统和 Micrsoft Office 软件都必须是 VOL 版本。
+
+**激活 Windows**
+
+用管理员权限运行 CMD 或 PowerShell，输入如下命令：
 ```powershell
 slmgr /skms xxx.xxx.xxx.xxx
 slmgr /ato
 slmgr /xpr
 ```
-验证一下是否激活：
-`slmgr.vbs -dlv`
+验证一下是否激活：`slmgr.vbs -dlv`
 
-**激活Office**
+**激活 Office**
 
-用管理员权限运行CMD或PowerShell，输入如下命令：
+用管理员权限运行 CMD 或 PowerShell，输入如下命令：
 ```powershell
-# 进入office安装目录
+# 进入office 安装目录
 cd “C:\Program Files(x86)\Microsoft Office\Office16”
-# 注册kms服务器地址
+# 注册 kms 服务器地址
 cscript ospp.vbs /sethst:xxx.xxx.xxx.xxx
 # 执行激活
 cscript ospp.vbs /act
@@ -34,7 +35,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 # DNS
 **软件方案**
-- DnsJumper（windows下快速配置DNS）
+- DnsJumper（windows 下快速配置 DNS）
 - [chengr28/Pcap_DNSProxy](https://github.com/chengr28/pcap_dnsproxy)（DNS 代理）
     ```ini
     [DNS]
@@ -48,7 +49,7 @@ CSCRIPT OSPP.VBS /DSTATUS
     ```
 - [jedisct1/dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)（DNS 代理）
     - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
-- [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的DNS 代理,感觉没上面两个好用)
+- [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的 DNS 代理,感觉没上面两个好用)
 
 **服务器推荐**
 - 国内:110.6.6.6、14.114.114.114
@@ -95,14 +96,14 @@ sudo systemctl restart docker
 
 **windows**
 
-对于Windows 10以上的用户 推荐使用Docker for Windows
-Windows安装文件：http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/
+对于 Windows 10 以上的用户 推荐使用 Docker for Windows
+Windows 安装文件：http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/
 
-在系统右下角托盘图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Docker Daemon。编辑窗口内的JSON串，填写下方加速器地址：
+在系统右下角托盘图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Docker Daemon。编辑窗口内的 JSON 串，填写下方加速器地址：
 {
   "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
 }
-编辑完成后点击 Apply 保存按钮，等待Docker重启并应用配置的镜像加速器。
+编辑完成后点击 Apply 保存按钮，等待 Docker 重启并应用配置的镜像加速器。
 
 ## node&js
 ```bash
@@ -124,11 +125,11 @@ npm config delete proxy  # 取消代理
 5. 华中科技大学http://pypi.hustunique.com/
 
 - 临时使用：
-可以在使用pip的时候，加上参数-i和镜像地址`https://pypi.tuna.tsinghua.edu.cn/simple`
-例如：`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`，这样就会从清华镜像安装pandas库。
+可以在使用 pip 的时候，加上参数 -i 和镜像地址 `https://pypi.tuna.tsinghua.edu.cn/simple`
+例如：`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`，这样就会从清华镜像安装 pandas 库。
 
 - 永久修改，一劳永逸：
-    1. Linux下，修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件。文件夹要加“.”，表示是隐藏文件夹)
+    1. Linux 下，修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件。文件夹要加“.”，表示是隐藏文件夹)
     ```vim
     mkdir -p ~/.pip/
     vim ~/.pip/pip.conf
@@ -138,7 +139,7 @@ npm config delete proxy  # 取消代理
         trusted-host = https://pypi.tuna.tsinghua.edu.cn
     ```
 
-    2. windows下，直接在user目录中创建一个pip目录，如：C:\Users\xx\pip，然后新建文件pip.ini，即 %HOMEPATH%\pip\pip.ini，在pip.ini文件中输入以下内容（以豆瓣镜像为例）：
+    2. windows 下，直接在 user 目录中创建一个 pip 目录，如：C:\Users\xx\pip，然后新建文件 pip.ini，即 %HOMEPATH%\pip\pip.ini，在 pip.ini 文件中输入以下内容：
     ```vim
     [global]
     index-url = https://pypi.tuna.tsinghua.edu.cn/simple
@@ -205,23 +206,23 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 
 `ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4` 优秀用法
 
-```bash
 `ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
-in.mp4是960 x 540，H.264 / AVC，30fps，大小为149.3 MB。
-转出来的out.mp4是176 x 144，H.264 / AVC，30fps，大小为21.0 MB。
+```
+in.mp4 是 960 x 540，H.264 / AVC，30fps，大小为 149.3 MB。
+转出来的 out.mp4 是176 x 144，H.264 / AVC，30fps，大小为 21.0 MB。
 
-y: 当已存在out.mp4是，不提示是否覆盖。
+y: 当已存在 out.mp4 是，不提示是否覆盖。
 -i in.mp4: 输入文件名。
 -s 176x144: 输出分辨率。
 -vcodec -libx264: 输出文件使用的编解码器。
--vpre fast: 使用libx264做为编解码器时，需要带上这个参数。
+-vpre fast: 使用 libx264 做为编解码器时，需要带上这个参数。
 -b 800000: 码率，单位是字节，不是k字节。
 out.mp4: 输出文件名。
-以上参数的使用细节，ffmpeg的help里有更详细的描述。
+以上参数的使用细节，ffmpeg 的 help 里有更详细的描述。
 ```
 
+`ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4`
 ```bash
-ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4
 -r 29.97 帧数 (一般用25就可以了)
 -b 1500 视频数据流量，用-b xxx表示使用固定码率，数字可更改；还可以用动态码率如：-qscale 4和-qscale 6，4的质量比6高（一般用800就可以了，否则文件会很大）
 -acodec aac 音频编码用AAC

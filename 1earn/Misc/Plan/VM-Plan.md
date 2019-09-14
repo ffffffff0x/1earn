@@ -1,51 +1,51 @@
 # VM-Plan
 
 <p align="center">
-    <a href="https://www.flickr.com/photos/sofi01/4667759854"><img src="../../../img/Misc/VM-Plan.jpg" width="70%"></a>
+    <a href="https://www.flickr.com/photos/sofi01/4667759854"><img src="../../../assets/img/Misc/VM-Plan.jpg" width="70%"></a>
 </p>
 
 ---
 
 ## VMware
 
-**Linux虚拟机建议**
+**Linux 虚拟机建议**
 - [Centos](https://www.centos.org/)
 - [Kali-xfce](https://www.kali.org/)
 - [Manjaro-kde](https://manjaro.org)
 - [Parrot-kde](https://www.parrotsec.org/)
 
-**Windows虚拟机建议**
+**Windows 虚拟机建议**
 - 渗透/靶机-[commando-vm](https://github.com/fireeye/commando-vm)
 - 日用-Win10 2019 Ltsc
 
 **关闭虚拟内存**
 
-使用 VMWare 虚拟机，虚拟机启动后，会在虚拟机目录下建立一个与虚拟内存大小相同的 .vmem文件,这个文件主要是将虚拟机内存的内容映射到磁盘，以支持在虚拟机的暂停等功能
+使用 VMWare 虚拟机，虚拟机启动后，会在虚拟机目录下建立一个与虚拟内存大小相同的 .vmem 文件,这个文件主要是将虚拟机内存的内容映射到磁盘，以支持在虚拟机的暂停等功能
 
-- **对特定的虚拟机"禁用"vmem文件**
+- **对特定的虚拟机"禁用" vmem 文件**
 
-  修改特定虚拟机目录下的vmx文件，在其中加上一行：
+  修改特定虚拟机目录下的 vmx 文件，在其中加上一行：
   `mainMem.useNamedFile = "FALSE"`
 
 **VMTools**
 
-如果没有装，一定要装.如果装不了，可以尝试这个方案[open-vm-tools](https://github.com/vmware/open-vm-tools)
+如果没有装，一定要装.如果装不了，可以尝试这个方案 [open-vm-tools](https://github.com/vmware/open-vm-tools)
 
 **Centos 共享文件夹**
 
-1. 需要vm tool
-2. 不能用mount工具挂载，而是得用vmhgfs-fuse，需要安装工具包
+1. 需要 vm tool
+2. 不能用 mount 工具挂载，而是得用 vmhgfs-fuse，需要安装工具包
 
 ```bash
 yum install open-vm-tools-devel -y
-有的源的名字并不一定为open-vm-tools-devel(centos) ，而是open-vm-dkms(unbuntu)
+有的源的名字并不一定为 open-vm-tools-devel(centos) ，而是 open-vm-dkms(unbuntu)
 执行：vmhgfs-fuse .host:/ /mnt/hgfs
 ```
 
 **常见报错**
 - **该虚拟机似乎正在使用中。如果该虚拟机未在使用，请按“获取所有权(T)**
 
-    将虚拟机路径下后缀为.lck的文件夹删除
+    将虚拟机路径下后缀为 .lck 的文件夹删除
 
 - **无法将 Ethernet0 连接到虚拟网络"VMnet0"**
 
@@ -53,11 +53,11 @@ yum install open-vm-tools-devel -y
 
 - **无法获得 VMCI 驱动程序的版本: 句柄无效。驱动程序“vmci.sys”的版本不正确.....**
 
-    找到虚拟机路径下对应的.vmx文件，用编辑器打开，找到`vmci0.present = “TRUE”`一项,将该项修改为：`vmci0.present = “FALSE”`
+    找到虚拟机路径下对应的 .vmx 文件，用编辑器打开，找到 `vmci0.present = “TRUE”`一项,将该项修改为：`vmci0.present = “FALSE”`
 
 ---
 
-## Linux虚拟机定制建议
+## Linux 虚拟机定制建议
 
 1.预装软件(持续更新)
 ```bash
@@ -103,7 +103,7 @@ disk:40G
 
 ---
 
-## Windows定制建议
+## Windows 定制建议
 
 1.预装软件
 ```bash
@@ -118,7 +118,7 @@ chrome
   TIM
   钉钉
   360杀毒(虚拟机运行,用来测免杀)
-  360浏览器(为了兼容部分 IE、flash 网页)
+  360浏览器(为了兼容部分 IE、flash 网页，尼玛的弹广告是真的烦)
 
 渗透/靶机
   python

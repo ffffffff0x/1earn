@@ -541,7 +541,9 @@ firewall-cmd --reload
 **配置 DHCP**
 
 DHCP 服务程序用于为客户端主机分配可用的 IP 地址，而且这是服务器与客户端主机进行文件传输的基础
+
 `yum -y install dhcp`
+
 ```vim
 # 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议，旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0（这个文件会在下面的步骤中创建），其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件，自行进入下一步的安装过程。
 vim /etc/dhcp/dhcpd.conf
@@ -591,7 +593,7 @@ service tftp
 ```bash
 systemctl restart xinetd
 systemctl enable xinetd
-firewall-cmd --permanent --add-port=69/udp  # 放行tftp
+firewall-cmd --permanent --add-port=69/udp  # 放行 tftp
 firewall-cmd --reload
 ```
 
@@ -654,12 +656,13 @@ clearpart --all --initlabel
 ```
 
 **Reference**
-- [第19章 使用PXE+Kickstart无人值守安装服务。](https://www.linuxprobe.com/chapter-19.html)
+- [第19章 使用 PXE+Kickstart 无人值守安装服务。](https://www.linuxprobe.com/chapter-19.html)
 
 ---
 
 ## [OpenVPN](https://openvpn.net/)
 
+**docker 安装**
 ```
 systemctl start docker
 docker pull kylemanna/openvpn:2.4
@@ -710,7 +713,7 @@ sz /data/openvpn/conf/whsir.ovpn
 在 openvpn 的安装目录下，有个 config 目录，将服务器上的 user.ovpn，放在该目录下，运行 OpenVPN GUI，右键 whsir 连接 connect
 
 **Reference**
-- [通过docker搭建openvpn](https://blog.whsir.com/post-2809.html)
+- [通过 docker 搭建 openvpn](https://blog.whsir.com/post-2809.html)
 
 ---
 
@@ -955,7 +958,7 @@ echo -e "xxx.com {
 
 ---
 
-## [Rpm](https://rpm.org/)&[Node✔](https://nodejs.org)
+## [Rpm](https://rpm.org/) & [Node✔](https://nodejs.org)
 
 **包管理器方式**
 - apt
@@ -1590,9 +1593,9 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 **管理**
 ```bash
 ps -aux
-看一下哪个是gunicorn进程
+看一下哪个是 gunicorn 进程
 kill 杀掉
-gunicorn searx.webapp:app -b 127.0.0.1:8888 -D # 再次强调,在 /mijisou 目录下运行
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目录下运行
 ```
 
 **配合 Cloudflare 的 CDN**
@@ -1712,8 +1715,8 @@ sudo service mysql start
 **安装**
 ```bash
 yum install postgresql-server
-postgresql-setup initdb  # 初始化数据库
-service postgresql start # 启动服务
+postgresql-setup initdb # 初始化数据库
+service postgresql start  # 启动服务
 ```
 
 PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下。

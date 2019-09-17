@@ -604,7 +604,31 @@
 ---
 
 ## 虚拟化
+**检测虚拟机**
+- **windows**
+
+    cmd : `systeminfo`
+
+    Powershell : `get-wmiobject win32_computersystem | fl model`
+
+- **linux**
+
+    `lshw -class system | grep -i VM & grep -i virtual`
+
+    `dmesg | grep -i VM & grep -i virtual`
+
+    `dmidecode -s system-product-name`
+
 ### Docker
 **未授权访问漏洞**
 
 - `http://<ip>:2375/version`
+
+## 仓库
+### Nexus
+**CVE-2019-7238**
+- 文章
+    - [一次偶遇Nexus](https://www.secpulse.com/archives/111818.html)
+
+- POC | Payload | exp
+    - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)

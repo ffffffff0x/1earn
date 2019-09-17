@@ -88,11 +88,11 @@ nslookup -qt=type domain [dns-server]   查询其他记录
 
 **net**
 ```cmd
-net use ipipc$ " " /user:" " 建立 IPC 空链接
-net use ipipc$ "密码" /user:"用户名" 建立 IPC 非空链接
-net use h: ipc$ "密码" /user:"用户名" 直接登陆后映射对方 C: 到本地为 H:
+net use \\IP\ipc$ " " /user:" " 建立 IPC 空链接
+net use \\IP\ipc$ "密码" /user:"用户名" 建立 IPC 非空链接
+net use z: \\ip\ipc$ "pass" /user:"user" 直接登陆后映射对方 C: 到本地为 H:
 net use h: ipc$ 登陆后映射对方 C: 到本地为 H:
-net use ipipc$ /del 删除 IPC 链接
+net use \\IP\ipc$ /del 删除 IPC 链接
 net use h: /del 删除映射对方到本地的为 H: 的映射
 net user 用户名　密码　/add 建立用户
 net user guest /active:yes 激活 guest 用户

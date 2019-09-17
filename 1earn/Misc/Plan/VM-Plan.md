@@ -66,7 +66,8 @@ vim
 python2
 python3
 make
-gcc*gcc-c++
+gcc
+gcc-c++
 curl
 git
 SSH
@@ -131,6 +132,9 @@ chrome
     JPython(为了运行插件)
     JRuby(同上)
   phpstudy(为了方便搭建环境)
+  dvwa
+  pikachu
+  xxe-lab
 ```
 
 2.桌面需求

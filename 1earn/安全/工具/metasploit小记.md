@@ -272,7 +272,7 @@ run
 
     portfwd 是 meterpreter 提供的端口转发功能,在 meterpreter 下使用 portfwd -h 命令查看该命令的参数。
     ```bash
-    portfwd add -l 2222 -r 1.1.1.1 -p 3389  # 将1.1.1.3的3389端口转发到本地的2222端口。
+    portfwd add -l 2222 -r 1.1.1.1 -p 3389  # 将 1.1.1.3 的 3389 端口转发到本地的 2222 端口。
     -l：本地监听端口
     -r：内网目标的 ip
     -p：内网目标的端口
@@ -330,7 +330,7 @@ execute -f <path> [options] 在目标主机上执行 exe 文件
 
 当 meterpreter 单独作为一个进程运行时容易被发现,如果将它和系统经常运行的进程进行绑定,就能够实现持久化。
 ```bash
-getpid  # 查看当前会话的进程id
+getpid  # 查看当前会话的进程 id
 ps  # 查看目标运行的进程
 migrate pid # 绑定/迁移进程
 ```

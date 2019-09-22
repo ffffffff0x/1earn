@@ -2,7 +2,7 @@
 
 `Linux 加固+维护+应急响应参考`
 
-`文档内容和` [加固笔记](../../渗透/笔记/加固笔记.md) `难免有重复的部分，建议2个都看看`
+`文档内容和` [加固笔记](../../安全/笔记/加固笔记.md) `难免有重复的部分，建议2个都看看`
 
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
@@ -248,6 +248,26 @@ net.ipv4.icmp_echo_ignore_all=1
     ```
 
 **防**
+- **骚操作:ping 钥匙**
+    - [使用 ping 钥匙临时开启 SSH:22 端口，实现远程安全 SSH 登录管理就这么简单](https://www.cnblogs.com/martinzhang/p/5348769.html)
+
+    ```bash
+    # 规则1 只接受Data为1078字节的ping包，并将源IP记录到自定义名为sshKeyList的列表中
+    iptables -A INPUT -p icmp -m icmp --icmp-type 8 -m length --length 1078 -m recent --name sshKeyList --set -j ACCEPT
+
+    # 规则2 若30秒内发送次数达到6次(及更高)，当发起SSH:22新连接请求时拒绝
+    iptables -A INPUT -p tcp -m tcp --dport 22 --syn -m recent --name sshKeyList --rcheck --seconds 30 --hitcount 6 -j DROP
+
+    # 规则3 若30秒内发送次数达到5次，当发起SSH:22新连接请求时放行
+    iptables -A INPUT -p tcp -m tcp --dport 22 --syn -m recent --name sshKeyList --rcheck --seconds 30 --hitcount 5 -j ACCEPT
+
+    # 规则4 对于已建立的连接放行
+    iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
+
+    # 规则5 老规矩：最后的拒绝
+    iptables -A INPUT -j DROP
+    ```
+
 - **更改默认端口**
 
     修改 `/etc/ssh/sshd_config` 文件，将其中的 Port 22 改为指定的端口
@@ -280,9 +300,10 @@ net.ipv4.icmp_echo_ignore_all=1
     ```vim
     vim /etc/ssh/sshd_config
 
-    RSAAuthentication yes # RSA 认证
-    PubkeyAuthentication yes # 开启公钥验证
-    AuthorizedKeysFile /root/.ssh/authorized_keys # 验证文件路径
+    RSAAuthentication yes   # RSA 认证
+    PubkeyAuthentication yes    # 开启公钥验证
+    AuthorizedKeysFile /root/.ssh/authorized_keys   # 验证文件路径
+    PasswordAuthentication no   # 禁止密码登录
     ```
 
     `sudo service sshd restart` 重启 sshd 服务

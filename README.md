@@ -4,9 +4,9 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/Category-knowledge-red.svg">
-    <img src="https://img.shields.io/badge/Branch-master-yellow.svg?longCache=true">
-    <img src="https://img.shields.io/github/commit-activity/w/No-Github/1earn.svg?style=popout">
-    <img src="https://img.shields.io/github/last-commit/No-Github/1earn.svg?style=popout">
+    <img src="https://img.shields.io/github/repo-size/No-Github/1earn?color=yellow">
+    <img src="https://img.shields.io/github/last-commit/No-Github/1earn.svg?color=blue">
+    <img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?color=brightgreen">
 </p>
 
 > 完事开头难,然后一直开头一直难...
@@ -15,49 +15,59 @@
     <img src="./assets/img/readme.jpg">
 </p>
 
-本项目的初衷是分享知识资源，内容涉及运维、渗透、开发等领域，目前主攻渗透部分，对于内容中有疑问或建议请提 issue，处理时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+本项目的初衷是分享知识资源，内容涉及运维、安全、开发等领域，目前主攻安全部分，对于内容中有疑问或建议欢迎提交 issue，回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+
+该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议。
+
+目标是成为最优秀的安全资源框架
 
 ---
 
 ## Manual
-### 渗透
+### 安全
 
-- **[Power-PenTest](./1earn/渗透/Power-PenTest.md)** : 记录渗透资源/知识点 `注: 该文档是连接其下各个目录子文件的树`
-- **[Speed-PenTest](./1earn/渗透/Speed-PenTest.md)** : 渗透测试时的思路 `注: 我一般会直接复制一副作为参考、信息记录、方便团队协作、出报告等😜`
+- **[Power-PenTest](./1earn/安全/Power-PenTest.md)** : 记录渗透资源/知识点 `注: 该文档是连接其下各个目录子文件的树`
+- **[Speed-PenTest](./1earn/安全/Speed-PenTest.md)** : 渗透测试时的思路 `注: 我一般会直接复制一副作为参考、信息记录、方便团队协作、出报告等😜`
 
 ### 运维
 
-**Linux**
-- **[God-Linux](./1earn/运维/Linux/God-Linux.md)** : 记录一些 linux 下的骚操作,收集的较少，后面会慢慢添加
-- **[Power-Linux](./1earn/运维/Linux/Power-Linux.md)** : 配置指南,记录各种服务搭建与配置过程
-- **[Secure-Linux](./1earn/运维/Linux/Secure-Linux.md)** : 记录自己优化 linux 服务器性能与问题排查时用到的命令
-- **[Speed-Linux](./1earn/运维/Linux/Speed-Linux.md)** : 命令速查手册,记录各种基本命令操作
+- **Linux**
+    - **[God-Linux](./1earn/运维/Linux/God-Linux.md)** : 记录一些 linux 下的骚操作,收集的较少，后面会慢慢添加
+    - **[Power-Linux](./1earn/运维/Linux/Power-Linux.md)** : 配置指南,记录各种服务搭建与配置过程
+    - **[Secure-Linux](./1earn/运维/Linux/Secure-Linux.md)** : 记录自己优化 linux 服务器性能与问题排查时用到的命令
+    - **[Speed-Linux](./1earn/运维/Linux/Speed-Linux.md)** : 命令速查手册,记录各种基本命令操作
 
-**Network**
+- **Network**
 
-`目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在明年前再补充内容`
+    `目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在明年前再补充内容`
 
-- **[不同厂商](./1earn/运维/Network/不同厂商🎲.md)** : 记录不同厂商配置服务命令的区别
-- **[方向实验](./1earn/运维/Network/方向实验🔨.md)** : 按方向分类记录配置
-- **[理论模型](./1earn/运维/Network/理论模型📕.md)** : 以科来网络通讯协议图为参照记录知识点
+    - **[不同厂商](./1earn/运维/Network/不同厂商🎲.md)** : 记录不同厂商配置服务命令的区别
+    - **[方向实验](./1earn/运维/Network/方向实验🔨.md)** : 按方向分类记录配置
+    - **[理论模型](./1earn/运维/Network/理论模型📕.md)** : 以科来网络通讯协议图为参照记录知识点
 
-**Windows**
-- 记录按客户需求搭建服务的过程(关键部分)
+- **Windows**
+    - 记录按客户需求搭建服务的过程(关键部分)
 
 ### Misc
 
-**Plan**
-- **[Misc-Plan](./1earn/Misc/Plan/Misc-Plan.md)** : 各种小技巧
-- **[VM-Plan](./1earn/Misc/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
+- **Plan**
+    - **[Misc-Plan](./1earn/Misc/Plan/Misc-Plan.md)** : 各种小技巧
+    - **[VM-Plan](./1earn/Misc/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
 
-**Tools**
-- **[Web-Tools](./1earn/Misc/Tools/Web-Tools.md)** : 在线 web 工具集合
-- **[Win-Tools](./1earn/Misc/Tools/Win-Tools.md)** : windows 下的软件使用方案
+- **Tools**
+    - **[Web-Tools](./1earn/Misc/Tools/Web-Tools.md)** : 在线 web 工具集合
+    - **[Win-Tools](./1earn/Misc/Tools/Win-Tools.md)** : windows 下的软件使用方案
 
 ### 开发
 
-**Git**
-- **[Git-Help](./1earn/开发/git/Git-Help.md)** : 记录 git 命令理解与速查
+- **Git**
+    - **[Git-Help](./1earn/开发/git/Git-Help.md)** : 记录 git 命令理解与速查
+
+- **python**
+    - 我 python 学的太烂了，都不好意思拿出来🤣
+
+- **GO**
+    - 努力学习中
 
 ---
 
@@ -75,7 +85,7 @@
 
 ## 建议和吐槽
 
-`本项目所有文档均在 VScode 编辑器中编写，故只兼容 VScode 侧边预览的 markdown 语法，暂不考虑兼容其他编辑器的md语法`
+`本项目所有文档均在 VScode 编辑器中编写，故只兼容 VScode 侧边预览的 markdown 语法，暂不考虑兼容其他编辑器的 md 语法`
 
 ~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
@@ -95,6 +105,9 @@
 - 2019-7-17:最近事情比较多,写的少了,不过我承诺,这个项目会一直更新下去
 - 2019-7-21 02:16:04:半夜失眠,索性爬起来写点东西,发现power-pentest写下去字数可能会越来越少,因为会越来越精简,所有的细化内容会被拆分成各个小的笔记,怎么说呢?我不知道这算好算坏,我自认为没有能力写出一套网络安全的百科全书,不过凡事在于坚持嘛,说不定呢
 - 2019-8-14:之后的学习重点会放在渗透方面,运维内容只能说随缘更新了.
+- 2019-9-22:作为一个技术人员，在各种乌七八糟花里胡哨的概念忽脸而至时，应该能够保持理智，不要被各种人带节奏。不要做一名喜鹊开发者。
+
+---
 
 ## List
 

@@ -10,9 +10,7 @@
 
 ## 大纲
 ```markdown
-1. Linux 编程
-	- 编译
-2. Shell/Base
+1. Shell/Base
 	- 环境变量
 	- 通配符/限制输出
 	- 会话
@@ -24,7 +22,7 @@
 			- 删
 			- 查
 			- 改
-3. net
+2. net
 	- 配置
 	- 传输/下载
 		- bt
@@ -40,7 +38,7 @@
 		- yum
 		- apt
 		- 常用软件
-4. 系统管理
+3. 系统管理
 	- 系统设置
 		- 时间
 		- 语言
@@ -48,35 +46,10 @@
 		- 账号管控
 	- 系统信息
 		- 进程管理
-5. 设备管理
+4. 设备管理
 		- 硬盘/数据
-```
-
----
-
-# 🚬Linux 编程
-很多脚本第一行用来指定本脚本用什么解释器来执行
-
-例如 `#!/usr/bin/python` 相当于写死了 python 路径。
-
-而 `#!/usr/bin/env python` 会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
-
-## 编译
-```bash
-mount -t tmpfs tmpfs ~/build -o size=1G	# 把文件放到内存上做编译
-make -j	# 并行编译
-ccache	# 把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间。
-
-# 在 /usr/local/bin 下建立 gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用 gcc 等命令时会调用到 ccache 就可以了（通常情况下 /usr/local /bin 会在 PATH 中排在 /usr/bin 前面）。
-
-distcc	# 多台机器一起编译
-	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 # 默认的 3632 端口允许来自同一个网络的 distcc 连接。
-
-	export DISTCC_HOSTS="localhost 10.64.25.1 10.64.25.2 10.64.25.3"
-	把 g++,gcc 等常用的命令链接到 /usr/bin/distcc 上
-
-	make -j4	# 在 make 的时候,也必须用 -j 参数,一般是参数可以用所有参用编译的计算机 CPU 内核总数的两倍做为并行的任务数。
-	distccmon-text # 查看编译任务的分配情况。
+5. Linux 编程
+	- 编译
 ```
 
 ---
@@ -96,7 +69,6 @@ vim ~/.bash_profile # 永久修改变量
 PATH=$PATH:/usr/local/bin/
 ```
 `source ~/.bash_profile` 立即生效
-
 
 - **fish**
 ```vim
@@ -239,7 +211,16 @@ mkdir -m 777 /test	# 创建时指定权限
 #### 删
 ```bash
 rm -i	# 确认
-rmdir # 删除空目录
+rmdir	# 删除空目录
+
+# 删除巨大文件小 tips
+	echo "" >  bigfile
+	rm bigfile
+
+	> access.log	# 通过重定向到 Null 来清空文件内容
+	: > access.log
+	true > access.log
+	cat /dev/null > access.log
 ```
 
 #### 查
@@ -774,10 +755,12 @@ chgrp	# 改变文件或目录所属的用户组
 umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022
 # umask 值 002 所对应的文件和目录创建缺省权限分别为 6 6 4 和 7 7 5
 
-chattr # 用于改变文件属性
-	chattr +i <文件>	# 用chattr命令防止系统中某个关键文件被修改
-    lsattr <文件>
-	chattr +a <文件>	# 让某个文件只能往里面追加数据，但不能删除
+chattr	# 可修改文件的多种特殊属性
+	chattr +i <文件>	# 增加后，使文件不能被删除、重命名、设定链接接、写入、新增数据
+	chattr +a <文件>	# 增加该属性后，只能追加不能删除，非root用户不能设定该属性
+	chattr +c <文件>	# 自动压缩该文件，读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
+
+lsattr <文件>	# 该命令用来读取文件或者目录的特殊权限
 ```
 ```vim
 visudo	# 加 sudo 权限
@@ -811,6 +794,28 @@ lshw	# 查看硬件信息
 
 ### 进程管理
 
+**服务管理**
+```bash
+service <程序> status/start/restart/stop	# 控制系统服务的实用工具
+systemctl # 系统服务管理器指令
+	systemctl enable crond.service	# 让某个服务开机自启(.service 可以省略)
+	systemctl disable crond	# 不让开机自启
+	systemctl status crond	# 查看服务状态
+	systemctl start crond	# 启动某个服务
+	systemctl stop crond	# 停止某个服务
+	systemctl restart crond	# 重启某个服务
+	systemctl reload *	# 重新加载服务配置文件
+	systemctl is-enabled crond	# 查询服务是否开机启动
+
+chkconfig	# 检查、设置系统的各种服务
+	chkconfig --list	# 列出所有的系统服务
+	chkconfig --add httpd	# 增加 httpd 服务
+	chkconfig --del httpd	# 删除 httpd 服务
+	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on（开启）的状态,另外如果不传入参数 --level，则默认针对级别 2/3/4/5 操作。
+
+# 从 CentOS7 开始，CentOS 的服务管理工具由 SysV 改为了 systemd，但即使是在 CentOS7 里，也依然可以使用 chkconfig 这个原本出现在 SysV 里的命令。
+```
+
 **进程处理**
 ```bash
 # 杀进程
@@ -818,16 +823,6 @@ kill -s STOP <PID>	# 删除执行中的程序或工作
 	kill -HUP <pid>	# 更改配置而不需停止并重新启动服务
 	kill -KILL <pid> # 信号(SIGKILL)无条件终止进程
 killall <PID>	# 使用进程的名称来杀死进程
-
-# 处理进程
-service <程序> status/start/restart/stop	# 控制系统服务的实用工具
-systemctl enable/disable/status/start/restart/stop <程序>	# 系统服务管理器指令
-
-chkconfig	# 检查、设置系统的各种服务
-	chkconfig --list	# 列出所有的系统服务
-	chkconfig --add httpd	# 增加 httpd 服务
-	chkconfig --del httpd	# 删除 httpd 服务
-	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on（开启）的状态
 
 ctrl+z # 将前台运行的任务暂停,仅仅是暂停,而不是将任务终止。
 bg	# 转后台运行
@@ -977,6 +972,33 @@ blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 	blkid -po udev /dev/sda1	# 获取更多详细信息
 	blkid -g	# 清理 blkid 的缓存
+```
+
+---
+
+# 🚬Linux 编程
+很多脚本第一行用来指定本脚本用什么解释器来执行
+
+例如 `#!/usr/bin/python` 相当于写死了 python 路径。
+
+而 `#!/usr/bin/env python` 会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
+
+## 编译
+```bash
+mount -t tmpfs tmpfs ~/build -o size=1G	# 把文件放到内存上做编译
+make -j	# 并行编译
+ccache	# 把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间。
+
+# 在 /usr/local/bin 下建立 gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用 gcc 等命令时会调用到 ccache 就可以了（通常情况下 /usr/local /bin 会在 PATH 中排在 /usr/bin 前面）。
+
+distcc	# 多台机器一起编译
+	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 # 默认的 3632 端口允许来自同一个网络的 distcc 连接。
+
+	export DISTCC_HOSTS="localhost 10.64.25.1 10.64.25.2 10.64.25.3"
+	把 g++,gcc 等常用的命令链接到 /usr/bin/distcc 上
+
+	make -j4	# 在 make 的时候,也必须用 -j 参数,一般是参数可以用所有参用编译的计算机 CPU 内核总数的两倍做为并行的任务数。
+	distccmon-text # 查看编译任务的分配情况。
 ```
 
 ---

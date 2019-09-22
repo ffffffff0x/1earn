@@ -734,6 +734,7 @@ cd .. && rm -rf proxychains-ng
 **编辑配置**
 ```bash
 vim /etc/proxychains.conf
+
 socks5 127.0.0.1 1080 # 改成你懂的
 ```
 
@@ -778,6 +779,10 @@ apt install openssh-server=1:7.2p2-4ubuntu2.8
 apt install ssh
 ```
 `service ssh restart` 然后重启 SSH 服务
+
+**加固**
+
+本部分内容移步[Secure-Linux](./Secure-Linux#SSH) SSH 部分
 
 ---
 
@@ -2338,14 +2343,40 @@ gcc helloworld.c -o execFile
 
 ## [🐹Go](https://golang.org/)
 
-**源文件方式安装**
+**安装**
 ```bash
-wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz
-tar -xzvf go1.12.5.linux-amd64.tar.gz -C /usr/bin
+访问 https://golang.org/dl/ 下载最新版本包
 
-echo "export PATH=$PATH:/usr/bin/go/bin" >> ~/.bash_profile
-source ~/.bash_profile
+tar -C /usr/local -xzf 相应文件.tar.gz
+
+export GOROOT=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+export GOPATH=$HOME/Applications/Go
+source $HOME/.profile
+# $GOPATH 可以包含多个工作目录，取决于你的个人情况。如果你设置了多个工作目录，那么当你在之后使用 go get（远程包安装命令）时远程包将会被安装在第一个目录下。
 go version
+```
+
+**Test your installation**
+```bash
+mkdir -p $HOME/Applications/Go
+cd $HOME/Applications/Go
+```
+```vim
+vim hello.go
+
+
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Printf("hello, world\n")
+}
+```
+```bash
+go build
+./hello
 ```
 
 ---
@@ -2431,6 +2462,7 @@ PATH=$PATH:/usr/local/python3/bin/
 python3 -V
 pip3 -V
 ```
+
 ---
 
 ## [💎Ruby](https://www.ruby-lang.org)
@@ -2640,7 +2672,7 @@ setenforce 0
 # 虚拟化
 ## [🐋Docker](https://www.docker.com)
 
-**centos**
+**centos 下安装**
 ```bash
 yum install -y yum-utils device-mapper-persistent-data lvm2
 wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -2676,11 +2708,39 @@ docker-compose version
 docker login
 ```
 
-**debian**
+**debian 下安装**
 ```bash
 sudo apt update
 sudo apt install docker.io
 docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但实际上还是需要你登陆
+```
+
+**使用**
+
+默认情况下，只有管理员权限能够运行 docker 命令。考虑到安全问题，你不会想用 root 用户或使用 sudo 来运行 Docker 的。要解决这个问题，你需要将自己的用户加入到 docker 组中。
+
+`sudo usermod -a -G docker $USER`
+
+完成操作后，登出系统然后再重新登录，应该就搞定了。不过若你的平台是 Fedora，则添加用户到 docker 组时会发现这个组是不存在的。那该怎么办呢？你需要首先创建这个组。命令如下：
+```bash
+sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
+newgrp docker
+```
+
+启动，暂停以及启用 Docker
+```
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo systemctl stop docker
+sudo systemctl restart docker
+```
+
+拉取镜像
+```bash
+docker images # 检查一下系统中已经有了哪些镜像
+docker pull nginx # 拉取一个镜像
+docker search nginx # 搜索 Docker Hub 中的所有 Nginx 镜像
+docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
 ```
 
 ---

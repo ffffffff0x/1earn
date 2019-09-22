@@ -91,7 +91,7 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 编码原理：Base64 编码要求把3个8位字节转化为4个6位的字节，之后在6位的前面补两个0，形成8位一个字节的形式，6位2进制能表示的最大数是2的6次方是64，这也是为什么是64个字符(A-Z,a-z，0-9，+，/这64个编码字符，=号不属于编码字符，而是填充字符)的原因，这样就需要一张映射表，如下：
 
-![image](../../../assets/img/渗透/笔记/cryptography/jiIR3yZ.png)
+![image](../../../assets/img/安全/笔记/cryptography/jiIR3yZ.png)
 
 >例子(base64)：
 >
@@ -157,7 +157,7 @@ mathematics is the most beautiful branch of philosophy.
 ## 5.XXencode 编码
 XXencode 将输入文本以每三个字节为单位进行编码。如果最后剩下的资料少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6bit为单位分为4个组，每个组以十进制来表示所出现的数值只会落在0到63之间。以所对应值的位置字符代替。它所选择的可打印字符是`+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`，一共64个字符。跟 base64 打印字符相比，就是 UUencode 多一个“-” 字符，少一个”/” 字符。
 
-![image](../../../assets/img/渗透/笔记/cryptography/m6VjIb3.png)
+![image](../../../assets/img/安全/笔记/cryptography/m6VjIb3.png)
 
 > 源文本：
 > The quick brown fox jumps over the lazy dog\
@@ -230,8 +230,8 @@ ISO-8859-1 的较高部分（从 160 到 255 之间的代码）全都有实体�
 
 敲击码表:
 
-![image](../../../assets/img/渗透/笔记/cryptography/TIM截图20190814151752.png)
-![image](../../../assets/img/渗透/笔记/cryptography/TIM截图20190814151904.png)
+![image](../../../assets/img/安全/笔记/cryptography/TIM截图20190814151752.png)
+![image](../../../assets/img/安全/笔记/cryptography/TIM截图20190814151904.png)
 
 ## 12.莫尔斯电码
 摩尔斯电码(Morse Code)是由美国人萨缪尔·摩尔斯在1836年发明的一种时通时断的且通过不同的排列顺序来表达不同英文字母、数字和标点符号的信号代码，摩尔斯电码主要由以下5种它的代码组成：
@@ -278,7 +278,7 @@ M  --    |Z  --..  |=  -...-
 
     曼彻斯特编码的频率要比NRZ高一倍，传输等量数据所需的带宽大一倍
 
-![image](../../../assets/img/渗透/笔记/cryptography/曼彻斯特编码.png)
+![image](../../../assets/img/安全/笔记/cryptography/曼彻斯特编码.png)
 
 
 （根据802.3中规定编码方式）从接收的编码位中提取原始数据：
@@ -340,10 +340,10 @@ M  --    |Z  --..  |=  -...-
 > 明文： The quick brown fox jumps over the lazy dog
 
 填入5行7列表(事先约定填充的行列数)
-![image](../../../assets/img/渗透/笔记/cryptography/aURZRvE.png)
+![image](../../../assets/img/安全/笔记/cryptography/aURZRvE.png)
 
 加密的回路线(事先约定填充的行列数)
-![image](../../../assets/img/渗透/笔记/cryptography/rmiIv2Z.png)
+![image](../../../assets/img/安全/笔记/cryptography/rmiIv2Z.png)
 
 > 密文： gesfc inpho dtmwu qoury zejre hbxva lookT
 
@@ -353,12 +353,12 @@ M  --    |Z  --..  |=  -...-
 > 以明文 The quick brown fox jumps over the lazy dog，密钥 how are u为例：
 
 填入5行7列表(事先约定填充的行列数，如果明文不能填充完表格可以约定使用某个字母进行填充)
-![image](../../../assets/img/渗透/笔记/cryptography/aURZRvE.png)
+![image](../../../assets/img/安全/笔记/cryptography/aURZRvE.png)
 
 密钥： how are u
 
 按how are u在字母表中的出现的先后顺序进行编号，我们就有a为1,e为2，h为3，o为4，r为5，u为6，w为7，所以先写出a列，其次e列，以此类推写出的结果便是密文：
-![image](../../../assets/img/渗透/笔记/cryptography/AfiMnq3.png)
+![image](../../../assets/img/安全/笔记/cryptography/AfiMnq3.png)
 
 >密文： qoury inpho Tkool hbxva uwmtd cfseg erjez
 
@@ -391,7 +391,7 @@ ZYXWVUTSRQPONMLKJIHGFEDCBA
 
 > 密文： Uif rvjdl cspxo gpy kvnqt pwfs uif mbaz eph
 
-![image](../../../assets/img/渗透/笔记/cryptography/凯撒密码参照表.jpg)
+![image](../../../assets/img/安全/笔记/cryptography/凯撒密码参照表.jpg)
 
 ### 3.ROT5/13/18/47
 
@@ -431,27 +431,27 @@ ROT47：对数字、字母、常用符号进行编码，按照它们的ASCII值�
 ### 5.希尔密码
 
 希尔密码(`Hill Cipher`)是基于线性代数多重代换密码，由Lester S. Hill在1929年发明。每个字母转换成26进制数字：A=0, B=1, C=2...Z=25一串字母当成n维向量，跟一个n×n的矩阵相乘，再将得出的结果MOD26
-![image](../../../assets/img/渗透/笔记/cryptography/希儿密码加密.png)
-![image](../../../assets/img/渗透/笔记/cryptography/希儿密码解密.png)
+![image](../../../assets/img/安全/笔记/cryptography/希儿密码加密.png)
+![image](../../../assets/img/安全/笔记/cryptography/希儿密码解密.png)
 
 ### 6.猪圈密码
 
 猪圈密码(Pigpen Cipher或称九宫格密码、朱高密码、共济会密码或共济会员密码)，是一种以格子为基础的简单替代式密码。
 
-![image](../../../assets/img/渗透/笔记/cryptography/猪圈密码.jpg)
+![image](../../../assets/img/安全/笔记/cryptography/猪圈密码.jpg)
 
 变种
 
 圣堂武士密码(Templar Cipher)是共济会的“猪圈密码”的一个变种，一直被共济会圣殿骑士用。
 
-![image](../../../assets/img/渗透/笔记/cryptography/templar_cipher.png)
+![image](../../../assets/img/安全/笔记/cryptography/templar_cipher.png)
 
 **OTHER CIPHER**
 
-![image](../../../assets/img/渗透/笔记/cryptography/othercipher1.png)
-![image](../../../assets/img/渗透/笔记/cryptography/othercipher2.png)
-![image](../../../assets/img/渗透/笔记/cryptography/othercipher3.png)
-![image](../../../assets/img/渗透/笔记/cryptography/othercipher4.png)
+![image](../../../assets/img/安全/笔记/cryptography/othercipher1.png)
+![image](../../../assets/img/安全/笔记/cryptography/othercipher2.png)
+![image](../../../assets/img/安全/笔记/cryptography/othercipher3.png)
+![image](../../../assets/img/安全/笔记/cryptography/othercipher4.png)
 
 ### 7.波利比奥斯方阵密码
 
@@ -459,7 +459,7 @@ ROT47：对数字、字母、常用符号进行编码，按照它们的ASCII值�
 
 常见的排布方式：
 
-![image](../../../assets/img/渗透/笔记/cryptography/波利比奥斯方阵.png)
+![image](../../../assets/img/安全/笔记/cryptography/波利比奥斯方阵.png)
 
 实例：
 
@@ -471,13 +471,13 @@ ROT47：对数字、字母、常用符号进行编码，按照它们的ASCII值�
 
 夏多密码是作者麦克斯韦·格兰特在中篇小说《死亡之链》塑造夏多这一英雄人物中所自创的密码
 
-![image](../../../assets/img/渗透/笔记/cryptography/夏多密码.png)
+![image](../../../assets/img/安全/笔记/cryptography/夏多密码.png)
 
 在以上所示的字母表密钥的底部，列有四个附加符号1，2，3，4.他们可以放在密文中的任何地方。每个附加符号指示，如何转动写有密文的纸张，再进行后续的加密或解密操作，直到出现另一个附加符号。可以把每个附加符号中的那根线看作是指示针，它指示了纸张的上端朝上，朝右，朝下，朝左。比如说：如果出现符号3，那么纸张就应该转动180度，使其上端朝下； 符号2表示纸张上端朝右，依次类推。
 
 >源文本： I AM IN DANGER SEND HELP(我有危险，速来增援)
 >
->密文：![image](../../../assets/img/渗透/笔记/cryptography/夏多密码1.jpg)
+>密文：![image](../../../assets/img/安全/笔记/cryptography/夏多密码1.jpg)
 
 ### 9.普莱菲尔密码
 
@@ -489,7 +489,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解。
 
 1. 整理密钥字母 C U L T U R E ，去掉后面重复的字母得到： C U L T R E
 
-2. 用上一步得到的字母自上而下来填补5乘5方表的纵列（也可横排），之后的空白按照相同的顺序用字母表中剩余的字母依次填补完整![image](../../../assets/img/渗透/笔记/cryptography/普莱费尔密码.png)
+2. 用上一步得到的字母自上而下来填补5乘5方表的纵列（也可横排），之后的空白按照相同的顺序用字母表中剩余的字母依次填补完整![image](../../../assets/img/安全/笔记/cryptography/普莱费尔密码.png)
 
 这一步需要注意的要点：整理密钥字母时，如果出现"Z"，则需要去除，因为在英文里"Z"的使用频率最低，相应的如果是德文，则需将"I"与"J"当作一个字母来看待，而法语则去掉"W"或"K"。
 
@@ -517,7 +517,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解。
 
 维吉尼亚密码(`Vigenère Cipher`)是在单一恺撒密码的基础上扩展出多表代换密码，根据密钥(当密钥长度小于明文长度时可以循环使用)来决定用哪一行的密表来进行替换，以此来对抗字频统计
 
-![image](../../../assets/img/渗透/笔记/cryptography/维吉尼亚密码密表.png)
+![image](../../../assets/img/安全/笔记/cryptography/维吉尼亚密码密表.png)
 
 **已知秘钥加密解密**
 
@@ -538,7 +538,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解。
 ### 变种
 有几种密码和维吉尼亚密码相似，格罗斯费尔德密码(`Gronsfeld cipher`)实际上和维吉尼亚密码相同，除了使用了数字来代替字母以外没有什么区别。数字可以选择一种数列，如斐波那契数列，或者一些其他的伪随机序列。格罗斯费尔德密码密码分析过程和维吉尼亚密码大同小异，不过，自动密钥密码不能使用 卡西斯基算法 (kasiski)来破译，因为自动密钥密码的密钥不重复循环使用，破译自动密钥密码最好的方法的就是从密文不断尝试和猜测其中明文或密钥的一部分。
 
-![image](../../../assets/img/渗透/笔记/cryptography/格罗斯菲尔德密码.png)
+![image](../../../assets/img/安全/笔记/cryptography/格罗斯菲尔德密码.png)
 
 ### 11.自动密钥密码
 
@@ -581,7 +581,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解。
 
 Porta密码(`Porta Cipher`)是一个由意大利那不勒斯的医生Giovanni Battista della Porta发明的多表代换密码，Porta密码具有加密解密过程的是相同的特点。
 
-![image](../../../assets/img/渗透/笔记/cryptography/Porta密码密表.png)
+![image](../../../assets/img/安全/笔记/cryptography/Porta密码密表.png)
 
 >明文： THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
 >
@@ -597,7 +597,7 @@ Porta密码可以被以 维吉尼亚密码 破解相类似方式进行自动攻�
 同音替换密码(`Homophonic Substitution Cipher`)是单字母可以被其他几种密文字母同时替换的密码，通常要比标准替换密码破解更加困难，破解标准替换密码最简单的方法就是分析字母出现频率，通常在英语中字母'E'(或'T')出现的频率是最高的，如果我们允许字母'E'可以同时被3种不同字符代替，那么就不能还是以普通字母的频率来分析破解，如果允许可代替字符越多，那么密文就会更难破译。
 
 常见代换规则表：
-![image](../../../assets/img/渗透/笔记/cryptography/同音替换密码常见规则.png)
+![image](../../../assets/img/安全/笔记/cryptography/同音替换密码常见规则.png)
 
 >明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
 >
@@ -609,14 +609,14 @@ Porta密码可以被以 维吉尼亚密码 破解相类似方式进行自动攻�
 仿射密码(`Affine Cipher`)是一种单表代换密码，字母表中的每个字母相应的值使用一个简单的数学函数映射到对应的数值，再把对应数值转换成字母。这个公式意味着每个字母加密都会返回一个相同的字母，意义着这种加密方式本质上是一种标准替代密码。因此，它具有所有替代密码的弱点。每一个字母都是通过函数（ax + b）mod m加密，其中B是位移量，为了保证仿射密码的可逆性，a和m需要满足gcd(a , m)=1，一般m为设置为26
 
 常见的字母对应关系：
-![image](../../../assets/img/渗透/笔记/cryptography/格罗斯菲尔德密码.png)
+![image](../../../assets/img/安全/笔记/cryptography/格罗斯菲尔德密码.png)
 
 以E(x) = (5x + 8) mod 26函数为例子
 
-![image](../../../assets/img/渗透/笔记/cryptography/仿射密码示例.png)
+![image](../../../assets/img/安全/笔记/cryptography/仿射密码示例.png)
 
 
-![image](../../../assets/img/渗透/笔记/cryptography/仿射密码解密.png)
+![image](../../../assets/img/安全/笔记/cryptography/仿射密码解密.png)
 
 以E(x) = (5x + 8) mod 26加密，通过计算可得D(x)=21(x - 8) mod 26，这样便可以得到明文。
 
@@ -644,7 +644,7 @@ ADFGX 密码(`ADFGX Cipher`)是结合了改良过的 Polybius 方格替代密码
 
 加密矩阵：
 
-![image](../../../assets/img/渗透/笔记/cryptography/ADFGX密码加密矩阵.png)
+![image](../../../assets/img/安全/笔记/cryptography/ADFGX密码加密矩阵.png)
 
 >明文： THE QUICK BROWN FOX
 >
@@ -652,7 +652,7 @@ ADFGX 密码(`ADFGX Cipher`)是结合了改良过的 Polybius 方格替代密码
 >>
 >>列移位密钥： how are u
 >>
->>![image](../../../assets/img/渗透/笔记/cryptography/ADFGX密码加密矩阵2.png)
+>>![image](../../../assets/img/安全/笔记/cryptography/ADFGX密码加密矩阵2.png)
 >
 >密文： DXADF AGXF XFFXD FXGGX DGFG AADA ADXXF
 
@@ -660,7 +660,7 @@ ADFGX 密码(`ADFGX Cipher`)是结合了改良过的 Polybius 方格替代密码
 
 ADFGVX 密码实际上就是 ADFGX 密码的扩充升级版，一样具有 ADFGX 密码相同的特点，加密过程也类似，不同的是密文字母增加了 V，使得可以再使用 10 数字来替换明文。
 
-![image](../../../assets/img/渗透/笔记/cryptography/ADFGVX密码加密矩阵.png)
+![image](../../../assets/img/安全/笔记/cryptography/ADFGVX密码加密矩阵.png)
 
 加密过程完全类似
 
@@ -748,7 +748,7 @@ ADFGVX 密码实际上就是 ADFGX 密码的扩充升级版，一样具有 ADFGX
 
 示例:
 
-![image](../../../assets/img/渗透/笔记/cryptography/四方密码.png)
+![image](../../../assets/img/安全/笔记/cryptography/四方密码.png)
 
 明文： THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
 
@@ -964,7 +964,7 @@ Digrafid 密码(Digrafid Cipher)使用两个密钥生成分别生成类似波利
 
 示例密阵:
 
-![image](../../../assets/img/渗透/笔记/cryptography/格朗普雷密码.png)
+![image](../../../assets/img/安全/笔记/cryptography/格朗普雷密码.png)
 
     #!shell
     明文:T  H  E  Q  U  I  C  K  B  R  O  W  N  F  O
@@ -974,7 +974,7 @@ Digrafid 密码(Digrafid Cipher)使用两个密钥生成分别生成类似波利
 ### 28.比尔密码
 比尔密码(`Beale ciphers`)有三份密码，当然这里说的是已被破解第二份，是一种类似书密码的替换密码。
 
-![image](../../../img/渗透/笔记/cryptography/比尔密码.png)
+![image](../../../img/安全/笔记/cryptography/比尔密码.png)
 
 以第二密码为例，每一个数字代表美国《独立宣言》的文本中的第几个词的首字母，如1代表第1个词的首字母“w”，2代表第2个词首字母“i”。解密后的文字如下：
 

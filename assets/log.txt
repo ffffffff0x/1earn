@@ -376,14 +376,36 @@ power-pentest.md 修改逻辑类漏洞部分内容，移步到逻辑类漏洞笔
     ++ 泛微-->e-mobile < 6.5 Ognl 表达式注入
     ++ Joomla-->joomscan
 
+---
 
-
-
-
-
-
-
-
+更新日期 2019.9.17~22
+0. ~ 修改部分文件排版和段落格式,路径错误,跳转链接
+   ~ 采用 CC BY-NC-SA 4.0 协议。
+1. Power-Pentest
+    ~ 修改大纲结构
+    ++ web 漏扫-->netsparker
+    ++ web 漏扫-->被动漏扫
+    ++ 另类-->截图-->domain_screen
+    ++ DNS 枚举-->LangSrcCurise
+    ++ 端口扫-->halive
+    ++ SRC/众测收集-->List of bug bounty writeups
+    ++ 物联网设备-->Router/Switch-->Realtek_switch_hacking
+    ++ Fuzz-->字典-->fuzzdb
+    ++ apt-->钓鱼-->blackeye
+    ++ cobaltstrike-->LuWu
+    ++ 运维保障-->基线-->Benchmarks
+    ++ Windows vul-->漏洞查询-->Windows提权EXP在线搜索工具
+2. 权限维持与反侦察笔记
+    ++ win-->后门用户
+3. Secure-Linux
+    ++ SSH-->ping 钥匙
+4. Speed-Linux
+    ~ 进程管理
+    ~ 读写
+5. nmap小记
+    ++ 加几个脚本使用方法
+6. web服务和中间件整合笔记
+    ++ 泛微-->e-cology OA Beanshell 组件远程代码执行
 
 
 

@@ -150,7 +150,7 @@ npm config delete proxy  # 取消代理
 ## 终端
 **proxychains**
 
-详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../../运维/Linux/Power-Linux.md)
+详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../../运维/Linux/Power-Linux.md##proxychains)
 - 使用方法:
     在需要代理的命令前加上 proxychains4,如:
     `proxychains4 wget http://xxx.com/xxx.zip`

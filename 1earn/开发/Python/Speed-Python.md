@@ -1,7 +1,66 @@
 # Spedd-Pyhon🐍
 `主要总结基础的语法和操作`
 
-# 安装/配置
+---
+
+# 推荐工具/资源
+- [pycharm](https://www.jetbrains.com/pycharm/)
+
+---
+
+# 安装/配置/报错
+## 安装
+**yum 安装**
+```bash
+yum install epel-release
+或
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+yum -y install python36 python36-devel
+
+wget https://bootstrap.pypa.io/get-pip.py	# 安装pip3
+python3 get-pip.py
+```
+
+**源代码编译方式安装**
+
+安装依赖环境
+```bash
+yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+```
+
+下载Python3
+
+`wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz`
+
+安装python3
+```bash
+mkdir -p /usr/local/python3
+tar zxvf Python-3.6.1.tgz
+cd Python-3.6.1
+./configure --prefix=/usr/local/python3
+make
+make install 或者 make && make install
+```
+
+添加到环境变量
+```bash
+ln -s /usr/local/python3/bin/python3 /usr/bin/python3
+```
+```vim
+vim ~/.bash_profile # 永久修改变量
+
+PATH=$PATH:/usr/local/python3/bin/
+```
+`source ~/.bash_profile	`
+
+检查 Python3 及 pip3 是否正常可用
+```bash
+python3 -V
+pip3 -V
+```
+
+---
+
 ## 打包
 安装 Pyinstaller
 ```bash
@@ -24,6 +83,10 @@ pyinstaller -F myfile.py
 
 exe文件生成
 如果程序打包过程没有报错，则会生成3个文件夹（有时候是2个），其中名为dist的文件夹中会有一个myfile.exe文件，运行一下，如果没有问题就打包成功，可以把这个exe文件单独拿出去用，其他的生成的文件夹可以删掉了。
+
+## 常见报错
+
+鸽
 
 ---
 

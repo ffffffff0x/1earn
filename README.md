@@ -15,18 +15,20 @@
     <img src="./assets/img/readme.jpg">
 </p>
 
-本项目的初衷是分享知识资源，内容涉及运维、安全、开发等领域，目前主攻安全部分，对于内容中有疑问或建议欢迎提交 issue，回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+**简介:** 本项目的初衷是分享知识资源，内容涉及运维、安全、开发等领域，目前主攻 ~~安全研究~~ 预防+治疗脱发问题，对于内容中有疑问或建议欢迎提交 issue，回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+
+**目标:** 成为最优秀的安全资源框架
+
+**更新时间:** 每周周某
 
 该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议。
-
-目标是成为最优秀的安全资源框架
 
 ---
 
 ## Manual
 ### 安全
 
-- **[Power-PenTest](./1earn/安全/Power-PenTest.md)** : 记录渗透资源/知识点 `注: 该文档是连接其下各个目录子文件的树`
+- **[Power-PenTest](./1earn/安全/Power-PenTest.md)** : 记录渗透资源/知识点  `注: 该文档是连接其下各个目录子文件的树`
 - **[Speed-PenTest](./1earn/安全/Speed-PenTest.md)** : 渗透测试时的思路 `注: 我一般会直接复制一副作为参考、信息记录、方便团队协作、出报告等😜`
 
 ### 运维
@@ -67,7 +69,7 @@
     - 我 python 学的太烂了，都不好意思拿出来🤣
 
 - **GO**
-    - 努力学习中
+    - 努力学习中,10月更新
 
 ---
 
@@ -106,6 +108,7 @@
 - 2019-7-21 02:16:04:半夜失眠,索性爬起来写点东西,发现power-pentest写下去字数可能会越来越少,因为会越来越精简,所有的细化内容会被拆分成各个小的笔记,怎么说呢?我不知道这算好算坏,我自认为没有能力写出一套网络安全的百科全书,不过凡事在于坚持嘛,说不定呢
 - 2019-8-14:之后的学习重点会放在渗透方面,运维内容只能说随缘更新了.
 - 2019-9-22:作为一个技术人员，在各种乌七八糟花里胡哨的概念忽脸而至时，应该能够保持理智，不要被各种人带节奏。不要做一名喜鹊开发者。
+- 2019-9-26:越努力，头发掉的越快
 
 ---
 
@@ -133,12 +136,10 @@
 - [安全客 - 有思想的安全新媒体](http://bobao.360.cn/)
 - [安全脉搏](https://www.secpulse.com/)
 - [Linux中国开源社区](https://linux.cn/)
-- [T00LS - 低调求发展 - 潜心习安全](https://www.t00ls.net/)
 - [看雪安全论坛 - www.pediy.com](http://bbs.pediy.com/)
 - [先知社区](https://xz.aliyun.com/)
 - [My Digital Life Forums](https://forums.mydigitallife.net/)
 - [Linux Commands](https://www.tecmint.com/category/linux-commands/)
-- [卡饭论坛](https://bbs.kafan.cn/index.php)
 - [阮一峰的网络日志](http://www.ruanyifeng.com/blog/)
 - [少数派 - 高品质数字消费指南](https://sspai.com/)
 - [小众软件](http://www.appinn.com/)

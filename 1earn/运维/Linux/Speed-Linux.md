@@ -410,13 +410,11 @@ wget --no-check-certificate	# 不检查 https 证书
 ### bt
 - Transmission
 - rtorrent
-
 - **[peerflix](https://github.com/mafintosh/peerflix)**
 	```bash
 	npm install -g peerflix
 	peerflix "magnet:?xt=urn:btih:ef330b39f4801d25b4245212e75a38634bfc856e"
 	```
-
 - **[tget](https://github.com/jeffjose/tget)**
 	```bash
 	npm install -g t-get
@@ -705,7 +703,7 @@ echo "test" > test.txt
 <ctrl+d>
 
 atq：列出用户的计划任务，如果是超级用户将列出所有用户的任务，结果的输出格式为：作业号、日期、小时、队列和用户名
-atrm：根据Job number删除at任务
+atrm：根据 Job number 删除 at 任务
 ```
 
 ### 账号管控
@@ -834,6 +832,17 @@ jobs	# 显示Linux中的任务列表及任务状态
 
 pidof program	# 找出 program 程序的进程 PID
 pidof -x script # 找出 shell 脚本 script 的进程 PID
+
+cmdline
+# 在Linux系统中，根据进程号得到进程的命令行参数，常规的做法是读取 /proc/{PID}/cmdline，并用'\0'分割其中的字符串得到进程的 args[]，例如下面这个例子：
+	# xxd /proc/7771/cmdline
+	0000000: 2f69 746f 612f 6170 702f 6d61 7665 2f62  /itoa/app/mave/b
+	0000010: 696e 2f6d 6176 6500 2d70 002f 6974 6f61  in/mave.-p./itoa
+	0000020: 2f61 7070 2f6d 6176 6500                 /app/mave.
+	通过分割其中的 0x00(C 语言字符串结束符)，可以把这个进程 args[]，解析出来：
+	args[0]=/itoa/app/mave/bin/mave
+	args[1]=-p
+	args[2]=/itoa/app/mave
 ```
 
 **查询负载、进程监控**
@@ -982,6 +991,20 @@ blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 例如 `#!/usr/bin/python` 相当于写死了 python 路径。
 
 而 `#!/usr/bin/env python` 会去环境设置寻找 python 目录,可以增强代码的可移植性,推荐这种写法。
+
+**常见问题**
+
+-  Linux 下运行 bash 脚本显示“: /usr/bin/env: "bash\r": 没有那个文件或目录
+
+	这主要是因为 bash 后面多了 \r 这个字符的原因。在 linux 终端下，输出 \r 会什么都不显示，只是把光标移到行首。于是终端虽然输出了 /usr/bin/env bash，但是碰到\r后，光标会被移到行首，接着输出了:No such file or directory 把前面的覆盖掉了。于是出现了那个莫名其妙的出错信息了
+
+	一般来说这是下载在 windows 下载 github 脚本后会遇到的问题,下载压缩包，在 linux 中解压，或直接使用 linux 下载
+
+	或者用 vim 打开 sh 脚本文件， 重新设置文件的格式
+    ```vim
+	：set ff=unix
+    ：wq!
+	```
 
 ## 编译
 ```bash

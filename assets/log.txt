@@ -407,5 +407,47 @@ power-pentest.md 修改逻辑类漏洞部分内容，移步到逻辑类漏洞笔
 6. web服务和中间件整合笔记
     ++ 泛微-->e-cology OA Beanshell 组件远程代码执行
 
+---
+
+更新日期 2019.9.24~30
+1. 业务软件vul整合笔记
+    ++ memecache 未授权的验证方法
+2. Speed-Linux
+    ++ Linux 编程 常见的问题
+3. web服务和中间件整合笔记
+    ++ phpMyAdmin-->CVE-2019-12922 & 4.9.0.1 CSRF
+4. Power-Pentest
+    ~ 大纲添加超链接
+    ~ 各种爆破-->Misc_Fuzz
+    ~ Fuzz-->Web_Fuzz
+    ~ 字典-->Web专用字典
+    + 应急-->恶意样本查询
+    + RedTeam-->web渗透-->Web_Fuzz-->web暴力破解-->jwt
+    ++ burp插件-->BurpSuite-Extender-MarkInfo
+    ++ CDN/查源IP-->fav-up
+5. burp小记
+    ++ 补充内容
+6. Speed-Linux
+    ++ 系统管理--系统信息--进程管理--进程处理-->cmdline
+7. web服务和中间件整合笔记
+    + 各类论坛/CMS/框架-->ThinkPHP
+    + 中间件/服务-->Apache Solr
+    + 中间件/服务-->Jenkins
+    + 中间件/服务-->Jira
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

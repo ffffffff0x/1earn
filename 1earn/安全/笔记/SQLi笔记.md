@@ -1,3 +1,20 @@
+# SQLi 笔记
+
+---
+
+## Reference
+
+
+---
+
+按 SQLMap 中的分类来看，SQL 注入类型有以下 5 种：
+```
+UNION query SQL injection(可联合查询注入)
+Stacked queries SQL injection(可多语句查询注入)
+Boolean-based blind SQL injection(布尔型注入)
+Error-based SQL injection(报错型注入)
+Time-based blind SQL injection(基于时间延迟注入)
+```
 
 
 **SQL 注入常规利用思路**
@@ -9,6 +26,9 @@
 5. 利用后台或了解的进一步信息，上传 webshell 或向数据库写入一句话木马，以进一步提权，直到拿到服务器权限。
 ```
 
+---
+
+# MYSQL
 **手动注入**
 - 手工注入思路
 
@@ -40,7 +60,15 @@
 
 
 
+---
 
+# MSSQL
+
+
+---
+
+
+# ORACLE
 
 
 

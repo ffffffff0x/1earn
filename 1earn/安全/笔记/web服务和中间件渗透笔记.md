@@ -17,18 +17,28 @@
 ## dedeCMS
 鸽
 
+---
+
 ## Discuz
 鸽
+
+---
 
 ## Drupal
 鸽
 
+---
+
 ## ECshop
 鸽
+
+---
 
 ## Joomla
 **工具**
 - [rezasp/joomscan](https://github.com/rezasp/joomscan)
+
+---
 
 ## [MetInfo](https://www.metinfo.cn/)
 **CVE-2018-13024**
@@ -43,7 +53,13 @@
 
     - `admin/column/save.php?name=123&action=editor&foldername=upload&module=22;@eval($_POST[1]);/*`
 
+---
+
 ## [phpMyAdmin](https://www.phpmyadmin.net/)
+**CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
+- POC | Payload | exp
+    - [phpMyAdmin 4.6.2 - (Authenticated) Remote Code Execution](https://www.exploit-db.com/exploits/40185)
+
 **LOAD DATA INFILE 任意文件读取漏洞**
 - POC | Payload | exp
     [Gifts/Rogue-MySql-Server](https://github.com/Gifts/Rogue-MySql-Server)
@@ -58,9 +74,55 @@
 
     回到db的终端，如果文件读取成功会将文件内容记录到 mysql.log 文件中
 
-**4.8.x 本地文件包含漏洞利用**
+**phpMyAdmin 4.7.x CSRF**
+- 文章
+    - [](http://blog.vulnspy.com/2018/06/10/phpMyAdmin-4-7-x-XSRF-CSRF-vulnerability-exploit/)
 
-- [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/) 可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
+**4.8.x 本地文件包含漏洞利用**
+- 文章
+    - [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/) 可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
+
+**phpmyadmin4.8.1后台getshell**
+- 文章
+    - [phpmyadmin4.8.1后台getshell](https://mp.weixin.qq.com/s/HZcS2HdUtqz10jUEN57aog)
+
+**CVE-2019-12922 & 4.9.0.1 CSRF**
+- POC | Payload | exp
+
+    - `<img src=" http://server/phpmyadmin/setup/index.php?page=servers&mode=remove&id=1" style="display:none;" />`
+    - https://www.hedysx.com/bug/2398.html
+
+---
+
+## ThinkPHP
+### <5
+**文章**
+- [thinkphp一些版本的通杀漏洞payload](http://www.moonsec.com/post-853.html)
+- [代码审计 | ThinkPHP3.x、5.x框架任意文件包含](https://bbs.ichunqiu.com/forum.php?mod=viewthread&tid=39586)
+- [Thinkphp2.1爆出重大安全漏洞](https://www.cnblogs.com/milantgh/p/3639178.html)
+- [ThinkPHP3.2.3框架实现安全数据库操作分析](https://xz.aliyun.com/t/79)
+- [ThinkPHP-漏洞分析集合 ](https://xz.aliyun.com/t/2812)
+- [ThinkPHP3.2 框架sql注入漏洞分析(2018-08-23)](https://xz.aliyun.com/t/2629)
+- [ Thinkphp框架 3.2.x sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38901-1-12.html)
+
+### 5
+**文章**
+- [ThinkPHP 5.x (v5.0.23及v5.1.31以下版本) 远程命令执行漏洞利用（GetShell）](https://www.vulnspy.com/cn-thinkphp-5.x-rce/)
+- [代码审计 | ThinkPHP3.x、5.x框架任意文件包含](https://bbs.ichunqiu.com/forum.php?mod=viewthread&tid=39586)
+- [ThinkPHP 5.0.x、5.1.x、5.2.x 全版本远程命令执行漏洞](https://blog.csdn.net/csacs/article/details/86668057)
+- [ThinkPHP v5.1.22曝出SQL注入漏洞](https://nosec.org/home/detail/1821.html)
+- [ThinkPHP-漏洞分析集合 ](https://xz.aliyun.com/t/2812)
+- [ThinkPHP 5.1.x SQL注入漏洞分析](https://www.freebuf.com/vuls/185420.html)
+- [ThinkPHP框架 < 5.0.16 sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38284-1-13.html)
+- [ThinkPHP 5.x 远程命令执行漏洞利用过程](https://laucyun.com/a9142c328b103cd86a3715bd5073c4be.html)
+
+**工具**
+- [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection)
+
+**资源**
+- [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln)
+
+---
 
 ## [YxCMS](http://www.yxcms.net/index.html)
 **常见路径**
@@ -72,12 +134,14 @@
 - 文章
     - [YxCMS 1.4.7 最新版漏洞分析](https://bbs.ichunqiu.com/thread-45926-1-1.html)
 
+---
+
 ## 泛微
 **e-mobile < 6.5 Ognl 表达式注入**
 - 文章
     - [关于表达式注入的小记录](https://zhuanlan.zhihu.com/p/26052235)
     - [泛微 E-Mobile Ognl 表达式注入](https://blog.csdn.net/qq_27446553/article/details/68203308)
-    - [泛微E-Mobile Ognl 表达式注入](https://docs.ioin.in/writeup/www.sh0w.top/_index_php_archives_14_/index.html)
+    - [泛微 E-Mobile Ognl 表达式注入](https://docs.ioin.in/writeup/www.sh0w.top/_index_php_archives_14_/index.html)
 
 - POC | Payload | exp
     ```
@@ -87,9 +151,15 @@
 **e-cology OA Beanshell 组件远程代码执行**
 - 文章
     - [[漏洞预警]泛微e-cology OA Beanshell组件远程代码执行分析](https://mp.weixin.qq.com/s/Hr6fSOaPcTp2YaD-fPMxyg)
+    - [泛微e-cology OA Beanshell组件远程代码执行漏洞复现](https://mp.weixin.qq.com/s/LpXiLukOKMfMSa8gUYBqNA)
 
 - POC | Payload | exp
     - [jas502n/e-cology](https://github.com/jas502n/e-cology)
+    ```
+    /weaver/bsh.servlet.BshServlet
+    ```
+
+---
 
 ## 致远 OA
 **A8-OA-seeyon-RCE**
@@ -105,59 +175,6 @@
 **toolkit**
 - [hatRiot/clusterd](https://github.com/hatRiot/clusterd)
 
-## 编辑器
-
-**手册**
-- [编辑器漏洞手册](https://navisec.it/%e7%bc%96%e8%be%91%e5%99%a8%e6%bc%8f%e6%b4%9e%e6%89%8b%e5%86%8c/)
-
-**ewebeditor**
-- 文章
-    - [ewebeditor 编辑器漏洞总结](https://www.0dayhack.com/post-426.html)
-
-- 常用路径
-    ```
-    Admin_Login.asp 登录页面
-    Admin_Default.asp 管理首页
-    Admin_Style.asp
-    Admin_UploadFile.asp
-    Upload.asp
-    Admin_ModiPwd.asp
-    eWebEditor.asp
-    db/ewebeditor.mdb 默认数据库路径
-    ewebeditor/login_admin.asp
-    eweb/login_admin.asp
-    editor/login_admin.asp
-    ```
-
-**FCKeditor**
-- 文章
-    - [Fckeditor上传漏洞利用拿shell总结](https://www.0dayhack.com/post-413.html)
-
-- 常用路径
-    ```
-    FCKeditor/_samples/default.html   查看编辑器版本
-    FCKeditor/_whatsnew.html
-    fckeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/
-    FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/
-    FCKeditor/editor/filemanager/browser/default/browser.html?type=Image&connector=connectors/asp/connector.asp
-    FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=http://www.test.com%2Ffckeditor%2Feditor%2Ffilemanager%2Fconnectors%2Fphp%2Fconnector.php
-    FCKeditor/_samples/asp/sample01.asp
-    FCKeditor/_samples/asp/sample02.asp
-    FCKeditor/_samples/asp/sample03.asp
-    FCKeditor/_samples/asp/sample04.asp
-    ```
-
-**kindeditor**
-- **kindeditor<=4.1.5 上传漏洞**
-    - 文章
-        - [kindeditor<=4.1.5上传漏洞复现](https://www.cnblogs.com/backlion/p/10421405.html)
-
-    - 漏洞修复
-        1. 直接删除 `upload_json.*` 和 `file_manager_json.*`
-        2. 升级 kindeditor 到最新版本
-
----
-
 ## ActiveMQ
 **测试链接**
 
@@ -165,13 +182,20 @@
 
 ---
 
-## Apache
-**CVE-2017-9798** Optionsbleed 服务器内存信息泄漏漏洞
-- 文章
-    - [Optionsbleed 漏洞泄露 Apache Server 的内存信息](https://www.freebuf.com/vuls/148525.html)
+## Apache shiro
+**Shiro 反序列化 RCE**
 
+鸽
+
+---
+
+## Apache Solr
+**资源**
+- [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
+
+**CVE-2019-0192 Apache Solr RCE 5.0.0 to 5.5.5 and 6.0.0 to 6.6.5**
 - POC | Payload | exp
-    - [hannob/optionsbleed](https://github.com/hannob/optionsbleed)
+    https://github.com/mpgn/CVE-2019-0192/
 
 ---
 
@@ -288,16 +312,6 @@ Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路�
 
 ---
 
-## JBOSS
-**工具**
-- [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss)
-
-**未授权访问漏洞**
-
-- `http://<ip>:8080/jmx-console`
-
----
-
 ## IIS
 **IIS shortname**
 
@@ -351,7 +365,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 如果我们请求的文件/文件夹名同时存在大小写时，这个请求会被请求两次，一次是原封不动的请求，一次是全部使用小写的请求。
 
 下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-![image](../../../assets/img/渗透/1.jpg)
+![image](../../../assets/img/安全/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
 - POC | Payload | exp
@@ -366,8 +380,74 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 ---
 
+## JBOSS
+**工具**
+- [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss)
+
+**未授权访问漏洞**
+
+- `http://<ip>:8080/jmx-console`
+
+---
+
+## Jenkins
+**资源**
+- [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
+- [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
+- [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
+- [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
+
+**CVE-2018-1999001**
+- 文章
+    - [Jenkins配置文件路径改动导致管理员权限开放漏洞(CVE-2018-1999001) ](https://mp.weixin.qq.com/s/O_Ni4Xlsi4uHRcyv3SeY5g)
+
+**CVE-2018-1999002**
+- 文章
+    - [安全研究 | Jenkins 任意文件读取漏洞分析](https://bbs.ichunqiu.com/thread-43283-1-1.html)
+
+**cve-2019-1003000**
+- 文章
+    - [Jenkins未授权访问RCE漏洞复现记录 | angelwhu_blog](https://www.angelwhu.com/blog/?p=539)
+    - [Jenkins RCE CVE-2019-1003000 漏洞复现](https://blog.51cto.com/13770310/2352740)
+
+- POC | Payload | exp
+    - [adamyordan/cve-2019-1003000-jenkins-rce-poc: Jenkins RCE Proof-of-Concept: SECURITY-1266 / CVE-2019-1003000 (Script Security), CVE-2019-1003001 (Pipeline: Groovy), CVE-2019-1003002 (Pipeline: Declarative)](https://github.com/adamyordan/cve-2019-1003000-jenkins-rce-poc)
+
+**CVE-2019-10320**
+- 文章
+    - [Exploring the File System via Jenkins Credentials Plugin Vulnerability – CVE-2019-10320 | Nightwatch Cybersecurity](https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-via-jenkins-credentials-plugin-vulnerability-cve-2019-10320/)
+
+---
+
+## Jira
+**CVE-2019-8451**
+- POC | Payload | exp
+    - [jas502n/CVE-2019-8451](https://github.com/jas502n/CVE-2019-8451)
+
+---
+
+## Resin
+**文章**
+- [针对Resin服务的攻击向量整理](https://blkstone.github.io/2017/10/30/resin-attack-vectors/)
+
+**Resin 任意文件读取漏洞**
+- 文章
+
+- **文章**
+    - [Resin任意文件读取漏洞](https://www.cnblogs.com/KevinGeorge/p/8953731.html)
+
+---
+
+## Spring-boot
+**CVE-2018-1273 Spring Data Commons RCE 远程命令执行漏洞**
+- POC | Payload | exp
+    - [wearearima/poc-cve-2018-1273](https://github.com/wearearima/poc-cve-2018-1273)
+    - [jas502n/cve-2018-1273](https://github.com/jas502n/cve-2018-1273)
+
+---
+
 ## Weblogic
-`老版本 weblogic 有一些常见的弱口令，比如 weblogic、system、portaladmin 和 guest 等，用户名密码交叉使用。`
+`老版本 weblogic 有一些常见的弱口令，比如 weblogic、system、portaladmin 和 guest,Oracle@123 等，用户名密码交叉使用。`
 
 **工具**
 - [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan)
@@ -376,6 +456,10 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 **文章**
 - [利用Weblogic进行入侵的一些总结](http://drops.xmd5.com/static/drops/tips-8321.html)
+- [Weblogic JRMP反序列化漏洞回顾](https://xz.aliyun.com/t/2479)
+- [Oracle WebLogic RCE反序列化漏洞分析](https://www.anquanke.com/post/id/162390)
+- [【漏洞预警】WebLogic T3 反序列化绕过漏洞 & 附检测POC](https://www.secfree.com/a/957.html)
+- [Weblogic 常见漏洞分析](https://hellohxk.com/blog/weblogic/)
 
 **CVE-2009-1975**
 - POC | Payload | exp
@@ -454,3 +538,55 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
     - [MyTools/CVE-2019-2725](https://github.com/No4l/MyTools/tree/master/CVE-2019-2725)
     - [skytina/CNVD-C-2019-48814-COMMON](https://github.com/skytina/CNVD-C-2019-48814-COMMON)
     - [lufeirider/CVE-2019-2725](https://github.com/lufeirider/CVE-2019-2725)
+
+---
+
+## 编辑器
+**手册**
+- [编辑器漏洞手册](https://navisec.it/%e7%bc%96%e8%be%91%e5%99%a8%e6%bc%8f%e6%b4%9e%e6%89%8b%e5%86%8c/)
+
+**ewebeditor**
+- 文章
+    - [ewebeditor 编辑器漏洞总结](https://www.0dayhack.com/post-426.html)
+
+- 常用路径
+    ```
+    Admin_Login.asp 登录页面
+    Admin_Default.asp 管理首页
+    Admin_Style.asp
+    Admin_UploadFile.asp
+    Upload.asp
+    Admin_ModiPwd.asp
+    eWebEditor.asp
+    db/ewebeditor.mdb 默认数据库路径
+    ewebeditor/login_admin.asp
+    eweb/login_admin.asp
+    editor/login_admin.asp
+    ```
+
+**FCKeditor**
+- 文章
+    - [Fckeditor上传漏洞利用拿shell总结](https://www.0dayhack.com/post-413.html)
+
+- 常用路径
+    ```
+    FCKeditor/_samples/default.html   查看编辑器版本
+    FCKeditor/_whatsnew.html
+    fckeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/
+    FCKeditor/editor/filemanager/browser/default/connectors/asp/connector.asp?Command=GetFoldersAndFiles&Type=Image&CurrentFolder=/
+    FCKeditor/editor/filemanager/browser/default/browser.html?type=Image&connector=connectors/asp/connector.asp
+    FCKeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=http://www.test.com%2Ffckeditor%2Feditor%2Ffilemanager%2Fconnectors%2Fphp%2Fconnector.php
+    FCKeditor/_samples/asp/sample01.asp
+    FCKeditor/_samples/asp/sample02.asp
+    FCKeditor/_samples/asp/sample03.asp
+    FCKeditor/_samples/asp/sample04.asp
+    ```
+
+**kindeditor**
+- **kindeditor<=4.1.5 上传漏洞**
+    - 文章
+        - [kindeditor<=4.1.5上传漏洞复现](https://www.cnblogs.com/backlion/p/10421405.html)
+
+    - 漏洞修复
+        1. 直接删除 `upload_json.*` 和 `file_manager_json.*`
+        2. 升级 kindeditor 到最新版本

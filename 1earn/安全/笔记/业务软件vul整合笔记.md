@@ -160,6 +160,13 @@
 
     `nc -vv <ip> 11211`
 
+    ```bash
+    set aaa 0 10 9  # 存个 aaa 值
+    memcached
+
+    get aaa # 读这个值
+    ```
+
 ### MS SQL Server
 **文章**
 - [从攻击MS SQL Server到获得系统访问权限](https://www.freebuf.com/articles/database/22997.html)

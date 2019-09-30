@@ -22,6 +22,8 @@ sqlmap -u URL --batch   # 不要请求用户输入，使用默认行为
 sqlmap -r aaa.txt   # post型注入
 
 sqlmap -u URL -dbms mysql -level 3   # 指定数据库类型为 mysql，级别为 3（共 5 级，级别越高，检测越全面）
+
+sqlmap -u URL --dbms mysql --prefix "%df%27" --technique U -v 3   # 宽字节检测
 ```
 
 **获取信息**

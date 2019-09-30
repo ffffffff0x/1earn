@@ -1458,8 +1458,6 @@ engines:
     categories : it
     base_url : https://directory.fsf.org/
     number_of_results : 5
-# what part of a page matches the query string: title, text, nearmatch
-# title - query matches title, text - query matches the text of page, nearmatch - nearmatch in title
     search_type : title
     timeout : 5.0
 
@@ -1819,9 +1817,17 @@ authorization: enabled
 
   在 CentOS 和 Red Hat 系统中,首先添加 EPEL 仓库,然后更新 yum 源:
 
-  `yum install epel-release`
+  ```bash
+  wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+  yum update
+  yum clean all
+  yum makecache
+  yum install redis
+  ```
 
-  `yum install redis`
+  在 debian 中
+
+  `apt install redis-server`
 
   安装好后启动 Redis 服务即可
 
@@ -1831,14 +1837,16 @@ authorization: enabled
 
   在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载
 
-  `wget http://download.redis.io/releases/redis-4.0.1.tar.gz`
+  `wget http://download.redis.io/releases/redis-5.0.5.tar.gz`
 
   安装
   ```bash
-  tar -zxvf redis-4.0.1.tar.gz
-  cd redis-4.0.1
+  tar -zxvf redis-5.0.5.tar.gz
+  cd redis-5.0.5
   make
+  yum install tcl tcl-devel -y
   make test
+  make MALLOC=libc
   make install
   ```
   ```bash
@@ -2455,7 +2463,7 @@ vim ~/.bash_profile # 永久修改变量
 
 PATH=$PATH:/usr/local/python3/bin/
 ```
-`source ~/.bash_profile	`
+`source ~/.bash_profile`
 
 检查 Python3 及 pip3 是否正常可用
 ```bash
@@ -2543,7 +2551,7 @@ supervisorctl update
 ```
 
 **Reference**
-- [Supervisor安装与配置（Linux/Unix进程管理工具）](https://blog.csdn.net/xyang81/article/details/51555473)
+- [Supervisor 安装与配置（Linux/Unix 进程管理工具）](https://blog.csdn.net/xyang81/article/details/51555473)
 
 ---
 

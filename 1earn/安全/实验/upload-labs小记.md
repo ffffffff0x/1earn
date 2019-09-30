@@ -41,7 +41,7 @@
 ## Pass-01-js 检查
 检测规则: 在客户端使用 js 对不合法图片进行检查
 
-`payload: 直接禁用JS 或 burp 抓包修改文件后缀名`
+`payload: 直接禁用 JS 或 burp 抓包修改文件后缀名`
 
 ## Pass-02-验证 Content-type
 
@@ -53,7 +53,7 @@
 
 检测规则: 禁止上传 .asp|.aspx|.php|.jsp 后缀文件
 
-利用 PHP 的一些可解析后缀比如：php3 、php4、php5、phtml 等等
+利用 PHP 的一些可解析后缀比如：pht、php3 、php4、php5、phtml 等等
 
 `payload: 上传文件后缀改为 php3 `
 

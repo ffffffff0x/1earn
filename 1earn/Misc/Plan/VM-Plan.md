@@ -62,7 +62,6 @@ yum install open-vm-tools-devel -y
 
 1.预装软件(持续更新)
 ```bash
-bzip2
 vim
 python2
 python3
@@ -89,7 +88,7 @@ Centos
 
 3.网络设置
 ```bash
-dns:208.67.222.222 114.114.114.114
+dns:208.67.222.222 223.5.5.5
 软件包换源:aliyun 源或 163、tuna 源
 pip 换源
 docker 换源
@@ -125,8 +124,6 @@ chrome
 渗透/靶机
   python
   java
-  CTF工具
-    ctftools
   各类扫描工具(exe/python/go)
   burp
     常见插件
@@ -159,7 +156,6 @@ disk:60G
 5.功能要求
 ```bash
 开启 RDP
-开启 ssh，telnet 功能(客户端、服务端)
 
 更新到最新版本，打好补丁
 记得激活(笑

@@ -81,6 +81,7 @@
 
 - POC | Payload | exp
     - [WyAtu/CVE-2018-20250](https://github.com/WyAtu/CVE-2018-20250)
+    - [Ridter/acefile](https://github.com/Ridter/acefile)
 
 ---
 
@@ -571,11 +572,15 @@
 ---
 
 ## 远程服务
-
 ### Java RMI
 **JAVA RMI 反序列化远程命令执行漏洞**
+- 文章
+    - [Java RMI 反序列化漏洞检测工具的编写](https://www.anquanke.com/post/id/85681)
+    - [JAVA反序列化之 Rmi命令执行漏洞分析](https://www.freebuf.com/column/200796.html)
+    - [JAVA RMI 反序列化远程命令执行漏洞](https://blog.csdn.net/LeeHDsniper/article/details/71599504)
 
-鸽
+- POC | Payload | exp
+    - [frohoff/ysoserial: A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.](https://github.com/frohoff/ysoserial)
 
 ### OpenSSH
 **CVE-2018-15473 OpenSSH 用户枚举漏洞**
@@ -627,9 +632,10 @@
     `dmidecode -s system-product-name`
 
 ### Docker
-**未授权访问漏洞**
-
-- `http://<ip>:2375/version`
+**docker remote api 未授权访问**
+- POC | Payload | exp
+    - `http://<ip>:2375/version`
+    - [netxfly/docker-remote-api-exp](https://github.com/netxfly/docker-remote-api-exp)
 
 ## 仓库
 ### Nexus

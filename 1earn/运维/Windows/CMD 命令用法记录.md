@@ -134,6 +134,8 @@ net password 密码 更改系统登陆密码
 
 `finger username @host` 查看最近有哪些用户登陆
 
+`sc showsid server` 查看 SID
+
 **slmgr.vbs**
 ```cmd
 slmgr.vbs -dlv :显示详细的许可证信息

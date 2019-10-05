@@ -15,22 +15,22 @@
 
 # 各类论坛/CMS/框架
 ## dedeCMS
-鸽
+![image](../../../assets/img/才怪.png)
 
 ---
 
 ## Discuz
-鸽
+![image](../../../assets/img/才怪.png)
 
 ---
 
 ## Drupal
-鸽
+![image](../../../assets/img/才怪.png)
 
 ---
 
 ## ECshop
-鸽
+![image](../../../assets/img/才怪.png)
 
 ---
 
@@ -185,7 +185,7 @@
 ## Apache shiro
 **Shiro 反序列化 RCE**
 
-鸽
+![image](../../../assets/img/才怪.png)
 
 ---
 
@@ -204,7 +204,7 @@
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
 - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
 
-**环境收集**
+**环境搭建**
 - [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
 - [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx)
 - [https://github.com/shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
@@ -397,6 +397,10 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 - [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
 - [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
 
+**CVE-2017-1000353**
+- POC | Payload | exp
+    - [vulhub/CVE-2017-1000353](https://github.com/vulhub/CVE-2017-1000353)
+
 **CVE-2018-1999001**
 - 文章
     - [Jenkins配置文件路径改动导致管理员权限开放漏洞(CVE-2018-1999001) ](https://mp.weixin.qq.com/s/O_Ni4Xlsi4uHRcyv3SeY5g)
@@ -453,6 +457,9 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 - [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan)
 - [rabbitmask/WeblogicScan](https://github.com/rabbitmask/WeblogicScan)
 - [rabbitmask/WeblogicScanLot](https://github.com/rabbitmask/WeblogicScanLot)
+
+**环境搭建**
+- [QAX-A-Team/WeblogicEnvironment](https://github.com/QAX-A-Team/WeblogicEnvironment)
 
 **文章**
 - [利用Weblogic进行入侵的一些总结](http://drops.xmd5.com/static/drops/tips-8321.html)

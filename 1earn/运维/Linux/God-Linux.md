@@ -7,25 +7,36 @@
 ---
 
 # bash
-
 ``` bash
-!$：上一个命令的最后一个参数。例如：上一条命令（vim test.txt），cat !$ = cat test.txt
+# 上一个命令的最后一个参数。例如：上一条命令（vim test.txt），cat !$ = cat test.txt
+!$
 
-一个命令创建项目的目录结构
+# 以 root 身份运行最后一个命令
+sudo !!
+
+# 切换到上一个目录
+cd -
+
+# 一个命令创建项目的目录结构
 mkdir -vp scf/{lib/,bin/,doc/{info,product},logs/{info,product},service/deploy/{info,product}}
 
-筛选出命令中错误的输出，方便找到问题
+# 筛选出命令中错误的输出，方便找到问题
 yum list 1 > /dev/null
 
-查看自己的外网地址
-curl ifconfig.me
-
-优雅的使用 linux
+# 优雅的使用 linux
 alias please="sudo"
 ```
 
-## shell
+## net
+```bash
+# 在当前目录起个 8080 端口的 HTTP 服务
+python -m SimpleHTTPServer 8080
 
+# 查看自己的外网地址
+curl ifconfig.me
+```
+
+## shell
 **fork 炸弹**
 ```bash
 :(){:|:&};:
@@ -48,7 +59,6 @@ let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xarg
 ```
 
 ## VIM
-
 ``` bash
 无 root 权限，保存编辑的文件
 :w !sudo tee %

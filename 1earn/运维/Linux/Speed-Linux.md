@@ -24,6 +24,8 @@
 			- 改
 2. net
 	- 配置
+	- 查看
+	- 抓包
 	- 传输/下载
 		- bt
 	- Firewall
@@ -338,6 +340,7 @@ BOOTPROTO=static	# 使用静态 IP,而不是由 DHCP 分配 IP
 IPADDR=172.16.102.61
 PREFIX=24
 GATEWAY=172.16.102.254
+DNS1=223.5.5.5
 ```
 ```vim
 vim /etc/hosts
@@ -345,6 +348,7 @@ vim /etc/hosts
 127.0.0.1  test localhost	# 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
 ```
 ```bash
+service network restart
 systemctl restart NetworkManager	# 重启网络管理
 systemctl enable NetworkManager
 ```
@@ -382,8 +386,85 @@ ROUTES=(gateway)
 
 ---
 
-## 传输/下载
+## 查看
+**IP**
+```bash
+ifconfig
+ip a
+```
 
+**端口**
+```bash
+getent services # 查看所有服务的默认端口名称和端口号
+ss -tnlp
+```
+
+**路由表**
+```bash
+route
+ip r
+```
+
+---
+
+## 抓包
+**tcpdump**
+```bash
+# 安装
+apt install tcpdump -y
+yum install tcpdump -y
+
+# 当我们在没用任何选项的情况下运行 tcpdump 命令时，它将捕获所有接口上的数据包
+tcpdump -i {接口名}	# 指定接口
+
+# 假设我们想从特定接口（如 enp0s3）捕获 12 个数据包
+tcpdump -i enp0s3 -c 12
+
+# 使用 -D 选项显示 tcpdump 命令的所有可用接口，
+tcpdump -D
+
+# 默认情况下，在 tcpdump 命令输出中，不显示可读性好的时间戳，如果您想将可读性好的时间戳与每个捕获的数据包相关联，那么使用 -tttt 选项，示例如下所示
+tcpdump -i enp0s3 -c 12 -tttt
+
+# 使用 tcpdump 命令中的 -w 选项将捕获的 TCP/IP 数据包保存到一个文件中
+tcpdump -i enp0s3 -c 12 -tttt -w test.pcap	# 注意：文件扩展名必须为 .pcap
+
+# 捕获并保存大小大于 N 字节的数据包。
+tcpdump -i enp0s3 -c 12 -tttt -w test.pcap greater 1024
+# 捕获并保存大小小于 N 字节的数据包。
+tcpdump -i enp0s3 -c 12 -tttt -w test.pcap less 1024
+
+# 使用选项 -r 从文件中读取这些数据包
+tcpdump -r test.pcap -tttt
+
+# 只捕获特定接口上的 IP 地址数据包
+tcpdump -i enp0s3 -n
+
+# 使用 tcp 选项来只捕获 TCP 数据包
+tcpdump -i enp0s3 tcp
+
+# 从特定接口 enp0s3 上的特定端口（例如 22）捕获数据包
+tcpdump -i enp0s3 port 22
+
+# 使用 src 关键字后跟 IP 地址，捕获来自特定来源 IP 的数据包
+tcpdump -i enp0s3 -n src 1.1.1.1
+
+# 捕获来自特定目的 IP 的数据包
+tcpdump -i enp0s3 -n dst 1.1.1.1
+
+# 假设我想捕获两台主机 169.144.0.1 和 169.144.0.20 之间的 TCP 数据包
+tcpdump -w test2.pcap -i enp0s3 tcp and \(host 169.144.0.1 or host 169.144.0.20\)
+
+# 只捕获两台主机之间的 SSH 数据包流
+tcpdump -w test3.pcap -i enp0s3 src 169.144.0.1 and port 22 and dst 169.144.0.20 and port 22
+
+# 使用 tcpdump 命令，以 ASCII 和十六进制格式捕获 TCP/IP 数据包
+tcpdump -c 10 -A -i enp0s3
+```
+
+---
+
+## 传输/下载
 **scp**
 ```bash
 scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt	# 文件传输
@@ -519,8 +600,8 @@ deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
 deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
 
 # 官方源
-# deb http://http.kali.org/kali kali-rolling main non-free contrib
-# deb-src http://http.kali.org/kali kali-rolling main non-free contrib
+deb http://http.kali.org/kali kali-rolling main non-free contrib
+deb-src http://http.kali.org/kali kali-rolling main non-free contrib
 ```
 `apt-get update && apt-get upgrade && apt-get dist-upgrade`
 
@@ -598,7 +679,6 @@ apt-get update && apt-get upgrade && apt-get dist-upgrade
 rm -rf /var/lib/dpkg/lock	# 强制解锁占用
 
 # 常用软件
-apt install vim
 apt install python
 apt install gcc
 apt install gcc-++
@@ -659,16 +739,18 @@ insert 模式按 ESC 键,返回 Normal 模式
 ### 时间
 
 ```bash
+date	# 查看当前时间
+date -R	# 查看当前时区
 data -s "2019-03-31 13:12:29"	# 修改系统时间
 
 ntpdate	# 设置本地日期和时间
 	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
 
 hwclock	   # 硬件时钟访问工具
-	hwclock –w # 将系统时钟同步到硬件时钟
+	hwclock –w # 将系统时钟同步到硬件时钟，将当前时间和日期写入 BIOS，避免重启后失效
 	hwclock -s # 将硬件时钟同步到系统时钟
 
-cal 2019	# 2019 日历
+cal	# 查看日历
 ```
 
 ### 语言
@@ -714,7 +796,7 @@ whoami	# 当前用户
 groups	# 当前组
 
 useradd -d /home/<用户名> -s /sbin/nologin <用户名>  # 创建用户
-passwd <密码>	# 设置密码
+passwd <用户>>	# 设置用户密码
 
 addgroup <组名>	# 创建组
 addgroup <用户名> <组名>	# 移动用户到组
@@ -853,6 +935,7 @@ vmstat	# 显示虚拟内存状态
 ps	# 报告当前系统的进程状态
 	ps -aux #显示现在所有用户所有程序
 	# 由于ps命令能够支持的系统类型相当的多，所以选项多的离谱，这里略
+pidstat -u -p ALL	# 查看所有进程的 CPU 使用情况
 ```
 
 ---

@@ -435,15 +435,43 @@ power-pentest.md 修改逻辑类漏洞部分内容，移步到逻辑类漏洞笔
     + 中间件/服务-->Jenkins
     + 中间件/服务-->Jira
 
+---
 
+更新日期 2019.10.1~6
+0. Linux-实验下的笔记全部重新排版一遍,word 用 markdown 重写
+安全
+1. Power-Pentest
+    + LAN-WAN-->DDOS
+    + 业务/协议类vul-->SMTP-->邮件检测
+    + BlueTeam-->事件响应-->应急-->URL分析
+    ++ web渗透-->进阶玩法-->bypass-disable_functions
+    ++ 信息收集-->网站-->CDN/查源IP
+    ++ 工控/IoT/物理-->物联网设备-->议题
+    ++ Misc_Fuzz-->服务-端口爆破
+    ++ Misc-->apt-->压缩包攻击-->明文攻击
+    ~ 运维保障 基线合并到加固
+2. web服务和中间件整合笔记
+    + Weblogic-->环境搭建
+    ++ Jenkins-->CVE-2017-1000353
+3. 业务软件vul整合笔记
+    ++ 远程服务-->Java RMI-->JAVA RMI 反序列化远程命令执行漏洞
+    ++ Docker-->docker remote api 未授权访问
+4. sqlmap小记
+    ++ 常见操作-->检测注入
+    ++ 常见操作-->获取信息
 
+运维
+1. Power-Linux
+    + SSH-->排错
+2. God-Linux
+    ~ 修改分类
+    + net
+    ++ bash
+3. Speed-Linux
+    + net-->抓包
+    + net-->查看
 
-
-
-
-
-
-
+---
 
 
 

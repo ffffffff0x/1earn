@@ -154,6 +154,8 @@ vim /etc/security/limits.conf
 
 **查**
 ```bash
+getent services # 查看所有服务的默认端口名称和端口号
+
 lsof -i -P  # 显示进程使用端口使用情况
 lsof -i:22  # 只查 22 端口
 
@@ -319,7 +321,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **使用 Fail2ban**
 
-    - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md) --> 安全服务 --> Fail2ban 部分
+    - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md##[Fail2ban](https://github.com/fail2ban/fail2ban))
 
 ---
 

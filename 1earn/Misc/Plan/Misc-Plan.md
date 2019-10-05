@@ -52,7 +52,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 - [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的 DNS 代理,感觉没上面两个好用)
 
 **服务器推荐**
-- 国内:110.6.6.6、14.114.114.114
+- 国内:223.5.5.5、114.114.114.114
 - 全球:208.67.222.222、208.67.220.220
 
 ---

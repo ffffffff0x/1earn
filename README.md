@@ -54,6 +54,7 @@
 
 - **Plan**
     - **[Misc-Plan](./1earn/Misc/Plan/Misc-Plan.md)** : 各种小技巧
+    - **[Team-Plan](./1earn/Misc/Plan/Team-Plan.md)** : 团队协作解决方案
     - **[VM-Plan](./1earn/Misc/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
 
 - **Tools**

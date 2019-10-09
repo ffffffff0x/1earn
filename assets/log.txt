@@ -520,6 +520,26 @@ Misc
 2. Web-Tools
     + 添加基本内容
 
+---
+
+更新日期 2019.10.9
+
+Misc
+1. Team-Plan
+    + 添加基本内容
+
+安全
+1. Power-Pentest
+    ~ 修改大纲中无法跳转的问题
+
+运维
+1. Speed-Linux
+    ~ 重写大纲
+2. Power-Linux
+    ~ 重写大纲
+
+
+
 
 
 

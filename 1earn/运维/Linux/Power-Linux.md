@@ -13,73 +13,101 @@
 ---
 
 ## 大纲
-```markdown
-1. 系统配置
-  - Net
-  - 配置本地 yum 源,挂载,安装
-  - RAID
-  - Lvm 物理卷
-2. 网络服务
-	- AdguardTeam
-	- Chrony
-	- cloud-torrent
-	- DHCP
-	- DNS
-	- Kicktart
-	- OpenVPN
-	- proxychains
-	- SSH
-3. web 服务
-	- Apache
-	- Caddy
-	- Rpm & Node
-	- PHP
-	- Nginx
-  - Tomcat
-	- phpMyAdmin
-	- Wordpress
-	- Mijisou
-4. 数据库
-	- Relational
-		- Oracle
-		- Mariadb
-		- MySQL
-		- Postgresql
-	- Document
-		- MongoDB
-	- Key-value
-		- Redis
-		- Memcached
-5. 文本工具
-	- Vim
-6. 文件服务
-	- filebrowser
-	- NFS
-	- Samba
-	- Vsftp
-7. 编程语言
-	- C
-	- Go
-	- JDK
-	- Python3
-	- Ruby
-8. 管理工具
-	- Supervisor
-  - Webmin
-9. 系统监控
-	- Zabbix
-10. 虚拟化
-	- Docker
-11. CI
-	- Jenkins
-12. 堡垒机
-	- Jumpserver
-13. 安全服务
-	- ClamAV
-	- Fail2ban
-14. 仓库
-  - Nexus
-```
+
+**系统配置**
+
+* [Net](#Net)
+* [RAID](#RAID)
+* [Lvm](#Lvm)
+
+**网络服务**
+
+* [AdguardTeam](#AdguardTeam)
+* [Chrony](#Chrony)
+* [cloud-torrent](#cloud-torrent)
+* [DHCP](#DHCP)
+* [DNS](#DNS)
+* [Kicktart](#Kicktart)
+* [OpenVPN](#OpenVPN)
+* [proxychains](#proxychains)
+* [SSH](#SSH)
+
+**web 服务**
+
+* [Apache](#Apache)
+* [Caddy](#Caddy)
+* [npm & Node](#npm&Node)
+* [PHP](#PHP)
+* [Nginx](#Nginx)
+* [phpMyAdmin](#phpMyAdmin)
+* [Tomcat](#Tomcat)
+* [Wordpress](#Wordpress)
+* [Mijisou](#Mijisou)
+
+**数据库**
+
+* [Relational](#Relational)
+  * [Oracle](#Oracle)
+  * [Mariadb](#Mariadb)
+  * [MySQL](#MySQL)
+  * [Postgresql](#Postgresql)
+* [Document](#Document)
+  * [MongoDB](#MongoDB)
+* [Key-value](#Key-value)
+  * [Redis](#Redis)
+  * [Memcached](#Memcached)
+
+**文本工具**
+
+* [Vim](#Vim)
+
+**文件服务**
+
+* [filebrowser](#filebrowser)
+* [NFS](#NFS)
+* [Samba](#Samba)
+* [Vsftp](#Vsftp)
+
+**编程语言**
+
+* [C](#C)
+* [Go](#Go)
+* [JDK](#JDK)
+* [Python3](#Python3)
+* [Ruby](#Ruby)
+
+**管理工具**
+
+* [Supervisor](#Supervisor)
+* [Webmin](#Webmin)
+
+**系统监控**
+
+* [Zabbix](#Zabbix)
+
+**虚拟化**
+
+* [Docker](#Docker)
+
+**CI**
+
+* [Jenkins](#Jenkins)
+
+**堡垒机**
+
+* [Jumpserver](#Jumpserver)
+
+**安全服务**
+
+* [ClamAV](#ClamAV)
+* [Fail2ban](#Fail2ban)
+
+
+**仓库**
+
+* [Nexus](#Nexus)
+
+
 
 ---
 
@@ -114,40 +142,6 @@ vim /etc/resolv.conf
 nameserver 8.8.8.8
 ```
 `service network restart`
-
----
-
-## 配置本地 yum 源,挂载,安装
-
-**挂载**
-
-`mkdir /mnt/cdrom`
-
-`mount /dev/cdrom /mnt/cdrom/`
-
-**自动挂载**
-```vim
-vim /etc/fstab
-
-/dev/cdrom /mnt/cdrom iso9660 defaults 0 0
-```
-
-进入 /etc/yum.repos.d 目录,将其中三个改名或者移走留下 CentOS-Base.repo
-```bash
-cd /etc/yum.repos.d
-rm  CentOS-Media.repo
-rm  CentOS-Vault.repo
-```
-
-编辑 CentOS-Base.repo
-```vim
-vim CentOS-Base.repo
-
-baseurl=file:///mnt/cdrom/  # 这里为本地源路径
-gpgcheck=0
-enabled=1    # 开启本地源
-```
-`yum list` 看一下包
 
 ---
 
@@ -216,7 +210,7 @@ mount | grep '^/dev'
 
 ---
 
-## Lvm 物理卷
+## Lvm
 
 ```bash
 fdisk ‐l		# 查看磁盘情况
@@ -1027,10 +1021,10 @@ echo -e "xxx.com {
 
 ---
 
-## Rpm & Node✔
+## npm&Node
 
 **官网**
-- https://rpm.org/
+- https://www.npmjs.com/
 - https://nodejs.org
 
 **包管理器方式**
@@ -1223,6 +1217,53 @@ vim /usr/share/nginx/test.com/info.php
 
 ---
 
+## phpMyAdmin
+
+**官网**
+- https://www.phpmyadmin.net/
+
+**建议搭配上面的 nginx+php 扩展笔记**
+
+**创建数据库和一个用户**
+```bash
+yum install mariadb mariadb-server
+systemctl start mariadb
+systemctl enable mariadb
+mysql_secure_installation
+
+mysql -u root -p
+
+创建一个专给 WordPress 存数据的数据库
+MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
+
+创建用于 WordPress 对应用户
+MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
+
+分别配置本地登录和远程登录权限
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
+MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
+
+刷新权限
+MariaDB [(none)]> flush privileges;
+```
+
+**下载**
+```bash
+wget https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.zip
+unzip phpMyAdmin-4.8.5-all-languages.zip
+mv phpMyAdmin-4.8.5-all-languages phpMyAdmin
+cp phpMyAdmin /usr/share/nginx/test.com/
+cd /usr/share/nginx/test.com/phpMyAdmin
+
+cp config.sample.inc.php config.inc.php
+
+systemctl restart nginx
+```
+
+访问 `https://www.test.com/phpMyAdmin/index.php`
+
+---
+
 ## Tomcat
 
 **官网**
@@ -1346,53 +1387,6 @@ tomcat 默认的发布 web 项目的目录是：webapps
 将导出的 war 包直接上传到 webapps 根目录下，随着 tomcat 的启动，war 包可以自动被解析。
 
 然后调用路径查询是否安装成功
-
----
-
-## phpMyAdmin
-
-**官网**
-- https://www.phpmyadmin.net/
-
-**建议搭配上面的 nginx+php 扩展笔记**
-
-**创建数据库和一个用户**
-```bash
-yum install mariadb mariadb-server
-systemctl start mariadb
-systemctl enable mariadb
-mysql_secure_installation
-
-mysql -u root -p
-
-创建一个专给 WordPress 存数据的数据库
-MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
-
-创建用于 WordPress 对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
-
-分别配置本地登录和远程登录权限
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
-
-刷新权限
-MariaDB [(none)]> flush privileges;
-```
-
-**下载**
-```bash
-wget https://files.phpmyadmin.net/phpMyAdmin/4.8.5/phpMyAdmin-4.8.5-all-languages.zip
-unzip phpMyAdmin-4.8.5-all-languages.zip
-mv phpMyAdmin-4.8.5-all-languages phpMyAdmin
-cp phpMyAdmin /usr/share/nginx/test.com/
-cd /usr/share/nginx/test.com/phpMyAdmin
-
-cp config.sample.inc.php config.inc.php
-
-systemctl restart nginx
-```
-
-访问 `https://www.test.com/phpMyAdmin/index.php`
 
 ---
 

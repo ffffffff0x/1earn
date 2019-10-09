@@ -35,6 +35,7 @@
 	- Rpm & Node
 	- PHP
 	- Nginx
+  - Tomcat
 	- phpMyAdmin
 	- Wordpress
 	- Mijisou
@@ -64,6 +65,7 @@
 	- Ruby
 8. 管理工具
 	- Supervisor
+  - Webmin
 9. 系统监控
 	- Zabbix
 10. 虚拟化
@@ -75,6 +77,8 @@
 13. 安全服务
 	- ClamAV
 	- Fail2ban
+14. 仓库
+  - Nexus
 ```
 
 ---
@@ -280,9 +284,12 @@ lvdisplay
 ---
 
 # 网络服务
-## [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)
+## AdguardTeam
 
 `一个 DNS 去广告、去跟踪的服务`
+
+**项目地址**
+- https://github.com/AdguardTeam/AdGuardHome
 
 **安装**
 ```bash
@@ -307,9 +314,14 @@ systemctl stop firewalld
 
 ---
 
-## [Chrony](https://chrony.tuxfamily.org/)
+## Chrony
 
 `一个时间同步软件，可用于搭建类 NTP 时间服务`
+
+**官网**
+- https://chrony.tuxfamily.org/
+
+**简介**
 
 它由两个程序组成：chronyd 和 chronyc。
 
@@ -333,7 +345,7 @@ server time4.aliyun.com iburst
 server time5.aliyun.com iburst
 server time6.aliyun.com iburst
 server time7.aliyun.com iburst
-  或
+# 或
 server time1.google.com iburst
 server time2.google.com iburst
 server time3.google.com iburst
@@ -360,9 +372,12 @@ chronyc # 进入交互模式
 
 ---
 
-## [cloud-torrent](https://github.com/jpillora/cloud-torrent)
+## cloud-torrent
 
-`web torrent 下载服务，懂得都懂，还用我说嘛`
+`web torrent 下载服务`
+
+**项目地址**
+- https://github.com/jpillora/cloud-torrent
 
 **安装**
 
@@ -521,7 +536,7 @@ named-checkzone abc.com abc.loopback
 named-checkzone abc.com www.loopback
 service named restart
 
-setenforce 0
+setenforce 0  # 关闭 selinux
 firewall-cmd --zone=public --add-service=dns --permanent
 firewall-cmd --reload
 ```
@@ -661,10 +676,13 @@ clearpart --all --initlabel
 
 ---
 
-## [OpenVPN](https://openvpn.net/)
+## OpenVPN
+
+**官网**
+- https://openvpn.net/
 
 **docker 安装**
-```
+```bash
 systemctl start docker
 docker pull kylemanna/openvpn:2.4
 mkdir -p /data/openvpn
@@ -718,9 +736,12 @@ sz /data/openvpn/conf/whsir.ovpn
 
 ---
 
-## [proxychains](https://github.com/rofl0r/proxychains-ng)
+## proxychains
 
 `通过 DLL 注入，使目标程序走代理`
+
+**项目地址**
+- https://github.com/rofl0r/proxychains-ng
 
 **安装**
 ```bash
@@ -745,7 +766,10 @@ socks5 127.0.0.1 1080 # 改成你懂的
 
 ---
 
-## [🔑SSH](https://www.ssh.com)
+## 🔑SSH
+
+**官网**
+- https://www.ssh.com
 
 一般主机安装完毕后 SSH 是默认开启的,使用 `/etc/init.d/ssh status` 查看主机 SSH 状态
 
@@ -794,8 +818,34 @@ apt install ssh
 
 ---
 
+## ttyd
+
+`在 web 上访问终端`
+
+**项目地址**
+- https://github.com/tsl0922/ttyd
+
+**安装**
+```bash
+sudo apt-get install cmake g++ pkg-config git vim-common libwebsockets-dev libjson-c-dev libssl-dev
+git clone https://github.com/tsl0922/ttyd.git
+cd ttyd && mkdir build && cd build
+cmake ..
+make && make install
+```
+
+**运行**
+```bash
+ttyd -p 8080 bash -x  # 现在访问 http://localhost:8080 即可
+```
+
+---
+
 # web 服务
-## [Apache](https://www.apache.org/)
+## Apache
+
+**官网**
+- https://www.apache.org/
 
 **安装**
 ```bash
@@ -808,7 +858,8 @@ yum install mod_ssl
 vim /etc/httpd/conf/httpd.conf
 
 DocumentRoot "/var/www/html"
-ServerName  xx.xx.xx.xx:80   # 设置 Web 服务器的主机名和监听端口
+ServerName  xx.xx.xx.xx:80
+# 设置 Web 服务器的主机名和监听端口
 ```
 
 **启服务**
@@ -830,7 +881,8 @@ firewall-cmd --reload
 vim /etc/httpd/conf.d/virthost.conf
 
 <VirtualHost 192.168.1xx.22:80>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
+  # 设置 Web 服务器的主机名和监听端口
 	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
@@ -839,7 +891,8 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443
 <VirtualHost 192.168.1xx.22:443>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
+  # 设置 Web 服务器的主机名和监听端口
 	DocumentRoot "/data/web_data"
 
 	SSLEngine on
@@ -862,45 +915,45 @@ firewall-cmd --reload
 
 **mod_ssl**
 - **为 linux 提供 web 证书**
-```bash
-cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem
-openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+  ```bash
+  cd /etc/pki/CA/private
+  openssl genrsa 2048 > cakey.pem
+  openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
-cd /etc/pki/CA
-touch index.txt  # 索引问文件
-touch serial    # 给客户发证编号存放文件
-echo 01 > serial
+  cd /etc/pki/CA
+  touch index.txt  # 索引问文件
+  touch serial    # 给客户发证编号存放文件
+  echo 01 > serial
 
-mkdir /etc/httpd/ssl
-cd /etc/httpd/ssl
-openssl genrsa 1024 > httpd.key
-openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt
+  mkdir /etc/httpd/ssl
+  cd /etc/httpd/ssl
+  openssl genrsa 1024 > httpd.key
+  openssl req -new -key httpd.key > httpd.csr
+  openssl ca -days 365 -in httpd.csr > httpd.crt
 
-# 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
-cat /etc/pki/CA/index.txt
-```
+  # 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
+  cat /etc/pki/CA/index.txt
+  ```
 
 - **为 windows 提供 web 证书**
-```bash
-cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem
-openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+  ```bash
+  cd /etc/pki/CA/private
+  openssl genrsa 2048 > cakey.pem
+  openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
-cd /etc/pki/CA
-touch index.txt  # 索引问文件
-touch serial    # 给客户发证编号存放文件
-echo 01 > serial
+  cd /etc/pki/CA
+  touch index.txt  # 索引问文件
+  touch serial    # 给客户发证编号存放文件
+  echo 01 > serial
 
-cd
-openssl genrsa 1024 > httpd.key
-openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt
+  cd
+  openssl genrsa 1024 > httpd.key
+  openssl req -new -key httpd.key > httpd.csr
+  openssl ca -days 365 -in httpd.csr > httpd.crt
 
-openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
-# 自己把 server.pfx 导出给 windows2008 主机
-```
+  openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
+  # 自己把 server.pfx 导出给 windows2008 主机
+  ```
 
 - **向 windows CA 服务器申请证书**
 
@@ -920,7 +973,10 @@ yum install httpd-tools
 
 ---
 
-## [Caddy](https://caddyserver.com/)
+## Caddy
+
+**官网**
+- https://caddyserver.com/
 
 **安装 Caddy**
 ```bash
@@ -971,12 +1027,16 @@ echo -e "xxx.com {
 
 ---
 
-## [Rpm](https://rpm.org/) & [Node✔](https://nodejs.org)
+## Rpm & Node✔
+
+**官网**
+- https://rpm.org/
+- https://nodejs.org
 
 **包管理器方式**
 - apt
 
-  `apt-get install nodejs npm` 讲道理 apt 安装不太好使
+  `apt-get install nodejs npm`
 
 - yum
 
@@ -1005,9 +1065,14 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ```
 
+**加速**
+- [node&js](../../Misc/Plan/Misc-Plan.md#node&js)
+
 ---
 
-## [PHP](https://www.php.net/)
+## PHP
+**官网**
+- https://www.php.net/
 
 **安装**
 ```bash
@@ -1018,19 +1083,41 @@ rpm 安装 PHP7 相应的 yum 源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w
-php -v
+php -v  # 查看PHP版本
 
 service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 ```
 
 ---
 
-## [Nginx](https://nginx.org/)
+## Nginx
+**官网**
+- https://nginx.org/
 
 **安装**
+- **yum 安装**
+  ```bash
+  yum install nginx
+  systemctl start nginx.service
+  ```
+
+- **源代码编译安装**
+
+  自己下载好包 https://nginx.org/en/download.html，传到服务器上，这里以1.14.2 举例
+
+  ```bash
+  tar -zxvf nginx-1.14.2.tar.gz
+  cd nginx-1.14.2/
+  ./configure
+  make
+  make install
+  cd /usr/local/nginx/sbin
+  ./nginx
+  ```
+
+  注:源代码安装你的默认目录在 /usr/local/nginx 下,配置文件在 conf/ 中，不要搞错了
+
 ```bash
-yum install nginx
-systemctl start nginx.service
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --reload
 ```
@@ -1053,7 +1140,6 @@ server {
 ```
 `nginx -t ` 检测文件是否有误
 
-
 ```bash
 mkdir /usr/share/nginx/test.com
 echo "hello world!" > /usr/share/nginx/test.com/index.html
@@ -1062,7 +1148,7 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置：`192.168.1.112   www.test.com test.com`
+如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置： `192.168.1.112   www.test.com test.com`
 
 `curl www.test.com`
 
@@ -1137,9 +1223,138 @@ vim /usr/share/nginx/test.com/info.php
 
 ---
 
-## [phpMyAdmin](https://www.phpmyadmin.net/)
+## Tomcat
 
-**建议搭配上面的 nginx+php 扩展**
+**官网**
+- https://tomcat.apache.org
+
+**安装**
+
+Tomcat 依赖 JDK，在安装 Tomcat 之前需要先安装 Java JDK。输入命令 java -version，如果显示 JDK 版本，证明已经安装了 JDK
+
+默认情况下，CentOS 安装有 JDK，一般先卸载掉
+```bash
+rpm -qa | grep jdk # 查询本地 JDK
+```
+
+JDK 安装过程 见 [如下](##JDK)
+
+下载 Tomcat 安装包 https://tomcat.apache.org/download-80.cgi 将安装包上传至服务器,我这里以 8.5.46 为例
+```bash
+tar -zvxf apache-tomcat-8.5.46.tar.gz
+cd apache-tomcat-8.5.46
+cd bin
+./startup.sh
+```
+
+如果访问 http://ip:8080/ 失败，查看防火墙开放端口
+```bash
+firewall-cmd --permanent --zone=public --add-port=8080/tcp
+firewall-cmd --reload
+```
+
+**设置 tomcat 的服务器启动和关闭**
+
+```vim
+vim /etc/rc.d/init.d/tomcat
+
+#!/bin/bash
+# /etc/rc.d/init.d/tomcat
+# init script for tomcat precesses
+# processname: tomcat
+# description: tomcat is a j2se server
+# chkconfig: 2345 86 16
+# description: Start up the Tomcat servlet engine.
+
+if [ -f /etc/init.d/functions ]; then
+. /etc/init.d/functions
+elif [ -f /etc/rc.d/init.d/functions ]; then
+. /etc/rc.d/init.d/functions
+else
+echo -e "\atomcat: unable to locate functions lib. Cannot continue."
+exit -1
+fi
+RETVAL=$?
+CATALINA_HOME="/usr/local/root/tomcat"  # tomcat 安装目录，你安装在什么目录下就复制什么目录
+case "$1" in
+start)
+if [ -f $CATALINA_HOME/bin/startup.sh ];
+then
+echo $"Starting Tomcat"
+$CATALINA_HOME/bin/startup.sh
+fi
+;;
+stop)
+if [ -f $CATALINA_HOME/bin/shutdown.sh ];
+then
+echo $"Stopping Tomcat"
+$CATALINA_HOME/bin/shutdown.sh
+fi
+;;
+*)
+echo $"Usage: $0 {start|stop}"
+exit 1
+;;
+esac
+exit $RETVAL
+```
+```bash
+chmod 755 /etc/rc.d/init.d/tomcat
+chkconfig --add /etc/rc.d/init.d/tomcat
+```
+
+以上所有工作顺利进行并且没有报错，则配置完成，你可以输入命令 `service tomcat start` 和 `service tomcat stop` 进行验证
+
+**修改端口号**
+
+进入 tomcat 的 conf 目录下，修改 server.xml 文件，可以修改端口，默认 8080
+
+**设置用户名和密码登录**
+
+修改 conf 目录下 tomcat-user.xml
+```vim
+<role rolename="admin-gui"/>
+<role rolename="manager-gui"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-script"/>
+<role rolename="manager-status"/>
+<user username="admin" password="admin" roles="admin-gui,manager-gui,manager-jmx,manager-script,manager-status"/>
+```
+
+- manager-gui - 允许访问 HTML GUI 和状态页面
+- manager-script - 允许访问文本界面和状态页面
+- manager-jmx - 允许访问 JMX 代理和状态页面
+- manager-status - 仅允许访问状态页面
+
+```bash
+service tomcat start
+service tomcat stop
+```
+
+如果爆 403 错误,就注释掉 Tomcat/webapps/manager/META-INF/context.xml 文件中内容
+```xml
+<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />-->
+```
+
+自行重启服务
+
+**发布测试**
+
+tomcat 默认的发布 web 项目的目录是：webapps
+
+将导出的 war 包直接上传到 webapps 根目录下，随着 tomcat 的启动，war 包可以自动被解析。
+
+然后调用路径查询是否安装成功
+
+---
+
+## phpMyAdmin
+
+**官网**
+- https://www.phpmyadmin.net/
+
+**建议搭配上面的 nginx+php 扩展笔记**
 
 **创建数据库和一个用户**
 ```bash
@@ -1181,7 +1396,10 @@ systemctl restart nginx
 
 ---
 
-## [Wordpress](https://wordpress.org/)
+## Wordpress
+
+**官网**
+- https://wordpress.org/
 
 **下载 WordPress 安装包并解压**
 ```bash
@@ -1239,17 +1457,17 @@ vim wp-config-sample.php
 在标有 `// ** MySQL settings - You can get this info from your web host ** //` 下输入你的数据库相关信息
 ```
 DB_NAME
-    在第二步中为WordPress创建的数据库名称
+    在第二步中为 WordPress 创建的数据库名称
 DB_USER
-    在第二步中创建的WordPress用户名
+    在第二步中创建的 WordPress 用户名
 DB_PASSWORD
-    第二步中为WordPress用户名设定的密码
+    第二步中为 WordPress 用户名设定的密码
 DB_HOST
-    第二步中设定的hostname（通常是localhost,但总有例外；参见编辑wp-config.php文件中的"可能的DB_HOST值）。
+    第二步中设定的 hostname（通常是 localhost,但总有例外；参见编辑wp-config.php 文件中的"可能的 DB_HOST 值）。
 DB_CHARSET
-    数据库字符串,通常不可更改（参见zh-cn:编辑wp-config.php）。
+    数据库字符串,通常不可更改。
 DB_COLLATE
-    留为空白的数据库排序（参见zh-cn:编辑wp-config.php）。
+    留为空白的数据库排序。
 ```
 
 在标有 `* Authentication Unique Keys.` 的版块下输入密钥的值,保存 wp-config.php 文件,也可以不管这个
@@ -1257,8 +1475,8 @@ DB_COLLATE
 **上传文件**
 
 接下来需要决定将博客放在网站的什么位置上：
-    网站根目录下（如：http://example.com/）
-    网站子目录下（如：http://example.com/blog/
+- 网站根目录下（如：http://example.com/）
+- 网站子目录下（如：http://example.com/blog/）
 
 根目录
 
@@ -1275,7 +1493,7 @@ DB_COLLATE
 ```bash
 mv wordpress/* /var/www/html
 
-setenforce 0
+setenforce 0  # 关闭 selinux
 service httpd start
 service firewalld stop
 ```
@@ -1292,9 +1510,12 @@ service firewalld stop
 
 ---
 
-## [Mijisou](https://mijisou.com/)
+## Mijisou
 
 `基于开源项目 Searx 二次开发的操作引擎`
+
+**官网**
+- https://mijisou.com/
 
 **依赖**
 
@@ -1637,7 +1858,12 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目�
 ## Relational
 ### Oracle
 
-### [Mariadb](https://mariadb.org/)
+![image](../../../assets/img/才怪.png)
+
+### Mariadb
+
+**官网**
+- https://mariadb.org/
 
 **安装**
 
@@ -1711,17 +1937,26 @@ mysql -u root -p
 
 ---
 
-### [📦MySQL](https://www.mysql.com)
+### 📦MySQL
+
+**官网**
+- https://www.mysql.com
+
+**安装**
 
 和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
-sudo apt install mysql-server mysql-clien
-sudo service mysql start
+apt install mysql-server mysql-clien
+
+service mysql start
 ```
 
 ---
 
-### [🐘Postgresql](https://www.postgresql.org)
+### 🐘Postgresql
+
+**官网**
+- https://www.postgresql.org
 
 **安装**
 ```bash
@@ -1762,7 +1997,10 @@ host    all             all             0.0.0.0/0               md5
 ---
 
 ## Document
-### [🍃MongoDB](https://www.mongodb.com/)
+### 🍃MongoDB
+
+**官网**
+- https://www.mongodb.com/
 
 **安装**
 ```vim
@@ -1818,7 +2056,10 @@ authorization: enabled
 ---
 
 ## Key-value
-### [🔺🔴⭐Redis](https://redis.io/)
+### 🔺🔴⭐Redis
+
+**官网**
+- https://redis.io/
 
 **安装**
 - **包管理器方式**
@@ -1827,7 +2068,6 @@ authorization: enabled
 
   ```bash
   wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
-  yum update
   yum clean all
   yum makecache
   yum install redis
@@ -1885,9 +2125,29 @@ requirepass 密码	#设置 redis 密码
 
 `redis-cli -h <ip> -p 6379 -a <PASSWORD>`
 
+**压测**
+
+Redis-benchmark 是官方自带的 Redis 性能测试工具，可以有效的测试 Redis 服务的性能。
+```bash
+redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000
+# 100 个并发连接，100000 个请求，检测 host 为 localhost 端口为 6379 的 redis 服务器性能
+
+redis-benchmark -h 127.0.0.1 -p 6379 -q -d 100
+# 测试存取大小为100字节的数据包的性能
+
+redis-benchmark -t set,lpush -n 100000 -q
+# 只测试某些操作的性能
+
+redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
+# 只测试某些数值存取的性能
+```
+
 ---
 
-### [Memcached](https://memcached.org/)
+### Memcached
+
+**官网**
+- https://memcached.org/
 
 **安装**
 - **软件包安装**
@@ -1956,12 +2216,17 @@ set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大�
   sudo apt-get install vim
   ```
 
+**[SpaceVim - 模块化的 Vim IDE](https://spacevim.org/cn/)**
+
 ---
 
 # 文件服务
-## [filebrowser](https://github.com/filebrowser/filebrowser)
+## filebrowser
 
 `一个在线网盘服务，只能在线看图片,在线看视频是不支持的 ^w^`
+
+**项目地址**
+- https://github.com/filebrowser/filebrowser
 
 **安装**
 
@@ -2046,7 +2311,10 @@ vim /etc/fstab
 
 ---
 
-## [Samba](https://www.samba.org)
+## Samba
+
+**官网**
+- https://www.samba.org
 
 **服务端**
 
@@ -2112,7 +2380,10 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 
 ---
 
-## [Vsftp](https://security.appspot.com/vsftpd.html)
+## Vsftp
+
+**官网**
+- https://security.appspot.com/vsftpd.html
 
 **匿名访问**
 
@@ -2134,7 +2405,7 @@ anon_mkdir_write_enable=YES
 anon_other_write_enable=YES
 ```
 ```bash
-setenforce 0
+setenforce 0  # 关闭 selinux
 firewall-cmd --permanent --zone=public --add-service=ftp
 firewall-cmd --reload
 systemctl restart vsftpd
@@ -2194,7 +2465,7 @@ write_enable=YES
 local_umask=022
 ```
 ```bash
-setenforce 0
+setenforce 0  # 关闭 selinux
 firewall-cmd --permanent --zone=public --add-service=ftp
 firewall-cmd --reload
 systemctl restart vsftpd
@@ -2326,7 +2597,7 @@ anon_umask=022
 
 **启服务**
 ```bash
-setenforce 0
+setenforce 0  # 关闭 selinux
 firewall-cmd --zone=public --add-service=ftp
 firewall-cmd --reload
 systemctl restart vsftpd
@@ -2357,7 +2628,10 @@ gcc helloworld.c -o execFile
 
 ---
 
-## [🐹Go](https://golang.org/)
+## 🐹Go
+
+**官网**
+- https://golang.org/
 
 **安装**
 ```bash
@@ -2396,7 +2670,8 @@ go build
 ```
 
 ---
-## [☕JDK](https://www.oracle.com/technetwork/java/javase/downloads/)
+
+## JDK
 
 **rpm 包方式安装**
 
@@ -2410,13 +2685,13 @@ rpm -ivh jdk-****.rpm
 ```
 
 **使用 ppa/源方式安装**
-1. 添加ppa
+1. 添加 ppa
 
     `sudo add-apt-repository ppa:webupd8team/java`
 
     `sudo apt-get update`
 
-2. 安装oracle-java-installer
+2. 安装 oracle-java-installer
 
 	jdk7
 
@@ -2426,9 +2701,42 @@ rpm -ivh jdk-****.rpm
 
 	`sudo apt-get install oracle-java8-installer`
 
+**编译安装**
+
+自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+文件名类似 `jdk-8u212-linux-x64.tar.gz`
+
+```bash
+bash
+tar -xzvf jdk-8u212-linux-x64.tar.gz
+mv jdk1.8.0_212/ /usr/local/lib/jvm/
+cd /usr/local/lib/
+mv jvm jdk
+mv jdk jdk1.8
+export JAVA_HOME=/usr/local/lib/jdk1.8/
+
+export JRE_HOME=JAVAHOME/jreexportCLASSPATH=.:{JAVA_HOME}/lib:JREHOME/libexportPATH={JAVA_HOME}/bin:$PATH
+update-alternatives --install /usr/bin/java java /usr/local/lib/jdk1.8/bin/java 1
+update-alternatives --install /usr/bin/javac javac /usr/local/lib/jdk1.8/bin/javac 1
+
+update-alternatives --set java /usr/local/lib/jdk1.8/bin/java
+
+update-alternatives --set javac /usr/local/lib/jdk1.8/bin/javac
+```
+
+**测试**
+```bash
+java
+javac
+```
+
 ---
 
-## [🐍Python3](https://www.python.org/)
+## 🐍Python3
+
+**官网**
+- https://www.python.org/
 
 **yum 安装**
 ```bash
@@ -2479,9 +2787,15 @@ python3 -V
 pip3 -V
 ```
 
+**加速**
+- [pip](../../Misc/Plan/Misc-Plan.md#pip)
+
 ---
 
-## [💎Ruby](https://www.ruby-lang.org)
+## 💎Ruby
+
+**官网**
+- https://www.ruby-lang.org
 
 **安装**
 
@@ -2507,11 +2821,14 @@ export PATH=$PATH:/usr/local/bin/
 ---
 
 # 管理工具
-## [Supervisor](http://supervisord.org/)
+## Supervisor
 
-因为 Supervisor 是 Python 开发的，安装前先检查一下系统否安装了 Python2.4 以上版本。
+**官网**
+- http://supervisord.org/
 
 **安装**
+
+因为 Supervisor 是 Python 开发的，安装前先检查一下系统否安装了 Python2.4 以上版本。
 
 `pip install supervisor`
 
@@ -2563,8 +2880,40 @@ supervisorctl update
 
 ---
 
+## Webmin
+
+**官网**
+- http://www.webmin.com/index.html
+
+**安装**
+
+在官网下载 RPM 包,上传至服务器,这里以 1.930-1 为例
+```bash
+yum -y install perl-Net-SSLeay
+yum -y install perl-Encode-Detect
+yum -y install perl-Data-Dumper
+rpm -Uvh webmin-1.930-1.noarch.rpm
+
+firewall-cmd --permanent --zone=public --add-port=10000/tcp
+firewall-cmd --reload
+```
+安装完直接启动,访问 https://127.0.0.1:10000 注意,带 HTTPS
+
+默认账号 root，密码与服务器一致
+
+**修改密码**
+
+```bash
+/usr/libexec/webmin/changepass.pl /etc/webmin/ root 1234qwer
+```
+
+---
+
 # 系统监控
-## [Zabbix](https://www.zabbix.com/)
+## Zabbix
+
+**官网**
+- https://www.zabbix.com/
 
 **安装依赖**
 ```bash
@@ -2676,7 +3025,7 @@ date.timezone Asia/Shanghai
 systemctl stop mysqld && reboot
 systemctl start httpd && systemctl start zabbix-server
 systemctl stop firewalld
-setenforce 0
+setenforce 0  # 关闭 selinux
 ```
 访问 `http://{ip地址}/zabbix/setup.php`
 
@@ -2686,7 +3035,10 @@ setenforce 0
 ---
 
 # 虚拟化
-## [🐋Docker](https://www.docker.com)
+## 🐋Docker
+
+**官网**
+- https://www.docker.com
 
 **centos 下安装**
 ```bash
@@ -2728,7 +3080,7 @@ docker login
 ```bash
 sudo apt update
 sudo apt install docker.io
-docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但实际上还是需要你登陆
+docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
 ```
 
 **使用**
@@ -2759,10 +3111,16 @@ docker search nginx # 搜索 Docker Hub 中的所有 Nginx 镜像
 docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
 ```
 
+**加速**
+- [Docker 镜像加速](../../Misc/Plan/Misc-Plan.md#Docker)
+
 ---
 
 # CI
-## [🤵🏻Jenkins](https://jenkins.io/)
+## 🤵🏻Jenkins
+
+**官网**
+- https://jenkins.io/
 
 `注,Jenkins 需要 jdk 环境，请先行安装`
 
@@ -2797,7 +3155,12 @@ sudo apt-get install jenkins
 ---
 
 # 堡垒机
-## [Jumpserver](http://www.jumpserver.org/)
+## Jumpserver
+
+**官网**
+- http://www.jumpserver.org/
+
+**安装**
 
 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 写的很详细了,在此我只记录重点
 
@@ -2868,8 +3231,13 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
   && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
 ```
 
+---
+
 # 安全服务
-## [ClamAV](https://www.clamav.net)
+## ClamAV
+
+**官网**
+- https://www.clamav.net
 
 `本部分来自 https://blog.51cto.com/11199460/2083697，在此仅作排版调整`
 
@@ -2965,7 +3333,11 @@ clamscan -r --bell -i / # 扫描所有文件并且显示有问题的文件的扫
 clamscan -r --remove  # 查杀当前目录并删除感染的文件
 ```
 
-## [Fail2ban](https://github.com/fail2ban/fail2ban)
+---
+
+## Fail2ban
+
+- https://github.com/fail2ban/fail2ban
 
 `本部分来自 https://linux.cn/article-5067-1.html，在此仅作排版调整`
 
@@ -3059,6 +3431,62 @@ fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
 fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地址
 ```
 注意，如果你停止了 Fail2ban 服务，那么所有的 IP 地址都会被解锁。当你重启 Fail2ban，它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表，如果这些异常地址的发生时间仍然在禁止时间内，那么 Fail2ban 会重新将这些 IP 地址禁止。
+
+---
+
+# 仓库
+## Nexus
+
+**官网**
+- https://www.sonatype.com/nexus-repository-oss
+
+**安装**
+- **JDK**
+    ```bash
+    tar xzf jdk-8u212-linux-x64.tar.gz
+    ```
+    ```vim
+    vim /etc/profile
+
+    export JAVA_HOME=/root/jdk1.8.0_212
+    export PATH=$PATH:$JAVA_HOME/bin
+    ```
+    ```bash
+    source /etc/profile
+    java -version
+    ```
+
+- **Maven**
+    ```bash
+    tar xzf apache-maven-3.6.2-bin.tar.gz
+    ```
+    ```vim
+    vim /etc/profile
+
+    export MAVEN_HOME=/root/apache-maven-3.6.2
+    export PATH=$PATH:$MAVEN_HOME/bin
+    ```
+    ```bash
+    source /etc/profile
+    mvn -version
+    ```
+
+- **Nexus**
+    - 在官网下载 UNIX 安装包，上传至服务器，这里以 https://help.sonatype.com/repomanager2/download#Download-NexusRepositoryManager2OSS 2.14.14-01 为例
+
+    ```bash
+    tar -xf nexus-2.14.14-01-bundle.tar.gz -C /usr/local
+    cd /usr/local/nexus-2.14.14-01/bin/
+    export RUN_AS_USER=root
+
+    ./nexus start
+    firewall-cmd --add-port=8081/tcp --permanent
+    firewall-cmd --reload
+    ```
+    ```bash
+    curl http://127.0.0.1:8081/nexus/
+    ```
+    默认登录账号/密码为： admin/admin123
 
 ---
 

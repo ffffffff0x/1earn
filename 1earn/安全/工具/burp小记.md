@@ -23,33 +23,9 @@
 
 这里以 kali 举例，kali 自带的是 openjdk 不支持新版 burp，自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-文件名类似 `jdk-8u212-linux-x64.tar.gz`
+安装过程见 [Power-Linux](../../运维/Linux/Power-Linux.md##JDK)
 
-```bash
-bash
-tar -xzvf jdk-8u212-linux-x64.tar.gz
-mv jdk1.8.0_212/ /usr/local/lib/jvm/
-cd /usr/local/lib/
-mv jvm jdk
-mv jdk jdk1.8
-export JAVA_HOME=/usr/local/lib/jdk1.8/
-
-export JRE_HOME=JAVAHOME/jreexportCLASSPATH=.:{JAVA_HOME}/lib:JREHOME/libexportPATH={JAVA_HOME}/bin:$PATH
-update-alternatives --install /usr/bin/java java /usr/local/lib/jdk1.8/bin/java 1
-update-alternatives --install /usr/bin/javac javac /usr/local/lib/jdk1.8/bin/javac 1
-
-update-alternatives --set java /usr/local/lib/jdk1.8/bin/java
-
-update-alternatives --set javac /usr/local/lib/jdk1.8/bin/javac
-```
-
-输两条命令测试
-```bash
-java
-javac
-```
-
-没问题就直接运行注册机即可 `java -jar burp-loader-keygen-jas502n.jar
+没问题就直接运行即可 `java -jar <burp文件名>.jar
 `
 
 ---

@@ -3,7 +3,9 @@
 ---
 
 ## Reference
-
+- []()
+- []()
+- []()
 
 ---
 
@@ -15,7 +17,6 @@ Boolean-based blind SQL injection(布尔型注入)
 Error-based SQL injection(报错型注入)
 Time-based blind SQL injection(基于时间延迟注入)
 ```
-
 
 **SQL 注入常规利用思路**
 ```

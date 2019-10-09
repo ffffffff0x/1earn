@@ -473,7 +473,52 @@ power-pentest.md 修改逻辑类漏洞部分内容，移步到逻辑类漏洞笔
 
 ---
 
+更新日期 2019.10.6~9
+安全
+0. 调整部分文档标点符号及排版
+1. Power-Pentest
+    + 瑞士军刀/安全工具/框架-->环境部署
+    ++ 口令获取及破解-->工具-->mimikatz
+    ++ 教程资源-->靶机-->Misc
+2. 权限维持与反侦察笔记
+    ++ web-->shell
+3. 业务软件vul整合笔记
+    ~ 修改分类
+    ++ C/S-->浏览器
+    ++ 管理工具-->Webmin
+    ++ 虚拟化 & 云平台-->Citrix Receiver
+4. 逻辑类漏洞笔记
+    ~ 调整排版
+    ++ 业务授权安全-->越权测试
+5. web服务和中间件整合笔记
+    + 各类论坛/CMS/框架-->Discuz
 
+运维
+0. 调整部分文档标点符号及排版
+1. Speed-Linux
+    + 系统管理-->系统设置-->SELinux
+    ++ 系统管理-->系统设置-->时间
+2. Power-Linux
+    ~ 本来要添加 tigervnc 的内容,但由于连接失败(排了半天错都没成功),遂放弃
+    + 网络服务-->ttyd
+    + web 服务-->Tomcat
+    + web 服务-->Nginx
+    + 仓库-->Nexus
+    ++ 数据库-->Key-value-->Redis-->压测
+3. firewalld
+    + 添加基本内容
+4. Secure-Linux
+    ++ 负载-->查
+5. LAMP
+    + 添加基本内容
+6. Nginx
+    + 添加基本内容
+
+Misc
+1. Misc-Plan
+    + 各种代理/源-->GoLand
+2. Web-Tools
+    + 添加基本内容
 
 
 

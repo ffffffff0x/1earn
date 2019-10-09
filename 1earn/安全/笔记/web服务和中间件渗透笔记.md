@@ -20,7 +20,31 @@
 ---
 
 ## Discuz
-![image](../../../assets/img/才怪.png)
+### Discuz
+**文章**
+- [Discuz!X 前台任意文件删除漏洞深入解析](https://xz.aliyun.com/t/34)
+- [Discuz!因Memcached未授权访问导致的RCE](https://xz.aliyun.com/t/2018)
+- [Discuz!X 个人账户删除漏洞](https://xz.aliyun.com/t/2297)
+- [Discuz!x3.4后台文件任意删除漏洞分析](https://xz.aliyun.com/t/4725)
+
+**CVE-2018-14729**
+- 影响范围
+    - Discuz! 1.5-2.5
+
+- 文章
+    - [Discuz! 1.5-2.5 命令执行漏洞分析(CVE-2018-14729)](https://paper.seebug.org/763/)
+
+- POC | Payload | exp
+    - [FoolMitAh/CVE-2018-14729](https://github.com/FoolMitAh/CVE-2018-14729)
+
+### Discuz!ML
+**工具**
+- [theLSA/discuz-ml-rce](https://github.com/theLSA/discuz-ml-rce)
+
+**CVE-2019-13956**
+- 文章
+    - [Discuz! ML远程代码执行(CVE-2019-13956)](https://www.cnblogs.com/yuzly/p/11386755.html)
+    - [Discuz!ML V3.X 代码注入分析 ](https://xz.aliyun.com/t/5638)
 
 ---
 
@@ -207,7 +231,7 @@
 **环境搭建**
 - [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
 - [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx)
-- [https://github.com/shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
+- [shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
 
 **文章**
 - [Struts2 历史 RCE 漏洞回顾不完全系列](http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities/)
@@ -548,7 +572,7 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 ---
 
-## 编辑器
+## 编辑器&组件
 **手册**
 - [编辑器漏洞手册](https://navisec.it/%e7%bc%96%e8%be%91%e5%99%a8%e6%bc%8f%e6%b4%9e%e6%89%8b%e5%86%8c/)
 
@@ -597,3 +621,8 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
     - 漏洞修复
         1. 直接删除 `upload_json.*` 和 `file_manager_json.*`
         2. 升级 kindeditor 到最新版本
+
+**webuploader**
+- **webuploader-v-0.1.15 组件存在文件上传漏洞(未授权)**
+    - POC | Payload | exp
+        - [jas502n/webuploader-0.1.15-Demo](https://github.com/jas502n/webuploader-0.1.15-Demo#webuploader-v-0115-%E7%BB%84%E4%BB%B6%E5%AD%98%E5%9C%A8%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%9C%AA%E6%8E%88%E6%9D%83)

@@ -22,7 +22,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.2.22:8080
 <VirtualHost 192.168.2.22:8080>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
 	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
@@ -69,7 +69,7 @@ nslookup www.abc.com
 vim /etc/httpd/conf/httpd.conf
 
 	DocumentRoot "/var/www/html"
-	ServerName  xx.xx.xx.xx:80     # 设置Web服务器的主机名和监听端口
+	ServerName  xx.xx.xx.xx:80
 ```
 
 3. Index.html 内容使用 fubuki!fubuki!fubuki!fubuki!；
@@ -140,7 +140,7 @@ yum -y install mod_ssl
 vim /etc/httpd/conf.d/virthost.conf
 
 <VirtualHost 192.168.1xx.22:80>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
 	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
@@ -149,7 +149,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443
 <VirtualHost 192.168.1xx.22:443>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
 	DocumentRoot "/data/web_data"
 
 	SSLEngine on
@@ -228,7 +228,7 @@ yum -y install mod_ssl
 vim /etc/httpd/conf.d/virthost.conf
 
 <VirtualHost 192.168.1xx.33:80>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
 	DocumentRoot "/data/web_data"
 	<Directory "/data/web_data">
 		Require all granted
@@ -237,7 +237,7 @@ vim /etc/httpd/conf.d/virthost.conf
 
 Listen 192.168.1XX.33:443
 <VirtualHost 192.168.1xx.33:443>
-	ServerName  www.abc.com     # 设置 Web 服务器的主机名和监听端口
+	ServerName  www.abc.com
 	DocumentRoot "/data/web_data"
 
 	SSLEngine on

@@ -1,10 +1,19 @@
-# Power-Linux🎓
+```
+ ███████                                           ██       ██
+░██░░░░██                                         ░██      ░░
+░██   ░██  ██████  ███     ██  █████  ██████      ░██       ██ ███████  ██   ██ ██   ██
+░███████  ██░░░░██░░██  █ ░██ ██░░░██░░██░░█ █████░██      ░██░░██░░░██░██  ░██░░██ ██
+░██░░░░  ░██   ░██ ░██ ███░██░███████ ░██ ░ ░░░░░ ░██      ░██ ░██  ░██░██  ░██ ░░███
+░██      ░██   ░██ ░████░████░██░░░░  ░██         ░██      ░██ ░██  ░██░██  ░██  ██░██
+░██      ░░██████  ███░ ░░░██░░██████░███         ░████████░██ ███  ░██░░██████ ██ ░░██
+░░        ░░░░░░  ░░░    ░░░  ░░░░░░ ░░░          ░░░░░░░░ ░░ ░░░   ░░  ░░░░░░ ░░   ░░
+```
 
 `Linux 下各种常见服务的搭建/配置指南`
 
 `大部分适用于 Centos7`
 
-`目前主要以安装搭建为主，更深一步的配置请自行研究`
+`目前主要以安装搭建为主,更深一步的配置请自行研究`
 
 <p align="center">
      <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="70%"></a>
@@ -172,10 +181,10 @@ w 写入
 - RAID1
 
 	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
-	- -Cv: 创建一个阵列并打印出详细信息。
-	- /dev/md0: 阵列名称。
+	- -Cv: 创建一个阵列并打印出详细信息.
+	- /dev/md0: 阵列名称.
 	-a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建；
-	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 。
+	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 .
 	- -n2: 指定我们将两个分区加入到阵列中去,分别为/dev/sdb1 和 /dev/sdc1
 
 - RAID5
@@ -249,7 +258,7 @@ lvdisplay
 
 **格式化**
 
-将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录。
+将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录.
 ```bash
 mkfs.xfs /dev/datastore/database
 mkdir /mnt/database
@@ -267,7 +276,7 @@ mount | grep '^/dev'
 
 **扩容**
 
-将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求。
+将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求.
 ```bash
 lvextend -L 15G /dev/datastore/database
 lvs	# 确认有足够空间
@@ -310,16 +319,16 @@ systemctl stop firewalld
 
 ## Chrony
 
-`一个时间同步软件，可用于搭建类 NTP 时间服务`
+`一个时间同步软件,可用于搭建类 NTP 时间服务`
 
 **官网**
 - https://chrony.tuxfamily.org/
 
 **简介**
 
-它由两个程序组成：chronyd 和 chronyc。
+它由两个程序组成：chronyd 和 chronyc.
 
-chronyd 是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步。它确定计算机增减时间的比率,并对此进行补偿。
+chronyd 是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步.它确定计算机增减时间的比率,并对此进行补偿.
 
 chronyc 是用来监控 chronyd 性能和配置其参数程序
 
@@ -381,7 +390,7 @@ chronyc # 进入交互模式
 
 `cloud-torrent -o`
 
-`我日，就这么简单`
+`我日,就这么简单`
 
 ---
 
@@ -539,7 +548,7 @@ firewall-cmd --reload
 
 ## Kicktart
 
-`是 Kicktart 不是 kickstarter，这玩意不能众筹，这是用于联网安装系统时给 PXE 服务提供应答文件的`
+`是 Kicktart 不是 kickstarter,这玩意不能众筹,这是用于联网安装系统时给 PXE 服务提供应答文件的`
 
 - 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
 - 环境:VMWARE
@@ -550,12 +559,12 @@ firewall-cmd --reload
 
 **配置 DHCP**
 
-DHCP 服务程序用于为客户端主机分配可用的 IP 地址，而且这是服务器与客户端主机进行文件传输的基础
+DHCP 服务程序用于为客户端主机分配可用的 IP 地址,而且这是服务器与客户端主机进行文件传输的基础
 
 `yum -y install dhcp`
 
 ```vim
-# 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议，旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0（这个文件会在下面的步骤中创建），其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件，自行进入下一步的安装过程。
+# 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议,旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0 (这个文件会在下面的步骤中创建) ,其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件,自行进入下一步的安装过程.
 vim /etc/dhcp/dhcpd.conf
 
 allow booting;
@@ -579,7 +588,7 @@ systemctl enable dhcpd
 
 **配置 TFTP 服务**
 
-配置 TFTP 服务程序，为客户端主机提供引导及驱动文件。当客户端主机有了基本的驱动程序之后，再通过 vsftpd 服务程序将完整的光盘镜像文件传输过去。
+配置 TFTP 服务程序,为客户端主机提供引导及驱动文件.当客户端主机有了基本的驱动程序之后,再通过 vsftpd 服务程序将完整的光盘镜像文件传输过去.
 ```bash
 yum -y install tftp-server xinetd
 ```
@@ -609,25 +618,25 @@ firewall-cmd --reload
 
 **配置 SYSLinux 服务**
 
-SYSLinux 是一个用于提供引导加载的服务程序。与其说 SYSLinux 是一个服务程序，不如说更需要里面的引导文件，在安装好 SYSLinux 服务程序软件包后，/usr/share/syslinux 目录中会出现很多引导文件。
+SYSLinux 是一个用于提供引导加载的服务程序.与其说 SYSLinux 是一个服务程序,不如说更需要里面的引导文件,在安装好 SYSLinux 服务程序软件包后,/usr/share/syslinux 目录中会出现很多引导文件.
 ```bash
 yum -y install syslinux
 
-# 首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中，也就是 pxelinux.0，这样客户端主机就能够顺利地获取到引导文件。另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件。
+# 首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中,也就是 pxelinux.0,这样客户端主机就能够顺利地获取到引导文件.另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件.
 cd /var/lib/tftpboot
 cp /usr/share/syslinux/pxelinux.0 .
 mkdir /media/cdrom
 mount /dev/cdrom /media/cdrom
-# 确认光盘镜像已经被挂载到 /media/cdrom 目录后，使用复制命令将光盘镜像中自带的一些引导文件也复制到 TFTP 服务程序的默认目录中。
+# 确认光盘镜像已经被挂载到 /media/cdrom 目录后,使用复制命令将光盘镜像中自带的一些引导文件也复制到 TFTP 服务程序的默认目录中.
 cp /media/cdrom/images/pxeboot/{vmlinuz,initrd.img} .
 cp /media/cdrom/isolinux/{vesamenu.c32,boot.msg} .
 
-# 在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录，虽然该目录的名字带有后缀，但依然也是目录，而非文件！将系统光盘中的开机选项菜单复制到该目录中，并命名为 default。这个 default 文件就是开机时的选项菜单。
+# 在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录,虽然该目录的名字带有后缀,但依然也是目录,而非文件！将系统光盘中的开机选项菜单复制到该目录中,并命名为 default.这个 default 文件就是开机时的选项菜单.
 mkdir pxelinux.cfg
 cp /media/cdrom/isolinux/isolinux.cfg pxelinux.cfg/default
 ```
 ```vim
-# 默认的开机菜单中有两个选项，要么是安装系统，要么是对安装介质进行检验。既然我们已经确定采用无人值守的方式安装系统，还需要为每台主机手动选择相应的选项，未免与我们的主旨（无人值守安装）相悖。现在我们编辑这个 default 文件，把第 1 行的 default 参数修改为 linux，这样系统在开机时就会默认执行那个名称为 linux 的选项了。对应的 linux 选项大约在 64 行，我们将默认的光盘镜像安装方式修改成 FTP 文件传输方式，并指定好光盘镜像的获取网址以及 Kickstart 应答文件的获取路径
+# 默认的开机菜单中有两个选项,要么是安装系统,要么是对安装介质进行检验.既然我们已经确定采用无人值守的方式安装系统,还需要为每台主机手动选择相应的选项,未免与我们的主旨 (无人值守安装) 相悖.现在我们编辑这个 default 文件,把第 1 行的 default 参数修改为 linux,这样系统在开机时就会默认执行那个名称为 linux 的选项了.对应的 linux 选项大约在 64 行,我们将默认的光盘镜像安装方式修改成 FTP 文件传输方式,并指定好光盘镜像的获取网址以及 Kickstart 应答文件的获取路径
 
 # 修改第 1 行和第 64 行
 vim pxelinux.cfg/default
@@ -662,11 +671,11 @@ vim /var/ftp/pub/ks.cfg
 url --url=ftp://192.168.0.105
 timezone Asia/Shanghai --isUtc
 clearpart --all --initlabel
-# 如果觉得系统默认自带的应答文件参数较少，不能满足生产环境的需求，则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包。这是一款图形化的 Kickstart 应答文件生成工具，可以根据自己的需求生成自定义的应答文件，然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可。
+# 如果觉得系统默认自带的应答文件参数较少,不能满足生产环境的需求,则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包.这是一款图形化的 Kickstart 应答文件生成工具,可以根据自己的需求生成自定义的应答文件,然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可.
 ```
 
 **Reference**
-- [第19章 使用 PXE+Kickstart 无人值守安装服务。](https://www.linuxprobe.com/chapter-19.html)
+- [第19章 使用 PXE+Kickstart 无人值守安装服务.](https://www.linuxprobe.com/chapter-19.html)
 
 ---
 
@@ -686,17 +695,17 @@ docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_genconf
 **生成密钥文件**
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_initpki
-输入私钥密码（输入时是看不见的）：
+输入私钥密码 (输入时是看不见的) ：
 Enter PEM pass phrase:12345678
 再输入一遍
 Verifying - Enter PEM pass phrase:12345678
-输入一个 CA 名称（我这里直接回车）
+输入一个 CA 名称 (我这里直接回车)
 Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
-输入刚才设置的私钥密码（输入完成后会再让输入一次）
+输入刚才设置的私钥密码 (输入完成后会再让输入一次)
 Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
 ```
 
-**生成客户端证书（这里的 user 改成你想要的名字）**
+**生成客户端证书 (这里的 user 改成你想要的名字) **
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
 
@@ -723,7 +732,7 @@ yum install lrzsz -y
 sz /data/openvpn/conf/whsir.ovpn
 ```
 
-在 openvpn 的安装目录下，有个 config 目录，将服务器上的 user.ovpn，放在该目录下，运行 OpenVPN GUI，右键 whsir 连接 connect
+在 openvpn 的安装目录下,有个 config 目录,将服务器上的 user.ovpn,放在该目录下,运行 OpenVPN GUI,右键 whsir 连接 connect
 
 **Reference**
 - [通过 docker 搭建 openvpn](https://blog.whsir.com/post-2809.html)
@@ -732,7 +741,7 @@ sz /data/openvpn/conf/whsir.ovpn
 
 ## proxychains
 
-`通过 DLL 注入，使目标程序走代理`
+`通过 DLL 注入,使目标程序走代理`
 
 **项目地址**
 - https://github.com/rofl0r/proxychains-ng
@@ -756,11 +765,11 @@ socks5 127.0.0.1 1080 # 改成你懂的
 
 **使用**
 
-在需要代理的命令前加上 proxychains4 ，如：`proxychains4 wget https://www.google.com/`
+在需要代理的命令前加上 proxychains4 ,如：`proxychains4 wget https://www.google.com/`
 
 ---
 
-## 🔑SSH
+## SSH
 
 **官网**
 - https://www.ssh.com
@@ -780,9 +789,9 @@ PermitRootLogin yes
 service ssh restart
 systemctl enable ssh
 ```
-若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍。
+若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍.
 
-这时不要着急,只需要在 Kali 控制端口重新生成两个秘钥即可。
+这时不要着急,只需要在 Kali 控制端口重新生成两个秘钥即可.
 ```bash
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
@@ -790,8 +799,8 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 
 **Ubuntu**
 
-如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client（ubuntu 有默认安装,如果没有则 `sudo
-apt-get install openssh-client`）,如果要使本机开放 SSH 服务就需要安装 openssh-server
+如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `sudo
+apt-get install openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
 apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
@@ -805,10 +814,122 @@ apt install ssh
 
 **排错**
 
-0. 思路就是，先排查是不是客户端(自己)的问题，再排查是不是服务端(对面)的问题，最后在排查是不是传输中(中间)的问题。
-1. ping 试试，如果网络层可通，那么大概率是应用层的问题，检查 SSH 配置，是否有白名单限制，或者你他娘的意大利防火墙/selinux就没放行
-2. 假设这么一种情况，应用层配置正常，主机一切正常，但路由器/交换机在 ACL 上禁用了 SSH 的流量，这样就是传输层的问题了。内网 IPS/IDS 阻断同理。
-3. 麻烦你看下账号密码是不是写错了谢谢。或者是不是限制只使用密钥登陆的。
+0. 先排查是不是客户端(自己)的问题,再排查是不是服务端(对面)的问题,最后在排查是不是传输中(中间)的问题.
+1. ping 试试,如果网络层可通,那么大概率是应用层的问题,检查 SSH 配置,是否有白名单限制,或者你他娘的意大利防火墙或selinux就没放行
+2. 假设这么一种情况,应用层配置正常,主机一切正常,但路由器/交换机在 ACL 上禁用了 SSH 的流量,这样就是传输层的问题了.内网 IPS/IDS 阻断同理.
+3. 麻烦你看下账号密码是不是写错了谢谢.或者是不是限制只使用密钥登陆的.
+
+**motd**
+- [Mithrilwoodrat/FBI-WARNING-in-console](https://github.com/Mithrilwoodrat/FBI-WARNING-in-console)
+- [abcfy2/motd](https://github.com/abcfy2/motd)
+- `vim /etc/motd`
+
+```
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           佛祖保佑       永不死机
+           心外无法       法外无心
+```
+```
+  _      `-._     `-.     `.   \      :      /   .'     .-'     _.-'      _
+   `--._     `-._    `-.    `.  `.    :    .'  .'    .-'    _.-'     _.--'
+        `--._    `-._   `-.   `.  \   :   /  .'   .-'   _.-'    _.--'
+  `--.__     `--._   `-._  `-.  `. `. : .' .'  .-'  _.-'   _.--'     __.--'
+  __    `--.__    `--._  `-._ `-. `. \:/ .' .-' _.-'  _.--'    __.--'    __
+    `--..__   `--.__   `--._ `-._`-.`_=_'.-'_.-' _.--'   __.--'   __..--'
+  --..__   `--..__  `--.__  `--._`-q(-_-)p-'_.--'  __.--'  __..--'   __..--
+        ``--..__  `--..__ `--.__ `-'_) (_`-' __.--' __..--'  __..--''
+  ...___        ``--..__ `--..__`--/__/  \--'__..--' __..--''        ___...
+        ```---...___    ``--..__`_(<_   _/)_'__..--''    ___...---'''
+  ```-----....._____```---...___(__\_\_|_/__)___...---'''_____.....-----'''
+```
+```
+############################################################################################################&
+############################################################################################################&
+############################################################################################################&
+############################################################################################################&
+############################################################################################################&
+############################################################################################################&
+############################################################################################################&
+##########################################################@#################################################&
+#####################################################$;`.:|%@###############################################&
+#################################################$:....`:;;!$##$;::!@#######################################&
+##############################################|`......':'':;|&%:':;:::'%####################################&
+###########################################$'........``......`:;!;'`.''..'$#################################&
+#######################################@$!`.........``........`'`...'::'...`|###############################&
+###################################|'.`:'.........``.............``.....`'`...!#############################&
+###############################&;....:;...............``..........``.......':`..;$@#########################&
+############################@!.....`;:................``............``.....```'`..';$#######################&
+##########################&:......'!'..........``.....``.............``.....``.`'`.```%#####################&
+########################&:.......:;`..........''......`...............``......``.':`.`.`$###################&
+######################@;........':`..........''......``................```.....``..''.`. '&#################&
+#####################!........:!:`..........`'`......``..................`......``..``...  :@###############&
+###################$'.....`!$%|!`...........':`..........''..............`'......``..``..`.  !##############&
+##################!.....;$&%||!:...........`'``......``''`'`..............;;.....``...''..`.  .%############&
+#######@%;|$@###@;....!&&%|||%;...........````.......`'':`  ..............`'......``...''..`. '|%@##########&
+########&|!$%|&&;...`|$$$||||;`...........````.......```:.   .....................``....''.... `$###########&
+#########$|$|!%||;.`:|%%|!||!'``.........``.``.......:!!|!`   ..............  ....::.....''..`` '&##########&
+#########@$|%%|||%%%%%|||!|%;;!`.........``.``...'%&@@$|!;|&#&' ............  ....`:'.....``..'' ;##########&
+###########$%%|!!%$%$%|||!||%%:.........``..``.`|&&!'.'$###!  |%. ..........   ....``.....``..`;:'$#########&
+##########@$$%|!!!;:|%||||%$$!`........``....``:%!.`;@#######%.`;.   `......    ... .`..``.'`.'|&%$#########&
+##########&%$$|!|%:.;%|%$||$$;.........``....''``..:$###@%$@##| ..     .`.`.   .|####|`.''.''.`%############&
+##########&$$%$|!|:.;%!!$&&@&;........``.....`'....!##@@! .%##&`          .   ':``  .!|'`'`''.`%############&
+##########@$&$$||%:.;%||$@|'''........``......''...|@####$$###$`             ..;#####!::`'`''.'|############&
+#########%;%%$&%|;..;|'      .`......``.......`;'.``;&@#######;               ;######@!''.`:'.:;|###########&
+########$'..`!%%!`.`         .'......``.......'`.``.  !#####&'                |##$';##$!:.`!;.:::&##########&
+#######&:........`.          `;;.....''.......'`  :'                         .%#@$`:@#@%:.';:;:..!##########&
+######&:..'`.....`.           `!:...``........'`                              ;#######%;'..`::`..'%#########&
+#####&:.!|`......`.         . .`''..`'........'`                               !#####&'`'`.`'`....;@########&
+####$:|#%`........`           .`..'````.......'`                                 '|!`   `;'...``..`%########&
+###@@##$'..........`        . .`....`'`.......'`                                          ''..:!'..:&#######&
+######$'............`.        .`.....``.......'.          '`...`'''`                      `'...|#!..!#######&
+#####%`...............'`      .`..............`.                     !|                   ':...:&#&:.|######&
+####%`...................`::` .`.::...........'`                    .|;                   ::....!###&:|#####&
+###|..............``..........`'`;:...........'`                    ':                   ;;``...`%####@@####&
+#@;.....````......''''.........`:'`...........'`         ..        ..                  .:`'%$:...'$#########&
+%`...`';|:   .`....'` ':.......`:`''..........'`           `'   .`.                  `;'..!###&:..'$########&
+#########&'     .`.'`   `;`...;%;':!'.........'`                                  .;:.....!######|`'$#######&
+#&' `!@###|        `:.    .::':' .'::`........:'                              `;:`........|&&######@|$######&
+##&'      '.        ..       '''    '!'.......;&&|'                     ';!;'''..........`%;`$##############&
+###$`                         .:.     ::......:|%$%'          `%&&$!`...````.`'........'''!' :@#############&
+                                        ''....'!|%$&$$$$&&$!: :|;!!:....``''.''`.......':;:   !###@#########&
+#&'                                      ':`..'|%||%||||||%|;!|$&|!:.````:|:.||`......'`.;'   .%#&!$########&
+####@;                                     ;;.'!|!||!|||||%|!||%$|!:```'!&|'!&|'.....'` `;`    :@%.!########&
+####@$%!.                                   :|:;$|%$%%%%$$%!|%%$$$|:``!%|%!!$%!'....:'  ::      !; :@#######&
+####&'                            .'         :$$$||;.               .`:!|%$%%%!'..`'.   ``         `$#######&
+######%.   ';;'                               :|'                   ..     '|%;`.`.                .$#######&
+######@&!.       .                             ''                   ..       :|:.                  .%#######&
+######;             .                           .                    .       '%:                   ..'&#####&
+######@:               .                        .`                   .       .:`                  .`';``$###&
+######@%'                 .                      ';'.                         '.                  `''`   |##&
+#####$'`;'           .    ..''                     .`.'!;`           ..    `%&:                  '` ``  `&##&
+#####!..'|'             ..                          ........';!!`    .. :|!` `.                    ``  '&###&
+#####&:.:;                  .                       ...............''`....'`                      ``  :@####&
+######$!'        .             ..                  .`............``   .```'`                     .`  ;######&
+######@:             .            .                 ''..........`'.  .``..'`                    .`  '&######&
+######;                              .              ':``..........      ..`.                   ''   .%######&
+###$%:                      .           .            ;%%!:'`......  `. ...'.                  ``     :@#####&
+#$';:                                     .          :||%%%%|;'``.``.````;%'                .`        :@####&
+#&%;                                         .       .!||%||%%%$&|:'.`;%|!!`               '.          ;####&
+```
 
 ---
 
@@ -1040,20 +1161,20 @@ echo -e "xxx.com {
 
 **源文件方式安装**
 
-首先下载 NodeJS 的二进制文件,http://nodejs.org/download/ 。在 Linux Binaries (.tar.gz) 行处根据自己系统的位数选择
+首先下载 NodeJS 的二进制文件,http://nodejs.org/download/ .在 Linux Binaries (.tar.gz) 行处根据自己系统的位数选择
 ```bash
 # 解压到当前文件夹下运行
 tar zxvf node-v0.10.26-linux-x64.tar.gz
 
-进入解压后的目录 bin 目录下,执行 ls 会看到两个文件 node,npm. 然后执行 ./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的。依次运行如下三条命令
+进入解压后的目录 bin 目录下,执行 ls 会看到两个文件 node,npm. 然后执行 ./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的.依次运行如下三条命令
 cd node-v0.10.26-linux-x64/bin
 ls
 ./node -v
 ```
-因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin 这个目录是不在环境变量中的,所以只能到该目录下才能 node 的程序。如果在其他的目录下执行 node 命令的话 ,必须通过绝对路径访问才可以的
+因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin 这个目录是不在环境变量中的,所以只能到该目录下才能 node 的程序.如果在其他的目录下执行 node 命令的话 ,必须通过绝对路径访问才可以的
 
 如果要在任意目录可以访问的话,需要将 node 所在的目录,添加 PATH 环境变量里面,或者通过软连接的形式将 node 和 npm 链接到系统默认的 PATH 目录下的一个
-在终端执行 echo $PATH 可以获取 PATH 变量包含的内容,系统默认的 PATH 环境变量包括 /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符。所以我们可以将 node 和 npm 链接到 /usr/local/bin 目录下如下执行
+在终端执行 echo $PATH 可以获取 PATH 变量包含的内容,系统默认的 PATH 环境变量包括 /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符.所以我们可以将 node 和 npm 链接到 /usr/local/bin 目录下如下执行
 ```bash
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
 ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
@@ -1097,7 +1218,7 @@ service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 
 - **源代码编译安装**
 
-  自己下载好包 https://nginx.org/en/download.html，传到服务器上，这里以1.14.2 举例
+  自己下载好包 https://nginx.org/en/download.html,传到服务器上,这里以1.14.2 举例
 
   ```bash
   tar -zxvf nginx-1.14.2.tar.gz
@@ -1109,7 +1230,7 @@ service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
   ./nginx
   ```
 
-  注:源代码安装你的默认目录在 /usr/local/nginx 下,配置文件在 conf/ 中，不要搞错了
+  注:源代码安装你的默认目录在 /usr/local/nginx 下,配置文件在 conf/ 中,不要搞错了
 
 ```bash
 firewall-cmd --permanent --zone=public --add-service=http
@@ -1271,9 +1392,9 @@ systemctl restart nginx
 
 **安装**
 
-Tomcat 依赖 JDK，在安装 Tomcat 之前需要先安装 Java JDK。输入命令 java -version，如果显示 JDK 版本，证明已经安装了 JDK
+Tomcat 依赖 JDK,在安装 Tomcat 之前需要先安装 Java JDK.输入命令 java -version,如果显示 JDK 版本,证明已经安装了 JDK
 
-默认情况下，CentOS 安装有 JDK，一般先卸载掉
+默认情况下,CentOS 安装有 JDK,一般先卸载掉
 ```bash
 rpm -qa | grep jdk # 查询本地 JDK
 ```
@@ -1288,7 +1409,7 @@ cd bin
 ./startup.sh
 ```
 
-如果访问 http://ip:8080/ 失败，查看防火墙开放端口
+如果访问 http://ip:8080/ 失败,查看防火墙开放端口
 ```bash
 firewall-cmd --permanent --zone=public --add-port=8080/tcp
 firewall-cmd --reload
@@ -1316,7 +1437,7 @@ echo -e "\atomcat: unable to locate functions lib. Cannot continue."
 exit -1
 fi
 RETVAL=$?
-CATALINA_HOME="/usr/local/root/tomcat"  # tomcat 安装目录，你安装在什么目录下就复制什么目录
+CATALINA_HOME="/usr/local/root/tomcat"  # tomcat 安装目录,你安装在什么目录下就复制什么目录
 case "$1" in
 start)
 if [ -f $CATALINA_HOME/bin/startup.sh ];
@@ -1344,11 +1465,11 @@ chmod 755 /etc/rc.d/init.d/tomcat
 chkconfig --add /etc/rc.d/init.d/tomcat
 ```
 
-以上所有工作顺利进行并且没有报错，则配置完成，你可以输入命令 `service tomcat start` 和 `service tomcat stop` 进行验证
+以上所有工作顺利进行并且没有报错,则配置完成,你可以输入命令 `service tomcat start` 和 `service tomcat stop` 进行验证
 
 **修改端口号**
 
-进入 tomcat 的 conf 目录下，修改 server.xml 文件，可以修改端口，默认 8080
+进入 tomcat 的 conf 目录下,修改 server.xml 文件,可以修改端口,默认 8080
 
 **设置用户名和密码登录**
 
@@ -1384,7 +1505,7 @@ service tomcat stop
 
 tomcat 默认的发布 web 项目的目录是：webapps
 
-将导出的 war 包直接上传到 webapps 根目录下，随着 tomcat 的启动，war 包可以自动被解析。
+将导出的 war 包直接上传到 webapps 根目录下,随着 tomcat 的启动,war 包可以自动被解析.
 
 然后调用路径查询是否安装成功
 
@@ -1457,11 +1578,11 @@ DB_USER
 DB_PASSWORD
     第二步中为 WordPress 用户名设定的密码
 DB_HOST
-    第二步中设定的 hostname（通常是 localhost,但总有例外；参见编辑wp-config.php 文件中的"可能的 DB_HOST 值）。
+    第二步中设定的 hostname (通常是 localhost,但总有例外；参见编辑wp-config.php 文件中的"可能的 DB_HOST 值) .
 DB_CHARSET
-    数据库字符串,通常不可更改。
+    数据库字符串,通常不可更改.
 DB_COLLATE
-    留为空白的数据库排序。
+    留为空白的数据库排序.
 ```
 
 在标有 `* Authentication Unique Keys.` 的版块下输入密钥的值,保存 wp-config.php 文件,也可以不管这个
@@ -1469,14 +1590,14 @@ DB_COLLATE
 **上传文件**
 
 接下来需要决定将博客放在网站的什么位置上：
-- 网站根目录下（如：http://example.com/）
-- 网站子目录下（如：http://example.com/blog/）
+- 网站根目录下 (如：http://example.com/)
+- 网站子目录下 (如：http://example.com/blog/)
 
 根目录
 
-如果需要将文件上传到 web 服务器,可用 FTP 客户端将 wordpress 目录下所有内容（无需上传目录本身）上传至网站根目录
+如果需要将文件上传到 web 服务器,可用 FTP 客户端将 wordpress 目录下所有内容 (无需上传目录本身) 上传至网站根目录
 
-如果文件已经在 web 服务器中且希望通过 shell 访问来安装 wordpress,可将 wordpress 目录下所有内容（无需转移目录本身）转移到网站根目录
+如果文件已经在 web 服务器中且希望通过 shell 访问来安装 wordpress,可将 wordpress 目录下所有内容 (无需转移目录本身) 转移到网站根目录
 
 子目录
 
@@ -1494,11 +1615,11 @@ service firewalld stop
 
 **运行安装脚本**
 
-在常用的 web 浏览器中运行安装脚本。
+在常用的 web 浏览器中运行安装脚本.
 
 将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
 
-将 WordPress 文件放在子目录（假设子目录名为 blog）下的用户请访问：http://example.com/blog/wp-admin/install.php
+将 WordPress 文件放在子目录 (假设子目录名为 blog) 下的用户请访问：http://example.com/blog/wp-admin/install.php
 
 访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
 
@@ -1811,7 +1932,7 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 
 **修改**
 
-`秘迹®️是熵加网络科技（北京）有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技（北京）有限公司保留追究法律责任的权利。`
+`秘迹®️是熵加网络科技 (北京) 有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技 (北京) 有限公司保留追究法律责任的权利.`
 
 配置文件中改下名字
 `mijisou/searx/static/themes/entropage/img` 中的 logo 图标自己换一下
@@ -1837,7 +1958,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目�
 
 **磁盘占用**
 
-服务运行一段时间后，`/var/lib/redis` 路径下会有一些缓存文件(貌似)，直接删了就行
+服务运行一段时间后,`/var/lib/redis` 路径下会有一些缓存文件(貌似),直接删了就行
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
@@ -1907,23 +2028,23 @@ systemctl stop mariadb
 # 用以下命令在没有权限检查的情况下重新启动数据库
 mysqld_safe --skip-grant-tables &
 
-# 这里， --skip-grant-tables 选项让你在没有密码和所有权限的情况下进行连接。如果使用此选项启动服务器，它还会启用 --skip-networking 选项，这用于防止其他客户端连接到数据库服务器。并且，& 符号用于在后台运行命令，因此你可以在以下步骤中输入其他命令。请注意，上述命令很危险，并且你的数据库会变得不安全。你应该只在短时间内运行此命令以重置密码。
+# 这里, --skip-grant-tables 选项让你在没有密码和所有权限的情况下进行连接.如果使用此选项启动服务器,它还会启用 --skip-networking 选项,这用于防止其他客户端连接到数据库服务器.并且,& 符号用于在后台运行命令,因此你可以在以下步骤中输入其他命令.请注意,上述命令很危险,并且你的数据库会变得不安全.你应该只在短时间内运行此命令以重置密码.
 
-# 接下来，以 root 用户身份登录 MySQL/MariaDB 服务器：
+# 接下来,以 root 用户身份登录 MySQL/MariaDB 服务器：
 mysql
 
-# 在 mysql > 或 MariaDB [(none)] > 提示符下，运行以下命令重置 root 用户密码：
+# 在 mysql > 或 MariaDB [(none)] > 提示符下,运行以下命令重置 root 用户密码：
 UPDATE mysql.user SET Password=PASSWORD('NEW-PASSWORD') WHERE User='root';
 
-# 使用你自己的密码替换上述命令中的 NEW-PASSWORD。
-# 然后，输入以下命令退出 mysql 控制台。
+# 使用你自己的密码替换上述命令中的 NEW-PASSWORD.
+# 然后,输入以下命令退出 mysql 控制台.
 
 FLUSH PRIVILEGES;
 exit
 
-# 最后，关闭之前使用 --skip-grant-tables 选项运行的数据库。为此，运行：
+# 最后,关闭之前使用 --skip-grant-tables 选项运行的数据库.为此,运行：
 mysqladmin -u root -p shutdown
-# 系统将要求你输入在上一步中设置的 MySQL/MariaDB 用户密码。
+# 系统将要求你输入在上一步中设置的 MySQL/MariaDB 用户密码.
 
 systemctl start mariadb
 mysql -u root -p
@@ -1931,7 +2052,7 @@ mysql -u root -p
 
 ---
 
-### 📦MySQL
+### MySQL
 
 **官网**
 - https://www.mysql.com
@@ -1947,7 +2068,7 @@ service mysql start
 
 ---
 
-### 🐘Postgresql
+### Postgresql
 
 **官网**
 - https://www.postgresql.org
@@ -1959,7 +2080,7 @@ postgresql-setup initdb # 初始化数据库
 service postgresql start  # 启动服务
 ```
 
-PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下。
+PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下.
 
 **修改用户密码**
 ```sql
@@ -1982,8 +2103,8 @@ vim /var/lib/pgsql/data/pg_hba.conf
 host    all             all             127.0.0.1/32            md5
 host    all             all             0.0.0.0/0               md5
 
-# 其中 0.0.0.0/0 表示运行任意 ip 地址访问。
-# 若设置为 192.168.1.0/24 则表示允许来自 ip 为 192.168.1.0 ~ 192.168.1.255 之间的访问。
+# 其中 0.0.0.0/0 表示运行任意 ip 地址访问.
+# 若设置为 192.168.1.0/24 则表示允许来自 ip 为 192.168.1.0 ~ 192.168.1.255 之间的访问.
 ```
 
 `service postgresql restart` 防火墙记得放行
@@ -1991,7 +2112,7 @@ host    all             all             0.0.0.0/0               md5
 ---
 
 ## Document
-### 🍃MongoDB
+### MongoDB
 
 **官网**
 - https://www.mongodb.com/
@@ -2050,7 +2171,7 @@ authorization: enabled
 ---
 
 ## Key-value
-### 🔺🔴⭐Redis
+### Redis
 
 **官网**
 - https://redis.io/
@@ -2121,10 +2242,10 @@ requirepass 密码	#设置 redis 密码
 
 **压测**
 
-Redis-benchmark 是官方自带的 Redis 性能测试工具，可以有效的测试 Redis 服务的性能。
+Redis-benchmark 是官方自带的 Redis 性能测试工具,可以有效的测试 Redis 服务的性能.
 ```bash
 redis-benchmark -h 127.0.0.1 -p 6379 -c 100 -n 100000
-# 100 个并发连接，100000 个请求，检测 host 为 localhost 端口为 6379 的 redis 服务器性能
+# 100 个并发连接,100000 个请求,检测 host 为 localhost 端口为 6379 的 redis 服务器性能
 
 redis-benchmark -h 127.0.0.1 -p 6379 -q -d 100
 # 测试存取大小为100字节的数据包的性能
@@ -2182,7 +2303,7 @@ firewall-cmd --reload
 **常用配置**
 
 `sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
-最后面直接添加你想添加的配置,下面是一些常用的（不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整）
+最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整) 
 ```vim
 set number # 显示行号
 set nobackup # 覆盖文件时不备份
@@ -2190,7 +2311,7 @@ set cursorline # 突出显示当前行
 set ruler # 在右下角显示光标位置的状态行
 set shiftwidth=4 # 设定 > 命令移动时的宽度为 4
 set softtabstop=4 # 使得按退格键时可以一次删掉 4 个空格
-set tabstop=4 # 设定 tab 长度为 4(可以改）
+set tabstop=4 # 设定 tab 长度为 4(可以改) 
 set smartindent # 开启新行时使用智能自动缩进
 set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
 
@@ -2217,7 +2338,7 @@ set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大�
 # 文件服务
 ## filebrowser
 
-`一个在线网盘服务，只能在线看图片,在线看视频是不支持的 ^w^`
+`一个在线网盘服务,只能在线看图片,在线看视频是不支持的 ^w^`
 
 **项目地址**
 - https://github.com/filebrowser/filebrowser
@@ -2351,7 +2472,7 @@ mkdir /smbshare
 chown smb1:smb1 /smbshare
 ```
 
-关闭 selinux（需要重启）
+关闭 selinux (需要重启) 
 ```vim
 vim /etc/selinux/config
 SELINUX=disabled
@@ -2406,8 +2527,8 @@ systemctl restart vsftpd
 systemctl enable vsftpd
 ```
 
-现在就可以在客户端执行 ftp 命令连接到远程的 FTP 服务器了。
-在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空。而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录。
+现在就可以在客户端执行 ftp 命令连接到远程的 FTP 服务器了.
+在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空.而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录.
 我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限：
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
@@ -2465,7 +2586,7 @@ firewall-cmd --reload
 systemctl restart vsftpd
 systemctl enable vsftpd
 ```
-按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了。但是在使用 root 管理员登录后,系统提示如下的错误信息：
+按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了.但是在使用 root 管理员登录后,系统提示如下的错误信息：
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -2475,14 +2596,14 @@ Name (192.168.10.10:root): root
 Login failed.
 ftp>
 ```
-可见,在我们输入 root 管理员的密码之前,就已经被系统拒绝访问了。这是因为 vsftpd 服务程序所在的目录中默认存放着两个名为"用户名单"的文件（ftpusers 和 user_list）。只要里面写有某位用户的名字,就不再允许这位用户登录到 FTP 服务器上。
+可见,在我们输入 root 管理员的密码之前,就已经被系统拒绝访问了.这是因为 vsftpd 服务程序所在的目录中默认存放着两个名为"用户名单"的文件 (ftpusers 和 user_list) .只要里面写有某位用户的名字,就不再允许这位用户登录到 FTP 服务器上.
 ```bash
 [root@linuxprobe ~]# cat /etc/vsftpd/user_list
 
 [root@linuxprobe ~]# cat /etc/vsftpd/ftpusers
 ```
-如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可。我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录 FTP 服务器
-在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是 /home/username 目录。而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况。
+如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可.我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录 FTP 服务器
+在采用本地用户模式登录FTP服务器后,默认访问的是该用户的家目录,也就是说,访问的是 /home/username 目录.而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况.
 
 ---
 
@@ -2494,7 +2615,7 @@ ftp>
 
 认证
 
-创建虚拟用户文件,把这些用户名和密码存放在一个文件中。该文件内容格式是：用户名占用一行,密码占一行。
+创建虚拟用户文件,把这些用户名和密码存放在一个文件中.该文件内容格式是：用户名占用一行,密码占一行.
 
 `cd /etc/vsftp`
 
@@ -2560,7 +2681,7 @@ touch testfile
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 
-guest_enable=YES      # 表示是否开启 vsftpd 虚拟用户的功能,yes 表示开启,no 表示不开启。
+guest_enable=YES      # 表示是否开启 vsftpd 虚拟用户的功能,yes 表示开启,no 表示不开启.
 guest_username=virtual       # 指定虚拟用户的宿主用户
 user_config_dir=/etc/vsftpd/user_conf     # 设定虚拟用户个人 vsftpd 服务文件存放路径
 allow_writeable_chroot=YES
@@ -2576,7 +2697,7 @@ anon_other_wirte_enable=YES
 anon_umask=022
 
 
-# 要求虚拟用户具有写权限（上传、下载、删除、重命名）
+# 要求虚拟用户具有写权限 (上传、下载、删除、重命名) 
 
 # umask = 022 时,新建的目录 权限是755,文件的权限是 644
 # umask = 077 时,新建的目录 权限是700,文件的权限时 600
@@ -2599,7 +2720,7 @@ systemctl enable vsftpd
 ```
 
 **Reference**
-- [第11章 使用Vsftpd服务传输文件。](https://www.linuxprobe.com/chapter-11.html)
+- [第11章 使用Vsftpd服务传输文件.](https://www.linuxprobe.com/chapter-11.html)
 
 ---
 
@@ -2622,7 +2743,7 @@ gcc helloworld.c -o execFile
 
 ---
 
-## 🐹Go
+## Go
 
 **官网**
 - https://golang.org/
@@ -2637,7 +2758,7 @@ export GOROOT=$HOME/go
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$HOME/Applications/Go
 source $HOME/.profile
-# $GOPATH 可以包含多个工作目录，取决于你的个人情况。如果你设置了多个工作目录，那么当你在之后使用 go get（远程包安装命令）时远程包将会被安装在第一个目录下。
+# $GOPATH 可以包含多个工作目录,取决于你的个人情况.如果你设置了多个工作目录,那么当你在之后使用 go get (远程包安装命令) 时远程包将会被安装在第一个目录下.
 go version
 ```
 
@@ -2699,7 +2820,7 @@ rpm -ivh jdk-****.rpm
 
 自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-文件名类似 `jdk-8u212-linux-x64.tar.gz`
+这里以 `jdk-8u212-linux-x64.tar.gz` 举例
 
 ```bash
 bash
@@ -2727,7 +2848,7 @@ javac
 
 ---
 
-## 🐍Python3
+## Python3
 
 **官网**
 - https://www.python.org/
@@ -2786,7 +2907,7 @@ pip3 -V
 
 ---
 
-## 💎Ruby
+## Ruby
 
 **官网**
 - https://www.ruby-lang.org
@@ -2822,11 +2943,11 @@ export PATH=$PATH:/usr/local/bin/
 
 **安装**
 
-因为 Supervisor 是 Python 开发的，安装前先检查一下系统否安装了 Python2.4 以上版本。
+因为 Supervisor 是 Python 开发的,安装前先检查一下系统否安装了 Python2.4 以上版本.
 
 `pip install supervisor`
 
-安装完成后，我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
+安装完成后,我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
 
 `echo_supervisord_conf > /etc/supervisord.conf`
 
@@ -2836,27 +2957,27 @@ export PATH=$PATH:/usr/local/bin/
 ```conf
 vim /etc/supervisord.conf
 
-; [program:xx]是被管理的进程配置参数，xx是进程的名称
+; [program:xx]是被管理的进程配置参数,xx是进程的名称
 [program:xx]
 command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令
 autostart=true       ; 在 supervisord 启动的时候也自动启动
-startsecs=10         ; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒
-autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为 unexpected，表示进程意外杀死后才重启
-startretries=3       ; 启动失败自动重试次数，默认是3
-user=tomcat          ; 用哪个用户启动进程，默认是root
-priority=999         ; 进程启动优先级，默认999，值小的优先启动
-redirect_stderr=true ; 把 stderr 重定向到 stdout，默认 false
-stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小，默认 50MB s
-tdout_logfile_backups = 20   ; stdout 日志文件备份数，默认是10
-; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）
+startsecs=10         ; 启动10秒后没有异常退出,就表示进程正常启动了,默认为1秒
+autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false],默认为 unexpected,表示进程意外杀死后才重启
+startretries=3       ; 启动失败自动重试次数,默认是3
+user=tomcat          ; 用哪个用户启动进程,默认是root
+priority=999         ; 进程启动优先级,默认999,值小的优先启动
+redirect_stderr=true ; 把 stderr 重定向到 stdout,默认 false
+stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小,默认 50MB s
+tdout_logfile_backups = 20   ; stdout 日志文件备份数,默认是10
+; stdout 日志文件,需要注意当指定目录不存在时无法正常启动,所以需要手动创建目录 (supervisord 会自动创建日志文件) 
 stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out
-stopasgroup=false     ;默认为 false,进程被杀死时，是否向这个进程组发送 stop 信号，包括子进程
-killasgroup=false     ;默认为 false，向进程组发送 kill 信号，包括子进程
+stopasgroup=false     ;默认为 false,进程被杀死时,是否向这个进程组发送 stop 信号,包括子进程
+killasgroup=false     ;默认为 false,向进程组发送 kill 信号,包括子进程
 ```
 
 注意修改 user = tomcat
 
-接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时，需要指定 supervisor 配置文件
+接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时,需要指定 supervisor 配置文件
 
 `supervisord -c /etc/supervisord.conf`
 
@@ -2870,7 +2991,7 @@ supervisorctl update
 ```
 
 **Reference**
-- [Supervisor 安装与配置（Linux/Unix 进程管理工具）](https://blog.csdn.net/xyang81/article/details/51555473)
+- [Supervisor 安装与配置 (Linux/Unix 进程管理工具) ](https://blog.csdn.net/xyang81/article/details/51555473)
 
 ---
 
@@ -2893,7 +3014,7 @@ firewall-cmd --reload
 ```
 安装完直接启动,访问 https://127.0.0.1:10000 注意,带 HTTPS
 
-默认账号 root，密码与服务器一致
+默认账号 root,密码与服务器一致
 
 **修改密码**
 
@@ -2947,11 +3068,11 @@ query_cache_limit = 16M
 collation_server = utf8_bin
 character_set_server = utf8
 ```
-原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%，如果主机内存不是 8GB，以上参数可依据相应比例进行调整，例如主机内存为 16GB，则 innodb_buffer_pool_size 建议设置为 12GB，innodb_log_buffer_size 建议设置为 32M，innodb_log_file_size 建议设置为 128M，以此类推。请注意 innodb_buffer_pool_size 的值必须是整数，例如主机内存是4G，那么 innodb_buffer_pool_size 可以设置为 3G，而不能设置为 3.2G
+原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%,如果主机内存不是 8GB,以上参数可依据相应比例进行调整,例如主机内存为 16GB,则 innodb_buffer_pool_size 建议设置为 12GB,innodb_log_buffer_size 建议设置为 32M,innodb_log_file_size 建议设置为 128M,以此类推.请注意 innodb_buffer_pool_size 的值必须是整数,例如主机内存是4G,那么 innodb_buffer_pool_size 可以设置为 3G,而不能设置为 3.2G
 ```bash
 systemctl enable mysqld && systemctl start mysqld
 grep 'temporary password' /var/log/mysqld.log # 获取 MySQL 的 root 初始密码
-mysql_secure_installation # 初始化，改下密码
+mysql_secure_installation # 初始化,改下密码
 systemctl restart mysqld
 mysql -u root -p
   create database zabbix character set utf8;
@@ -2984,7 +3105,7 @@ zcat create.sql.gz | mysql -uroot zabbix -p
   ValueCacheSize=256M
   Timeout=30
   ```
-  如果需要监控 VMware 虚拟机，则还需要设置以下选项参数：
+  如果需要监控 VMware 虚拟机,则还需要设置以下选项参数：
   ```vim
   StartVMwareCollectors=2
   VMwareCacheSize=256M
@@ -3029,7 +3150,7 @@ setenforce 0  # 关闭 selinux
 ---
 
 # 虚拟化
-## 🐋Docker
+## Docker
 
 **官网**
 - https://www.docker.com
@@ -3079,17 +3200,17 @@ docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但
 
 **使用**
 
-默认情况下，只有管理员权限能够运行 docker 命令。考虑到安全问题，你不会想用 root 用户或使用 sudo 来运行 Docker 的。要解决这个问题，你需要将自己的用户加入到 docker 组中。
+默认情况下,只有管理员权限能够运行 docker 命令.考虑到安全问题,你不会想用 root 用户或使用 sudo 来运行 Docker 的.要解决这个问题,你需要将自己的用户加入到 docker 组中.
 
 `sudo usermod -a -G docker $USER`
 
-完成操作后，登出系统然后再重新登录，应该就搞定了。不过若你的平台是 Fedora，则添加用户到 docker 组时会发现这个组是不存在的。那该怎么办呢？你需要首先创建这个组。命令如下：
+完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下：
 ```bash
 sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
 newgrp docker
 ```
 
-启动，暂停以及启用 Docker
+启动,暂停以及启用 Docker
 ```
 sudo systemctl start docker
 sudo systemctl enable docker
@@ -3111,12 +3232,12 @@ docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
 ---
 
 # CI
-## 🤵🏻Jenkins
+## Jenkins
 
 **官网**
 - https://jenkins.io/
 
-`注,Jenkins 需要 jdk 环境，请先行安装`
+`注,Jenkins 需要 jdk 环境,请先行安装`
 
 **rpm 包方式安装**
 
@@ -3233,7 +3354,7 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 **官网**
 - https://www.clamav.net
 
-`本部分来自 https://blog.51cto.com/11199460/2083697，在此仅作排版调整`
+`本部分来自 https://blog.51cto.com/11199460/2083697,在此仅作排版调整`
 
 **安装**
 ```bash
@@ -3256,14 +3377,14 @@ freshclam 命令通过文件 /etc/cron.d/clamav-update 来自动运行
 vim /etc/cron.d/clamav-update
 ```
 
-但默认情况下是禁止了自动更新功能，需要移除文件 /etc/sysconfig/freshclam 最后一行的配置才能启用
+但默认情况下是禁止了自动更新功能,需要移除文件 /etc/sysconfig/freshclam 最后一行的配置才能启用
 ```vim
 vim /etc/cron.d/clamav-update
 
 # FRESHCLAM_DELAY=
 ```
 
-定义服务器类型（本地或者 TCP），在这里定义为使用本地 socket，将文件 /etc/clam.d/scan.conf 中的这一行前面的注释符号去掉：
+定义服务器类型 (本地或者 TCP) ,在这里定义为使用本地 socket,将文件 /etc/clam.d/scan.conf 中的这一行前面的注释符号去掉：
 ```vim
 vim /etc/clamd.d/scan.conf
 
@@ -3333,7 +3454,7 @@ clamscan -r --remove  # 查杀当前目录并删除感染的文件
 
 - https://github.com/fail2ban/fail2ban
 
-`本部分来自 https://linux.cn/article-5067-1.html，在此仅作排版调整`
+`本部分来自 https://linux.cn/article-5067-1.html,在此仅作排版调整`
 
 **安装**
 
@@ -3346,17 +3467,17 @@ Debian: `apt install fail2ban`
 vim /etc/fail2ban/jail.conf
 
 [DEFAULT]
-# 以空格分隔的列表，可以是 IP 地址、CIDR 前缀或者 DNS 主机名
+# 以空格分隔的列表,可以是 IP 地址、CIDR 前缀或者 DNS 主机名
 # 用于指定哪些地址可以忽略 fail2ban 防御
 ignoreip = 127.0.0.1 172.31.0.0/24 10.10.0.0/24 192.168.0.0/24
 
-# 客户端主机被禁止的时长（秒），-1代表永远
+# 客户端主机被禁止的时长 (秒) ,-1代表永远
 bantime = 10m
 
 # 客户端主机被禁止前允许失败的次数
 maxretry = 5
 
-# 间隔时间（秒），间隔时间内超过最大尝试次数即被封锁
+# 间隔时间 (秒) ,间隔时间内超过最大尝试次数即被封锁
 findtime = 10m
 
 mta = sendmail
@@ -3374,17 +3495,17 @@ logpath = /var/log/secure
 maxretry = 3
 ```
 
-根据上述配置，fail2ban 会自动禁止在最近 10 分钟内有超过 3 次访问尝试失败的任意 IP 地址。一旦被禁，这个 IP 地址将会在 24 小时内一直被禁止访问 SSH 服务。这个事件也会通过 sendemail 发送邮件通知。
+根据上述配置,fail2ban 会自动禁止在最近 10 分钟内有超过 3 次访问尝试失败的任意 IP 地址.一旦被禁,这个 IP 地址将会在 24 小时内一直被禁止访问 SSH 服务.这个事件也会通过 sendemail 发送邮件通知.
 
 **测试**
 ```bash
 service fail2ban restart
 
-# 为了验证 fail2ban 成功运行，使用参数'ping'来运行 fail2ban-client 命令。 如果 fail2ban 服务正常运行，你可以看到“pong（嘭）”作为响应。
+# 为了验证 fail2ban 成功运行,使用参数'ping'来运行 fail2ban-client 命令. 如果 fail2ban 服务正常运行,你可以看到“pong (嘭) ”作为响应.
 fail2ban-client ping
 ```
 
-为了测试 fail2ban 是否能正常工作，尝试通过使用错误的密码来用 SSH 连接到服务器模拟一个暴力破解攻击。与此同时，监控 `/var/log/fail2ban.log` ，该文件记录在 fail2ban 中发生的任何敏感事件。
+为了测试 fail2ban 是否能正常工作,尝试通过使用错误的密码来用 SSH 连接到服务器模拟一个暴力破解攻击.与此同时,监控 `/var/log/fail2ban.log` ,该文件记录在 fail2ban 中发生的任何敏感事件.
 
 ```bash
 tail -f /var/log/fail2ban.log
@@ -3407,16 +3528,16 @@ tail -f /var/log/fail2ban.log
 2019-07-24 23:36:04,778 fail2ban.actions        [14760]: NOTICE  [ssh-iptables] Ban 192.168.72.130
 ```
 
-根据上述的日志文件，Fail2ban 通过检测 IP 地址的多次失败登录尝试，禁止了一个 IP 地址 192.168.72.130
+根据上述的日志文件,Fail2ban 通过检测 IP 地址的多次失败登录尝试,禁止了一个 IP 地址 192.168.72.130
 
 **解禁 IP**
 
-由于 fail2ban 的“ssh-iptables”监狱使用 iptables 来阻塞问题 IP 地址，你可以通过以下方式来检测当前 iptables 来验证禁止规则。
+由于 fail2ban 的“ssh-iptables”监狱使用 iptables 来阻塞问题 IP 地址,你可以通过以下方式来检测当前 iptables 来验证禁止规则.
 ```bash
 iptables --list -n
 iptables -D fail2ban-SSH -s 192.168.72.130 -j DROP
 ```
-当然你可以使用上述的 iptables 命令手动地检验和管理 fail2ban 的 IP 阻塞列表，但实际上有一个适当的方法就是使用 fail2ban-client 命令行工具。这个命令不仅允许你对"ssh-iptables"监狱进行管理，同时也是一个标准的命令行接口，可以管理其他类型的 fail2ban 监狱。
+当然你可以使用上述的 iptables 命令手动地检验和管理 fail2ban 的 IP 阻塞列表,但实际上有一个适当的方法就是使用 fail2ban-client 命令行工具.这个命令不仅允许你对"ssh-iptables"监狱进行管理,同时也是一个标准的命令行接口,可以管理其他类型的 fail2ban 监狱.
 ```bash
 fail2ban-client status  # 检验 fail2ban 状态
 
@@ -3424,7 +3545,7 @@ fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
 
 fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地址
 ```
-注意，如果你停止了 Fail2ban 服务，那么所有的 IP 地址都会被解锁。当你重启 Fail2ban，它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表，如果这些异常地址的发生时间仍然在禁止时间内，那么 Fail2ban 会重新将这些 IP 地址禁止。
+注意,如果你停止了 Fail2ban 服务,那么所有的 IP 地址都会被解锁.当你重启 Fail2ban,它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表,如果这些异常地址的发生时间仍然在禁止时间内,那么 Fail2ban 会重新将这些 IP 地址禁止.
 
 ---
 
@@ -3466,7 +3587,7 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地�
     ```
 
 - **Nexus**
-    - 在官网下载 UNIX 安装包，上传至服务器，这里以 https://help.sonatype.com/repomanager2/download#Download-NexusRepositoryManager2OSS 2.14.14-01 为例
+    - 在官网下载 UNIX 安装包,上传至服务器,这里以 https://help.sonatype.com/repomanager2/download#Download-NexusRepositoryManager2OSS 2.14.14-01 为例
 
     ```bash
     tar -xf nexus-2.14.14-01-bundle.tar.gz -C /usr/local
@@ -3484,4 +3605,4 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地�
 
 ---
 
-`"朋友的疏远大致分为两种。天各一方的两个人,慢慢的失掉了联系,彼此不再知道近况,多年之后再聚首往往就只是相对无言了。另一种就令人唏嘘的多了,两个朝夕得见的人,彼此的境遇竟因着造化相去渐远,这时心里也许会慢慢生出一种无力感来,因为无论怎么说怎么做也只能感觉心的距离越来越远了。——吴念真《这些人,那些事》`
+`"朋友的疏远大致分为两种.天各一方的两个人,慢慢的失掉了联系,彼此不再知道近况,多年之后再聚首往往就只是相对无言了.另一种就令人唏嘘的多了,两个朝夕得见的人,彼此的境遇竟因着造化相去渐远,这时心里也许会慢慢生出一种无力感来,因为无论怎么说怎么做也只能感觉心的距离越来越远了.——吴念真《这些人,那些事》`

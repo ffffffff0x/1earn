@@ -7,11 +7,11 @@
 ---
 
 # 激活
-注意:Windows 系统和 Micrsoft Office 软件都必须是 VOL 版本。
+注意:Windows 系统和 Micrsoft Office 软件都必须是 VOL 版本.
 
 **激活 Windows**
 
-用管理员权限运行 CMD 或 PowerShell，输入如下命令:
+用管理员权限运行 CMD 或 PowerShell,输入如下命令:
 ```powershell
 slmgr /skms xxx.xxx.xxx.xxx
 slmgr /ato
@@ -21,7 +21,7 @@ slmgr /xpr
 
 **激活 Office**
 
-用管理员权限运行 CMD 或 PowerShell，输入如下命令:
+用管理员权限运行 CMD 或 PowerShell,输入如下命令:
 ```powershell
 # 进入office 安装目录
 cd “C:\Program Files(x86)\Microsoft Office\Office16”
@@ -35,8 +35,8 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 # DNS
 **软件方案**
-- DnsJumper（windows 下快速配置 DNS）
-- [chengr28/Pcap_DNSProxy](https://github.com/chengr28/pcap_dnsproxy)（DNS 代理）
+- DnsJumper (windows 下快速配置 DNS)
+- [chengr28/Pcap_DNSProxy](https://github.com/chengr28/pcap_dnsproxy) (DNS 代理)
     ```ini
     [DNS]
     Outgoing Protocol = IPv4 + TCP
@@ -47,7 +47,7 @@ CSCRIPT OSPP.VBS /DSTATUS
     IPv4 Local Main DNS Address = 119.29.29.29:53
     IPv4 Local Alternate DNS Address = 114.114.115.115:53
     ```
-- [jedisct1/dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy)（DNS 代理）
+- [jedisct1/dnscrypt-proxy](https://github.com/jedisct1/dnscrypt-proxy) (DNS 代理)
     - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
 - [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的 DNS 代理,感觉没上面两个好用)
 
@@ -102,11 +102,11 @@ sudo systemctl restart docker
 对于 Windows 10 以上的用户 推荐使用 Docker for Windows
 Windows 安装文件:http://mirrors.aliyun.com/docker-toolbox/windows/docker-for-windows/
 
-在系统右下角托盘图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Docker Daemon。编辑窗口内的 JSON 串，填写下方加速器地址:
+在系统右下角托盘图标内右键菜单选择 Settings,打开配置窗口后左侧导航菜单选择 Docker Daemon.编辑窗口内的 JSON 串,填写下方加速器地址:
 {
   "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
 }
-编辑完成后点击 Apply 保存按钮，等待 Docker 重启并应用配置的镜像加速器。
+编辑完成后点击 Apply 保存按钮,等待 Docker 重启并应用配置的镜像加速器.
 
 ## node&js
 ```bash
@@ -128,11 +128,11 @@ npm config delete proxy  # 取消代理
 5. 华中科技大学http://pypi.hustunique.com/
 
 - 临时使用:
-可以在使用 pip 的时候，加上参数 -i 和镜像地址 `https://pypi.tuna.tsinghua.edu.cn/simple`
-例如:`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`，这样就会从清华镜像安装 pandas 库。
+可以在使用 pip 的时候,加上参数 -i 和镜像地址 `https://pypi.tuna.tsinghua.edu.cn/simple`
+例如:`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`,这样就会从清华镜像安装 pandas 库.
 
-- 永久修改，一劳永逸:
-    1. Linux 下，修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件。文件夹要加“.”，表示是隐藏文件夹)
+- 永久修改,一劳永逸:
+    1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加“.”,表示是隐藏文件夹)
     ```vim
     mkdir -p ~/.pip/
     vim ~/.pip/pip.conf
@@ -142,7 +142,7 @@ npm config delete proxy  # 取消代理
         trusted-host = https://pypi.tuna.tsinghua.edu.cn
     ```
 
-    2. windows 下，直接在 user 目录中创建一个 pip 目录，如:C:\Users\xx\pip，然后新建文件 pip.ini，即 %HOMEPATH%\pip\pip.ini，在 pip.ini 文件中输入以下内容:
+    2. windows 下,直接在 user 目录中创建一个 pip 目录,如:C:\Users\xx\pip,然后新建文件 pip.ini,即 %HOMEPATH%\pip\pip.ini,在 pip.ini 文件中输入以下内容:
     ```vim
     [global]
     index-url = https://pypi.tuna.tsinghua.edu.cn/simple
@@ -168,8 +168,8 @@ npm config delete proxy  # 取消代理
 - 包含多个关键字:`allintitle:关键字 关键字2`
 - 搜索特定类型的文件:`关键字 filetype:扩展名` 例如`人类简史 filetype:pdf`
 - 搜索特定网站的内容:`关键字 site:网址`
-- 排除不想要的结果:`关键字 - 排查条件`,例如搜索 “运动相机”，但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
-- 双引号的用处:例如:`"how to write a code"` 如果没有引号，搜索的大部分结果是以 `write code` 为关键字。包含引号后，会确保将完整的字符串做为期望的检索结果提交给搜索引擎。
+- 排除不想要的结果:`关键字 - 排查条件`,例如搜索 “运动相机”,但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
+- 双引号的用处:例如:`"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
 
 ---
 
@@ -214,27 +214,27 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 
 `ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
 ```
-in.mp4 是 960 x 540，H.264 / AVC，30fps，大小为 149.3 MB。
-转出来的 out.mp4 是176 x 144，H.264 / AVC，30fps，大小为 21.0 MB。
+in.mp4 是 960 x 540,H.264 / AVC,30fps,大小为 149.3 MB.
+转出来的 out.mp4 是176 x 144,H.264 / AVC,30fps,大小为 21.0 MB.
 
-y: 当已存在 out.mp4 是，不提示是否覆盖。
--i in.mp4: 输入文件名。
--s 176x144: 输出分辨率。
--vcodec -libx264: 输出文件使用的编解码器。
--vpre fast: 使用 libx264 做为编解码器时，需要带上这个参数。
--b 800000: 码率，单位是字节，不是k字节。
-out.mp4: 输出文件名。
-以上参数的使用细节，ffmpeg 的 help 里有更详细的描述。
+y: 当已存在 out.mp4 是,不提示是否覆盖.
+-i in.mp4: 输入文件名.
+-s 176x144: 输出分辨率.
+-vcodec -libx264: 输出文件使用的编解码器.
+-vpre fast: 使用 libx264 做为编解码器时,需要带上这个参数.
+-b 800000: 码率,单位是字节,不是k字节.
+out.mp4: 输出文件名.
+以上参数的使用细节,ffmpeg 的 help 里有更详细的描述.
 ```
 
 `ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4`
 ```bash
 -r 29.97 帧数 (一般用25就可以了)
--b 1500 视频数据流量，用-b xxx表示使用固定码率，数字可更改；还可以用动态码率如:-qscale 4和-qscale 6，4的质量比6高（一般用800就可以了，否则文件会很大）
+-b 1500 视频数据流量,用-b xxx表示使用固定码率,数字可更改；还可以用动态码率如:-qscale 4和-qscale 6,4的质量比6高 (一般用800就可以了,否则文件会很大)
 -acodec aac 音频编码用AAC
 -ac 2 声道数1或2
 -ar 48000 声音的采样频率
--ab 128 音频数据流量，一般选择32、64、96、128 # -vol 200 200%的音量，可更改（如果源文件声音很小，可以提升10到20倍(1000%~2000%)，我试过，效果还行！但不能太大，200000%我也试验过，但嘈杂声太大了）
+-ab 128 音频数据流量,一般选择32、64、96、128 # -vol 200 200%的音量,可更改 (如果源文件声音很小,可以提升10到20倍(1000%~2000%),我试过,效果还行！但不能太大,200000%我也试验过,但嘈杂声太大了)
 ```
 
 ---

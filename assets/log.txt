@@ -538,6 +538,35 @@ Misc
 2. Power-Linux
     ~ 重写大纲
 
+---
+
+更新日期 2019.10.9~11
+0. 调整部分文档标点符号
+安全
+1. Power-Pentest
+    ++ 添加 LOGO
+    ++ RedTeam-->信息收集-->网站-->whois-备案
+    ++ 运维保障-->加固-->工具-->Evaluation_tools
+2. web服务和中间件整合笔记
+    ++ 各类论坛/CMS/框架-->泛微-->泛微 OA WorkflowCenterTreeData 接口注入漏洞
+3. waf总结
+    ~ 改为安防设备总结
+4. dvwa小记
+    ++ SQL Injection High 下使用 sqlmap 注入的方法
+
+运维
+1. 文件
+    ++ /etc
+2. Speed-Linux
+    ++ 添加 LOGO
+    ++ Linux 编程-->source 命令与 `.` 的区别
+3. Power-Linux
+    ++ 添加 LOGO
+    ++ 网络服务-->SSH-->motd
+4. Secure-Linux
+    ++ 添加 LOGO
+5. God-Linux
+    ++ 添加 LOGO
 
 
 

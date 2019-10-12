@@ -568,6 +568,17 @@ Misc
 5. God-Linux
     ++ 添加 LOGO
 
+---
+
+更新日期 2019.10.11~12
+0. 为gitbook优化部分文件排版
+安全
+1. Power-Pentest
+    ~ 调整 LOGO 宽度
+2. 文件解析漏洞笔记
+    ++ Apache-->CVE-2017-15715
+3. Speed-Pentest
+    ++ 临时手机短信
 
 
 

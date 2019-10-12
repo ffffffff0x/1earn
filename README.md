@@ -120,7 +120,7 @@
 
 ## List
 
-以下是我平日收集知识与资源的渠道(部分)
+以下是我平日收集知识与资源的渠道
 - [每日一文](https://meiriyiwen.com/)
 - [喷嚏网----阅读、发现和分享：8小时外的健康生活！](https://www.dapenti.com/blog/index.asp)
 - [Nicolas Krassas](https://twitter.com/Dinosn)
@@ -157,12 +157,20 @@
 - [T00LS](https://www.t00ls.net/)
 - [看雪安全论坛](http://bbs.pediy.com/)
 
-## Thank
+---
+
+以下是该项目的灵感来源
 
 - [Micro8-渗透沉思录](https://www.secpulse.com/archives/98814.html)
 - [Teach Yourself Programming in Ten Years](http://norvig.com/21-days.html)
 - [To Find a Better Solution, Ask a Better Question – Member Feature Stories – Medium](https://medium.com/s/story/to-find-a-better-solution-ask-a-better-question-3be7fee5af65)
 - [The Magpie Developer](https://blog.codinghorror.com/the-magpie-developer/)
+
+---
+
+以下是直接或间接参与过本项目贡献的人员名单
+- [Survivor_ms](https://github.com/136510385)
+- [hhkk2334](https://www.uiihh.xyz)
 
 ---
 

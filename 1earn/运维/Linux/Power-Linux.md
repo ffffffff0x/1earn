@@ -23,13 +23,15 @@
 
 ## 大纲
 
-**系统配置**
+`注: 未对 gitbook 页面链接跳转进行优化,见谅`
+
+**🥩系统配置**
 
 * [Net](#Net)
 * [RAID](#RAID)
 * [Lvm](#Lvm)
 
-**网络服务**
+**🍜网络服务**
 
 * [AdguardTeam](#AdguardTeam)
 * [Chrony](#Chrony)
@@ -41,7 +43,7 @@
 * [proxychains](#proxychains)
 * [SSH](#SSH)
 
-**web 服务**
+**🍦web 服务**
 
 * [Apache](#Apache)
 * [Caddy](#Caddy)
@@ -53,7 +55,7 @@
 * [Wordpress](#Wordpress)
 * [Mijisou](#Mijisou)
 
-**数据库**
+**🍉数据库**
 
 * [Relational](#Relational)
   * [Oracle](#Oracle)
@@ -66,18 +68,18 @@
   * [Redis](#Redis)
   * [Memcached](#Memcached)
 
-**文本工具**
+**🍆文本工具**
 
 * [Vim](#Vim)
 
-**文件服务**
+**🍣文件服务**
 
 * [filebrowser](#filebrowser)
 * [NFS](#NFS)
 * [Samba](#Samba)
 * [Vsftp](#Vsftp)
 
-**编程语言**
+**🍗编程语言**
 
 * [C](#C)
 * [Go](#Go)
@@ -85,34 +87,34 @@
 * [Python3](#Python3)
 * [Ruby](#Ruby)
 
-**管理工具**
+**🍞管理工具**
 
 * [Supervisor](#Supervisor)
 * [Webmin](#Webmin)
 
-**系统监控**
+**🍪系统监控**
 
 * [Zabbix](#Zabbix)
 
-**虚拟化**
+**🌭虚拟化**
 
 * [Docker](#Docker)
 
-**CI**
+**🍔CI**
 
 * [Jenkins](#Jenkins)
 
-**堡垒机**
+**🍭堡垒机**
 
 * [Jumpserver](#Jumpserver)
 
-**安全服务**
+**🍯安全服务**
 
 * [ClamAV](#ClamAV)
 * [Fail2ban](#Fail2ban)
 
 
-**仓库**
+**🥗仓库**
 
 * [Nexus](#Nexus)
 

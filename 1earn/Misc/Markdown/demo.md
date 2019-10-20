@@ -1,5 +1,14 @@
 # Markdown学习手册
 
+---
+
+## Reference
+1. [https://guides.github.com/features/mastering-markdown](https://guides.github.com/features/mastering-markdown)
+2. [https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/)
+3. [Markdown 语法说明 (简体中文版)](https://www.appinn.com/markdown/)
+
+---
+
 ![image](https://user-images.githubusercontent.com/1908863/28227953-eb6eefa4-68a1-11e7-8769-96ea83facf3b.png)
 
 列表
@@ -94,7 +103,6 @@ H~2~O
 ## 二级标题
 ### 三级标题
 
-
 1. Numbered
 2. List
 
@@ -104,7 +112,7 @@ H~2~O
 \*literal asterisks\*
 
 加粗和斜体
-**加粗** 
+**加粗**
 *斜体*
 
 代码块(去掉\)
@@ -112,7 +120,6 @@ H~2~O
 code
 \```
 ```
-
 
 ### 下面是 Python 代码块
 ```python{.line-numbers}
@@ -130,10 +137,3 @@ require 'redcarpet'
 markdown = Redcarpet.new("Hello World!")
 puts markdown.to_html
 ```
-
-
-
-### Reference
-1. [https://guides.github.com/features/mastering-markdown](https://guides.github.com/features/mastering-markdown)
-2. [https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/)
-3. [Markdown 语法说明 (简体中文版)](https://www.appinn.com/markdown/)

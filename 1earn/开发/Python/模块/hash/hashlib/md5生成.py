@@ -5,13 +5,11 @@ lock = threading.Lock()
 curTask = 1
 maxTask = 1000000
 
-
 f = open('test.txt', 'w')
 def thread():
     global lock
     global curTask
     global maxTask
-
 
     while 1:
         lock.acquire()  # 取任务  #这个过程不能被打断
@@ -24,7 +22,6 @@ def thread():
 
         print(myTask)
         f.write(str(myTask)+"-"+hashlib.md5(str(myTask).encode(encoding='UTF-8')).hexdigest()+'\n')
-
 
 # 多线程执行
 threadNum = 200

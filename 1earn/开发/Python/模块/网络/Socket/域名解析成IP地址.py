@@ -8,7 +8,7 @@ def URL2IP():
    for oneurl in urllist.readlines():
 	   url=re.sub('@|#|ftp://|https://|http://|moz-extension://|/', '',oneurl)
 	   print(url)
-	  
+
 	  '''
        try:
            ip =socket.gethostbyname(url)
@@ -25,8 +25,7 @@ try:
     urllist.close()
     iplist.close()
     print ("complete !")
-	
+
 except:
     print ("ERROR !")
 
-	

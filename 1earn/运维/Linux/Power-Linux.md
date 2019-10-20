@@ -1672,7 +1672,7 @@ server:
 cache:
     cache_server : "127.0.0.1" # redis cache server ip address
     cache_port : 6379 # redis cache server port
-    cache_time : 86400 # cache 1 day
+    cache_time : 60 # cache 1 min
     cache_type : "redis" # cache type
     cache_db : 0 # we use db 0 in dev env
 
@@ -2751,15 +2751,16 @@ gcc helloworld.c -o execFile
 - https://golang.org/
 
 **安装**
+
+访问 https://golang.org/dl/ 下载最新版本包,这里以 `go1.13.linux-amd64.tar.gz` 为例
+
 ```bash
-访问 https://golang.org/dl/ 下载最新版本包
+tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
 
-tar -C /usr/local -xzf 相应文件.tar.gz
-
-export GOROOT=$HOME/go
-export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:/usr/local/go/bin
+export GOROOT=/usr/local/go
 export GOPATH=$HOME/Applications/Go
-source $HOME/.profile
+source ~/.bash_profile
 # $GOPATH 可以包含多个工作目录,取决于你的个人情况.如果你设置了多个工作目录,那么当你在之后使用 go get (远程包安装命令) 时远程包将会被安装在第一个目录下.
 go version
 ```
@@ -3226,6 +3227,37 @@ docker images # 检查一下系统中已经有了哪些镜像
 docker pull nginx # 拉取一个镜像
 docker search nginx # 搜索 Docker Hub 中的所有 Nginx 镜像
 docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
+```
+
+常用命令
+```bash
+docker run -it [docker_id] bash     # 运行一个容器实例
+docker ps             # 查看当前运行的 docker 容器的进程信息
+docker image rm [docker_image_id]   # 删除本地的 docker 镜像
+docker rmi -f [docker_image_id]     # 删除本地的 docker 镜像
+docker exec -it [docker_id] bash  # 获取容器的shell
+docker kill # 杀死容器
+docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
+```
+
+**Docker-Compose**
+
+Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
+
+去下载二进制包 https://github.com/docker/compose/releases
+
+然后将文件上传到 `/usr/local/bin/` 文件夹下，然后将其重命名为 docker-compose，修改此文件的权限，增加可执行：`chmod +x /usr/local/bin/docker-compose`
+
+```bash
+docker-compose build
+docker-compose up -d
+docker-compose stop
+```
+
+```bash
+docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
+docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
+docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
 ```
 
 **加速**

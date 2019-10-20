@@ -18,10 +18,22 @@
 
 # github
 **例子**
-```
-create user identified by
-create user zabbix@'%' identified by
-```
+- 敏感信息
+    ```
+    create user identified by
+    create user zabbix@'%' identified by
+    各单位
+    ```
+
+- 交流
+    ```
+    内部
+    钉钉群
+    ```
+
+- 人名
+    - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus)
+    - [重名top500](../文件/重名top500.txt)
 
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
@@ -35,100 +47,100 @@ create user zabbix@'%' identified by
 - [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
 
 **例子**
+- **常见语法**
+    ```
+    inurl:tw
+    inurl:jp
 
-常见
-```
-inurl:tw
-inurl:jp
+    inurl:editor/db/
+    inurl:eWebEditor/db/
+    inurl:bbs/data/
+    inurl:databackup/
+    inurl:blog/data/
+    inurl:\boke\data
+    inurl:bbs/database/
+    inurl:conn.asp
+    inc/conn.asp
+    Server.mapPath(".mdb")
+    allinurl:bbs data
+    filetype:mdb inurl:database
+    filetype:inc conn
+    inurl:data filetype:mdb
+    intitle:"index of" data
 
-inurl:editor/db/
-inurl:eWebEditor/db/
-inurl:bbs/data/
-inurl:databackup/
-inurl:blog/data/
-inurl:\boke\data
-inurl:bbs/database/
-inurl:conn.asp
-inc/conn.asp
-Server.mapPath(".mdb")
-allinurl:bbs data
-filetype:mdb inurl:database
-filetype:inc conn
-inurl:data filetype:mdb
-intitle:"index of" data
+    intitle:"index of" etc
+    intitle:"Index of" .sh_history
+    intitle:"Index of" .bash_history
+    intitle:"index of" passwd
+    intitle:"index of" people.lst
+    intitle:"index of" pwd.db
+    intitle:"index of" etc/shadow
+    intitle:"index of" spwd
+    intitle:"index of" master.passwd
+    intitle:"index of" htpasswd
+    inurl:service.pwd
+    ```
 
-intitle:"index of" etc
-intitle:"Index of" .sh_history
-intitle:"Index of" .bash_history
-intitle:"index of" passwd
-intitle:"index of" people.lst
-intitle:"index of" pwd.db
-intitle:"index of" etc/shadow
-intitle:"index of" spwd
-intitle:"index of" master.passwd
-intitle:"index of" htpasswd
-inurl:service.pwd
-```
+- **黑产**
+    ```
+    老虎机 site:*.gov.cn
+    澳门银行 site:*.gov.cn
+    万博亚洲官网 site:*.gov.cn
+    狗万app site:*.gov.cn
+    新万博官网 site:*.gov.cn
+    ylg9999 site:*.gov.cn
+    九州娱乐 site:*.gov.cn
+    澳门威尼斯人 site:*.gov.cn
+    威尼斯人 site:*.gov.cn
+    大红鹰葡京会
+    振动盘
+    澳门银河
+    永利娱乐场
+    太阳城集团
+    金沙娱乐
+    Bet365
+    钱柜娱乐
+    永利娱乐
+    百家乐
+    ```
 
-黑产
-```
-老虎机 site:*.gov.cn
-澳门银行 site:*.gov.cn
-万博亚洲官网 site:*.gov.cn
-狗万app site:*.gov.cn
-新万博官网 site:*.gov.cn
-ylg9999 site:*.gov.cn
-九州娱乐 site:*.gov.cn
-澳门威尼斯人 site:*.gov.cn
-威尼斯人 site:*.gov.cn
-大红鹰葡京会
-振动盘
-澳门银河
-永利娱乐场
-太阳城集团
-金沙娱乐
-Bet365
-钱柜娱乐
-永利娱乐
-百家乐
-```
+- **漏洞**
+    ```
+    目录遍历漏洞
+        site:xxx.com intitle:index.of
+        site:xxx.com intitle:转到父目录
 
-漏洞
-```
-目录遍历漏洞
-    site:xxx.com intitle:index.of
+    配置文件泄露
+        site:xxx.com ext:xml | ext:conf | ext:cnf | ext:reg | ext:inf | ext:rdp | ext:cfg | ext:txt | extra | ext:ini
 
-配置文件泄露
-    site:xxx.com ext:xml | ext:conf | ext:cnf | ext:reg | ext:inf | ext:rdp | ext:cfg | ext:txt | extra | ext:ini
+    数据库文件泄露
+        site:xxx.com ext:sql | ext:dbf | ext:mdb
 
-数据库文件泄露
-    site:xxx.com ext:sql | ext:dbf | ext:mdb
+    日志文件泄露
+        site:xxx.com ext:log
 
-日志文件泄露
-    site:xxx.com ext:log
+    备份和历史文件
+        site:xxx.com ext:bkf | ext:bkp | ext:bak | extld | ext:backup
 
-备份和历史文件
-    site:xxx.com ext:bkf | ext:bkp | ext:bak | extld | ext:backup
+    SQL错误
+        site:xxx.com intext:”sql syntax near” | intext:”syntax error has occurred” | intext:”incorrect syntax near” | intext:”unexpected end of SQL command” | intext:”Warning: mysql_connect()” | intext:”Warning: mysql_query()” | intext:”Warning: pg_connect()”
 
-SQL错误
-    site:xxx.com intext:”sql syntax near” | intext:”syntax error has occurred” | intext:”incorrect syntax near” | intext:”unexpected end of SQL command” | intext:”Warning: mysql_connect()” | intext:”Warning: mysql_query()” | intext:”Warning: pg_connect()”
+    公开文件信息
+        site:xxx.com ext:doc | ext:docx | extdt | ext:pdf | ext:rtf | ext:sxw | ext:psw | ext:ppt | ext:pptx | ext:pps | ext:csv
 
-公开文件信息
-    site:xxx.com ext:doc | ext:docx | extdt | ext:pdf | ext:rtf | ext:sxw | ext:psw | ext:ppt | ext:pptx | ext:pps | ext:csv
+    phpinfo()
+        site:xxx.com ext:php intitle:phpinfo “published by the PHP Group”
 
-phpinfo()
-    site:xxx.com ext:php intitle:phpinfo “published by the PHP Group”
+    JIRA
+        配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
+        此查询列出了其URI中具有“UserPickerBrowser”的所有URL，以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能。
 
-JIRA
-    配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
-    此查询列出了其URI中具有“UserPickerBrowser”的所有URL，以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能。
+        inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
+        此查询列出了所有在其URI中具有“Managefilters”并且文本为“Public”的URL，以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器。
 
-    inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
-    此查询列出了所有在其URI中具有“Managefilters”并且文本为“Public”的URL，以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器。
-
-    inurl:/ConfigurePortalPages!default.jspa?view=popular
-    此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
-```
+        inurl:/ConfigurePortalPages!default.jspa?view=popular
+        此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
+    ```
 
 ---
 

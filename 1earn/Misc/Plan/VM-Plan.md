@@ -62,8 +62,6 @@ yum install open-vm-tools-devel -y
 
 **预装软件**
 - vim
-- python2
-- python3
 - make
 - gcc
 - gcc-c++

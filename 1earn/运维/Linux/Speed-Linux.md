@@ -826,6 +826,15 @@ vim /etc/crontab	# 系统任务调度的配置文件
 * * * * * command	# 每1分钟执行一次 command
 3,15 * * * * command	# 每小时的第3和第15分钟执行
 @reboot	command	# 开机启动
+
+# 例子
+0 */2 * * * /sbin/service httpd restart	# 意思是每两个小时重启一次apache
+50 7 * * * /sbin/service sshd start	# 意思是每天7：50开启ssh服务
+50 22 * * * /sbin/service sshd stop	# 意思是每天22：50关闭ssh服务
+0 0 1,15 * * fsck /home	# 每月1号和15号检查/home 磁盘
+1 * * * * /home/bruce/backup	# 每小时的第一分执行 /home/bruce/backup这个文件
+00 03 * * 1-5 find /home "*.xxx" -mtime +4 -exec rm {} \;	# 每周一至周五3点钟，在目录/home中，查找文件名为*.xxx的文件，并删除4天前的文件。
+30 6 */10 * * ls	# 意思是每月的1、11、21、31日是的6：30执行一次ls命令
 ```
 
 **at**
@@ -1010,7 +1019,7 @@ cmdline
 ```bash
 top	# 实时动态地查看系统的整体运行情况
 free	# 显示当前系统未使用的和已使用的内存数目
-vmstat	# 显示虚拟内存状态
+vmstat 1	# 显示虚拟内存状态
 ps	# 报告当前系统的进程状态
 	ps -aux #显示现在所有用户所有程序
 	# 由于ps命令能够支持的系统类型相当的多,所以选项多的离谱,这里略

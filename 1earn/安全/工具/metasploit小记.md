@@ -8,13 +8,25 @@
 
 ---
 
-## Reference
-- [linux - Metasploit: Module database cache not built yet, using slow search - Server Fault](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
-- [Metasploit入门用法(主动攻击) - CSDN博客](https://blog.csdn.net/wsh19930305/article/details/72855660)
-- [meterpreter必知必会的15个命令](https://www.4hou.com/tools/14185.html)
-- [萌新科普 手把手教你如何用MSF进行后渗透测试](https://www.anquanke.com/post/id/164525)
-- [浅谈MSF渗透测试](https://www.freebuf.com/news/210292.html)
-- [内网渗透之如何玩转Meterpreter？](http://www.secist.com/archives/1070.html)
+**项目地址**
+- https://github.com/rapid7/metasploit-framework
+
+**文章/相关**
+- [MSF基础命令新手指南](https://www.jianshu.com/p/77ffbfc3a06c)
+- [【渗透神器系列】Metasploit](https://thief.one/2017/08/01/1/)
+- [给kali的Metasploit下添加一个新的exploit](https://blog.csdn.net/SilverMagic/article/details/40978081)
+- [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
+- [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)
+
+**Module database cache not built yet, using slow search**
+```bash
+service postgresql start
+msfdb init
+db_rebuild_cache
+```
+
+**图形化 UI**
+- [WayzDev/Kage](https://github.com/WayzDev/Kage)
 
 ---
 

@@ -8,11 +8,19 @@
 
 ---
 
-## Reference
+**文章**
 - [【渗透神器系列】搜索引擎](https://thief.one/2017/05/19/1/)
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
 - [shodan-manual](https://b404.gitbooks.io/shodan-manual/)
 - [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
+
+**搜索引擎语法**
+- 包含关键字: `intitle:关键字`
+- 包含多个关键字: `allintitle:关键字 关键字2`
+- 搜索特定类型的文件: `关键字 filetype:扩展名` 例如 `人类简史 filetype:pdf`
+- 搜索特定网站的内容: `关键字 site:网址`
+- 排除不想要的结果: `关键字 - 排查条件`,例如搜索 “运动相机”,但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
+- 双引号的用处:例如: `"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
 
 ---
 
@@ -33,11 +41,26 @@
 
 - 人名
     - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus)
-    - [重名top500](../文件/重名top500.txt)
+    - [重名top500](../../../assets/file/安全/重名top500.txt)
 
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具，例如密码，私钥
+
+**同类**
+```
+https://usersnap.com/ | Usersnap - Customer Feedback & Visual Bug Tracking
+https://www.assembla.com/home | Secure Git, Secure Software Development in the Cloud | Assembla
+https://osdn.net/ | Develop and Download Open Source Software - OSDN
+https://gitee.com/ | 码云 Gitee — 基于 Git 的代码托管和研发协作平台
+https://xiaolvyun.baidu.com/#page1 | 百度效率云 | Git代码托管，版本管理，项目管理，持续集成，持续交付，研发工具云端解决方案
+https://sourceforge.net/ | SourceForge - Download, Develop and Publish Free Open Source Software
+https://launchpad.net/ | Launchpad
+https://bitbucket.org/ | Bitbucket | The Git solution for professional teams
+https://coding.net/ | CODING - 一站式软件研发管理平台
+https://about.gitlab.com/ | The first single application for the entire DevOps lifecycle - GitLab | GitLab
+https://github.com/ | GitHub
+```
 
 ---
 
@@ -81,7 +104,7 @@
     inurl:service.pwd
     ```
 
-- **黑产**
+- **黑产seo**
     ```
     老虎机 site:*.gov.cn
     澳门银行 site:*.gov.cn
@@ -102,6 +125,14 @@
     钱柜娱乐
     永利娱乐
     百家乐
+    博必发
+    商务模特
+    会所推荐
+    洗浴休闲
+    找鸡上门
+    外围女
+    按摩服务
+    大保健
     ```
 
 - **漏洞**

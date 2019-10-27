@@ -36,7 +36,7 @@
 		* [查](#查)
 		* [改](#改)
 
-**📶net**
+**📶网络管理**
 
 * [配置](#配置)
 * [查看](#查看)
@@ -300,7 +300,7 @@ gedit	# 图形化的编辑器
 
 ---
 
-# 📶net
+# 📶网络管理
 ## 配置
 **ip**
 ```bash
@@ -897,6 +897,10 @@ chmod <数字> <文件>	# 给文件权限
 	chmod u=rw,g=r,o= <文件>
 	chown -R u+x <文件夹>	# 对文件夹及其子目录所有文件的所有者增加执行权限
 
+	chmod u+s test_file    # 给文件增加SUID属性
+	chmod g+s test_dir     # 给目录增加SGID属性
+	chmod o+t test_dir     # 给目录增加Sticky属性
+
 chgrp	# 改变文件或目录所属的用户组
 	chgrp user1 file.txt	# Change the owning group of the file file.txt to the group named user1.
 	chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
@@ -1024,6 +1028,11 @@ ps	# 报告当前系统的进程状态
 	ps -aux #显示现在所有用户所有程序
 	# 由于ps命令能够支持的系统类型相当的多,所以选项多的离谱,这里略
 pidstat -u -p ALL	# 查看所有进程的 CPU 使用情况
+
+watch <其他命令>	# 以周期性的方式执行给定的指令，指令输出以全屏方式显示。
+	-n：指定指令执行的间隔时间（秒）；
+	-d：高亮显示指令输出信息不同之处；
+	-t：不显示标题。
 ```
 
 ---

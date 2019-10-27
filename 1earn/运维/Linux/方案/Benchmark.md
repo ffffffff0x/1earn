@@ -1,4 +1,4 @@
-# 🐱‍👤Benchmark
+# Benchmark
 `应用于主机性能判断`
 
 ---
@@ -7,7 +7,7 @@
 ```bash
 uname -r    # 查看系统
 cat /etc/os-release # 查看通用 Linux 发行版版本
-cat /proc/version   # # 查看系统版本
+cat /proc/version   # 查看系统版本
 ```
 
 ---
@@ -59,6 +59,21 @@ mv besttrace /usr/local/bin
 cd /home && rm -rf /home/tmp
 # 安装完成后，就可以用指令 besttrace IP/域名 来追踪路由了
 ```
+
+**speedtest-cli**
+
+- 简介
+
+    Speedtest.net 提供一个命令行版本——speedtest-cli，能够在终端中简单快速的测试出 linux 的网速
+
+- 使用过程
+    ```
+    wget https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+    chmod a+rx speedtest.py
+    mv speedtest.py /usr/local/bin/speedtest-cli
+    chown root:root /usr/local/bin/speedtest-cli
+    speedtest-cli
+    ```
 
 ---
 

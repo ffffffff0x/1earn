@@ -8,15 +8,30 @@
 
 ---
 
-## Reference
+**官网**
+- https://nmap.org/
 
-- [Nmap参考指南(Man Page)](https://nmap.org/man/zh/)
+**文章**
+- [【渗透神器系列】nmap](https://thief.one/2017/05/02/1/)
+- [Nmap扫描原理与用法](https://blog.csdn.net/aspirationflow/article/details/7694274)
 - [Nmap 进阶使用 [ 脚本篇 ]](https://www.freebuf.com/column/149716.html)
-- Nmap渗透测试思维导图 [png](../文件/Nmap渗透测试思维导图.png)
+
+**zenmap**
+- [Zenmap - 跨平台的 GUI 版 nmap bug 较多,不宜使用](https://nmap.org/zenmap/)
+
+**脚本**
+- [smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)
+
+**报告模板**
+- [honze-net/nmap-bootstrap-xsl](https://github.com/honze-net/nmap-bootstrap-xsl)
+
+**导图**
+- Nmap 渗透测试思维导图 [png](../../../assets/img/安全/Nmap渗透测试思维导图.png)
 
 ---
 
 # 用法
+
 `nmap -T5 -A -vv xx.xx.xx.xx` 这条命令的意思是往死里扫，管 TM 封不封地址
 
 TCP1：`nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN 路径`

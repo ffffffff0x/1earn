@@ -2,10 +2,28 @@
 
 ---
 
-## Reference
-- []()
-- []()
-- []()
+## 免责声明
+
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+
+---
+
+**靶场**
+
+![image](../../../assets/img/才怪.png)
+
+**教程**
+- [SQL 注入 - CTF Wiki](https://ctf-wiki.github.io/ctf-wiki/web/sqli/)
+- [Beyond SQLi: Obfuscate and Bypass](https://www.exploit-db.com/papers/17934)
+- [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
+- [aleenzz/MYSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MYSQL_SQL_BYPASS_WIKI)
+
+**payload**
+- [trietptm/SQL-Injection-Payloads](https://github.com/trietptm/SQL-Injection-Payloads)
+
+**sqlmap**
+- **笔记**
+    - [sqlmap 小记](../工具/sqlmap小记.md)
 
 ---
 

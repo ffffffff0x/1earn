@@ -8,15 +8,20 @@
 
 ---
 
-## Reference
+**文章**
 - [中间件漏洞合集](https://mp.weixin.qq.com/s/yN8lxwL-49OKfVR86JF01g)
+
+**工具**
+- [SecWiki/CMS-Hunter](https://github.com/SecWiki/CMS-Hunter)
+- [Q2h1Cg/CMS-Exploit-Framework](https://github.com/Q2h1Cg/CMS-Exploit-Framework)
+- [Lucifer1993/AngelSword](https://github.com/Lucifer1993/AngelSword)
 
 ---
 
 # 各类论坛/CMS框架
 ## dedeCMS
 **文章**
-- [解决DEDECMS历史难题--找后台目录 ](https://xz.aliyun.com/t/2064)
+- [解决DEDECMS历史难题--找后台目录](https://xz.aliyun.com/t/2064)
 
 ---
 
@@ -104,6 +109,9 @@ ECShop 是一款 B2C 独立网店系统，适合企业及个人快速构建个�
 
 - 官网: https://www.phpmyadmin.net/
 
+**文章**
+- [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
+
 **CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
 - POC | Payload | exp
     - [phpMyAdmin 4.6.2 - (Authenticated) Remote Code Execution](https://www.exploit-db.com/exploits/40185)
@@ -130,7 +138,7 @@ ECShop 是一款 B2C 独立网店系统，适合企业及个人快速构建个�
 - 文章
     - [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/) 可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
 
-**phpmyadmin4.8.1后台getshell**
+**phpmyadmin4.8.1 后台 getshell**
 - 文章
     - [phpmyadmin4.8.1后台getshell](https://mp.weixin.qq.com/s/HZcS2HdUtqz10jUEN57aog)
 
@@ -184,6 +192,15 @@ ECShop 是一款 B2C 独立网店系统，适合企业及个人快速构建个�
 **YxCMS 1.4.7 多个漏洞**
 - 文章
     - [YxCMS 1.4.7 最新版漏洞分析](https://bbs.ichunqiu.com/thread-45926-1-1.html)
+
+---
+
+## zcncms
+**文章**
+- [zcncms多个漏洞-Musec](http://musec.lofter.com/post/303379_d39f0c)
+- [ZCNCMS审计及漏洞分析](https://www.anquanke.com/post/id/179782)
+- [代码审计——zcncms后台SQL注入(一) ](http://0day5.com/archives/4053/)
+- [代码审计——zcncms几处漏洞合集(二) ](http://0day5.com/archives/4062/)
 
 ---
 
@@ -394,6 +411,7 @@ Apache Spark 是一款集群计算系统，其支持用户向管理节点提交�
 ---
 
 ## Apache Tomcat
+
 Tomcat 默认端口为 8080，也可能被改为其他端口，后台管理路径为 `/manager/html`，后台默认弱口令 admin/admin、tomcat/tomcat 等，若果配置不当，可通过”Tomcat Manager”连接部署 war 包的方式获取 webshell。
 
 **文章**
@@ -724,9 +742,8 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
 - `http://<ip>:8080/jmx-console`
 
-## PHPCGI
-
-**CVE-2012-1823 远程代码执行漏洞**
+## PHP
+**CVE-2012-1823 PHPCGI 远程代码执行漏洞**
 - 影响版本
 
     - php < 5.3.12 or php < 5.4.2
@@ -753,6 +770,57 @@ windows 在创建一个新文件时，操作系统还会生成 8.3 格式的兼�
 
     <?php echo shell_exec("id"); ?>
     ```
+
+**CVE-2018-19518 PHP imap 远程命令执行漏洞**
+- 简介
+
+    php imap 扩展用于在 PHP 中执行邮件收发操作。其 imap_open 函数会调用 rsh 来连接远程 shell，而 debian/ubuntu 中默认使用 ssh 来代替 rsh 的功能（也就是说，在 debian 系列系统中，执行 rsh 命令实际执行的是 ssh 命令）。
+
+    因为 ssh 命令中可以通过设置 -oProxyCommand= 来调用第三方命令，攻击者通过注入注入这个参数，最终将导致命令执行漏洞。
+
+- POC | Payload | exp
+    - [PHP imap 远程命令执行漏洞（CVE-2018-19518）](https://github.com/vulhub/vulhub/blob/master/php/CVE-2018-19518/README.md)
+
+**CVE-2019-11043 PHP-FPM 远程代码执行漏洞**
+- 简介
+
+    在长亭科技举办的 Real World CTF 中，国外安全研究员 Andrew Danau 在解决一道 CTF 题目时发现，向目标服务器 URL 发送 %0a 符号时，服务返回异常，疑似存在漏洞。
+
+    在使用一些有错误的 Nginx 配置的情况下，通过恶意构造的数据包，即可让 PHP-FPM 执行任意代码。
+
+- POC | Payload | exp
+    - [PHP-FPM 远程代码执行漏洞（CVE-2019-11043）](https://github.com/vulhub/vulhub/blob/master/php/CVE-2019-11043/README.zh-cn.md)
+    - [neex/phuip-fpizdam](https://github.com/neex/phuip-fpizdam)
+
+**LFI with phpinfo**
+- 简介
+
+    PHP 文件包含漏洞中，如果找不到可以包含的文件，我们可以通过包含临时文件的方法来 getshell。因为临时文件名是随机的，如果目标网站上存在 phpinfo，则可以通过 phpinfo 来获取临时文件名，进而进行包含。
+
+- POC | Payload | exp
+    - [PHP文件包含漏洞（利用phpinfo）](https://github.com/vulhub/vulhub/blob/master/php/inclusion/README.md)
+    - [LFI with phpinfo](https://github.com/hxer/vulnapp/tree/master/lfi_phpinfo)
+
+**PHP环境 XML外部实体注入漏洞（XXE）**
+- 简介
+
+    libxml2.9.0 以后，默认不解析外部实体.
+
+- POC | Payload | exp
+    - [PHP环境 XML外部实体注入漏洞（XXE）](https://github.com/vulhub/vulhub/blob/master/php/php_xxe/README.md)
+
+**XDebug 远程调试漏洞（代码执行）**
+- 简介
+
+    XDebug是PHP的一个扩展，用于调试PHP代码。如果目标开启了远程调试模式，并设置remote_connect_back = 1：
+    ```
+    xdebug.remote_connect_back = 1
+    xdebug.remote_enable = 1
+    ```
+    这个配置下，我们访问 http://target/index.php?XDEBUG_SESSION_START=phpstorm，目标服务器的 XDebug 将会连接访问者的 IP（或 X-Forwarded-For 头指定的地址）并通过 dbgp 协议与其通信，我们通过 dbgp 中提供的 eval 方法即可在目标服务器上执行任意 PHP 代码。
+
+- POC | Payload | exp
+    - [XDebug 远程调试漏洞（代码执行）](https://github.com/vulhub/vulhub/blob/master/php/xdebug-rce/README.md)
 
 ---
 
@@ -1091,6 +1159,16 @@ FCKeditor/_samples/asp/sample04.asp
 - POC | Payload | exp
     - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)
     - [jas502n/CVE-2019-7238](https://github.com/jas502n/CVE-2019-7238)
+
+---
+
+## noVNC
+**CVE-2017-18635 xss**
+- 文章
+    - [Exploiting an old noVNC XSS (CVE-2017-18635) in OpenStack](https://www.shielder.it/blog/exploiting-an-old-novnc-xss-cve-2017-18635-in-openstack/)
+
+- POC | Payload | exp
+    - [ShielderSec/cve-2017-18635](https://github.com/ShielderSec/cve-2017-18635)
 
 ---
 

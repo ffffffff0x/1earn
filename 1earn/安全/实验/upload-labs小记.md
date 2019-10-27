@@ -1,4 +1,4 @@
-# [upload-labs](https://github.com/c0ny1/upload-labs)
+# upload-labs 通关笔记
 
 ---
 
@@ -15,7 +15,7 @@
 ---
 
 ## Source
-
+- https://github.com/c0ny1/upload-labs
 - [Upload-labs 20关通关笔记](https://xz.aliyun.com/t/4029)
 - [upload-labs刷关记录](https://blog.csdn.net/u011377996/article/details/86776198)
 - [Upload-labs通关手册](https://xz.aliyun.com/t/2435)
@@ -28,7 +28,6 @@
 # 环境要求
 
 - 操作系统: Window or Linux 推荐使用 Windows，除了 Pass-19 必须在 linux 下，其余 Pass 都可以在 Windows 上运行
-
 - PHP 版本:  推荐 5.2.17  其他版本可能会导致部分 Pass 无法突破
 - PHP 组件:  php_gd2,php_exif    部分 Pass 依赖这两个组件
 - 中间件:   设置 Apache 以 moudel 方式连接

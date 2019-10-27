@@ -1,4 +1,4 @@
-# [dvwa](http://www.dvwa.co.uk/)
+# dvwa 通关笔记
 
 ---
 
@@ -24,6 +24,7 @@
 ---
 
 ## Reference
+- http://www.dvwa.co.uk/
 - [新手指南：DVWA-1.9全级别教程之Brute Force](https://www.freebuf.com/articles/web/116437.html)
 - [新手指南：DVWA-1.9全级别教程之Command Injection](https://www.freebuf.com/articles/web/116714.html)
 - [新手指南：DVWA-1.9全级别教程之CSRF](https://www.freebuf.com/articles/web/118352.html)
@@ -59,9 +60,9 @@
 
 修改 config.inc.php,配置数据库密码 `$_DVWA[ 'db_password' ] = 'root';`
 
->登录 Login URL: http://127.0.0.1/dvwa/login.php
+> 登录 Login URL: http://127.0.0.1/dvwa/login.php
 
->账号密码: admin/password
+> 账号密码: admin/password
 
 **难度**
 

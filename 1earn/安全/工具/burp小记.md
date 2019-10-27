@@ -1,4 +1,4 @@
-# [Burp Suite](https://portswigger.net/) 小记
+# Burp Suite 小记
 
 ---
 
@@ -8,9 +8,85 @@
 
 ---
 
-## Reference
-- [kali 安装新版本burp 以及不能使用重新安装jdk的解决方法](https://blog.csdn.net/nzjdsds/article/details/81205184)
-- [Burp Suite 实战指南](https://t0data.gitbooks.io/burpsuite/)
+**官网**
+- https://portswigger.net/
+
+**资源**
+- [Mr-xn/BurpSuite-collections](https://github.com/Mr-xn/BurpSuite-collections)
+
+**书**
+- [Burp Suite 实战指南](https://t0data.gitbooks.io/burpsuite/content/)
+
+**tips**
+
+Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `false` ,可以关闭火狐向 `http://detectportal.firefox.com/` 发包
+
+**插件**
+
+- [BApp Store](https://portswigger.net/bappstore)
+
+---
+
+> 使用堆栈跟踪进行 Java 指纹识别
+- [x41sec/BeanStack](https://github.com/x41sec/beanstack)
+
+> 分块传输辅助插件,用于分块传输绕 WAF
+- [c0ny1/chunked-coding-converter](https://github.com/c0ny1/chunked-coding-converter)
+
+> 顾名思义,这是 burp 中的 hackbar
+- [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar)
+
+> 添加一些右键菜单让 burp 用起来更顺畅
+- [bit4woo/knife](https://github.com/bit4woo/knife)
+
+> 利用 burp 收集整个企业、组织的域名 (不仅仅是单个主域名) 的插件
+- [bit4woo/domain_hunter](https://github.com/bit4woo/domain_hunter)
+
+> 捕捉由 Burp 发出的 payloads 触发的目标与外部系统发生数据交互行为
+- [hackvertor/taborator](https://github.com/hackvertor/taborator)
+- [NetSPI/BurpCollaboratorDNSTunnel](https://github.com/NetSPI/BurpCollaboratorDNSTunnel)
+
+> burpsuite 的日志插件,不过是增强版本
+- [nccgroup/BurpSuiteLoggerPlusPlus](https://github.com/nccgroup/BurpSuiteLoggerPlusPlus)
+
+> Hackvertor 构造绕过 waf 的 payload 并破解 XOR 加密
+- 商店有
+- [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
+
+> 使用 phantomjs 调用前端加密函数对数据进行加密,方便对加密数据输入点进行 fuzz.
+- [c0ny1/jsEncrypter](https://github.com/c0ny1/jsEncrypter)
+
+> Authz 快速探测越权
+- 商店有
+- [wuntee/BurpAuthzPlugin](https://github.com/wuntee/BurpAuthzPlugin)
+    - [基于BurpSuite快速探测越权-Authz插件](https://gh0st.cn/archives/2019-06-27/1)
+
+> 高速 Intruder 插件
+- 商店有
+- [PortSwigger/turbo-intruder](https://github.com/portswigger/turbo-intruder)
+- [Turbo Intruder：BurpSuite高速 Intruder 插件介绍](https://www.freebuf.com/sectool/195912.html)
+
+> 从 js 文件中提取隐藏的路径并对其进行美化以便进一步阅读
+- [Lopseg/Jsdir](https://github.com/Lopseg/Jsdir)
+
+> 一个 Burp 插件,实现用 AES 算法透明加密原版菜刀 Caidao.exe 与服务器端交互的 http 数据流
+- [ekgg/Caidao-AES-Version](https://github.com/ekgg/Caidao-AES-Version)
+
+> HTTP Desync Attacks 辅助工具
+- [PortSwigger/http-request-smuggler](https://github.com/PortSwigger/http-request-smuggler)
+
+> 一款兼容 Windows,mac,linux 多个系统平台的 Burp 与 sqlmap 联动插件
+- [c0ny1/sqlmap4burp-plus-plus](https://github.com/c0ny1/sqlmap4burp-plus-plus)
+    - [重构 sqlmap4burp 插件](http://gv7.me/articles/2019/refactoring-sqlmap4burp/)
+
+> 一个 burp 插件,自动识别图形验证码,并用于Intruder中的Payload.
+- [bit4woo/reCAPTCHA](https://github.com/bit4woo/reCAPTCHA)
+
+> Burp被动扫描流量转发插件
+- [c0ny1/passive-scan-client](https://github.com/c0ny1/passive-scan-client)
+
+> 高亮标记敏感信息并展示相关匹配的信息,然后针对高亮的请求进行深度挖掘
+- [gh0stkey/BurpSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuite-Extender-MarkInfo)
 
 ---
 

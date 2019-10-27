@@ -1,4 +1,4 @@
-# [pikachu](https://github.com/zhuifengshaonianhanlu/pikachu)
+# pikachu 通关笔记
 
 ---
 
@@ -24,6 +24,7 @@
 ---
 
 ## Reference
+- https://github.com/zhuifengshaonianhanlu/pikachu
 - [第三周作业 token防爆破 （基于pikachu平台）burp token的暴力破解](https://blog.csdn.net/weixin_43899561/article/details/88780363)
 - [第三周作业 1、从数字型注入认识SQL漏洞 2、字符型注入 3、搜索型及xx型输入](https://blog.csdn.net/weixin_43899561/article/details/88784162)
 - [第四周作业1.虚拟机中安装Kail 2.union注入 3.information_schema注入 4.sql-Inject漏洞手动测试-基于函数报错的信息获取 5.Http Header注入](https://blog.csdn.net/weixin_43899561/article/details/88930597)

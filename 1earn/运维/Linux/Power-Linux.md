@@ -94,6 +94,7 @@
 
 **🍪系统监控**
 
+* [Loganalyzer](#Loganalyzer)
 * [Zabbix](#Zabbix)
 
 **🌭虚拟化**
@@ -1183,7 +1184,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ```
 
 **加速**
-- [node&js](../../Misc/Plan/Misc-Plan.md#node&js)
+- [node&js](../../Plan/Misc-Plan.md#node&js)
 
 ---
 
@@ -1672,7 +1673,7 @@ server:
 cache:
     cache_server : "127.0.0.1" # redis cache server ip address
     cache_port : 6379 # redis cache server port
-    cache_time : 60 # cache 1 min
+    cache_time : 30 # cache 30 s
     cache_type : "redis" # cache type
     cache_db : 0 # we use db 0 in dev env
 
@@ -1961,6 +1962,17 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目�
 **磁盘占用**
 
 服务运行一段时间后,`/var/lib/redis` 路径下会有一些缓存文件(貌似),直接删了就行
+
+**redis 报错**
+
+如果出现 "MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error. Resque" 可以尝试以下命令
+
+```bash
+$ redis-cli
+> config set stop-writes-on-bgsave-error no
+```
+
+- https://gist.github.com/kapkaev/4619127
 
 **Thank**
 - [asciimoo/searx](https://github.com/asciimoo/searx)
@@ -2699,7 +2711,7 @@ anon_other_wirte_enable=YES
 anon_umask=022
 
 
-# 要求虚拟用户具有写权限 (上传、下载、删除、重命名) 
+# 要求虚拟用户具有写权限 (上传、下载、删除、重命名)
 
 # umask = 022 时,新建的目录 权限是755,文件的权限是 644
 # umask = 077 时,新建的目录 权限是700,文件的权限时 600
@@ -2906,7 +2918,7 @@ pip3 -V
 ```
 
 **加速**
-- [pip](../../Misc/Plan/Misc-Plan.md#pip)
+- [pip](../../Plan/Misc-Plan.md#pip)
 
 ---
 
@@ -2939,6 +2951,29 @@ export PATH=$PATH:/usr/local/bin/
 ---
 
 # 管理工具
+## BaoTa
+
+**官网**
+- https://www.bt.cn/
+- https://github.com/aaPanel/BaoTa
+
+**安装**
+- **Centos**
+
+  `yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh`
+
+- **Ubuntu/Debian**
+
+  `wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh`
+
+**使用**
+
+- web: 安装完后会随机生成8位的管理路径,账号和密码,访问即可
+
+- shell: 使用 `bt` 命令
+
+---
+
 ## Supervisor
 
 **官网**
@@ -3028,6 +3063,83 @@ firewall-cmd --reload
 ---
 
 # 系统监控
+## Loganalyzer
+**安装**
+
+这里以 LAMP 环境为例
+```bash
+yum -y install httpd mariadb mariadb-server php php-mysql mysql-devel
+systemctl start mariadb
+systemctl restart httpd
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
+```
+```vim
+vim /etc/httpd/conf/httpd.conf
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+```
+```bash
+yum -y install rsyslog-mysql
+cd /usr/share/doc/rsyslog-8.24.0/
+mysql -uroot -p < mysql-createDB.sql
+
+systemctl restart rsyslog
+
+mysql -uroot -p
+GRANT ALL ON Syslog.* TO 'Syslog'@'localhost' identified BY 'Syslog';
+FLUSH PRIVILEGES;
+```
+
+`注:这里数据库账号的密码自己改一下`
+
+```vim
+vim /etc/rsyslog.conf
+
+$ModLoad immark
+
+$ModLoad imudp
+$UDPServerRun 514
+
+$ModLoad imtcp
+
+$ModLoad ommysql
+*.* :ommysql:localhost,Syslog,rsyslog,Syslog
+```
+
+`注:同样,这里数据库账号链接的密码自己也记得改一下`
+
+```bash
+wget -c http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz
+tar xf loganalyzer-4.1.7.tar.gz -C /tmp/
+cd /tmp/loganalyzer-4.1.7/
+
+# !!注: 我这里有个删除 /var/www/html/ 下文件的操作,看清楚再执行!!
+rm -rf /var/www/html/*
+cp -a src/* /var/www/html/
+cp -a contrib/* /var/www/html/
+chmod +x /var/www/html/*.sh
+cd /var/www/html
+./configure.sh
+```
+
+```bash
+echo 1 > /var/log/syslog
+```
+
+然后访问 127.0.0.1 即可看到初始化安装界面,在 step3 记得选择 `Enable User Database`
+
+- Database Host:localhost
+- Database Port:3306
+- Database Name:Syslog
+- Table prefix:logcon_
+- Database User:Syslog
+- Database Password:Syslog  `注: 密码自己记得改`
+
+---
+
 ## Zabbix
 
 **官网**
@@ -3261,7 +3373,7 @@ docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容�
 ```
 
 **加速**
-- [Docker 镜像加速](../../Misc/Plan/Misc-Plan.md#Docker)
+- [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
 
 ---
 

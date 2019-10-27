@@ -48,20 +48,18 @@
     - **[不同厂商](./1earn/运维/Network/不同厂商🎲.md)** : 记录不同厂商配置服务命令的区别
     - **[方向实验](./1earn/运维/Network/方向实验🔨.md)** : 按方向分类记录配置
     - **[理论模型](./1earn/运维/Network/理论模型📕.md)** : 以科来网络通讯协议图为参照记录知识点
+    - **[速查](./1earn/运维/Network/速查.md)** : 速查各类帧、报文格式、掩码等
 
 - **Windows**
     - 记录按客户需求搭建服务的过程(关键部分)
 
-### Misc
+### Plan
 
-- **Plan**
-    - **[Misc-Plan](./1earn/Misc/Plan/Misc-Plan.md)** : 各种小技巧
-    - **[Team-Plan](./1earn/Misc/Plan/Team-Plan.md)** : 团队协作解决方案
-    - **[VM-Plan](./1earn/Misc/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
-
-- **Tools**
-    - **[Web-Tools](./1earn/Misc/Tools/Web-Tools.md)** : 在线 web 工具集合
-    - **[Win-Tools](./1earn/Misc/Tools/Win-Tools.md)** : windows 下的软件使用方案
+- **[Misc-Plan](./1earn/Plan/Misc-Plan.md)** : 各种小技巧
+- **[Team-Plan](./1earn/Plan/Team-Plan.md)** : 团队协作解决方案
+- **[VM-Plan](./1earn/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
+- **[Web-Tools](./1earn/Plan/Web-Tools.md)** : 在线 web 工具集合
+- **[Win-Tools](./1earn/Plan/Win-Tools.md)** : windows 下的软件使用方案
 
 ### 开发
 
@@ -102,21 +100,6 @@
 建议的阅读体验
 - [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)+[FiraCode](https://github.com/tonsky/FiraCode)
 - [Typora](https://www.typora.io/)
-
----
-
-## NOTE:
-- 2019-4-5:本来是分享写的笔记，但是现在发现越来越像在写手册了
-- 2019-5-2:快要坚持一个月每天更新了
-- 2019-5-13:定个小目标，10月前，所有自己写的md文档加起来50W字(目前总字数23W)
-- 2019-6-17:这段时间放松了。自我反省。
-- 2019-7-3:鸽了好久的网络部分开始更新,那什么时候开始学学开发呢(自问)
-- 2019-7-17:最近事情比较多,写的少了,不过我承诺,这个项目会一直更新下去
-- 2019-7-21 02:16:04:半夜失眠,索性爬起来写点东西,发现power-pentest写下去字数可能会越来越少,因为会越来越精简,所有的细化内容会被拆分成各个小的笔记,怎么说呢?我不知道这算好算坏,我自认为没有能力写出一套网络安全的百科全书,不过凡事在于坚持嘛,说不定呢
-- 2019-8-14:之后的学习重点会放在渗透方面,运维内容只能说随缘更新了.
-- 2019-9-22:作为一个技术人员，在各种乌七八糟花里胡哨的概念忽脸而至时，应该能够保持理智，不要被各种人带节奏。不要做一名喜鹊开发者。
-- 2019-9-26:越努力，头发掉的越快
-- 2019-10-7:假期看了挺多文章，但感觉没什么长进，还是浮躁吧，根本静不下心去学。
 
 ---
 
@@ -168,11 +151,14 @@
 
 ---
 
-以下是直接或间接贡献过本项目的人员名单
+以下是直接或间接贡献过本项目的人员名单(排名不分先后)
 - [Survivor_ms](https://github.com/136510385)
 - [hhkk2334](https://www.uiihh.xyz)
 - [幻羽灵殇](https://github.com/syl2293686270)
 - [xidaner](https://github.com/xidaner)
+- [the-fog](https://github.com/the-fog)
+- [BeakHyun](https://github.com/Alienware-OWO)
+- [cililianjie](https://github.com/cililianjie)
 
 ---
 

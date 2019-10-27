@@ -11,7 +11,7 @@
 
 `Linux 加固+维护+应急响应参考`
 
-`文档内容和` [加固笔记](../../安全/笔记/加固笔记.md) `难免有重复的部分,建议2个都看看`
+`文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/加固笔记.md)
 
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
@@ -19,7 +19,7 @@
 
 ---
 
-# 本地👮🏻‍
+# 本地
 ## 密码重置
 **centos7**
 
@@ -46,6 +46,28 @@ last # 查看登陆用户历史
 pkill -u linfengfeiye   # 直接剔除用户
 ps -ef| grep pts/0  # 得到用户登录相应的进程号 pid 后执行
 kill -9 pid # 安全剔除用户
+```
+
+---
+
+## 账号
+**/etc/passwd**
+- 若用户ID=0，则表示该用户拥有超级用户的权限
+- 检查是否有多个ID=0
+- 禁用或删除多余的账号
+
+**设置账户锁定登录失败锁定次数、锁定时间**
+```
+vim /etc/pam.d/system-auth
+
+auth required pam_tally.so onerr=fail deny=6 unlock_time=300
+```
+
+**修改账户超时值，设置自动注销时间**
+```
+vim /etc/profile
+
+TMOUT=600
 ```
 
 ---
@@ -110,7 +132,7 @@ kill -9 pid # 安全剔除用户
 
 ---
 
-## 系统管理👨‍🎓
+## 系统管理
 ### 系统信息
 #### 进程管理
 
@@ -155,7 +177,7 @@ vim /etc/security/limits.conf
 
 ---
 
-# Net🕵🏻
+# Net
 ## 端口
 
 **查**

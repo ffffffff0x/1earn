@@ -7,6 +7,7 @@
 
 **网络操作**
 - [net/http](./模块-框架/网络操作/net-http.md)
+- [caucy/batch_ping](https://github.com/caucy/batch_ping)
 
 **系统操作**
 - [os](./模块-框架/系统操作/os包.md)

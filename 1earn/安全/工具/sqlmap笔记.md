@@ -1,4 +1,4 @@
-# sqlmap 小记
+# sqlmap 笔记
 
 ---
 

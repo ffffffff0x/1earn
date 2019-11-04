@@ -4,6 +4,17 @@
 
 ---
 
+**常见报错**
+- **无法加载文件 `******.ps1`，因为在此系统中禁止执行脚本。有关详细信息，请参阅 "get-help about_signing"**
+
+    `set-ExecutionPolicy RemoteSigned`
+
+- **使用powershell运行脚本报错：进行数字签名。无法在当前系统上运行该脚本。有关运行脚本和设置执行策略的详细信息**
+
+    `powershell "Set-ExecutionPolicy -ExecutionPolicy Unrestricted -force |Out-null"`
+
+---
+
 ## 初步认识，什么是 PowerShell
 
 > Windows PowerShell 是一种命令行外壳程序和脚本环境，使命令行用户和脚本编写者可以利用 .NET Framework的强大功能。

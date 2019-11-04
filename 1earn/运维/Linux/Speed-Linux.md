@@ -540,6 +540,10 @@ firewall-cmd --reload	# 重新加载
 firewall-cmd --list-services	# 查看防火墙设置
 ```
 
+**更多配置**
+
+见 [Firewall.md](./实验/Firewall.md)
+
 ### Iptables
 ```bash
 iptables-save > /root/firewall_rules.backup	# 先备份一下策略
@@ -745,7 +749,7 @@ echo "$(tput cuf 5) (Title 17, United States Code, Section 506)."
 **Fish**
 ```bash
 echo /usr/bin/fish | sudo tee -a /etc/shells	# 加默认
-usermod -s /usr/bin/fish USERNAME
+usermod -s /usr/bin/fish <USERNAME>
 ```
 
 **Powerline-shell**
@@ -861,11 +865,12 @@ atrm：根据 Job number 删除 at 任务
 
 **账号**
 ```bash
+id  # 当前用户
 whoami	# 当前用户
 groups	# 当前组
 
 useradd -d /home/<用户名> -s /sbin/nologin <用户名>  # 创建用户
-passwd <用户>>	# 设置用户密码
+passwd <用户名>>	# 设置用户密码
 
 addgroup <组名>	# 创建组
 addgroup <用户名> <组名>	# 移动用户到组
@@ -875,6 +880,8 @@ newgrp <组名>	# 创建组
 usermod -g <组名> <用户名>	# 修改用户的主组
 usermod -G <附加组> <用户名>	# 修改用户的附加组
 usermod -s /bin/bash <用户名>	# 修改用户登录的 Shell
+usermod -L <用户名>  # 锁定用户
+usermod -U <用户名>  # 解锁用户
 
 userdel <用户名>	# 只删除用户不删除家目录
 userdel -r <用户名>	# 同时删除家目录
@@ -882,8 +889,11 @@ userdel -f <用户名>	# 强制删除,即使用户还在登陆中
 sudo passwd	# 配置 su 密码
 
 chage	# 修改帐号和密码的有效期限
-	chage -l <用户> # 查看一下用户密码状态
-	chage -d <用户> # 把密码修改曰期归零了,这样用户一登录就要修改密码
+	chage -l <用户名> # 查看一下用户密码状态
+	chage -d <用户名> # 把密码修改曰期归零了,这样用户一登录就要修改密码
+
+passwd -l <用户名>  # 锁定用户
+passwd -u <用户名>  # 解锁用户
 ```
 
 **权限**
@@ -897,16 +907,17 @@ chmod <数字> <文件>	# 给文件权限
 	chmod u=rw,g=r,o= <文件>
 	chown -R u+x <文件夹>	# 对文件夹及其子目录所有文件的所有者增加执行权限
 
-	chmod u+s test_file    # 给文件增加SUID属性
-	chmod g+s test_dir     # 给目录增加SGID属性
-	chmod o+t test_dir     # 给目录增加Sticky属性
+	chmod u+s test_file    # 给文件增加 SUID 属性
+	chmod g+s test_dir     # 给目录增加 SGID 属性
+	chmod o+t test_dir     # 给目录增加 Sticky 属性
 
 chgrp	# 改变文件或目录所属的用户组
 	chgrp user1 file.txt	# Change the owning group of the file file.txt to the group named user1.
 	chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
 
-umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022
+umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022(重启后消失)
 # umask 值 002 所对应的文件和目录创建缺省权限分别为 6 6 4 和 7 7 5
+# 需要长期修改,可以直接改 vim /etc/profile 中 umask 值
 
 chattr	# 可修改文件的多种特殊属性
 	chattr +i <文件>	# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
@@ -936,7 +947,7 @@ setfacl -b <文件/文件夹>	# 删除 ACL
 ### SELinux
 **查看 SELinux 状态**
 ```bash
-getenforce	# 查看selinux状态
+getenforce	# 查看 selinux 状态
 /usr/sbin/sestatus	# 查看安全策略
 ```
 
@@ -1084,40 +1095,7 @@ shred -zvu -n  5 <文件>	# 主要用于文件覆盖内容,也可以删除
 ```
 
 **数据恢复**
-
-*一点建议 : 业务系统,rm 删除后,没有立即关机,运行的系统会持续覆盖误删数据.所以对于重要数据,误删后请立即关机*
-
-- [foremost](http://foremost.sourceforge.net/)
-```bash
-apt-get install foremost
-rm -f /dev/sdb1/photo1.png
-
-foremost -t png -i /dev/sdb1
-# 恢复完成后会在当前目录建立一个 output 目录,在 output 目录下会建立 png 子目录下会包括所有可以恢复的 png 格式的文件.
-# 需要说明的是 png 子目录下会包括的 png 格式的文件名称已经改变,另外 output 目录下的 audit.txt 文件是恢复文件列表.
-```
-
-- [extundelete](http://extundelete.sourceforge.net/)
-```bash
-apt-get install extundelete
-mkdir –p /backupdate/deldate
-mkfs.ext4 /dev/sdd1
-mount /dev/sdd1 /backupdate
-cd /backupdate/deldate
-touch del1.txt
-echo " test 1" > del1.txt
-md5sum del1.txt # 获取文件校验码
-66fb6627dbaa37721048e4549db3224d  del1.txt
-rm -fr /backupdate/*
-umount /backupdate # 卸载文件系统或者挂载为只读
-
-extundelete /dev/sdd1 --inode 2 #查询恢复数据信息,注意这里的 --inode 2 这里会扫描分区 ：
-extundelete /dev/sdd1 --restore-file del1.txt # 如果恢复一个目录
-extundelete /dev/sdd1 --restore-directory /backupdate/deldate # 恢复所有文件
-extundelete /dev/sdd1 --restore-all # 获取恢复文件校验码,对比检测是否恢复成功
-md5sum RECOVERED_FILES/ del1.txt
-66fb6627dbaa37721048e4549db3224d  RECOVERED_FILES/del1.txt
-```
+- [数据恢复](./Secure-Linux.md#文件恢复)
 
 **占用**
 ```bash

@@ -59,7 +59,6 @@
 - **[Team-Plan](./1earn/Plan/Team-Plan.md)** : 团队协作解决方案
 - **[VM-Plan](./1earn/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
 - **[Web-Tools](./1earn/Plan/Web-Tools.md)** : 在线 web 工具集合
-- **[Win-Tools](./1earn/Plan/Win-Tools.md)** : windows 下的软件使用方案
 
 ### 开发
 
@@ -68,9 +67,6 @@
 
 - **GO**
     - 努力学习中
-
-- **Python**
-    - 还是个菜鸟
 
 ---
 

@@ -43,9 +43,13 @@
     - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus)
     - [重名top500](../../../assets/file/安全/重名top500.txt)
 
+- 地名
+    - [modood/Administrative-divisions-of-China: 中华人民共和国行政区划：省级（省份直辖市自治区）、 地级（城市）、 县级（区县）、 乡级（乡镇街道）、 村级（村委会居委会） ，中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫。](https://github.com/modood/Administrative-divisions-of-China)
+
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具，例如密码，私钥
+- [gwen001/github-search](https://github.com/gwen001/github-search)
 
 **同类**
 ```
@@ -72,6 +76,10 @@ https://github.com/ | GitHub
 **例子**
 - **常见语法**
     ```
+    site:*.site.com -www
+    site:*.*.site.com -www
+    site:*.*.*.site.com -www
+
     inurl:tw
     inurl:jp
 

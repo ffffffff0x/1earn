@@ -11,35 +11,56 @@
 ---
 
 # 群聊
-- 钉钉
+- [钉钉](https://www.dingtalk.com)
     - 好用,但只建议公司内团队使用,非企业类型的团队建议使用下面的工具
-- 微信
+- [微信](https://weixin.qq.com/)
     - 不推荐,多端信息不同步且无法长期保存,文件保存时间短
-- QQ
+- [QQ](https://im.qq.com/)/[TIM](https://office.qq.com/)
     - 不推荐,多端信息不同步且无法长期保存,文件过滤严重
-- Telegram
+- [Telegram](https://telegram.org/)
     - 好用,需科学上网,免费
-- Discord
+- [Discord](https://discordapp.com/)
     - 好用,需科学上网,免费
-- Slack
+- [Slack](https://slack.com)
     - 好用,需科学上网,免费版不够用,团队版价格适中
 
 ---
 
 # 文件共享
-- 坚果云
+- [坚果云](https://www.jianguoyun.com)
     - 好用,快速,免费版流量不够用,团队版价格适中
+- [微云](https://www.weiyun.com/)
+    - 体验一般,速度一般,容量少
+- [百度网盘](https://pan.baidu.com/disk/home)
+    - 略
+- [MEGA](https://mega.nz/)
+    - 好用,需科学上网,免费不太够用
+- [Dropbox](https://www.dropbox.com)
+    - 好用,部分地区需科学上网,免费不够用
+
+## 临时文件分享
+- https://bitsend.jp/
+- https://file.pizza/
+- https://www.4shared.com/
+- https://fileroom.io/about
+- https://fuli.cowtransfer.com/
+- https://clicknupload.org/
+- https://send.firefox.com/
+- https://wetransfer.com/
 
 ---
 
-# 知识库/Wiki
-- 语雀
-- mkdocs
-- wiki.js
+# 知识库-Wiki
+- [GitBook](https://www.gitbook.com/)
+- [为知笔记](https://www.wiz.cn/)
+- [语雀](https://www.yuque.com/)
+- [mkdocs](https://www.mkdocs.org/)
+- [wiki.js](https://wiki.js.org/)
+- [star7th/showdoc](https://github.com/star7th/showdoc)
 
 ---
 
 # 在线编辑
-- 石墨文档
-- 腾讯文档
-- Google 文档
+- [石墨文档](https://shimo.im/)
+- [腾讯文档](https://docs.qq.com/)
+- [Google 文档](https://docs.google.com/document)

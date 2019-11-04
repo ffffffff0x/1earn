@@ -256,6 +256,10 @@
     - [WyAtu/CVE-2018-20250](https://github.com/WyAtu/CVE-2018-20250)
     - [Ridter/acefile](https://github.com/Ridter/acefile)
 
+**WinRAR 5.80 XML 注入漏洞和拒绝服务攻击漏洞**
+- POC | Payload | exp
+    - https://mrxn.net/Infiltration/641.html
+
 ---
 
 # 数据库
@@ -494,6 +498,12 @@
 
 - POC | Payload | exp
     - [OrientDB - Code Execution](https://www.exploit-db.com/exploits/44068)
+
+---
+
+## PostgreSQL
+**工具**
+- [v5est0r/fuck_postgres](https://github.com/v5est0r/fuck_postgres)
 
 ---
 

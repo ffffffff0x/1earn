@@ -25,11 +25,12 @@
 
 `注: 未对 gitbook 页面链接跳转进行优化,见谅`
 
-**🥩系统配置**
+**🥩常见服务**
 
+* [Lvm](#Lvm)
 * [Net](#Net)
 * [RAID](#RAID)
-* [Lvm](#Lvm)
+* [Vim](#Vim)
 
 **🍜网络服务**
 
@@ -43,14 +44,16 @@
 * [proxychains](#proxychains)
 * [SSH](#SSH)
 
-**🍦web 服务**
+**🍦web服务-中间件**
 
 * [Apache](#Apache)
 * [Caddy](#Caddy)
 * [npm & Node](#npm&Node)
-* [PHP](#PHP)
+* [Nexus](#Nexus)
 * [Nginx](#Nginx)
+* [PHP](#PHP)
 * [phpMyAdmin](#phpMyAdmin)
+* [RabbitMQ](#RabbitMQ)
 * [Tomcat](#Tomcat)
 * [Wordpress](#Wordpress)
 * [Mijisou](#Mijisou)
@@ -67,10 +70,8 @@
 * [Key-value](#Key-value)
   * [Redis](#Redis)
   * [Memcached](#Memcached)
-
-**🍆文本工具**
-
-* [Vim](#Vim)
+* [图形](#图形)
+  * [Neo4j](#Neo4j)
 
 **🍣文件服务**
 
@@ -87,43 +88,95 @@
 * [Python3](#Python3)
 * [Ruby](#Ruby)
 
-**🍞管理工具**
+**🍞系统监管**
 
+* [BaoTa](#BaoTa)
+* [Jenkins](#Jenkins)
+* [Jumpserver](#Jumpserver)
+* [Loganalyzer](#Loganalyzer)
 * [Supervisor](#Supervisor)
 * [Webmin](#Webmin)
-
-**🍪系统监控**
-
-* [Loganalyzer](#Loganalyzer)
 * [Zabbix](#Zabbix)
 
 **🌭虚拟化**
 
 * [Docker](#Docker)
 
-**🍔CI**
-
-* [Jenkins](#Jenkins)
-
-**🍭堡垒机**
-
-* [Jumpserver](#Jumpserver)
-
 **🍯安全服务**
 
 * [ClamAV](#ClamAV)
 * [Fail2ban](#Fail2ban)
 
+---
 
-**🥗仓库**
+# 常见服务
+## Lvm
 
-* [Nexus](#Nexus)
+```bash
+fdisk ‐l		# 查看磁盘情况
+fdisk /dev/sdb	# 创建系统分区
+	n
+	p
+	1
+	后面都是默认,直接回车
 
+	t	# 转换分区格式
+	8e
 
+	w	# 写入分区表
+```
+
+**卷组**
+
+创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
+```bash
+pvcreate /dev/sdb1	# 初始化物理卷
+vgcreate ‐s 16M datastore /dev/sdb1 # 创建物理卷
+```
+
+**逻辑卷**
+
+逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
+```bash
+lvcreate ‐l 50 ‐n database datastore
+```
+
+逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
+```bash
+lvcreate ‐L 8G ‐n database datastore
+lvdisplay
+```
+
+**格式化**
+
+将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录.
+```bash
+mkfs.xfs /dev/datastore/database
+mkdir /mnt/database
+```
+```vim
+vi /etc/fstab
+/dev/datastore/database /mnt/database/ xfs defaults 0 0
+```
+
+重启验证
+```bash
+shutdown -r now
+mount | grep '^/dev'
+```
+
+**扩容**
+
+将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求.
+```bash
+lvextend -L 15G /dev/datastore/database
+lvs	# 确认有足够空间
+resize2fs /dev/datastore/database
+lvdisplay
+```
 
 ---
 
-# 系统配置
 ## Net
 
 **centos 配置网卡**
@@ -222,70 +275,40 @@ mount | grep '^/dev'
 
 ---
 
-## Lvm
+## Vim
 
-```bash
-fdisk ‐l		# 查看磁盘情况
-fdisk /dev/sdb	# 创建系统分区
-	n
-	p
-	1
-	后面都是默认,直接回车
+**常用配置**
 
-	t	# 转换分区格式
-	8e
-
-	w	# 写入分区表
-```
-
-**卷组**
-
-创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
-```bash
-pvcreate /dev/sdb1	# 初始化物理卷
-vgcreate ‐s 16M datastore /dev/sdb1 # 创建物理卷
-```
-
-**逻辑卷**
-
-逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
-```bash
-lvcreate ‐l 50 ‐n database datastore
-```
-
-逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
-```bash
-lvcreate ‐L 8G ‐n database datastore
-lvdisplay
-```
-
-**格式化**
-
-将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录.
-```bash
-mkfs.xfs /dev/datastore/database
-mkdir /mnt/database
-```
+`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
+最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整)
 ```vim
-vi /etc/fstab
-/dev/datastore/database /mnt/database/ xfs defaults 0 0
+set number # 显示行号
+set nobackup # 覆盖文件时不备份
+set cursorline # 突出显示当前行
+set ruler # 在右下角显示光标位置的状态行
+set shiftwidth=4 # 设定 > 命令移动时的宽度为 4
+set softtabstop=4 # 使得按退格键时可以一次删掉 4 个空格
+set tabstop=4 # 设定 tab 长度为 4(可以改)
+set smartindent # 开启新行时使用智能自动缩进
+set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+
+下面这个没觉得很有用,在代码多的时候会比较好
+#set showmatch # 插入括号时,短暂地跳转到匹配的对应括号
+#set matchtime=2 # 短暂跳转到匹配括号的时间
 ```
 
-重启验证
-```bash
-shutdown -r now
-mount | grep '^/dev'
-```
+**解决 ssh 后 vim 中不能使用小键盘的问题**
+- xshell
 
-**扩容**
+  更改的方法: 在终端设置中选择终端类型为 linux
 
-将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求.
-```bash
-lvextend -L 15G /dev/datastore/database
-lvs	# 确认有足够空间
-resize2fs /dev/datastore/database
-lvdisplay
-```
+- ubuntu
+  ```bash
+  sudo apt-get remove vim-common
+  sudo apt-get install vim
+  ```
+
+**[SpaceVim - 模块化的 Vim IDE](https://spacevim.org/cn/)**
 
 ---
 
@@ -546,6 +569,10 @@ setenforce 0  # 关闭 selinux
 firewall-cmd --zone=public --add-service=dns --permanent
 firewall-cmd --reload
 ```
+
+**更多配置案例**
+
+见 [dns.md](./实验/dns.md)
 
 ---
 
@@ -862,7 +889,7 @@ apt install ssh
         ``--..__  `--..__ `--.__ `-'_) (_`-' __.--' __..--'  __..--''
   ...___        ``--..__ `--..__`--/__/  \--'__..--' __..--''        ___...
         ```---...___    ``--..__`_(<_   _/)_'__..--''    ___...---'''
-  ```-----....._____```---...___(__\_\_|_/__)___...---'''_____.....-----'''
+  ```-----....._____```---...___(__\_\_|_)/__)___...---'''_____.....-----'''
 ```
 ```
 ############################################################################################################&
@@ -959,7 +986,49 @@ ttyd -p 8080 bash -x  # 现在访问 http://localhost:8080 即可
 
 ---
 
-# web 服务
+# web服务-中间件
+## ActiveMQ
+
+Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件；由于 ActiveMQ 是一个纯 Java 程序，因此只需要操作系统支持 Java 虚拟机，ActiveMQ 便可执行。
+
+**安装**
+
+安装依赖 JDK
+```bash
+cd /
+tar xzf jdk-8u212-linux-x64.tar.gz
+```
+```vim
+vim /etc/profile
+
+export JAVA_HOME=/root/jdk1.8.0_212
+export PATH=$PATH:$JAVA_HOME/bin
+```
+```bash
+source /etc/profile
+java -version
+```
+
+下载 activemq 压缩包,这里以 5.14.5 为例
+```
+wget http://archive.apache.org/dist/activemq/5.14.5/apache-activemq-5.14.5-bin.tar.gz
+tar -zxvf apache-activemq-5.14.5-bin.tar.gz
+mv apache-activemq-5.14.5 activemq
+cd activemq/bin/
+./activemq start
+ps -ef| grep activemq
+```
+```
+firewall-cmd --zone=public --add-port=8161/tcp --permanent
+firewall-cmd --reload
+```
+
+访问 127.0.0.1:8161   用户名:admin 密码：admin
+
+修改用户信息编辑 conf/jetty-realm.properties 即可
+
+---
+
 ## Apache
 
 **官网**
@@ -1089,6 +1158,10 @@ sudo apt install apache2-utils
 yum install httpd-tools
 ```
 
+**更多配置案例**
+
+见 [apache.md](./实验/apache.md)
+
 ---
 
 ## Caddy
@@ -1188,27 +1261,63 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 ---
 
-## PHP
+## Nexus
+
 **官网**
-- https://www.php.net/
+- https://www.sonatype.com/nexus-repository-oss
 
 **安装**
-```bash
-若之前安装过其他版本 PHP,先删除
-yum remove php*
+- **JDK**
+    ```bash
+    tar xzf jdk-8u212-linux-x64.tar.gz
+    ```
+    ```vim
+    vim /etc/profile
 
-rpm 安装 PHP7 相应的 yum 源
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-yum install php70w
-php -v  # 查看PHP版本
+    export JAVA_HOME=/root/jdk1.8.0_212
+    export PATH=$PATH:$JAVA_HOME/bin
+    ```
+    ```bash
+    source /etc/profile
+    java -version
+    ```
 
-service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
-```
+- **Maven**
+    ```bash
+    tar xzf apache-maven-3.6.2-bin.tar.gz
+    ```
+    ```vim
+    vim /etc/profile
+
+    export MAVEN_HOME=/root/apache-maven-3.6.2
+    export PATH=$PATH:$MAVEN_HOME/bin
+    ```
+    ```bash
+    source /etc/profile
+    mvn -version
+    ```
+
+- **Nexus**
+    - 在官网下载 UNIX 安装包,上传至服务器,这里以 https://help.sonatype.com/repomanager2/download#Download-NexusRepositoryManager2OSS 2.14.14-01 为例
+
+    ```bash
+    tar -xf nexus-2.14.14-01-bundle.tar.gz -C /usr/local
+    cd /usr/local/nexus-2.14.14-01/bin/
+    export RUN_AS_USER=root
+
+    ./nexus start
+    firewall-cmd --add-port=8081/tcp --permanent
+    firewall-cmd --reload
+    ```
+    ```bash
+    curl http://127.0.0.1:8081/nexus/
+    ```
+    默认登录账号/密码为： admin/admin123
 
 ---
 
 ## Nginx
+
 **官网**
 - https://nginx.org/
 
@@ -1339,6 +1448,31 @@ vim /usr/share/nginx/test.com/info.php
 ```
 `curl http://www.test.com/info.php` 测试
 
+**更多配置案例**
+
+见 [Nginx.md](./实验/Nginx.md)
+
+---
+
+## PHP
+
+**官网**
+- https://www.php.net/
+
+**安装**
+```bash
+若之前安装过其他版本 PHP,先删除
+yum remove php*
+
+rpm 安装 PHP7 相应的 yum 源
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install php70w
+php -v  # 查看PHP版本
+
+service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
+```
+
 ---
 
 ## phpMyAdmin
@@ -1388,7 +1522,83 @@ systemctl restart nginx
 
 ---
 
+## RabbitMQ
+
+RabbitMQ 是流行的开源消息队列系统，是 AMQP（Advanced Message Queuing Protocol 高级消息队列协议）的标准实现，用 erlang 语言开发。RabbitMQ 据说具有良好的性能和时效性，同时还能够非常好的支持集群和负载部署，非常适合在较大规模的分布式系统中使用。
+
+**官网**
+- https://www.rabbitmq.com/
+
+**安装**
+
+必须要有 Erlang 环境支持,下载 erlang 软件包,这里以 erlang-19.0.4 为例
+```bash
+wget http://www.rabbitmq.com/releases/erlang/erlang-19.0.4-1.el7.centos.x86_64.rpm
+rpm -ivh erlang-19.0.4-1.el7.centos.x86_64.rpm
+```
+安装完后输入 erl 测试
+
+安装 rabbitmq,这里以 v3.6.10 为例
+```bash
+yum -y install socat
+wget  http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
+rpm -ivh rabbitmq-server-3.6.10-1.el7.noarch.rpm
+```
+
+`注意：如果是重装请记得删除 /var/lib/rabbitmq 目录和 /etc/rabbitmq 目录，否则可能服务会起不来`
+
+```bash
+systemctl start rabbitmq-server
+或
+rabbitmq-server -detached   # 启动rabbitmq，-detached 代表后台守护进程方式启动
+
+rabbitmqctl status
+```
+
+**配置网页插件**
+```bash
+# 首先创建目录，否则可能报错：
+mkdir /etc/rabbitmq
+
+# 然后启用插件：
+rabbitmq-plugins enable rabbitmq_management
+
+# 配置防火墙
+firewall-cmd --permanent --add-port=15672/tcp
+firewall-cmd --permanent --add-port=5672/tcp
+firewall-cmd --reload
+```
+
+访问: 127.0.0.1:15672,这个时候是没有账号密码的!
+
+**配置 web 端访问账号密码和权限**
+
+默认网页是不允许访问的，需要增加一个用户修改一下权限，代码如下：
+```bash
+## 添加用户，后面两个参数分别是用户名和密码
+rabbitmqctl add_user <账号> <密码>
+rabbitmqctl set_permissions -p / <账号> ".*" ".*" ".*" # 添加权限
+rabbitmqctl set_user_tags <账号> administrator # 修改用户角色
+```
+
+**开启用户远程访问**
+
+默认情况下，RabbitMQ 的默认的 guest 用户只允许本机访问， 如果想让 guest 用户能够远程访问的话，只需要将配置文件中的 loopback_users 列表置为空即可，
+如下：
+```
+{loopback_users, []}
+```
+
+另外关于新添加的用户，直接就可以从远程访问的，如果想让新添加的用户只能本地访问，可以将用户名添加到上面的列表, 如只允许 admin 用户本机访问。
+```
+{loopback_users, ["admin"]}
+```
+
+---
+
 ## Tomcat
+
+Tomcat 类似与一个 apache 的扩展型，属于 apache 软件基金会的核心项目，属于开源的轻量级 Web 应用服务器，是开发和调试 JSP 程序的首选，主要针对 Jave 语言开发的网页代码进行解析，Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样，具有处理 HTML 页面的功能，然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx，所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端。可以这样认为，当配置正确时，Apache 为 HTML 页面服务，而 Tomcat 实际上运行 JSP 页面和 Servlet。比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序。
 
 **官网**
 - https://tomcat.apache.org
@@ -1516,17 +1726,21 @@ tomcat 默认的发布 web 项目的目录是：webapps
 
 ## Wordpress
 
+WordPress 是一个开源的内容管理系统（CMS），允许用户构建动态网站和博客。
+
 **官网**
 - https://wordpress.org/
 
-**下载 WordPress 安装包并解压**
+**安装**
+
+下载 WordPress 安装包并解压
 ```bash
 wget https://wordpress.org/latest.tar.gz
 
 tar -xzvf latest.tar.gz
 ```
 
-**创建 WordPress 数据库和一个用户**
+创建 WordPress 数据库和一个用户
 ```bash
 yum install mariadb mariadb-server
 systemctl start mariadb
@@ -1535,10 +1749,10 @@ mysql_secure_installation
 
 mysql -u root -p
 
-创建一个专给WordPress存数据的数据库
+创建一个专给 WordPress 存数据的数据库
 MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
 
-创建用于WordPress对应用户
+创建用于 WordPress 对应用户
 MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
 
 分别配置本地登录和远程登录权限
@@ -1549,7 +1763,7 @@ MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified
 MariaDB [(none)]> flush privileges;
 ```
 
-**配置 PHP**
+配置 PHP
 ```bash
 # 安装PHP源
 rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
@@ -1567,7 +1781,7 @@ systemctl restart httpd
 php -v
 ```
 
-**设置 wp-config.php 文件**
+设置 wp-config.php 文件
 ```bash
 cd wordpress
 vim wp-config-sample.php
@@ -1590,7 +1804,7 @@ DB_COLLATE
 
 在标有 `* Authentication Unique Keys.` 的版块下输入密钥的值,保存 wp-config.php 文件,也可以不管这个
 
-**上传文件**
+上传文件
 
 接下来需要决定将博客放在网站的什么位置上：
 - 网站根目录下 (如：http://example.com/)
@@ -1616,15 +1830,11 @@ service httpd start
 service firewalld stop
 ```
 
-**运行安装脚本**
+运行安装脚本
 
-在常用的 web 浏览器中运行安装脚本.
-
-将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
-
-将 WordPress 文件放在子目录 (假设子目录名为 blog) 下的用户请访问：http://example.com/blog/wp-admin/install.php
-
-访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
+- 将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
+- 将 WordPress 文件放在子目录 (假设子目录名为 blog) 下的用户请访问：http://example.com/blog/wp-admin/install.php
+- 访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
 
 ---
 
@@ -1987,7 +2197,107 @@ $ redis-cli
 ## Relational
 ### Oracle
 
-![image](../../../assets/img/才怪.png)
+- 机器物理内存应不少于 1GB，如果是 VMWARE 虚拟机建议不少于 1200MB.
+- 对于64位的oracle11g数据库，若程序文件和数据文件安装在同一个分区，则该分区的硬盘空间要求分别为：企业版 5.65GB、标准版 5.38GB；除此以外，还应确保 `/tmp` 目录所在分区的空间不少于1GB，总的来说，建议为 oracle11g 准备至少 8GB 的硬盘空间
+
+**RPM 方式安装**
+
+下载需要的安装包
+- http://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackage/oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+- https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html
+
+这里以 Oracle19c 为例
+
+```bash
+yum localinstall -y oracle-database-preinstall-19c-1.0-1.el7.x86_64.rpm
+
+yum localinstall -y oracle-database-ee-19c-1.0-1.x86_64.rpm
+```
+
+注意安装完成之后的配置 需要使用 root 用户.
+
+修改字符集以及其他的配置:
+```
+vim /etc/init.d/oracledb_ORCLCDB-19c
+
+export ORACLE_VERSION=19c
+export ORACLE_SID=ORA19C
+export TEMPLATE_NAME=General_Purpose.dbc
+export CHARSET=ZHS16GBK
+export PDB_NAME=ORA19CPDB
+export CREATE_AS_CDB=true
+```
+
+复制参数文件
+```bash
+cd /etc/sysconfig/
+cp oracledb_ORCLCDB-19c.conf  oracledb_ORA19C-19c.conf
+
+/etc/init.d/oracledb_ORCLCDB-19c configure
+# 等待Oracle数据库执行初始化操作即可
+```
+
+增加环境变量处理
+```vim
+vim /etc/profile.d/oracle19c.sh
+
+export  ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
+export  PATH=$PATH:/opt/oracle/product/19c/dbhome_1/bin
+export  ORACLE_SID=ORA19C
+```
+source /etc/profile.d/oracle19c.sh
+
+修改Oracle用户的密码:
+```bash
+passwd oracle
+
+# 使用Oracle登录进行相关的处理
+su - oracle
+sqlplus / as sysdba
+
+# 查看pdb信息
+show pdbs
+
+# 修改密码
+alter user system identified by Test1234;
+
+# 启动
+startup
+exit
+
+# 启动监听器
+cd $ORACLE_HOME/bin
+lsnrctl start
+```
+```
+systemctl stop firewalld
+systemctl disable firewalld
+setenforce 0
+```
+
+使用 navicat 连接测试
+
+![image](../../../assets/img/运维/Linux/Power/1.png)
+
+`注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下，使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
+
+**注 : 报错ORA-28547:connection to server failed, probable Oracle Net admin error**
+
+oci.dll 版本不对。因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的，Oracle 的客户端分为两种，一种是标准版，一种是简洁版，即 Oracle Install Client。而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI，如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时，多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的。
+
+OCI 下载地址：https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压instantclient-basic-win-x64
+
+打开navicat，一次选择：工具->选项->环境-->OCI环境，选择刚才解压好的 instantclient-basic-win-x64 目录中的 oci.dll 文件即可，重启 navicat
+
+**注 : 报错 oracle library is not loaded**
+
+还是 oci.dll 版本不对，换个低版本的 Instant Client 🤣
+
+**注 : 报错 ORA-28040: No matching authentication protocol**
+
+这个还是 oci.dll 版本不对，再换个高版本的 Instant Client 😂
+
+---
 
 ### Mariadb
 
@@ -2311,41 +2621,33 @@ firewall-cmd --reload
 
 ---
 
-# 文本工具
-## Vim
+## 图形
+### Neo4j
 
-**常用配置**
+**官网**
+- https://neo4j.com
 
-`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
-最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整) 
-```vim
-set number # 显示行号
-set nobackup # 覆盖文件时不备份
-set cursorline # 突出显示当前行
-set ruler # 在右下角显示光标位置的状态行
-set shiftwidth=4 # 设定 > 命令移动时的宽度为 4
-set softtabstop=4 # 使得按退格键时可以一次删掉 4 个空格
-set tabstop=4 # 设定 tab 长度为 4(可以改) 
-set smartindent # 开启新行时使用智能自动缩进
-set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+**安装**
 
-下面这个没觉得很有用,在代码多的时候会比较好
-#set showmatch # 插入括号时,短暂地跳转到匹配的对应括号
-#set matchtime=2 # 短暂跳转到匹配括号的时间
+依赖 jdk,安装过程见 [JDK](#JDK)
+
+下载 neo4j,这里以 2.3.9 为例
+```bash
+tar -zvxf neo4j-community-2.3.9-unix.tar.gz
+cd neo4j-community-2.3.9/conf
 ```
+```vim
+vim neo4j-server.properties
 
-**解决 ssh 后 vim 中不能使用小键盘的问题**
-- xshell
-
-  更改的方法: 在终端设置中选择终端类型为 linux
-
-- ubuntu
-  ```bash
-  sudo apt-get remove vim-common
-  sudo apt-get install vim
-  ```
-
-**[SpaceVim - 模块化的 Vim IDE](https://spacevim.org/cn/)**
+org.neo4j.server.webserver.address=0.0.0.0
+```
+```bash
+cd ../bin
+firewall-cmd --permanent --zone=public --add-port=7474/tcp
+firewall-cmd --reload
+./neo4j start
+```
+访问 127.0.0.1:7474,初始账号密码 neo4j,进去后会要求你修改密码
 
 ---
 
@@ -2438,6 +2740,10 @@ vim /etc/fstab
 [nfsuser1@localhost nfsfiles]$ cat hello.txt
 ```
 
+**更多配置案例**
+
+见 [nfs.md](./实验/nfs.md)
+
 ---
 
 ## Samba
@@ -2486,7 +2792,7 @@ mkdir /smbshare
 chown smb1:smb1 /smbshare
 ```
 
-关闭 selinux (需要重启) 
+关闭 selinux (需要重启)
 ```vim
 vim /etc/selinux/config
 SELINUX=disabled
@@ -2506,6 +2812,11 @@ mkdir /data/web_data
 mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 /data/web_data
 ```
+
+**更多配置案例**
+
+见 [Samba.md](./实验/Samba.md)
+
 
 ---
 
@@ -2736,6 +3047,10 @@ systemctl enable vsftpd
 **Reference**
 - [第11章 使用Vsftpd服务传输文件.](https://www.linuxprobe.com/chapter-11.html)
 
+**更多配置案例**
+
+见 [Vsftp.md](./实验/Vsftp.md)
+
 ---
 
 # 编程语言
@@ -2950,7 +3265,7 @@ export PATH=$PATH:/usr/local/bin/
 
 ---
 
-# 管理工具
+# 系统监管
 ## BaoTa
 
 **官网**
@@ -2971,6 +3286,198 @@ export PATH=$PATH:/usr/local/bin/
 - web: 安装完后会随机生成8位的管理路径,账号和密码,访问即可
 
 - shell: 使用 `bt` 命令
+
+---
+
+## Jenkins
+
+**官网**
+- https://jenkins.io/
+
+`注,Jenkins 需要 jdk 环境,请先行安装`
+
+**rpm 包方式安装**
+
+添加 Jenkins 源:
+```bash
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
+sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+```
+
+使用 yum 命令安装 Jenkins:
+
+`yum install jenkins`
+
+**使用 ppa/源方式安装**
+```bash
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+
+sed -i "1ideb https://pkg.jenkins.io/debian binary/" /etc/apt/sources.list
+
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+安装后默认服务是启动的,默认是 8080 端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
+
+查看密码
+
+`cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+---
+
+## Jumpserver
+
+**官网**
+- http://www.jumpserver.org/
+
+**安装**
+
+[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 写的很详细了,在此我只记录重点
+
+`注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
+
+```bash
+echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
+  && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
+  && if [ "$(getenforce)" != "Disabled" ]; then setsebool -P httpd_can_network_connect 1; fi
+```
+```bash
+echo -e "\033[31m 2. 部署环境 \033[0m" \
+  && yum update -y \
+  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && yum -y install kde-l10n-Chinese \
+  && localedef -c -f UTF-8 -i zh_CN zh_CN.UTF-8 \
+  && export LC_ALL=zh_CN.UTF-8 \
+  && echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf \
+  && yum -y install wget gcc epel-release git \
+  && yum install -y yum-utils device-mapper-persistent-data lvm2 \
+  && yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo \
+  && yum makecache fast \
+  && rpm --import https://mirrors.aliyun.com/docker-ce/linux/centos/gpg \
+  && echo -e "[nginx-stable]\nname=nginx stable repo\nbaseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/\ngpgcheck=1\nenabled=1\ngpgkey=https://nginx.org/keys/nginx_signing.key" > /etc/yum.repos.d/nginx.repo \
+  && rpm --import https://nginx.org/keys/nginx_signing.key \
+  && yum -y install redis mariadb mariadb-devel mariadb-server nginx docker-ce \
+  && systemctl enable redis mariadb nginx docker \
+  && systemctl start redis mariadb \
+  && yum -y install python36 python36-devel \
+  && python3.6 -m venv /opt/py3
+```
+```bash
+echo -e "\033[31m 3. 下载组件 \033[0m" \
+  && cd /opt \
+  && if [ ! -d "/opt/jumpserver" ]; then git clone --depth=1 https://github.com/jumpserver/jumpserver.git; fi \
+  && if [ ! -f "/opt/luna.tar.gz" ]; then wget https://demo.jumpserver.org/download/luna/1.4.9/luna.tar.gz; tar xf luna.tar.gz; chown -R root:root luna; fi \
+  && yum -y install $(cat /opt/jumpserver/requirements/rpm_requirements.txt) \
+  && source /opt/py3/bin/activate \
+  && pip install --upgrade pip setuptools -i https://mirrors.aliyun.com/pypi/simple/ \
+  && pip install -r /opt/jumpserver/requirements/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ \
+  && curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io \
+  && systemctl restart docker \
+  && docker pull jumpserver/jms_coco:1.4.9 \
+  && docker pull jumpserver/jms_guacamole:1.4.9 \
+  && rm -rf /etc/nginx/conf.d/default.conf \
+  && curl -o /etc/nginx/conf.d/jumpserver.conf https://demo.jumpserver.org/download/nginx/conf.d/jumpserver.conf
+```
+```bash
+echo -e "\033[31m 4. 处理配置文件 \033[0m" \
+  && if [ "$DB_PASSWORD" = "" ]; then DB_PASSWORD=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 24`; fi \
+  && if [ "$SECRET_KEY" = "" ]; then SECRET_KEY=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 50`; echo "SECRET_KEY=$SECRET_KEY" >> ~/.bashrc; fi \
+  && if [ "$BOOTSTRAP_TOKEN" = "" ]; then BOOTSTRAP_TOKEN=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`; echo "BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN" >> ~/.bashrc; fi \
+  && if [ "$Server_IP" = "" ]; then Server_IP=`ip addr | grep inet | egrep -v '(127.0.0.1|inet6|docker)' | awk '{print $2}' | tr -d "addr:" | head -n 1 | cut -d / -f1`; fi \
+  && if [ ! -d "/var/lib/mysql/jumpserver" ]; then mysql -uroot -e "create database jumpserver default charset 'utf8';grant all on jumpserver.* to 'jumpserver'@'127.0.0.1' identified by '$DB_PASSWORD';flush privileges;"; fi \
+  && if [ ! -f "/opt/jumpserver/config.yml" ]; then cp /opt/jumpserver/config_example.yml /opt/jumpserver/config.yml; sed -i "s/SECRET_KEY:/SECRET_KEY: $SECRET_KEY/g" /opt/jumpserver/config.yml; sed -i "s/BOOTSTRAP_TOKEN:/BOOTSTRAP_TOKEN: $BOOTSTRAP_TOKEN/g" /opt/jumpserver/config.yml; sed -i "s/# DEBUG: true/DEBUG: false/g" /opt/jumpserver/config.yml; sed -i "s/# LOG_LEVEL: DEBUG/LOG_LEVEL: ERROR/g" /opt/jumpserver/config.yml; sed -i "s/# SESSION_EXPIRE_AT_BROWSER_CLOSE: false/SESSION_EXPIRE_AT_BROWSER_CLOSE: true/g" /opt/jumpserver/config.yml; sed -i "s/DB_PASSWORD: /DB_PASSWORD: $DB_PASSWORD/g" /opt/jumpserver/config.yml; fi
+```
+```bash
+echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
+  && systemctl start nginx \
+  && cd /opt/jumpserver \
+  && ./jms start all -d \
+  && docker run --name jms_coco -d -p 2222:2222 -p 5000:5000 -e CORE_HOST=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_coco:1.4.9 \
+  && docker run --name jms_guacamole -d -p 8081:8081 -e JUMPSERVER_SERVER=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_guacamole:1.4.9 \
+  && echo -e "\033[31m 你的数据库密码是 $DB_PASSWORD \033[0m" \
+  && echo -e "\033[31m 你的SECRET_KEY是 $SECRET_KEY \033[0m" \
+  && echo -e "\033[31m 你的BOOTSTRAP_TOKEN是 $BOOTSTRAP_TOKEN \033[0m" \
+  && echo -e "\033[31m 你的服务器IP是 $Server_IP \033[0m" \
+  && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
+```
+
+---
+
+## Loganalyzer
+**安装**
+
+这里以 LAMP 环境为例
+```bash
+yum -y install httpd mariadb mariadb-server php php-mysql mysql-devel
+systemctl start mariadb
+systemctl restart httpd
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
+```
+```vim
+vim /etc/httpd/conf/httpd.conf
+
+<IfModule dir_module>
+    DirectoryIndex index.php index.html
+</IfModule>
+```
+```bash
+yum -y install rsyslog-mysql
+cd /usr/share/doc/rsyslog-8.24.0/
+mysql -uroot -p < mysql-createDB.sql
+
+systemctl restart rsyslog
+
+mysql -uroot -p
+GRANT ALL ON Syslog.* TO 'Syslog'@'localhost' identified BY 'Syslog';
+FLUSH PRIVILEGES;
+```
+
+`注:这里数据库账号的密码自己改一下`
+
+```vim
+vim /etc/rsyslog.conf
+
+$ModLoad immark
+
+$ModLoad imudp
+$UDPServerRun 514
+
+$ModLoad imtcp
+
+$ModLoad ommysql
+*.* :ommysql:localhost,Syslog,rsyslog,Syslog
+```
+
+`注:同样,这里数据库账号链接的密码自己也记得改一下`
+
+```bash
+wget -c http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz
+tar xf loganalyzer-4.1.7.tar.gz -C /tmp/
+cd /tmp/loganalyzer-4.1.7/
+
+# !!注: 我这里有个删除 /var/www/html/ 下文件的操作,看清楚再执行!!
+rm -rf /var/www/html/*
+cp -a src/* /var/www/html/
+cp -a contrib/* /var/www/html/
+chmod +x /var/www/html/*.sh
+cd /var/www/html
+./configure.sh
+```
+
+```bash
+echo 1 > /var/log/syslog
+```
+
+然后访问 127.0.0.1 即可看到初始化安装界面,在 step3 记得选择 `Enable User Database`
+
+- Database Host:localhost
+- Database Port:3306
+- Database Name:Syslog
+- Table prefix:logcon_
+- Database User:Syslog
+- Database Password:Syslog  `注: 密码自己记得改`
 
 ---
 
@@ -3059,84 +3566,6 @@ firewall-cmd --reload
 ```bash
 /usr/libexec/webmin/changepass.pl /etc/webmin/ root 1234qwer
 ```
-
----
-
-# 系统监控
-## Loganalyzer
-**安装**
-
-这里以 LAMP 环境为例
-```bash
-yum -y install httpd mariadb mariadb-server php php-mysql mysql-devel
-systemctl start mariadb
-systemctl restart httpd
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --reload
-```
-```vim
-vim /etc/httpd/conf/httpd.conf
-
-<IfModule dir_module>
-    DirectoryIndex index.php index.html
-</IfModule>
-```
-```bash
-yum -y install rsyslog-mysql
-cd /usr/share/doc/rsyslog-8.24.0/
-mysql -uroot -p < mysql-createDB.sql
-
-systemctl restart rsyslog
-
-mysql -uroot -p
-GRANT ALL ON Syslog.* TO 'Syslog'@'localhost' identified BY 'Syslog';
-FLUSH PRIVILEGES;
-```
-
-`注:这里数据库账号的密码自己改一下`
-
-```vim
-vim /etc/rsyslog.conf
-
-$ModLoad immark
-
-$ModLoad imudp
-$UDPServerRun 514
-
-$ModLoad imtcp
-
-$ModLoad ommysql
-*.* :ommysql:localhost,Syslog,rsyslog,Syslog
-```
-
-`注:同样,这里数据库账号链接的密码自己也记得改一下`
-
-```bash
-wget -c http://download.adiscon.com/loganalyzer/loganalyzer-4.1.7.tar.gz
-tar xf loganalyzer-4.1.7.tar.gz -C /tmp/
-cd /tmp/loganalyzer-4.1.7/
-
-# !!注: 我这里有个删除 /var/www/html/ 下文件的操作,看清楚再执行!!
-rm -rf /var/www/html/*
-cp -a src/* /var/www/html/
-cp -a contrib/* /var/www/html/
-chmod +x /var/www/html/*.sh
-cd /var/www/html
-./configure.sh
-```
-
-```bash
-echo 1 > /var/log/syslog
-```
-
-然后访问 127.0.0.1 即可看到初始化安装界面,在 step3 记得选择 `Enable User Database`
-
-- Database Host:localhost
-- Database Port:3306
-- Database Name:Syslog
-- Table prefix:logcon_
-- Database User:Syslog
-- Database Password:Syslog  `注: 密码自己记得改`
 
 ---
 
@@ -3377,119 +3806,49 @@ docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容�
 
 ---
 
-# CI
-## Jenkins
-
-**官网**
-- https://jenkins.io/
-
-`注,Jenkins 需要 jdk 环境,请先行安装`
-
-**rpm 包方式安装**
-
-添加 Jenkins 源:
-```bash
-sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
-sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
-```
-
-使用 yum 命令安装 Jenkins:
-
-`yum install jenkins`
-
-**使用 ppa/源方式安装**
-```bash
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-
-sed -i "1ideb https://pkg.jenkins.io/debian binary/" /etc/apt/sources.list
-
-sudo apt-get update
-sudo apt-get install jenkins
-```
-
-安装后默认服务是启动的,默认是 8080 端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
-
-查看密码
-
-`cat /var/lib/jenkins/secrets/initialAdminPassword`
-
----
-
-# 堡垒机
-## Jumpserver
-
-**官网**
-- http://www.jumpserver.org/
+# 分布式
+## zookeeper
 
 **安装**
 
-[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 写的很详细了,在此我只记录重点
+依赖 jdk,安装过程见 [JDK](#JDK)
 
-`注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
+zookeeper 支持两种运行模式：独立模式（standalone）和复制模式（replicated）。
+
+真正用于生产环境的 Zookeeper 肯定都是使用复制模式的，这样做可以避免单点问题。想要使用复制模式，但由于没有富余的机器能够使用，所以可以在单台机器上通过配置来使用复制模式，从而模拟真实的集群环境。
+
+由于 Zookeeper 集群是通过多数选举的方式产生 leader 的，因此，集群需要奇数个 Zookeeper 实例组成，也就是说至少需要3台（1台不能算"群"）。
+
+这里配置的为 `独立模式`
 
 ```bash
-echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
-  && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
-  && if [ "$(getenforce)" != "Disabled" ]; then setsebool -P httpd_can_network_connect 1; fi
+wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+mkdir /usr/local/zookeeper
+tar -zxvf zookeeper-3.4.14.tar.gz -C /usr/local/zookeeper/
+
+cd /usr/local/zookeeper/zookeeper-3.4.14/conf/
+cp zoo_sample.cfg zoo.cfg
+```
+
+创建数据存储目录与日志目录
+```bash
+mkdir /usr/local/zookeeper/zookeeper-3.4.14/dataDir
+mkdir /usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
+```
+
+修改数据存储和日志目录
+```vim
+vim /usr/local/zookeeper/zookeeper-3.4.14/conf/zoo.cfg
+
+dataDir=/usr/local/zookeeper/zookeeper-3.4.14/dataDir
+dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 ```
 ```bash
-echo -e "\033[31m 2. 部署环境 \033[0m" \
-  && yum update -y \
-  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-  && yum -y install kde-l10n-Chinese \
-  && localedef -c -f UTF-8 -i zh_CN zh_CN.UTF-8 \
-  && export LC_ALL=zh_CN.UTF-8 \
-  && echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf \
-  && yum -y install wget gcc epel-release git \
-  && yum install -y yum-utils device-mapper-persistent-data lvm2 \
-  && yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo \
-  && yum makecache fast \
-  && rpm --import https://mirrors.aliyun.com/docker-ce/linux/centos/gpg \
-  && echo -e "[nginx-stable]\nname=nginx stable repo\nbaseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/\ngpgcheck=1\nenabled=1\ngpgkey=https://nginx.org/keys/nginx_signing.key" > /etc/yum.repos.d/nginx.repo \
-  && rpm --import https://nginx.org/keys/nginx_signing.key \
-  && yum -y install redis mariadb mariadb-devel mariadb-server nginx docker-ce \
-  && systemctl enable redis mariadb nginx docker \
-  && systemctl start redis mariadb \
-  && yum -y install python36 python36-devel \
-  && python3.6 -m venv /opt/py3
-```
-```bash
-echo -e "\033[31m 3. 下载组件 \033[0m" \
-  && cd /opt \
-  && if [ ! -d "/opt/jumpserver" ]; then git clone --depth=1 https://github.com/jumpserver/jumpserver.git; fi \
-  && if [ ! -f "/opt/luna.tar.gz" ]; then wget https://demo.jumpserver.org/download/luna/1.4.9/luna.tar.gz; tar xf luna.tar.gz; chown -R root:root luna; fi \
-  && yum -y install $(cat /opt/jumpserver/requirements/rpm_requirements.txt) \
-  && source /opt/py3/bin/activate \
-  && pip install --upgrade pip setuptools -i https://mirrors.aliyun.com/pypi/simple/ \
-  && pip install -r /opt/jumpserver/requirements/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ \
-  && curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io \
-  && systemctl restart docker \
-  && docker pull jumpserver/jms_coco:1.4.9 \
-  && docker pull jumpserver/jms_guacamole:1.4.9 \
-  && rm -rf /etc/nginx/conf.d/default.conf \
-  && curl -o /etc/nginx/conf.d/jumpserver.conf https://demo.jumpserver.org/download/nginx/conf.d/jumpserver.conf
-```
-```bash
-echo -e "\033[31m 4. 处理配置文件 \033[0m" \
-  && if [ "$DB_PASSWORD" = "" ]; then DB_PASSWORD=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 24`; fi \
-  && if [ "$SECRET_KEY" = "" ]; then SECRET_KEY=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 50`; echo "SECRET_KEY=$SECRET_KEY" >> ~/.bashrc; fi \
-  && if [ "$BOOTSTRAP_TOKEN" = "" ]; then BOOTSTRAP_TOKEN=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`; echo "BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN" >> ~/.bashrc; fi \
-  && if [ "$Server_IP" = "" ]; then Server_IP=`ip addr | grep inet | egrep -v '(127.0.0.1|inet6|docker)' | awk '{print $2}' | tr -d "addr:" | head -n 1 | cut -d / -f1`; fi \
-  && if [ ! -d "/var/lib/mysql/jumpserver" ]; then mysql -uroot -e "create database jumpserver default charset 'utf8';grant all on jumpserver.* to 'jumpserver'@'127.0.0.1' identified by '$DB_PASSWORD';flush privileges;"; fi \
-  && if [ ! -f "/opt/jumpserver/config.yml" ]; then cp /opt/jumpserver/config_example.yml /opt/jumpserver/config.yml; sed -i "s/SECRET_KEY:/SECRET_KEY: $SECRET_KEY/g" /opt/jumpserver/config.yml; sed -i "s/BOOTSTRAP_TOKEN:/BOOTSTRAP_TOKEN: $BOOTSTRAP_TOKEN/g" /opt/jumpserver/config.yml; sed -i "s/# DEBUG: true/DEBUG: false/g" /opt/jumpserver/config.yml; sed -i "s/# LOG_LEVEL: DEBUG/LOG_LEVEL: ERROR/g" /opt/jumpserver/config.yml; sed -i "s/# SESSION_EXPIRE_AT_BROWSER_CLOSE: false/SESSION_EXPIRE_AT_BROWSER_CLOSE: true/g" /opt/jumpserver/config.yml; sed -i "s/DB_PASSWORD: /DB_PASSWORD: $DB_PASSWORD/g" /opt/jumpserver/config.yml; fi
-```
-```bash
-echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
-  && systemctl start nginx \
-  && cd /opt/jumpserver \
-  && ./jms start all -d \
-  && docker run --name jms_coco -d -p 2222:2222 -p 5000:5000 -e CORE_HOST=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_coco:1.4.9 \
-  && docker run --name jms_guacamole -d -p 8081:8081 -e JUMPSERVER_SERVER=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_guacamole:1.4.9 \
-  && echo -e "\033[31m 你的数据库密码是 $DB_PASSWORD \033[0m" \
-  && echo -e "\033[31m 你的SECRET_KEY是 $SECRET_KEY \033[0m" \
-  && echo -e "\033[31m 你的BOOTSTRAP_TOKEN是 $BOOTSTRAP_TOKEN \033[0m" \
-  && echo -e "\033[31m 你的服务器IP是 $Server_IP \033[0m" \
-  && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
+# 启动
+/usr/local/zookeeper/zookeeper-3.4.14/bin/zkServer.sh start
+
+# 连接
+/usr/local/zookeeper/zookeeper-3.4.14/bin/zkCli.sh
 ```
 
 ---
@@ -3598,6 +3957,7 @@ clamscan -r --remove  # 查杀当前目录并删除感染的文件
 
 ## Fail2ban
 
+**项目地址**
 - https://github.com/fail2ban/fail2ban
 
 `本部分来自 https://linux.cn/article-5067-1.html,在此仅作排版调整`
@@ -3692,62 +4052,6 @@ fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
 fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地址
 ```
 注意,如果你停止了 Fail2ban 服务,那么所有的 IP 地址都会被解锁.当你重启 Fail2ban,它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表,如果这些异常地址的发生时间仍然在禁止时间内,那么 Fail2ban 会重新将这些 IP 地址禁止.
-
----
-
-# 仓库
-## Nexus
-
-**官网**
-- https://www.sonatype.com/nexus-repository-oss
-
-**安装**
-- **JDK**
-    ```bash
-    tar xzf jdk-8u212-linux-x64.tar.gz
-    ```
-    ```vim
-    vim /etc/profile
-
-    export JAVA_HOME=/root/jdk1.8.0_212
-    export PATH=$PATH:$JAVA_HOME/bin
-    ```
-    ```bash
-    source /etc/profile
-    java -version
-    ```
-
-- **Maven**
-    ```bash
-    tar xzf apache-maven-3.6.2-bin.tar.gz
-    ```
-    ```vim
-    vim /etc/profile
-
-    export MAVEN_HOME=/root/apache-maven-3.6.2
-    export PATH=$PATH:$MAVEN_HOME/bin
-    ```
-    ```bash
-    source /etc/profile
-    mvn -version
-    ```
-
-- **Nexus**
-    - 在官网下载 UNIX 安装包,上传至服务器,这里以 https://help.sonatype.com/repomanager2/download#Download-NexusRepositoryManager2OSS 2.14.14-01 为例
-
-    ```bash
-    tar -xf nexus-2.14.14-01-bundle.tar.gz -C /usr/local
-    cd /usr/local/nexus-2.14.14-01/bin/
-    export RUN_AS_USER=root
-
-    ./nexus start
-    firewall-cmd --add-port=8081/tcp --permanent
-    firewall-cmd --reload
-    ```
-    ```bash
-    curl http://127.0.0.1:8081/nexus/
-    ```
-    默认登录账号/密码为： admin/admin123
 
 ---
 

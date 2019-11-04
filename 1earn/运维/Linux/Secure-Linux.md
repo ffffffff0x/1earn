@@ -48,6 +48,32 @@ ps -ef| grep pts/0  # 得到用户登录相应的进程号 pid 后执行
 kill -9 pid # 安全剔除用户
 ```
 
+**修改账户超时值，设置自动注销时间**
+```
+vim /etc/profile
+
+TMOUT=600
+```
+
+**设置 BASH 保留历史命令的条目**
+
+检查方法：`cat /etc/profile | grep HISTSIZE`
+
+加固方法：
+```
+vim /etc/profile
+
+修改 HISTSIZE=5 即保留最新执行的5条命令
+```
+
+**设置注销时删除命令记录**
+
+检查方法：`cat /etc/skel/.bash_logout`
+
+增加如下行 `rm -f $HOME/.bash_history`
+
+这样，系统中的所有用户注销时都会删除其命令记录，如果只需要针对某个特定用户，，如 root 用户进行设置，则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可。
+
 ---
 
 ## 账号
@@ -61,13 +87,15 @@ kill -9 pid # 安全剔除用户
 vim /etc/pam.d/system-auth
 
 auth required pam_tally.so onerr=fail deny=6 unlock_time=300
+# 设置为密码连续输错6次,锁定时间300秒
 ```
 
-**修改账户超时值，设置自动注销时间**
-```
-vim /etc/profile
-
-TMOUT=600
+**/etc/login.defs**
+```bash
+PASS_MAX_DAYS   90   # 用户的密码最长使用天数
+PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
+PASS_MIN_LEN    7   # 密码的最小长度
+PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 ```
 
 ---
@@ -152,9 +180,10 @@ vim /etc/security/limits.conf
     user1 - nproc 20  # 退出后重新登录,就会发现最大进程数已经更改为 20 了
 ```
 
-##### 负载
+**负载**
+- **文章**
+    - [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
 
-**查**
 - **查询负载、进程监控**
     ```bash
     ps aux | grep Z # 列出进程表中所有僵尸进程
@@ -162,7 +191,6 @@ vim /etc/security/limits.conf
     ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
     ```
 
-**防**
 - **清理缓存**
     ```bash
     sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延迟的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
@@ -172,8 +200,248 @@ vim /etc/security/limits.conf
     sync
     ```
 
-- **文章**
-    - [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
+---
+
+## 文件恢复
+
+`一点建议 : 业务系统,rm 删除后,没有立即关机,运行的系统会持续覆盖误删数据.所以对于重要数据,误删后请立即关机`
+
+**[foremost](http://foremost.sourceforge.net/)**
+```bash
+apt-get install foremost
+rm -f /dev/sdb1/photo1.png
+
+foremost -t png -i /dev/sdb1
+# 恢复完成后会在当前目录建立一个 output 目录,在 output 目录下会建立 png 子目录下会包括所有可以恢复的 png 格式的文件.
+# 需要说明的是 png 子目录下会包括的 png 格式的文件名称已经改变,另外 output 目录下的 audit.txt 文件是恢复文件列表.
+```
+
+**[extundelete](http://extundelete.sourceforge.net/)**
+```bash
+apt-get install extundelete
+mkdir –p /backupdate/deldate
+mkfs.ext4 /dev/sdd1
+mount /dev/sdd1 /backupdate
+cd /backupdate/deldate
+touch del1.txt
+echo " test 1" > del1.txt
+md5sum del1.txt # 获取文件校验码
+66fb6627dbaa37721048e4549db3224d  del1.txt
+rm -fr /backupdate/*
+umount /backupdate # 卸载文件系统或者挂载为只读
+
+extundelete /dev/sdd1 --inode 2 #查询恢复数据信息,注意这里的 --inode 2 这里会扫描分区 ：
+extundelete /dev/sdd1 --restore-file del1.txt # 如果恢复一个目录
+extundelete /dev/sdd1 --restore-directory /backupdate/deldate # 恢复所有文件
+extundelete /dev/sdd1 --restore-all # 获取恢复文件校验码,对比检测是否恢复成功
+md5sum RECOVERED_FILES/ del1.txt
+66fb6627dbaa37721048e4549db3224d  RECOVERED_FILES/del1.txt
+```
+
+**[ext3grep](https://code.google.com/archive/p/ext3grep/downloads)**
+
+如果被误删的文件在根分区，那么你最好重启计算机，进入单用户模式，以只读的方式挂载根分区，然后再进行恢复。
+
+进入单用户模式后，根分区还是以读写方式 mount 的，用下面的命令，把挂载方式由读写(rw)改为只读(ro)： `mount -o ro,remount / `
+
+如果被删除的文件不是根分区，也可以用 unmount 的方式将该分区卸载。假设文件在分区 /dev/sda3中，该分区挂载到 /home，那么我们用下面的命令来卸载： `umount /dev/sda3 `
+
+当然，在卸载前要保证没有程序在访问该分区，否则卸载会失败。所以，一般推荐进入单用户模式来恢复文件。
+
+*安装*
+
+访问 https://code.google.com/archive/p/ext3grep/downloads 下载源代码,这里以 ext3grep-0.10.2.tar.gz 为例
+```bash
+yum install -y e2fsprogs
+yum install -y e2fsprogs-devel
+tar zxf ext3grep-0.10.2.tar.gz
+cd ./ext3grep-0.10.2
+./configure
+make
+make install
+```
+
+如果 make 出错，修改 src/ext3.h
+```C
+// ext3grep -- An ext3 file system investigation and undelete tool
+//
+//! @file ext3.h Declaration of ext3 types and macros.
+//
+// Copyright (C) 2008, by
+//
+// Carlo Wood, Run on IRC <carlo@alinoe.com>
+// RSA-1024 0x624ACAD5 1997-01-26                    Sign & Encrypt
+// Fingerprint16 = 32 EC A7 B6 AC DB 65 A6  F6 F6 55 DD 1C DC FF 61
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#ifndef EXT3_H
+#define EXT3_H
+#ifdef _LINUX_EXT2_FS_H
+#error please include this file before any other includes of ext2fs/ext2_fs.h
+#endif
+#define s_clusters_per_group s_frags_per_group
+
+// Use the header files from e2progs (http://e2fsprogs.sourceforge.net)
+// We can use these headers and then everything named ext2 or ext3.
+#include <ext2fs/ext2_fs.h>			// Definitions of ext2, ext3 and ext4.
+
+// All of the following is backwards compatible, so we can use the EXT2 versions.
+#define EXT3_BLOCK_SIZE		EXT2_BLOCK_SIZE
+#define EXT3_FRAG_SIZE		EXT2_FRAG_SIZE
+#define EXT3_BLOCKS_PER_GROUP	EXT2_BLOCKS_PER_GROUP
+#define EXT3_INODES_PER_GROUP	EXT2_INODES_PER_GROUP
+#define EXT3_FIRST_INO		EXT2_FIRST_INO
+#define EXT3_INODE_SIZE		EXT2_INODE_SIZE
+#define EXT3_BLOCK_SIZE_BITS	EXT2_BLOCK_SIZE_BITS
+#define EXT3_DESC_PER_BLOCK	EXT2_DESC_PER_BLOCK
+#define EXT3_DIR_ROUND		EXT2_DIR_ROUND
+#define EXT3_DIR_REC_LEN	EXT2_DIR_REC_LEN
+#define EXT3_FT_DIR		EXT2_FT_DIR
+#define EXT3_FT_UNKNOWN		EXT2_FT_UNKNOWN
+#define EXT3_FT_MAX		EXT2_FT_MAX
+#define EXT3_MAX_BLOCK_SIZE	EXT2_MAX_BLOCK_SIZE
+#define EXT3_NDIR_BLOCKS	EXT2_NDIR_BLOCKS
+#define EXT3_IND_BLOCK		EXT2_IND_BLOCK
+#define EXT3_DIND_BLOCK		EXT2_DIND_BLOCK
+#define EXT3_TIND_BLOCK		EXT2_TIND_BLOCK
+#define EXT3_VALID_FS		EXT2_VALID_FS
+#define EXT3_ERROR_FS		EXT2_ERROR_FS
+#define EXT3_FT_REG_FILE	EXT2_FT_REG_FILE
+#define EXT3_FT_CHRDEV		EXT2_FT_CHRDEV
+#define EXT3_FT_BLKDEV		EXT2_FT_BLKDEV
+#define EXT3_FT_FIFO		EXT2_FT_FIFO
+#define EXT3_FT_SOCK		EXT2_FT_SOCK
+#define EXT3_FT_SYMLINK		EXT2_FT_SYMLINK
+#define EXT3_N_BLOCKS		EXT2_N_BLOCKS
+#define EXT3_DIR_PAD		EXT2_DIR_PAD
+#define EXT3_ROOT_INO		EXT2_ROOT_INO
+#define EXT3_I_SIZE		EXT2_I_SIZE
+#define EXT3_FEATURE_COMPAT_DIR_PREALLOC	EXT2_FEATURE_COMPAT_DIR_PREALLOC
+#define EXT3_FEATURE_COMPAT_IMAGIC_INODES	EXT2_FEATURE_COMPAT_IMAGIC_INODES
+#define EXT3_FEATURE_COMPAT_EXT_ATTR		EXT2_FEATURE_COMPAT_EXT_ATTR
+#define EXT3_FEATURE_COMPAT_RESIZE_INODE	EXT2_FEATURE_COMPAT_RESIZE_INODE
+#define EXT3_FEATURE_COMPAT_DIR_INDEX		EXT2_FEATURE_COMPAT_DIR_INDEX
+#define EXT3_FEATURE_INCOMPAT_COMPRESSION	EXT2_FEATURE_INCOMPAT_COMPRESSION
+#define EXT3_FEATURE_INCOMPAT_FILETYPE		EXT2_FEATURE_INCOMPAT_FILETYPE
+#define EXT3_FEATURE_INCOMPAT_META_BG		EXT2_FEATURE_INCOMPAT_META_BG
+#define EXT3_FEATURE_RO_COMPAT_SPARSE_SUPER	EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER
+#define EXT3_FEATURE_RO_COMPAT_LARGE_FILE	EXT2_FEATURE_RO_COMPAT_LARGE_FILE
+#define EXT3_FEATURE_RO_COMPAT_BTREE_DIR	0x0004
+typedef ext2_super_block ext3_super_block;
+typedef ext2_group_desc ext3_group_desc;
+typedef ext2_inode ext3_inode;
+typedef ext2_dir_entry_2 ext3_dir_entry_2;
+
+// Get declaration of journal_superblock_t
+#include <ext2fs/ext2fs.h>
+// This header is a copy from e2fsprogs-1.40.7 except that the type
+// of 'journal_revoke_header_t::r_count' was changed from int to __s32.
+#include "kernel-jbd.h"
+
+#ifndef USE_PCH
+#include <stdint.h>
+#endif
+
+extern uint32_t inode_count_;
+
+// This (POD) struct protects it's members so we
+// can do access control for debugging purposes.
+
+struct Inode : protected ext3_inode {
+  public:
+    __u16 mode(void) const { return i_mode; }
+    __u16 uid_low(void) const { return i_uid_low; }
+    off_t size(void) const { return EXT3_I_SIZE(this); }
+    __u32 atime(void) const { return i_atime; }
+    __u32 ctime(void) const { return i_ctime; }
+    __u32 mtime(void) const { return i_mtime; }
+    __u32 dtime(void) const { return i_dtime; }
+    __u16 gid_low(void) const { return i_gid_low; }
+    __u16 links_count(void) const { return i_links_count; }
+    __u32 blocks(void) const { return i_blocks; }
+    __u32 flags(void) const { return i_flags; }
+    __u32 const* block(void) const { return i_block; }
+    __u32 generation(void) const { return i_generation; }
+    __u32 file_acl(void) const { return i_file_acl; }
+    __u32 dir_acl(void) const { return i_dir_acl; }
+    __u32 faddr(void) const { return i_faddr; }
+    __u16 uid_high(void) const { return i_uid_high; }
+    __u16 gid_high(void) const { return i_gid_high; }
+
+    #ifndef i_reseved2
+    #define i_reserved2 osd2.hurd2.h_i_author
+#endif
+    __u32 reserved2(void) const { return i_reserved2; }
+    void set_reserved2(__u32 val) { i_reserved2 = val; }
+
+    // Returns true if this inode is part of an ORPHAN list.
+    // In that case, dtime is overloaded to point to the next orphan and contains an inode number.
+    bool is_orphan(void) const
+    {
+       // This relies on the fact that time_t is larger than the number of inodes.
+       // Assuming we might deal with files as old as five years, then this would
+       // go wrong for partitions larger than ~ 8 TB (assuming a block size of 4096
+       // and twice as many blocks as inodes).
+       return i_links_count == 0 && i_atime && i_dtime < i_atime && i_dtime <= inode_count_;
+    }
+
+    // This returns true if dtime() is expected to contain a date.
+    bool has_valid_dtime(void) const
+    {
+      return i_dtime && !is_orphan();
+    }
+
+    // This returns true if the inode appears to contain data refering to a previously
+    // deleted file, directory or symlink but does not contain the block list anymore.
+    // That means it will return false for orphan-ed inodes, although they are basically
+    // (partially) deleted.
+    bool is_deleted(void) const
+    {
+      return i_links_count == 0 && i_mode && (i_block[0] == 0 ||
+                                              !((i_mode & 0xf000) == 0x4000 || (i_mode & 0xf000) == 0x8000));
+    }
+};
+
+#endif // EXT3_H
+```
+
+*使用*
+
+在开始恢复前，选择一个目录来存放被恢复的文件。ext3grep 程序会在当前目录下创建一个名为 RESTORED_FILES 的目录来存放被恢复的文件。因此在运行 ext3grep 命令前，先要切换到一个你可读写的目录中。
+
+因为进入了单用户模式，并且将根分区设成了只读，那么只能把恢复出来的文件放在U盘中了。因此，先 cd /mnt 进入U盘目录。如果你有幸记得你误删除的文件名及其路径的话，就可以直接用下面的命令进行恢复了：
+```bash
+ext3grep /dev/your-device --restore-file path/to/your/file/filename
+#  需要注意的是，上面的文件路径，是在该分区上文件路径。假设我们要恢复 /dev/sda3 分区上文件，这个分区原来的安装点是 /home，现在想恢复文件 /home//vi/tips.xml，那么输入的命令应该是：
+
+ext3grep /dev/sda3 --restore-file /vi/tips.xml
+
+# 如果你忘记了文件名，或者你误删除的是一个目录而你无法记全该目录中的文件，你可以先用下面的命令查询一下文件名：
+ext3grep /dev/sda3 --dump-names | tee filename.txt
+
+上面的命令把 ext3grep 命令的输出记录到文件 filename.txt 中，你可以慢慢查看，或者使用 grep 命令过滤出你需要的信息。
+
+当你知道了目录/文件的信息后，就可以用上面说的命令进行恢复了。
+
+# 这款软件不能按目录恢复文件，只能执行恢复全部命令：
+ext3grep /dev/sda3 --restore-all
+```
+
+*binlog*
+
+开启 Binlog,让 ext3grep 从 Binlog 中恢复,对数据库场景有用。
 
 ---
 
@@ -191,11 +459,14 @@ ss -tnlp
 ss -tnlp | grep ssh
 ss -tnlp | grep ":22"
 
-etstat -tnlp
+netstat -tnlp
 netstat -tnlp | grep ssh
 
 nmap -sV -p 22 localhost
 ```
+
+**防**
+- [EtherDream/anti-portscan: 使用 iptables 防止端口扫描](https://github.com/EtherDream/anti-portscan)
 
 ---
 

@@ -13,6 +13,7 @@
 - [T00LS帖子正文XSS](https://www.hackersb.cn/hacker/235.html)
 - [The adventures of xss vectors in curious places](https://github.com/Dliv3/Venom)
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
+- [Avast 杀毒软件中 5000 美元的 XSS 漏洞](https://nosec.org/home/detail/3118.html)
 
 **xss 平台**
 - **开源平台**

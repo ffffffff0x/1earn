@@ -23,6 +23,8 @@
 **工具**
 - [Snowming04/Cipher_Encryption_Type_Identification: 对密文的加密类型进行判断的命令行工具.](https://github.com/Snowming04/Cipher_Encryption_Type_Identification)
 - [gchq/CyberChef](https://github.com/gchq/CyberChef)
+- [guyoung/CaptfEncoder](https://github.com/guyoung/CaptfEncoder)
+- [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom)
 
 **在线工具**
 ```
@@ -33,6 +35,25 @@ https://gchq.github.io/CyberChef/
 https://www.sojson.com/encrypt/
 https://cryptii.com/
 ```
+
+**功能类**
+- 数学
+    - https://zh.numberempire.com/factoringcalculator.php
+    - http://atool.org/quality_factor.php
+    - https://zh.numberempire.com/
+    - https://www.logcalculator.net/
+
+- 大小写
+    - http://www.convertstring.com/zh_CN/StringFunction/ToUpperCase
+    - http://www.convertstring.com/zh_CN/StringFunction/ToLowerCase
+    - https://convertcase.net/
+
+- 反向
+    - http://www.convertstring.com/zh_CN/StringFunction/ReverseString
+    - https://www.qqxiuzi.cn/zh/daoxu/
+
+- 时间戳
+    - http://tool.chinaz.com/tools/unixtime.aspx
 
 ---
 
@@ -517,6 +538,24 @@ http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 - [SHA256哈希 - 在线SHA256哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA256)
 - [SHA3​​84哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
 - [SHA512哈希 - 在线SHA512哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA512)
+
+---
+
+## SM国密
+
+国密即国家密码局认定的国产密码算法。主要有 SM1，SM2，SM3，SM4。密钥长度和分组长度均为 128 位。
+- SM1 为对称加密。其加密强度与 AES 相当。该算法不公开，调用该算法时，需要通过加密芯片的接口进行调用。
+- SM2 为非对称加密，基于 ECC。该算法已公开。由于该算法基于ECC，故其签名速度与秘钥生成速度都快于 RSA。ECC 256位（SM2 采用的就是 ECC 256 位的一种）安全强度比 RSA 2048 位高，但运算速度快于 RSA。
+- SM3 消息摘要。可以用 MD5 作为对比理解。该算法已公开。校验结果为256位。
+- SM4 无线局域网标准的分组数据算法。对称加密，密钥长度和分组长度均为128位。
+
+**工具**
+- [tjfoc/gmsm: GM SM2/3/4 library based on Golang (基于Go语言的国密SM2/SM3/SM4算法库)](https://github.com/tjfoc/gmsm)
+- [JuneAndGreen/sm-crypto: 国密算法js版](https://github.com/JuneAndGreen/sm-crypto)
+- [PopezLotado/SM2Java: 国密SM2,SM3 Java实现](https://github.com/PopezLotado/SM2Java)
+- [NEWPLAN/SMx: 国家商用加密算法 SMx（SM2,SM3,SM4）](https://github.com/NEWPLAN/SMx)
+- [algorithmNation:国密算法 SM2加解密 SM2 SM3 SM4签名验签](https://gitee.com/xshuai/algorithmNation)
+- [ZZMarquis/gmhelper:基于BC库：国密SM2/SM3/SM4算法简单封装；实现SM2 X509v3证书的签发；实现SM2 pfx证书的签发 ](https://github.com/ZZMarquis/gmhelper)
 
 ---
 
@@ -1324,28 +1363,7 @@ I have deposited in the county of Bedford...
 
 ---
 
-# 功能类
-
-- [Unix时间戳(Unix timestamp)转换工具](http://tool.chinaz.com/tools/unixtime.aspx)
-
-**数学**
-- [因式分解工具](https://zh.numberempire.com/factoringcalculator.php)
-- [在线分解质因数 - 分解质因数](http://atool.org/quality_factor.php)
-- [数学工具](https://zh.numberempire.com/)
-- [Logarithm Calculator log(x)](https://www.logcalculator.net/)
-
-**大小写**
-- [大写与字符串在线大写转换器](http://www.convertstring.com/zh_CN/StringFunction/ToUpperCase)
-- [小写字符串 - 在线小写转换器](http://www.convertstring.com/zh_CN/StringFunction/ToLowerCase)
-- [Convert Case - Convert upper case to lower case, lower case to upper case and more!](https://convertcase.net/)
-
-**反向**
-- [反向字符串 - 在线字符串换向器](http://www.convertstring.com/zh_CN/StringFunction/ReverseString)
-- [文字倒序工具,在线文字倒序](https://www.qqxiuzi.cn/zh/daoxu/)
-
----
-
-# 其他
+# 其他编码
 **Brainfuck**
 - http://esoteric.sange.fi/brainfuck/impl/interp/i.html
 - https://www.nayuki.io/page/brainfuck-interpreter-javascript

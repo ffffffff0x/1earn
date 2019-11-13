@@ -41,7 +41,7 @@
 
 - 人名
     - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus)
-    - [重名top500](../../../assets/file/安全/重名top500.txt)
+    - [重名top500](../../../../assets/file/安全/重名top500.txt)
 
 - 地名
     - [modood/Administrative-divisions-of-China: 中华人民共和国行政区划：省级（省份直辖市自治区）、 地级（城市）、 县级（区县）、 乡级（乡镇街道）、 村级（村委会居委会） ，中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫。](https://github.com/modood/Administrative-divisions-of-China)
@@ -50,6 +50,7 @@
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具，例如密码，私钥
 - [gwen001/github-search](https://github.com/gwen001/github-search)
+- [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit)
 
 **同类**
 ```
@@ -112,7 +113,7 @@ https://github.com/ | GitHub
     inurl:service.pwd
     ```
 
-- **黑产seo**
+- **黑产seo关键词**
     ```
     老虎机 site:*.gov.cn
     澳门银行 site:*.gov.cn
@@ -183,7 +184,10 @@ https://github.com/ | GitHub
 
 ---
 
-# [Shodan](https://www.shodan.io)
+# Shodan
+
+- https://www.shodan.io
+
 **语法**
 ```bash
 hostname：搜索指定的主机或域名,例如 hostname:"google"
@@ -254,7 +258,10 @@ port:5900 screenshot.label:loggedin # 无认证vnc
 
 ---
 
-# [censys](https://www.censys.io)
+# censys
+
+- https://www.censys.io
+
 **例子**
 ```bash
 23.0.0.0/8 or 8.8.8.0/24    # 可以使用and or not
@@ -269,7 +276,10 @@ autonomous_system.description: University   # 系统描述
 
 ---
 
-# [钟馗之眼](https://www.zoomeye.org/)
+# 钟馗之眼
+
+- https://www.zoomeye.org/
+
 **语法**
 ```bash
 app:nginx   # 组件名
@@ -294,7 +304,10 @@ city:tokyo + app:weblogic   # weblogic反序列化来一波？
 
 ---
 
-# [FoFa](https://fofa.so)
+# FoFa
+
+- https://fofa.so
+
 **语法**
 ```bash
 title="abc" # 从标题中搜索abc。例：标题中有北京的网站。
@@ -320,7 +333,10 @@ title!="powered by" && body=discuz
 
 ---
 
-# [Dnsdb](https://www.dnsdb.io/)
+# Dnsdb
+
+- https://www.dnsdb.io/
+
 **语法**
 ```markdown
 DnsDB 查询语法结构为条件1 条件2 条件3 …., 每个条件以空格间隔, DnsDB 会把满足所有查询条件的结果返回给用户.

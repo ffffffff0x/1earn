@@ -143,9 +143,9 @@ nmap 默认发送一个 ARP 的 PING 数据包，来探测目标主机 1-10000 �
 ## 脚本
 ### 常见
 - **[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)** - 用于枚举SMB用户
-    ```
-    nmap --script smb-enum-users.nse -p445 <host>
-    sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <host>
+    ```bash
+    nmap --script smb-enum-users.nse -p 445 <目标IP>
+    sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <目标IP>
     ```
 
 - 用于知道自己网站使用了哪些 http 方法

@@ -2181,6 +2181,13 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目�
 $ redis-cli
 > config set stop-writes-on-bgsave-error no
 ```
+或
+```
+vim /etc/redis.conf
+
+stop-writes-on-bgsave-error no
+```
+
 
 - https://gist.github.com/kapkaev/4619127
 
@@ -4049,9 +4056,86 @@ fail2ban-client status  # 检验 fail2ban 状态
 
 fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
 
-fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的IP地址
+fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地址
 ```
 注意,如果你停止了 Fail2ban 服务,那么所有的 IP 地址都会被解锁.当你重启 Fail2ban,它会从 /etc/log/secure(或 /var/log/auth.log)中找到异常的 IP 地址列表,如果这些异常地址的发生时间仍然在禁止时间内,那么 Fail2ban 会重新将这些 IP 地址禁止.
+
+---
+
+## Snort
+
+**官网**
+- https://www.snort.org/
+
+**安装**
+- **源代码编译安装**
+
+    安装依赖
+    ```bash
+    yum -y install gcc flex bison zlib zlib-devel libpcap libpcap-devel pcre pcre-devel libdnet libdnet-devel tcpdump openssl openssl-devel
+    ```
+
+    ```bash
+    wget https://www.snort.org/downloads/snort/daq-2.0.6.tar.gz
+    wget https://www.snort.org/downloads/snort/snort-2.9.15.tar.gz
+    ```
+    ```bash
+    tar xvzf daq-2.0.6.tar.gz
+
+    cd daq-2.0.6
+    ./configure && make && sudo make install
+    cd ../
+    ```
+    ```bash
+    wget http://luajit.org/download/LuaJIT-2.0.5.tar.gz
+    tar xvzf LuaJIT-2.0.5.tar.gz
+    cd LuaJIT-2.0.5
+    make install
+    ```
+    ```bash
+    tar xvzf snort-2.9.15.tar.gz
+
+    cd snort-2.9.15
+    ./configure --enable-sourcefire && make && sudo make install
+    ```
+
+- **rpm 包安装**
+
+    这里以 2.9.15-1 为例，最新版访问官网了解 https://www.snort.org
+    ```bash
+    yum install https://www.snort.org/downloads/snort/snort-2.9.15-1.centos7.x86_64.rpm
+    ```
+
+    安装 snort 的时候可能会报错：`缺少 libnghttp2.so.14()(64bit)`
+    ```bash
+    yum install epel-release -y
+    yum install nghttp2
+    ```
+
+    测试：`snort`，如果没有报错则安装成功。
+
+    如果报错 `snort: error while loading shared libraries: libdnet.1: cannot open shared object file: No such file or directory`
+    ```bash
+    wget http://prdownloads.sourceforge.net/libdnet/libdnet-1.11.tar.gz
+    tar -xzvf libdnet-1.11.tar.gz
+    ./configure
+    make && make install
+    ```
+
+**规则下载**
+
+Snort 官方提供的三类规则
+
+- Community rules：无需注册or购买，可直接下载使用
+- Registered rules：需要注册才可以下载
+- Subscriber rules：需要注册花钱购买
+
+访问官网 https://www.snort.org/ 下载规则
+
+下载完，解压至相应目录
+```
+tar -xvf snortrules-snapshot-<version>.tar.gz -C /etc/snort/rules
+```
 
 ---
 

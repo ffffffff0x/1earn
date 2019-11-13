@@ -110,51 +110,6 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 ---
 
-## phpMyAdmin
-
-- 官网: https://www.phpmyadmin.net/
-
-**文章**
-- [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
-
-**CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
-- POC | Payload | exp
-    - [phpMyAdmin 4.6.2 - (Authenticated) Remote Code Execution](https://www.exploit-db.com/exploits/40185)
-
-**LOAD DATA INFILE 任意文件读取漏洞**
-- POC | Payload | exp
-    [Gifts/Rogue-MySql-Server](https://github.com/Gifts/Rogue-MySql-Server)
-    ```vim
-    vim rogue_mysql_server.py
-
-    PORT = 3307
-    ```
-    `python rogue_mysql_server.py`
-
-    打开目标 phpMyAdmin 的登录页面,地址输入 db:3307、用户名、密码,提交登录。
-
-    回到db的终端,如果文件读取成功会将文件内容记录到 mysql.log 文件中
-
-**phpMyAdmin 4.7.x CSRF**
-- 文章
-    - [phpMyAdmin 4.7.x CSRF 漏洞利用](http://blog.vulnspy.com/2018/06/10/phpMyAdmin-4-7-x-XSRF-CSRF-vulnerability-exploit/)
-
-**4.8.x 本地文件包含漏洞利用**
-- 文章
-    - [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/) 可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
-
-**phpmyadmin4.8.1 后台 getshell**
-- 文章
-    - [phpmyadmin4.8.1后台getshell](https://mp.weixin.qq.com/s/HZcS2HdUtqz10jUEN57aog)
-
-**CVE-2019-12922 & 4.9.0.1 CSRF**
-- POC | Payload | exp
-
-    - `<img src=" http://server/phpmyadmin/setup/index.php?page=servers&mode=remove&id=1" style="display:none;" />`
-    - https://www.hedysx.com/bug/2398.html
-
----
-
 ## ThinkCMF
 **ThinkCMF_getshell**
 - POC | Payload | exp
@@ -340,6 +295,13 @@ Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发,�
 - 文章
     - [Apache Solr 远程命令执行漏洞 (CVE-2019-0193) ](https://vulhub.org/#/environments/solr/CVE-2019-0193/)
 
+**Apache Solr Velocity模版注入远程命令执行漏洞**
+- 影响版本
+    - 影响 Apache Solr 8.1.1 到 8.2.0 版本。
+
+- 文章
+    - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
+
 ---
 
 ## Apache Spark
@@ -360,6 +322,7 @@ Apache Spark 是一款集群计算系统,其支持用户向管理节点提交应
 **工具**
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
 - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
+- [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools)
 
 **环境搭建**
 - [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
@@ -374,6 +337,10 @@ Apache Spark 是一款集群计算系统,其支持用户向管理节点提交应
 **S2-020 & CVE-2014-0094 & CNNVD-201403-191**
 
 **S2-045 & CVE-2017-5638**
+- 简介
+
+    恶意用户可在上传文件时通过修改HTTP请求头中的Content-Type值来触发该漏洞进而执行系统命令。
+
 - POC | Payload | exp
     - [tengzhangchao/Struts2_045-Poc](https://github.com/tengzhangchao/Struts2_045-Poc)
     - [iBearcat/S2-045](https://github.com/iBearcat/S2-045)
@@ -706,6 +673,14 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     http://www.xxx.com/a*~1*/.aspx
     # 若存在将返回404,不存在则返回400。以此类推,不断向下猜解所有的6个字符。
     ```
+    ```
+    Windows Server 2008 R2
+    查询是否开启短文件名功能：fsutil 8dot3name query
+    关闭该功能：fsutil 8dot3name set 1
+
+    Windows Server 2003
+    关闭该功能：fsutil behavior set disable8dot3 1
+    ```
 
 - POC | Payload | exp
     - [lijiejie/IIS_shortname_Scanner](https://github.com/lijiejie/IIS_shortname_Scanner)
@@ -735,7 +710,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 如果我们请求的文件/文件夹名同时存在大小写时,这个请求会被请求两次,一次是原封不动的请求,一次是全部使用小写的请求。
 
 下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-![image](../../../assets/img/安全/1.jpg)
+![image](../../../../assets/img/安全/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
 - POC | Payload | exp
@@ -1185,6 +1160,51 @@ FCKeditor/_samples/asp/sample04.asp
 
 - POC | Payload | exp
     - [ShielderSec/cve-2017-18635](https://github.com/ShielderSec/cve-2017-18635)
+
+---
+
+## phpMyAdmin
+
+- 官网: https://www.phpmyadmin.net/
+
+**文章**
+- [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
+
+**CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
+- POC | Payload | exp
+    - [phpMyAdmin 4.6.2 - (Authenticated) Remote Code Execution](https://www.exploit-db.com/exploits/40185)
+
+**LOAD DATA INFILE 任意文件读取漏洞**
+- POC | Payload | exp
+    [Gifts/Rogue-MySql-Server](https://github.com/Gifts/Rogue-MySql-Server)
+    ```vim
+    vim rogue_mysql_server.py
+
+    PORT = 3307
+    ```
+    `python rogue_mysql_server.py`
+
+    打开目标 phpMyAdmin 的登录页面,地址输入 db:3307、用户名、密码,提交登录。
+
+    回到db的终端,如果文件读取成功会将文件内容记录到 mysql.log 文件中
+
+**phpMyAdmin 4.7.x CSRF**
+- 文章
+    - [phpMyAdmin 4.7.x CSRF 漏洞利用](http://blog.vulnspy.com/2018/06/10/phpMyAdmin-4-7-x-XSRF-CSRF-vulnerability-exploit/)
+
+**4.8.x 本地文件包含漏洞利用**
+- 文章
+    - [phpMyAdmin 4.8.x 本地文件包含漏洞利用 | Vulnspy Blog](http://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-LFI-Exploit/) 可以通过这个线上靶场实验,不过 docker 镜像可能有点问题,mysql 进程起不起来,我的解决方式是直接卸了重装 mysql-server,而且他默认的 apt 源无法访问,还要换一下 apt 源
+
+**phpmyadmin4.8.1 后台 getshell**
+- 文章
+    - [phpmyadmin4.8.1后台getshell](https://mp.weixin.qq.com/s/HZcS2HdUtqz10jUEN57aog)
+
+**CVE-2019-12922 & 4.9.0.1 CSRF**
+- POC | Payload | exp
+
+    - `<img src=" http://server/phpmyadmin/setup/index.php?page=servers&mode=remove&id=1" style="display:none;" />`
+    - https://www.hedysx.com/bug/2398.html
 
 ---
 

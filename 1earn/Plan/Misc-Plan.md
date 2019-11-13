@@ -34,6 +34,11 @@ CSCRIPT OSPP.VBS /DSTATUS
 ```
 
 # DNS
+**快速刷新 DNS 缓存**
+```
+ipconfig /flushdns
+```
+
 **软件方案**
 - DnsJumper (windows 下快速配置 DNS)
 - [chengr28/Pcap_DNSProxy](https://github.com/chengr28/pcap_dnsproxy) (DNS 代理)
@@ -51,9 +56,9 @@ CSCRIPT OSPP.VBS /DSTATUS
     - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
 - [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的 DNS 代理,感觉没上面两个好用)
 
-**服务器推荐**
+**DNS 服务器推荐**
 - 国内:223.5.5.5、114.114.114.114
-- 全球:208.67.222.222、208.67.220.220
+- 全球:208.67.222.222、208.67.220.220、1.1.1.1
 
 ---
 

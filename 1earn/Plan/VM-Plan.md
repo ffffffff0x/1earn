@@ -12,11 +12,11 @@
 - [Centos](https://www.centos.org/)
 - [Kali-xfce](https://www.kali.org/)
 - [Manjaro-kde](https://manjaro.org)
-- [Parrot-kde](https://www.parrotsec.org/)
 
 **Windows 虚拟机建议**
 - 渗透/靶机-[commando-vm](https://github.com/fireeye/commando-vm)
 - 日用-Win10 2019 Ltsc
+- 日用-Win7
 
 ### 常见问题
 **关闭虚拟内存**

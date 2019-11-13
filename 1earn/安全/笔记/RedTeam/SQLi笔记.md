@@ -10,7 +10,7 @@
 
 **靶场**
 
-![image](../../../assets/img/才怪.png)
+![image](../../../../assets/img/才怪.png)
 
 **教程**
 - [SQL 注入 - CTF Wiki](https://ctf-wiki.github.io/ctf-wiki/web/sqli/)
@@ -21,9 +21,15 @@
 **payload**
 - [trietptm/SQL-Injection-Payloads](https://github.com/trietptm/SQL-Injection-Payloads)
 
+**SQLi 检测环境/靶场**
+- **在线版**
+    - http://demo.testfire.net/
+    - https://juice-shop.herokuapp.com/#/search
+    - https://sqlchop.chaitin.cn/demo/
+
 **sqlmap**
 - **笔记**
-    - [sqlmap 小记](../工具/sqlmap小记.md)
+    - [sqlmap 笔记](../../工具/sqlmap笔记.md)
 
 ---
 
@@ -47,7 +53,8 @@ Time-based blind SQL injection(基于时间延迟注入)
 
 ---
 
-# MYSQL
+# 按库
+## MYSQL
 **手动注入**
 - 手工注入思路
 
@@ -72,28 +79,24 @@ Time-based blind SQL injection(基于时间延迟注入)
 
     两个测试成功后，可以判断负载的 sql 被执行，存在 sql 注入漏洞。
 
+---
 
+## MSSQL
 
-
-
-
-
+![image](../../../../assets/img/才怪.png)
 
 ---
 
-# MSSQL
+## ORACLE
 
+![image](../../../../assets/img/才怪.png)
 
 ---
 
+# 按类型
+## UA注入
+**文章**
+- [User Agent注入攻击及防御](https://www.freebuf.com/articles/web/105124.html)
 
-# ORACLE
-
-
-
-
-
-
-
-
-
+**案例**
+- [m.17u.cn一处SQL注入](https://sec.ly.com/bugdetail?id=009063229194078153174131073236159115161105151152)

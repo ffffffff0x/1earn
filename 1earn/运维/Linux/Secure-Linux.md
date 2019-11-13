@@ -11,7 +11,7 @@
 
 `Linux 加固+维护+应急响应参考`
 
-`文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/加固笔记.md)
+`文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
 
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
@@ -19,7 +19,7 @@
 
 ---
 
-# 本地
+# Shell-Base
 ## 密码重置
 **centos7**
 
@@ -76,30 +76,6 @@ vim /etc/profile
 
 ---
 
-## 账号
-**/etc/passwd**
-- 若用户ID=0，则表示该用户拥有超级用户的权限
-- 检查是否有多个ID=0
-- 禁用或删除多余的账号
-
-**设置账户锁定登录失败锁定次数、锁定时间**
-```
-vim /etc/pam.d/system-auth
-
-auth required pam_tally.so onerr=fail deny=6 unlock_time=300
-# 设置为密码连续输错6次,锁定时间300秒
-```
-
-**/etc/login.defs**
-```bash
-PASS_MAX_DAYS   90   # 用户的密码最长使用天数
-PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
-PASS_MIN_LEN    7   # 密码的最小长度
-PASS_WARN_AGE   9   # 密码过期前多少天开始提示
-```
-
----
-
 ## 加固
 **查后门**
 - **添加 root 权限后门用户**
@@ -145,7 +121,44 @@ PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 
 ---
 
-## SELinux
+## 系统管理
+### 系统设置
+#### 启动项-计划任务
+
+**开机启动**
+```bash
+chkconfig   # 查看开机启动服务命令
+ls /etc/init.d  # 查看开机启动配置文件命令
+cat /etc/rc.local   # 查看 rc 启动文件
+```
+
+---
+
+#### 账号
+**/etc/passwd**
+- 若用户ID=0，则表示该用户拥有超级用户的权限
+- 检查是否有多个ID=0
+- 禁用或删除多余的账号
+
+**设置账户锁定登录失败锁定次数、锁定时间**
+```
+vim /etc/pam.d/system-auth
+
+auth required pam_tally.so onerr=fail deny=6 unlock_time=300
+# 设置为密码连续输错6次,锁定时间300秒
+```
+
+**/etc/login.defs**
+```bash
+PASS_MAX_DAYS   90   # 用户的密码最长使用天数
+PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
+PASS_MIN_LEN    7   # 密码的最小长度
+PASS_WARN_AGE   9   # 密码过期前多少天开始提示
+```
+
+---
+
+#### SELinux
 **关闭 SELinux**
 - 需要重启
 	```vim
@@ -160,12 +173,13 @@ PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 
 ---
 
-## 系统管理
 ### 系统信息
 #### 进程管理
 
 **进程定位**
 ```bash
+ps -aux # 列出所有进程以及相关信息命令
+top # 总览系统全面信息命令
 pidof name  # 定位程序的 pid
 pidof -x name   # 定位脚本的 pid
 ```
@@ -620,7 +634,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **使用 Fail2ban**
 
-    - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md##[Fail2ban](https://github.com/fail2ban/fail2ban))
+    - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md##Fail2ban)
 
 ---
 

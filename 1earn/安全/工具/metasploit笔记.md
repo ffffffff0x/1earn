@@ -45,6 +45,16 @@ curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/t
 apt-get update
 apt-get install metasploit-framework
 ```
+嫌官方源速度慢可以添加阿里云的源
+```vim
+vim /etc/apt/sources.list
+
+deb http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
+deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
+```
+
+也可以直接使用 `msfupdate`
+
 
 **添加一个新的 exploit**
 

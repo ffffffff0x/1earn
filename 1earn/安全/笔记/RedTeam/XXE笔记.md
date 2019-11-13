@@ -18,13 +18,12 @@
 - [XXE: XML eXternal Entity Injection vulnerabilities](https://www.gracefulsecurity.com/xml-external-entity-injection-xxe-vulnerabilities/)
 - [浅谈 XXE 攻击](https://www.freebuf.com/articles/web/126788.html)
 
-
 **靶场**
 - [c0ny1/xxe-lab: 一个包含 php,java,python,C# 等各种语言版本的 XXE 漏洞 Demo](https://github.com/c0ny1/xxe-lab)
 - [TheTwitchy/vulnd_xxe](https://github.com/TheTwitchy/vulnd_xxe)
 
 **议题**
-- [Build Your SSRF Exploit Framework —— 一个只影响有钱人的漏洞](../../assets/file/安全/议题报告/WhiteHatFest2016/一个只影响有钱人的漏洞.pdf)
+- [Build Your SSRF Exploit Framework —— 一个只影响有钱人的漏洞](../../../../assets/file/安全/议题报告/WhiteHatFest2016/一个只影响有钱人的漏洞.pdf)
 
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/xxe.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xxe.md)

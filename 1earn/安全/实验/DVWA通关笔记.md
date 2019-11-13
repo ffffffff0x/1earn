@@ -14,8 +14,10 @@
 ---
 
 ## 实验环境
-- phpstudy(php5.2珍藏版)：http://phpstudy.php.cn/wenda/404.html
-(可以测试%00 截断)
+
+`这里的环境仅供参考`
+
+- phpstudy(可以测试 `%00` 截断,你还可以顺便测试 Phpstudy 后门)
 - Microsoft Windows 10 企业版 LTSC - 10.0.17763
 - dvwa Version 1.10 *Development* (Release date: 2015-10-08)
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415

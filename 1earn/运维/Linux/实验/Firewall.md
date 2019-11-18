@@ -45,9 +45,9 @@
 ## 常用命令
 **服务管理**
 ```bash
-systemctl status firewalld
-systemctl start firewalld
-systemctl stop firewalld
+systemctl status firewalld	# 查看服务运行状态
+systemctl start firewalld	# 开启服务
+systemctl stop firewalld	# 关闭服务
 ```
 
 **查看**

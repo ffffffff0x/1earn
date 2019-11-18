@@ -152,7 +152,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 用 hex 功能在 1.php 后面添加一个 \x0A
 
-![image](../../../../assets/img/安全/笔记/文件解析漏洞/1.png)
+![image](../../../../assets/img/安全/笔记/RedTeam/web常见漏洞笔记/1.png)
 
 访问 http://10.10.10.131:8080/1.php%0A ，成功解析
 
@@ -318,6 +318,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
 - [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
 - [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
+
+**案例**
+- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
 
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)

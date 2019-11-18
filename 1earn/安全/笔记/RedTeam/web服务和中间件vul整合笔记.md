@@ -1,4 +1,4 @@
-# web 服务和中间件 vul 整合
+# web 服务和中间件 vul 整合笔记
 
 ---
 
@@ -144,6 +144,12 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 **资源**
 - [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln)
+
+---
+
+## WordPress
+**工具**
+- [wpscanteam/wpscan](https://github.com/wpscanteam/wpscan)
 
 ---
 

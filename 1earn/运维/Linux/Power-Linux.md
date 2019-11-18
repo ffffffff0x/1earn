@@ -15,6 +15,8 @@
 
 `目前主要以安装搭建为主,更深一步的配置请自行研究`
 
+`注:如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
+
 <p align="center">
      <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="70%"></a>
 </p>
@@ -277,6 +279,21 @@ mount | grep '^/dev'
 
 ## Vim
 
+**常用操作**
+```
+Normal 模式下 i 进入 insert 模式
+:wq 存盘+退出
+dd 删除当前行,并存入剪切板
+p 粘贴
+:q！强制退出
+:wq！强制保存退出
+:w !sudo tee %  无 root 权限,保存编辑的文件
+:saveas <path/to/file> 另存为
+按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
+:%s/foo/bar 代表替换 foo 为 bar
+insert 模式按 ESC 键,返回 Normal 模式
+```
+
 **常用配置**
 
 `sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
@@ -296,6 +313,10 @@ set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大�
 #set showmatch # 插入括号时,短暂地跳转到匹配的对应括号
 #set matchtime=2 # 短暂跳转到匹配括号的时间
 ```
+
+**使用 vim 对比文件**
+
+`vimdiff  FILE_LEFT  FILE_RIGHT`
 
 **解决 ssh 后 vim 中不能使用小键盘的问题**
 - xshell
@@ -816,8 +837,13 @@ PasswordAuthentication yes
 PermitRootLogin yes
 ```
 ```bash
-service ssh restart
-systemctl enable ssh
+service ssh restart # 启动ssh
+systemctl enable ssh  # 设置为开机自启
+
+# 或
+
+/etc/init.d/ssh start # 启动ssh
+update-rc.d ssh enable  # 设置为开机自启
 ```
 若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍.
 
@@ -1596,6 +1622,118 @@ rabbitmqctl set_user_tags <账号> administrator # 修改用户角色
 
 ---
 
+
+## searx
+
+`尊重隐私，可控的元搜索引擎。`
+
+**项目地址**
+- https://github.com/asciimoo/searx
+
+**安装搭建**
+
+注:本次在 Debian/Ubuntu 下搭建，centos 下基本一致,请参考 [官方教程](https://github.com/asciimoo/searx/wiki/Installation-on-RHEL-7---CentOS-7)
+
+加源,安装依赖
+```
+sudo add-apt-repository universe
+sudo apt-get update
+
+sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev vim lrzsz unzip
+```
+
+安装 searx
+```bash
+cd /usr/local
+sudo git clone https://github.com/asciimoo/searx.git
+sudo useradd searx -d /usr/local/searx
+sudo chown searx:searx -R /usr/local/searx
+```
+
+测试 python 虚拟环境
+```bash
+sudo -u searx -i
+cd /usr/local/searx
+virtualenv searx-ve
+. ./searx-ve/bin/activate
+./manage.sh update_packages
+```
+
+一些安全性配置
+```bash
+sed -i -e "s/ultrasecretkey/`openssl rand -hex 16`/g" searx/settings.yml
+sed -i -e "s/debug : True/debug : False/g" searx/settings.yml
+```
+
+```bash
+sudo apt-get -y install uwsgi uwsgi-plugin-python
+```
+```vim
+vim /etc/uwsgi/apps-available/searx.ini
+
+[uwsgi]
+# Who will run the code
+uid = searx
+gid = searx
+
+# disable logging for privacy
+disable-logging = true
+
+# Number of workers (usually CPU count)
+workers = 4
+
+# The right granted on the created socket
+chmod-socket = 666
+
+# Plugin to use and interpretor config
+single-interpreter = true
+master = true
+plugin = python
+lazy-apps = true
+enable-threads = true
+
+# Module to import
+module = searx.webapp
+
+# Virtualenv and python path
+virtualenv = /usr/local/searx/searx-ve/
+pythonpath = /usr/local/searx/
+chdir = /usr/local/searx/searx/
+```
+```bash
+cd /etc/uwsgi/apps-enabled
+ln -s ../apps-available/searx.ini
+/etc/init.d/uwsgi restart
+```
+
+配置 nginx 代理
+```bash
+sudo apt-get -y install nginx
+```
+```vim
+vim /etc/nginx/sites-available/searx
+
+server {
+    listen 80;
+    server_name www.你的域名.com;
+    root /usr/local/searx;
+
+    location / {
+            include uwsgi_params;
+            uwsgi_pass unix:/run/uwsgi/app/searx/socket;
+    }
+}
+```
+```bash
+sudo ln -s /etc/nginx/sites-available/searx /etc/nginx/sites-enabled/searx
+sudo service nginx restart
+sudo service uwsgi restart
+```
+
+现在访问 www.你的域名.com 查看你的搜索引擎服务把~
+
+---
+
 ## Tomcat
 
 Tomcat 类似与一个 apache 的扩展型，属于 apache 软件基金会的核心项目，属于开源的轻量级 Web 应用服务器，是开发和调试 JSP 程序的首选，主要针对 Jave 语言开发的网页代码进行解析，Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样，具有处理 HTML 页面的功能，然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx，所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端。可以这样认为，当配置正确时，Apache 为 HTML 页面服务，而 Tomcat 实际上运行 JSP 页面和 Servlet。比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序。
@@ -1842,8 +1980,10 @@ service firewalld stop
 
 `基于开源项目 Searx 二次开发的操作引擎`
 
-**官网**
-- https://mijisou.com/
+`2019-11-17:不在推荐该开源项目，建议直接使用源项目` [searx](##searx)
+
+**项目地址**
+- https://github.com/entropage/mijisou
 
 **依赖**
 
@@ -2147,8 +2287,7 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 
 `秘迹®️是熵加网络科技 (北京) 有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技 (北京) 有限公司保留追究法律责任的权利.`
 
-配置文件中改下名字
-`mijisou/searx/static/themes/entropage/img` 中的 logo 图标自己换一下
+配置文件中改下名字 `mijisou/searx/static/themes/entropage/img` 中的 logo 图标自己换一下
 
 **管理**
 ```bash
@@ -2335,11 +2474,19 @@ Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回�
 **配置远程访问**
 
 Mariadb 数据库授权 root 用户能够远程访问
-```sql
+```bash
 systemctl start mariadb
 mysql -u root -p
+
+
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
+
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
+
 FLUSH PRIVILEGES;
 ```
 
@@ -3412,6 +3559,7 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 ---
 
 ## Loganalyzer
+
 **安装**
 
 这里以 LAMP 环境为例
@@ -3706,48 +3854,27 @@ setenforce 0  # 关闭 selinux
 **官网**
 - https://www.docker.com
 
-**centos 下安装**
-```bash
-yum install -y yum-utils device-mapper-persistent-data lvm2
-wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
-sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
-yum makecache fast
-yum install -y docker
-```
+**安装**
 
-or
+- **centos 下安装**
+  ```bash
+  yum install -y yum-utils device-mapper-persistent-data lvm2
+  wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+  sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+  yum makecache fast
+  yum install -y docker
+  ```
 
-`curl -sSL https://get.docker.com/ | sh`
+- **debian 下安装**
+  ```bash
+  sudo apt update
+  sudo apt install docker.io
+  docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
+  ```
 
-or
+- **官方一条命令安装**
 
-Step 1 — Install Docker
-```bash
-sudo yum install -y yum-utils device-mapper-persistent-data lvm2
-sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-sudo yum install docker-ce
-sudo usermod -aG docker $(whoami)
-sudo systemctl enable docker.service
-sudo systemctl start docker.service
-```
-
-Step 2 — Install Docker Compose
-```bash
-sudo yum install epel-release
-sudo yum install -y python-pip
-sudo pip install docker-compose
-sudo yum upgrade python*
-docker-compose version
-
-docker login
-```
-
-**debian 下安装**
-```bash
-sudo apt update
-sudo apt install docker.io
-docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
-```
+  `curl -sSL https://get.docker.com/ | sh`
 
 **使用**
 
@@ -3792,21 +3919,32 @@ docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
 
 Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
-去下载二进制包 https://github.com/docker/compose/releases
+- **Ubuntu Install**
+  ```bash
+  sudo yum install epel-release
+  sudo yum install -y python-pip
+  sudo pip install docker-compose
+  sudo yum upgrade python*
+  docker-compose version
+  ```
 
-然后将文件上传到 `/usr/local/bin/` 文件夹下，然后将其重命名为 docker-compose，修改此文件的权限，增加可执行：`chmod +x /usr/local/bin/docker-compose`
+- **其他系统**
 
-```bash
-docker-compose build
-docker-compose up -d
-docker-compose stop
-```
+  去下载二进制包 https://github.com/docker/compose/releases
 
-```bash
-docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
-docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
-docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
-```
+  然后将文件上传到 `/usr/local/bin/` 文件夹下，然后将其重命名为 docker-compose，修改此文件的权限，增加可执行：`chmod +x /usr/local/bin/docker-compose`
+
+  ```bash
+  docker-compose build
+  docker-compose up -d
+  docker-compose stop
+  ```
+
+  ```bash
+  docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
+  docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
+  docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
+  ```
 
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
@@ -3862,6 +4000,8 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 
 # 安全服务
 ## ClamAV
+
+`一个开源防病毒引擎，用于检测木马，病毒，恶意软件和其他恶意威胁。`
 
 **官网**
 - https://www.clamav.net
@@ -3964,6 +4104,8 @@ clamscan -r --remove  # 查杀当前目录并删除感染的文件
 
 ## Fail2ban
 
+`禁止导致多次身份验证错误的主机`
+
 **项目地址**
 - https://github.com/fail2ban/fail2ban
 
@@ -4063,6 +4205,8 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 ---
 
 ## Snort
+
+`一个开源的 IDS`
 
 **官网**
 - https://www.snort.org/

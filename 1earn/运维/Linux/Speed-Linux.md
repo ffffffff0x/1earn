@@ -210,8 +210,8 @@ unzip FileName.zip	# 解压
 zip FileName.zip DirName	# 压缩
 
 .rar
-rar -x FileName.rar	# 解压
-rar -a FileName.rar DirName	# 压缩
+rar x FileName.rar	# 解压
+rar a FileName.rar DirName	# 压缩
 
 .lha
 lha -e FileName.lha	# 解压
@@ -294,10 +294,29 @@ cp <源文件> <目标文件/目标路径>	# 复制
 mv <源文件> <目标文件/目标路径>	# 对文件或目录重命名,或移动
 
 vi 	# 编辑器
-vim	# 编辑器
 nano	# 编辑器
 gedit	# 图形化的编辑器
 ```
+
+**Vim**
+
+- **常用操作**
+	```
+	Normal 模式下 i 进入 insert 模式
+	:wq 存盘+退出
+	dd 删除当前行,并存入剪切板
+	p 粘贴
+	:q！强制退出
+	:wq！强制保存退出
+	:w !sudo tee %  无 root 权限,保存编辑的文件
+	:saveas <path/to/file> 另存为
+	按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
+	:%s/foo/bar 代表替换 foo 为 bar
+	insert 模式按 ESC 键,返回 Normal 模式
+	```
+
+- **更多操作**
+	- [Vim](./Power-Linux.md#Vim)
 
 ---
 
@@ -534,6 +553,9 @@ firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1
 
 firewall-cmd --reload	# 重新加载
 firewall-cmd --list-services	# 查看防火墙设置
+systemctl status firewalld	# 查看服务运行状态
+systemctl start firewalld	# 开启服务
+systemctl stop firewalld	# 关闭服务
 ```
 
 **更多配置**
@@ -555,6 +577,32 @@ iptables-restore </root/firewall_rules.backup	# 规则恢复一下
 ---
 
 ## 软件包管理
+
+**update-alternatives**
+```bash
+# update-alternatives 命令用于处理linux系统中软件版本的切换，在各个linux发行版中均提供了该命令，命令参数略有区别，但大致是一样的。
+
+# 注册软件
+	update-alternatives --install <link> <name> <path> <priority>
+	update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_91/bin/java 200	# 以jdk为例，安装了jdk以后，先要在update-alternatives工具中注册
+	update-alternatives --install /usr/bin/java java /opt/jdk1.8.0_111/bin/java 300
+
+	# 第一个参数 --install 表示注册服务名。
+	# 第二个参数是注册最终地址，成功后将会把命令在这个固定的目的地址做真实命令的软链，以后管理就是管理这个软链；
+	# 第三个参数：服务名，以后管理时以它为关联依据。
+	# 第四个参数，被管理的命令绝对路径。
+	# 第五个参数，优先级，数字越大优先级越高。
+
+# 查看已注册列表
+	update-alternatives --display java
+
+# 修改命令版本
+	update-alternatives --config java
+	# 输入数字，选择相应版本
+	update-alternatives --auto java	# 按照优先级高自动选择
+	update-alternatives --set java /opt/jdk1.8.0_91/bin/java	# 直接指定
+```
+
 ### 源
 **本地 yum 源**
 
@@ -616,6 +664,12 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted univer
 deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
 ```
 
+enable the “Universe” repository
+```
+sudo add-apt-repository universe
+sudo apt-get update
+```
+
 **Kali 源**
 ```vim
 vim /etc/apt/sources.list
@@ -627,6 +681,18 @@ deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-
 # 官方源
 deb http://http.kali.org/kali kali-rolling main non-free contrib
 deb-src http://http.kali.org/kali kali-rolling main non-free contrib
+
+# 中科大
+deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+
+# 浙大
+deb http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
+deb-src http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
+
+# 东软大学
+deb http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
+deb-src http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
 ```
 `apt-get update && apt-get upgrade && apt-get dist-upgrade`
 
@@ -652,6 +718,8 @@ make install	# 安装
 
 > dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具.
 ```bash
+# deb 是 debian linux的安装格式，跟 red hat 的 rpm 非常相似，最基本的安装命令是：dpkg -i file.deb
+
 dpkg -i xxxxx.deb  # 安装软件
 dpkg -R /usr/local/src	# 安装路径下所有包
 dpkg -L # 查看软件安装位置
@@ -703,6 +771,10 @@ yum install python
 > apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
 ```bash
 apt-get update && apt-get upgrade && apt-get dist-upgrade
+
+# 无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
+rm -rf /var/cache/apt/archives/lock
+rm -rf /var/lib/dpkg/lock-frontend
 rm -rf /var/lib/dpkg/lock	# 强制解锁占用
 
 # 常用软件
@@ -719,6 +791,14 @@ apt install curl
 apt-add-repository ppa:fish-shell/release-3
 apt update
 apt install fish
+```
+
+**Gdebi**
+
+Gdebi 是一个安装 .deb 软件包的工具。提供了图形化的使用界面
+```bash
+apt update
+apt install gdebi
 ```
 
 ### 常用软件
@@ -750,6 +830,26 @@ echo /usr/bin/fish | sudo tee -a /etc/shells	# 加默认
 usermod -s /usr/bin/fish <USERNAME>
 ```
 
+**zsh**
+```bash
+apt install zsh	# 安装 zsh
+
+chsh -s /bin/zsh	# 切换默认的 shell 为 zsh
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"	# 安装 oh-my-zsh
+
+git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions	# 下载命令补全插件
+
+# zshrc 配置文件中修改如下内容
+vim ~/.zshrc
+
+plugins=(git zsh-autosuggestions)
+
+zsh	# 重新加载 zsh 配置
+
+# 更多主题见此 https://github.com/robbyrussell/oh-my-zsh/wiki/themes
+```
+
 **Powerline-shell**
 
 `pip install powerline-shell`
@@ -760,25 +860,6 @@ function fish_prompt
 	powerline-shell --shell bare $status
 end
 ```
-
-**Vim**
-
-常用操作
-```
-Normal 模式下 i 进入 insert 模式
-:wq 存盘+退出
-dd 删除当前行,并存入剪切板
-p 粘贴
-:q！强制退出
-:wq！强制保存退出
-:w !sudo tee %  无 root 权限,保存编辑的文件
-:saveas <path/to/file> 另存为
-按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
-:%s/foo/bar 代表替换 foo 为 bar
-insert 模式按 ESC 键,返回 Normal 模式
-```
-
-使用 vim 对比文件 `vimdiff  FILE_LEFT  FILE_RIGHT`
 
 ---
 
@@ -1000,10 +1081,14 @@ chkconfig	# 检查、设置系统的各种服务
 
 **进程处理**
 ```bash
+ps -aux	# 查看进程
+
 # 杀进程
+kill
 kill -s STOP <PID>	# 删除执行中的程序或工作
+	kill -l	# 显示信号
 	kill -HUP <pid>	# 更改配置而不需停止并重新启动服务
-	kill -KILL <pid> # 信号(SIGKILL)无条件终止进程
+	kill -9 <PID> && kill -KILL <pid> # 信号(SIGKILL)无条件终止进程
 killall <PID>	# 使用进程的名称来杀死进程
 
 ctrl+z # 将前台运行的任务暂停,仅仅是暂停,而不是将任务终止.
@@ -1029,7 +1114,7 @@ cmdline
 	args[2]=/itoa/app/mave
 
 # 不挂断地运行命令
-nohub	# nohup 命令运行由 Command参数和任何相关的 Arg参数指定的命令，忽略所有挂断（SIGHUP）信号。在注销后使用 nohup 命令运行后台中的程序。要运行后台中的 nohup 命令，添加 & （ 表示“and”的符号）到命令的尾部。
+nohup	# nohup 命令运行由 Command参数和任何相关的 Arg参数指定的命令，忽略所有挂断（SIGHUP）信号。在注销后使用 nohup 命令运行后台中的程序。要运行后台中的 nohup 命令，添加 & （ 表示“and”的符号）到命令的尾部。
 	nohup COMMAND &	# 使命令永久的在后台执行
 	sh test.sh &	# 将 sh test.sh 任务放到后台 ，关闭xshell，对应的任务也跟着停止。
 	nohup sh test.sh	# 将 sh test.sh 任务放到后台，关闭标准输入，终端不再能够接收任何输入（标准输入），重定向标准输出和标准错误到当前目录下的 nohup.out 文件，即使关闭 xshell 退出当前 session 依然继续运行。

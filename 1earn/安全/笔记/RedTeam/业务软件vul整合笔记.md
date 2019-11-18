@@ -363,7 +363,7 @@
 
         利用 log 变量，猜绝对路径
 
-        ![image](../../../../assets/img/安全/笔记/业务软件vul整合笔记/1.png)
+        ![image](../../../../assets/img/安全/笔记/RedTeam/业务软件vul整合笔记/1.png)
 
         或者直接查询 `select @@basedir;`
 

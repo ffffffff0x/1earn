@@ -82,6 +82,7 @@ git config --global --unset https.proxy
 - 阿里云: https://cr.console.aliyun.com/#/accelerator
 - DaoCloud: https://www.daocloud.io/mirror#accelerator-doc
 - 中科大: https://lug.ustc.edu.cn/wiki/mirrors/help/docker
+- 网易: http://hub-mirror.c.163.com
 
 **linux**
 ```bash
@@ -135,11 +136,14 @@ npm config delete proxy  # 取消代理
     1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加“.”,表示是隐藏文件夹)
     ```vim
     mkdir -p ~/.pip/
-    vim ~/.pip/pip.conf
-        [global]
-        index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-        [install]
-        trusted-host = https://pypi.tuna.tsinghua.edu.cn
+    ```
+    ```bash
+    sudo tee ~/.pip/pip.conf <<-'EOF'
+    [global]
+    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+    [install]
+    trusted-host = https://pypi.tuna.tsinghua.edu.cn
+    EOF
     ```
 
     2. windows 下,直接在 user 目录中创建一个 pip 目录,如:C:\Users\xx\pip,然后新建文件 pip.ini,即 %HOMEPATH%\pip\pip.ini,在 pip.ini 文件中输入以下内容:

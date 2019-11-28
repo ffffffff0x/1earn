@@ -44,7 +44,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > 利用 burp 收集整个企业、组织的域名 (不仅仅是单个主域名) 的插件
 - [bit4woo/domain_hunter](https://github.com/bit4woo/domain_hunter)
 
-> 捕捉由 Burp 发出的 payloads 触发的目标与外部系统发生数据交互行为
+> DNS_log
 - [hackvertor/taborator](https://github.com/hackvertor/taborator)
 - [NetSPI/BurpCollaboratorDNSTunnel](https://github.com/NetSPI/BurpCollaboratorDNSTunnel)
 
@@ -90,6 +90,9 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > 高亮标记敏感信息并展示相关匹配的信息,然后针对高亮的请求进行深度挖掘
 - [gh0stkey/BurpSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuite-Extender-MarkInfo)
 
+> 通过 BurpSuite 来构建自己的爆破字典，可以通过字典爆破来发现隐藏资产。
+- [TEag1e/BurpCollector](https://github.com/TEag1e/BurpCollector)
+
 ---
 
 ## 安装
@@ -127,7 +130,7 @@ Site Map 的左边为访问的 URL，按照网站的层级和深度，树形展�
 
 同时，也可以将某个域直接加入 Target Scope 中.
 
-**Compare site maps**
+**右键--Compare site maps**
 
 站点比较是一个 Burp 提供给渗透测试人员对站点进行动态分析的利器，我们在比较帐号权限时经常使用到它。当我们登陆应用系统，使用不同的帐号，帐号本身在应用系统中被赋予了不同的权限，那么帐号所能访问的功能模块、内容、参数等都是不尽相同的，此时使用站点比较，能很好的帮助渗透测试人员区分出来。一般来说，主要有以下3种场景：
 1. 同一个帐号，具有不同的权限，比较两次请求结果的差异。
@@ -162,7 +165,7 @@ Site Map 1 我们默认为当前会话。
 
 如果我们之前是针对全站进行比较，且是选择重新发生一次作为 Site Map2 的方式，则界面加载过程中会不停提示你数据加载的进度，如果涉及功能请求的链接较少，则很快进入比较界面。
 
-**Engagement tools**
+**右键--Engagement tools**
 - Analyze target
 
     ![image](../../../assets/img/安全/工具/burp/11.png)
@@ -205,11 +208,11 @@ Target Scope 中作用域的定义比较宽泛，通常来说，当我们对某�
 # Proxy
 
 ## intercept
-**Don't intercept requests**
+**右键--Don't intercept requests**
 
 这里指定满足规则的包,需要忽略
 
-**Do intercept**
+**右键--Do intercept**
 
 拦截回包
 
@@ -275,11 +278,28 @@ Burp 允许您创建多个代理侦听器，并提供了大量配置选项来控
     - 生成与特定的主机名CA签发的证书（Generate a CA-signed certificate with a specific hostname）—— -是类似于前面的选项;不同的是，Burp会生成一个主机证书与每一个SSL连接使用，使用指定的主机名。
     - 使用自定义证书（Use a custom certificate）—— 此选项可以加载一个特定的证书（在PKCS＃12格式）呈现给浏览器。如果应用程序使用这需要一个特定的服务器证书（例如，与给定的序列号或证书链）的客户端应该使用这个选项。
 
-**SSL pass through**
+**SSL Pass Through**
 
 SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接，而通过这些连接的请求或响应任何细节将在 Burp 代理拦截视图或历史日志中可见。通过 SSL 连接传递并不是简单地消除在客户机上 SSL 错误的情况。比如说，在执行 SSL 证书的应用。如果应用程序访问多个域，或使用 HTTP 和 HTTPS 连接的混合，然后通过 SSL 连接到特定的主机仍然能够以正常的方式使用 Burp 的其他方式进行通信。如果启用自动添加客户端 SSL 协商失败的选项，当客户端检测失败的 SSL 协议（例如，由于不承认 Burp 的 CA 证书），会自动将相关的服务器添加到 SSL 直通通过列表中去。其设置界面如下图所示：
 
 ![image](../../../assets/img/安全/工具/burp/19.png)
+
+**Miscellaneous**
+
+这些设置控制 Burp Proxy 行为的一些特定细节。 提供以下选项：
+-  **Use HTTP/1.0 in requests to server** - 此选项控制 Burp 代理是否在对目标服务器的请求中强制实施 HTTP 版本1.0。 默认设置是使用浏览器使用的 HTTP 版本。 但是，某些旧版服务器或应用程序可能需要版本1.0才能正常运行。
+- **Use HTTP/1.0 in responses to client** - 当前所有的浏览器都支持 HTTP 的1.0版和1.1版。 由于1.0版的功能集减少了，因此强制使用版本1.0有时对于控制浏览器行为的各个方面非常有用，例如防止尝试执行 HTTP pipelining。
+- **Set response header "Connection: close"** - 在某些情况下，此选项对于防止 HTTP pipelining 也可能很有用。
+- **Set "Connection: close" on incoming requests** - 在某些情况下，此选项对于防止 HTTP pipelining 也可能很有用。
+- **Strip Proxy-* headers in incoming requests** - 浏览器有时会发送请求头，其中包含要用于正在使用的代理服务器的信息。有些恶意网站可能试图诱使浏览器在这些标头中包含敏感数据而对访客造成一定的攻击。默认情况下， Burp 代理会从传入的请求中删除这些标头，以防止任何信息泄漏。取消选中此选项 Burp 就不修改这些请求头。
+- **Remove unsupported encodings from Accept-Encoding headers in incoming requests** - 浏览器通常会提供接受各种编码的响应，例如 压缩内容。在 Burp 中处理响应时，某些编码会引起问题。默认情况下，Burp 会删除不支持的编码，以减少使用它们的机会。 如果服务器要求支持不支持的编码，则可能需要取消选中此选项。
+- **Strip Sec-WebSocket-Extensions headers in incoming requests** - 浏览器可能会提供支持与 WebSocket 连接有关的各种扩展的信息，例如 压缩内容。在 Burp 中处理响应时，某些编码会引起问题。默认情况下，Burp 删除此标头以减少使用扩展名的机会。如果服务器要求特定的扩展名，则可能需要取消选中此选项。
+- **Unpack GZIP / deflate in requests** - 某些应用程序（通常使用自定义客户端组件的应用程序）会压缩请求中的消息正文。此选项控制 Burp 代理是否自动解包压缩的请求主体。如果某些应用程序预期会有压缩体，并且压缩已被 Burp 移除，则它们可能会中断。
+- **Unpack GZIP / deflate in responses** - 大多数浏览器在响应中接受 GZIP 和压缩压缩的内容。此选项控制 Burp 代理是否自动解压缩压缩的响应主体。注意，通常可以通过从请求中删除 Accept-Encoding 标头（可能使用Burp Proxy的匹配和替换功能）来防止服务器尝试压缩响应。
+- **Disable web interface at http://burp** - 如果您被迫将侦听器配置为接受不受保护的接口上的连接，并希望防止其他人访问Burp的浏览器内接口，则此选项可能很有用。
+- **Suppress Burp error messages in browser** - 当发生某些错误时，默认情况下 Burp 会向浏览器返回有意义的错误消息。 如果您希望以隐身模式运行 Burp，以对受害用户进行中间人攻击，那么抑制这些错误消息以掩盖 Burp 的事实可能很有用。
+- **Don't send items to Proxy history or live tasks** - 此选项可防止 Burp 将任何请求记录到代理历史记录或将其发送到实时任务，例如被动爬网或实时审核。 如果您将 Burp Proxy 用于某些特定目的（例如，对上游服务器进行身份验证或执行匹配和替换操作），并且希望避免引起日志记录所需的内存和存储开销，则这可能会很有用。
+- **Don't send items to Proxy history or live tasks, if out of scope** - 此选项可防止 Burp 将任何范围外的请求记录到 Proxy 历史记录中或将其发送到实时任务，例如 被动抓取 或 实时审计。 避免积累范围外项目的项目数据很有用。
 
 ---
 

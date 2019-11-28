@@ -78,6 +78,10 @@ cd /home && rm -rf /home/tmp
 
 **speedtest-cli**
 
+- 项目地址
+
+    https://github.com/sivel/speedtest-cli
+
 - 简介
 
     Speedtest.net 提供一个命令行版本——speedtest-cli，能够在终端中简单快速的测试出 linux 的网速

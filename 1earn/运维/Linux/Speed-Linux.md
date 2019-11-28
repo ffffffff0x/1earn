@@ -370,7 +370,7 @@ systemctl enable NetworkManager
 vim /etc/sysconfig/network-scripts/ifcfg-eth0	# 是不是 eth0 要看自己的网卡,使用 ip a
 
 HOSTNAME=test
-onboot=yes
+onboot=yes	# 激活网络
 HWADDR=00:0C:29:F1:2E:7B
 BOOTPROTO=static	# 使用静态 IP,而不是由 DHCP 分配 IP
 # BOOTPROTO=dhcp 这个是 DHCP 的配置,如果配这个那下面的就不需要配置了
@@ -604,6 +604,9 @@ iptables-restore </root/firewall_rules.backup	# 规则恢复一下
 ```
 
 ### 源
+
+`最新版的 linux 系统下，yum 和 apt 都支持自动使用较快的源`
+
 **本地 yum 源**
 
 挂载到/mnt/cdrom
@@ -811,7 +814,7 @@ chmod 777 /etc/bash.command-not-found
 source /etc/bash.command-not-found
 ```
 ```vim
-vim /etc/bashrc
+vim /etc/bashrc 或 vim /etc/bash.bashrc
 
 . /etc/bash.command-not-found
 echo "$(tput cuf 10) $(tput setab 1)FBI WARNING$(tput sgr 0)"

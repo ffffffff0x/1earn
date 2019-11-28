@@ -76,6 +76,13 @@ yum install open-vm-tools-devel -y
 - curl
 - git
 - lrzsz
+- wget
+- unzip
+- git
+- docker
+- docker-Compose
+- python3
+- pip3
 - [proxychains](../运维/Linux/Power-Linux.md#proxychains)
 - [SSH](../运维/Linux/Power-Linux.md#SSH)
 - [bash-insulter](../运维/Linux/Speed-Linux.md#常用软件)

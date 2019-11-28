@@ -449,7 +449,7 @@ chronyc # 进入交互模式
 
 **复制一份示例**
 
-`cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf `
+`cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf`
 
 **修改配置文件**
 ```vim

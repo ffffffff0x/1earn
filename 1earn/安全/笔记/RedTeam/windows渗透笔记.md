@@ -170,6 +170,8 @@
 - [SecWiki/windows-kernel-exploits](https://github.com/SecWiki/windows-kernel-exploits) - Windows 平台提权漏洞集合
 - [WindowsExploits/Exploits](https://github.com/WindowsExploits/Exploits)- Windows Exploits
 
+---
+
 ## 漏洞查询
 **文章**
 - [windows 本地提权对照表](http://www.7kb.org/138.html)
@@ -184,11 +186,20 @@
 - [提权辅助网页](https://bugs.hacking8.com/tiquan/)
 - [Windows提权EXP在线搜索工具](http://blog.neargle.com/win-powerup-exp-index/)
 
+---
+
 ## 本地提权
 **CVE-2018-8120**
 - POC | Payload | exp
     - [unamer/CVE-2018-8120: CVE-2018-8120 Windows LPE exploit](https://github.com/unamer/CVE-2018-8120)
     - [alpha1ab/CVE-2018-8120: CVE-2018-8120 Exploit for Win2003 Win2008 WinXP Win7](https://github.com/alpha1ab/CVE-2018-8120)
+
+**CVE-2019-1388**
+- 文章
+    - [最新Windows 7安全桌面提权漏洞风险提示与过程披露](https://mp.weixin.qq.com/s/V8GyBxda-JXyv-5D6bR36g)
+    - [Thanksgiving Treat: Easy-as-Pie Windows 7 Secure Desktop Escalation of Privilege](https://www.zerodayinitiative.com/blog/2019/11/19/thanksgiving-treat-easy-as-pie-windows-7-secure-desktop-escalation-of-privilege)
+
+---
 
 ## 远程利用
 **MS08-067 & CVE-2008-4250**
@@ -257,6 +268,8 @@
 
 - 修复工具
     - [“CVE-2019-0708”漏洞检测修复工具](https://www.qianxin.com/other/CVE-2019-0708)
+
+---
 
 ## 其他
 **CVE-2018-8420 Msxml 解析器的远程代码执行漏洞**

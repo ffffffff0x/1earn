@@ -10,12 +10,13 @@
 
 **Linux 虚拟机建议**
 - [Centos](https://www.centos.org/)
-- [Kali-xfce](https://www.kali.org/)
-- [Manjaro-kde](https://manjaro.org)
+- [Kali](https://www.kali.org/)
+- [Manjaro](https://manjaro.org)
 
 **Windows 虚拟机建议**
 - 适用于 : 渗透/靶机
   - [commando-vm](https://github.com/fireeye/commando-vm) - fireeye 出品的部署 Windows 的渗透测试虚拟机脚本
+  - win2008
 - 适用于 : 日常使用
   - 版本: Win10 2019 Ltsc
   - 版本: Win7
@@ -72,13 +73,11 @@ yum install open-vm-tools-devel -y
 - vim
 - make
 - gcc
-- gcc-c++
 - curl
 - git
 - lrzsz
 - wget
 - unzip
-- git
 - docker
 - docker-Compose
 - python3

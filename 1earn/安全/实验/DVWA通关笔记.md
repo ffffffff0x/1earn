@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -22,32 +22,6 @@
 - dvwa Version 1.10 *Development* (Release date: 2015-10-08)
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415
 - kali 4.19.0-kali3-amd64
-
----
-
-## Reference
-- http://www.dvwa.co.uk/
-- [新手指南：DVWA-1.9全级别教程之Brute Force](https://www.freebuf.com/articles/web/116437.html)
-- [新手指南：DVWA-1.9全级别教程之Command Injection](https://www.freebuf.com/articles/web/116714.html)
-- [新手指南：DVWA-1.9全级别教程之CSRF](https://www.freebuf.com/articles/web/118352.html)
-- [新手指南：DVWA-1.9全级别教程之File Inclusion](https://www.freebuf.com/articles/web/119150.html)
-- [新手指南：DVWA-1.9全级别教程之File Upload](https://www.freebuf.com/articles/web/119467.html)
-- [新手指南：DVWA-1.9全级别教程之Insecure CAPTCHA](https://www.freebuf.com/articles/web/119692.html)
-- [新手指南：DVWA-1.9全级别教程之SQL Injection](https://www.freebuf.com/articles/web/120747.html)
-- [新手指南：DVWA-1.9全级别教程之SQL Injection(Blind)](https://www.freebuf.com/articles/web/120985.html)
-- [新手指南：DVWA-1.9全级别教程(完结篇，附实例)之XSS](https://www.freebuf.com/articles/web/123779.html)
-- [DVWA 黑客攻防演练(十三)JS 攻击 JavaScript Attacks](https://www.cnblogs.com/jojo-feed/p/10206443.html)
-- [DVWA 黑客攻防实战(十五) 绕过内容安全策略 Content Security Policy (CSP) Bypass](https://www.cnblogs.com/jojo-feed/p/10204588.html)
-- [2019-3-16 dvwa学习(16)--JavaScript Attacks JS攻击](https://blog.csdn.net/weixin_42555985/article/details/88641118)
-- [DVWA Weak Session IDs 通关教程](http://www.storysec.com/dvwa-weak-session-ids.html)
-- [DVWA XSS (DOM) 通关教程](http://www.storysec.com/dvwa-xss-dom.html)
-- [DVWA SQL Injection 通关教程](http://www.storysec.com/dvwa-sql-injection.html)
-- [DVWA File Inclusion 通关教程](http://www.storysec.com/dvwa-file-inclusion.html)
-- [DVWA Command Injection 通关教程](http://www.storysec.com/dvwa-command-injection.html)
-- [DVWA File Upload 通关教程](http://www.storysec.com/dvwa-file-upload.html)
-- [DVWA XSS (Reflected) 通关教程](http://www.storysec.com/dvwa-xss-reflected.html)
-- [DVWA CSRF 通关教程](http://www.storysec.com/dvwa-csrf.html)
-- [DVWA 1.10 High等级的CSRF另类通关法](https://www.freebuf.com/articles/web/203301.html)
 
 ---
 

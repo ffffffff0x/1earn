@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -171,7 +171,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **靶场**
 - [upload-labs](https://github.com/c0ny1/upload-labs)
-    - [upload-labs 通关笔记](./实验/upload-labs通关笔记.md)
+    - [upload-labs 通关笔记](../../实验/upload-labs通关笔记.md)
 
 ---
 
@@ -183,109 +183,109 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 **工具**
 - [lijiejie/BBScan](https://github.com/lijiejie/BBScan)
 
-**目录遍历**
-- **案例**
-    - [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
+## 目录遍历
+**案例**
+- [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
 
-**GIT 源码泄露**
-- **简介**
+## GIT 源码泄露
+**简介**
 
-    当在一个空目录执行 git init 时,Git 会创建一个 .git 目录. 这个目录包含所有的 Git 存储和操作的对象. 如果想备份或复制一个版本库,只需把这个目录拷贝至另一处就可以了.
+当在一个空目录执行 git init 时,Git 会创建一个 .git 目录. 这个目录包含所有的 Git 存储和操作的对象. 如果想备份或复制一个版本库,只需把这个目录拷贝至另一处就可以了.
 
-- **案例**
-    - [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
+**案例**
+- [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
 
-- **工具**
-    - [lijiejie/GitHack](https://github.com/lijiejie/GitHack)
-    - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract)
+**工具**
+- [lijiejie/GitHack](https://github.com/lijiejie/GitHack)
+- [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract)
 
-**SVN 源码泄露**
+## SVN 源码泄露
 
-- **案例**
-    - [我爱我家某处源码泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0149331)
+**案例**
+- [我爱我家某处源码泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0149331)
 
-- **工具**
-    - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper)
-    - [admintony/svnExploit](https://github.com/admintony/svnExploit)
+**工具**
+- [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper)
+- [admintony/svnExploit](https://github.com/admintony/svnExploit)
 
-**DS_Store 文件泄漏**
-- **简介**
+## DS_Store 文件泄漏
+**简介**
 
-    .DS_Store 文件 MAC 系统是用来存储这个文件夹的显示属性的：比如文件图标的摆放位置.如果用户删除以后的副作用就是这些信息的失去.
+.DS_Store 文件 MAC 系统是用来存储这个文件夹的显示属性的：比如文件图标的摆放位置.如果用户删除以后的副作用就是这些信息的失去.
 
-    这些文件本来是给 Finder 使用的,但它们被设想作为一种更通用的有关显示设置的元数据存储,诸如图标位置和视图设置. 当你需要把代码上传的时候,安全正确的操作应该把 .DS_Store 文件删除才正确.
+这些文件本来是给 Finder 使用的,但它们被设想作为一种更通用的有关显示设置的元数据存储,诸如图标位置和视图设置. 当你需要把代码上传的时候,安全正确的操作应该把 .DS_Store 文件删除才正确.
 
-    因为里面包含了一些目录信息,如果没有删除,攻击者通过 .DS_Store 可以知道这个目录里面所有文件名称,从而让攻击者掌握了更多的信息.　
+因为里面包含了一些目录信息,如果没有删除,攻击者通过 .DS_Store 可以知道这个目录里面所有文件名称,从而让攻击者掌握了更多的信息.　
 
-- **案例**
-    - [TCL 某网站 DS_Store 文件泄露敏感信息](http://www.anquan.us/static/bugs/wooyun-2015-091869.html)
+**案例**
+- [TCL 某网站 DS_Store 文件泄露敏感信息](http://www.anquan.us/static/bugs/wooyun-2015-091869.html)
 
-- **工具**
-    - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp)
+**工具**
+- [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp)
 
-**网站备份压缩文件**
-- **简介**
+## 网站备份压缩文件
+**简介**
 
-    该漏洞的成因主要有是管理员将备份文件放在到 web 服务器可以访问的目录下.
+该漏洞的成因主要有是管理员将备份文件放在到 web 服务器可以访问的目录下.
 
-    该漏洞往往会导致服务器整站源代码或者部分页面的源代码被下载,利用.源代码中所包含的各类敏感信息,如服务器数据库连接信息,服务器配置信息等会因此而泄露,造成巨大的损失.
+该漏洞往往会导致服务器整站源代码或者部分页面的源代码被下载,利用.源代码中所包含的各类敏感信息,如服务器数据库连接信息,服务器配置信息等会因此而泄露,造成巨大的损失.
 
-- **案例**
-    - [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
-    - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
+**案例**
+- [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
+- [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
-**WEB-INF/web.xml 信息泄露**
-- **简介**
+## WEB-INF/web.xml 信息泄露
+**简介**
 
-    WEB-INF 是 Java 的 WEB 应用的安全目录.该目录原则上来说是客户端无法访问,只有服务端才可以可以访问.如果想在页面中直接访问其中的文件,必须通过 web.xml 文件对要访问的文件进行相应映射才能访问.
+WEB-INF 是 Java 的 WEB 应用的安全目录.该目录原则上来说是客户端无法访问,只有服务端才可以可以访问.如果想在页面中直接访问其中的文件,必须通过 web.xml 文件对要访问的文件进行相应映射才能访问.
 
-    WEB-INF 主要包含一下文件或目录：
-    ```
-    /WEB-INF/web.xml：Web 应用程序配置文件,描述了 servlet 和其他的应用组件配置及命名规则；
-    /WEB-INF/classes/：含了站点所有用的 class 文件,包括 servlet class 和非 servlet class,他们不能包含在 .jar 文件中；
-    /WEB-INF/lib/：存放 web 应用需要的各种 JAR 文件,放置仅在这个应用中要求使用的 jar 文件 , 如数据库驱动 jar 文件；
-    /WEB-INF/src/：源码目录,按照包名结构放置各个 java 文件；
-    /WEB-INF/database.properties：数据库配置文件.
-    ```
-    不过在一些特定的场合却会让攻击者能读取到其中的内容,从而造成源码泄露.
+WEB-INF 主要包含一下文件或目录：
+```
+/WEB-INF/web.xml：Web 应用程序配置文件,描述了 servlet 和其他的应用组件配置及命名规则；
+/WEB-INF/classes/：含了站点所有用的 class 文件,包括 servlet class 和非 servlet class,他们不能包含在 .jar 文件中；
+/WEB-INF/lib/：存放 web 应用需要的各种 JAR 文件,放置仅在这个应用中要求使用的 jar 文件 , 如数据库驱动 jar 文件；
+/WEB-INF/src/：源码目录,按照包名结构放置各个 java 文件；
+/WEB-INF/database.properties：数据库配置文件.
+```
+不过在一些特定的场合却会让攻击者能读取到其中的内容,从而造成源码泄露.
 
-- **案例**
-    - [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
+**案例**
+- [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
 
-**idea 文件夹泄露**
-- **工具**
-    - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit)
+## idea 文件夹泄露
+**工具**
+- [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit)
 
-**phpinfo**
-- **文章**
-    - [phpinfo 可以告诉我们什么](http://zeroyu.xyz/2018/11/13/what-phpinfo-can-tell-we/)
-    - [PHPINFO 中的重要信息](https://www.k0rz3n.com/2019/02/12/PHPINFO%20%E4%B8%AD%E7%9A%84%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF/)
-    - [amazing phpinfo() ](https://skysec.top/2018/04/04/amazing-phpinfo/)
-    - [phpinfo 中值得注意的信息](https://seaii-blog.com/index.php/2017/10/25/73.html)
+## phpinfo
+**文章**
+- [phpinfo 可以告诉我们什么](http://zeroyu.xyz/2018/11/13/what-phpinfo-can-tell-we/)
+- [PHPINFO 中的重要信息](https://www.k0rz3n.com/2019/02/12/PHPINFO%20%E4%B8%AD%E7%9A%84%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF/)
+- [amazing phpinfo() ](https://skysec.top/2018/04/04/amazing-phpinfo/)
+- [phpinfo 中值得注意的信息](https://seaii-blog.com/index.php/2017/10/25/73.html)
 
-- **工具**
-    - [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
+**工具**
+- [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
 
-**jsonp 信息泄露**
-- **文章**
-    - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
+## jsonp 信息泄露
+**文章**
+- [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
 
-- **案例**
-    - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](https://shuimugan.com/bug/view?bug_no=172305)
-    - [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
-    - [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
-    - [唯品会某处 JSONP+CSRF 泄露重要信息](https://shuimugan.com/bug/view?bug_no=122755)
-    - [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](https://shuimugan.com/bug/view?bug_no=204941)
-    - [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](https://shuimugan.com/bug/view?bug_no=118712)
-    - [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](https://shuimugan.com/bug/view?bug_no=70690)
-    - [利用 JSONP 劫持可以泄漏 QQ 号](https://shuimugan.com/bug/view?bug_no=65177)
-    - [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
-    - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
-    - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
+**案例**
+- [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](https://shuimugan.com/bug/view?bug_no=172305)
+- [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
+- [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
+- [唯品会某处 JSONP+CSRF 泄露重要信息](https://shuimugan.com/bug/view?bug_no=122755)
+- [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](https://shuimugan.com/bug/view?bug_no=204941)
+- [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](https://shuimugan.com/bug/view?bug_no=118712)
+- [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](https://shuimugan.com/bug/view?bug_no=70690)
+- [利用 JSONP 劫持可以泄漏 QQ 号](https://shuimugan.com/bug/view?bug_no=65177)
+- [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
+- [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
+- [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
 
-**JS 敏感信息泄露**
-- **文章**
-    - [JS 敏感信息泄露：不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
+## JS 敏感信息泄露
+**文章**
+- [JS 敏感信息泄露：不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
 
 ---
 

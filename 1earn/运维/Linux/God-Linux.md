@@ -34,6 +34,10 @@ yum list 1 > /dev/null
 
 # 优雅的使用 linux
 alias please="sudo"
+
+# 没用但有趣的东西。
+P=(' ' █ ░ ▒ ▓)
+while :;do printf "\e[$[RANDOM%LINES+1];$[RANDOM%COLUMNS+1]f${P[$RANDOM%5]}";done
 ```
 
 ## net

@@ -31,7 +31,6 @@
     * [现代密码](#现代密码)
     * [古典密码](#古典密码)
     * [其他编码](#其他编码)
-    * [功能类](#功能类)
 * [转换/优化](#转换/优化)
     * [代码格式化](#代码格式化)
     * [图片压缩](#图片压缩)
@@ -219,7 +218,9 @@
     - https://www.qqxiuzi.cn/bianma/base.php?type=16
 
 **HTML编码**
+- https://www.qqxiuzi.cn/bianma/zifushiti.php
 - http://www.convertstring.com/zh_CN/EncodeDecode/HtmlEncode
+- https://tool.oschina.net/encode
 
 **Quoted-Printable**
 - http://web.chacuo.net/charsetquotedprintable

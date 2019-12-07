@@ -6,7 +6,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -208,11 +208,11 @@ ISO-8859-1 的较高部分（从 160 到 255 之间的代码）全都有实体�
 **带有实体名称的 ASCII 实体**
 结果|	描述|	实体名称|	实体编号
 |-|-|-|-
-"|	quotation mark|	`&quot;`|	`&#34;`
-'|	apostrophe| 	`&apos;`|	`&#39;`
-&|	ampersand|	`&amp;`|	`&#38;`
-<|	less-than|	`&lt;`|	`&#60;`
->|	greater-than|	`&gt;`|	`&#62;`
+`"` |	quotation mark|	`&quot;`|	`&#34;`
+`'` |	apostrophe| 	`&apos;`|	`&#39;`
+`&` |	ampersand|	`&amp;`|	`&#38;`
+`<` |	less-than|	`&lt;`|	`&#60;`
+`>` |	greater-than|	`&gt;`|	`&#62;`
 
 **在线工具**
 - http://www.convertstring.com/zh_CN/EncodeDecode/HtmlEncode

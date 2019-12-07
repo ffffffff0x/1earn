@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -92,6 +92,9 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 > 通过 BurpSuite 来构建自己的爆破字典，可以通过字典爆破来发现隐藏资产。
 - [TEag1e/BurpCollector](https://github.com/TEag1e/BurpCollector)
+
+> 用于解码和修改任意的 protobuf 消息，而不需要定义 protobuf 类型。
+- [nccgroup/blackboxprotobuf](https://github.com/nccgroup/blackboxprotobuf)
 
 ---
 

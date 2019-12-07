@@ -4,13 +4,9 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
-
-**靶场**
-
-![image](../../../../assets/img/才怪.png)
 
 **教程**
 - [SQL 注入 - CTF Wiki](https://ctf-wiki.github.io/ctf-wiki/web/sqli/)
@@ -21,11 +17,14 @@
 **payload**
 - [trietptm/SQL-Injection-Payloads](https://github.com/trietptm/SQL-Injection-Payloads)
 
-**SQLi 检测环境/靶场**
-- **在线版**
-    - http://demo.testfire.net/
-    - https://juice-shop.herokuapp.com/#/search
-    - https://sqlchop.chaitin.cn/demo/
+**SQLi 测试**
+- http://demo.testfire.net/
+- https://juice-shop.herokuapp.com/#/search
+- https://sqlchop.chaitin.cn/demo/
+
+**靶场**
+
+![image](../../../../assets/img/才怪.png)
 
 **sqlmap**
 - **笔记**

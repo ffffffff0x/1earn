@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -252,7 +252,7 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 **CVE-2016-3088 ActiveMQ 任意文件写入漏洞**
 - 简述
 
-    ActiveMQ 的 web 控制台分三个应用,admin、api 和 fileserver,其中 admin 是管理员页面,api 是接口,fileserver 是储存文件的接口；admin 和 api 都需要登录后才能使用,fileserver无需登录。
+    ActiveMQ 的 web 控制台分三个应用,admin、api 和 fileserver,其中 admin 是管理员页面,api 是接口,fileserver 是储存文件的接口；admin 和 api 都需要登录后才能使用,fileserver 无需登录。
 
     fileserver 是一个 RESTful API 接口,我们可以通过 GET、PUT、DELETE 等 HTTP 请求对其中存储的文件进行读写操作,其设计目的是为了弥补消息队列操作不能传输、存储二进制文件的缺陷,但后来发现：
     - 其使用率并不高
@@ -266,6 +266,9 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 ---
 
 ## Apache shiro
+**工具**
+- [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化，一键检测工具
+
 **Shiro RememberMe 1.2.4 反序列化漏洞(SHIRO-550)**
 - POC | Payload | exp
     - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
@@ -326,7 +329,10 @@ Apache Spark 是一款集群计算系统,其支持用户向管理节点提交应
 
 ---
 
-## Apache Struts
+## Apache Struts2
+
+Struts2 的 bug 漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+Bulletins
+
 **工具**
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
 - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具

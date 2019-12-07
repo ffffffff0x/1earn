@@ -719,7 +719,8 @@ make install	# 安装
 
 ### dpkg
 
-> dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具.
+dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具.
+
 ```bash
 # deb 是 debian linux的安装格式，跟 red hat 的 rpm 非常相似，最基本的安装命令是：dpkg -i file.deb
 
@@ -730,7 +731,8 @@ dpkg -L # 查看软件安装位置
 
 ### Pacman
 
-> pacman 是 Arch 的包管理工具.
+pacman 是 Arch 的包管理工具.
+
 ```bash
 pacman -S <package>	# 安装或者升级单个软件包
 pacman -R <package>	# 删除单个软件包,保留其全部已经安装的依赖关系
@@ -743,7 +745,8 @@ pacman -S fish
 
 ### rpm
 
-> rpm 命令是 RPM 软件包的管理工具.
+rpm 命令是 RPM 软件包的管理工具.
+
 ```bash
 rpm -qa 		# 搜索 rpm 包
 rpm -qf /etc/my.conf	# 查询文件来自哪个包
@@ -753,7 +756,8 @@ rpm -e xxx	# 卸载
 
 ### yum
 
-> yum 命令是在 Fedora 和 RedHat 以及 SUSE 中基于 rpm 的软件包管理器
+yum 命令是在 Fedora 和 RedHat 以及 SUSE 中基于 rpm 的软件包管理器
+
 ```bash
 yum update && yum upgrade # 更新和升级 rpm 软件包
 yum repolist	# 查看仓库列表
@@ -771,7 +775,8 @@ yum install python
 
 ### apt
 
-> apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
+apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
+
 ```bash
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 
@@ -783,15 +788,15 @@ rm -rf /var/lib/dpkg/lock	# 强制解锁占用
 # 常用软件
 apt install python
 apt install gcc
-apt install gcc-++
 apt install g++
 apt install make
-apt install vim-common=2:7.4.1689-3ubuntu1.2
 apt install vim
 apt install git
 apt install curl
+apt install lrzsz
+apt install wget
+apt install unzip
 
-apt-add-repository ppa:fish-shell/release-3
 apt update
 apt install fish
 ```
@@ -799,6 +804,7 @@ apt install fish
 **Gdebi**
 
 Gdebi 是一个安装 .deb 软件包的工具。提供了图形化的使用界面
+
 ```bash
 apt update
 apt install gdebi

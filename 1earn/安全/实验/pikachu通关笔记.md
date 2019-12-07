@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
 
 ---
 
@@ -20,23 +20,6 @@
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415
 - kali 4.19.0-kali3-amd64
 - pikachu - Commits on Feb 9, 2019
-
----
-
-## Reference
-- https://github.com/zhuifengshaonianhanlu/pikachu
-- [第三周作业 token防爆破 （基于pikachu平台）burp token的暴力破解](https://blog.csdn.net/weixin_43899561/article/details/88780363)
-- [第三周作业 1、从数字型注入认识SQL漏洞 2、字符型注入 3、搜索型及xx型输入](https://blog.csdn.net/weixin_43899561/article/details/88784162)
-- [第四周作业1.虚拟机中安装Kail 2.union注入 3.information_schema注入 4.sql-Inject漏洞手动测试-基于函数报错的信息获取 5.Http Header注入](https://blog.csdn.net/weixin_43899561/article/details/88930597)
-- [第六周作业 1.SQL inject防范措施 2.sqlmap工具使用案例 3.XSS基本概念和原理 4.反射型XSS(get) 5.存储型XSS 6.安装nmap](https://blog.csdn.net/weixin_43899561/article/details/89291896)
-- [第七周作业 1.dom型XSS详解及演示 2.cookie获取及xss后台使用 3.反射型XSS(POST) 4.xss钓鱼演示 5.xss获取键盘记录演示](https://blog.csdn.net/weixin_43899561/article/details/89429726)
-- [第八周作业 1.XSS盲打 2.XSS绕过 3.XSS绕过之htmlspecialchars()函数 4.XSS防范措施href和js输出](https://blog.csdn.net/weixin_43899561/article/details/89647834)
-- [第八周作业 1.CSRF漏洞概述及原理 2.通过CSRF进行地址修改 3.token是如何防止CSRF漏洞？4.远程命令、代码执行漏洞原理及演示](https://blog.csdn.net/weixin_43899561/article/details/89742243)
-- [insert、update和delete 注入方法](https://blog.csdn.net/qq1124794084/article/details/84590929)
-- [SQL注入：宽字节注入（GBK双字节绕过）](https://lyiang.wordpress.com/2015/06/09/sql%E6%B3%A8%E5%85%A5%EF%BC%9A%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%EF%BC%88gbk%E5%8F%8C%E5%AD%97%E8%8A%82%E7%BB%95%E8%BF%87%EF%BC%89/)
-- [浅谈XXE攻击](https://www.freebuf.com/articles/web/126788.html)
-- [第十周作业 1.漏洞越权原理：水平越权，垂直越权 2.php反序列化 3.xxe漏洞原理 4.ssrf漏洞](https://blog.csdn.net/weixin_43899561/article/details/90745005)
-- [浅析SSRF原理及利用方式](https://www.anquanke.com/post/id/145519)
 
 ---
 

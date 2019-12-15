@@ -74,7 +74,7 @@ systemctl restart named
 ---
 
 ## 案例 1
-配置 DNS 服务，将相关主机名添加 A 记录，分别为 www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com；
+配置 DNS 服务，将相关主机名添加 A 记录，分别为 www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com;
 
 **安装**
 ```bash
@@ -114,7 +114,7 @@ cp named.localhost www.localhost
 cp named.loopback www.loopback
 chown named www.localhost
 chown named www.loopback
-# 因为配置文件是在 root 用户下建立的，所以启动 BIND 进程的 named 用户无法读取，会造成不能解析。
+# 因为配置文件是在 root 用户下建立的，所以启动 BIND 进程的 named 用户无法读取，会造成不能解析.
 ```
 
 **域名正向反向解析配置文件**
@@ -156,13 +156,13 @@ $TTL 1D
 1 PTR vpn.abc.com.
 1 PTR web.abc.com.
 
-！！！注意域名后面的 ”点号“ 不能少
+!!!注意域名后面的 "点号" 不能少
 ```
 
 **配置文件语法检查**
 ```bash
-named-checkconf  # 检查配置文件中的语法/etc/named.conf /etc/named.rfc1912.zones
-named-checkzone abc.com www.localhost # 解析库文件语法检查
+named-checkconf  						# 检查配置文件中的语法/etc/named.conf /etc/named.rfc1912.zones
+named-checkzone abc.com www.localhost	# 解析库文件语法检查
 named-checkzone abc.com www.loopback
 ```
 
@@ -177,12 +177,12 @@ service named start
 ---
 
 ## 案例 2
-- 监听所有地址；
-- 允许所有机器查询；
-- 将 ftp.abc.com 解析至主机 B 公网 IP:1.1.1.1；
-- 将 www.abc.com 解析至主机 A 公网 IP:1.1.2.1；
-- 建立反向简析区域完成 ftp.abc.com，www.abc.com，域名的反向解析；
-- 只允许主机 B 192.168.XX+1.22 的 ip 进行区域传送。
+- 监听所有地址;
+- 允许所有机器查询;
+- 将 ftp.abc.com 解析至主机 B 公网 IP:1.1.1.1;
+- 将 www.abc.com 解析至主机 A 公网 IP:1.1.2.1;
+- 建立反向简析区域完成 ftp.abc.com，www.abc.com，域名的反向解析;
+- 只允许主机 B 192.168.XX+1.22 的 ip 进行区域传送.
 
 **安装**
 ```bash
@@ -300,13 +300,13 @@ firewall-cmd --reload
 ---
 
 ## 案例 3
-- 监听当前主机的所有地址；
-- 允许所有主机查询和递归查询；
-- 区域定义均配置在 /etc/named.conf 文件中；
-- abc.com 的区域数据文件名为 abc.com.zone；
+- 监听当前主机的所有地址;
+- 允许所有主机查询和递归查询;
+- 区域定义均配置在 /etc/named.conf 文件中;
+- abc.com 的区域数据文件名为 abc.com.zone;
 - 配置反向域数据文件名为 172.16.0.zone
-- 为 www.abc.com 添加 A 记录解析，解析至 serverA 的公网 IP；
-- 为 ftp.abc.com 添加 A 记录解析，解析至 serverB 的公网 IP。
+- 为 www.abc.com 添加 A 记录解析，解析至 serverA 的公网 IP;
+- 为 ftp.abc.com 添加 A 记录解析，解析至 serverB 的公网 IP.
 - 为 serverA、serverB 的公网 IP 添加 www、ftp 的 PTR 解析记录
 
 **安装**
@@ -399,10 +399,10 @@ firewall-cmd --reload
 
 
 ## 案例 4
-- 配置 abc.com 域的从 DNS 服务，主 DNS 为主机 A；
-- 配置 0.16.172 反向域的从 DNS 服务，主 DNS 为主机 A；
-- 监听所有地址；
-- 允许所有机器查询。(住:这会产生域传送漏洞)
+- 配置 abc.com 域的从 DNS 服务，主 DNS 为主机 A;
+- 配置 0.16.172 反向域的从 DNS 服务，主 DNS 为主机 A;
+- 监听所有地址;
+- 允许所有机器查询.(住:这会产生域传送漏洞)
 
 **安装**
 ```bash

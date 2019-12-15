@@ -9,9 +9,8 @@
 ░░░░░░░░   ░░░░░░  ░░░░░   ░░░░░░ ░░░     ░░░░░░       ░░░░░░░░ ░░ ░░░   ░░  ░░░░░░ ░░   ░░
 ```
 
-`Linux 加固+维护+应急响应参考`
-
-`文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
+- `Linux 加固+维护+应急响应参考`
+- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
 
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
@@ -36,19 +35,19 @@
 
 **查**
 ```bash
-who  # 查看当前登录用户
-w   # 查看登录用户行为
-last # 查看登陆用户历史
+who     # 查看当前登录用户
+w       # 查看登录用户行为
+last    # 查看登陆用户历史
 ```
 
 **防**
 ```bash
 pkill -u linfengfeiye   # 直接剔除用户
-ps -ef| grep pts/0  # 得到用户登录相应的进程号 pid 后执行
-kill -9 pid # 安全剔除用户
+ps -ef| grep pts/0      # 得到用户登录相应的进程号 pid 后执行
+kill -9 pid             # 安全剔除用户
 ```
 
-**修改账户超时值，设置自动注销时间**
+**修改账户超时值,设置自动注销时间**
 ```
 vim /etc/profile
 
@@ -57,9 +56,9 @@ TMOUT=600
 
 **设置 BASH 保留历史命令的条目**
 
-检查方法：`cat /etc/profile | grep HISTSIZE`
+检查方法 : `cat /etc/profile | grep HISTSIZE`
 
-加固方法：
+加固方法:
 ```
 vim /etc/profile
 
@@ -68,11 +67,11 @@ vim /etc/profile
 
 **设置注销时删除命令记录**
 
-检查方法：`cat /etc/skel/.bash_logout`
+检查方法: `cat /etc/skel/.bash_logout`
 
 增加如下行 `rm -f $HOME/.bash_history`
 
-这样，系统中的所有用户注销时都会删除其命令记录，如果只需要针对某个特定用户，，如 root 用户进行设置，则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可。
+这样,系统中的所有用户注销时都会删除其命令记录,如果只需要针对某个特定用户,,如 root 用户进行设置,则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可.
 
 ---
 
@@ -85,7 +84,9 @@ vim /etc/profile
 - **vim 后门**
 
    检测对应 vim 进程号虚拟目录的 map 文件是否有 python 字眼.
-   `netstat -antlp`
+
+   查看连接情况 `netstat -antlp`
+
    例如发现 vim pid 为 12
    ```
    file /proc/12/exe
@@ -103,7 +104,7 @@ vim /etc/profile
 
 - **预加载型动态链接库后门 ld.so.preload**
 
-    通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意：在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
+    通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意:在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
 
 - **内核级 rootkit**
 
@@ -127,8 +128,8 @@ vim /etc/profile
 
 **开机启动**
 ```bash
-chkconfig   # 查看开机启动服务命令
-ls /etc/init.d  # 查看开机启动配置文件命令
+chkconfig           # 查看开机启动服务命令
+ls /etc/init.d      # 查看开机启动配置文件命令
 cat /etc/rc.local   # 查看 rc 启动文件
 ```
 
@@ -136,7 +137,7 @@ cat /etc/rc.local   # 查看 rc 启动文件
 
 #### 账号
 **/etc/passwd**
-- 若用户ID=0，则表示该用户拥有超级用户的权限
+- 若用户ID=0,则表示该用户拥有超级用户的权限
 - 检查是否有多个ID=0
 - 禁用或删除多余的账号
 
@@ -150,7 +151,7 @@ auth required pam_tally.so onerr=fail deny=6 unlock_time=300
 
 **/etc/login.defs**
 ```bash
-PASS_MAX_DAYS   90   # 用户的密码最长使用天数
+PASS_MAX_DAYS   90  # 用户的密码最长使用天数
 PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
 PASS_MIN_LEN    7   # 密码的最小长度
 PASS_WARN_AGE   9   # 密码过期前多少天开始提示
@@ -178,9 +179,9 @@ PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 
 **进程定位**
 ```bash
-ps -aux # 列出所有进程以及相关信息命令
-top # 总览系统全面信息命令
-pidof name  # 定位程序的 pid
+ps -aux         # 列出所有进程以及相关信息命令
+top             # 总览系统全面信息命令
+pidof name      # 定位程序的 pid
 pidof -x name   # 定位脚本的 pid
 ```
 
@@ -200,7 +201,7 @@ vim /etc/security/limits.conf
 
 - **查询负载、进程监控**
     ```bash
-    ps aux | grep Z # 列出进程表中所有僵尸进程
+    ps aux | grep Z                                         # 列出进程表中所有僵尸进程
     ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head   # 获取占用CPU资源最多的10个进程
     ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
     ```
@@ -239,28 +240,28 @@ mount /dev/sdd1 /backupdate
 cd /backupdate/deldate
 touch del1.txt
 echo " test 1" > del1.txt
-md5sum del1.txt # 获取文件校验码
+md5sum del1.txt             # 获取文件校验码
 66fb6627dbaa37721048e4549db3224d  del1.txt
 rm -fr /backupdate/*
-umount /backupdate # 卸载文件系统或者挂载为只读
+umount /backupdate          # 卸载文件系统或者挂载为只读
 
-extundelete /dev/sdd1 --inode 2 #查询恢复数据信息,注意这里的 --inode 2 这里会扫描分区 ：
-extundelete /dev/sdd1 --restore-file del1.txt # 如果恢复一个目录
-extundelete /dev/sdd1 --restore-directory /backupdate/deldate # 恢复所有文件
-extundelete /dev/sdd1 --restore-all # 获取恢复文件校验码,对比检测是否恢复成功
+extundelete /dev/sdd1 --inode 2                                 #查询恢复数据信息,注意这里的 --inode 2 这里会扫描分区 :
+extundelete /dev/sdd1 --restore-file del1.txt                   # 如果恢复一个目录
+extundelete /dev/sdd1 --restore-directory /backupdate/deldate   # 恢复所有文件
+extundelete /dev/sdd1 --restore-all                             # 获取恢复文件校验码,对比检测是否恢复成功
 md5sum RECOVERED_FILES/ del1.txt
 66fb6627dbaa37721048e4549db3224d  RECOVERED_FILES/del1.txt
 ```
 
 **[ext3grep](https://code.google.com/archive/p/ext3grep/downloads)**
 
-如果被误删的文件在根分区，那么你最好重启计算机，进入单用户模式，以只读的方式挂载根分区，然后再进行恢复。
+如果被误删的文件在根分区,那么你最好重启计算机,进入单用户模式,以只读的方式挂载根分区,然后再进行恢复.
 
-进入单用户模式后，根分区还是以读写方式 mount 的，用下面的命令，把挂载方式由读写(rw)改为只读(ro)： `mount -o ro,remount / `
+进入单用户模式后,根分区还是以读写方式 mount 的,用下面的命令,把挂载方式由读写(rw)改为只读(ro):  `mount -o ro,remount / `
 
-如果被删除的文件不是根分区，也可以用 unmount 的方式将该分区卸载。假设文件在分区 /dev/sda3中，该分区挂载到 /home，那么我们用下面的命令来卸载： `umount /dev/sda3 `
+如果被删除的文件不是根分区,也可以用 unmount 的方式将该分区卸载.假设文件在分区 /dev/sda3中,该分区挂载到 /home,那么我们用下面的命令来卸载: `umount /dev/sda3 `
 
-当然，在卸载前要保证没有程序在访问该分区，否则卸载会失败。所以，一般推荐进入单用户模式来恢复文件。
+当然,在卸载前要保证没有程序在访问该分区,否则卸载会失败.所以,一般推荐进入单用户模式来恢复文件.
 
 *安装*
 
@@ -275,7 +276,7 @@ make
 make install
 ```
 
-如果 make 出错，修改 src/ext3.h
+如果 make 出错,修改 src/ext3.h
 ```C
 // ext3grep -- An ext3 file system investigation and undelete tool
 //
@@ -433,29 +434,29 @@ struct Inode : protected ext3_inode {
 
 *使用*
 
-在开始恢复前，选择一个目录来存放被恢复的文件。ext3grep 程序会在当前目录下创建一个名为 RESTORED_FILES 的目录来存放被恢复的文件。因此在运行 ext3grep 命令前，先要切换到一个你可读写的目录中。
+在开始恢复前,选择一个目录来存放被恢复的文件.ext3grep 程序会在当前目录下创建一个名为 RESTORED_FILES 的目录来存放被恢复的文件.因此在运行 ext3grep 命令前,先要切换到一个你可读写的目录中.
 
-因为进入了单用户模式，并且将根分区设成了只读，那么只能把恢复出来的文件放在U盘中了。因此，先 cd /mnt 进入U盘目录。如果你有幸记得你误删除的文件名及其路径的话，就可以直接用下面的命令进行恢复了：
+因为进入了单用户模式,并且将根分区设成了只读,那么只能把恢复出来的文件放在U盘中了.因此,先 cd /mnt 进入U盘目录.如果你有幸记得你误删除的文件名及其路径的话,就可以直接用下面的命令进行恢复了:
 ```bash
 ext3grep /dev/your-device --restore-file path/to/your/file/filename
-#  需要注意的是，上面的文件路径，是在该分区上文件路径。假设我们要恢复 /dev/sda3 分区上文件，这个分区原来的安装点是 /home，现在想恢复文件 /home//vi/tips.xml，那么输入的命令应该是：
+# 需要注意的是,上面的文件路径,是在该分区上文件路径.假设我们要恢复 /dev/sda3 分区上文件,这个分区原来的安装点是 /home,现在想恢复文件 /home//vi/tips.xml,那么输入的命令应该是:
 
 ext3grep /dev/sda3 --restore-file /vi/tips.xml
 
-# 如果你忘记了文件名，或者你误删除的是一个目录而你无法记全该目录中的文件，你可以先用下面的命令查询一下文件名：
+# 如果你忘记了文件名,或者你误删除的是一个目录而你无法记全该目录中的文件,你可以先用下面的命令查询一下文件名:
 ext3grep /dev/sda3 --dump-names | tee filename.txt
 
-上面的命令把 ext3grep 命令的输出记录到文件 filename.txt 中，你可以慢慢查看，或者使用 grep 命令过滤出你需要的信息。
+上面的命令把 ext3grep 命令的输出记录到文件 filename.txt 中,你可以慢慢查看,或者使用 grep 命令过滤出你需要的信息.
 
-当你知道了目录/文件的信息后，就可以用上面说的命令进行恢复了。
+当你知道了目录/文件的信息后,就可以用上面说的命令进行恢复了.
 
-# 这款软件不能按目录恢复文件，只能执行恢复全部命令：
+# 这款软件不能按目录恢复文件,只能执行恢复全部命令:
 ext3grep /dev/sda3 --restore-all
 ```
 
 *binlog*
 
-开启 Binlog,让 ext3grep 从 Binlog 中恢复,对数据库场景有用。
+开启 Binlog,让 ext3grep 从 Binlog 中恢复,对数据库场景有用.
 
 ---
 
@@ -464,10 +465,10 @@ ext3grep /dev/sda3 --restore-all
 
 **查**
 ```bash
-getent services # 查看所有服务的默认端口名称和端口号
+getent services     # 查看所有服务的默认端口名称和端口号
 
-lsof -i -P  # 显示进程使用端口使用情况
-lsof -i:22  # 只查 22 端口
+lsof -i -P          # 显示进程使用端口使用情况
+lsof -i:22          # 只查 22 端口
 
 ss -tnlp
 ss -tnlp | grep ssh
@@ -487,7 +488,7 @@ nmap -sV -p 22 localhost
 ## Firewall
 **查**
 ```bash
-firewall-cmd --list-services  # 查看防火墙设置
+firewall-cmd --list-services    # 查看防火墙设置
 ```
 
 **防**
@@ -495,7 +496,7 @@ firewall-cmd --list-services  # 查看防火墙设置
 firewall-cmd --permanent --zone=public --remove-service=ssh
 firewall-cmd --permanent --zone=public --add-service=http
 firewall-cmd --permanent --zone=internal --add-source=1.1.1.1
-firewall-cmd --reload   # 重启防火墙服务
+firewall-cmd --reload           # 重启防火墙服务
 ```
 
 在上面的配置中,如果有人尝试从 1.1.1.1 去 ssh,这个请求将会成功,因为这个源区域(internal)被首先应用,并且它允许 ssh 访问.
@@ -504,7 +505,7 @@ firewall-cmd --reload   # 重启防火墙服务
 
 如果 1.1.1.1 尝试进行 http 访问会怎样？源区域(internal)不允许它,但是,目标是 default,因此,请求将传递到接口区域(public),它被允许访问.
 
-现在,让我们假设有人从 3.3.3.3 拖你的网站.要限制从那个 IP 的访问,简单地增加它到预定义的 drop 区域,正如其名,它将丢弃所有的连接：
+现在,让我们假设有人从 3.3.3.3 拖你的网站.要限制从那个 IP 的访问,简单地增加它到预定义的 drop 区域,正如其名,它将丢弃所有的连接:
 ```bash
 firewall-cmd --permanent --zone=drop --add-source=3.3.3.3
 firewall-cmd --reload
@@ -518,8 +519,8 @@ firewall-cmd --reload
 ## 禁 ping
 **临时性,重启后失效**
 ```bash
-echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_all # 允许 ping
-echo 1 >/proc/sys/net/ipv4/icmp_echo_ignore_all # 禁止 ping
+echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_all     # 允许 ping
+echo 1 >/proc/sys/net/ipv4/icmp_echo_ignore_all     # 禁止 ping
 ```
 
 **长期性**
@@ -579,7 +580,7 @@ net.ipv4.icmp_echo_ignore_all=1
     # 规则4 对于已建立的连接放行
     iptables -A INPUT -m state --state ESTABLISHED -j ACCEPT
 
-    # 规则5 老规矩：最后的拒绝
+    # 规则5 老规矩:最后的拒绝
     iptables -A INPUT -j DROP
     ```
 
@@ -612,13 +613,13 @@ net.ipv4.icmp_echo_ignore_all=1
     cat id_rsa.pub >> authorized_keys
     chmod 600 authorized_keys
     ```
-    ```vim
+    ```bash
     vim /etc/ssh/sshd_config
 
-    RSAAuthentication yes   # RSA 认证
-    PubkeyAuthentication yes    # 开启公钥验证
+    RSAAuthentication yes                           # RSA 认证
+    PubkeyAuthentication yes                        # 开启公钥验证
     AuthorizedKeysFile /root/.ssh/authorized_keys   # 验证文件路径
-    PasswordAuthentication no   # 禁止密码登录
+    PasswordAuthentication no                       # 禁止密码登录
     ```
 
     `sudo service sshd restart` 重启 sshd 服务
@@ -635,7 +636,3 @@ net.ipv4.icmp_echo_ignore_all=1
 - **使用 Fail2ban**
 
     - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md##Fail2ban)
-
----
-
-`真正的人,真正的事,往往不及心中所想的那么好.(金庸《倚天屠龙记》)`

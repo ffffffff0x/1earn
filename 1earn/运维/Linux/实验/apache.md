@@ -3,12 +3,12 @@
 ---
 
 ## 案例1
-- 配置 http 服务，以虚拟主机的方式建立一个 web 站点；
-- 配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d 目录下；
-- 仅监听 192.168.2.22:8080 端口；
-- 使用 www.abc.com 作为域名进行访问；
-- 网站根目录为 /data/web_data；
-- index.html 内容使用 fubuki!!fubuki!!fubuki!!fubuki!!。
+- 配置 http 服务，以虚拟主机的方式建立一个 web 站点;
+- 配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d 目录下;
+- 仅监听 192.168.2.22:8080 端口;
+- 使用 www.abc.com 作为域名进行访问;
+- 网站根目录为 /data/web_data;
+- index.html 内容使用 fubuki!!fubuki!!fubuki!!fubuki!!.
 
 **安装**
 ```bash
@@ -50,8 +50,8 @@ service httpd start
 
 ---
 
-## apache+mod_ssl⚾
-- 配置 http+https 服务，建立一个 web 站点；
+## apache+mod_ssl
+- 配置 http+https 服务，建立一个 web 站点;
 
 0. 安装
 ```bash
@@ -59,12 +59,12 @@ yum -y install httpd
 yum -y install mod_ssl
 ```
 
-1. 使用 www.abc.com 作为域名进行访问；
+1. 使用 www.abc.com 作为域名进行访问;
 ```bash
 nslookup www.abc.com
 ```
 
-2. 网站根目录为 /var/www/html；
+2. 网站根目录为 /var/www/html;
 ```vim
 vim /etc/httpd/conf/httpd.conf
 
@@ -72,7 +72,7 @@ vim /etc/httpd/conf/httpd.conf
 	ServerName  xx.xx.xx.xx:80
 ```
 
-3. Index.html 内容使用 fubuki!fubuki!fubuki!fubuki!；
+3. Index.html 内容使用 fubuki!fubuki!fubuki!fubuki!;
 ```vim
 vim var/www/html/index.html
 
@@ -85,7 +85,7 @@ firewall-cmd --zone=public --add-port=8080/tcp --permanent
 firewall-cmd --reload
 ```
 
-4. 配置 https 服务使原站点能使用 https 访问。
+4. 配置 https 服务使原站点能使用 https 访问.
 ```bash
 # 查看证书密钥位置
 sed ‐n '/^SSLCertificateFile/p;/^SSLCertificateKeyFile/p '/etc/httpd/conf.d/ssl.conf
@@ -106,7 +106,7 @@ openssl req ‐new ‐x509 ‐days 365 ‐key ../private/localhost.key �
 
 防火墙放行 https，重启服务，测试
 ```
-设置 SELINUX 状态为 Disabled；
+设置 SELINUX 状态为 Disabled;
 ```bash
 setenforce 0
 ```
@@ -122,12 +122,12 @@ SELINUX=disabled
 ### A
 - 配置 http 服务，以虚拟主机的方式创建 web 站点
 - 将 /etc/httpd/conf.d/ssl.conf 重命名为 ssl.conf.bak
-- 配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d 目录下；
-- 配置 https 功能，https 所用的证书 httpd.crt、私钥 httpd.key 放置在 /etc/httpd/ssl目录中（目录需自己创建）；
-- 使用 www.abc.com 作为域名进行访问；
-- 网站根目录为 /data/web_data；
-- 提供 http、https 服务，仅监听 192.168.1XX.22 的 IP 地址；
-- index.html 内容使用 fubuki!!fubuki!!fubuki!!fubuki!!；
+- 配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d 目录下;
+- 配置 https 功能，https 所用的证书 httpd.crt、私钥 httpd.key 放置在 /etc/httpd/ssl目录中(目录需自己创建);
+- 使用 www.abc.com 作为域名进行访问;
+- 网站根目录为 /data/web_data;
+- 提供 http、https 服务，仅监听 192.168.1XX.22 的 IP 地址;
+- index.html 内容使用 fubuki!!fubuki!!fubuki!!fubuki!!;
 
 **安装**
 ```bash
@@ -212,10 +212,10 @@ curl https://www.abc.com
 ### B
 配置 http 服务，以虚拟主机的方式创建 web 站点
 将 /etc/httpd/conf.d/ssl.conf 重命名为 ssl.conf.bak
-配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d目录下；
-配置 https 功能，https 所用的证书httpd.crt、私钥 httpd.key 放置在 /etc/httpd/ssl 目录中（目录需自己创建，httpd.crt、httpd.key 均文件从 serverA 复制）；
-使用 www.abc.com 作为域名进行访问；
-提供 http、https 服务，仅监听 192.168.1XX.33 的地址。
+配置文件名为 virthost.conf，放置在 /etc/httpd/conf.d目录下;
+配置 https 功能，https 所用的证书httpd.crt、私钥 httpd.key 放置在 /etc/httpd/ssl 目录中(目录需自己创建，httpd.crt、httpd.key 均文件从 serverA 复制);
+使用 www.abc.com 作为域名进行访问;
+提供 http、https 服务，仅监听 192.168.1XX.33 的地址.
 
 **安装**
 ```

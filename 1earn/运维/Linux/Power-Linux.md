@@ -9,23 +9,18 @@
 ░░        ░░░░░░  ░░░    ░░░  ░░░░░░ ░░░          ░░░░░░░░ ░░ ░░░   ░░  ░░░░░░ ░░   ░░
 ```
 
-`Linux 下各种常见服务的搭建/配置指南`
-
-`大部分适用于 Centos7`
-
-`目前主要以安装搭建为主,更深一步的配置请自行研究`
-
-`注:如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
+- `Linux 下各种常见服务的搭建/配置指南`
+- `大部分适用于 Centos7`
+- `主要以安装搭建为主,更深一步的配置请自行研究`
+- `如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
 
 <p align="center">
-     <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="70%"></a>
+     <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="65%"></a>
 </p>
 
 ---
 
 ## 大纲
-
-`注: 未对 gitbook 页面链接跳转进行优化,见谅`
 
 **🥩常见服务**
 
@@ -43,7 +38,7 @@
 * [DNS](#DNS)
 * [Kicktart](#Kicktart)
 * [OpenVPN](#OpenVPN)
-* [proxychains](#proxychains)
+* [proxychains-ng](#proxychains-ng)
 * [SSH](#SSH)
 
 **🍦web服务-中间件**
@@ -88,6 +83,7 @@
 * [Go](#Go)
 * [JDK](#JDK)
 * [Python3](#Python3)
+  * [pip3](#pip3)
 * [Ruby](#Ruby)
 
 **🍞系统监管**
@@ -103,6 +99,7 @@
 **🌭虚拟化**
 
 * [Docker](#Docker)
+  * [Docker-Compose](#Docker-Compose)
 
 **🍯安全服务**
 
@@ -115,35 +112,35 @@
 ## Lvm
 
 ```bash
-fdisk -l		# 查看磁盘情况
-fdisk /dev/sdb	# 创建系统分区
+fdisk -l		        # 查看磁盘情况
+fdisk /dev/sdb	    # 创建系统分区
 	n
 	p
 	1
 	后面都是默认,直接回车
 
-	t	# 转换分区格式
+	t	  # 转换分区格式
 	8e
 
-	w	# 写入分区表
+	w   # 写入分区表
 ```
 
 **卷组**
 
-创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB；
+创建一个名为 datastore 的卷组,卷组的PE尺寸为 16MB;
 ```bash
-pvcreate /dev/sdb1	# 初始化物理卷
-vgcreate -s 16M datastore /dev/sdb1 # 创建物理卷
+pvcreate /dev/sdb1	                  # 初始化物理卷
+vgcreate -s 16M datastore /dev/sdb1   # 创建物理卷
 ```
 
 **逻辑卷**
 
-逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成；
+逻辑卷的名称为 database 所属卷组为 datastore,该逻辑卷由 50 个 PE 组成;
 ```bash
 lvcreate -l 50 -n database datastore
 ```
 
-逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB；
+逻辑卷的名称为database所属卷组为datastore,该逻辑卷大小为8GB;
 ```bash
 lvcreate -L 8G -n database datastore
 lvdisplay
@@ -172,7 +169,7 @@ mount | grep '^/dev'
 将 database 逻辑卷扩容至 15GB 空间大小,以满足业务需求.
 ```bash
 lvextend -L 15G /dev/datastore/database
-lvs	# 确认有足够空间
+lvs	    # 确认有足够空间
 resize2fs /dev/datastore/database
 lvdisplay
 ```
@@ -241,7 +238,7 @@ w 写入
 	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
 	- -Cv: 创建一个阵列并打印出详细信息.
 	- /dev/md0: 阵列名称.
-	-a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建；
+	-a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建;
 	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 .
 	- -n2: 指定我们将两个分区加入到阵列中去,分别为/dev/sdb1 和 /dev/sdc1
 
@@ -249,11 +246,11 @@ w 写入
 
 	`mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1`
 
-	可以使用以下命令查看进度：
+	可以使用以下命令查看进度:
 
 	`cat /proc/mdstat`
 
-	另外一个获取阵列信息的方法是：
+	另外一个获取阵列信息的方法是:
 
 	`mdadm -D /dev/md0`
 
@@ -264,14 +261,14 @@ w 写入
 **以 UUID 的形式开机自动挂载**
 ```bash
 mkdir /data/ftp_data
-blkid	/dev/md0 # 查 UUID 值
+blkid	/dev/md0    # 查 UUID 值
 ```
 ```vim
 vim /etc/fstab
 UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
 ```
 ```bash
-shutdown -r now # 重启验证
+shutdown -r now   # 重启验证
 mount | grep '^/dev'
 ```
 
@@ -280,36 +277,35 @@ mount | grep '^/dev'
 ## Vim
 
 **常用操作**
-```
+```bash
 Normal 模式下 i 进入 insert 模式
-:wq 存盘+退出
-dd 删除当前行,并存入剪切板
-p 粘贴
-:q！强制退出
-:wq！强制保存退出
-:w !sudo tee %  无 root 权限,保存编辑的文件
-:saveas <path/to/file> 另存为
+:wq                       # 存盘+退出
+dd                        # 删除当前行,并存入剪切板
+p                         # 粘贴
+:q!                       # 强制退出
+:wq!                      # 强制保存退出
+:w !sudo tee %            # 无 root 权限,保存编辑的文件
+:saveas <path/to/file>    # 另存为
 按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
-:%s/foo/bar 代表替换 foo 为 bar
+:%s/foo/bar               # 代表替换 foo 为 bar
 insert 模式按 ESC 键,返回 Normal 模式
 ```
 
 **常用配置**
 
-`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc`
-最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整)
-```vim
-set number # 显示行号
-set nobackup # 覆盖文件时不备份
-set cursorline # 突出显示当前行
-set ruler # 在右下角显示光标位置的状态行
-set shiftwidth=4 # 设定 > 命令移动时的宽度为 4
-set softtabstop=4 # 使得按退格键时可以一次删掉 4 个空格
-set tabstop=4 # 设定 tab 长度为 4(可以改)
-set smartindent # 开启新行时使用智能自动缩进
-set ignorecase smartcase # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
+`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc` 最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整)
+```bash
+set number                # 显示行号
+set nobackup              # 覆盖文件时不备份
+set cursorline            # 突出显示当前行
+set ruler                 # 在右下角显示光标位置的状态行
+set shiftwidth=4          # 设定 > 命令移动时的宽度为 4
+set softtabstop=4         # 使得按退格键时可以一次删掉 4 个空格
+set tabstop=4             # 设定 tab 长度为 4(可以改)
+set smartindent           # 开启新行时使用智能自动缩进
+set ignorecase smartcase  # 搜索时忽略大小写,但在有一个或以上大写字母时仍 保持对大小写敏感
 
-下面这个没觉得很有用,在代码多的时候会比较好
+下面这个在代码多的时候会比较好
 #set showmatch # 插入括号时,短暂地跳转到匹配的对应括号
 #set matchtime=2 # 短暂跳转到匹配括号的时间
 ```
@@ -373,7 +369,7 @@ systemctl stop firewalld
 
 **简介**
 
-它由两个程序组成：chronyd 和 chronyc.
+它由两个程序组成:chronyd 和 chronyc.
 
 chronyd 是一个后台运行的守护进程,用于调整内核中运行的系统时钟和时钟服务器同步.它确定计算机增减时间的比率,并对此进行补偿.
 
@@ -416,7 +412,7 @@ systemctl start chronyd.service
 chronyc sourcestats # 检查 ntp 源服务器状态
 chronyc sources -v  # 检查 ntp 详细同步状态
 
-chronyc # 进入交互模式
+chronyc             # 进入交互模式
   activity
 ```
 
@@ -436,8 +432,6 @@ chronyc # 进入交互模式
 **运行**
 
 `cloud-torrent -o`
-
-`我日,就这么简单`
 
 ---
 
@@ -469,13 +463,13 @@ subnet 192.168.1.0 netmask 255.255.255.0 {         # 定义 DHCP 作用域
 }
 ```
 ```bash
-dhcpd -t    # 检测语法有无错误
-service dhcpd start    # 开启 dhcp 服务
+dhcpd -t                          # 检测语法有无错误
+service dhcpd start               # 开启 dhcp 服务
 
 firewall-cmd --zone=public --add-service=dhcp --permanent
-firewall-cmd --reload # 记得防火墙放行
+firewall-cmd --reload             # 记得防火墙放行
 
-cat /var/lib/dhcpd/dhcpd.leases # 查看租约文件,了解租用情况
+cat /var/lib/dhcpd/dhcpd.leases   # 查看租约文件,了解租用情况
 ```
 ---
 
@@ -586,7 +580,7 @@ named-checkzone abc.com abc.loopback
 named-checkzone abc.com www.loopback
 service named restart
 
-setenforce 0  # 关闭 selinux
+setenforce 0      # 关闭 selinux
 firewall-cmd --zone=public --add-service=dns --permanent
 firewall-cmd --reload
 ```
@@ -606,7 +600,7 @@ firewall-cmd --reload
 - 1台无人值守系统——RHEL 7——192.168.10.10
 - 1台客户端——未安装操作系统
 
-注：vmware 中做实验需要在虚拟网络编辑器中将 dhcp 服务关闭
+注:vmware 中做实验需要在虚拟网络编辑器中将 dhcp 服务关闭
 
 **配置 DHCP**
 
@@ -615,7 +609,7 @@ DHCP 服务程序用于为客户端主机分配可用的 IP 地址,而且这是�
 `yum install -y dhcp`
 
 ```vim
-# 这里使用的配置文件有两个主要区别：允许了 BOOTP 引导程序协议,旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址；在配置文件的最下面加载了引导驱动文件 pxelinux.0 (这个文件会在下面的步骤中创建) ,其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件,自行进入下一步的安装过程.
+# 这里使用的配置文件有两个主要区别:允许了 BOOTP 引导程序协议,旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址;在配置文件的最下面加载了引导驱动文件 pxelinux.0 (这个文件会在下面的步骤中创建) ,其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件,自行进入下一步的安装过程.
 vim /etc/dhcp/dhcpd.conf
 
 allow booting;
@@ -663,13 +657,13 @@ service tftp
 ```bash
 systemctl restart xinetd
 systemctl enable xinetd
-firewall-cmd --permanent --add-port=69/udp  # 放行 tftp
+firewall-cmd --permanent --add-port=69/udp    # 放行 tftp
 firewall-cmd --reload
 ```
 
 **配置 SYSLinux 服务**
 
-SYSLinux 是一个用于提供引导加载的服务程序.与其说 SYSLinux 是一个服务程序,不如说更需要里面的引导文件,在安装好 SYSLinux 服务程序软件包后,/usr/share/syslinux 目录中会出现很多引导文件.
+SYSLinux 是一个用于提供引导加载的服务程序.与其说 SYSLinux 是一个服务程序,不如说更需要里面的引导文件,在安装好 SYSLinux 服务程序软件包后, `/usr/share/syslinux` 目录中会出现很多引导文件.
 ```bash
 yum install -y syslinux
 
@@ -682,7 +676,7 @@ mount /dev/cdrom /media/cdrom
 cp /media/cdrom/images/pxeboot/{vmlinuz,initrd.img} .
 cp /media/cdrom/isolinux/{vesamenu.c32,boot.msg} .
 
-# 在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录,虽然该目录的名字带有后缀,但依然也是目录,而非文件！将系统光盘中的开机选项菜单复制到该目录中,并命名为 default.这个 default 文件就是开机时的选项菜单.
+# 在 TFTP 服务程序的目录中新建 pxelinux.cfg 目录,虽然该目录的名字带有后缀,但依然也是目录,而非文件!将系统光盘中的开机选项菜单复制到该目录中,并命名为 default.这个 default 文件就是开机时的选项菜单.
 mkdir pxelinux.cfg
 cp /media/cdrom/isolinux/isolinux.cfg pxelinux.cfg/default
 ```
@@ -716,7 +710,7 @@ cp ~/anaconda-ks.cfg /var/ftp/pub/ks.cfg
 chmod +r /var/ftp/pub/ks.cfg
 ```
 ```vim
-#修改第 7、27、35 行
+# 修改第 7、27、35 行
 vim /var/ftp/pub/ks.cfg
 
 url --url=ftp://192.168.0.105
@@ -746,7 +740,7 @@ docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_genconf
 **生成密钥文件**
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_initpki
-输入私钥密码 (输入时是看不见的) ：
+输入私钥密码 (输入时是看不见的) :
 Enter PEM pass phrase:12345678
 再输入一遍
 Verifying - Enter PEM pass phrase:12345678
@@ -756,7 +750,7 @@ Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
 Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
 ```
 
-**生成客户端证书 (这里的 user 改成你想要的名字) **
+**生成客户端证书 (这里的 user 改成你想要的名字)**
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
 
@@ -790,7 +784,7 @@ sz /data/openvpn/conf/whsir.ovpn
 
 ---
 
-## proxychains
+## proxychains-ng
 
 `通过 DLL 注入,使目标程序走代理`
 
@@ -811,12 +805,12 @@ cd .. && rm -rf proxychains-ng
 ```bash
 vim /etc/proxychains.conf
 
-socks5 127.0.0.1 1080 # 改成你懂的
+socks5 127.0.0.1 1080   # 改成你懂的
 ```
 
 **使用**
 
-在需要代理的命令前加上 proxychains4 ,如：`proxychains4 wget https://www.google.com/`
+在需要代理的命令前加上 proxychains4 ,如:`proxychains4 wget https://www.google.com/`
 
 ---
 
@@ -831,18 +825,16 @@ socks5 127.0.0.1 1080 # 改成你懂的
 
 安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
 ```vim
-vim /etc/ssh/sshd_config
-
-PasswordAuthentication yes
-PermitRootLogin yes
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 ```
 ```bash
-service ssh restart # 启动ssh
-systemctl enable ssh  # 设置为开机自启
+service ssh restart     # 启动ssh
+systemctl enable ssh    # 设置为开机自启
 
 # 或
 
-/etc/init.d/ssh start # 启动ssh
+/etc/init.d/ssh start   # 启动ssh
 update-rc.d ssh enable  # 设置为开机自启
 ```
 若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍.
@@ -1007,7 +999,7 @@ make && make install
 
 **运行**
 ```bash
-ttyd -p 8080 bash -x  # 现在访问 http://localhost:8080 即可
+ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
 ```
 
 ---
@@ -1015,7 +1007,7 @@ ttyd -p 8080 bash -x  # 现在访问 http://localhost:8080 即可
 # web服务-中间件
 ## ActiveMQ
 
-Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件；由于 ActiveMQ 是一个纯 Java 程序，因此只需要操作系统支持 Java 虚拟机，ActiveMQ 便可执行。
+Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.
 
 **安装**
 
@@ -1049,7 +1041,7 @@ firewall-cmd --zone=public --add-port=8161/tcp --permanent
 firewall-cmd --reload
 ```
 
-访问 127.0.0.1:8161   用户名:admin 密码：admin
+访问 127.0.0.1:8161   用户名:admin 密码:admin
 
 修改用户信息编辑 conf/jetty-realm.properties 即可
 
@@ -1134,8 +1126,8 @@ firewall-cmd --reload
   openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
   cd /etc/pki/CA
-  touch index.txt  # 索引问文件
-  touch serial    # 给客户发证编号存放文件
+  touch index.txt     # 索引问文件
+  touch serial        # 给客户发证编号存放文件
   echo 01 > serial
 
   mkdir /etc/httpd/ssl
@@ -1155,8 +1147,8 @@ firewall-cmd --reload
   openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
   cd /etc/pki/CA
-  touch index.txt  # 索引问文件
-  touch serial    # 给客户发证编号存放文件
+  touch index.txt   # 索引问文件
+  touch serial      # 给客户发证编号存放文件
   echo 01 > serial
 
   cd
@@ -1202,7 +1194,7 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBack
 
 **配置文件**
 ```bash
-chown -R root:www-data /usr/local/bin     # 设置目录数据权限
+chown -R root:www-data /usr/local/bin   # 设置目录数据权限
 touch /usr/local/caddy/Caddyfile
 
 echo -e ":80 {
@@ -1214,7 +1206,7 @@ mkdir /usr/local/caddy/www
 echo "<h1>first</h1>" >> /usr/local/caddy/www/index.html
 
 /etc/init.d/caddy start
-# 如果启动失败可以看 Caddy 日志： tail -f /tmp/caddy.log
+# 如果启动失败可以看 Caddy 日志: tail -f /tmp/caddy.log
 ```
 
 **反向代理**
@@ -1338,7 +1330,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
     ```bash
     curl http://127.0.0.1:8081/nexus/
     ```
-    默认登录账号/密码为： admin/admin123
+    默认登录账号/密码为: admin/admin123
 
 ---
 
@@ -1377,7 +1369,7 @@ firewall-cmd --reload
 
 **虚拟主机**
 
-在 /etc/nginx/conf.d/ 目录下新建一个站点的配置文件,列如：test.com.conf
+在 /etc/nginx/conf.d/ 目录下新建一个站点的配置文件,列如:test.com.conf
 ```vim
 vim /etc/nginx/conf.d/test.com.conf
 
@@ -1401,13 +1393,13 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置： `192.168.1.112   www.test.com test.com`
+如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置: `192.168.1.112   www.test.com test.com`
 
 `curl www.test.com`
 
 **https**
 ```bash
-openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
+openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key    # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
 
 mv httpd.crt /etc/nginx
 mv httpd.key /etc/nginx
@@ -1447,9 +1439,9 @@ rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
 
 systemctl start php-fpm.service
-netstat -tnlp # 检查 php-fpm 默认监听端口：9000
+netstat -tnlp   # 检查 php-fpm 默认监听端口:9000
 ```
-```vim
+```bash
 # 添加配置
 vim /etc/nginx/conf.d/test.com.conf
 
@@ -1494,7 +1486,7 @@ rpm 安装 PHP7 相应的 yum 源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w
-php -v  # 查看PHP版本
+php -v                # 查看PHP版本
 
 service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 ```
@@ -1517,17 +1509,17 @@ mysql_secure_installation
 
 mysql -u root -p
 
-创建一个专给 WordPress 存数据的数据库
+# 创建一个专给 WordPress 存数据的数据库
 MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
 
-创建用于 WordPress 对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
+# 创建用于 WordPress 对应用户
+MariaDB [(none)]> create user idiota@localhost identified by 'password';  # "idiota"对应创建的用户,"password"内填写用户的密码
 
-分别配置本地登录和远程登录权限
+# 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
 
-刷新权限
+# 刷新权限
 MariaDB [(none)]> flush privileges;
 ```
 
@@ -1550,7 +1542,7 @@ systemctl restart nginx
 
 ## RabbitMQ
 
-RabbitMQ 是流行的开源消息队列系统，是 AMQP（Advanced Message Queuing Protocol 高级消息队列协议）的标准实现，用 erlang 语言开发。RabbitMQ 据说具有良好的性能和时效性，同时还能够非常好的支持集群和负载部署，非常适合在较大规模的分布式系统中使用。
+RabbitMQ 是流行的开源消息队列系统,是 AMQP(Advanced Message Queuing Protocol 高级消息队列协议)的标准实现,用 erlang 语言开发.RabbitMQ 据说具有良好的性能和时效性,同时还能够非常好的支持集群和负载部署,非常适合在较大规模的分布式系统中使用.
 
 **官网**
 - https://www.rabbitmq.com/
@@ -1571,22 +1563,22 @@ wget  http://www.rabbitmq.com/releases/rabbitmq-server/v3.6.10/rabbitmq-server-3
 rpm -ivh rabbitmq-server-3.6.10-1.el7.noarch.rpm
 ```
 
-`注意：如果是重装请记得删除 /var/lib/rabbitmq 目录和 /etc/rabbitmq 目录，否则可能服务会起不来`
+`注意:如果是重装请记得删除 /var/lib/rabbitmq 目录和 /etc/rabbitmq 目录,否则可能服务会起不来`
 
 ```bash
 systemctl start rabbitmq-server
 或
-rabbitmq-server -detached   # 启动rabbitmq，-detached 代表后台守护进程方式启动
+rabbitmq-server -detached   # 启动rabbitmq,-detached 代表后台守护进程方式启动
 
 rabbitmqctl status
 ```
 
 **配置网页插件**
 ```bash
-# 首先创建目录，否则可能报错：
+# 首先创建目录,否则可能报错:
 mkdir /etc/rabbitmq
 
-# 然后启用插件：
+# 然后启用插件:
 rabbitmq-plugins enable rabbitmq_management
 
 # 配置防火墙
@@ -1599,23 +1591,23 @@ firewall-cmd --reload
 
 **配置 web 端访问账号密码和权限**
 
-默认网页是不允许访问的，需要增加一个用户修改一下权限，代码如下：
+默认网页是不允许访问的,需要增加一个用户修改一下权限,代码如下:
 ```bash
-## 添加用户，后面两个参数分别是用户名和密码
+## 添加用户,后面两个参数分别是用户名和密码
 rabbitmqctl add_user <账号> <密码>
-rabbitmqctl set_permissions -p / <账号> ".*" ".*" ".*" # 添加权限
-rabbitmqctl set_user_tags <账号> administrator # 修改用户角色
+rabbitmqctl set_permissions -p / <账号> ".*" ".*" ".*"  # 添加权限
+rabbitmqctl set_user_tags <账号> administrator          # 修改用户角色
 ```
 
 **开启用户远程访问**
 
-默认情况下，RabbitMQ 的默认的 guest 用户只允许本机访问， 如果想让 guest 用户能够远程访问的话，只需要将配置文件中的 loopback_users 列表置为空即可，
-如下：
+默认情况下,RabbitMQ 的默认的 guest 用户只允许本机访问, 如果想让 guest 用户能够远程访问的话,只需要将配置文件中的 loopback_users 列表置为空即可,
+如下:
 ```
 {loopback_users, []}
 ```
 
-另外关于新添加的用户，直接就可以从远程访问的，如果想让新添加的用户只能本地访问，可以将用户名添加到上面的列表, 如只允许 admin 用户本机访问。
+另外关于新添加的用户,直接就可以从远程访问的,如果想让新添加的用户只能本地访问,可以将用户名添加到上面的列表, 如只允许 admin 用户本机访问.
 ```
 {loopback_users, ["admin"]}
 ```
@@ -1625,14 +1617,14 @@ rabbitmqctl set_user_tags <账号> administrator # 修改用户角色
 
 ## searx
 
-`尊重隐私，可控的元搜索引擎。`
+`尊重隐私,可控的元搜索引擎.`
 
 **项目地址**
 - https://github.com/asciimoo/searx
 
 **安装搭建**
 
-注:本次在 Debian/Ubuntu 下搭建，centos 下基本一致,请参考 [官方教程](https://github.com/asciimoo/searx/wiki/Installation-on-RHEL-7---CentOS-7)
+注:本次在 Debian/Ubuntu 下搭建,centos 下基本一致,请参考 [官方教程](https://github.com/asciimoo/searx/wiki/Installation-on-RHEL-7---CentOS-7)
 
 加源,安装依赖
 ```
@@ -1736,7 +1728,7 @@ sudo service uwsgi restart
 
 ## Tomcat
 
-Tomcat 类似与一个 apache 的扩展型，属于 apache 软件基金会的核心项目，属于开源的轻量级 Web 应用服务器，是开发和调试 JSP 程序的首选，主要针对 Jave 语言开发的网页代码进行解析，Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样，具有处理 HTML 页面的功能，然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx，所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端。可以这样认为，当配置正确时，Apache 为 HTML 页面服务，而 Tomcat 实际上运行 JSP 页面和 Servlet。比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序。
+Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核心项目,属于开源的轻量级 Web 应用服务器,是开发和调试 JSP 程序的首选,主要针对 Jave 语言开发的网页代码进行解析,Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样,具有处理 HTML 页面的功能,然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx,所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端.可以这样认为,当配置正确时,Apache 为 HTML 页面服务,而 Tomcat 实际上运行 JSP 页面和 Servlet.比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序.
 
 **官网**
 - https://tomcat.apache.org
@@ -1747,7 +1739,7 @@ Tomcat 依赖 JDK,在安装 Tomcat 之前需要先安装 Java JDK.输入命令 j
 
 默认情况下,CentOS 安装有 JDK,一般先卸载掉
 ```bash
-rpm -qa | grep jdk # 查询本地 JDK
+rpm -qa | grep jdk    # 查询本地 JDK
 ```
 
 JDK 安装过程 见 [如下](##JDK)
@@ -1854,7 +1846,7 @@ service tomcat stop
 
 **发布测试**
 
-tomcat 默认的发布 web 项目的目录是：webapps
+tomcat 默认的发布 web 项目的目录是:webapps
 
 将导出的 war 包直接上传到 webapps 根目录下,随着 tomcat 的启动,war 包可以自动被解析.
 
@@ -1864,7 +1856,7 @@ tomcat 默认的发布 web 项目的目录是：webapps
 
 ## Wordpress
 
-WordPress 是一个开源的内容管理系统（CMS），允许用户构建动态网站和博客。
+WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
 
 **官网**
 - https://wordpress.org/
@@ -1887,23 +1879,23 @@ mysql_secure_installation
 
 mysql -u root -p
 
-创建一个专给 WordPress 存数据的数据库
-MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
+# 创建一个专给 WordPress 存数据的数据库
+MariaDB [(none)]> create database idiota_info; # 最后的"idiota_info"为数据库名
 
-创建用于 WordPress 对应用户
+# 创建用于 WordPress 对应用户
 MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
 
-分别配置本地登录和远程登录权限
+# 分别配置本地登录和远程登录权限
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
 MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
 
-刷新权限
+# 刷新权限
 MariaDB [(none)]> flush privileges;
 ```
 
 配置 PHP
 ```bash
-# 安装PHP源
+# 安装 PHP 源
 rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
@@ -1912,10 +1904,10 @@ yum install php70w
 yum install php70w-mysql
 yum install httpd
 
-# 重启Apache
+# 重启 Apache
 systemctl restart httpd
 
-# 查看PHP版本
+# 查看 PHP 版本
 php -v
 ```
 
@@ -1933,7 +1925,7 @@ DB_USER
 DB_PASSWORD
     第二步中为 WordPress 用户名设定的密码
 DB_HOST
-    第二步中设定的 hostname (通常是 localhost,但总有例外；参见编辑wp-config.php 文件中的"可能的 DB_HOST 值) .
+    第二步中设定的 hostname (通常是 localhost,但总有例外;参见编辑wp-config.php 文件中的"可能的 DB_HOST 值) .
 DB_CHARSET
     数据库字符串,通常不可更改.
 DB_COLLATE
@@ -1944,9 +1936,9 @@ DB_COLLATE
 
 上传文件
 
-接下来需要决定将博客放在网站的什么位置上：
-- 网站根目录下 (如：http://example.com/)
-- 网站子目录下 (如：http://example.com/blog/)
+接下来需要决定将博客放在网站的什么位置上:
+- 网站根目录下 (如:http://example.com/)
+- 网站子目录下 (如:http://example.com/blog/)
 
 根目录
 
@@ -1963,15 +1955,15 @@ DB_COLLATE
 ```bash
 mv wordpress/* /var/www/html
 
-setenforce 0  # 关闭 selinux
+setenforce 0    # 关闭 selinux
 service httpd start
 service firewalld stop
 ```
 
 运行安装脚本
 
-- 将 WordPress 文件放在根目录下的用户请访问：http://example.com/wp-admin/install.php
-- 将 WordPress 文件放在子目录 (假设子目录名为 blog) 下的用户请访问：http://example.com/blog/wp-admin/install.php
+- 将 WordPress 文件放在根目录下的用户请访问:http://example.com/wp-admin/install.php
+- 将 WordPress 文件放在子目录 (假设子目录名为 blog) 下的用户请访问:http://example.com/blog/wp-admin/install.php
 - 访问 `http://xxx.xxx.xxx.xxx/wp-admin/setup-config.php` 下面就略了,自己照着页面上显示的来
 
 ---
@@ -1980,7 +1972,7 @@ service firewalld stop
 
 `基于开源项目 Searx 二次开发的操作引擎`
 
-`2019-11-17:不在推荐该开源项目，建议直接使用源项目` [searx](##searx)
+`2019-11-17:不在推荐该开源项目,建议直接使用源项目` [searx](##searx)
 
 **项目地址**
 - https://github.com/entropage/mijisou
@@ -2235,7 +2227,7 @@ sentry:
 **运行+caddy 反代**
 ```bash
 mv searx/settings_et_dev.yml searx/settings.yml
-gunicorn searx.webapp:app -b 127.0.0.1:8888 -D	# 一定要在mijisou目录下运行
+gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 一定要在mijisou目录下运行
 
 wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/caddy_install.sh && chmod +x caddy_install.sh && bash caddy_install.sh
 
@@ -2246,7 +2238,7 @@ echo "www.你的域名.com {
 }" >> /usr/local/caddy/Caddyfile
 
 /etc/init.d/caddy start
-# 如果启动失败可以看 Caddy 日志：tail -f /tmp/caddy.log
+# 如果启动失败可以看 Caddy 日志:tail -f /tmp/caddy.log
 ```
 
 **opensearch**
@@ -2310,7 +2302,7 @@ gunicorn searx.webapp:app -b 127.0.0.1:8888 -D  # 再次强调,在 /mijisou 目�
 
 **磁盘占用**
 
-服务运行一段时间后,`/var/lib/redis` 路径下会有一些缓存文件(貌似),直接删了就行
+服务运行一段时间后, `/var/lib/redis` 路径下会有一些缓存文件(貌似),直接删了就行
 
 **redis 报错**
 
@@ -2327,15 +2319,7 @@ vim /etc/redis.conf
 stop-writes-on-bgsave-error no
 ```
 
-
 - https://gist.github.com/kapkaev/4619127
-
-**Thank**
-- [asciimoo/searx](https://github.com/asciimoo/searx)
-- [entropage/mijisou: Privacy-respecting metasearch engine](https://github.com/entropage/mijisou)
-- [一个可以保护个人隐私的网络搜索服务：秘迹搜索搭建教程 - Rat's Blog](https://www.moerats.com/archives/922/)
-- [OpenSearch description format | MDN](https://developer.mozilla.org/en-US/docs/Web/OpenSearch)
-- [Add or remove a search engine in Firefox | Firefox Help](https://support.mozilla.org/en-US/kb/add-or-remove-search-engine-firefox)
 
 ---
 
@@ -2343,8 +2327,8 @@ stop-writes-on-bgsave-error no
 ## Relational
 ### Oracle
 
-- 机器物理内存应不少于 1GB，如果是 VMWARE 虚拟机建议不少于 1200MB.
-- 对于64位的oracle11g数据库，若程序文件和数据文件安装在同一个分区，则该分区的硬盘空间要求分别为：企业版 5.65GB、标准版 5.38GB；除此以外，还应确保 `/tmp` 目录所在分区的空间不少于1GB，总的来说，建议为 oracle11g 准备至少 8GB 的硬盘空间
+- 机器物理内存应不少于 1GB,如果是 VMWARE 虚拟机建议不少于 1200MB.
+- 对于64位的oracle11g数据库,若程序文件和数据文件安装在同一个分区,则该分区的硬盘空间要求分别为:企业版 5.65GB、标准版 5.38GB;除此以外,还应确保 `/tmp` 目录所在分区的空间不少于1GB,总的来说,建议为 oracle11g 准备至少 8GB 的硬盘空间
 
 **RPM 方式安装**
 
@@ -2427,23 +2411,23 @@ setenforce 0
 
 ![image](../../../assets/img/运维/Linux/Power/1.png)
 
-`注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下，使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
+`注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下,使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
 
 **注 : 报错ORA-28547:connection to server failed, probable Oracle Net admin error**
 
-oci.dll 版本不对。因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的，Oracle 的客户端分为两种，一种是标准版，一种是简洁版，即 Oracle Install Client。而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI，如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时，多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的。
+oci.dll 版本不对.因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的,Oracle 的客户端分为两种,一种是标准版,一种是简洁版,即 Oracle Install Client.而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI,如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时,多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的.
 
-OCI 下载地址：https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压instantclient-basic-win-x64
+OCI 下载地址:https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压instantclient-basic-win-x64
 
-打开navicat，一次选择：工具->选项->环境-->OCI环境，选择刚才解压好的 instantclient-basic-win-x64 目录中的 oci.dll 文件即可，重启 navicat
+打开navicat,一次选择:工具->选项->环境-->OCI环境,选择刚才解压好的 instantclient-basic-win-x64 目录中的 oci.dll 文件即可,重启 navicat
 
 **注 : 报错 oracle library is not loaded**
 
-还是 oci.dll 版本不对，换个低版本的 Instant Client 🤣
+还是 oci.dll 版本不对,换个低版本的 Instant Client 🤣
 
 **注 : 报错 ORA-28040: No matching authentication protocol**
 
-这个还是 oci.dll 版本不对，再换个高版本的 Instant Client 😂
+这个还是 oci.dll 版本不对,再换个高版本的 Instant Client 😂
 
 ---
 
@@ -2484,10 +2468,10 @@ mysql -u root -p
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
 
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户，请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 
 FLUSH PRIVILEGES;
 ```
@@ -2510,10 +2494,10 @@ mysqld_safe --skip-grant-tables &
 
 # 这里, --skip-grant-tables 选项让你在没有密码和所有权限的情况下进行连接.如果使用此选项启动服务器,它还会启用 --skip-networking 选项,这用于防止其他客户端连接到数据库服务器.并且,& 符号用于在后台运行命令,因此你可以在以下步骤中输入其他命令.请注意,上述命令很危险,并且你的数据库会变得不安全.你应该只在短时间内运行此命令以重置密码.
 
-# 接下来,以 root 用户身份登录 MySQL/MariaDB 服务器：
+# 接下来,以 root 用户身份登录 MySQL/MariaDB 服务器:
 mysql
 
-# 在 mysql > 或 MariaDB [(none)] > 提示符下,运行以下命令重置 root 用户密码：
+# 在 mysql > 或 MariaDB [(none)] > 提示符下,运行以下命令重置 root 用户密码:
 UPDATE mysql.user SET Password=PASSWORD('NEW-PASSWORD') WHERE User='root';
 
 # 使用你自己的密码替换上述命令中的 NEW-PASSWORD.
@@ -2522,7 +2506,7 @@ UPDATE mysql.user SET Password=PASSWORD('NEW-PASSWORD') WHERE User='root';
 FLUSH PRIVILEGES;
 exit
 
-# 最后,关闭之前使用 --skip-grant-tables 选项运行的数据库.为此,运行：
+# 最后,关闭之前使用 --skip-grant-tables 选项运行的数据库.为此,运行:
 mysqladmin -u root -p shutdown
 # 系统将要求你输入在上一步中设置的 MySQL/MariaDB 用户密码.
 
@@ -2556,18 +2540,18 @@ service mysql start
 **安装**
 ```bash
 yum install postgresql-server
-postgresql-setup initdb # 初始化数据库
+postgresql-setup initdb   # 初始化数据库
 service postgresql start  # 启动服务
 ```
 
 PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下.
 
 **修改用户密码**
-```sql
+```
 sudo -u postgres psql postgres
-\l # 查看当前的数据库列表
+\l                  # 查看当前的数据库列表
 \password postgres  # 给 postgres 用户设置密码
-\q  # 退出数据库
+\q                  # 退出数据库
 ```
 
 **开启远程访问**
@@ -2633,7 +2617,7 @@ mongo
   }
  )
 
-> show dbs;	# 查看数据库
+> show dbs;	    # 查看数据库
 > db.version();	# 查看数据库版本
 ```
 
@@ -2714,7 +2698,7 @@ PONG
 vim /etc/redis.conf
 
 #bind 127.0.0.1
-requirepass 密码	#设置 redis 密码
+requirepass 密码	      # 设置 redis 密码
 ```
 `service redis restart` 当然还要记得开防火墙
 
@@ -2887,13 +2871,14 @@ vim /etc/fstab
 
 服务器
 ```bash
-[root@localhost ~]# cd /public/
-[root@localhost public]# echo "hello" > hello.txt
+cd /public/
+echo "hello" > hello.txt
 ```
+
 客户端
 ```bash
-[nfsuser1@localhost ~]$ cd /mnt/nfsfiles/
-[nfsuser1@localhost nfsfiles]$ cat hello.txt
+cd /mnt/nfsfiles/
+cat hello.txt
 ```
 
 **更多配置案例**
@@ -2917,12 +2902,12 @@ vim /etc/fstab
 ```vim
 vim /etc/samba/smb.conf
 [smbshare]
-path = /smbshare	# 共享目录
+path = /smbshare	                # 共享目录
 public = yes
 writeable=yes
-hosts allow = 192.168.1xx.33/32	# 允许主机
+hosts allow = 192.168.1xx.33/32	  # 允许主机
 hosts deny = all
-create mask = 0770	# 创建文件的权限为 0770；
+create mask = 0770	              # 创建文件的权限为 0770;
 ```
 
 验证配置文件有没有错误
@@ -2933,10 +2918,10 @@ create mask = 0770	# 创建文件的权限为 0770；
 ```bash
 # 添加用户,设置密码
 useradd smb1
-smbpasswd -a smb1(密码：smb123456)
+smbpasswd -a smb1(密码:smb123456)
 
 # 将用户添加到 samba 服务器中,并设置密码
-pdbedit -a smb1(密码：smb123456)
+pdbedit -a smb1(密码:smb123456)
 
 # 查看 samba 数据库用户
 pdbedit -L
@@ -3010,7 +2995,7 @@ systemctl enable vsftpd
 
 现在就可以在客户端执行 ftp 命令连接到远程的 FTP 服务器了.
 在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空.而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录.
-我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限：
+我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限:
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -3061,13 +3046,13 @@ write_enable=YES
 local_umask=022
 ```
 ```bash
-setenforce 0  # 关闭 selinux
+setenforce 0      # 关闭 selinux
 firewall-cmd --permanent --zone=public --add-service=ftp
 firewall-cmd --reload
 systemctl restart vsftpd
 systemctl enable vsftpd
 ```
-按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了.但是在使用 root 管理员登录后,系统提示如下的错误信息：
+按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了.但是在使用 root 管理员登录后,系统提示如下的错误信息:
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
 Connected to 192.168.10.10 (192.168.10.10).
@@ -3096,7 +3081,7 @@ ftp>
 
 认证
 
-创建虚拟用户文件,把这些用户名和密码存放在一个文件中.该文件内容格式是：用户名占用一行,密码占一行.
+创建虚拟用户文件,把这些用户名和密码存放在一个文件中.该文件内容格式是:用户名占用一行,密码占一行.
 
 `cd /etc/vsftp`
 
@@ -3127,7 +3112,7 @@ vim /etc/pam.d/vsftpd.vu
 
 auth       required     pam_userdb.so db=/etc/vsftpd/login
 account    required     pam_userdb.so db=/etc/vsftpd/login
-# 注意：格式是 db=/etc/vsftpd/login 这样的,一定不要去掉源文件的 .db 后缀
+# 注意:格式是 db=/etc/vsftpd/login 这样的,一定不要去掉源文件的 .db 后缀
 ```
 
 配置文件
@@ -3152,7 +3137,7 @@ allow_writeable_chroot=YES
 |allow_writeable_chroot=YES |	允许对禁锢的FTP根目录执行写入操作,而且不拒绝用户的登录请求|
 
 用户配置权限文件
-所有用户主目录为 /home/ftp 宿主为 virtual 用户；
+所有用户主目录为 /home/ftp 宿主为 virtual 用户;
 ```bash
 useradd -d /home/ftp -s /sbin/nologin virtual
 chmod -Rf 755 /home/ftp/
@@ -3193,7 +3178,7 @@ anon_umask=022
 
 **启服务**
 ```bash
-setenforce 0  # 关闭 selinux
+setenforce 0    # 关闭 selinux
 firewall-cmd --zone=public --add-service=ftp
 firewall-cmd --reload
 systemctl restart vsftpd
@@ -3302,7 +3287,7 @@ rpm -ivh jdk-****.rpm
 
 	`sudo apt-get install oracle-java8-installer`
 
-**编译安装**
+**直接使用编译完成的**
 
 自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
@@ -3345,9 +3330,6 @@ yum install epel-release
 或
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 yum install -y python36 python36-devel
-
-wget https://bootstrap.pypa.io/get-pip.py	# 安装pip3
-python3 get-pip.py
 ```
 
 **源代码编译方式安装**
@@ -3390,6 +3372,12 @@ pip3 -V
 
 **加速**
 - [pip](../../Plan/Misc-Plan.md#pip)
+
+### pip3
+```
+wget https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py
+```
 
 ---
 
@@ -3474,7 +3462,7 @@ sudo apt-get update
 sudo apt-get install jenkins
 ```
 
-安装后默认服务是启动的,默认是 8080 端口,在浏览器输入:http://127.0.0.1:8080/即可打开主页
+安装后默认服务是启动的,默认是 8080 端口,在浏览器输入 : http://127.0.0.1:8080/即可打开主页
 
 查看密码
 
@@ -3664,14 +3652,14 @@ vim /etc/supervisord.conf
 command=/opt/apache-tomcat-8.0.35/bin/catalina.sh run  ; 程序启动命令
 autostart=true       ; 在 supervisord 启动的时候也自动启动
 startsecs=10         ; 启动10秒后没有异常退出,就表示进程正常启动了,默认为1秒
-autorestart=true     ; 程序退出后自动重启,可选值：[unexpected,true,false],默认为 unexpected,表示进程意外杀死后才重启
+autorestart=true     ; 程序退出后自动重启,可选值:[unexpected,true,false],默认为 unexpected,表示进程意外杀死后才重启
 startretries=3       ; 启动失败自动重试次数,默认是3
 user=tomcat          ; 用哪个用户启动进程,默认是root
 priority=999         ; 进程启动优先级,默认999,值小的优先启动
 redirect_stderr=true ; 把 stderr 重定向到 stdout,默认 false
 stdout_logfile_maxbytes=20MB  ; stdout 日志文件大小,默认 50MB s
 tdout_logfile_backups = 20   ; stdout 日志文件备份数,默认是10
-; stdout 日志文件,需要注意当指定目录不存在时无法正常启动,所以需要手动创建目录 (supervisord 会自动创建日志文件) 
+; stdout 日志文件,需要注意当指定目录不存在时无法正常启动,所以需要手动创建目录 (supervisord 会自动创建日志文件)
 stdout_logfile=/opt/apache-tomcat-8.0.35/logs/catalina.out
 stopasgroup=false     ;默认为 false,进程被杀死时,是否向这个进程组发送 stop 信号,包括子进程
 killasgroup=false     ;默认为 false,向进程组发送 kill 信号,包括子进程
@@ -3772,8 +3760,8 @@ character_set_server = utf8
 原则上 innodb_buffer_pool_size 需要设置为主机内存的 80%,如果主机内存不是 8GB,以上参数可依据相应比例进行调整,例如主机内存为 16GB,则 innodb_buffer_pool_size 建议设置为 12GB,innodb_log_buffer_size 建议设置为 32M,innodb_log_file_size 建议设置为 128M,以此类推.请注意 innodb_buffer_pool_size 的值必须是整数,例如主机内存是4G,那么 innodb_buffer_pool_size 可以设置为 3G,而不能设置为 3.2G
 ```bash
 systemctl enable mysqld && systemctl start mysqld
-grep 'temporary password' /var/log/mysqld.log # 获取 MySQL 的 root 初始密码
-mysql_secure_installation # 初始化,改下密码
+grep 'temporary password' /var/log/mysqld.log   # 获取 MySQL 的 root 初始密码
+mysql_secure_installation                       # 初始化,改下密码
 systemctl restart mysqld
 mysql -u root -p
   create database zabbix character set utf8;
@@ -3806,7 +3794,7 @@ zcat create.sql.gz | mysql -uroot zabbix -p
   ValueCacheSize=256M
   Timeout=30
   ```
-  如果需要监控 VMware 虚拟机,则还需要设置以下选项参数：
+  如果需要监控 VMware 虚拟机,则还需要设置以下选项参数:
   ```vim
   StartVMwareCollectors=2
   VMwareCacheSize=256M
@@ -3841,9 +3829,9 @@ date.timezone Asia/Shanghai
 systemctl stop mysqld && reboot
 systemctl start httpd && systemctl start zabbix-server
 systemctl stop firewalld
-setenforce 0  # 关闭 selinux
+setenforce 0    # 关闭 selinux
 ```
-访问 `http://{ip地址}/zabbix/setup.php`
+访问 `http://ip地址/zabbix/setup.php`
 
 **Reference**
 - [CentOS 7安装Zabbix 3.4](https://www.centos.bz/2017/11/centos-7%E5%AE%89%E8%A3%85zabbix-3-4/)
@@ -3871,7 +3859,7 @@ setenforce 0  # 关闭 selinux
   ```bash
   sudo apt update
   sudo apt install docker.io
-  docker login	# 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
+  docker login  # 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
   ```
 
 - **官方一条命令安装**
@@ -3884,7 +3872,7 @@ setenforce 0  # 关闭 selinux
 
 `sudo usermod -a -G docker $USER`
 
-完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下：
+完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下:
 ```bash
 sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
 newgrp docker
@@ -3900,24 +3888,24 @@ sudo systemctl restart docker
 
 拉取镜像
 ```bash
-docker images # 检查一下系统中已经有了哪些镜像
-docker pull nginx # 拉取一个镜像
-docker search nginx # 搜索 Docker Hub 中的所有 Nginx 镜像
+docker images                   # 检查一下系统中已经有了哪些镜像
+docker pull nginx               # 拉取一个镜像
+docker search nginx             # 搜索 Docker Hub 中的所有 Nginx 镜像
 docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
 ```
 
 常用命令
 ```bash
-docker run -it [docker_id] bash     # 运行一个容器实例
-docker ps             # 查看当前运行的 docker 容器的进程信息
-docker image rm [docker_image_id]   # 删除本地的 docker 镜像
-docker rmi -f [docker_image_id]     # 删除本地的 docker 镜像
-docker exec -it [docker_id] bash  # 获取容器的shell
-docker kill # 杀死容器
+docker run -it [docker_id] bash             # 运行一个容器实例
+docker ps                                   # 查看当前运行的 docker 容器的进程信息
+docker image rm [docker_image_id]           # 删除本地的 docker 镜像
+docker rmi -f [docker_image_id]             # 删除本地的 docker 镜像
+docker exec -it [docker_id] bash            # 获取容器的shell
+docker kill                                 # 杀死容器
 docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
 ```
 
-**Docker-Compose**
+### Docker-Compose
 
 Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
@@ -3934,7 +3922,7 @@ Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
   去下载二进制包 https://github.com/docker/compose/releases
 
-  然后将文件上传到 `/usr/local/bin/` 文件夹下，然后将其重命名为 docker-compose，修改此文件的权限，增加可执行：`chmod +x /usr/local/bin/docker-compose`
+  然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行:`chmod +x /usr/local/bin/docker-compose`
 
   ```bash
   docker-compose build
@@ -3960,11 +3948,11 @@ Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
 依赖 jdk,安装过程见 [JDK](#JDK)
 
-zookeeper 支持两种运行模式：独立模式（standalone）和复制模式（replicated）。
+zookeeper 支持两种运行模式:独立模式(standalone)和复制模式(replicated).
 
-真正用于生产环境的 Zookeeper 肯定都是使用复制模式的，这样做可以避免单点问题。想要使用复制模式，但由于没有富余的机器能够使用，所以可以在单台机器上通过配置来使用复制模式，从而模拟真实的集群环境。
+真正用于生产环境的 Zookeeper 肯定都是使用复制模式的,这样做可以避免单点问题.想要使用复制模式,但由于没有富余的机器能够使用,所以可以在单台机器上通过配置来使用复制模式,从而模拟真实的集群环境.
 
-由于 Zookeeper 集群是通过多数选举的方式产生 leader 的，因此，集群需要奇数个 Zookeeper 实例组成，也就是说至少需要3台（1台不能算"群"）。
+由于 Zookeeper 集群是通过多数选举的方式产生 leader 的,因此,集群需要奇数个 Zookeeper 实例组成,也就是说至少需要3台(1台不能算"群").
 
 这里配置的为 `独立模式`
 
@@ -4003,7 +3991,7 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 # 安全服务
 ## ClamAV
 
-`一个开源防病毒引擎，用于检测木马，病毒，恶意软件和其他恶意威胁。`
+`一个开源防病毒引擎,用于检测木马,病毒,恶意软件和其他恶意威胁.`
 
 **官网**
 - https://www.clamav.net
@@ -4015,7 +4003,7 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 yum install -y epel-release
 yum install -y clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
 
-# 在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除“Example”字符
+# 在两个配置文件 /etc/freshclam.conf 和 /etc/clamd.d/scan.conf 中移除"Example"字符
 cp /etc/freshclam.conf /etc/freshclam.conf.bak
 sed -i -e "s/^Example/#Example/" /etc/freshclam.conf
 
@@ -4038,7 +4026,7 @@ vim /etc/cron.d/clamav-update
 # FRESHCLAM_DELAY=
 ```
 
-定义服务器类型 (本地或者 TCP) ,在这里定义为使用本地 socket,将文件 /etc/clam.d/scan.conf 中的这一行前面的注释符号去掉：
+定义服务器类型 (本地或者 TCP) ,在这里定义为使用本地 socket,将文件 /etc/clam.d/scan.conf 中的这一行前面的注释符号去掉:
 ```vim
 vim /etc/clamd.d/scan.conf
 
@@ -4097,9 +4085,9 @@ systemctl status clamd@scan.service
 
 查杀病毒
 ```bash
-clamscan -r /home # 扫描所有用户的主目录就使用
+clamscan -r /home       # 扫描所有用户的主目录就使用
 clamscan -r --bell -i / # 扫描所有文件并且显示有问题的文件的扫描结果
-clamscan -r --remove  # 查杀当前目录并删除感染的文件
+clamscan -r --remove    # 查杀当前目录并删除感染的文件
 ```
 
 ---
@@ -4158,7 +4146,7 @@ maxretry = 3
 ```bash
 service fail2ban restart
 
-# 为了验证 fail2ban 成功运行,使用参数'ping'来运行 fail2ban-client 命令. 如果 fail2ban 服务正常运行,你可以看到“pong (嘭) ”作为响应.
+# 为了验证 fail2ban 成功运行,使用参数'ping'来运行 fail2ban-client 命令. 如果 fail2ban 服务正常运行,你可以看到"pong (嘭) "作为响应.
 fail2ban-client ping
 ```
 
@@ -4189,16 +4177,16 @@ tail -f /var/log/fail2ban.log
 
 **解禁 IP**
 
-由于 fail2ban 的“ssh-iptables”监狱使用 iptables 来阻塞问题 IP 地址,你可以通过以下方式来检测当前 iptables 来验证禁止规则.
+由于 fail2ban 的"ssh-iptables"监狱使用 iptables 来阻塞问题 IP 地址,你可以通过以下方式来检测当前 iptables 来验证禁止规则.
 ```bash
 iptables --list -n
 iptables -D fail2ban-SSH -s 192.168.72.130 -j DROP
 ```
 当然你可以使用上述的 iptables 命令手动地检验和管理 fail2ban 的 IP 阻塞列表,但实际上有一个适当的方法就是使用 fail2ban-client 命令行工具.这个命令不仅允许你对"ssh-iptables"监狱进行管理,同时也是一个标准的命令行接口,可以管理其他类型的 fail2ban 监狱.
 ```bash
-fail2ban-client status  # 检验 fail2ban 状态
+fail2ban-client status                                  # 检验 fail2ban 状态
 
-fail2ban-client status ssh-iptables # 检验一个特定监狱的状态
+fail2ban-client status ssh-iptables                     # 检验一个特定监狱的状态
 
 fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地址
 ```
@@ -4247,18 +4235,18 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 - **rpm 包安装**
 
-    这里以 2.9.15-1 为例，最新版访问官网了解 https://www.snort.org
+    这里以 2.9.15-1 为例,最新版访问官网了解 https://www.snort.org
     ```bash
     yum install https://www.snort.org/downloads/snort/snort-2.9.15-1.centos7.x86_64.rpm
     ```
 
-    安装 snort 的时候可能会报错：`缺少 libnghttp2.so.14()(64bit)`
+    安装 snort 的时候可能会报错:`缺少 libnghttp2.so.14()(64bit)`
     ```bash
     yum install epel-release -y
     yum install nghttp2
     ```
 
-    测试：`snort`，如果没有报错则安装成功。
+    测试:`snort`,如果没有报错则安装成功.
 
     如果报错 `snort: error while loading shared libraries: libdnet.1: cannot open shared object file: No such file or directory`
     ```bash
@@ -4272,17 +4260,13 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 Snort 官方提供的三类规则
 
-- Community rules：无需注册or购买，可直接下载使用
-- Registered rules：需要注册才可以下载
-- Subscriber rules：需要注册花钱购买
+- Community rules:无需注册or购买,可直接下载使用
+- Registered rules:需要注册才可以下载
+- Subscriber rules:需要注册花钱购买
 
 访问官网 https://www.snort.org/ 下载规则
 
-下载完，解压至相应目录
+下载完,解压至相应目录
 ```
 tar -xvf snortrules-snapshot-<version>.tar.gz -C /etc/snort/rules
 ```
-
----
-
-`"朋友的疏远大致分为两种.天各一方的两个人,慢慢的失掉了联系,彼此不再知道近况,多年之后再聚首往往就只是相对无言了.另一种就令人唏嘘的多了,两个朝夕得见的人,彼此的境遇竟因着造化相去渐远,这时心里也许会慢慢生出一种无力感来,因为无论怎么说怎么做也只能感觉心的距离越来越远了.——吴念真《这些人,那些事》`

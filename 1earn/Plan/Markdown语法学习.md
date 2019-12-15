@@ -30,7 +30,7 @@
 - [ ] this is an incomplete item
 
 
-正如 Kanye West 所说：
+正如 Kanye West 所说:
 > We're living the future so
 > the present is our past.
 >> s
@@ -38,7 +38,7 @@
 >>>> b
 >>>>> f
 
-我觉得你应该在这里使用`<addr>` 才对。
+我觉得你应该在这里使用`<addr>` 才对.
 
 &copy;
 
@@ -118,7 +118,7 @@ code
 ##### Heading 5 link [Heading link](https://github.com/pandao/editor.md "Heading link")
 ###### Heading 6 link [Heading link](https://github.com/pandao/editor.md "Heading link")
 
-#### 标题（用底线的形式）Heading (underline)
+#### 标题(用底线的形式)Heading (underline)
 
 This is an H1
 =============
@@ -130,16 +130,16 @@ This is an H2
 
 ----
 
-~~删除线~~ <s>删除线（开启识别HTML标签时）</s>
+~~删除线~~ <s>删除线(开启识别HTML标签时)</s>
 *斜体字*      _斜体字_
 **粗体**  __粗体__
 ***粗斜体*** ___粗斜体___
 
-上标：X<sub>2</sub>，下标：O<sup>2</sup>
+上标:X<sub>2</sub>,下标:O<sup>2</sup>
 
 **缩写(同HTML的abbr标签)**
 
-> 即更长的单词或短语的缩写形式，前提是开启识别HTML标签时，已默认开启
+> 即更长的单词或短语的缩写形式,前提是开启识别HTML标签时,已默认开启
 
 The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.
 
@@ -149,7 +149,7 @@ The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is mainta
 
 引用的行内混合 Blockquotes
 
-> 引用：如果想要插入空白换行`即<br />标签`，在插入处先键入两个以上的空格然后回车即可，[普通链接](http://localhost/)。
+> 引用:如果想要插入空白换行`即<br />标签`,在插入处先键入两个以上的空格然后回车即可,[普通链接](http://localhost/).
 
 ### 锚点与链接 Links
 
@@ -157,7 +157,7 @@ The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is mainta
 
 [普通链接带标题](http://localhost/ "普通链接带标题")
 
-直接链接：<https://github.com>
+直接链接:<https://github.com>
 
 [锚点链接][anchor-id]
 
@@ -171,17 +171,17 @@ GFM a-tail link @pandao
 
 #### 行内代码 Inline code
 
-执行命令：`npm install marked`
+执行命令:`npm install marked`
 
 #### 缩进风格
 
-即缩进四个空格，也做为实现类似`<pre>`预格式化文本(Preformatted Text)的功能。
+即缩进四个空格,也做为实现类似`<pre>`预格式化文本(Preformatted Text)的功能.
 
     <?php
         echo "Hello world!";
     ?>
 
-预格式化文本：
+预格式化文本:
 
     | First Header  | Second Header |
     | ------------- | ------------- |
@@ -254,31 +254,31 @@ Image:
 
 ![](https://pandao.github.io/editor.md/examples/images/8.jpg)
 
-> 图为：厦门白城沙滩
+> 图为:厦门白城沙滩
 
-图片加链接 (Image + Link)：
+图片加链接 (Image + Link):
 
 [![](https://pandao.github.io/editor.md/examples/images/7.jpg)](https://pandao.github.io/editor.md/examples/images/7.jpg "李健首张专辑《似水流年》封面")
 
-> 图为：李健首张专辑《似水流年》封面
+> 图为:李健首张专辑《似水流年》封面
 
 ----
 
 ### 列表 Lists
 
-#### 无序列表（减号）Unordered Lists (-)
+#### 无序列表(减号)Unordered Lists (-)
 
 - 列表一
 - 列表二
 - 列表三
 
-#### 无序列表（星号）Unordered Lists (*)
+#### 无序列表(星号)Unordered Lists (*)
 
 * 列表一
 * 列表二
 * 列表三
 
-#### 无序列表（加号和嵌套）Unordered Lists (+)
+#### 无序列表(加号和嵌套)Unordered Lists (+)
 
 + 列表一
 + 列表二
@@ -378,13 +378,13 @@ X&sup2; Y&sup3; &frac34; &frac14;  &times;  &divide;   &raquo;
 
 $$E=mc^2$$
 
-行内的公式$$E=mc^2$$行内的公式，行内的$$E=mc^2$$公式。
+行内的公式$$E=mc^2$$行内的公式,行内的$$E=mc^2$$公式.
 
 $$\(\sqrt{3x-1}+(1+x)^2\)$$
 
 $$\sin(\alpha)^{\theta}=\sum_{i=0}^{n}(x^i + \cos(f))$$
 
-多行公式：
+多行公式:
 
 ```math
 \displaystyle

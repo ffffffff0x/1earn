@@ -1,12 +1,13 @@
 # Misc-Plan
 
 <p align="center">
-    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../assets/img/Misc/Misc-Plan.jpg" width="65%"></a>
+    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../assets/img/Misc/Misc-Plan.jpg" width="60%"></a>
 </p>
 
 ---
 
 # 激活
+
 注意:Windows 系统和 Micrsoft Office 软件都必须是 VOL 版本.
 
 **激活 Windows**
@@ -17,14 +18,14 @@ slmgr /skms xxx.xxx.xxx.xxx
 slmgr /ato
 slmgr /xpr
 ```
-验证一下是否激活:`slmgr.vbs -dlv`
+验证一下是否激活 : `slmgr.vbs -dlv`
 
 **激活 Office**
 
 用管理员权限运行 CMD 或 PowerShell,输入如下命令:
 ```powershell
 # 进入office 安装目录
-cd “C:\Program Files(x86)\Microsoft Office\Office16”
+cd "C:\Program Files(x86)\Microsoft Office\Office16"
 # 注册 kms 服务器地址
 cscript ospp.vbs /sethst:xxx.xxx.xxx.xxx
 # 执行激活
@@ -34,6 +35,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 ```
 
 # DNS
+
 **快速刷新 DNS 缓存**
 ```
 ipconfig /flushdns
@@ -64,6 +66,7 @@ ipconfig /flushdns
 
 # 各种代理/源
 ## git
+
 ```git
 // 查看当前代理设置
 git config --global http.proxy
@@ -79,10 +82,11 @@ git config --global --unset https.proxy
 ```
 
 ## Docker
-- 阿里云: https://cr.console.aliyun.com/#/accelerator
-- DaoCloud: https://www.daocloud.io/mirror#accelerator-doc
-- 中科大: https://lug.ustc.edu.cn/wiki/mirrors/help/docker
-- 网易: http://hub-mirror.c.163.com
+
+- 阿里云 : https://cr.console.aliyun.com/#/accelerator
+- DaoCloud : https://www.daocloud.io/mirror#accelerator-doc
+- 中科大 : https://lug.ustc.edu.cn/wiki/mirrors/help/docker
+- 网易 : http://hub-mirror.c.163.com
 
 **linux**
 ```bash
@@ -110,6 +114,7 @@ Windows 安装文件:http://mirrors.aliyun.com/docker-toolbox/windows/docker-for
 编辑完成后点击 Apply 保存按钮,等待 Docker 重启并应用配置的镜像加速器.
 
 ## node&js
+
 ```bash
 npm install -g nrm
 nrm ls
@@ -121,6 +126,7 @@ npm config delete proxy  # 取消代理
 ```
 
 ## pip
+
 常用的国内镜像包括:
 1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
 2. 豆瓣http://pypi.douban.com/simple/
@@ -133,7 +139,7 @@ npm config delete proxy  # 取消代理
 例如:`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`,这样就会从清华镜像安装 pandas 库.
 
 - 永久修改,一劳永逸:
-    1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加“.”,表示是隐藏文件夹)
+    1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
     ```vim
     mkdir -p ~/.pip/
     ```
@@ -155,14 +161,20 @@ npm config delete proxy  # 取消代理
     ```
 
 ## 终端
+
 **proxychains**
 
 详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../运维/Linux/Power-Linux.md##proxychains)
 - 使用方法:
-    在需要代理的命令前加上 proxychains4,如:
-    `proxychains4 wget http://xxx.com/xxx.zip`
+
+    在需要代理的命令前加上 proxychains4,如 : `proxychains4 wget http://xxx.com/xxx.zip`
+
+- Tips:
+
+    如果嫌每次命令前加上 proxychain4 麻烦,可以 `proxychains4 bash` 这样 DLL 注入的 bash 里的命令都会走代理.
 
 ## GO
+
 **goproxy**
 - https://goproxy.io/
 
@@ -212,6 +224,7 @@ npm config delete proxy  # 取消代理
 ---
 
 # ffmpeg
+
 **视频合并**
 ```bash
 file '0.flv'
@@ -245,25 +258,9 @@ out.mp4: 输出文件名.
 `ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4`
 ```bash
 -r 29.97 帧数 (一般用25就可以了)
--b 1500 视频数据流量,用-b xxx表示使用固定码率,数字可更改；还可以用动态码率如:-qscale 4和-qscale 6,4的质量比6高 (一般用800就可以了,否则文件会很大)
+-b 1500 视频数据流量,用-b xxx表示使用固定码率,数字可更改;还可以用动态码率如:-qscale 4和-qscale 6,4的质量比6高 (一般用800就可以了,否则文件会很大)
 -acodec aac 音频编码用AAC
 -ac 2 声道数1或2
 -ar 48000 声音的采样频率
--ab 128 音频数据流量,一般选择32、64、96、128 # -vol 200 200%的音量,可更改 (如果源文件声音很小,可以提升10到20倍(1000%~2000%),我试过,效果还行！但不能太大,200000%我也试验过,但嘈杂声太大了)
+-ab 128 音频数据流量,一般选择32、64、96、128 # -vol 200 200%的音量,可更改 (如果源文件声音很小,可以提升10到20倍(1000%~2000%),我试过,效果还行!但不能太大,200000%我也试验过,但嘈杂声太大了)
 ```
-
----
-
-# Reference
-- [Wind4/vlmcsd: KMS Emulator in C (currently runs on Linux including Android, FreeBSD, Solaris, Minix, Mac OS, iOS, Windows with or without Cygwin)](https://github.com/Wind4/vlmcsd)
-- [基于 vlmcsd 搭建 KMS 服务器 - 简书](https://www.jianshu.com/p/11d51983852e)
-- [chengr28/Pcap_DNSProxy: Pcap_DNSProxy, a local DNS server based on packet capturing](https://github.com/chengr28/Pcap_DNSProxy)
-- [git 配置代理命令 - 阿兴的平凡世界 - 博客园](https://www.cnblogs.com/gx1069/p/6840413.html)
-- [npm 配置镜像、设置代理 - MockingBird 博客 - SegmentFault 思否](https://segmentfault.com/a/1190000002589144)
-- [将 pip 源更换到国内镜像 - LittleBee的博客 - CSDN博客](https://blog.csdn.net/sinat_21591675/article/details/82770360)
-- [你真的会使用搜索引擎吗？](https://mp.weixin.qq.com/s/le_zYcDfhSLvbuu99LprMQ)
-- [VSCode 好看字体](https://blog.csdn.net/s1124yy/article/details/82315988)
-- [tonsky/FiraCode](https://github.com/tonsky/FiraCode)
-- [使用ffmpeg合并视频文件的三种方法](https://blog.csdn.net/u012587637/article/details/51670975)
-- [FFmpeg压缩MP4视频](https://blog.csdn.net/lakeheart879/article/details/78736634)
-- [怎样用ffmpeg 压缩视频](https://blog.csdn.net/lakeheart879/article/details/78736634)

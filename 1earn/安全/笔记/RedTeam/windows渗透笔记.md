@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
@@ -12,13 +12,13 @@
 
 **cmd 开 RDP**
 - 文章
-    - [开启 RDP](http://b404.xyz/2017/12/27/open-RDP/)
+    - [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
 
 - 命令
     - **dos 命令开启 3389 端口(开启 XP&2003 终端服务)**
-        1. 方法一：`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
+        1. 方法一:`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
 
-        2. 方法二：`REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
+        2. 方法二:`REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
 
     - **WMIC 开启 3389**
 
@@ -47,7 +47,7 @@
 
         `REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启`
 
-    - **更改终端端口为 2008(十六进制为：0x7d8)**
+    - **更改终端端口为 2008(十六进制为:0x7d8)**
 
         1. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\Wds\rdpwd\Tds\tcp /v PortNumber /t REG_DWORD /d 0x7d8 /f`
         2. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber /t REG_DWORD /d 0x7D8 /f`
@@ -56,7 +56,7 @@
 
         `REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制`
 
-    - **取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制：**
+    - **取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:**
 
         `REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f`
 
@@ -188,7 +188,7 @@
 
 ---
 
-## 本地提权
+## 提权
 **CVE-2018-8120**
 - POC | Payload | exp
     - [unamer/CVE-2018-8120: CVE-2018-8120 Windows LPE exploit](https://github.com/unamer/CVE-2018-8120)
@@ -201,7 +201,7 @@
 
 ---
 
-## 远程利用
+## 远程
 **MS08-067 & CVE-2008-4250**
 - MSF 模块
     ```bash
@@ -255,9 +255,13 @@
     ```
 
 - 修复工具
-    - [“永恒之蓝”勒索蠕虫漏洞修复工具](https://www.qianxin.com/other/wannacryfix)
+    - ["永恒之蓝"勒索蠕虫漏洞修复工具](https://www.qianxin.com/other/wannacryfix)
 
 **bluekeep & CVE-2019-0708**
+- 文章
+    - [RDP Stands for "Really DO Patch!" – Understanding the Wormable RDP Vulnerability CVE-2019-0708](https://securingtomorrow.mcafee.com/other-blogs/mcafee-labs/rdp-stands-for-really-do-patch-understanding-the-wormable-rdp-vulnerability-cve-2019-0708/)
+    - [worawit/CVE-2019-0708](https://github.com/worawit/CVE-2019-0708/blob/master/NOTE.md)
+
 - POC | Payload | exp
     - [zerosum0x0/CVE-2019-0708](https://github.com/zerosum0x0/CVE-2019-0708)
     - [robertdavidgraham/rdpscan](https://github.com/robertdavidgraham/rdpscan)
@@ -267,7 +271,7 @@
     - [k8gege/CVE-2019-0708](https://github.com/k8gege/CVE-2019-0708) - 批量检测工具
 
 - 修复工具
-    - [“CVE-2019-0708”漏洞检测修复工具](https://www.qianxin.com/other/CVE-2019-0708)
+    - ["CVE-2019-0708"漏洞检测修复工具](https://www.qianxin.com/other/CVE-2019-0708)
 
 - MSF 模块
     ```bash

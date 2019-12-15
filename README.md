@@ -15,7 +15,7 @@
     <img src="./assets/img/readme.jpg">
 </p>
 
-**简介:** 本项目的初衷是分享知识资源，内容涉及安全、运维领域，目前主攻 ~~安全研究~~ 预防+治疗脱发问题，对于内容中有疑问或建议欢迎提交 issue，回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提)。
+**简介:** 本项目的初衷是分享知识资源,内容涉及安全、运维领域,目前主攻 ~~安全研究~~ 预防+治疗脱发问题,对于内容中有疑问或建议欢迎提交 issue,回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提).
 
 **目标:** 成为最优秀的安全资源框架
 
@@ -23,7 +23,7 @@
 
 **项目地址** https://github.com/No-Github/1earn
 
-该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议。
+该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议.
 
 ---
 
@@ -31,12 +31,11 @@
 ### 安全
 
 - **[Power-PenTest](./1earn/安全/Power-PenTest.md)** : 记录渗透资源/知识点  `注: 该文档是连接其下各个目录子文件的树`
-- **[Speed-PenTest](./1earn/安全/Speed-PenTest.md)** : 渗透测试时的思路 `注: 我一般会直接复制一副作为参考、信息记录、方便团队协作、出报告等😜`
 
 ### 运维
 
 - **Linux**
-    - **[God-Linux](./1earn/运维/Linux/God-Linux.md)** : 记录一些 linux 下的骚操作,收集的较少，后面会慢慢添加
+    - **[God-Linux](./1earn/运维/Linux/God-Linux.md)** : 记录一些 linux 下的骚操作,收集的较少,后面会慢慢添加
     - **[Power-Linux](./1earn/运维/Linux/Power-Linux.md)** : 配置指南,记录各种服务搭建与配置过程
     - **[Secure-Linux](./1earn/运维/Linux/Secure-Linux.md)** : 记录自己优化 linux 服务器性能与问题排查时用到的命令
     - **[Speed-Linux](./1earn/运维/Linux/Speed-Linux.md)** : 命令速查手册,记录各种基本命令操作
@@ -78,7 +77,7 @@
 
 ## 建议和吐槽
 
-`本项目所有文档均在 VScode 编辑器中编写，故只兼容 VScode 侧边预览的 markdown 语法，暂不考虑兼容其他编辑器的 md 语法`
+`本项目所有文档均在 VScode 编辑器中编写,故只兼容 VScode 侧边预览的 markdown 语法,暂不考虑兼容其他编辑器的 md 语法`
 
 ~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是 clone 到本地阅读,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
@@ -95,7 +94,7 @@
 
 以下是我平日收集知识与资源的渠道
 - [每日一文](https://meiriyiwen.com/)
-- [喷嚏网----阅读、发现和分享：8小时外的健康生活！](https://www.dapenti.com/blog/index.asp)
+- [喷嚏网----阅读、发现和分享:8小时外的健康生活!](https://www.dapenti.com/blog/index.asp)
 - [Nicolas Krassas](https://twitter.com/Dinosn)
 - [Binni Shah](https://twitter.com/binitamshah)
 - [360CERT](https://cert.360.cn/daily)
@@ -124,7 +123,7 @@
 - [小众软件](http://www.appinn.com/)
 - [反斗软件](http://www.apprcn.com/)
 - [免費資源網路社群 – 免費資源指南,每日網路資訊與科技新知](https://free.com.tw/)
-- [异次元软件世界 - 软件改变生活！](http://www.iplaysoft.com/)
+- [异次元软件世界 - 软件改变生活!](http://www.iplaysoft.com/)
 - [V2EX](https://www.v2ex.com/)
 - [看雪安全论坛](http://bbs.pediy.com/)
 
@@ -152,4 +151,4 @@
 
 ## 免责声明
 
-`本人撰写的手册，仅供学习和研究使用，请勿使用文中的技术源码用于非法用途，任何人造成的任何负面影响，与本人无关。`
+`本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`

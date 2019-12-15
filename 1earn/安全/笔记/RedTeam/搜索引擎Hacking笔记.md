@@ -4,12 +4,12 @@
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
 **文章**
-- [【渗透神器系列】搜索引擎](https://thief.one/2017/05/19/1/)
+- [[渗透神器系列]搜索引擎](https://thief.one/2017/05/19/1/)
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
 - [shodan-manual](https://b404.gitbooks.io/shodan-manual/)
 - [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
@@ -19,7 +19,7 @@
 - 包含多个关键字: `allintitle:关键字 关键字2`
 - 搜索特定类型的文件: `关键字 filetype:扩展名` 例如 `人类简史 filetype:pdf`
 - 搜索特定网站的内容: `关键字 site:网址`
-- 排除不想要的结果: `关键字 - 排查条件`,例如搜索 “运动相机”,但只想看 GoPro 品牌以外的产品 `运动相机 -GoPro`
+- 排除不想要的结果: `关键字 - 排查条件`,例如搜索 "运动相机",但只想看 GoPro 品牌以外的产品 `运动相机 -GoPro`
 - 双引号的用处:例如: `"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
 
 **常用搜索接口**
@@ -33,6 +33,7 @@ http://so.51cto.com/?keywords=
 ---
 
 # github
+
 **例子**
 - 敏感信息
     ```
@@ -54,11 +55,11 @@ http://so.51cto.com/?keywords=
     - [重名top500](../../../../assets/file/安全/重名top500.txt)
 
 - 地名
-    - [modood/Administrative-divisions-of-China: 中华人民共和国行政区划：省级（省份直辖市自治区）、 地级（城市）、 县级（区县）、 乡级（乡镇街道）、 村级（村委会居委会） ，中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫。](https://github.com/modood/Administrative-divisions-of-China)
+    - [modood/Administrative-divisions-of-China: 中华人民共和国行政区划:省级(省份直辖市自治区)、 地级(城市)、 县级(区县)、 乡级(乡镇街道)、 村级(村委会居委会) ,中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫.](https://github.com/modood/Administrative-divisions-of-China)
 
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
-- [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具，例如密码，私钥
+- [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具,例如密码,私钥
 - [gwen001/github-search](https://github.com/gwen001/github-search)
 - [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit)
 
@@ -68,7 +69,7 @@ https://usersnap.com/ | Usersnap - Customer Feedback & Visual Bug Tracking
 https://www.assembla.com/home | Secure Git, Secure Software Development in the Cloud | Assembla
 https://osdn.net/ | Develop and Download Open Source Software - OSDN
 https://gitee.com/ | 码云 Gitee — 基于 Git 的代码托管和研发协作平台
-https://xiaolvyun.baidu.com/#page1 | 百度效率云 | Git代码托管，版本管理，项目管理，持续集成，持续交付，研发工具云端解决方案
+https://xiaolvyun.baidu.com/#page1 | 百度效率云 | Git代码托管,版本管理,项目管理,持续集成,持续交付,研发工具云端解决方案
 https://sourceforge.net/ | SourceForge - Download, Develop and Publish Free Open Source Software
 https://launchpad.net/ | Launchpad
 https://bitbucket.org/ | Bitbucket | The Git solution for professional teams
@@ -80,7 +81,8 @@ https://github.com/ | GitHub
 ---
 
 # google
-**资源**
+
+**搜索语法合集**
 - [Google Hacking Database](https://www.exploit-db.com/google-hacking-database)
 - [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
 
@@ -173,23 +175,23 @@ https://github.com/ | GitHub
         site:xxx.com ext:bkf | ext:bkp | ext:bak | extld | ext:backup
 
     SQL错误
-        site:xxx.com intext:”sql syntax near” | intext:”syntax error has occurred” | intext:”incorrect syntax near” | intext:”unexpected end of SQL command” | intext:”Warning: mysql_connect()” | intext:”Warning: mysql_query()” | intext:”Warning: pg_connect()”
+        site:xxx.com intext:"sql syntax near" | intext:"syntax error has occurred" | intext:"incorrect syntax near" | intext:"unexpected end of SQL command" | intext:"Warning: mysql_connect()" | intext:"Warning: mysql_query()" | intext:"Warning: pg_connect()"
 
     公开文件信息
         site:xxx.com ext:doc | ext:docx | extdt | ext:pdf | ext:rtf | ext:sxw | ext:psw | ext:ppt | ext:pptx | ext:pps | ext:csv
 
     phpinfo()
-        site:xxx.com ext:php intitle:phpinfo “published by the PHP Group”
+        site:xxx.com ext:php intitle:phpinfo "published by the PHP Group"
 
     JIRA
         配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
-        此查询列出了其URI中具有“UserPickerBrowser”的所有URL，以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能。
+        此查询列出了其URI中具有"UserPickerBrowser"的所有URL,以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能.
 
         inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
-        此查询列出了所有在其URI中具有“Managefilters”并且文本为“Public”的URL，以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器。
+        此查询列出了所有在其URI中具有"Managefilters"并且文本为"Public"的URL,以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器.
 
         inurl:/ConfigurePortalPages!default.jspa?view=popular
-        此查询列出其URI中具有“ConfigurePortalPages”的所有URL，以查找公开公开的所有JIRA仪表板。
+        此查询列出其URI中具有"ConfigurePortalPages"的所有URL,以查找公开公开的所有JIRA仪表板.
     ```
 
     ```
@@ -206,19 +208,26 @@ https://github.com/ | GitHub
 
 - https://www.shodan.io
 
+**手册**
+- [shodan-manual](https://b404.gitbooks.io/shodan-manual/content/)
+
+**文章**
+- [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
+- [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
+
 **语法**
 ```bash
-hostname：搜索指定的主机或域名,例如 hostname:"google"
-port：搜索指定的端口或服务,例如 port:"21"
-country：搜索指定的国家,例如 country:"CN"
-city：搜索指定的城市,例如 city:"Hefei"
-org：搜索指定的组织或公司,例如 org:"google"
-isp：搜索指定的ISP供应商,例如 isp:"China Telecom"
-product：搜索指定的操作系统/软件/平台,例如 product:"Apache httpd"
-version：搜索指定的软件版本,例如 version:"1.6.2"
-geo：搜索指定的地理位置,参数为经纬度,例如 geo:"31.8639, 117.2808"
-before/after：搜索指定收录时间前后的数据,格式为dd-mm-yy,例如 before:"11-11-15"
-net：搜索指定的IP地址或子网,例如 net:"210.45.240.0/24"
+hostname:搜索指定的主机或域名,例如 hostname:"google"
+port:搜索指定的端口或服务,例如 port:"21"
+country:搜索指定的国家,例如 country:"CN"
+city:搜索指定的城市,例如 city:"Hefei"
+org:搜索指定的组织或公司,例如 org:"google"
+isp:搜索指定的ISP供应商,例如 isp:"China Telecom"
+product:搜索指定的操作系统/软件/平台,例如 product:"Apache httpd"
+version:搜索指定的软件版本,例如 version:"1.6.2"
+geo:搜索指定的地理位置,参数为经纬度,例如 geo:"31.8639, 117.2808"
+before/after:搜索指定收录时间前后的数据,格式为dd-mm-yy,例如 before:"11-11-15"
+net:搜索指定的IP地址或子网,例如 net:"210.45.240.0/24"
 ```
 
 **例子**
@@ -288,7 +297,7 @@ port:5900 screenshot.label:loggedin # 无认证vnc
 location.country_code: DE　　# 国家
 protocols: ("23/telnet" or "21/ftp")    # 协议
 tags: scada # 标签
-80.http.get.headers.server：nginx   # 服务器类型版本
+80.http.get.headers.server:nginx   # 服务器类型版本
 autonomous_system.description: University   # 系统描述
 ```
 
@@ -328,18 +337,18 @@ city:tokyo + app:weblogic   # weblogic反序列化来一波？
 
 **语法**
 ```bash
-title="abc" # 从标题中搜索abc。例：标题中有北京的网站。
-header="abc"    # 从http头中搜索abc。例：jboss服务器。
-body="abc"  # 从html正文中搜索abc。例：正文包含Hacked by。
-domain="qq.com" # 搜索根域名带有qq.com的网站。例： 根域名是qq.com的网站。
-host=".gov.cn"  # 从url中搜索.gov.cn,注意搜索要用host作为名称。
-port="443"  # 查找对应443端口的资产。例： 查找对应443端口的资产。
-ip="1.1.1.1"    # 从ip中搜索包含1.1.1.1的网站,注意搜索要用ip作为名称。
-protocol="https"    # 搜索制定协议类型(在开启端口扫描的情况下有效)。例： 查询https协议资产。
-city="Beijing"  # 搜索指定城市的资产。例： 搜索指定城市的资产。
-region="Zhejiang"   # 搜索指定行政区的资产。例： 搜索指定行政区的资产。
-country="CN"    # 搜索指定国家(编码)的资产。例： 搜索指定国家(编码)的资产。
-cert="google.com"   # 搜索证书(https或者imaps等)中带有google.com的资产。
+title="abc" # 从标题中搜索abc.例:标题中有北京的网站.
+header="abc"    # 从http头中搜索abc.例:jboss服务器.
+body="abc"  # 从html正文中搜索abc.例:正文包含Hacked by.
+domain="qq.com" # 搜索根域名带有qq.com的网站.例: 根域名是qq.com的网站.
+host=".gov.cn"  # 从url中搜索.gov.cn,注意搜索要用host作为名称.
+port="443"  # 查找对应443端口的资产.例: 查找对应443端口的资产.
+ip="1.1.1.1"    # 从ip中搜索包含1.1.1.1的网站,注意搜索要用ip作为名称.
+protocol="https"    # 搜索制定协议类型(在开启端口扫描的情况下有效).例: 查询https协议资产.
+city="Beijing"  # 搜索指定城市的资产.例: 搜索指定城市的资产.
+region="Zhejiang"   # 搜索指定行政区的资产.例: 搜索指定行政区的资产.
+country="CN"    # 搜索指定国家(编码)的资产.例: 搜索指定国家(编码)的资产.
+cert="google.com"   # 搜索证书(https或者imaps等)中带有google.com的资产.
 ```
 
 **例子**

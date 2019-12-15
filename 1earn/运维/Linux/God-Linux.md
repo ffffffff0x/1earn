@@ -10,14 +10,14 @@
 ```
 
 <p align="center">
-    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/运维/Linux/God-Linux.jpg" width="70%"></a>
+    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/运维/Linux/God-Linux.jpg" width="60%"></a>
 </p>
 
 ---
 
 # bash
 ``` bash
-# 上一个命令的最后一个参数.例如：上一条命令(vim test.txt),cat !$ = cat test.txt
+# 上一个命令的最后一个参数.例如:上一条命令(vim test.txt),cat !$ = cat test.txt
 !$
 
 # 以 root 身份运行最后一个命令
@@ -35,7 +35,7 @@ yum list 1 > /dev/null
 # 优雅的使用 linux
 alias please="sudo"
 
-# 没用但有趣的东西。
+# 没用但有趣的东西.
 P=(' ' █ ░ ▒ ▓)
 while :;do printf "\e[$[RANDOM%LINES+1];$[RANDOM%COLUMNS+1]f${P[$RANDOM%5]}";done
 ```
@@ -76,7 +76,3 @@ let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xarg
 无 root 权限,保存编辑的文件
 :w !sudo tee %
 ```
-
----
-
-`真实的、永恒的、最高级的快乐,只能从三样东西中取得：工作、自我克制和爱.(罗曼·罗兰《托尔斯泰传》) `

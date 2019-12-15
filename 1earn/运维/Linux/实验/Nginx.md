@@ -26,7 +26,7 @@ firewall-cmd --reload
 
 **反向代理**
 
-反向代理（Reverse Proxy）方式是指以代理服务器来接受 internet 上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给 internet 上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。
+反向代理(Reverse Proxy)方式是指以代理服务器来接受 internet 上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给 internet 上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器.
 
 ```vim
 cd /usr/local/nginx/conf
@@ -52,9 +52,9 @@ server {
         proxy_connect_timeout      300; #nginx跟后端服务器连接超时时间(代理连接超时)
         proxy_send_timeout         300; #后端服务器数据回传时间(代理发送超时)
         proxy_read_timeout         300; #连接成功后，后端服务器响应时间(代理接收超时)
-        proxy_buffer_size          4k; #设置代理服务器（nginx）保存用户头信息的缓冲区大小
+        proxy_buffer_size          4k; #设置代理服务器(nginx)保存用户头信息的缓冲区大小
         proxy_buffers              4 32k; #proxy_buffers缓冲区，网页平均在32k以下的话，这样设置
-        proxy_busy_buffers_size    64k; #高负荷下缓冲大小（proxy_buffers*2）
+        proxy_busy_buffers_size    64k; #高负荷下缓冲大小(proxy_buffers*2)
         proxy_temp_file_write_size 64k; #设定缓存文件夹大小，大于这个值，将从upstream服务器传
     }
 }

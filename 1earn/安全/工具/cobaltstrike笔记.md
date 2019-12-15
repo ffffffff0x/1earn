@@ -1,0 +1,43 @@
+# cobaltstrike 笔记
+
+---
+
+## 免责声明
+
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
+
+---
+
+**官网**
+- https://www.cobaltstrike.com/
+
+**使用**
+- 服务端
+
+    `./teamserver <你的IP> <你的密码>`
+
+- 客户端
+
+    `java -Dfile.encoding=UTF-8 -javaagent:CobaltStrikeCN.jar -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -jar cobaltstrike.jar`
+
+    或
+
+    `javaw -Dfile.encoding=UTF-8 -javaagent:CobaltStrikeCN.jar -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -jar cobaltstrike.jar`
+
+**文章**
+- [cobalt strike 快速上手 [ 一 ] - FreeBuf专栏·攻防之路](https://www.freebuf.com/column/149236.html)
+- [教你修改cobalt strike的50050端口 - 3HACK](https://www.3hack.com/note/96.html)
+- [ryanohoro/csbruter: Cobalt Strike team server password brute force tool](https://github.com/ryanohoro/csbruter)
+
+**爆破 cobaltstrike teamserver**
+```bash
+git clone https://github.com/ryanohoro/csbruter
+cd csbruter
+cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
+```
+
+**工具**
+- [rmikehodges/cs-ssl-gen](https://github.com/rmikehodges/cs-ssl-gen) sslgen 将安装一个 letsencrypt 证书并从中创建一个 Cobalt Strike 密钥库.
+- [QAX-A-Team/LuWu](https://github.com/QAX-A-Team/LuWu) - 快速在 VPS 部署 C等服务
+- [DeEpinGh0st/Erebus](https://github.com/DeEpinGh0st/Erebus) CobaltStrike 后渗透测试插件
+- [uknowsec/SharpToolsAggressor](https://github.com/uknowsec/SharpToolsAggressor) - 内网渗透中常用的c#程序整合成cs脚本,直接内存加载.

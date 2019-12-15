@@ -1,12 +1,12 @@
 # Kioptrix4 通关笔记
 
-- 笔记内容由 [xidaner](https://github.com/xidaner) 提供，我仅作部分内容修改
+- 笔记内容由 [xidaner](https://github.com/xidaner) 提供,我仅作部分内容修改
 
 ---
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
@@ -16,7 +16,7 @@
 
 ![image](../../../assets/img/安全/实验/Kioptrix4/1.png)
 
-在虚拟机中要先接入到和 kali 一个网段中。然后我们要知道这个虚拟机的 ip 地址，就要用到 IP 探活。
+在虚拟机中要先接入到和 kali 一个网段中.然后我们要知道这个虚拟机的 ip 地址,就要用到 IP 探活.
 
 ```
 nmap -sP <你虚拟机网卡的网段> /24
@@ -24,7 +24,7 @@ nmap -sP <你虚拟机网卡的网段> /24
 
 ![image](../../../assets/img/安全/实验/Kioptrix4/2.png)
 
-可以发现网段中一共有 4 个 ip 地址，除去本机和 kali 剩下的就是靶机的 ip 地址
+可以发现网段中一共有 4 个 ip 地址,除去本机和 kali 剩下的就是靶机的 ip 地址
 
 ---
 
@@ -35,11 +35,11 @@ nmap 192.168.17.130
 
 ![image](../../../assets/img/安全/实验/Kioptrix4/3.png)
 
-可以发现，目标打开了 80 端口
+可以发现,目标打开了 80 端口
 
 ![image](../../../assets/img/安全/实验/Kioptrix4/4.png)
 
-目测可以注入,尝试了简单 payload，下面选择直接跑 sqlmap
+目测可以注入,尝试了简单 payload,下面选择直接跑 sqlmap
 
 ---
 ---
@@ -48,7 +48,7 @@ nmap 192.168.17.130
 # 中期
 ## sql注入
 
-代码：
+代码:
 
 ```
 sqlmap -u http://192.168.17.130/checklogin.php
@@ -125,7 +125,7 @@ select sys_exec('usermod -a -G admin john');
 ![image](../../../assets/img/安全/实验/Kioptrix4/17.png)
 ![image](../../../assets/img/安全/实验/Kioptrix4/18.png)
 
-在我们退出去后，尝试登陆到 root
+在我们退出去后,尝试登陆到 root
 
 ![image](../../../assets/img/安全/实验/Kioptrix4/19.png)
 

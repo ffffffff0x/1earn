@@ -4,7 +4,7 @@
 
 ## 免责声明
 
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关。`
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
 
@@ -47,11 +47,11 @@
 
 - 文件协议读取
 
-    其前提是得知道网站应用的绝对路径（物理路径）：
+    其前提是得知道网站应用的绝对路径(物理路径):
 
     `Payload: http://www.test.com/test.php?file=file://D:/Server/htdocs/test/upload/hourse.jpg&x=phpinfo()`
 
-    结果和上面一样，只是地址栏链接不一样。
+    结果和上面一样,只是地址栏链接不一样.
 
 - 压缩包文件读取
 
@@ -61,15 +61,15 @@
 
 - phar:// 相对路径运行 PHP 文件
 
-    当我们想要运行自己的 PHP 文件，该咋做呐？通过文件包含（include,require 这类函数），首先构造一个这样的文件，将 webshell.php 添加到压缩文件 .zip，然后将压缩包后缀名改为 .jpg 反正合法的文件后缀即可（一般的操作是这样的，当只能上传图片的时候），最后使用 phar:// 按照相对路径读取并执行文件。
+    当我们想要运行自己的 PHP 文件,该咋做呐？通过文件包含(include,require 这类函数),首先构造一个这样的文件,将 webshell.php 添加到压缩文件 .zip,然后将压缩包后缀名改为 .jpg 反正合法的文件后缀即可(一般的操作是这样的,当只能上传图片的时候),最后使用 phar:// 按照相对路径读取并执行文件.
 
-    `Payload：http://www.test.php?file=phar://upload/shell.jpg/shell.php?x=phpinfo()`
+    `Payload:http://www.test.php?file=phar://upload/shell.jpg/shell.php?x=phpinfo()`
 
 - 读取源码
 
-    当我们没法儿上传文件，但是又想读取文件的源码来寻找别的漏洞从而进一步利用该怎么做呐？同样的利用 php://filter/ 协议可以实现，要注意的是，因为编码问题，一般我们会将读取的文件先 Base64 编码一下输出：
+    当我们没法儿上传文件,但是又想读取文件的源码来寻找别的漏洞从而进一步利用该怎么做呐？同样的利用 php://filter/ 协议可以实现,要注意的是,因为编码问题,一般我们会将读取的文件先 Base64 编码一下输出:
 
-    `Payload：http://www.test.com/test.php?file=php://filter/read=convert.base64-encode/resource=upload/shell.php`
+    `Payload:http://www.test.com/test.php?file=php://filter/read=convert.base64-encode/resource=upload/shell.php`
 
 ---
 
@@ -90,11 +90,11 @@ IIS 6.0 解析利用方法有两种
 
     `wooyun.asp;.jpg `
 
-第一种，在网站下建立文件夹的名字为 .asp、.asa 的文件夹，其目录内的任何扩展名的文件都被 IIS 当作 asp 文件来解析并执行。
+第一种,在网站下建立文件夹的名字为 .asp、.asa 的文件夹,其目录内的任何扩展名的文件都被 IIS 当作 asp 文件来解析并执行.
 
-例如创建目录 wooyun.asp，那么 `/wooyun.asp/1.jpg` 将被当作 asp 文件来执行。假设黑阔可以控制上传文件夹路径,就可以不管你上传后你的图片改不改名都能拿 shell 了。
+例如创建目录 wooyun.asp,那么 `/wooyun.asp/1.jpg` 将被当作 asp 文件来执行.假设黑阔可以控制上传文件夹路径,就可以不管你上传后你的图片改不改名都能拿 shell 了.
 
-第二种，在 IIS6.0 下，分号后面的不被解析，也就是说 `wooyun.asp;.jpg` 会被服务器看成是wooyun.asp
+第二种,在 IIS6.0 下,分号后面的不被解析,也就是说 `wooyun.asp;.jpg` 会被服务器看成是wooyun.asp
 
 还有 IIS6.0 默认的可执行文件除了 asp 还包含这三种
 ```
@@ -112,7 +112,7 @@ IIS 6.0 解析利用方法有两种
 ## Nginx
 **Nginx <8.03 畸形解析漏洞**
 
-在默认 Fast-CGI 开启状况下,黑阔上传一个名字为 wooyun.jpg，内容为
+在默认 Fast-CGI 开启状况下,黑阔上传一个名字为 wooyun.jpg,内容为
 
 `<?PHP fputs(fopen('shell.php','w'),'<?php eval($_POST[cmd])?>');?>`
 
@@ -120,7 +120,7 @@ IIS 6.0 解析利用方法有两种
 
 - **案例**
     - [用友软件某分站SQL注入漏洞+nginx解析漏洞](http://www.anquan.us/static/bugs/wooyun-2013-032250.html)
-    - [新浪网分站多处安全漏洞（nginx解析+SQL注射等）小礼包 ](http://www.anquan.us/static/bugs/wooyun-2013-021064.html)
+    - [新浪网分站多处安全漏洞(nginx解析+SQL注射等)小礼包 ](http://www.anquan.us/static/bugs/wooyun-2013-021064.html)
     - [kingsoft.com某x级域名nginx解析漏洞+爆路径 ](http://www.anquan.us/static/bugs/wooyun-2013-019253.html)
 
 **Nginx <8.03 空字节代码执行漏洞**
@@ -133,34 +133,34 @@ Nginx 在图片中嵌入 PHP 代码然后通过访问 `xxx.jpg%00.php` 来执行
 
 Apache 是从右到左开始判断解析,如果为不可识别解析,就再往左判断.
 
-比如 wooyun.php.owf.rar “.owf”和”.rar” 这两种后缀是 apache 不可识别解析,apache 就会把 wooyun.php.owf.rar 解析成 php.
+比如 wooyun.php.owf.rar ".owf"和".rar" 这两种后缀是 apache 不可识别解析,apache 就会把 wooyun.php.owf.rar 解析成 php.
 
-如何判断是不是合法的后缀就是这个漏洞的利用关键,测试时可以尝试上传一个 wooyun.php.rara.jpg.png…（把你知道的常见后缀都写上…）去测试是否是合法后缀
+如何判断是不是合法的后缀就是这个漏洞的利用关键,测试时可以尝试上传一个 wooyun.php.rara.jpg.png…(把你知道的常见后缀都写上…)去测试是否是合法后缀
 
 - **案例**
     - [安卓开发平台存在上传漏洞和 Apache 解析漏洞,成功获取 webshell](http://www.anquan.us/static/bugs/wooyun-2013-018433.html)
 
 **.htaccess**
 
-如果在 Apache 中 .htaccess 可被执行.且可被上传.那可以尝试在 .htaccess 中写入: `<FilesMatch "wooyun.jpg"> SetHandler application/x-httpd-php </FilesMatch>` 然后再上传 shell.jpg 的木马, 这样 shell.jpg 就可解析为 php 文件。
+如果在 Apache 中 .htaccess 可被执行.且可被上传.那可以尝试在 .htaccess 中写入: `<FilesMatch "wooyun.jpg"> SetHandler application/x-httpd-php </FilesMatch>` 然后再上传 shell.jpg 的木马, 这样 shell.jpg 就可解析为 php 文件.
 
 **CVE-2017-15715 Apache HTTPD 换行解析漏洞**
 
-其 2.4.0~2.4.29 版本中存在一个解析漏洞，在解析 PHP 时，1.php\x0A 将被按照 PHP 后缀进行解析，导致绕过一些服务器的安全策略。
+其 2.4.0~2.4.29 版本中存在一个解析漏洞,在解析 PHP 时,1.php\x0A 将被按照 PHP 后缀进行解析,导致绕过一些服务器的安全策略.
 
-原理：在解析 PHP 时，1.php\x0A 将被按照 PHP 后缀进行解析。
+原理:在解析 PHP 时,1.php\x0A 将被按照 PHP 后缀进行解析.
 
 用 hex 功能在 1.php 后面添加一个 \x0A
 
 ![image](../../../../assets/img/安全/笔记/RedTeam/web常见漏洞笔记/1.png)
 
-访问 http://10.10.10.131:8080/1.php%0A ，成功解析
+访问 http://10.10.10.131:8080/1.php%0A ,成功解析
 
 ---
 
 ## 其他
 
-在 windows 环境下，`xx.jpg[空格]` 或 `xx.jpg.` 这两类文件都是不允许存在的，若这样命名，windows 会默认除去空格或点,黑客可以通过抓包，在文件名后加一个空格或者点绕过黑名单.若上传成功，空格和点都会被 windows 自动消除,这样也可以 getshell。
+在 windows 环境下,`xx.jpg[空格]` 或 `xx.jpg.` 这两类文件都是不允许存在的,若这样命名,windows 会默认除去空格或点,黑客可以通过抓包,在文件名后加一个空格或者点绕过黑名单.若上传成功,空格和点都会被 windows 自动消除,这样也可以 getshell.
 
 ---
 
@@ -211,7 +211,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 ## DS_Store 文件泄漏
 **简介**
 
-.DS_Store 文件 MAC 系统是用来存储这个文件夹的显示属性的：比如文件图标的摆放位置.如果用户删除以后的副作用就是这些信息的失去.
+.DS_Store 文件 MAC 系统是用来存储这个文件夹的显示属性的:比如文件图标的摆放位置.如果用户删除以后的副作用就是这些信息的失去.
 
 这些文件本来是给 Finder 使用的,但它们被设想作为一种更通用的有关显示设置的元数据存储,诸如图标位置和视图设置. 当你需要把代码上传的时候,安全正确的操作应该把 .DS_Store 文件删除才正确.
 
@@ -239,13 +239,13 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 WEB-INF 是 Java 的 WEB 应用的安全目录.该目录原则上来说是客户端无法访问,只有服务端才可以可以访问.如果想在页面中直接访问其中的文件,必须通过 web.xml 文件对要访问的文件进行相应映射才能访问.
 
-WEB-INF 主要包含一下文件或目录：
+WEB-INF 主要包含一下文件或目录:
 ```
-/WEB-INF/web.xml：Web 应用程序配置文件,描述了 servlet 和其他的应用组件配置及命名规则；
-/WEB-INF/classes/：含了站点所有用的 class 文件,包括 servlet class 和非 servlet class,他们不能包含在 .jar 文件中；
-/WEB-INF/lib/：存放 web 应用需要的各种 JAR 文件,放置仅在这个应用中要求使用的 jar 文件 , 如数据库驱动 jar 文件；
-/WEB-INF/src/：源码目录,按照包名结构放置各个 java 文件；
-/WEB-INF/database.properties：数据库配置文件.
+/WEB-INF/web.xml:Web 应用程序配置文件,描述了 servlet 和其他的应用组件配置及命名规则;
+/WEB-INF/classes/:含了站点所有用的 class 文件,包括 servlet class 和非 servlet class,他们不能包含在 .jar 文件中;
+/WEB-INF/lib/:存放 web 应用需要的各种 JAR 文件,放置仅在这个应用中要求使用的 jar 文件 , 如数据库驱动 jar 文件;
+/WEB-INF/src/:源码目录,按照包名结构放置各个 java 文件;
+/WEB-INF/database.properties:数据库配置文件.
 ```
 不过在一些特定的场合却会让攻击者能读取到其中的内容,从而造成源码泄露.
 
@@ -285,7 +285,7 @@ WEB-INF 主要包含一下文件或目录：
 
 ## JS 敏感信息泄露
 **文章**
-- [JS 敏感信息泄露：不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
+- [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
 
 ---
 
@@ -311,7 +311,7 @@ WEB-INF 主要包含一下文件或目录：
 
 # SSRF
 
-很多 web 应用都提供了从其他的服务器上获取数据的功能。使用用户指定的 URL，web 应用可以获取图片，下载文件，读取文件内容等。这个功能如果被恶意使用，可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器。这种形式的攻击称为服务端请求伪造攻击（Server-side Request Forgery）。
+很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
 
 **文章**
 - [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)

@@ -6,7 +6,7 @@
 
 ## 大纲
 
-`注: 未对 gitbook 页面链接跳转进行优化,见谅`
+`注: 未对 gitbook 页面链接跳转进行优化`
 
 **工具箱**
 
@@ -378,7 +378,7 @@
 **JS加密/解密**
 - http://tool.chinaz.com/tools/scriptencode.aspx
 
-**颜文字加密（aadecode）**
+**颜文字加密(aadecode)**
 - https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html
 - http://utf-8.jp/public/aaencode.html
 

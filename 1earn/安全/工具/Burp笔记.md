@@ -14,7 +14,7 @@
 **资源**
 - [Mr-xn/BurpSuite-collections](https://github.com/Mr-xn/BurpSuite-collections)
 
-**书**
+**教程**
 - [Burp Suite 实战指南](https://t0data.gitbooks.io/burpsuite/content/)
 
 **tips**
@@ -98,6 +98,9 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 > 即时操作 JWT，自动执行针对 JWT 的常见攻击
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B)
+
+> 验证码识别接口调用插件
+- [c0ny1/captcha-killer](https://github.com/c0ny1/captcha-killer)
 
 ---
 
@@ -280,9 +283,9 @@ Burp 允许您创建多个代理侦听器,并提供了大量配置选项来控�
 
     它有下列选项可供设置:
     - 使用自签名证书(Use a self-signed certificate ) —— 一个简单的自签名 SSL 证书呈现给您的浏览器,它总是会导致 SSL 警告.
-    - 生成每个主机的CA签名证书(Generate CA-signed per-host certificates)—— 这是默认选项.在安装时,Burp创造了一个独特的自签名的证书颁发机构(CA)证书,并将此计算机上使用.当你的浏览器发出的SSL连接指定主机,Burp生成该主机的SSL证书,由CA证书签名.您可以安装Burp的CA证书作为浏览器中的受信任的根,从而使每个主机证书没有任何警报接受.
-    - 生成与特定的主机名CA签发的证书(Generate a CA-signed certificate with a specific hostname)—— -是类似于前面的选项;不同的是,Burp会生成一个主机证书与每一个SSL连接使用,使用指定的主机名.
-    - 使用自定义证书(Use a custom certificate)—— 此选项可以加载一个特定的证书(在PKCS＃12格式)呈现给浏览器.如果应用程序使用这需要一个特定的服务器证书(例如,与给定的序列号或证书链)的客户端应该使用这个选项.
+    - 生成每个主机的 CA 签名证书(Generate CA-signed per-host certificates)—— 这是默认选项.在安装时,Burp 创造了一个独特的自签名的证书颁发机构(CA)证书,并将此计算机上使用.当你的浏览器发出的 SSL 连接指定主机,Burp 生成该主机的 SSL 证书,由 CA 证书签名.您可以安装 Burp 的 CA 证书作为浏览器中的受信任的根,从而使每个主机证书没有任何警报接受.
+    - 生成与特定的主机名 CA 签发的证书(Generate a CA-signed certificate with a specific hostname)—— -是类似于前面的选项;不同的是,Burp 会生成一个主机证书与每一个 SSL 连接使用,使用指定的主机名.
+    - 使用自定义证书(Use a custom certificate)—— 此选项可以加载一个特定的证书(在 PKCS＃12 格式)呈现给浏览器.如果应用程序使用这需要一个特定的服务器证书(例如,与给定的序列号或证书链)的客户端应该使用这个选项.
 
 **SSL Pass Through**
 

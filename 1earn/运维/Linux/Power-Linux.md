@@ -1737,11 +1737,6 @@ Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核�
 
 Tomcat 依赖 JDK,在安装 Tomcat 之前需要先安装 Java JDK.输入命令 java -version,如果显示 JDK 版本,证明已经安装了 JDK
 
-默认情况下,CentOS 安装有 JDK,一般先卸载掉
-```bash
-rpm -qa | grep jdk    # 查询本地 JDK
-```
-
 JDK 安装过程 见 [如下](##JDK)
 
 下载 Tomcat 安装包 https://tomcat.apache.org/download-80.cgi 将安装包上传至服务器,我这里以 8.5.46 为例
@@ -1832,8 +1827,8 @@ chkconfig --add /etc/rc.d/init.d/tomcat
 - manager-status - 仅允许访问状态页面
 
 ```bash
-service tomcat start
 service tomcat stop
+service tomcat start
 ```
 
 如果爆 403 错误,就注释掉 Tomcat/webapps/manager/META-INF/context.xml 文件中内容
@@ -2438,7 +2433,9 @@ OCI 下载地址:https://www.oracle.com/database/technologies/instant-client/dow
 
 **安装**
 
-`yum install -y mariadb mariadb-server`
+```bash
+yum install -y mariadb mariadb-server
+```
 
 **数据库初始化**
 ```bash
@@ -3294,21 +3291,20 @@ rpm -ivh jdk-****.rpm
 这里以 `jdk-8u212-linux-x64.tar.gz` 举例
 
 ```bash
-bash
 tar -xzvf jdk-8u212-linux-x64.tar.gz
-mv jdk1.8.0_212/ /usr/local/lib/jvm/
-cd /usr/local/lib/
-mv jvm jdk
-mv jdk jdk1.8
-export JAVA_HOME=/usr/local/lib/jdk1.8/
 
-export JRE_HOME=JAVAHOME/jreexportCLASSPATH=.:{JAVA_HOME}/lib:JREHOME/libexportPATH={JAVA_HOME}/bin:$PATH
-update-alternatives --install /usr/bin/java java /usr/local/lib/jdk1.8/bin/java 1
-update-alternatives --install /usr/bin/javac javac /usr/local/lib/jdk1.8/bin/javac 1
+mkdir /usr/local/java/
 
-update-alternatives --set java /usr/local/lib/jdk1.8/bin/java
+mv jdk1.8.0_212/ /usr/local/java
 
-update-alternatives --set javac /usr/local/lib/jdk1.8/bin/javac
+export JAVA_HOME=/usr/local/java/jdk1.8.0_212
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
+
+source /etc/profile
+
+ln -s /usr/local/java/jdk1.8.0_212/bin/java /usr/bin/java
 ```
 
 **测试**
@@ -3370,14 +3366,26 @@ python3 -V
 pip3 -V
 ```
 
-**加速**
-- [pip](../../Plan/Misc-Plan.md#pip)
-
 ### pip3
 ```
 wget https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
 ```
+
+**加速**
+- [pip](../../Plan/Misc-Plan.md#pip)
+
+**pip 指定版本安装**
+
+检查一遍 pip 和 pip3 分别指向的 Python
+```bash
+pip -V
+pip3 -V
+```
+
+在 linux 安装了多版本 python 时(例如 python2.6 和 2.7),pip 安装的包不一定是用户想要的位置,此时可以用 -t 选项来指定位置
+
+`pip install -t /usr/local/lib/python2.7/site-packages/ docker`
 
 ---
 
@@ -3388,7 +3396,6 @@ python3 get-pip.py
 
 **安装**
 
-注:在 Ubuntu 下有点问题,不建议用 Ubuntu 做运维环境
 下载 ruby 安装包,并进行编译安装
 ```bash
 wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.2.tar.gz
@@ -3909,32 +3916,27 @@ docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
 
 Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
-- **Ubuntu Install**
-  ```bash
-  sudo yum install epel-release
-  sudo yum install -y python-pip
-  sudo pip install docker-compose
-  sudo yum upgrade python*
-  docker-compose version
-  ```
+去下载二进制包 https://github.com/docker/compose/releases
 
-- **其他系统**
+然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行:`chmod +x /usr/local/bin/docker-compose`
 
-  去下载二进制包 https://github.com/docker/compose/releases
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
 
-  然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行:`chmod +x /usr/local/bin/docker-compose`
+```bash
+docker-compose build
+docker-compose up -d
+docker-compose stop
+```
 
-  ```bash
-  docker-compose build
-  docker-compose up -d
-  docker-compose stop
-  ```
-
-  ```bash
-  docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
-  docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
-  docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
-  ```
+```bash
+docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
+docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
+docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
+docker-compose exec <service> sh
+```
 
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
@@ -3957,7 +3959,7 @@ zookeeper 支持两种运行模式:独立模式(standalone)和复制模式(repli
 这里配置的为 `独立模式`
 
 ```bash
-wget http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
+wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz
 mkdir /usr/local/zookeeper
 tar -zxvf zookeeper-3.4.14.tar.gz -C /usr/local/zookeeper/
 

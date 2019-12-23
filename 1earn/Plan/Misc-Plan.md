@@ -140,7 +140,7 @@ npm config delete proxy  # 取消代理
 
 - 永久修改,一劳永逸:
     1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
-    ```vim
+    ```bash
     mkdir -p ~/.pip/
     ```
     ```bash

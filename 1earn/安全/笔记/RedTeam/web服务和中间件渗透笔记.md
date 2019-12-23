@@ -283,7 +283,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [hatRiot/clusterd](https://github.com/hatRiot/clusterd)
 - [matthiaskaiser/jmet](https://github.com/matthiaskaiser/jmet) - Java Message Exploitation Tool
 
-## ActiveMQ
+## Apache ActiveMQ
 
 > 官网 : https://activemq.apache.org/
 
@@ -535,6 +535,7 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 **CVE-2019-0232**
 - 文章
     - [CVE-2019-0232:Apache Tomcat RCE漏洞分析](https://xz.aliyun.com/t/4875)
+    - [复现CVE-2019-0232过程中遇到的坑 Apache Tomcat高危远程代码执行漏洞](http://www.nmd5.com/?p=375)
 
 - POC | Payload | exp
     - [pyn3rd/CVE-2019-0232](https://github.com/pyn3rd/CVE-2019-0232)
@@ -551,12 +552,15 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 **未授权访问漏洞**
 
 - `http://<ip>:9200`
+- `http://<ip>:9200/_cat/indices?v` 查看当前节点的所有 Index
+- `http://<ip>:9200/_search?pretty=true` 查询所有的 index, type
+- `curl http://localhost:9200/_nodes` 查看节点数据
 
 **CVE-2014-3120 ElasticSearch 命令执行漏洞**
 
 - 简述
 
-    -老版本 ElasticSearch 支持传入动态脚本 (MVEL) 来执行一些复杂的操作,而 MVEL 可执行 Java 代码,而且没有沙盒,所以我们可以直接执行任意代码.
+    老版本 ElasticSearch 支持传入动态脚本 (MVEL) 来执行一些复杂的操作,而 MVEL 可执行 Java 代码,而且没有沙盒,所以我们可以直接执行任意代码.
 
 - POC | Payload | exp
 
@@ -660,9 +664,9 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
     来源: https://vulhub.org/#/environments/elasticsearch/CVE-2015-3337/
 
-    `http://your-ip:9200/_plugin/head/../../../../../../../../../etc/passwd` (不要在浏览器访问)
+    - `http://your-ip:9200/_plugin/head/../../../../../../../../../etc/passwd` (不要在浏览器访问)
 
-    `http://your-ip:9200/_plugin/head/`
+    - `http://your-ip:9200/_plugin/head/`
 
 **CVE-2015-5531**
 
@@ -812,13 +816,17 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
 **未授权访问漏洞**
 
-- `http://<ip>:8080/jmx-console`
+- 简述
+
+    部分版本 JBoss 默认情况下访问 http://ip:8080/jmx-console 就可以浏览 JBoss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马有安全隐患。
+
+    - `http://<ip>:8080/jmx-console`
 
 **CVE-2016-7065 Red Hat JBoss EAP - Deserialization of Untrusted Data**
 - POC | Payload | exp
     - [Red Hat JBoss EAP - Deserialization of Untrusted Data](https://www.exploit-db.com/exploits/40842)
 
-**CVE-2017-12149 jboss反序列化**
+**CVE-2017-12149 JBoss 5.x/6.x 反序列化漏洞**
 - POC | Payload | exp
     - [yunxu1/jboss-_CVE-2017-12149](https://github.com/yunxu1/jboss-_CVE-2017-12149)
     - [jreppiks/CVE-2017-12149](https://github.com/jreppiks/CVE-2017-12149)
@@ -1068,6 +1076,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [MyTools/CVE-2019-2725](https://github.com/No4l/MyTools/tree/master/CVE-2019-2725)
     - [skytina/CNVD-C-2019-48814-COMMON](https://github.com/skytina/CNVD-C-2019-48814-COMMON)
     - [lufeirider/CVE-2019-2725](https://github.com/lufeirider/CVE-2019-2725)
+    - [black-mirror/Weblogic](https://github.com/black-mirror/Weblogic) - Weblogic CVE-2019-2725 CVE-2019-2729 Getshell 命令执行
 
 **CVE-2019-2890 WebLogic 反序列化RCE**
 - POC | Payload | exp
@@ -1182,9 +1191,11 @@ FCKeditor/_samples/asp/sample04.asp
 
 ---
 
-## Confluence
+## Atlassian Confluence
 
 > 官网 : https://www.atlassian.com/software/confluence
+
+Confluence 是一个专业的企业知识管理与协同软件，也可以用于构建企业 wiki。使用简单，强大的编辑和站点管理特征能够帮助团队成员之间共享信息、文档协作、集体讨论，信息推送。
 
 **CVE-2019-3398 Atlassian Confluence Download Attachments Remote Code Execution**
 - POC | Payload | exp
@@ -1192,74 +1203,31 @@ FCKeditor/_samples/asp/sample04.asp
 
 ---
 
-## Harbor
+## Atlassian Crowd
 
-> 官网 : https://goharbor.io/
+> 官网 : https://www.atlassian.com/software/crowd
 
-Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
+Atlassian Crowd 是一套基于 Web 的单点登录系统。该系统为多用户、网络应用程序和目录服务器提供验证、授权等功能。Atlassian Crowd Data Center 是 Crowd 的集群部署版。
 
-**CVE-2019-3990 User Enumeration Vulnerability**
-- POC | Payload | exp
-    ```
-    GET /api/users/search?email=@test
-    .com
-        => {"code":400,"message":"username is required"}
+**Atlassian Crowd 未授权访问漏洞**
 
-    GET /api/users/search?username=t
-        => User Enumeration
-    ```
-
----
-
-## Jenkins
-
-> 官网 : https://jenkins.io/
-
-**资源**
-- [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
-- [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
-- [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
-- [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
-
-**CVE-2017-1000353**
-- POC | Payload | exp
-    - [vulhub/CVE-2017-1000353](https://github.com/vulhub/CVE-2017-1000353)
-
-**CVE-2018-1000861**
 - 简述
 
-    Jenkins 使用 Stapler 框架开发,其允许用户通过 URL PATH 来调用一次 public 方法.由于这个过程没有做限制,攻击者可以构造一些特殊的 PATH 来执行一些敏感的 Java 方法.
+    Atlassian Crowd 和 Crowd Data Center 在其某些发行版本中错误地启用了 pdkinstall 开发插件，使其存在安全漏洞。攻击者利用该漏洞可在未授权访问的情况下对 Atlassian Crowd 和 Crowd Data Center 安装任意的恶意插件，执行任意代码/命令，从而获得服务器权限。
 
-    通过这个漏洞,我们可以找到很多可供利用的利用链.其中最严重的就是绕过 Groovy 沙盒导致未授权用户可执行任意命令:Jenkins 在沙盒中执行 Groovy 前会先检查脚本是否有错误,检查操作是没有沙盒的,攻击者可以通过 Meta-Programming 的方式,在检查这个步骤时执行任意命令.
+- 文章
+    - [Analysis of an Atlassian Crowd RCE - CVE-2019-11580](https://www.corben.io/atlassian-crowd-rce/)
 
 - POC | Payload | exp
-    - [orangetw/awesome-jenkins-rce-2019](https://github.com/orangetw/awesome-jenkins-rce-2019)
-
-**CVE-2018-1999001**
-- 文章
-    - [Jenkins配置文件路径改动导致管理员权限开放漏洞(CVE-2018-1999001) ](https://mp.weixin.qq.com/s/O_Ni4Xlsi4uHRcyv3SeY5g)
-
-**CVE-2018-1999002**
-- 文章
-    - [安全研究 | Jenkins 任意文件读取漏洞分析](https://bbs.ichunqiu.com/thread-43283-1-1.html)
-
-**cve-2019-1003000**
-- 文章
-    - [Jenkins未授权访问RCE漏洞复现记录 | angelwhu_blog](https://www.angelwhu.com/blog/?p=539)
-    - [Jenkins RCE CVE-2019-1003000 漏洞复现](https://blog.51cto.com/13770310/2352740)
-
-- POC | Payload | exp
-    - [adamyordan/cve-2019-1003000-jenkins-rce-poc: Jenkins RCE Proof-of-Concept: SECURITY-1266 / CVE-2019-1003000 (Script Security), CVE-2019-1003001 (Pipeline: Groovy), CVE-2019-1003002 (Pipeline: Declarative)](https://github.com/adamyordan/cve-2019-1003000-jenkins-rce-poc)
-
-**CVE-2019-10320**
-- 文章
-    - [Exploring the File System via Jenkins Credentials Plugin Vulnerability – CVE-2019-10320 | Nightwatch Cybersecurity](https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-via-jenkins-credentials-plugin-vulnerability-cve-2019-10320/)
+    - [jas502n/CVE-2019-11580](https://github.com/jas502n/CVE-2019-11580)
 
 ---
 
-## Jira
+## Atlassian Jira
 
 > 官网 : https://www.atlassian.com/software/jira
+
+JIRA 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集、流程审批、任务跟踪、项目跟踪和敏捷管理等工作领域。
 
 jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13085
 
@@ -1270,7 +1238,7 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
 **CVE-2019-8442 Jira 未授权敏感信息泄露**
 - 简介
 
-    Atlassian Jira是澳大利亚Atlassian公司的一套缺陷跟踪管理系统.该系统主要用于对工作中各类问题、缺陷进行跟踪管理. Atlassian Jira 7.13.4之前版本、8.0.4之前版本和8.1.1之前版本中的CachingResourceDownloadRewriteRule类存在安全漏洞.远程攻击者可利用该漏洞访问Jira webroot中的文件.
+    Atlassian Jira 是澳大利亚 Atlassian 公司的一套缺陷跟踪管理系统.该系统主要用于对工作中各类问题、缺陷进行跟踪管理. Atlassian Jira 7.13.4 之前版本、8.0.4 之前版本和 8.1.1 之前版本中的CachingResourceDownloadRewriteRule 类存在安全漏洞.远程攻击者可利用该漏洞访问 Jira webroot 中的文件.
 
 - POC | Payload | exp
     - https://note.youdao.com/ynoteshare1/index.html?id=4189e6fb21fb097a4109ac22f33b16cb&type=note
@@ -1333,6 +1301,100 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
 
 ---
 
+## Harbor
+
+> 官网 : https://goharbor.io/
+
+Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
+
+**CVE-2019-3990 User Enumeration Vulnerability**
+- POC | Payload | exp
+    ```
+    GET /api/users/search?email=@test
+    .com
+        => {"code":400,"message":"username is required"}
+
+    GET /api/users/search?username=t
+        => User Enumeration
+    ```
+
+---
+
+## Jenkins
+
+> 官网 : https://jenkins.io/
+
+**资源**
+- [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
+- [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
+- [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
+- [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
+
+**未授权访问漏洞**
+- 简述
+
+    默认情况下 Jenkins 面板中用户可以选择执行脚本界面来操作一些系统层命令，攻击者可通过未授权访问漏洞或者暴力破解用户密码等进入后台管理服务，通过脚本执行界面从而获取服务器权限。
+
+- 文章
+    - [知其一不知其二之Jenkins Hacking](https://www.secpulse.com/archives/2166.html)
+
+- 利用
+
+    `http://<IP>:8080/manage`
+
+**CVE-2017-1000353**
+- POC | Payload | exp
+    - [vulhub/CVE-2017-1000353](https://github.com/vulhub/CVE-2017-1000353)
+
+**CVE-2018-1000861**
+- 简述
+
+    Jenkins 使用 Stapler 框架开发,其允许用户通过 URL PATH 来调用一次 public 方法.由于这个过程没有做限制,攻击者可以构造一些特殊的 PATH 来执行一些敏感的 Java 方法.
+
+    通过这个漏洞,我们可以找到很多可供利用的利用链.其中最严重的就是绕过 Groovy 沙盒导致未授权用户可执行任意命令:Jenkins 在沙盒中执行 Groovy 前会先检查脚本是否有错误,检查操作是没有沙盒的,攻击者可以通过 Meta-Programming 的方式,在检查这个步骤时执行任意命令.
+
+- POC | Payload | exp
+    - [orangetw/awesome-jenkins-rce-2019](https://github.com/orangetw/awesome-jenkins-rce-2019)
+
+**CVE-2018-1999001**
+- 文章
+    - [Jenkins配置文件路径改动导致管理员权限开放漏洞(CVE-2018-1999001) ](https://mp.weixin.qq.com/s/O_Ni4Xlsi4uHRcyv3SeY5g)
+
+**CVE-2018-1999002**
+- 文章
+    - [安全研究 | Jenkins 任意文件读取漏洞分析](https://bbs.ichunqiu.com/thread-43283-1-1.html)
+
+**cve-2019-1003000**
+- 文章
+    - [Jenkins未授权访问RCE漏洞复现记录 | angelwhu_blog](https://www.angelwhu.com/blog/?p=539)
+    - [Jenkins RCE CVE-2019-1003000 漏洞复现](https://blog.51cto.com/13770310/2352740)
+
+- POC | Payload | exp
+    - [adamyordan/cve-2019-1003000-jenkins-rce-poc: Jenkins RCE Proof-of-Concept: SECURITY-1266 / CVE-2019-1003000 (Script Security), CVE-2019-1003001 (Pipeline: Groovy), CVE-2019-1003002 (Pipeline: Declarative)](https://github.com/adamyordan/cve-2019-1003000-jenkins-rce-poc)
+
+**CVE-2019-10320**
+- 文章
+    - [Exploring the File System via Jenkins Credentials Plugin Vulnerability – CVE-2019-10320 | Nightwatch Cybersecurity](https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-via-jenkins-credentials-plugin-vulnerability-cve-2019-10320/)
+
+---
+
+## Jupyter Notebook
+
+> 官网 : https://jupyter.org/
+
+Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记本，支持运行 40 多种编程语言。
+
+**未授权访问漏洞**
+- 简述
+
+    如果管理员未为 Jupyter Notebook 配置密码，将导致未授权访问漏洞，游客可在其中创建一个 console 并执行任意 Python 代码和命令。
+
+- 示例
+
+    `http://<IP>:8888`
+
+---
+
 ## Nexus
 
 > 官网 : https://www.sonatype.com/product-nexus-repository
@@ -1388,7 +1450,7 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
 
     打开目标 phpMyAdmin 的登录页面,地址输入 db:3307、用户名、密码,提交登录.
 
-    回到db的终端,如果文件读取成功会将文件内容记录到 mysql.log 文件中
+    回到 db 的终端,如果文件读取成功会将文件内容记录到 mysql.log 文件中
 
 **phpMyAdmin 4.7.x CSRF**
 - 文章

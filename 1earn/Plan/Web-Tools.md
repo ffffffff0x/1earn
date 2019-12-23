@@ -1,12 +1,11 @@
 # Web-Tools
 
-`所有网页不保证其可用性、安全性,未收任何广告费用,请大胆食用😜`
+- `所有网页不保证其可用性、安全性,未收任何广告费用,请大胆食用😜`
+- `由于内容太多,不定期更新`
 
 ---
 
 ## 大纲
-
-`注: 未对 gitbook 页面链接跳转进行优化`
 
 **工具箱**
 
@@ -68,11 +67,6 @@
     * [网站排行](#网站排行)
 * [随机](#随机)
 * [身份生成](#身份生成)
-* [邮箱-信息](#邮箱-信息)
-    * [查邮箱存活](#查邮箱存活)
-    * [短信接码](#短信接码)
-    * [临时邮箱](#临时邮箱)
-    * [匿名邮箱](#匿名邮箱)
 
 ---
 
@@ -689,79 +683,3 @@
 - http://jbjb.zouri.jp/
 - http://jsrun.net/square?page=1&s=%E8%BA%AB%E4%BB%BD%E8%AF%81%E5%8F%B7
 - https://id.ifreesite.com/
-
----
-
-## 邮箱-信息
-### 查邮箱存活
-- http://tool.chacuo.net/mailverify
-- https://verify-email.org/
-- http://www.emailcamel.com/
-
-### 短信接码
-- https://www.chenweiliang.com/cwl-558.html
-- https://51.ruyo.net/7789.html
-- https://miracletele.com/sms/
-- http://sms.sellaite.com/
-- https://catchsms.com/
-- https://www.freeonlinephone.org/
-- https://smsnumbersonline.com/
-- https://www.textnow.com/
-- https://www.receive-a-sms.com/
-- http://receive-sms-now.com/
-- https://receive-sms.com/
-- https://www.receive-sms-online.info/
-- https://sms-online.co/receive-free-sms
-- http://receive-sms-online.com/
-- http://receivefreesms.com/
-- https://www.receivesmsonline.net/
-- https://smsreceivefree.com/
-- https://receive-a-sms.com/
-- http://www.afreesms.com/freesms/
-- https://textfree.us/#/login
-- https://www.pdflibr.com/
-- https://sms-empfangen.com/
-- https://sms.cngrok.com/receiving-sms
-- https://yunduanxin.net/
-- https://shouduanxin.com/
-- https://www.becmd.com/
-- http://www.z-sms.com/
-- http://www.114sim.com/
-- https://shouduanxin.com/en/
-- http://www.345sms.com/
-- https://receiveasms.com/
-- https://www.gsmchecker.com/receive-sms-online
-- http://receivesmsverification.com/
-- http://smsget.net/en
-- https://hs3x.com/
-- https://www.receivesms.net/
-- http://receivesmsonline.com/
-- http://freesmsverification.com/
-- https://sms.ndtan.net/
-- https://receivefreesms.net/
-- http://freereceivesmsonline.com/
-- http://receivesmsonline.in/
-- https://www.visitorsms.com/
-
-### 临时邮箱
-- http://www.yopmail.com/zh/
-- http://gfan.gvoice.men/
-- https://10minutemail.com/
-- https://10minutemail.net/
-- http://mail.bccto.me/
-- http://www.bccto.me/
-- https://www.guerrillamail.com/zh/inbox
-- http://www.fakemailgenerator.com/#/dayrep.com/Firly1970/
-- https://tutanota.com/
-- https://temp-mail.org/en/
-- https://www.guerrillamail.com/
-- http://tool.chacuo.net/mailsend
-- https://binmail.co/home
-- https://maildrop.cc/
-- http://tool.chacuo.net/mailanonymous
-- https://tempmail.altmails.com/
-
-### 匿名邮箱
-- https://mail.protonmail.com/inbox
-- https://www.openmailbox.org/
-- https://www.fastmail.com/

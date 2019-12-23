@@ -182,6 +182,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **工具**
 - [lijiejie/BBScan](https://github.com/lijiejie/BBScan)
+- [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH)
 
 ## 目录遍历
 **案例**
@@ -293,6 +294,9 @@ WEB-INF 主要包含一下文件或目录:
 **文章**
 - [CSRF 的攻击与防御](http://www.secbox.cn/hacker/5742.html)
 
+**案例**
+- [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
+
 ---
 
 # http参数污染
@@ -335,5 +339,15 @@ WEB-INF 主要包含一下文件或目录:
 ---
 
 # CRLF Injection
-**文章**
+**案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
+
+---
+
+# CORS漏洞
+**文章**
+- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
+
+**案例**
+- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
+- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)

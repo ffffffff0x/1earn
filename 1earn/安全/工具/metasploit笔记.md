@@ -30,6 +30,25 @@ db_rebuild_cache
 
 ---
 
+## 基本使用
+
+```
+banner                          # 打印 banner
+color <'true'|'false'|'auto'>   # 切换颜色显示
+back                            # 返回
+use                             # 指定模块
+options                         # 查看模块选项
+info                            # 查看模块信息
+sessions                        # 查看会话
+jobs                            # 显示当前运行进程
+kill                            # 结束进程
+reload_all                      # 重新加载所有模块
+search                          # 搜索模块
+version                         # 显示当前版本
+```
+
+---
+
 ## 维护
 **安装**
 
@@ -54,7 +73,6 @@ deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
 ```
 
 也可以直接使用 `msfupdate`
-
 
 **添加一个新的 exploit**
 
@@ -115,7 +133,7 @@ exploit -j  # 后台执行
 
 **注意事项**
 
-如果meterpreter session 创建成功了,但很快就断连,此时应该修改使用的 payload,优先改成 generic/shell_reverse_tcp 等
+如果 meterpreter session 创建成功了,但很快就断连,此时应该修改使用的 payload,优先改成 generic/shell_reverse_tcp 等
 
 如果还不成功,切换回连端口或者改成 bind shell 试试
 

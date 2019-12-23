@@ -8,7 +8,15 @@
 
 ---
 
-> 官网 : https://www.kali.org/downloads/
+**官网**
+- https://www.kali.org/downloads/
+
+**教程**
+- [Kali-learning-notes Wiki](https://github.com/Keybird0/Kali-learning-notes/wiki)
+- [Kali Linux 渗透测试的艺术（中文版）](https://jobrest.gitbooks.io/kali-linux-cn/content/table_of_contents.html)
+- [大学霸 Kali Linux 安全渗透教程](https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/)
+
+---
 
 # 安装
 **更新系统**
@@ -91,6 +99,18 @@ python3 get-pip.py
 
 pip install pyinstaller
 ```
+
+**pip 指定版本安装**
+
+检查一遍 pip 和 pip3 分别指向的 Python
+```bash
+pip -V
+pip3 -V
+```
+
+在 linux 安装了多版本 python 时(例如 python2.6 和 2.7),pip 安装的包不一定是用户想要的位置,此时可以用 -t 选项来指定位置
+
+`pip install -t /usr/local/lib/python2.7/site-packages/ docker`
 
 ---
 

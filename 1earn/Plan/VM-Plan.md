@@ -79,10 +79,9 @@ yum install open-vm-tools-devel -y
 - lrzsz
 - wget
 - unzip
-- docker
-- docker-Compose
-- python3
-- pip3
+- [docker](../运维/Linux/Power-Linux.md#docker)
+- [docker-Compose](../运维/Linux/Power-Linux.md#Docker-Compose)
+- [Python](../运维/Linux/Power-Linux.md#Python3)
 - [proxychains-ng](../运维/Linux/Power-Linux.md#proxychains-ng)
 - [bash-insulter](../运维/Linux/Speed-Linux.md#常用软件)
 

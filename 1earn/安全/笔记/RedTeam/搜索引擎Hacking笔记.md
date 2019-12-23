@@ -32,6 +32,18 @@ http://so.51cto.com/?keywords=
 
 ---
 
+# 快照
+
+- http://2tool.top/
+- https://archive.org/
+
+**例子**
+```
+https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
+```
+
+---
+
 # github
 
 **例子**
@@ -85,6 +97,7 @@ https://github.com/ | GitHub
 **搜索语法合集**
 - [Google Hacking Database](https://www.exploit-db.com/google-hacking-database)
 - [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
+- [BullsEye0/google_dork_list](https://github.com/BullsEye0/google_dork_list)
 
 **例子**
 - **常见语法**
@@ -125,7 +138,7 @@ https://github.com/ | GitHub
     inurl:service.pwd
     ```
 
-- **黑产seo关键词**
+- **黑产 seo 关键词**
     ```
     老虎机 site:*.gov.cn
     澳门银行 site:*.gov.cn
@@ -184,14 +197,14 @@ https://github.com/ | GitHub
         site:xxx.com ext:php intitle:phpinfo "published by the PHP Group"
 
     JIRA
-        配置错误的JIRA设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
-        此查询列出了其URI中具有"UserPickerBrowser"的所有URL,以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能.
+        配置错误的 JIRA 设置  inurl:/UserPickerBrowser.jspa -intitle:Login -intitle:Log
+        此查询列出了其 URI 中具有"UserPickerBrowser"的所有 URL,以查找公开而且不需要经过身份验证的所有配置错误的 JIRA 用户选择器功能.
 
         inurl:/ManageFilters.jspa?filterView=popular AND ( intext:All users OR intext:Shared with the public OR intext:Public )
-        此查询列出了所有在其URI中具有"Managefilters"并且文本为"Public"的URL,以便找到所有公开暴露且未经过身份验证的错误配置的JIRA过滤器.
+        此查询列出了所有在其 URI 中具有"Managefilters"并且文本为"Public"的 URL,以便找到所有公开暴露且未经过身份验证的错误配置的 JIRA 过滤器.
 
         inurl:/ConfigurePortalPages!default.jspa?view=popular
-        此查询列出其URI中具有"ConfigurePortalPages"的所有URL,以查找公开公开的所有JIRA仪表板.
+        此查询列出其 URI 中具有"ConfigurePortalPages"的所有 URL,以查找公开公开的所有 JIRA 仪表板.
     ```
 
     ```
@@ -237,19 +250,22 @@ misc
 Server: uc-httpd 1.0.0 200 OK Country:"JP"
 h3c net:"61.191.146.0/24"
 country:US vuln:CVE-2014-0160
-port:135,139,445 -hash:0    # 过滤一些主文本标题为空的搜索结果
-Hikvision-Webs  # 海康威视
+port:135,139,445 -hash:0                        # 过滤一些主文本标题为空的搜索结果
+Hikvision-Webs                                  # 海康威视
 
 database
-all:"mongodb server information" all:"metrics"  # 开放Mongodb数据库
-port:27017 -all:"partially" all:"fs.files"  # 有点存货的Mongodb数据库
-port:"9200" all:"elastic indices"   # 开放ElasticSearch数据库
+all:"mongodb server information" all:"metrics"  # 开放 Mongodb 数据库
+port:27017 -all:"partially" all:"fs.files"      # 有点存货的 Mongodb 数据库
+port:"9200" all:"elastic indices"               # 开放 ElasticSearch 数据库
 
 ftp
-230 'anonymous@' login ok   # 开放匿名ftp
+230 'anonymous@' login ok                       # 开放匿名ftp
 
 vnc
-port:5900 screenshot.label:loggedin # 无认证vnc
+port:5900 screenshot.label:loggedin             # 无认证vnc
+
+rtsp
+port:554 has_screenshot:true                    # rtsp 未授权访问
 ```
 
 **外部工具/脚本**
@@ -291,13 +307,13 @@ port:5900 screenshot.label:loggedin # 无认证vnc
 
 **例子**
 ```bash
-23.0.0.0/8 or 8.8.8.0/24    # 可以使用and or not
-80.http.get.status_code: 200    # 指定状态
-80.http.get.status_code:[200 TO 300]    # 200-300之间的状态码
-location.country_code: DE　　# 国家
-protocols: ("23/telnet" or "21/ftp")    # 协议
-tags: scada # 标签
-80.http.get.headers.server:nginx   # 服务器类型版本
+23.0.0.0/8 or 8.8.8.0/24                    # 可以使用and or not
+80.http.get.status_code: 200                # 指定状态
+80.http.get.status_code:[200 TO 300]        # 200-300之间的状态码
+location.country_code: DE                   # 国家
+protocols: ("23/telnet" or "21/ftp")        # 协议
+tags: scada                                 # 标签
+80.http.get.headers.server:nginx            # 服务器类型版本
 autonomous_system.description: University   # 系统描述
 ```
 
@@ -309,19 +325,19 @@ autonomous_system.description: University   # 系统描述
 
 **语法**
 ```bash
-app:nginx   # 组件名
-ver:1.0 # 版本
-os:windows  # 操作系统
-country:"China" # 国家
-city:"hangzhou" # 城市
-port:80 # 端口
-hostname:google # 主机名
-site:google.com # 网站域名
-desc:nmask  # 描述
-keywords:passwd # 关键词
-service:ftp # 服务类型
-ip:8.8.8.8  # ip地址
-cidr:8.8.8.8/24 # ip地址段
+app:nginx           # 组件名
+ver:1.0             # 版本
+os:windows          # 操作系统
+country:"China"     # 国家
+city:"hangzhou"     # 城市
+port:80             # 端口
+hostname:google     # 主机名
+site:google.com     # 网站域名
+desc:nmask          # 描述
+keywords:passwd     # 关键词
+service:ftp         # 服务类型
+ip:8.8.8.8          # ip地址
+cidr:8.8.8.8/24     # ip地址段
 ```
 
 **例子**
@@ -337,17 +353,17 @@ city:tokyo + app:weblogic   # weblogic反序列化来一波？
 
 **语法**
 ```bash
-title="abc" # 从标题中搜索abc.例:标题中有北京的网站.
-header="abc"    # 从http头中搜索abc.例:jboss服务器.
-body="abc"  # 从html正文中搜索abc.例:正文包含Hacked by.
-domain="qq.com" # 搜索根域名带有qq.com的网站.例: 根域名是qq.com的网站.
-host=".gov.cn"  # 从url中搜索.gov.cn,注意搜索要用host作为名称.
-port="443"  # 查找对应443端口的资产.例: 查找对应443端口的资产.
-ip="1.1.1.1"    # 从ip中搜索包含1.1.1.1的网站,注意搜索要用ip作为名称.
+title="abc"         # 从标题中搜索 abc.例:标题中有北京的网站.
+header="abc"        # 从 http 头中搜索abc.例:jboss服务器.
+body="abc"          # 从 html 正文中搜索abc.例:正文包含Hacked by.
+domain="qq.com"     # 搜索根域名带有qq.com的网站.例: 根域名是qq.com的网站.
+host=".gov.cn"      # 从 url 中搜索.gov.cn,注意搜索要用host作为名称.
+port="443"          # 查找对应 443 端口的资产.例: 查找对应443端口的资产.
+ip="1.1.1.1"        # 从ip中搜索包含 1.1.1.1 的网站,注意搜索要用ip作为名称.
 protocol="https"    # 搜索制定协议类型(在开启端口扫描的情况下有效).例: 查询https协议资产.
-city="Beijing"  # 搜索指定城市的资产.例: 搜索指定城市的资产.
+city="Beijing"      # 搜索指定城市的资产.例: 搜索指定城市的资产.
 region="Zhejiang"   # 搜索指定行政区的资产.例: 搜索指定行政区的资产.
-country="CN"    # 搜索指定国家(编码)的资产.例: 搜索指定国家(编码)的资产.
+country="CN"        # 搜索指定国家(编码)的资产.例: 搜索指定国家(编码)的资产.
 cert="google.com"   # 搜索证书(https或者imaps等)中带有google.com的资产.
 ```
 

@@ -132,4 +132,3 @@ chkconfig   # 查看开机启动服务命令
 ls /etc/init.d  # 查看开机启动配置文件命令
 cat /etc/rc.local   # 查看 rc 启动文件
 ```
-

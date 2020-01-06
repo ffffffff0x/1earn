@@ -2408,13 +2408,13 @@ setenforce 0
 
 `注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下,使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
 
-**注 : 报错ORA-28547:connection to server failed, probable Oracle Net admin error**
+**注 : 报错 ORA-28547:connection to server failed, probable Oracle Net admin error**
 
 oci.dll 版本不对.因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的,Oracle 的客户端分为两种,一种是标准版,一种是简洁版,即 Oracle Install Client.而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI,如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时,多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的.
 
-OCI 下载地址:https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压instantclient-basic-win-x64
+OCI 下载地址 : https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压 instantclient-basic-win-x64
 
-打开navicat,一次选择:工具->选项->环境-->OCI环境,选择刚才解压好的 instantclient-basic-win-x64 目录中的 oci.dll 文件即可,重启 navicat
+打开 navicat,一次选择:工具->选项->环境-->OCI 环境,选择刚才解压好的 instantclient-basic-win-x64 目录中的 oci.dll 文件即可,重启 navicat
 
 **注 : 报错 oracle library is not loaded**
 
@@ -2544,7 +2544,7 @@ service postgresql start  # 启动服务
 PostgreSQL 安装完成后,会建立一下 ‘postgres’ 用户,用于执行 PostgreSQL,数据库中也会建立一个 'postgres' 用户,默认密码为自动生成,需要在系统中改一下.
 
 **修改用户密码**
-```
+```bash
 sudo -u postgres psql postgres
 \l                  # 查看当前的数据库列表
 \password postgres  # 给 postgres 用户设置密码

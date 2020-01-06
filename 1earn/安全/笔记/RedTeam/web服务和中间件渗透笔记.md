@@ -71,6 +71,14 @@
 
 > 官网 : https://www.drupal.org/
 
+**CVE-2014-3704 “Drupalgeddon” SQL注入漏洞**
+- 简述
+
+    Drupal 7.0~7.31 版本中存在一处无需认证的 SQL 漏洞。通过该漏洞，攻击者可以执行任意 SQL 语句，插入、修改管理员信息，甚至执行任意代码。
+
+- POC | Payload | exp
+    - https://vulhub.org/#/environments/drupal/CVE-2014-3704/
+
 **CVE-2017-6920 Drupal Core 8 PECL YAML 反序列化任意代码执行漏洞**
 - 简述
 
@@ -79,6 +87,28 @@
 - 文章
     - [CVE-2017-6920:Drupal远程代码执行漏洞分析及POC构造](https://paper.seebug.org/334/)
     - [Drupal Core 8 PECL YAML 反序列化任意代码执行漏洞 (CVE-2017-6920) ](https://vulhub.org/#/environments/drupal/CVE-2017-6920/)
+
+**CVE-2018-7600 Drupal Drupalgeddon 2 远程代码执行漏洞**
+- POC | Payload | exp
+    - https://github.com/vulhub/vulhub/blob/master/drupal/CVE-2018-7600/README.zh-cn.md
+
+**CVE-2018-7602 远程代码执行漏洞**
+- POC | Payload | exp
+    - [Drupal 远程代码执行漏洞（CVE-2018-7602）](https://vulhub.org/#/environments/drupal/CVE-2018-7602/)
+
+**CVE-2019-6339 远程代码执行漏洞**
+- 文章
+    - [Drupal 1-click to RCE 分析](https://paper.seebug.org/897/)
+
+- POC | Payload | exp
+    - https://vulhub.org/#/environments/drupal/CVE-2019-6339/
+
+**CVE-2019-6341 XSS**
+- 文章
+    - [Drupal 1-click to RCE 分析](https://paper.seebug.org/897/)
+
+- POC | Payload | exp
+    - https://vulhub.org/#/environments/drupal/CVE-2019-6341/
 
 ---
 
@@ -184,6 +214,9 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 **工具**
 - [wpscanteam/wpscan](https://github.com/wpscanteam/wpscan)
+
+**WordPress <= 5.3.? DoS**
+- https://github.com/roddux/wordpress-dos-poc
 
 ---
 
@@ -408,11 +441,16 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 **S2-016 & CVE-2013-2251**
 
 **S2-020 & CVE-2014-0094 & CNNVD-201403-191**
+- 文章
+    - [Struts2 S2-020在Tomcat 8下的命令执行分析](https://www.freebuf.com/articles/web/31039.html)
+
+- POC | Payload | exp
+    - https://github.com/coffeehb/Some-PoC-oR-ExP/blob/master/Struts2/S2-020_POC.py
 
 **S2-045 & CVE-2017-5638**
 - 简介
 
-    恶意用户可在上传文件时通过修改HTTP请求头中的Content-Type值来触发该漏洞进而执行系统命令.
+    恶意用户可在上传文件时通过修改 HTTP 请求头中的 Content-Type 值来触发该漏洞进而执行系统命令.
 
 - POC | Payload | exp
     - [tengzhangchao/Struts2_045-Poc](https://github.com/tengzhangchao/Struts2_045-Poc)
@@ -552,9 +590,13 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 **未授权访问漏洞**
 
 - `http://<ip>:9200`
+- `http://<ip>:9200/_plugin/head/` web管理界面
+- `http://<ip>:9200/_cat/indices`
+- `http://<ip>:9200/_river/_search` 查看数据库敏感信息
+- `http://<ip>:9200/_nodes` 查看节点数据
 - `http://<ip>:9200/_cat/indices?v` 查看当前节点的所有 Index
 - `http://<ip>:9200/_search?pretty=true` 查询所有的 index, type
-- `curl http://localhost:9200/_nodes` 查看节点数据
+- `curl http://<ip>:9200/_nodes` 查看节点数据
 
 **CVE-2014-3120 ElasticSearch 命令执行漏洞**
 
@@ -891,7 +933,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [PHP文件包含漏洞 (利用phpinfo) ](https://github.com/vulhub/vulhub/blob/master/php/inclusion/README.md)
     - [LFI with phpinfo](https://github.com/hxer/vulnapp/tree/master/lfi_phpinfo)
 
-**PHP环境 XML外部实体注入漏洞 (XXE)**
+**PHP 环境 XML 外部实体注入漏洞 (XXE)**
 - 简介
 
     libxml2.9.0 以后,默认不解析外部实体.
@@ -902,12 +944,12 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 **XDebug 远程调试漏洞 (代码执行)**
 - 简介
 
-    XDebug是PHP的一个扩展,用于调试PHP代码.如果目标开启了远程调试模式,并设置remote_connect_back = 1:
+    XDebug 是 PHP 的一个扩展,用于调试 PHP 代码.如果目标开启了远程调试模式,并设置 `remote_connect_back = 1`:
     ```
     xdebug.remote_connect_back = 1
     xdebug.remote_enable = 1
     ```
-    这个配置下,我们访问 http://target/index.php?XDEBUG_SESSION_START=phpstorm,目标服务器的 XDebug 将会连接访问者的 IP (或 X-Forwarded-For 头指定的地址) 并通过 dbgp 协议与其通信,我们通过 dbgp 中提供的 eval 方法即可在目标服务器上执行任意 PHP 代码.
+    这个配置下,我们访问 http://target/index.php?XDEBUG_SESSION_START=phpstorm,目标服务器的 XDebug 将会连接访问者的 IP (或 `X-Forwarded-For` 头指定的地址) 并通过 dbgp 协议与其通信,我们通过 dbgp 中提供的 eval 方法即可在目标服务器上执行任意 PHP 代码.
 
 - POC | Payload | exp
     - [XDebug 远程调试漏洞 (代码执行) ](https://github.com/vulhub/vulhub/blob/master/php/xdebug-rce/README.md)
@@ -1158,10 +1200,6 @@ FCKeditor/_samples/asp/sample04.asp
 
 **工具**
 - [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool)
-
-**fastjson-1.2.22 到 fastjson-1.2.24 反序列化导致任意命令执行漏洞**
-- POC | Payload | exp
-    - [fastjson 反序列化导致任意命令执行漏洞](https://vulhub.org/#/environments/fastjson/vuln/)
 
 ---
 
@@ -1469,6 +1507,20 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 
     - `<img src=" http://server/phpmyadmin/setup/index.php?page=servers&mode=remove&id=1" style="display:none;" />`
     - https://www.hedysx.com/bug/2398.html
+
+---
+
+## PHP-FPM
+
+PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说，是一个补丁包 ，旨在将 FastCGI 进程管理整合进 PHP 包中。
+
+**PHP-FPM Fastcgi 未授权访问漏洞**
+- 文章
+    - [Fastcgi协议分析 && PHP-FPM未授权访问漏洞 && Exp编写](https://www.leavesongs.com/PENETRATION/fastcgi-and-php-fpm.html)
+
+- POC | Payload | exp
+    - https://vulhub.org/#/environments/fpm/
+    - [phith0n/fpm.py](https://gist.github.com/phith0n/9615e2420f31048f7e30f3937356cf75)
 
 ---
 

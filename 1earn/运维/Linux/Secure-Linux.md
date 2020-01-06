@@ -634,5 +634,7 @@ net.ipv4.icmp_echo_ignore_all=1
     ```
 
 - **使用 Fail2ban**
-
     - [fail2ban](https://github.com/fail2ban/fail2ban) ,详细搭建步骤请移步 [Power-Linux](./Power-Linux.md##Fail2ban)
+
+- **SSH 陷阱**
+    - [skeeto/endlessh](https://github.com/skeeto/endlessh) - 蓝队 SSH 陷阱

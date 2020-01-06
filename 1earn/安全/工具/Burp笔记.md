@@ -53,10 +53,11 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 > Hackvertor 构造绕过 waf 的 payload 并破解 XOR 加密
 - 商店有
-- [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
+    - [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
 
 > 使用 phantomjs 调用前端加密函数对数据进行加密,方便对加密数据输入点进行 fuzz.
 - [c0ny1/jsEncrypter](https://github.com/c0ny1/jsEncrypter)
+    - [编写加密传输爆破插件jsEncrypter](http://gv7.me/articles/2017/jsEncrypter/)
 
 > Authz 快速探测越权
 - 商店有
@@ -66,7 +67,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > burp官方开发的爆破模块增强版
 - 商店有
 - [PortSwigger/turbo-intruder](https://github.com/portswigger/turbo-intruder)
-- [Turbo Intruder:BurpSuite高速 Intruder 插件介绍](https://www.freebuf.com/sectool/195912.html)
+    - [Turbo Intruder:BurpSuite高速 Intruder 插件介绍](https://www.freebuf.com/sectool/195912.html)
 
 > 从 js 文件中提取隐藏的路径并对其进行美化以便进一步阅读
 - [Lopseg/Jsdir](https://github.com/Lopseg/Jsdir)
@@ -530,3 +531,13 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 ![image](../../../assets/img/安全/工具/burp/15.png)
 
 安装完成的插件,都会显示在插件列表中.
+
+---
+
+# User options
+
+**Upstream Proxy Servers**
+
+![image](../../../assets/img/安全/工具/burp/15.png)
+
+上面描述了需要 burp 走代理的使用情况，同样，在使用一些被动漏扫工具时也可以使用该功能将 burp 的流量转发至被动漏扫工具。

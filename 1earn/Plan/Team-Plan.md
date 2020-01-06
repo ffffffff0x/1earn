@@ -2,6 +2,11 @@
 
 ---
 
+# 团队建设
+- [安全实验室的发展及展望](https://www.freebuf.com/articles/es/211571.html)
+
+---
+
 # 任务分配
 - [Trello](https://trello.com/)
     - 好用,有时需科学上网,免费版够用

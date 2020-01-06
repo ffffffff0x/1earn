@@ -29,17 +29,17 @@ vim /etc/samba/smb.conf
 添加用户,设置密码
 ```bash
 useradd smb1
-smbpasswd ‐a smb1(密码:smb123456)
+smbpasswd -a smb1(密码:smb123456)
 ```
 
 将用户添加到 samba 服务器中，并设置密码
 ```bash
-pdbedit ‐a smb1(密码:smb123456)
+pdbedit -a smb1(密码:smb123456)
 ```
 
 查看 samba 数据库用户
 ```bash
-pdbedit ‐L
+pdbedit -L
 ```
 
 创建共享目录，设置所有者和所属组
@@ -93,9 +93,9 @@ vim /etc/samba/smb.conf
 ```bash
 testparm
 useradd -s /sbin/nologin apache
-smbpasswd ‐a apache(密码:smb123456)
-pdbedit ‐a apache(密码:smb123456)
-pdbedit ‐L
+smbpasswd -a apache(密码:smb123456)
+pdbedit -a apache(密码:smb123456)
+pdbedit -L
 
 mkdir /data/web_data
 cd /data/web_data/
@@ -160,9 +160,9 @@ vim /etc/samba/smb.conf
 ```bash
 testparm
 useradd apache
-smbpasswd ‐a apache(密码:123)
-pdbedit ‐a apache(密码:123)
-pdbedit ‐L
+smbpasswd -a apache(密码:123)
+pdbedit -a apache(密码:123)
+pdbedit -L
 
 mkdir /data/web_data
 cd /data/web_data/

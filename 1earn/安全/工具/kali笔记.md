@@ -34,7 +34,7 @@ apt update && apt -y full-upgrade
 **常用工具**
 ```bash
 apt install lrzsz
-apt install owasp-mantra-ff # owasp 的集成浏览器
+apt install owasp-mantra-ff     # owasp 的集成浏览器
 apt install parallel
 ```
 
@@ -62,7 +62,7 @@ sh VBoxLinuxAdditions.run
 ## powershell
 ```bash
 apt install powershell
-pwsh    # 启动
+pwsh            # 启动
 $PSVersionTable # 测试一下
 ```
 
@@ -92,7 +92,7 @@ update-alternatives --config nc
 ## pip
 ```bash
 apt-get install python-setuptools
-easy_install pip    # 安装 pip
+easy_install pip                            # 安装 pip
 
 wget https://bootstrap.pypa.io/get-pip.py	# 安装 pip3
 python3 get-pip.py
@@ -126,7 +126,7 @@ cd .. && rm -rf proxychains-ng
 ```bash
 vim /etc/proxychains.conf
 
-socks5 127.0.0.1 1080 # 改成你懂的
+socks5 127.0.0.1 1080   # 改成你懂的
 ```
 在需要代理的命令前加上 proxychains4 ,如:`proxychains4 wget https://www.google.com/`
 
@@ -140,12 +140,12 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 ```
 ```bash
-service ssh restart # 启动 ssh
-systemctl enable ssh  # 设置为开机自启
+service ssh restart     # 启动 ssh
+systemctl enable ssh    # 设置为开机自启
 
 # 或
 
-/etc/init.d/ssh start # 启动 ssh
+/etc/init.d/ssh start   # 启动 ssh
 update-rc.d ssh enable  # 设置为开机自启
 ```
 若在使用工具登录时,当输完用户名密码后提示 SSH 服务器拒绝了密码,就再试一遍.
@@ -196,9 +196,9 @@ dpkg -i Nessus-8.8.0-ubuntu1110_amd64.deb
 apt update && apt dist-upgrade -y && reboot
 lspci -v
 apt install -y ocl-icd-libopencl1 nvidia-driver nvidia-cuda-toolkit # 安装OpenCL ICD加载程序,驱动程序和CUDA工具包.
-nvidia-smi  # 验证是否安装成功
-hashcat -I  # 确保是否能和hashcat协同工作
-hashcat -b  # Benchmarking
+nvidia-smi          # 验证是否安装成功
+hashcat -I          # 确保是否能和hashcat协同工作
+hashcat -b          # Benchmarking
 ```
 
 如若不成功,进行故障排除:
@@ -235,7 +235,7 @@ reboot
 检测是否安装成功:
 ```bash
 glxinfo | grep -i "direct rendering"
-direct rendering: Yes       //出现yes安装成功
+direct rendering: Yes   # 出现yes安装成功
 ```
 
 检测原本的 Oclhashcat-plus 是否运行正常:

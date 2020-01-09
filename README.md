@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg?color=brightgreen">
 </p>
 
-> 完事开头难,然后一直开头一直难...
+> 万事开头难,然后一直开头一直难...
 
 <p align="center">
     <img src="./assets/img/readme.jpg">
@@ -146,6 +146,7 @@
 - [the-fog](https://github.com/the-fog)
 - [BeakHyun](https://github.com/Alienware-OWO)
 - [cililianjie](https://github.com/cililianjie)
+- [mfslog](https://github.com/mfslog)
 
 ---
 

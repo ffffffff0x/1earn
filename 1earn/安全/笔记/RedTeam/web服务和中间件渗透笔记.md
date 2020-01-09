@@ -354,6 +354,7 @@ Apache Shiro 是一个功能强大且灵活的开源安全框架,主要功能包
 
 **工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
+- [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce)
 
 **Shiro RememberMe 1.2.4 反序列化漏洞(SHIRO-550)**
 - POC | Payload | exp

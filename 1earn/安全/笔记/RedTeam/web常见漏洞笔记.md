@@ -326,6 +326,7 @@ WEB-INF 主要包含一下文件或目录:
 - [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
 - [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
 - [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
+- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
 
 **案例**
 - [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)

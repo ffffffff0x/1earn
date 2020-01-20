@@ -13,6 +13,12 @@
 
 ---
 
+# 点击劫持
+
+- [click-jacking](https://www.hacksplaining.com/exercises/click-jacking) - 一个简单的讲解关于点击劫持的网站
+
+---
+
 # 任意文件下载-读取
 **案例**
 - [电信某分站配置不当导致敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-095088)
@@ -170,8 +176,10 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 # 文件上传漏洞
 **文章**
-- [简单粗暴的文件上传漏洞](https://paper.seebug.org/560/)(https://mp.weixin.qq.com/s/e1jy-DFOSROmSvvzX_Ge5g)
+- [简单粗暴的文件上传漏洞](https://paper.seebug.org/560/)
+- [BookFresh Tricky File Upload Bypass to RCE](https://secgeek.net/bookfresh-vulnerability/)
 - [Upload_Attack_Framework](https://www.slideshare.net/insight-labs/upload-attack-framework)
+- [关于File Upload的一些思考](https://www.freebuf.com/articles/web/223679.html)
 
 **靶场**
 - [upload-labs](https://github.com/c0ny1/upload-labs)
@@ -288,6 +296,18 @@ WEB-INF 主要包含一下文件或目录:
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
 
+## CORS 漏洞
+**文章**
+- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
+- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
+
+**案例**
+- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
+- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
+
+**工具**
+- [chenjj/CORScanner](https://github.com/chenjj/CORScanner)
+
 ## JS 敏感信息泄露
 **文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
@@ -346,13 +366,3 @@ WEB-INF 主要包含一下文件或目录:
 # CRLF Injection
 **案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
-
----
-
-# CORS漏洞
-**文章**
-- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
-
-**案例**
-- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
-- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)

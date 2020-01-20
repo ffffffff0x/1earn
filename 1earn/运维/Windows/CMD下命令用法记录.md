@@ -2,6 +2,14 @@
 
 ---
 
+**永久修改CMD的默认字符集**
+
+regedit
+
+[HKEY_CURRENT_USER\Console] "CodePage"=dword:0000fde9
+
+---
+
 # 网络常用
 **ipconfig**
 ```cmd

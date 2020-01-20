@@ -13,9 +13,18 @@
 
 **资源**
 - [Mr-xn/BurpSuite-collections](https://github.com/Mr-xn/BurpSuite-collections)
+- [snoopysecurity/awesome-burp-extensions](https://github.com/snoopysecurity/awesome-burp-extensions)
 
 **教程**
 - [Burp Suite 实战指南](https://t0data.gitbooks.io/burpsuite/content/)
+
+**文章**
+- [使用 burp suite 进行业务安全测试](https://testerhome.com/topics/15709)
+- [关于Burp Suite不能抓包的解决方法](https://blog.csdn.net/u011781521/article/details/54971084)
+- [商业web漏扫神器——burp suite篇详解](https://blog.csdn.net/dongfei2033/article/details/78323010)
+- [使用 Burp suite 爆破 HTTP Basic 认证](https://xiaix.me/shi-yong-burp-suite-bao-po-http-basic-ren-zheng/)
+- [kali 安装新版本burp 以及不能使用重新安装jdk的解决方法](https://blog.csdn.net/nzjdsds/article/details/81205184)
+- [Intercepting HSTS protected traffic using Burp suite and Firefox](https://abhijith.live/intercepting-hsts-protected-traffic-using-burp-suite-and-firefox/)
 
 **tips**
 
@@ -103,9 +112,16 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > 验证码识别接口调用插件
 - [c0ny1/captcha-killer](https://github.com/c0ny1/captcha-killer)
 
+> 通过修改 HTTP 请求头伪造 ip 的插件
+- [TheKingOfDuck/burpFakeIP](https://github.com/TheKingOfDuck/burpFakeIP)
+
+> 从 HTTP 响应中发现资产的 Burp 扩展
+- [redhuntlabs/BurpSuite-Asset_Discover](https://github.com/redhuntlabs/BurpSuite-Asset_Discover)
+
 ---
 
 ## 安装
+
 **windows**
 
 略
@@ -116,12 +132,12 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 安装过程见 [Power-Linux](../../运维/Linux/Power-Linux.md##JDK)
 
-没问题就直接运行即可 `java -jar <burp文件名>.jar
-`
+没问题就直接运行即可 `java -jar <burp文件名>.jar`
 
 ---
 
 ## 配置
+
 **证书**
 
 - **firefox**
@@ -218,6 +234,7 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 # Proxy
 
 ## intercept
+
 **右键--Don't intercept requests**
 
 这里指定满足规则的包,需要忽略
@@ -227,6 +244,7 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 拦截回包
 
 ## Options
+
 **Proxy listeners**
 
 代理侦听器是本地 HTTP 代理服务器,用于侦听来自浏览器的传入连接.它使您能够监视和拦截所有请求和响应,并且是 Burp 用户驱动的工作流程的核心.默认情况下,Burp 在环回接口的端口 8080 上创建一个侦听器.要使用此侦听器,您需要将浏览器配置为使用 127.0.0.1:8080 作为其代理服务器.测试几乎所有基于浏览器的 Web 应用程序都需要此默认侦听器.

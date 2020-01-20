@@ -114,7 +114,8 @@
     invoke-wcmdump
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
-- [Hashcat](https://hashcat.net/hashcat/)
+- [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) -
+对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager系列产品(Xshell,Xftp)。
 
 **文章**
 - [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
@@ -130,38 +131,16 @@
 ---
 
 # 漏洞利用
+
 **资源**
 - [SecWiki/windows-kernel-exploits](https://github.com/SecWiki/windows-kernel-exploits) - Windows 平台提权漏洞集合
 - [WindowsExploits/Exploits](https://github.com/WindowsExploits/Exploits)- Windows Exploits
 
 ---
 
-## 漏洞查询
-**文章**
-- [windows 本地提权对照表](http://www.7kb.org/138.html)
-
-**文件**
-- [BulletinSearch-微软官网提供的漏洞 excel 列表](http://download.microsoft.com/download/6/7/3/673E4349-1CA5-40B9-8879-095C72D5B49D/BulletinSearch.xlsx)
-
-**工具**
-- [GDSSecurity/Windows-Exploit-Suggester](https://github.com/GDSSecurity/Windows-Exploit-Suggester) - 此工具将目标修补程序级别与 Microsoft 漏洞数据库进行比较,以便检测目标上可能缺少的修补程序.
-- [bitsadmin/wesng](https://github.com/bitsadmin/wesng) - Windows Exploit Suggester
-- [tengzhangchao/microsoftSpider](https://github.com/tengzhangchao/microsoftSpider) - 爬取微软漏洞信息,MS 对应的每个版本操作系统 KB 号以及补丁下载地址.
-- [提权辅助网页](https://bugs.hacking8.com/tiquan/)
-- [Windows提权EXP在线搜索工具](http://blog.neargle.com/win-powerup-exp-index/)
-
----
-
 ## 提权
-**CVE-2018-8120**
-- POC | Payload | exp
-    - [unamer/CVE-2018-8120: CVE-2018-8120 Windows LPE exploit](https://github.com/unamer/CVE-2018-8120)
-    - [alpha1ab/CVE-2018-8120: CVE-2018-8120 Exploit for Win2003 Win2008 WinXP Win7](https://github.com/alpha1ab/CVE-2018-8120)
 
-**CVE-2019-1388**
-- 文章
-    - [最新Windows 7安全桌面提权漏洞风险提示与过程披露](https://mp.weixin.qq.com/s/V8GyBxda-JXyv-5D6bR36g)
-    - [Thanksgiving Treat: Easy-as-Pie Windows 7 Secure Desktop Escalation of Privilege](https://www.zerodayinitiative.com/blog/2019/11/19/thanksgiving-treat-easy-as-pie-windows-7-secure-desktop-escalation-of-privilege)
+关于 windows 更多提权内容,见笔记 [提权笔记](./提权笔记.md#win) windows 提权部分
 
 ---
 
@@ -261,3 +240,8 @@
 **CVE-2018-8420 Msxml 解析器的远程代码执行漏洞**
 - POC | Payload | exp
     - [Lz1y/CVE-2018-8420](https://github.com/Lz1y/CVE-2018-8420)
+
+**CVE-2020-0601**
+- POC | Payload | exp
+    - [ollypwn/CVE-2020-0601](https://github.com/ollypwn/CVE-2020-0601)
+    - [kudelskisecurity/chainoffools](https://github.com/kudelskisecurity/chainoffools)

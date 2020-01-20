@@ -140,7 +140,7 @@
 
 以下是直接或间接贡献过本项目的人员名单(排名不分先后)
 - [Survivor_ms](https://github.com/136510385)
-- [hhkk2334](https://www.uiihh.xyz)
+- [hhkk2334](https://www.thesteel.live/)
 - [幻羽灵殇](https://github.com/syl2293686270)
 - [xidaner](https://github.com/xidaner)
 - [the-fog](https://github.com/the-fog)

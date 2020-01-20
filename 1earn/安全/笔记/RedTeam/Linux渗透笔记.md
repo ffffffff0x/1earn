@@ -9,55 +9,14 @@
 ---
 
 # 漏洞利用
-**资源**
-- []()
-- []()
-
-## 漏洞查询
-**工具**
-- [mzet-/linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester)
-- [jondonas/linux-exploit-suggester-2](https://github.com/jondonas/linux-exploit-suggester-2)
-- [InteliSecureLabs/Linux_Exploit_Suggester](https://github.com/InteliSecureLabs/Linux_Exploit_Suggester)
-
----
-
 ## 提权
-**CVE-2016-5195 脏牛 Dirty COW**
-- 影响范围
-    - Linux 内核>=2.6.22(2007年发行),直到2016年10月18日修复
 
-- 文章
-    - [[翻译]从内核角度分析 Dirty Cow 原理](https://bbs.pediy.com/thread-218797.htm)
-
-- POC | Payload | exp
-    - [scumjr/dirtycow-vdso](https://github.com/scumjr/dirtycow-vdso)
-    - [dirtycow/dirtycow.github.io](https://github.com/dirtycow/dirtycow.github.io/wiki/PoCs)
-    - [gbonacini/CVE-2016-5195](https://github.com/gbonacini/CVE-2016-5195)
-
-**CVE-2017–1000405 Huge Dirty COW**
-- 文章
-    - ["Huge Dirty COW" (CVE-2017–1000405)](https://medium.com/bindecy/huge-dirty-cow-cve-2017-1000405-110eca132de0)
-
-- POC | Payload | exp
-    - [bindecy/HugeDirtyCowPOC](https://github.com/bindecy/HugeDirtyCowPOC)
-
-**CVE-2019-14287**
-- 文章
-    - [How to detect CVE-2019-14287 using Falco](https://sysdig.com/blog/detecting-cve-2019-14287/)
-
-- POC | Payload | exp
-    ```bash
-    cat /etc/sudoers | grep "(\s*ALL\s*,\s*\!root\s*)"
-    cat /etc/sudoers | grep "(\s*ALL\s*,\s*\!#0\s*)"
-
-    sudo -u#-1 id -u
-    或者:
-    sudo -u#4294967295 id -u
-    ```
+关于 linux 更多提权内容,见笔记 [提权笔记](./提权笔记.md#linux) linux 提权部分
 
 ---
 
 ## 远程代码执行
+
 **CVE-2014-6271** Bash 远程代码执行漏洞"破壳"
 - 文章
     - [Bash远程代码执行漏洞"破壳"(CVE-2014-6271)分析](https://www.antiy.com/response/CVE-2014-6271.html)
@@ -78,13 +37,29 @@
     use exploit/unix/dhcp/bash_environment
     ```
 
+**CVE-2015-7547**
+- 简介
+
+    Google安全团队发现 glibc 存在的溢出漏洞。glibc 的 DNS 客户端解析器中存在基于栈的缓冲区溢出漏洞。当软件用到 getaddrinfo 库函数（处理名字到地址以及服务到端口的转换）时，攻击者便可借助特制的域名、DNS 服务器或中间人攻击利用该漏洞，控制软件，并试图控制整个系统。
+
+    攻击者使用恶意的 DNS 域名服务器创建类似于 evildomain.com 的域名，然后向目标用户发送带有指向该域名的链接的邮件，一旦用户点击该链接，客户端或浏览器将会开始查找 evildomain.com，并最终得到恶意服务器的 buffer-busting 响应。该域名被嵌入服务器日志中，一旦解析就会触发远程代码执行，SSH 客户端也会因此被控制。或者，位于目标用户网络中的中间人攻击者可以篡改 DNS 响应，向恶意代码中动态注入负载。
+
+    简单的说，只要控制了 linux 服务器所访问的 DNS 服务器，或者对 linux 服务器的流量进行劫持；那么，在 Linux 服务器做 DNS 请求时，恶意 DNS 服务器就可以对 linux 服务器进行远程溢出攻击，获取服务器权限。
+
+- 文章
+    - [CVE-2015-7547 - sevck](https://www.cnblogs.com/sevck/p/5225639.html)
+    - [CVE-2015-7547的漏洞分析](http://blog.nsfocus.net/cve-2015-7547-vulnerability-analysis/)
+
+- POC | Payload | exp
+    - [fjserna/CVE-2015-7547](https://github.com/fjserna/CVE-2015-7547)
+
 **CVE-2018-1111** DHCP 客户端脚本代码执行漏洞
 - 文章
     - [CVE-2018-1111 复现环境搭建与 dhcp 命令注入](https://www.freebuf.com/articles/web/191884.html)
     - [DHCP 客户端脚本代码执行漏洞分析 (CVE-2018-1111) ](https://xz.aliyun.com/t/2455)
 
 - POC | Payload | exp
-    - [ knqyf263/CVE-2018-1111](https://github.com/knqyf263/CVE-2018-1111)
+    - [knqyf263/CVE-2018-1111](https://github.com/knqyf263/CVE-2018-1111)
     - [kkirsche/CVE-2018-1111](https://github.com/kkirsche/CVE-2018-1111)
 
 - 本地利用方法
@@ -108,3 +83,10 @@
     nc -l -p 6666 -v
     ```
     重启 CentOS 的网络服务,然后 shell 就反弹回来了
+
+
+
+
+
+
+

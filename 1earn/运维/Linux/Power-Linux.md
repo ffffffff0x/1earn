@@ -2404,6 +2404,8 @@ setenforce 0
 
 使用 navicat 连接测试
 
+默认 Oracle 数据库中的两个具有 DBA 权限的用户 Sys 和 System 的缺省密码是 manager。
+
 ![image](../../../assets/img/运维/Linux/Power/1.png)
 
 `注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下,使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
@@ -2423,6 +2425,24 @@ OCI 下载地址 : https://www.oracle.com/database/technologies/instant-client/d
 **注 : 报错 ORA-28040: No matching authentication protocol**
 
 这个还是 oci.dll 版本不对,再换个高版本的 Instant Client 😂
+
+**创建用户**
+
+oracle内部有两个默认的用户：system 和 sys。用户可直接登录到 system 用户以创建其他用户，因为 system 具有创建别的用户的权限。 在安装 oracle 时，用户或系统管理员首先可以为自己建立一个用户。
+
+```
+语法[创建用户]： create user 用户名 identified by 口令[即密码]；
+例子： create user test identified by test;
+
+语法[更改用户]: alter user 用户名 identified by 口令[改变的口令];
+例子： alter user test identified by 123456;
+```
+
+创建用户的时候用户名以c##或者C##开头即可。
+```
+错误写法：create user test identified by oracle;
+正确写法：create user c##test identified by oracle;
+```
 
 ---
 

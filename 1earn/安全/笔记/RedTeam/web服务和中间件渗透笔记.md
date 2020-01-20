@@ -346,6 +346,12 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 ---
 
+## Apache RocketMQ
+
+- 4.0.x~4.3.x 存在 fastjson 1.2.29
+
+---
+
 ## Apache shiro
 
 > 官网 : https://shiro.apache.org/

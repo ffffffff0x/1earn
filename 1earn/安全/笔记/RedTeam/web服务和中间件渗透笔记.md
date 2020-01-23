@@ -358,13 +358,24 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 Apache Shiro 是一个功能强大且灵活的开源安全框架,主要功能包括用户认证、授权、会话管理以及加密.
 
+shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
+
 **工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
 - [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce)
 
-**Shiro RememberMe 1.2.4 反序列化漏洞(SHIRO-550)**
+**SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
+- https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
+
 - POC | Payload | exp
     - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
+
+**SHIRO-721 | Shiro RememberMe Padding Oracle Vulnerability RCE**
+- https://issues.apache.org/jira/browse/SHIRO-721
+
+- POC | Payload | exp
+    - [3ndz/Shiro-721](https://github.com/3ndz/Shiro-721)
+    - [jas502n/SHIRO-721](https://github.com/jas502n/SHIRO-721)
 
 ---
 
@@ -1034,12 +1045,13 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 `老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用.`
 
 **工具**
-- [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan)
-- [rabbitmask/WeblogicScan](https://github.com/rabbitmask/WeblogicScan)
-- [rabbitmask/WeblogicScanLot](https://github.com/rabbitmask/WeblogicScanLot)
+- [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan) - 增强版WeblogicScan、检测结果更精确、插件化、添加CVE-2019-2618，CVE-2019-2729检测，Python3支持
+- [rabbitmask/WeblogicScan](https://github.com/rabbitmask/WeblogicScan) - Weblogic 一键漏洞检测工具
+- [rabbitmask/WeblogicScanLot](https://github.com/rabbitmask/WeblogicScanLot) - Weblogic 漏洞批量检测工具
+- [TideSec/Decrypt_Weblogic_Password](https://github.com/TideSec/Decrypt_Weblogic_Password) - 整理了7种解密 weblogic 的方法及响应工具
 
 **环境搭建**
-- [QAX-A-Team/WeblogicEnvironment](https://github.com/QAX-A-Team/WeblogicEnvironment)
+- [QAX-A-Team/WeblogicEnvironment](https://github.com/QAX-A-Team/WeblogicEnvironment) - Weblogic 环境搭建工具
 
 **文章**
 - [利用Weblogic进行入侵的一些总结](http://drops.xmd5.com/static/drops/tips-8321.html)
@@ -1111,6 +1123,14 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [hackping/XXEpayload](https://github.com/hackping/XXEpayload/tree/master/xxe)
     - `http://127.0.0.1:8338/ws_utc/begin.do`
 
+**CVE-2019-2615**
+- POC | Payload | exp
+    - [chiaifan/CVE-2019-2615](https://github.com/chiaifan/CVE-2019-2615)
+
+**CVE-2019-2618 Weblogic Upload Vuln(Need username password)**
+- POC | Payload | exp
+    - [jas502n/cve-2019-2618](https://github.com/jas502n/cve-2019-2618)
+
 **CVE-2019-2725 && CNVD-C-2019-48814**
 - 文章
     - [CNVD-C-2019-48814 Weblogic wls9_async_response 反序列化RCE复现](https://www.jianshu.com/p/c4982a845f55)
@@ -1131,6 +1151,10 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 - POC | Payload | exp
     - [SukaraLin/CVE-2019-2890](https://github.com/SukaraLin/CVE-2019-2890)
     - [jas502n/CVE-2019-2890](https://github.com/jas502n/CVE-2019-2890)
+
+**CVE-2020-2551 Weblogic RCE with IIOP**
+- POC | Payload | exp
+    - [jas502n/CVE-2020-2551](https://github.com/jas502n/CVE-2020-2551)
 
 ---
 

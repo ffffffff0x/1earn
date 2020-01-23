@@ -95,6 +95,9 @@ https://github.com/ | GitHub
 
 # google
 
+**案例**
+- [GGvulnz — How I hacked hundreds of companies through Google Groups](https://medium.com/@milanmagyar/ggvulnz-how-i-hacked-hundreds-of-companies-through-google-groups-b69c658c8924) - 作者描述了如何通过 google group 的搜索结果获得未授权的访问链接
+
 **搜索语法合集**
 - [Google Hacking Database](https://www.exploit-db.com/google-hacking-database)
 - [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
@@ -231,6 +234,9 @@ https://github.com/ | GitHub
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
 - [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
 
+**搜索语法合集**
+- [jakejarvis/awesome-shodan-queries](https://github.com/jakejarvis/awesome-shodan-queries)
+
 **语法**
 ```bash
 hostname:搜索指定的主机或域名,例如 hostname:"google"
@@ -238,12 +244,12 @@ port:搜索指定的端口或服务,例如 port:"21"
 country:搜索指定的国家,例如 country:"CN"
 city:搜索指定的城市,例如 city:"Hefei"
 org:搜索指定的组织或公司,例如 org:"google"
-isp:搜索指定的ISP供应商,例如 isp:"China Telecom"
+isp:搜索指定的 ISP 供应商,例如 isp:"China Telecom"
 product:搜索指定的操作系统/软件/平台,例如 product:"Apache httpd"
 version:搜索指定的软件版本,例如 version:"1.6.2"
 geo:搜索指定的地理位置,参数为经纬度,例如 geo:"31.8639, 117.2808"
-before/after:搜索指定收录时间前后的数据,格式为dd-mm-yy,例如 before:"11-11-15"
-net:搜索指定的IP地址或子网,例如 net:"210.45.240.0/24"
+before/after:搜索指定收录时间前后的数据,格式为 dd-mm-yy,例如 before:"11-11-15"
+net:搜索指定的 IP 地址或子网,例如 net:"210.45.240.0/24"
 ```
 
 **例子**
@@ -255,6 +261,7 @@ h3c net:"61.191.146.0/24"
 country:US vuln:CVE-2014-0160
 port:135,139,445 -hash:0                        # 过滤一些主文本标题为空的搜索结果
 Hikvision-Webs                                  # 海康威视
+title=“后台管理”
 
 database
 all:"mongodb server information" all:"metrics"  # 开放 Mongodb 数据库
@@ -311,6 +318,28 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
 
 - https://www.binaryedge.io/
 
+**语法**
+
+- https://docs.binaryedge.io/search/
+```bash
+ip	                # 目标 IP,例如 ip：“ 149.202.178.130/16”
+port	            # 端口,例如 port：80
+country             # 目标国家/地区,例如国家/地区：FR
+ASN                 # 目标的 AS 号，例如asn：1234
+type	            # BinaryEdge 模块类型，例如类型：mongodb
+product	            # 所寻找的产品名称，例如产品：apache2
+ipv6	            # 过滤 ipv6 结果，例如 Ipv6：true 或 ipv6：false
+tag	                # 可用标签列表：docs.binaryedge.io/search/#available-tags
+```
+
+**例子**
+```bash
+country:FR port:443                 # SSL from a Specific Organization Name
+ip:"149.202.178.130/16" port:80     # CIDR 149.202.178.130/16 and Port 80
+"Example Org" type:ssl              # France with Port 443
+product:"Dropbear sshd"             # Product Dropbear sshd
+```
+
 ---
 
 # censys
@@ -319,7 +348,7 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
 
 **例子**
 ```bash
-23.0.0.0/8 or 8.8.8.0/24                    # 可以使用and or not
+23.0.0.0/8 or 8.8.8.0/24                    # 可以使用 and or not
 80.http.get.status_code: 200                # 指定状态
 80.http.get.status_code:[200 TO 300]        # 200-300之间的状态码
 location.country_code: DE                   # 国家
@@ -384,6 +413,8 @@ cert="google.com"   # 搜索证书(https或者imaps等)中带有google.com的资
 title="powered by" && title!=discuz
 title!="powered by" && body=discuz
 (body="content=\"WordPress" || (header="X-Pingback" && header="/xmlrpc.php" && body="/wp-includes/") ) && host="gov.cn"
+
+app="Solr" && title=="Solr Admin"
 ```
 
 ---

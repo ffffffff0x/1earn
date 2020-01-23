@@ -227,10 +227,13 @@ npm config delete proxy  # 取消代理
 
 **视频合并**
 ```bash
-file '0.flv'
-file '1.flv'
-file '2.flv'
-file '3.flv'
+
+filelist.txt
+    file '0.flv'
+    file '1.flv'
+    file '2.flv'
+    file '3.flv'
+
 ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ```
 

@@ -372,6 +372,7 @@ hostname -I
 netstat -a
 cat /proc/net/fib_trie
 cat /etc/sysconfig/network
+sudo -v
 ```
 
 **端口**
@@ -420,8 +421,8 @@ dns-nameservers 10.0.208.1
 iface enp7s0 inet dhcp		# dhcp 配置
 ```
 ```bash
-sudo ip addr flush enp7s0
-sudo systemctl restart networking.service
+ip addr flush enp7s0
+systemctl restart networking.service
 
 systemctl restart NetworkManager
 systemctl enable NetworkManager
@@ -760,8 +761,8 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 
 enable the "Universe" repository
 ```bash
-sudo add-apt-repository universe
-sudo apt-get update
+add-apt-repository universe
+apt-get update
 ```
 
 **Kali 源**
@@ -792,9 +793,9 @@ deb-src http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
 
 **Pacman 源**
 ```bash
-sudo pacman-mirrors -i -c China -m rank		# 更新镜像排名
-sudo pacman -Syy    						# 更新数据源
-sudo pacman -S archlinux-keyring
+pacman-mirrors -i -c China -m rank		# 更新镜像排名
+pacman -Syy    						# 更新数据源
+pacman -S archlinux-keyring
 ```
 
 ### Binary
@@ -1078,6 +1079,9 @@ chage		# 修改帐号和密码的有效期限
 
 passwd -l <username>  				# 锁定用户
 passwd -u <username>  				# 解锁用户
+
+su <username>						# 切换账号
+su - <username>                     # 切换账号并改变工作目录至使用者的家目录
 ```
 
 **权限**
@@ -1120,6 +1124,10 @@ user1 ALL=(ALL)     ALL
 adduser user1 sudo	# 将 user1 加到 sudo 组中
 deluser user1 sudo	# 将 user1 从 sudo 组中删除
 ```
+```bash
+sudo -v # 查看 sudo 信息
+sudo -l # 查看当前权限
+```
 
 **ACL**
 ```bash
@@ -1128,7 +1136,7 @@ getfacl <File/Folder>					# 查看 ACL 权限
 setfacl -b <File/Folder>				# 删除 ACL
 ```
 
-更多内容参考笔记 [认证](./笔记/认证.md)
+关于 linux 的账号和认证更多内容参考笔记 [认证](./笔记/认证.md)
 
 ### SELinux
 

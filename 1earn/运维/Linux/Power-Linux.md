@@ -325,7 +325,9 @@ set ignorecase smartcase  # 搜索时忽略大小写,但在有一个或以上大
   sudo apt-get install vim
   ```
 
-**[SpaceVim - 模块化的 Vim IDE](https://spacevim.org/cn/)**
+**[SpaceVim](https://spacevim.org/cn/)** - 模块化的 Vim IDE
+
+**[how-to-exit-vim](https://github.com/hakluke/how-to-exit-vim)** - 退出 vim 的多种方式
 
 ---
 

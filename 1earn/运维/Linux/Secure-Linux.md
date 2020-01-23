@@ -482,6 +482,12 @@ nmap -sV -p 22 localhost
 
 **防**
 - [EtherDream/anti-portscan: 使用 iptables 防止端口扫描](https://github.com/EtherDream/anti-portscan)
+    ```bash
+    git clone https://github.com/EtherDream/anti-portscan
+    cd anti-portscan
+    vim install.sh # 修改需要打开的端口
+    sudo sh install.sh
+    ```
 
 ---
 

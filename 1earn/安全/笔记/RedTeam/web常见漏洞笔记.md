@@ -312,6 +312,10 @@ WEB-INF 主要包含一下文件或目录:
 **文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
 
+## 各类 API key 泄露
+**文章**
+- [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
+
 ---
 
 # CSRF

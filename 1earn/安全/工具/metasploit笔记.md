@@ -30,6 +30,72 @@ db_rebuild_cache
 
 ---
 
+## 安装及维护
+
+**安装**
+
+使用 Rapid7 的一套快速安装项目 metasploit-omnibus,可以实现一句话安装
+```
+curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall
+```
+
+安装完成后位置 `/opt/metasploit-framework/embedded/framework/`
+
+**目录结构**
+```bash
+modules
+    - auxiliary     # 主要包含辅助性脚本(扫描、嗅探、注入、爆破，漏洞挖掘)
+    - encoders      # 主要包含各种编码工具，以便绕过入侵检测和过滤系统
+    - exploits      # 漏洞利用，包含主流的漏洞利用脚本，exp 命名规则:系统/服务/模块
+    - nops          # 绕过针对溢出攻击滑行字符串的拦截检测
+    - payloads      # 攻击荷载，主要在目标机器执行代码
+    - post          # 此目录放着 msf 的 exploit 执行成功后，向目标发送的一些功能性指令，如提权，获取 hash 等
+    - evasion       # 新增，用来生成免杀 payload，类似于集成 msfvenom 功能
+data        # 存放 meterpreter ，passiveX，vnc，DLLs，等这些工具和一些用户接口代码，msfweb 和一些其他模块用到的数据文件
+plugins     # 这里的模块用户需要 load 来加载，提供数据库连接插件和各种要用到的插件
+scripts     # 这个目录下的文件大都是 meterpreter 这个模块利用的脚本，比如用到 migrate 来转移到其他进程的指令的源代码就在此
+tools       # 包含一些有用的脚本和零散的工具
+```
+
+**启动**
+```bash
+msfconsole          # 运行
+msfdb init          # 初始化数据库
+db_rebuild_cache    # 重建缓存
+db_status           # 查看数据库连接情况
+```
+
+**更新**
+
+对于 kali 自带的 msf 可以使用 apt 更新
+```bash
+apt-get update
+apt-get install metasploit-framework
+```
+
+嫌官方源速度慢可以添加阿里云的源
+```vim
+vim /etc/apt/sources.list
+
+deb http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
+deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
+```
+
+也可以直接使用 `msfupdate`
+
+**添加一个新的 exploit**
+
+1. 在 `/usr/share/metasploit-framework/modules/exploits/` 目录下新建一个自定义文件夹 aaatest,将 rb 脚本扔进去
+2. 启动 metasploit
+3. 输入 reload_all 重新加载所有模块
+4. use exploit/aaatest/exp(输入的时候可以用 tab 补全,如果不能补全说明就有问题)
+
+**msfvenom**
+
+使用 msfvenom 生成 payload 内容见 [权限维持笔记](../笔记/RedTeam/权限维持笔记.md#msfvenom)
+
+---
+
 ## 基本使用
 
 ```bash
@@ -57,41 +123,6 @@ threads                         # 查看和操作后台线程
 unset                           # 取消设置一个或多个特定的上下文变量
 unsetg                          # 取消设置一个或多个全局变量的
 ```
-
----
-
-## 维护
-
-**安装**
-
-使用 Rapid7 的一套快速安装项目 metasploit-omnibus,可以实现一句话安装
-```
-curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall
-```
-
-**更新**
-
-对于 kali 自带的 msf 可以使用 apt 更新
-```bash
-apt-get update
-apt-get install metasploit-framework
-```
-嫌官方源速度慢可以添加阿里云的源
-```vim
-vim /etc/apt/sources.list
-
-deb http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
-deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
-```
-
-也可以直接使用 `msfupdate`
-
-**添加一个新的 exploit**
-
-1. 在 `/usr/share/metasploit-framework/modules/exploits/` 目录下新建一个自定义文件夹 aaatest,将 rb 脚本扔进去
-2. 启动 metasploit
-3. 输入 reload_all 重新加载所有模块
-4. use exploit/aaatest/exp(输入的时候可以用 tab 补全,如果不能补全说明就有问题)
 
 ---
 

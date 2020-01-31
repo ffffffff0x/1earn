@@ -42,7 +42,7 @@
 
 - **Network**
 
-    `目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在明年前再补充内容`
+    `目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在今年再补充内容`
 
     - **[不同厂商](./1earn/运维/Network/不同厂商🎲.md)** : 记录不同厂商配置服务命令的区别
     - **[方向实验](./1earn/运维/Network/方向实验🔨.md)** : 按方向分类记录配置
@@ -50,7 +50,9 @@
     - **[速查](./1earn/运维/Network/速查.md)** : 速查各类帧、报文格式、掩码等
 
 - **Windows**
-    - 记录按客户需求搭建服务的过程(关键部分)
+    - **[CMD命令笔记](./1earn/运维/Windows/CMD命令笔记.md)** ： 记录一些 CMD 常用命令
+    - **[PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md)** ： 记录一些 powershell 常用命令
+    - **[Windows服务搭建笔记](./1earn/运维/Windows/Windows笔记.md)** : 记录 windows 搭建服务的步骤
 
 ### Plan
 

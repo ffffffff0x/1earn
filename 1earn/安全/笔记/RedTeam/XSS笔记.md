@@ -20,6 +20,7 @@
 - [xss编码绕过原理以及从中学习到的几个例子](https://0verwatch.top/xss-encodeorder.html)
 - [探索XSS利用编码绕过的原理](https://saucer-man.com/information_security/103.html)
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
+- [坑死我的HTTPOnly](http://gv7.me/articles/2017/Session-Cookie-without-Secure-flag-set/)
 
 **案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
@@ -98,6 +99,7 @@
 ---
 
 ## 绕过方法
+
 1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等;
 2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应;
 

@@ -9,6 +9,7 @@
 ---
 
 ## 快速使用
+
 SET 是 kali 自带的,所以先进入到 SET 的目录下.
 ```
 cd /usr/share/set

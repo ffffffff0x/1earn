@@ -142,6 +142,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 ## 脚本
 ### 常见
+
 - **[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)** - 用于枚举SMB用户
     ```bash
     nmap --script smb-enum-users.nse -p 445 <target ip>
@@ -219,6 +220,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
     `nmap -p 53 --script dns-zone-transfer.nse -v <target ip>`
 
 ### 数据库
+
 - MySQL
 
     `nmap -p3306 --script mysql-enum <target ip>`

@@ -20,6 +20,7 @@
 
 # Shell-Base
 ## 密码重置
+
 **centos7**
 
 1. 在启动菜单选择启动内核,按 e 编辑,找到 rhgb quiet 一行,把 `rhgb quiet` 替换为 `init=/bin/bash` (临时生效)
@@ -136,6 +137,7 @@ cat /etc/rc.local   # 查看 rc 启动文件
 ---
 
 #### 账号
+
 **/etc/passwd**
 - 若用户ID=0,则表示该用户拥有超级用户的权限
 - 检查是否有多个ID=0
@@ -160,6 +162,7 @@ PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 ---
 
 #### SELinux
+
 **关闭 SELinux**
 - 需要重启
 	```vim
@@ -492,6 +495,7 @@ nmap -sV -p 22 localhost
 ---
 
 ## Firewall
+
 **查**
 ```bash
 firewall-cmd --list-services    # 查看防火墙设置
@@ -523,6 +527,7 @@ firewall-cmd --reload
 ---
 
 ## 禁 ping
+
 **临时性,重启后失效**
 ```bash
 echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_all     # 允许 ping

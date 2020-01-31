@@ -2,12 +2,6 @@
 
 ---
 
-**Reference**
-- [Shell脚本编程30分钟入门](https://github.com/qinjx/30min_guides/blob/master/shell.md)
-- [Shell 教程](https://www.runoob.com/linux/linux-shell.html)
-
----
-
 **shell 和 shell 脚本的区别**
 - shell 是指一种应用程序，这个应用程序提供了一个界面，用户通过这个界面访问操作系统内核的服务。Ken Thompson 的 sh 是第一种 Unix Shell，Windows Explorer 是一个典型的图形界面 Shell。
 - shell 脚本（shell script），是一种为 shell 编写的脚本程序。业界所说的 shell 通常都是指 shell 脚本，但是，shell 和 shell script 是两个不同的概念。
@@ -44,7 +38,7 @@
 - source 命令会强制执行脚本中的全部命令,而忽略文件的权限.
 - source 命令通常用于重新执行刚修改的初始化文件,如 .bash_profile 和 .profile 等等.
 - source 命令可以影响执行脚本的父 shell 的环境,而 export 则只能影响其子 shell 的环境.
-- source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 export $KKK=111 ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 echo $KKK ,发现没有值,如果你用 source 来执行 ,然后再 echo ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
+- source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 export $KKK=111 ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 `echo $KKK` ,发现没有值,如果你用 `source` 来执行 ,然后再 `echo` ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
 
 ---
 
@@ -649,7 +643,7 @@ abc : 字符串不为空
 - -S: 判断某文件是否 socket。
 - -L: 检测文件是否存在并且是一个符号链接。
 
-变量 file 表示文件 /var/www/test.sh，它的大小为 100 字节，具有 rwx 权限。下面的代码，将检测该文件的各种属性：
+变量 file 表示文件 `/var/www/test.sh`，它的大小为 100 字节，具有 rwx 权限。下面的代码，将检测该文件的各种属性：
 ```sh
 #!/bin/bash
 
@@ -1593,12 +1587,12 @@ EOF
 
 **/dev/null 文件**
 
-如果希望执行某个命令，但又不希望在屏幕上显示输出结果，那么可以将输出重定向到 /dev/null：
+如果希望执行某个命令，但又不希望在屏幕上显示输出结果，那么可以将输出重定向到 `/dev/null`：
 ```
 command > /dev/null
 ```
 
-/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到"禁止输出"的效果。
+`/dev/null` 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 `/dev/null` 文件非常有用，将命令的输出重定向到它，会起到"禁止输出"的效果。
 
 如果希望屏蔽 stdout 和 stderr，可以这样写：
 ```sh
@@ -1643,3 +1637,9 @@ echo "地址：$url"
 ```
 
 > 注：被包含的文件 test1.sh 不需要可执行权限。
+
+---
+
+**Reference**
+- [Shell脚本编程30分钟入门](https://github.com/qinjx/30min_guides/blob/master/shell.md)
+- [Shell 教程](https://www.runoob.com/linux/linux-shell.html)

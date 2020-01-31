@@ -447,6 +447,7 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
 - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
 - [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools)
+- [x51/STS2G](https://github.com/x51/STS2G) - Golang 版 Struts2 漏洞扫描利用工具
 
 **环境搭建**
 - [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)

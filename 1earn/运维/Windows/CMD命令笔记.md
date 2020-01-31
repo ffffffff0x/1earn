@@ -1,8 +1,8 @@
-# CMD 命令用法记录
+# CMD 命令笔记
 
 ---
 
-**永久修改CMD的默认字符集**
+**永久修改 CMD 的默认字符集**
 
 regedit
 
@@ -11,6 +11,7 @@ regedit
 ---
 
 # 网络常用
+
 **ipconfig**
 ```cmd
 ipconfig /all       显示完整配置信息

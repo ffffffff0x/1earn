@@ -48,6 +48,7 @@
 * [美图-功能](#美图-功能)
 * [数据图](#数据图)
 * [带壳截图](#带壳截图)
+* [AI](#AI)
 
 **Misc**
 * [分享](#分享)
@@ -495,6 +496,7 @@
 - https://brush.ninja/
 - https://www.autodraw.com/
 - https://promo.com/tools/image-resizer/
+- https://pixlr.com/x/
 
 ## 美图-功能
 - https://pissang.github.io/voxelize-image/
@@ -517,6 +519,7 @@
 - https://www.minitagcloud.cn/
 - https://www.imgbot.ai/
 - https://pixfix.com/
+- https://resizing.app/
 
 ## 数据图
 - http://tinychart.co/
@@ -528,6 +531,17 @@
 - https://www.screely.com/
 - https://browserframe.com/
 - https://codeimg.io/
+
+## AI
+- https://artbreeder.com/browse
+- https://comixify.ii.pw.edu.pl/
+- https://thispersondoesnotexist.com/
+- https://www.thiswaifudoesnotexist.net/?ref=appinn
+- https://thiscatdoesnotexist.com/
+- http://www.whichfaceisreal.com/
+- https://nvlabs.github.io/SPADE/
+- https://havetheyfaked.me/
+- https://selfie2anime.com/
 
 ---
 

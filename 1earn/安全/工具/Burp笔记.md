@@ -56,6 +56,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > DNS_log
 - [hackvertor/taborator](https://github.com/hackvertor/taborator)
 - [NetSPI/BurpCollaboratorDNSTunnel](https://github.com/NetSPI/BurpCollaboratorDNSTunnel)
+- [nccgroup/CollaboratorPlusPlus](https://github.com/nccgroup/CollaboratorPlusPlus)
 
 > burpsuite 的日志插件,不过是增强版本
 - [nccgroup/BurpSuiteLoggerPlusPlus](https://github.com/nccgroup/BurpSuiteLoggerPlusPlus)

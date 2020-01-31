@@ -215,6 +215,7 @@
 
 - 修复工具
     - ["CVE-2019-0708"漏洞检测修复工具](https://www.qianxin.com/other/CVE-2019-0708)
+    - https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-0708
 
 - MSF 模块
     ```bash

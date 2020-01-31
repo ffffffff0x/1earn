@@ -55,7 +55,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
     各单位
     ```
 
-    - [leaky-repo](https://github.com/Plazmaz/leaky-repo)
+    - [leaky-repo](https://github.com/Plazmaz/leaky-repo) - 仓库收集了泄露文件的案例
 
 - 交流
     ```
@@ -64,7 +64,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
     ```
 
 - 人名
-    - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus)
+    - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus) - 中文人名语料库。中文姓名,姓氏,名字,称呼,日本人名,翻译人名,英文人名。可用于中文分词、人名实体识别。
     - [重名top500](../../../../assets/file/安全/重名top500.txt)
 
 - 地名
@@ -73,8 +73,8 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具,例如密码,私钥
-- [gwen001/github-search](https://github.com/gwen001/github-search)
-- [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit)
+- [gwen001/github-search](https://github.com/gwen001/github-search) - 在GitHub上执行基本搜索的工具。
+- [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit) - 实时的监控 github 寻找敏感信息
 
 **同类**
 ```
@@ -262,6 +262,7 @@ country:US vuln:CVE-2014-0160
 port:135,139,445 -hash:0                        # 过滤一些主文本标题为空的搜索结果
 Hikvision-Webs                                  # 海康威视
 title=“后台管理”
+http.title:"后台管理"
 
 database
 all:"mongodb server information" all:"metrics"  # 开放 Mongodb 数据库

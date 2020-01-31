@@ -19,6 +19,7 @@
 ---
 
 # 安装
+
 **更新系统**
 ```bash
 sudo tee /etc/apt/sources.list <<-'EOF'
@@ -39,6 +40,7 @@ apt install parallel
 ```
 
 ## vmtools
+
 ```bash
 tar zxvf vmtools.tar.gz -C /root
 cd /root/wmtools/
@@ -48,6 +50,7 @@ cd /root/wmtools/
 ---
 
 ## virtualbox additions
+
 ```bash
 mkdir /media/VBox
 ls /media/VBox/
@@ -60,6 +63,7 @@ sh VBoxLinuxAdditions.run
 ---
 
 ## powershell
+
 ```bash
 apt install powershell
 pwsh            # 启动
@@ -69,6 +73,7 @@ $PSVersionTable # 测试一下
 ---
 
 ## 谷歌输入法
+
 ```bash
 apt-get update && apt-get upgrade
 apt-get install fcitx
@@ -81,6 +86,7 @@ reboot
 ---
 
 ## ncat
+
 ```bash
 apt install ncat
 update-alternatives --config nc
@@ -90,10 +96,8 @@ update-alternatives --config nc
 ---
 
 ## pip
-```bash
-apt-get install python-setuptools
-easy_install pip                            # 安装 pip
 
+```bash
 wget https://bootstrap.pypa.io/get-pip.py	# 安装 pip3
 python3 get-pip.py
 
@@ -115,6 +119,7 @@ pip3 -V
 ---
 
 ## proxychains-ng
+
 ```bash
 git clone https://github.com/rofl0r/proxychains-ng.git
 cd proxychains-ng
@@ -248,6 +253,7 @@ cd /usr/share/oclhashcat-plus/
 
 # 配置与设置
 ## apt
+
 ```bash
 # 配置源
 vim /etc/apt/sources.list
@@ -290,6 +296,7 @@ rm -rf /var/lib/dpkg/lock	# 强制解锁占用
 ---
 
 ## 显示
+
 **切换 undercover 模式**
 ```bash
 Kali Undercover Mode

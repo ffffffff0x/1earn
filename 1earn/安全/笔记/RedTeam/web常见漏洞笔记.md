@@ -203,7 +203,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 ## GIT 源码泄露
 **简介**
 
-当在一个空目录执行 git init 时,Git 会创建一个 .git 目录. 这个目录包含所有的 Git 存储和操作的对象. 如果想备份或复制一个版本库,只需把这个目录拷贝至另一处就可以了.
+当在一个空目录执行 git init 时,Git 会创建一个 `.git` 目录. 这个目录包含所有的 Git 存储和操作的对象. 如果想备份或复制一个版本库,只需把这个目录拷贝至另一处就可以了.
+
+- `/.git/config`
 
 **案例**
 - [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
@@ -213,6 +215,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract)
 
 ## SVN 源码泄露
+
+- `/.svn/entries`
 
 **案例**
 - [我爱我家某处源码泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0149331)

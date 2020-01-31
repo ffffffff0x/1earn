@@ -19,20 +19,20 @@
 
 ## 大纲
 
-**👍Shell-Base**
+**👍基础使用**
 
 * [环境变量](#环境变量)
-* [通配符-限制输出](#通配符-限制输出)
-* [会话](#会话)
-* [目录](#目录)
+* [符号](#符号)
 * [会话](#会话)
 * [文件](#文件)
+	* [查看](#查看)
+	* [创建](#创建)
+	* [删除](#删除)
+	* [查询](#查询)
+	* [修改](#修改)
+	* [比较](#比较)
+	* [链接](#链接)
 	* [压缩备份](#压缩备份)
-	* [读写](#读写)
-		* [增](#增)
-		* [删](#删)
-		* [查](#查)
-		* [改](#改)
 
 **📶网络管理**
 
@@ -46,12 +46,12 @@
 	* [Iptables](#Iptables)
 * [软件包管理](#软件包管理)
 	* [源](#源)
+	* [apt](#apt)
 	* [Binary](#Binary)
 	* [dpkg](#dpkg)
 	* [Pacman](#Pacman)
 	* [rpm](#rpm)
 	* [yum](#yum)
-	* [apt](#apt)
 	* [常用软件](#常用软件)
 
 **🦋系统管理**
@@ -60,17 +60,15 @@
 	* [时间](#时间)
 	* [语言](#语言)
 	* [启动项-计划任务](#启动项-计划任务)
-	* [账号管控](#账号管控)
 * [系统信息](#系统信息)
-	* [进程管理](#进程管理)
-
-**🛠设备管理**
-
-* [硬盘-数据](#硬盘-数据)
+* [账号管控](#账号管控)
+* [进程管理](#进程管理)
+* [设备管理](#设备管理)
+	* [硬盘-数据](#硬盘-数据)
 
 ---
 
-# 👍Shell-Base
+# 👍基础使用
 
 **命令风格**
 - Unix 风格的参数,前面加单破折线,例如: `-H`
@@ -106,18 +104,36 @@
 
 ---
 
-## 通配符-限制输出
+## 符号
+
+```bash
+<				# 重定向输入
+>				# 重定向输出
+>>				# 末尾添加
+&				# 与
+|				# 管道符
+```
+
+```bash
+*				# 匹配任意多个字符
+	*.txt       	# 匹配全部后缀为 .txt 的文件
+**				# 匹配任意级别目录(bash 4.0以上版本支持，shopt -s globstar)
+	/etc/**/*.conf  # 查找 /etc/ 下所有 .conf 文件
+?				# 匹配单个字符
+	file?.log		# 匹配 file1.log, file2.log, ...
+[]				# 匹配一个单字符范围,如[a-z],[0-9]
+	[a-z]*.log  	# 匹配 a-z 开头的 .log 文件
+
+# 反斜杠(\)或引号(', ")都会使通配符失效。
+```
 
 ```bash
 head		# 显示文件的开头的内容.默认下,显示文件的头 10 行内容.
 tail		# 显示文件中的尾部内容.默认下,显示文件的末尾 10 行内容.
-<
->
 grep		# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
 sort		# 将文件进行排序,并将排序结果标准输出.
 uniq		# 用于报告或忽略文件中的重复行
 awk
-&
 ```
 
 ---
@@ -160,7 +176,9 @@ cat ~/.php_history
 
 ---
 
-## 目录
+## 文件和目录
+
+**目录**
 
 ```bash
 cd	# 切换工作目录
@@ -183,12 +201,173 @@ cd	# 切换工作目录
 	lib		# (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
 	tmp		# (temporary)用于存放各种临时文件
 ```
-
 更多内容参考笔记 [文件](./笔记/文件.md#/)
 
----
+### 查看
 
-## 文件
+```bash
+ls			# 查看文件
+	ls -a						# 查看隐藏文件
+
+cat			# 连接文件并打印到标准输出设备上
+	cat -n						# 带行号读
+	cat -b						# 带行号,越过空白行
+
+more		# 一个基于 vi 编辑器文本过滤器，它以全屏幕的方式按页显示文本文件的内容
+	more +10 a.txt				# 从第10行读起
+	more -10 f1.txt				# 每次显示10行读取文件
+
+head		# 用于显示文件的开头的内容,默认情况下显示文件的头10行内容
+	head -n 1 a.txt				# 读文件第一行
+	head -5 /etc/passwd			# 读取文件前5行
+
+tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾部10行内容
+	tail -10 /etc/passwd		# 读取文件后10行
+
+sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
+	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
+
+tac			# 倒着读
+od			# 二进制读
+less		# 允许用户向前或向后浏览文件
+du			# 查看文件大小
+stat		# 查看文件属性
+file		# 探测给定文件的类型
+
+pwd			# 以绝对路径的方式显示用户当前工作目录
+	pwd -P						# 目录链接时,显示实际路径而非 link 路径
+```
+
+### 创建
+
+```bash
+touch -r test1.txt test2.txt 				# 更新 test2.txt 时间戳与 test1.txt 时间戳相同
+touch -c -t 202510191820 a.txt 				# 更改时间
+truncate -s 100k aaa.txt					# 创建指定大小文件
+
+mkdir -p /mnt/aaa/aaa/aaa 					# 创建指定路径一系列文件夹
+mkdir -m 777 /test							# 创建时指定权限
+```
+
+### 删除
+
+```bash
+rm -i		# 确认
+rmdir		# 删除空目录
+
+# 删除巨大文件小 tips
+	echo "" >  bigfile
+	rm bigfile
+
+	> access.log			# 通过重定向到 Null 来清空文件内容
+	: > access.log
+	true > access.log
+	cat /dev/null > access.log
+```
+
+### 查询
+
+```bash
+fd					# 文件查找工具
+	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
+	dpkg -i fd-musl_7.3.0_amd64.deb
+	fd <File>
+```
+```bash
+find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
+locate <File>		# 查找文件或目录
+
+which <Command>		# 查找并显示给定命令的绝对路径
+```
+
+### 修改
+
+```bash
+cp <源文件> <目标文件/目标路径>			# 复制
+	cp -r <源目录> <目标目录/目标路径>	# 带目录复制
+
+mv <源文件> <目标文件/目标路径>			# 对文件或目录重命名,或移动
+
+vi 									# 编辑器
+nano								# 编辑器
+gedit								# 图形化的编辑器
+```
+
+**Vim**
+
+- **常用操作**
+	```bash
+	Normal 模式下 i 进入 insert 模式
+	:wq 					# 存盘+退出
+	dd  					# 删除当前行,并存入剪切板
+	p   					# 粘贴
+	:q! 					# 强制退出
+	:wq!					# 强制保存退出
+	:w !sudo tee %  		# 无 root 权限,保存编辑的文件
+	:saveas <path/to/file>  # 另存为
+	按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
+	:%s/foo/bar 			# 代表替换 foo 为 bar
+	insert 模式按 ESC 键,返回 Normal 模式
+	```
+
+- **更多操作**
+	- [Vim](./Power-Linux.md#Vim)
+
+### 比较
+
+```bash
+diff <变动前的文件> <变动后的文件>
+
+vimdiff <变动前的文件> <变动后的文件>
+```
+
+### 链接
+
+**软连接**
+
+是一类特殊的文件， 其包含有一条以绝对路径或者相对路径的形式指向其它文件或者目录的引用。 符号链接最早在 4.2BSD 版本中出现（1983年）。今天 POSIX 操作系统标准、大多数类 Unix 系统、Windows Vista、Windows 7 都支持符号链接。Windows 2000 与 Windows XP 在某种程度上也支持符号链接。
+
+符号链接的操作是透明的：对符号链接文件进行读写的程序会表现得直接对目标文件进行操作。某些需要特别处理符号链接的程序（如备份程序）可能会识别并直接对其进行操作。
+
+一个符号链接文件仅包含有一个文本字符串，其被操作系统解释为一条指向另一个文件或者目录的路径。它是一个独立文件，其存在并不依赖于目标文件。如果删除一个符号链接，它指向的目标文件不受影响。如果目标文件被移动、重命名或者删除，任何指向它的符号链接仍然存在，但是它们将会指向一个不复存在的文件。这种情况被有时被称为被遗弃。
+
+在 Linux 中，创建软连接的方法是使用 `ln -s`
+```bash
+ln -s /etc/bashrc /tmp/bashrc
+```
+查看软连接的指向可以用 `ls -l`
+
+删除软连接就如同删除普通文件一样，使用 `rm symlink` 即可。
+
+**硬链接**
+
+指通过索引节点来进行连接。在 Linux 的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号(Inode Index)。在 Linux 中，多个文件名指向同一索引节点是存在的。一般这种连接就是硬连接。硬连接的作用是允许一个文件拥有多个有效路径名，这样用户就可以建立硬连接到重要文件，以防止“误删”的功能。其原因如上所述，因为对应该目录的索引节点有一个以上的连接。只删除一个连接并不影响索引节点本身和其它的连接，只有当最后一个连接被删除后，文件的数据块及目录的连接才会被释放。也就是说，文件真正删除的条件是与之相关的所有硬连接文件均被删除。
+
+在 Linux 中，创建硬链接的方法是 ln:
+```
+ln file1 file2
+```
+
+创建硬链接之后，源文件和目标文件将拥有完全相同的 inode 编号，权限，内容等。
+
+硬链接的几个限制:
+- 硬链接创建时要求源文件必须存在
+- 不允许给目录创建硬链接(注意是不能通过 ln 的方式)
+- 只有在同一文件系统才能创建硬链接
+
+**inode**
+
+inode 是指在许多“类 Unix 文件系统”中的一种数据结构。每个 inode 保存了文件系统中的一个文件系统对象（包括文件、目录、设备文件、socket、管道, 等等）的元信息数据，但不包括数据内容或者文件名。
+
+文件系统中每个“文件系统对象”对应一个“inode”数据，并用一个整数值来辨识。这个整数常被称为 inode 号码（“i-number”或“inode number”）。由于文件系统的 inode 表的存储位置、总条目数量都是固定的，因此可以用 inode 号码去索引查找 inode 表。
+
+简而言之
+- inode 存储的是文件的元数据
+- inode 是文件在磁盘上的索引编号
+- inode 是文件的唯一标示符(主键), 而非文件名
+
+Linux 系统中，显示文件的 inode 使用 `ls -i`，使用 `df -i` 可以显示当前挂载列表中 inode 使用情况
+
 ### 压缩备份
 
 ```bash
@@ -248,116 +427,6 @@ rpm2cpio FileName.rpm | cpio -div			# 解包
 .deb
 ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
 ```
-
-### 读写
-#### 增
-
-```bash
-touch -r test1.txt test2.txt 				# 更新 test2.txt 时间戳与 test1.txt 时间戳相同
-touch -c -t 202510191820 a.txt 				# 更改时间
-truncate -s 100k aaa.txt					# 创建指定大小文件
-
-mkdir -p /mnt/aaa/aaa/aaa 					# 创建指定路径一系列文件夹
-mkdir -m 777 /test							# 创建时指定权限
-```
-
-#### 删
-
-```bash
-rm -i		# 确认
-rmdir		# 删除空目录
-
-# 删除巨大文件小 tips
-	echo "" >  bigfile
-	rm bigfile
-
-	> access.log			# 通过重定向到 Null 来清空文件内容
-	: > access.log
-	true > access.log
-	cat /dev/null > access.log
-```
-
-#### 查
-
-**查看**
-```bash
-ls			# 查看文件
-	ls -a						# 查看隐藏文件
-
-cat			# 连接文件并打印到标准输出设备上
-	cat -n						# 带行号读
-	cat -b						# 带行号,越过空白行
-
-more		# 一个基于 vi 编辑器文本过滤器，它以全屏幕的方式按页显示文本文件的内容
-	more +10 a.txt				# 从第10行读起
-	more -10 f1.txt				# 每次显示10行读取文件
-
-head		# 用于显示文件的开头的内容,默认情况下显示文件的头10行内容
-	head -n 1 a.txt				# 读文件第一行
-	head -5 /etc/passwd			# 读取文件前5行
-
-tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾部10行内容
-	tail -10 /etc/passwd		# 读取文件后10行
-
-sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
-	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
-
-tac			# 倒着读
-od			# 二进制读
-less		# 允许用户向前或向后浏览文件
-du			# 查看文件大小
-stat		# 查看文件属性
-file		# 探测给定文件的类型
-
-pwd			# 以绝对路径的方式显示用户当前工作目录
-	pwd -P						# 目录链接时,显示实际路径而非 link 路径
-```
-
-**查找**
-```bash
-fd					# 文件查找工具
-	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
-	dpkg -i fd-musl_7.3.0_amd64.deb
-	fd <File>
-
-find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
-locate <File>		# 查找文件或目录
-
-which <Command>		# 查找并显示给定命令的绝对路径
-```
-
-#### 改
-
-```bash
-cp <源文件> <目标文件/目标路径>			# 复制
-	cp -r <源目录> <目标目录/目标路径>	# 带目录复制
-
-mv <源文件> <目标文件/目标路径>			# 对文件或目录重命名,或移动
-
-vi 									# 编辑器
-nano								# 编辑器
-gedit								# 图形化的编辑器
-```
-
-**Vim**
-
-- **常用操作**
-	```bash
-	Normal 模式下 i 进入 insert 模式
-	:wq 					# 存盘+退出
-	dd  					# 删除当前行,并存入剪切板
-	p   					# 粘贴
-	:q! 					# 强制退出
-	:wq!					# 强制保存退出
-	:w !sudo tee %  		# 无 root 权限,保存编辑的文件
-	:saveas <path/to/file>  # 另存为
-	按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
-	:%s/foo/bar 			# 代表替换 foo 为 bar
-	insert 模式按 ESC 键,返回 Normal 模式
-	```
-
-- **更多操作**
-	- [Vim](./Power-Linux.md#Vim)
 
 ---
 
@@ -798,6 +867,34 @@ pacman -Syy    						# 更新数据源
 pacman -S archlinux-keyring
 ```
 
+### apt
+
+apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
+
+```bash
+# 更新源:
+apt-get update
+
+# 对软件进行一次整体更新:
+apt-get update & apt-get upgrade
+apt-get dist-upgrade
+apt-get clean
+
+# 无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
+rm -rf /var/cache/apt/archives/lock
+rm -rf /var/lib/dpkg/lock-frontend
+rm -rf /var/lib/dpkg/lock		# 强制解锁占用
+```
+
+**Gdebi**
+
+Gdebi 是一个安装 .deb 软件包的工具.提供了图形化的使用界面
+
+```bash
+apt update
+apt install gdebi
+```
+
 ### Binary
 
 ```bash
@@ -859,34 +956,6 @@ yum provides ifconfig 		# 查看哪个包提供 ifconfig
 
 # /var/run/yum.pid 已被锁定,PID 为 xxxx 的另一个程序正在运行.
 rm -f /var/run/yum.pid		# 强制解锁占用
-```
-
-### apt
-
-apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
-
-```bash
-# 更新源:
-apt-get update
-
-# 对软件进行一次整体更新:
-apt-get update & apt-get upgrade
-apt-get dist-upgrade
-apt-get clean
-
-# 无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
-rm -rf /var/cache/apt/archives/lock
-rm -rf /var/lib/dpkg/lock-frontend
-rm -rf /var/lib/dpkg/lock		# 强制解锁占用
-```
-
-**Gdebi**
-
-Gdebi 是一个安装 .deb 软件包的工具.提供了图形化的使用界面
-
-```bash
-apt update
-apt install gdebi
 ```
 
 ### 常用软件
@@ -1044,7 +1113,35 @@ atrm	# 根据 Job number 删除 at 任务
 
 将写好的脚本 (.sh 文件) 放到目录 `/etc/profile.d/` 下,系统启动后就会自动执行该目录下的所有 shell 脚本
 
-### 账号管控
+### SELinux
+
+**查看 SELinux 状态**
+```bash
+getenforce			# 查看 selinux 状态
+/usr/sbin/sestatus	# 查看安全策略
+```
+
+**关闭 SELinux**
+- 需要重启
+	```vim
+	vim /etc/selinux/config
+
+	SELINUX=disabled
+	```
+
+- 不需要重启
+
+	`setenforce 0`
+
+---
+
+## 系统信息
+
+- 内容参见 [信息](./笔记/信息.md)
+
+---
+
+## 账号管控
 
 **账号**
 ```bash
@@ -1138,43 +1235,7 @@ setfacl -b <File/Folder>				# 删除 ACL
 
 关于 linux 的账号和认证更多内容参考笔记 [认证](./笔记/认证.md)
 
-### SELinux
-
-**查看 SELinux 状态**
-```bash
-getenforce			# 查看 selinux 状态
-/usr/sbin/sestatus	# 查看安全策略
-```
-
-**关闭 SELinux**
-- 需要重启
-	```vim
-	vim /etc/selinux/config
-
-	SELINUX=disabled
-	```
-
-- 不需要重启
-
-	`setenforce 0`
-
----
-
-## 系统信息
-
-```bash
-uname -a			# 打印当前系统相关信息
-cat /etc/os-release
-cat /proc/version
-
-lshw				# 查看硬件信息
-ulimit      		# 显示系统资源限制的信息
-lpstat -a           # 显示 CUPS 中打印机的状态信息
-```
-
-更多查看主机信息内容参考笔记 [信息](./笔记/信息.md)
-
-### 进程管理
+## 进程管理
 
 **服务管理**
 ```bash
@@ -1284,8 +1345,8 @@ disown		# 使作业忽略 HUP 信号
 
 ---
 
-# 🛠设备管理
-## 硬盘-数据
+## 设备管理
+### 硬盘-数据
 
 **磁盘配额**
 - quota

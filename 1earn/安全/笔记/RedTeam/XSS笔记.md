@@ -79,7 +79,7 @@
 - https://xsschop.chaitin.cn/demo/
 
 **靶场**
-- [XSS 挑战通关笔记](../../实验/XSS挑战通关笔记.md)
+- [XSS 挑战通关笔记](../../实验/Misc/XSS挑战通关笔记.md)
 
 **payload**
 - [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)

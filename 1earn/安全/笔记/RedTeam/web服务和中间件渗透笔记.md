@@ -9,6 +9,7 @@
 ---
 
 # 各类论坛/CMS框架
+
 **什么是 CMS**
 
 内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在您的网站上提供的软件. 它有助于编辑,发布和修改网站的内容.
@@ -44,8 +45,12 @@
 - [DiscuzX v3.4 排行页面存储型XSS漏洞 分析](https://xz.aliyun.com/t/2899)
 
 **CVE-2018-14729**
-- 影响范围
-    - Discuz! 1.5-2.5
+- 描述
+
+    Discuz！1.5 至 2.5 中的 `source/admincp/admincp_db.php` 中的数据库备份功能允许远程攻击者执行任意 PHP 代码。
+
+- 影响版本
+    - Discuz! 1.5 ~ 2.5
 
 - 文章
     - [Discuz! 1.5-2.5 命令执行漏洞分析(CVE-2018-14729)](https://paper.seebug.org/763/)
@@ -61,6 +66,15 @@
 - [theLSA/discuz-ml-rce](https://github.com/theLSA/discuz-ml-rce)
 
 **CVE-2019-13956**
+- 描述
+
+    该漏洞存在 discuz ml(多国语言版)中,cookie 中的 language 可控并且没有严格过滤,导致可以远程代码执行。
+
+- 影响版本
+    - Discuz! ML V3.2
+    - Discuz! ML V3.3
+    - Discuz! ML V3.4
+
 - 文章
     - [Discuz! ML远程代码执行(CVE-2019-13956)](https://www.cnblogs.com/yuzly/p/11386755.html)
     - [Discuz!ML V3.X 代码注入分析 ](https://xz.aliyun.com/t/5638)
@@ -71,32 +85,77 @@
 
 > 官网 : https://www.drupal.org/
 
+**相关靶场**
+- [DC: 1](../../实验/VulnHub/DC1通关笔记.md)
+
 **CVE-2014-3704 “Drupalgeddon” SQL注入漏洞**
-- 简述
+- 简介
 
     Drupal 7.0~7.31 版本中存在一处无需认证的 SQL 漏洞。通过该漏洞，攻击者可以执行任意 SQL 语句，插入、修改管理员信息，甚至执行任意代码。
 
+- 影响版本
+    - Drupal 7.0 ~ 7.31
+
 - POC | Payload | exp
     - https://vulhub.org/#/environments/drupal/CVE-2014-3704/
+    - https://www.exploit-db.com/exploits/34992
+
+- MSF Module
+    ```bash
+    use exploit/multi/http/drupal_drupageddon
+    set RHOSTS <IP>
+    run
+    ```
 
 **CVE-2017-6920 Drupal Core 8 PECL YAML 反序列化任意代码执行漏洞**
-- 简述
+- 简介
 
     2017年6月21日,Drupal 官方发布了一个编号为 CVE-2017- 6920 的漏洞,影响为 Critical.这是 Drupal Core 的 YAML 解析器处理不当所导致的一个远程代码执行漏洞,影响 8.x 的 Drupal Core.
+
+- 影响版本
+    - Drupal 8.x
 
 - 文章
     - [CVE-2017-6920:Drupal远程代码执行漏洞分析及POC构造](https://paper.seebug.org/334/)
     - [Drupal Core 8 PECL YAML 反序列化任意代码执行漏洞 (CVE-2017-6920) ](https://vulhub.org/#/environments/drupal/CVE-2017-6920/)
 
 **CVE-2018-7600 Drupal Drupalgeddon 2 远程代码执行漏洞**
+- 描述
+
+    Drupal 是一款用量庞大的 CMS，其 6/7/8 版本的 Form API 中存在一处远程代码执行漏洞。
+
+- 影响版本
+    - Drupal 6/7/8
+
 - POC | Payload | exp
     - https://github.com/vulhub/vulhub/blob/master/drupal/CVE-2018-7600/README.zh-cn.md
 
+- MSF Module
+    ```bash
+    use exploit/unix/webapp/drupal_drupalgeddon2
+    set RHOSTS <IP>
+    run
+    ```
+
 **CVE-2018-7602 远程代码执行漏洞**
+- 影响版本
+    - Drupal 7.x
+    - Drupal 8.x
+
 - POC | Payload | exp
     - [Drupal 远程代码执行漏洞（CVE-2018-7602）](https://vulhub.org/#/environments/drupal/CVE-2018-7602/)
+    - [CVE-2018-7600/drupa7-CVE-2018-7602.py](https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7602.py)
 
 **CVE-2019-6339 远程代码执行漏洞**
+- 描述
+
+    phar 反序列化 RCE
+
+- 影响版本
+    - Drupal 7.0 ~ 7.62
+    - Drupal 8.5.0 ~ 8.5.9
+    - Drupal 8.6.0 ~ 8.6.6
+
 - 文章
     - [Drupal 1-click to RCE 分析](https://paper.seebug.org/897/)
 
@@ -104,6 +163,15 @@
     - https://vulhub.org/#/environments/drupal/CVE-2019-6339/
 
 **CVE-2019-6341 XSS**
+- 描述
+
+    通过文件模块或者子系统上传恶意文件触发 XSS 漏洞
+
+- 影响版本
+    - Drupal 7.0 ~ 7.65
+    - Drupal 8.5.0 ~ 8.5.14
+    - Drupal 8.6.0 ~ 8.6.13
+
 - 文章
     - [Drupal 1-click to RCE 分析](https://paper.seebug.org/897/)
 
@@ -119,12 +187,16 @@
 ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性化网上商店.系统是基于 PHP 语言及 MYSQL 数据库构架开发的跨平台开源程序.
 
 **ECShop 2.x/3.x SQL 注入/任意代码执行漏洞**
-- 简述
+- 简介
 
     其2017年及以前的版本中,存在一处 SQL 注入漏洞,通过该漏洞可注入恶意数据,最终导致任意代码执行漏洞.其 3.6.0 最新版已修复该漏洞.
 
+- 影响版本
+    - ECShop 2.x/3.x
+
 - 文章
     - [ECShop 2.x/3.x SQL注入/任意代码执行漏洞](https://github.com/vulhub/vulhub/blob/master/ecshop/xianzhi-2017-02-82239600/README.zh-cn.md)
+    - [ecshop2.x 代码执行](https://paper.seebug.org/691/)
 
 ---
 
@@ -155,6 +227,10 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
     远程攻击者可通过向 admin/column/save.php 文件发送 `module` 参数利用该漏洞向 .php 文件写入代码并执行该代码.
 
+- 影响版本
+    - MetInfo 5.3.16
+    - MetInfo 6.0.0
+
 - 文章
     - [CVE-2018-13024复现及一次简单的内网渗透](https://www.freebuf.com/news/193748.html)
 
@@ -168,7 +244,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 > 官网: https://www.thinkcmf.com/
 
-**ThinkCMF_getshell**
+**ThinkCMF 任意内容包含漏洞**
 - POC | Payload | exp
     - [jas502n/ThinkCMF_getshell](https://github.com/jas502n/ThinkCMF_getshell)
 
@@ -287,7 +363,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
     formids=11111111111)))%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0d%0a%0dunion select NULL,value from v$parameter order by (((1
     ```
 
-**泛微ecology OA系统接口存在数据库配置信息泄露漏洞**
+**泛微 ecology OA 系统接口存在数据库配置信息泄露漏洞**
 - POC | Payload | exp
     - [jas502n/DBconfigReader](https://github.com/jas502n/DBconfigReader)
 
@@ -323,15 +399,18 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开源的消息中间件,它支持Java消息服务、集群、Spring Framework 等.
 
 **CVE-2015-5254 ActiveMQ 反序列化漏洞**
-- 简述
+- 简介
 
     Apache ActiveMQ 5.13.0 之前 5.x 版本中存在安全漏洞,该漏洞源于程序没有限制可在代理中序列化的类.远程攻击者可借助特制的序列化的 Java Message Service(JMS)ObjectMessage 对象利用该漏洞执行任意代码.
+
+- 影响版本
+    - Apache ActiveMQ 5.0.0 ~ 5.12.1
 
 - 文章
     - [ActiveMQ 反序列化漏洞 (CVE-2015-5254) ](https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2015-5254/README.zh-cn.md)
 
 **CVE-2016-3088 ActiveMQ 任意文件写入漏洞**
-- 简述
+- 简介
 
     ActiveMQ 的 web 控制台分三个应用,admin、api 和 fileserver,其中 admin 是管理员页面,api 是接口,fileserver 是储存文件的接口;admin 和 api 都需要登录后才能使用,fileserver 无需登录.
 
@@ -339,7 +418,10 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
     - 其使用率并不高
     - 文件操作容易出现漏洞
 
-    所以,ActiveMQ 在 5.12.x~5.13.x 版本中,已经默认关闭了 fileserver 这个应用 (你可以在 conf/jetty.xml 中开启之) ;在 5.14.0 版本以后,彻底删除了 fileserver应用.
+    所以,ActiveMQ 在 5.12.x~5.13.x 版本中,已经默认关闭了 fileserver 这个应用 (你可以在 conf/jetty.xml 中开启之) ;在 5.14.0 版本以后,彻底删除了 fileserver 应用.
+
+- 影响版本
+    - Apache ActiveMQ < 5.12.x
 
 - 文章
     - [ActiveMQ任意文件写入漏洞 (CVE-2016-3088) ](https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2016-3088/README.zh-cn.md)
@@ -348,7 +430,7 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 ## Apache RocketMQ
 
-- 4.0.x~4.3.x 存在 fastjson 1.2.29
+- 4.0.x ~ 4.3.x 存在 fastjson 1.2.29
 
 ---
 
@@ -367,11 +449,25 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 **SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
 - https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
 
+- 影响版本
+    - 1.2.4
+
 - POC | Payload | exp
     - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
 
 **SHIRO-721 | Shiro RememberMe Padding Oracle Vulnerability RCE**
 - https://issues.apache.org/jira/browse/SHIRO-721
+
+- 描述
+
+    cookie 的 cookiememeMe 已通过 AES-128-CBC 模式加密，这很容易受到填充 oracle 攻击的影响。
+
+    攻击者可以使用有效的 RememberMe cookie 作为 Padding Oracle Attack 的前缀，然后制作精心制作的 RememberMe 来执行 Java 反序列化攻击。
+
+- 影响版本
+    - 1.2.5 ~ 1.2.6
+    - 1.3.0 ~ 1.3.2
+    - 1.4.0-RC2 ~ 1.4.1
 
 - POC | Payload | exp
     - [3ndz/Shiro-721](https://github.com/3ndz/Shiro-721)
@@ -385,6 +481,8 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 
 Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其主要功能包括全文检索、命中标示、分面搜索、动态聚类、数据库集成,以及富文本的处理.
 
+Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
+
 **资源**
 - [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
 
@@ -393,11 +491,26 @@ Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其�
 
     原理大致是文档通过 Http 利用 XML 加到一个搜索集合中.查询该集合也是通过 http 收到一个 XML/JSON 响应来实现.此次 7.1.0 之前版本总共爆出两个漏洞:XML 实体扩展漏洞 (XXE) 和远程命令执行漏洞 (RCE) ,二者可以连接成利用链,编号均为 CVE-2017-12629.
 
+- 影响版本
+    - Apache solr 5.5.0 ~ 5.5.4
+    - Apache solr 6.0.0 ~ 6.6.1
+    - Apache solr 7.0.0 ~ 7.0.1
+
 - 文章
     - [Apache solr XML 实体注入漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-XXE/)
     - [Apache Solr 远程命令执行漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-RCE/)
 
 **CVE-2019-0192 Apache Solr RCE 5.0.0 to 5.5.5 and 6.0.0 to 6.6.5**
+- https://issues.apache.org/jira/browse/SOLR-13301
+
+- 简介
+
+    ConfigAPI 允许通过 HTTP POST 请求配置 Solr 的 JMX 服务器。通过将其指向恶意的 RMI 服务器，攻击者可以利用 Solr 的不安全反序列化功能在 Solr 端触发远程代码执行。
+
+- 影响版本
+    - Apache solr 5.0.0 ~ 5.5.5
+    - Apache solr 6.0.0 ~ 6.6.5
+
 - POC | Payload | exp
     - https://github.com/mpgn/CVE-2019-0192/
 
@@ -406,12 +519,22 @@ Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其�
 
     此次漏洞出现在 Apache Solr 的 DataImportHandler,该模块是一个可选但常用的模块,用于从数据库和其他源中提取数据.它具有一个功能,其中所有的 DIH 配置都可以通过外部请求的 dataConfig 参数来设置.由于 DIH 配置可以包含脚本,因此攻击者可以通过构造危险的请求,从而造成远程命令执行.
 
+- 影响版本
+    - Apache solr < 8.2.0
+
 - 文章
     - [Apache Solr 远程命令执行漏洞 (CVE-2019-0193) ](https://vulhub.org/#/environments/solr/CVE-2019-0193/)
 
-**Apache Solr Velocity模版注入远程命令执行漏洞**
+- POC | Payload | exp
+    - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
+
+**Apache Solr Velocity 模版注入远程命令执行漏洞**
+- 简介
+
+    2019年10月30日，国外安全研究人员放出了一个关于 solr 模板注入的 exp，攻击者通过未授权访问 solr 服务器，发送特定的数据包开启 params.resource.loader.enabled，然后 get 访问接口导致服务器命令执行，命令回显结果在 response。
+
 - 影响版本
-    - 影响 Apache Solr 8.1.1 到 8.2.0 版本.
+    - Apache Solr < 8.2.0
 
 - 文章
     - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
@@ -458,8 +581,28 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 - [Struts2 历史 RCE 漏洞回顾不完全系列](http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities/)
 
 **S2-016 & CVE-2013-2251**
+- https://cwiki.apache.org/confluence/display/WW/S2-016
+
+- 描述
+
+    DefaultActionMapper 类支持以"action:"、"redirect:"、"redirectAction:"作为导航或是重定向前缀，但是这些前缀后面同时可以跟 OGNL 表达式，由于 struts2 没有对这些前缀做过滤，导致利用 OGNL 表达式调用 java 静态方法执行任意系统命令
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.15
+
+- POC | Payload | exp
+    - [OneSourceCat/s2-016-exp](https://github.com/OneSourceCat/s2-016-exp)
 
 **S2-020 & CVE-2014-0094 & CNNVD-201403-191**
+- https://cwiki.apache.org/confluence/display/WW/S2-020
+
+- 简介
+
+    Apache Struts 2.0.0-2.3.16 版本的默认上传机制是基于 Commons FileUpload 1.3 版本，其附加的 ParametersInterceptor 允许访问'class' 参数（该参数直接映射到 `getClass()` 方法），并允许控制 ClassLoader。在具体的 Web 容器部署环境下（如：Tomcat），攻击者利用 Web 容器下的 Java Class 对象及其属性参数（如：日志存储参数），可向服务器发起远程代码执行攻击，进而植入网站后门控制网站服务器主机。
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.16.1
+
 - 文章
     - [Struts2 S2-020在Tomcat 8下的命令执行分析](https://www.freebuf.com/articles/web/31039.html)
 
@@ -467,19 +610,30 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
     - https://github.com/coffeehb/Some-PoC-oR-ExP/blob/master/Struts2/S2-020_POC.py
 
 **S2-045 & CVE-2017-5638**
+- https://cwiki.apache.org/confluence/display/WW/S2-045
+
 - 简介
 
     恶意用户可在上传文件时通过修改 HTTP 请求头中的 Content-Type 值来触发该漏洞进而执行系统命令.
+
+- 影响版本
+    - Struts 2.3.5 ~ 2.3.31
+    - Struts 2.5 ~ 2.5.10
 
 - POC | Payload | exp
     - [tengzhangchao/Struts2_045-Poc](https://github.com/tengzhangchao/Struts2_045-Poc)
     - [iBearcat/S2-045](https://github.com/iBearcat/S2-045)
 
 **S2-046 & CVE-2017-5638**
+- https://cwiki.apache.org/confluence/display/WW/S2-046
 
 - 简介
 
     该漏洞是由于上传功能的异常处理函数没有正确处理用户输入的错误信息,导致远程攻击者可通过修改 HTTP 请求头中的 Content-Type 值,构造发送恶意的数据包,利用该漏洞进而在受影响服务器上执行任意系统命令.
+
+- 影响版本
+    - Struts 2.3.5 ~ 2.3.31
+    - Struts 2.5 ~ 2.5.10
 
 - 修复方案
     1. 官方已经发布版本更新,尽快升级到不受影响的版本(Struts 2.3.32 或 Struts 2.5.10.1),建议在升级前做好数据备份.
@@ -493,30 +647,82 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
     - [mazen160/struts-pwn](https://github.com/mazen160/struts-pwn)
 
 **S2-048 & CVE-2017-9791**
+- https://cwiki.apache.org/confluence/display/WW/S2-048
+
+- 简介
+
+    攻击者可以构造恶意的字段值通过 Struts2 的 struts2-struts1-plugin 插件，远程执行代码。
+
+- 影响版本
+    - Struts 2.1.x ~ 2.3.x
+
 - POC | Payload | exp
     - [dragoneeg/Struts2-048](https://github.com/dragoneeg/Struts2-048)
 
 **S2-052 & CVE-2017-9805**
+- https://cwiki.apache.org/confluence/display/WW/S2-052
+
+- 简介
+
+    启用 Struts REST 插件并使用 XStream 组件对 XML 进行反序列操作时，未对数据内容进行有效验证，可被攻击者进行远程代码执行攻击(RCE)。
+
+- 影响版本
+    - Struts 2.1.6 ~ 2.3.33
+    - Struts 2.5 ~ 2.5.12
+
 - POC | Payload | exp
     - [mazen160/struts-pwn_CVE-2017-9805](https://github.com/mazen160/struts-pwn_CVE-2017-9805)
 
 **S2-053 & CVE-2017-12611**
+- https://cwiki.apache.org/confluence/display/WW/S2-053
+
+- 简介
+
+    当开发者在 Freemarker 标签中使用如下代码时 `<@s.hidden name=”redirectUri” value=redirectUri /><@s.hidden name=”redirectUri” value=”${redirectUri}” />` Freemarker 会将值当做表达式进行执行，最后导致代码执行。
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.33
+    - Struts 2.5 ~ 2.5.10.1
+
 - POC | Payload | exp
     - [brianwrf/S2-053-CVE-2017-12611](https://github.com/brianwrf/S2-053-CVE-2017-12611)
 
 **S2-055 & CVE-2017-7525**
+- https://cwiki.apache.org/confluence/display/WW/S2-055
+
+- 简介
+
+    2017年12月1日，Apache Struts 发布最新的安全公告，Apache Struts 2.5.x REST 插件存在远程代码执行的中危漏洞，漏洞编号与 CVE-2017-7525 相关。漏洞的成因是由于使用的 Jackson 版本过低在进行 JSON 反序列化的时候没有任何类型过滤导致远程代码执行。。
+
+- 影响版本
+    - Struts 2.5 ~ 2.5.14
+
 - POC | Payload | exp
     - [iBearcat/S2-055](https://github.com/iBearcat/S2-055)
 
 **S2-056 & CVE-2018-1327**
+- https://cwiki.apache.org/confluence/display/WW/S2-056
+
+- 简介
+
+    S2-056 漏洞发生于 Apache Struts 2的 REST 插件，当使用 XStream 组件对 XML 格式的数据包进行反序列化操作，且未对数据内容进行有效验证时，攻击者可通过提交恶意 XML 数据对应用进行远程 DoS 攻击。
+
+- 影响版本
+    - Struts 2.1.1 ~ 2.5.14.1
+
 - POC | Payload | exp
     - [ iBearcat/S2-056-XStream](https://github.com/iBearcat/S2-056-XStream)
 
 **S2-057 & CVE-2018-11776**
+- https://cwiki.apache.org/confluence/display/WW/S2-057
 
 - 简介
 
     该漏洞由 Semmle Security Research team 的安全研究员 Man YueMo 发现.该漏洞是由于在 Struts2 开发框架中使用 namespace 功能定义 XML 配置时,namespace 值未被设置且在上层动作配置(Action Configuration)中未设置或用通配符 namespace,可能导致远程代码执行.
+
+- 影响版本
+    - Struts 2.0.4 ~ 2.3.34
+    - Struts 2.5.0 ~ 2.5.16
 
 - POC | Payload | exp
     - [Ivan1ee/struts2-057-exp](https://github.com/Ivan1ee/struts2-057-exp)
@@ -553,8 +759,8 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 
 - 影响版本
 
-    - CVE-2017-12615影响范围:Apache Tomcat 7.0.0 - 7.0.79 (windows环境)
-    - CVE-2017-12616影响范围:Apache Tomcat 7.0.0 - 7.0.80
+    - CVE-2017-12615 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.79 (windows 环境)
+    - CVE-2017-12616 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.80
 
 - 文章
     - [CVE-2017-12615/CVE-2017-12616:Tomcat信息泄漏和远程代码执行漏洞分析报告](https://paper.seebug.org/399/)
@@ -578,18 +784,37 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
     ```
 
 **CVE-2017-12617**
+- 简介
+
+    运行启用了 HTTP PUT 的 Apache Tomcat 特定版本时(例如，通过将默认 servlet 的只读初始化参数设置为 false)可以通过特制请求将 JSP 文件上载到服务器。然后可以请求此 JSP，并且服务器将执行其中包含的所有代码。
+
+- 影响版本
+    - Apache Tomcat 7.0.0 ~ 7.0.81
+    - Apache Tomcat 8.0.0 ~ 8.0.17
+
 - 文章
     - [CVE-2017-12617-Tomcat远程代码执行漏洞复现测试](https://www.freebuf.com/vuls/150203.html)
 
 - POC | Payload | exp
     - [cyberheartmi9/CVE-2017-12617](https://github.com/cyberheartmi9/CVE-2017-12617)
 
-- MSF 模块
+- MSF Module
     ```
     use exploit/multi/http/tomcat_jsp_upload_bypass
     ```
 
 **CVE-2019-0232**
+- 简介
+
+    该漏洞是由于 Tomcat CGI 将命令行参数传递给 Windows 程序的方式存在错误，使得 CGIServlet 被命令注入影响。
+
+    该漏洞只影响 Windows 平台，要求启用了 CGIServlet 和 enableCmdLineArguments 参数。但是 CGIServlet 和 enableCmdLineArguments 参数默认情况下都不启用。
+
+- 影响版本
+    - Apache Tomcat 7.0.0 ~ 7.0.93
+    - Apache Tomcat 8.0.0 ~ 8.5.39
+    - Apache Tomcat 9.0.1 ~ 9.0.17
+
 - 文章
     - [CVE-2019-0232:Apache Tomcat RCE漏洞分析](https://xz.aliyun.com/t/4875)
     - [复现CVE-2019-0232过程中遇到的坑 Apache Tomcat高危远程代码执行漏洞](http://www.nmd5.com/?p=375)
@@ -618,10 +843,12 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 - `curl http://<ip>:9200/_nodes` 查看节点数据
 
 **CVE-2014-3120 ElasticSearch 命令执行漏洞**
-
-- 简述
+- 简介
 
     老版本 ElasticSearch 支持传入动态脚本 (MVEL) 来执行一些复杂的操作,而 MVEL 可执行 Java 代码,而且没有沙盒,所以我们可以直接执行任意代码.
+
+- 影响版本
+    - ElasticSearch 1.1.1
 
 - POC | Payload | exp
 
@@ -673,6 +900,13 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     ```
 
 **CVE-2015-1427 Groovy 沙盒绕过 && 代码执行漏洞**
+- 简介
+
+    CVE-2014-3120 后，ElasticSearch 默认的动态脚本语言换成了 Groovy，并增加了沙盒，但默认仍然支持直接执行动态语言。
+
+- 影响版本
+    - ElasticSearch < 1 .3.7
+    - ElasticSearch 1.4.0 ~ 1.4.2
 
 - 文章
     - [Remote Code Execution in Elasticsearch - CVE-2015-1427](https://jordan-wright.com/blog/2015/03/08/elasticsearch-rce-vulnerability-cve-2015-1427/)
@@ -681,7 +915,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
     来源: [ElasticSearch Groovy 沙盒绕过 && 代码执行漏洞 (CVE-2015-1427) 测试环境](https://vulhub.org/#/environments/elasticsearch/CVE-2015-1427/)
 
-    由于查询时至少要求es中有一条数据,所以发送如下数据包,增加一个数据:
+    由于查询时至少要求 es 中有一条数据,所以发送如下数据包,增加一个数据:
     ```
     POST /website/blog/ HTTP/1.1
     Host: your-ip:9200
@@ -712,14 +946,14 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     ```
 
 **CVE-2015-3337 目录穿越漏洞**
+- 简介
+
+    在安装了具有"site"功能的插件以后,插件目录使用../即可向上跳转,导致目录穿越漏洞,可读取任意文件.没有安装任意插件的 elasticsearch 不受影响.
 
 - 影响版本
 
-    - 1.4.5 以下/1.5.2 以下
-
-- 简述
-
-    在安装了具有"site"功能的插件以后,插件目录使用../即可向上跳转,导致目录穿越漏洞,可读取任意文件.没有安装任意插件的 elasticsearch 不受影响.
+    - ElasticSearch < 1.4.4
+    - ElasticSearch 1.5.0 ~ 1.5.1
 
 - POC | Payload | exp
 
@@ -730,14 +964,13 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     - `http://your-ip:9200/_plugin/head/`
 
 **CVE-2015-5531**
-
-- 简述
+- 简介
 
     elasticsearch 1.5.1 及以前,无需任何配置即可触发该漏洞.之后的新版,配置文件 elasticsearch.yml 中必须存在 path.repo,该配置值为一个目录,且该目录必须可写,等于限制了备份仓库的根位置.不配置该值,默认不启动这个功能.
 
 - 影响版本
 
-    - 1.6.1 以下
+    - ElasticSearch < 1.6.0
 
 - 文章
     - [Elasticsearch目录遍历漏洞 (CVE-2015-5531) 复现与分析 (附PoC) ](https://www.freebuf.com/vuls/99942.html)
@@ -795,20 +1028,21 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 ## IIS
 
 **IIS shortname**
+- 简介
 
-windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容 MS-DOS 的(短)文件名,以允许基于 MS-DOS 或16位 windows 的程序访问这些文件.
-
-- 文章
-    - [IIS短文件名漏洞](http://www.lonelyor.org/lonelyorWiki/15446866501207.html)
-    - [IIS短文件名泄露漏洞修复](https://segmentfault.com/a/1190000006225568)
-    - [IIS短文件/文件夹漏洞(汇总整理) ](https://www.freebuf.com/articles/4908.html)
+    windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容 MS-DOS 的(短)文件名,以允许基于 MS-DOS 或16位 windows 的程序访问这些文件.
 
 - 修复方案
     1. 升级 .net framework 至 4.0 版本或以上
     2. 修改 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
     值 NtfsDisable8dot3NameCreation 为 1
 
-- 示例
+- 文章
+    - [IIS短文件名漏洞](http://www.lonelyor.org/lonelyorWiki/15446866501207.html)
+    - [IIS短文件名泄露漏洞修复](https://segmentfault.com/a/1190000006225568)
+    - [IIS短文件/文件夹漏洞(汇总整理) ](https://www.freebuf.com/articles/4908.html)
+
+- POC | Payload | exp
     ```bash
     1. http://www.xxx.com/*~1*/.aspx
     2. http://www.xxx.com/l1j1e*~1*/.aspx
@@ -824,47 +1058,58 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     Windows Server 2003
     关闭该功能:fsutil behavior set disable8dot3 1
     ```
-
-- POC | Payload | exp
     - [lijiejie/IIS_shortname_Scanner](https://github.com/lijiejie/IIS_shortname_Scanner)
     - [irsdl/IIS-ShortName-Scanner](https://github.com/irsdl/IIS-ShortName-Scanner)
 
 **.Net Framework 拒绝服务攻击**
+- 简介
 
-当请求文件夹名称包含 ~1 的请求,会导致不存在该文件的 .Net Framework 去递归查询所有根目录.如果只有一个"~1"是无效的,当"~1"大于一个,比如像这样:
-`/wwwtest/fuck~1/~1/~1/~1.aspx`
-此时文件系统会这样调用:
-```
-\wwwtest                           SUCCESS
-\wwwtest\fuck~1\~1\~1\~1           PATH NOT FOUND
-\wwwtest\fuck~1                    NAME NOT FOUND
-\wwwtest\fuck~1\~1\                PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1\             PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1              PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
-\wwwtest\fuck~1\~1\~1              PATH NOT FOUND
-\wwwtest\fuck~1\~1                 PATH NOT FOUND
-\wwwtest\fuck~1                    NAME NOT FOUND
-\wwwtest                           SUCCESS
-\wwwtest                           SUCCESS
-```
-如果我们请求的文件/文件夹名同时存在大小写时,这个请求会被请求两次,一次是原封不动的请求,一次是全部使用小写的请求.
+    当请求文件夹名称包含 ~1 的请求,会导致不存在该文件的 .Net Framework 去递归查询所有根目录.如果只有一个"~1"是无效的,当"~1"大于一个,比如像这样:
+    `/wwwtest/fuck~1/~1/~1/~1.aspx`
+    此时文件系统会这样调用:
+    ```
+    \wwwtest                           SUCCESS
+    \wwwtest\fuck~1\~1\~1\~1           PATH NOT FOUND
+    \wwwtest\fuck~1                    NAME NOT FOUND
+    \wwwtest\fuck~1\~1\                PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1\             PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1              PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1\~1.aspx      PATH NOT FOUND
+    \wwwtest\fuck~1\~1\~1              PATH NOT FOUND
+    \wwwtest\fuck~1\~1                 PATH NOT FOUND
+    \wwwtest\fuck~1                    NAME NOT FOUND
+    \wwwtest                           SUCCESS
+    \wwwtest                           SUCCESS
+    ```
+    如果我们请求的文件/文件夹名同时存在大小写时,这个请求会被请求两次,一次是原封不动的请求,一次是全部使用小写的请求.
 
-下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-![image](../../../../assets/img/安全/1.jpg)
+    下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
+    ![image](../../../../assets/img/安全/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
+- 简介
+
+    CVE-2017-7269 是 IIS 6.0 中存在的一个栈溢出漏洞，在 IIS6.0 处理 PROPFIND 指令的时候，由于对 url 的长度没有进行有效的长度控制和检查，导致执行 memcpy 对虚拟路径进行构造的时候，引发栈溢出，该漏洞可以导致远程代码执行。
+
+- 影响版本
+    - IIS 6.0
+    - win 2003-r2
+
+- 文章
+    - [CVE-2017-7269 IIS6.0远程代码执行漏洞分析及Exploit](https://paper.seebug.org/259/)
+
 - POC | Payload | exp
     - [zcgonvh/cve-2017-7269](https://github.com/zcgonvh/cve-2017-7269)
     - [zcgonvh/cve-2017-7269-tool](https://github.com/zcgonvh/cve-2017-7269-tool)
     - [lcatro/CVE-2017-7269-Echo-PoC](https://github.com/lcatro/CVE-2017-7269-Echo-PoC)
     - [edwardz246003/IIS_exploit](https://github.com/edwardz246003/IIS_exploit)
 
-- MSF 模块
-
-    - `use exploit/windows/iis/cve-2017-7269`
+- MSF Module
+    ```bash
+    use exploit/windows/iis/cve-2017-7269
+    ```
 
 ---
 
@@ -876,28 +1121,48 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 - [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss)
 
 **未授权访问漏洞**
-
-- 简述
+- 简介
 
     部分版本 JBoss 默认情况下访问 http://ip:8080/jmx-console 就可以浏览 JBoss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马有安全隐患。
 
     - `http://<ip>:8080/jmx-console`
 
 **CVE-2016-7065 Red Hat JBoss EAP - Deserialization of Untrusted Data**
+- 简介
+
+    JBoss 企业应用程序平台（EAP）4和5中的 JMX servlet 允许远程 DOS，并可能通过精心设计的序列化 Java 对象执行任意代码。
+
+- 影响版本
+    - JBOSS 4.0.0
+    - JBOSS 5.0.0
+
 - POC | Payload | exp
     - [Red Hat JBoss EAP - Deserialization of Untrusted Data](https://www.exploit-db.com/exploits/40842)
 
 **CVE-2017-12149 JBoss 5.x/6.x 反序列化漏洞**
+- 简介
+
+    该漏洞为 Java 反序列化错误类型，存在于 Jboss 的 HttpInvoker 组件中的 ReadOnlyAccessFilter 过滤器中。该过滤器在没有进行任何安全检查的情况下尝试将来自客户端的数据流进行反序列化，从而导致了漏洞。
+
+- 影响版本
+    - JBOSS 5.0.0 ~ 5.2.2
+
 - POC | Payload | exp
     - [yunxu1/jboss-_CVE-2017-12149](https://github.com/yunxu1/jboss-_CVE-2017-12149)
     - [jreppiks/CVE-2017-12149](https://github.com/jreppiks/CVE-2017-12149)
+    - https://github.com/vulhub/vulhub/tree/master/jboss/CVE-2017-12149
 
 ## PHP
 
 **CVE-2012-1823 PHPCGI 远程代码执行漏洞**
+- 简介
+
+    5.3.12 之前和 5.4.2 之前的 5.4.x 中的 sapi/cgi/cgi_main.c 在配置为 CGI 脚本（aka php-cgi）时，不能正确处理缺少=（等号）字符的查询字符串 ，它允许远程攻击者通过在查询字符串中放置命令行选项来执行任意代码，这与在"d"情况下缺少跳过某些 php_getopt 有关。
+
 - 影响版本
 
-    - php < 5.3.12 or php < 5.4.2
+    - php < 5.3.12
+    - php < 5.4.2
 
 - 文章
     - [PHP-CGI远程代码执行漏洞 (CVE-2012-1823) 分析](https://paper.seebug.org/297/)
@@ -922,12 +1187,23 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     <?php echo shell_exec("id"); ?>
     ```
 
+- MSF Module
+    ```
+    use exploit/multi/http/php_cgi_arg_injection
+    ```
+
 **CVE-2018-19518 PHP imap 远程命令执行漏洞**
 - 简介
 
     php imap 扩展用于在 PHP 中执行邮件收发操作.其 imap_open 函数会调用 rsh 来连接远程 shell,而 debian/ubuntu 中默认使用 ssh 来代替 rsh 的功能 (也就是说,在 debian 系列系统中,执行 rsh 命令实际执行的是 ssh 命令) .
 
     因为 ssh 命令中可以通过设置 -oProxyCommand= 来调用第三方命令,攻击者通过注入注入这个参数,最终将导致命令执行漏洞.
+
+- 影响版本
+    - php 5.6.0 ~ 5.6.38
+    - php 7.0.0 ~ 7.0.32
+    - php 7.1.0 ~ 7.1.24
+    - php 7.2.0 ~ 7.2.12
 
 - POC | Payload | exp
     - [PHP imap 远程命令执行漏洞 (CVE-2018-19518) ](https://github.com/vulhub/vulhub/blob/master/php/CVE-2018-19518/README.md)
@@ -938,6 +1214,11 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     在长亭科技举办的 Real World CTF 中,国外安全研究员 Andrew Danau 在解决一道 CTF 题目时发现,向目标服务器 URL 发送 %0a 符号时,服务返回异常,疑似存在漏洞.
 
     在使用一些有错误的 Nginx 配置的情况下,通过恶意构造的数据包,即可让 PHP-FPM 执行任意代码.
+
+- 影响版本
+    - php 7.1.0 ~ 7.1.33
+    - php 7.2.0 ~ 7.2.24
+    - php 7.3.0 ~ 7.3.11
 
 - POC | Payload | exp
     - [PHP-FPM 远程代码执行漏洞 (CVE-2019-11043) ](https://github.com/vulhub/vulhub/blob/master/php/CVE-2019-11043/README.zh-cn.md)
@@ -968,7 +1249,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     xdebug.remote_connect_back = 1
     xdebug.remote_enable = 1
     ```
-    这个配置下,我们访问 http://target/index.php?XDEBUG_SESSION_START=phpstorm,目标服务器的 XDebug 将会连接访问者的 IP (或 `X-Forwarded-For` 头指定的地址) 并通过 dbgp 协议与其通信,我们通过 dbgp 中提供的 eval 方法即可在目标服务器上执行任意 PHP 代码.
+    这个配置下,我们访问 http://target/index.php?XDEBUG_SESSION_START=phpstorm ,目标服务器的 XDebug 将会连接访问者的 IP (或 `X-Forwarded-For` 头指定的地址) 并通过 dbgp 协议与其通信,我们通过 dbgp 中提供的 eval 方法即可在目标服务器上执行任意 PHP 代码.
 
 - POC | Payload | exp
     - [XDebug 远程调试漏洞 (代码执行) ](https://github.com/vulhub/vulhub/blob/master/php/xdebug-rce/README.md)
@@ -997,6 +1278,10 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
     Spring Security OAuth 是为 Spring 框架提供安全认证支持的一个模块.在其使用 whitelabel views 来处理错误时,由于使用了Springs Expression Language (SpEL),攻击者在被授权的情况下可以通过构造恶意参数来远程执行命令.
 
+- 影响版本
+    - spring_security_oauth 1.0.0 ~ 1.0.5
+    - spring_security_oauth 2.0.0 ~ 2.0.9
+
 - POC | Payload | exp
 
     来源: https://vulhub.org/#/environments/spring/CVE-2016-4977/
@@ -1008,6 +1293,9 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
     Spring WebFlow 是一个适用于开发基于流程的应用程序的框架 (如购物逻辑) ,可以将流程的定义和实现流程行为的类和视图分离开来.在其 2.4.x 版本中,如果我们控制了数据绑定时的field,将导致一个 SpEL 表达式注入漏洞,最终造成任意命令执行.
 
+- 影响版本
+    - spring_web_flow 2.4.0 ~ 2.4.4
+
 - 文章
     - [Spring WebFlow 远程代码执行漏洞 (CVE-2017-4971) ](https://vulhub.org/#/environments/spring/CVE-2017-4971/)
 
@@ -1015,6 +1303,12 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 - 简介
 
     Spring Data REST 是一个构建在 Spring Data 之上,为了帮助开发者更加容易地开发 REST 风格的 Web 服务.在 REST API 的 Patch 方法中 (实现 RFC6902) ,path 的值被传入 setValue,导致执行了 SpEL 表达式,触发远程命令执行漏洞.
+
+- 影响版本
+    - spring_boot < 1.5.9
+    - spring_boot 2.0.0:m1 ~ 2.0.0:m5
+    - spring_data_rest < 2.6.9
+    - spring_data_rest 3.0.0 ~ 3.0.0:rc3
 
 - 文章
     - [Spring Data Rest 远程命令执行漏洞 (CVE-2017-8046) ](https://vulhub.org/#/environments/spring/CVE-2017-8046/)
@@ -1026,12 +1320,25 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
     在 spring messaging 中,其允许客户端订阅消息,并使用 selector 过滤消息.selector 用 SpEL 表达式编写,并使用 StandardEvaluationContext 解析,造成命令执行漏洞.
 
+- 影响版本
+    - spring_framework < 4.2.9
+    - spring_framework 4.3.0 ~ 4.3.15
+    - spring_framework 5.0 ~ 5.0.5
+
 - 文章
     - [Spring Messaging 远程命令执行漏洞 (CVE-2018-1270) ](https://vulhub.org/#/environments/spring/CVE-2018-1270/)
 
 **CVE-2018-1273 Spring Data Commons RCE 远程命令执行漏洞**
 - 文章
     - [Spring Data Commons 远程命令执行漏洞 (CVE-2018-1273) ](https://vulhub.org/#/environments/spring/CVE-2018-1273/)
+
+- 影响版本
+    - spring_data_commons < 1.12.10
+    - spring_data_commons 1.13 ~ 1.13.10
+    - spring_data_commons 2.0 ~ 2.0.5
+    - spring_data_rest < 2.5.10
+    - spring_data_rest 2.6 ~ 2.6.10
+    - spring_data_rest 3.0 ~ 3.0.5
 
 - POC | Payload | exp
     - [wearearima/poc-cve-2018-1273](https://github.com/wearearima/poc-cve-2018-1273)
@@ -1061,40 +1368,74 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 - [[漏洞预警]WebLogic T3 反序列化绕过漏洞 & 附检测POC](https://www.secfree.com/a/957.html)
 - [Weblogic 常见漏洞分析](https://hellohxk.com/blog/weblogic/)
 
-**CVE-2009-1975**
+**CVE-2009-1975 xss 漏洞**
+- 简介
+
+    BEA Product Suite 10.3 中 WebLogic Server 组件中的未指定漏洞使远程攻击者可以影响与 WLS 控制台程序包相关的机密性，完整性和可用性。
+
+- 影响版本
+    - weblogic_server 10.3
+
 - POC | Payload | exp
+    - `http://www.example.com:7011/consolehelp/console-help.portal?_nfpb=true&_pageLabel=ConsoleHelpSearchPage&searchQuery="><script>alert('DSECRG')</script> `
     - [Oracle WebLogic Server 10.3 - 'console-help.portal' Cross-Site Scripting](https://www.exploit-db.com/exploits/33079)
 
-- 示例
+**CVE-2017-10271 XMLDecoder 反序列化漏洞**
+- 简介
 
-    - `http://www.example.com:7011/consolehelp/console-help.portal?_nfpb=true&_pageLabel=ConsoleHelpSearchPage&searchQuery="><script>alert('DSECRG')</script> `
+    Weblogic 的 WLS Security 组件对外提供 webservice 服务，其中使用了 XMLDecoder 来解析用户传入的 XML 数据，在解析的过程中出现反序列化漏洞，导致可执行任意命令。
 
-**CVE-2017-10271**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.1.0 ~ 12.2.1.2.0
+
 - 文章
     - [WebLogic XMLDecoder反序列化漏洞复现](https://mochazz.github.io/2017/12/25/weblogic_xmldecode/)
     - [blog-hugo/content/blog/Weblogic-0day.md](https://github.com/kylingit/blog-hugo/blob/master/content/blog/Weblogic-0day.md)
 
-- 检测方法
-    - `<目标IP:端口>/wls-wsat/CoordinatorPortType11`
-
 - POC | Payload | exp
+    - `<目标IP:端口>/wls-wsat/CoordinatorPortType11`
     - [1337g/CVE-2017-10271](https://github.com/1337g/CVE-2017-10271)
 
-**CVE-2018-2628**
+**CVE-2018-2628 反序列化漏洞**
+- 简介
+
+    2018年4月18日，Oracle 官方发布了4月份的安全补丁更新 CPU（Critical Patch Update），更新中修复了一个高危的 WebLogic 反序列化漏洞 CVE-2018-2628。攻击者可以在未授权的情况下通过 T3 协议对存在漏洞的 WebLogic 组件进行远程攻击，并可获取目标系统所有权限。
+
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.2.0 ~ 12.2.1.3
+
 - 文章
     - [CVE-2018-2628 简单复现与分析 | xxlegend](http://xxlegend.com/2018/04/18/CVE-2018-2628%20%E7%AE%80%E5%8D%95%E5%A4%8D%E7%8E%B0%E5%92%8C%E5%88%86%E6%9E%90/)
 
 - POC | Payload | exp
     - [shengqi158/CVE-2018-2628](https://github.com/shengqi158/CVE-2018-2628)
 
-**CVE-2018-2893**
+**CVE-2018-2893 WebLogic 反序列化漏洞**
+- 简介
+
+    Oracle 官方在2018年7月发布了关键补丁更新，其中包含了 Oracle WebLogic Server 的一个高危的 WebLogic 反序列化漏洞，通过该漏洞，攻击者可以在未授权的情况下远程执行代码。
+
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.2.0 ~ 12.2.1.3
+
 - 文章
     - [天融信关于CVE-2018-2893 WebLogic反序列化漏洞分析](https://www.freebuf.com/column/178103.html)
 
 - POC | Payload | exp
     - [pyn3rd/CVE-2018-2893](https://github.com/pyn3rd/CVE-2018-2893)
 
-**CVE-2018-2894**
+**CVE-2018-2894 未授权访问致任意文件上传/RCE 漏洞**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.2.0 ~ 12.2.1.3
+
 - 文章
     - [Weblogic CVE-2018-2894 漏洞复现](https://blog.csdn.net/qq_23936389/article/details/81256015)
 
@@ -1102,6 +1443,11 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [LandGrey/CVE-2018-2894](https://github.com/LandGrey/CVE-2018-2894)
 
 **CVE-2018-3191**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - 文章
     - [从流量侧浅谈WebLogic远程代码执行漏洞(CVE-2018-3191)](https://www.jianshu.com/p/f73b162c4649)
 
@@ -1109,6 +1455,11 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [voidfyoo/CVE-2018-3191](https://github.com/voidfyoo/CVE-2018-3191)
 
 **CVE-2018-3245**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - 文章
     - [weblogic反序列化漏洞 cve-2018-3245](https://blog.51cto.com/13770310/2308371)
 
@@ -1116,6 +1467,10 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [pyn3rd/CVE-2018-3245](https://github.com/pyn3rd/CVE-2018-3245)
 
 **CVE-2018-3246**
+- 影响版本
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - 文章
     - [看我如何在Weblogic里捡一个XXE (CVE-2018-3246) ](https://www.freebuf.com/vuls/186862.html)
 
@@ -1124,36 +1479,71 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
     - [hackping/XXEpayload](https://github.com/hackping/XXEpayload/tree/master/xxe)
     - `http://127.0.0.1:8338/ws_utc/begin.do`
 
-**CVE-2019-2615**
+**CVE-2019-2615 任意文件读取漏洞**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - POC | Payload | exp
     - [chiaifan/CVE-2019-2615](https://github.com/chiaifan/CVE-2019-2615)
 
 **CVE-2019-2618 Weblogic Upload Vuln(Need username password)**
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - POC | Payload | exp
     - [jas502n/cve-2019-2618](https://github.com/jas502n/cve-2019-2618)
 
 **CVE-2019-2725 && CNVD-C-2019-48814**
+- 简介
+
+    4月17日，国家信息安全漏洞共享平台（CNVD）公开了 Weblogic 反序列化远程代码执行漏洞（CNVD-C-2019-48814）。由于在反序列化处理输入信息的过程中存在缺陷，未经授权的攻击者可以发送精心构造的恶意 HTTP 请求，利用该漏洞获取服务器权限，实现远程代码执行。
+
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+
 - 文章
     - [CNVD-C-2019-48814 Weblogic wls9_async_response 反序列化RCE复现](https://www.jianshu.com/p/c4982a845f55)
 
-- 检测方法
+- POC | Payload | exp
     ```bash
     <目标 IP:端口>/_async/AsyncResponseService
     <目标 IP:端口>/wls-wsat/CoordinatorPortType
     ```
-
-- POC | Payload | exp
     - [MyTools/CVE-2019-2725](https://github.com/No4l/MyTools/tree/master/CVE-2019-2725)
     - [skytina/CNVD-C-2019-48814-COMMON](https://github.com/skytina/CNVD-C-2019-48814-COMMON)
     - [lufeirider/CVE-2019-2725](https://github.com/lufeirider/CVE-2019-2725)
     - [black-mirror/Weblogic](https://github.com/black-mirror/Weblogic) - Weblogic CVE-2019-2725 CVE-2019-2729 Getshell 命令执行
 
 **CVE-2019-2890 WebLogic 反序列化RCE**
+- 简介
+
+    2019年10月16日，WebLogic 官方发布了安全补丁公告，修复了包含 CVE-2019-2890 等高危漏洞。Weblogic 在利用 T3 协议进行远程资源加载调用时，默认会进行黑名单过滤以保证反序列化安全。漏洞 CVE-2019-2890 绕过了 Weblogic 的反序列化黑名单，使攻击者可以通过 T3 协议对存在漏洞的 Weblogic 组件实施远程攻击，但该漏洞利用条件较高，官方也归类为需要身份认证。
+
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+
 - POC | Payload | exp
     - [SukaraLin/CVE-2019-2890](https://github.com/SukaraLin/CVE-2019-2890)
     - [jas502n/CVE-2019-2890](https://github.com/jas502n/CVE-2019-2890)
 
 **CVE-2020-2551 Weblogic RCE with IIOP**
+- 简介
+
+    最近 Oracle 发布了新一轮补丁,其中重点了修复多个高危安全漏洞.其中较为严重之一的则是 CVE-2020-2551.攻击者可以在未授权的情况下通过 IIOP 协议对存在漏洞的 WebLogic 进行远程代码执行的攻击.成功利用该漏洞的攻击者可以直接控制服务器,危害性极高。
+
+- 影响版本
+    - weblogic_server 10.3.6.0.0
+    - weblogic_server 12.1.3.0.0
+    - weblogic_server 12.2.1.3.0
+    - weblogic_server 12.2.1.4.0
+
 - POC | Payload | exp
     - [jas502n/CVE-2020-2551](https://github.com/jas502n/CVE-2020-2551)
 
@@ -1161,6 +1551,7 @@ windows 在创建一个新文件时,操作系统还会生成 8.3 格式的兼容
 
 # 组件
 ## 编辑器
+
 **手册**
 - [编辑器漏洞手册](https://navisec.it/%e7%bc%96%e8%be%91%e5%99%a8%e6%bc%8f%e6%b4%9e%e6%89%8b%e5%86%8c/)
 
@@ -1252,7 +1643,7 @@ FCKeditor/_samples/asp/sample04.asp
 > 项目地址 : https://github.com/aria2/aria2
 
 **Aria2 任意文件写入漏洞**
-- 简述
+- 简介
 
     Aria2 是一个命令行下轻量级、多协议、多来源的下载工具 (支持 HTTP/HTTPS、FTP、BitTorrent、Metalink) ,内建 XML-RPC 和 JSON-RPC 接口.在有权限的情况下,我们可以使用 RPC 接口来操作 aria2 来下载文件,将文件下载至任意目录,造成一个任意文件写入漏洞.
 
@@ -1268,6 +1659,16 @@ FCKeditor/_samples/asp/sample04.asp
 Confluence 是一个专业的企业知识管理与协同软件，也可以用于构建企业 wiki。使用简单，强大的编辑和站点管理特征能够帮助团队成员之间共享信息、文档协作、集体讨论，信息推送。
 
 **CVE-2019-3398 Atlassian Confluence Download Attachments Remote Code Execution**
+- 简介
+
+    Confluence Server 和 Data Center 在 downloadallattachments 资源中存在路径穿越漏洞。 在 Page 或 Blogs 具有添加附件权限的用户，或具有创建新空间或个人空间权限的用户，或对某空间具有“管理员”权限的用户可利用此路径穿越漏洞将文件写入任意位置。一定条件下可以执行任意代码。
+
+- 影响版本
+    - Atlassian confluence 2.0.0 ~ 6.6.13
+    - Atlassian confluence 6.7.0 ~ 6.12.4
+    - Atlassian confluence 6.13.0 ~ 6.13.4
+    - Atlassian confluence 6.14.0 ~ 6.14.3
+
 - POC | Payload | exp
     https://www.peerlyst.com/posts/cve-2019-3398-atlassian-confluence-download-attachments-remote-code-execution-juniper-networks?utm_source=twitter&utm_medium=social&utm_content=peerlyst_post&utm_campaign=peerlyst_shared_post
 
@@ -1279,11 +1680,17 @@ Confluence 是一个专业的企业知识管理与协同软件，也可以用于
 
 Atlassian Crowd 是一套基于 Web 的单点登录系统。该系统为多用户、网络应用程序和目录服务器提供验证、授权等功能。Atlassian Crowd Data Center 是 Crowd 的集群部署版。
 
-**Atlassian Crowd 未授权访问漏洞**
-
-- 简述
+**CVE-2019-11580 Atlassian Crowd 未授权访问漏洞**
+- 简介
 
     Atlassian Crowd 和 Crowd Data Center 在其某些发行版本中错误地启用了 pdkinstall 开发插件，使其存在安全漏洞。攻击者利用该漏洞可在未授权访问的情况下对 Atlassian Crowd 和 Crowd Data Center 安装任意的恶意插件，执行任意代码/命令，从而获得服务器权限。
+
+- 影响版本
+    - Atlassian Crowd 2.1.0 ~ 3.0.5
+    - Atlassian Crowd 3.1.0 ~ 3.1.6
+    - Atlassian Crowd 3.2.0 ~ 3.2.8
+    - Atlassian Crowd 3.3.0 ~ 3.3.5
+    - Atlassian Crowd 3.4.0 ~ 3.4.4
 
 - 文章
     - [Analysis of an Atlassian Crowd RCE - CVE-2019-11580](https://www.corben.io/atlassian-crowd-rce/)
@@ -1302,6 +1709,15 @@ JIRA 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用�
 jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13085
 
 **CVE-2019-3403 信息泄露(用户名枚举)**
+- 简介
+
+    Atlassian Jira 7.13.3 之前版本、8.0.4 之前版本和 8.1.1 之前版本中存在用户名枚举漏洞，攻击者可利用该漏洞枚举用户名称。
+
+- 影响版本
+    - Atlassian Jira < 7.13.3
+    - Atlassian Jira 8.0.0 ~ 8.0.4
+    - Atlassian Jira 8.1.0 ~ 8.1.1
+
 - POC | Payload | exp
     - https://blog.csdn.net/caiqiiqi/article/details/100094987
 
@@ -1310,13 +1726,26 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
 
     Atlassian Jira 是澳大利亚 Atlassian 公司的一套缺陷跟踪管理系统.该系统主要用于对工作中各类问题、缺陷进行跟踪管理. Atlassian Jira 7.13.4 之前版本、8.0.4 之前版本和 8.1.1 之前版本中的CachingResourceDownloadRewriteRule 类存在安全漏洞.远程攻击者可利用该漏洞访问 Jira webroot 中的文件.
 
+- 影响版本
+    - Atlassian Jira < 7.13.3
+    - Atlassian Jira 8.0.0 ~ 8.0.4
+    - Atlassian Jira 8.1.0 ~ 8.1.1
+
 - POC | Payload | exp
     - https://note.youdao.com/ynoteshare1/index.html?id=4189e6fb21fb097a4109ac22f33b16cb&type=note
     - https://hackerone.com/reports/632808
 
     `/s/thiscanbeanythingyouwant/_/META-INF/maven/com.atlassian.jira/atlassian-jira-webapp/pom.xml`
 
-**CVE-2019-8444 存储型XSS**
+**CVE-2019-8444 存储型 XSS**
+- 简介
+
+    Atlassian Jira 7.13.6之前版本和8.3.2之前的8.x版本中的 wikirenderer 组件存在跨站脚本漏洞。该漏洞源于 WEB 应用缺少对客户端数据的正确验证。攻击者可利用该漏洞执行客户端代码。
+
+- 影响版本
+    - Atlassian Jira 7.7 ~ 7.13.6
+    - Atlassian Jira 8.0.0 ~ 8.3.2
+
 - POC | Payload | exp
     ```
     POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
@@ -1332,39 +1761,39 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
     ```
 
 **CVE-2019-8446 信息泄露(用户名枚举)**
+- 简介
+
+    Atlassian Jira 8.3.2之前版本中的 /rest/issueNav/1/issueTable 资源存在授权问题漏洞。该漏洞源于网络系统或产品中缺少身份验证措施或身份验证强度不足。
+
+- 影响版本
+    - Atlassian Jira 7.6 ~ 8.3.2
+
 - POC | Payload | exp
     - https://talosintelligence.com/vulnerability_reports/TALOS-2019-0839
 
 **CVE-2019-8451 Jira 未授权 SSRF 漏洞**
-- 影响范围
+- 简介
 
-    - < 8.4.0
+    Atlassian Jira 8.4.0 之前版本中的 /plugins/servlet/gadgets/makeRequest 资源存在代码问题漏洞。该漏洞源于网络系统或产品的代码开发过程中存在设计或实现不当的问题。
+
+- 影响版本
+
+    - Atlassian Jira 7.6.0 ~ 8.4.0
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-8451](https://github.com/jas502n/CVE-2019-8451)
 
 **CVE-2019-11581 Atlassian Jira 模板注入漏洞**
-- 影响范围
-    - 4.4.x
-    - 5.x.x
-    - 6.x.x
-    - 7.0.x
-    - 7.1.x
-    - 7.2.x
-    - 7.3.x
-    - 7.4.x
-    - 7.5.x
-    - 7.6.x before 7.6.14 (the fixed version for 7.6.x)
-    - 7.7.x
-    - 7.8.x
-    - 7.9.x
-    - 7.10.x
-    - 7.11.x
-    - 7.12.x
-    - 7.13.x before 7.13.5 (the fixed version for 7.13.x)
-    - 8.0.x before 8.0.3 (the fixed version for 8.0.x)
-    - 8.1.x before 8.1.2 (the fixed version for 8.1.x)
-    - 8.2.x before 8.2.3 (the fixed version for 8.2.x)
+- 简介
+
+    Atlassian Jira 多个版本前存在利用模板注入执行任意命令
+
+- 影响版本
+    - Atlassian Jira 4.4 ~ 7.6.14
+    - Atlassian Jira 7.7.0 ~ 7.13.5
+    - Atlassian Jira 8.0.0 ~ 8.0.3
+    - Atlassian Jira 8.1.0 ~ 8.1.2
+    - Atlassian Jira 8.2.0 ~ 8.2.3
 
 - 文章
     - [Atlassian Jira 模板注入漏洞 (CVE-2019-11581) ](https://vulhub.org/#/environments/jira/CVE-2019-11581/)
@@ -1378,6 +1807,13 @@ jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13
 Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 
 **CVE-2019-3990 User Enumeration Vulnerability**
+- https://github.com/goharbor/harbor/security/advisories/GHSA-6qj9-33j4-rvhg
+
+- 影响版本
+    - harbor 1.7.0 ~ 1.7.6
+    - harbor 1.8.0 ~ 1.8.5
+    - harbor 1.9.0 ~ 1.9.1
+
 - POC | Payload | exp
     ```
     GET /api/users/search?email=@test
@@ -1394,6 +1830,8 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 
 > 官网 : https://jenkins.io/
 
+Jenkins 的漏洞参考 https://jenkins.io/security/advisories/
+
 **资源**
 - [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
 - [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
@@ -1401,7 +1839,7 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 - [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
 
 **未授权访问漏洞**
-- 简述
+- 简介
 
     默认情况下 Jenkins 面板中用户可以选择执行脚本界面来操作一些系统层命令，攻击者可通过未授权访问漏洞或者暴力破解用户密码等进入后台管理服务，通过脚本执行界面从而获取服务器权限。
 
@@ -1412,29 +1850,62 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 
     `http://<IP>:8080/manage`
 
-**CVE-2017-1000353**
+**CVE-2017-1000353 未授权远程代码执行漏洞**
+- 简介
+
+    Jenkins 未授权远程代码执行漏洞, 允许攻击者将序列化的 Java SignedObject 对象传输给 Jenkins CLI 处理，反序列化 ObjectInputStream 作为 Command 对象，这将绕过基于黑名单的保护机制, 导致代码执行。
+
+- 影响版本
+    - jenkins < 2.56
+
 - POC | Payload | exp
     - [vulhub/CVE-2017-1000353](https://github.com/vulhub/CVE-2017-1000353)
 
-**CVE-2018-1000861**
-- 简述
+**CVE-2018-1000861 远程命令执行漏洞**
+- 简介
 
     Jenkins 使用 Stapler 框架开发,其允许用户通过 URL PATH 来调用一次 public 方法.由于这个过程没有做限制,攻击者可以构造一些特殊的 PATH 来执行一些敏感的 Java 方法.
 
     通过这个漏洞,我们可以找到很多可供利用的利用链.其中最严重的就是绕过 Groovy 沙盒导致未授权用户可执行任意命令:Jenkins 在沙盒中执行 Groovy 前会先检查脚本是否有错误,检查操作是没有沙盒的,攻击者可以通过 Meta-Programming 的方式,在检查这个步骤时执行任意命令.
 
+- 影响版本
+    - jenkins < 2.153
+
 - POC | Payload | exp
     - [orangetw/awesome-jenkins-rce-2019](https://github.com/orangetw/awesome-jenkins-rce-2019)
 
-**CVE-2018-1999001**
+**CVE-2018-1999001 配置文件路径改动导致管理员权限开放漏洞**
+- 简介
+
+    Jenkins 官方在 7 月 18 号发布了安全公告，对 Jenkins 的两个高危漏洞进行通告，其中包括配置文件路径改动导致管理员权限开放的漏洞 CVE-2018-1999001，未授权用户通过发送一个精心构造的登陆凭据，能够致使匿名用户获取 Jenkins 的管理权限。
+
+- 影响版本
+    - jenkins < 2.121.1
+    - jenkins 2.122 ~ 2.132
+
 - 文章
     - [Jenkins配置文件路径改动导致管理员权限开放漏洞(CVE-2018-1999001) ](https://mp.weixin.qq.com/s/O_Ni4Xlsi4uHRcyv3SeY5g)
 
-**CVE-2018-1999002**
+**CVE-2018-1999002 任意文件读取漏洞**
+- 简介
+
+    Jenkins 7 月 18 日的安全通告修复了多个漏洞，其中 SECURITY-914 是未授权任意文件读取漏洞。攻击者可以发送精心制作的 HTTP 请求，以返回 Jenkins 主文件中任何文件的内容，该漏洞存在于 Stapler Web 框架的 org/kohsuke/stapler/Stapler.java 中。
+
+- 影响版本
+    - jenkins < 2.121.1
+    - jenkins 2.122 ~ 2.132
+
 - 文章
     - [安全研究 | Jenkins 任意文件读取漏洞分析](https://bbs.ichunqiu.com/thread-43283-1-1.html)
 
-**cve-2019-1003000**
+**CVE-2019-1003000 未授权访问RCE漏洞**
+- 简介
+
+    脚本安全插件 1.49 和更早版本的 src/main/Java/org/jenkinsci/plugins/Script Security/sandbox/groovy/GroovysandBox.Java 中存在沙箱绕过漏洞，使得攻击者能够提供沙箱脚本在 Jenkins 主 JVM 上执行任意代码。
+
+- 影响版本
+    - jenkins < 1.49
+
 - 文章
     - [Jenkins未授权访问RCE漏洞复现记录 | angelwhu_blog](https://www.angelwhu.com/blog/?p=539)
     - [Jenkins RCE CVE-2019-1003000 漏洞复现](https://blog.51cto.com/13770310/2352740)
@@ -1442,7 +1913,14 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 - POC | Payload | exp
     - [adamyordan/cve-2019-1003000-jenkins-rce-poc: Jenkins RCE Proof-of-Concept: SECURITY-1266 / CVE-2019-1003000 (Script Security), CVE-2019-1003001 (Pipeline: Groovy), CVE-2019-1003002 (Pipeline: Declarative)](https://github.com/adamyordan/cve-2019-1003000-jenkins-rce-poc)
 
-**CVE-2019-10320**
+**CVE-2019-10320 CloudBees Jenkins Credentials Plugin 信息泄露漏洞**
+- 简介
+
+    CloudBees Jenkins（Hudson Labs）是美国CloudBees公司的一套基于Java开发的持续集成工具。该产品主要用于监控持续的软件版本发布/测试项目和一些定时执行的任务。Credentials Plugin 是使用在其中的一个身份凭据存储插件。 Jenkins Credentials Plugin 2.1.18 及之前版本中存在信息泄露漏洞。该漏洞源于网络系统或产品在运行过程中存在配置等错误。未授权的攻击者可利用漏洞获取受影响组件敏感信息。
+
+- 影响版本
+    - jenkins < 2.1.18
+
 - 文章
     - [Exploring the File System via Jenkins Credentials Plugin Vulnerability – CVE-2019-10320 | Nightwatch Cybersecurity](https://wwws.nightwatchcybersecurity.com/2019/05/23/exploring-the-file-system-via-jenkins-credentials-plugin-vulnerability-cve-2019-10320/)
 
@@ -1455,7 +1933,7 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记本，支持运行 40 多种编程语言。
 
 **未授权访问漏洞**
-- 简述
+- 简介
 
     如果管理员未为 Jupyter Notebook 配置密码，将导致未授权访问漏洞，游客可在其中创建一个 console 并执行任意 Python 代码和命令。
 
@@ -1470,9 +1948,12 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 > 官网 : https://www.sonatype.com/product-nexus-repository
 
 **CVE-2019-7238 Nexus Repository Manager 3 Remote Code Execution without authentication < 3.15.0**
-- 简述
+- 简介
 
     Nexus Repository Manager 3 是一款软件仓库,可以用来存储和分发 Maven、NuGET 等软件源仓库.其 3.14.0 及之前版本中,存在一处基于 OrientDB 自定义函数的任意 JEXL 表达式执行功能,而这处功能存在未授权访问漏洞,将可以导致任意命令执行漏洞.
+
+- 影响版本
+    - nexus < 3.15.0
 
 - 文章
     - [一次偶遇Nexus](https://www.secpulse.com/archives/111818.html)
@@ -1489,6 +1970,13 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 > 官网 : https://novnc.com
 
 **CVE-2017-18635 xss**
+- 简介
+
+    noVNC 是一款 HTML VNC（Virtual Network Computing）客户端库。 noVNC 0.6.2之前版本中存在跨站脚本漏洞。该漏洞源于 WEB 应用缺少对客户端数据的正确验证。攻击者可利用该漏洞执行客户端代码。
+
+- 影响版本
+    - novnc < 0.6.2
+
 - 文章
     - [Exploiting an old noVNC XSS (CVE-2017-18635) in OpenStack](https://www.shielder.it/blog/exploiting-an-old-novnc-xss-cve-2017-18635-in-openstack/)
 
@@ -1505,6 +1993,15 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 - [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
 
 **CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
+- 简介
+
+    phpMyAdmin 中存在安全漏洞，该漏洞源于程序没有正确选择分隔符来避免使用 preg_replacee 修饰符。远程攻击者可借助特制的字符串利用该漏洞执行任意 PHP 代码。以下版本受到影响：phpMyAdmin4.0.10.16之前4.0.x版本，4.4.15.7之前4.4.x版本，4.6.3之前4.6.x版本。
+
+- 影响版本
+    - phpmyadmin 4.0.0 ~ 4.0.10.15
+    - phpmyadmin 4.4.0 ~ 4.4.15.6
+    - phpmyadmin 4.6.0 ~ 4.6.2
+
 - POC | Payload | exp
     - [phpMyAdmin 4.6.2 - (Authenticated) Remote Code Execution](https://www.exploit-db.com/exploits/40185)
 
@@ -1534,7 +2031,14 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 - 文章
     - [phpmyadmin4.8.1后台getshell](https://mp.weixin.qq.com/s/HZcS2HdUtqz10jUEN57aog)
 
-**CVE-2019-12922 & 4.9.0.1 CSRF**
+**CVE-2019-12922 4.9.0.1 CSRF**
+- 简介
+
+    phpMyAdmin 4.9.0.1 版本中存在跨站请求伪造漏洞。该漏洞源于 WEB 应用未充分验证请求是否来自可信用户。攻击者可利用该漏洞通过受影响客户端向服务器发送非预期的请求。
+
+- 影响版本
+    - phpmyadmin 4.9.0.1
+
 - POC | Payload | exp
 
     - `<img src=" http://server/phpmyadmin/setup/index.php?page=servers&mode=remove&id=1" style="display:none;" />`
@@ -1564,6 +2068,14 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 - `http://<ip>:9001`
 
 **CVE-2017-11610 Supervisord 远程命令执行漏洞**
+- 简介
+
+    supervisor 中的 XML-RPC 服务器允许远程身份验证的用户通过精心编制的与嵌套 supervisord 命名空间查找相关的 XML-RPC 请求执行任意命令。
+
+- 影响版本
+    - supervisor < 3.0
+    - supervisor 3.1.0 ~ 3.3.2
+
 - 文章
     - [Supervisord远程命令执行漏洞 (CVE-2017-11610) ](https://www.leavesongs.com/PENETRATION/supervisord-RCE-CVE-2017-11610.html)
     - [Supervisord 远程命令执行漏洞 (CVE-2017-11610) ](https://vulhub.org/#/environments/supervisor/CVE-2017-11610/)
@@ -1574,12 +2086,12 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 
 > 官网 : http://www.webmin.com/
 
-**CVE-2019-15107**
-- 影响范围
-    - 1.890 through 1.920
-
+**CVE-2019-15107 Webmin Remote Code Execution**
 - 详情
     - 在其找回密码页面中,存在一处无需权限的命令注入漏洞,通过这个漏洞攻击者即可以执行任意系统命令.
+
+- 影响版本
+    - Webmin < 1.920
 
 - 文章
     - [Webmin(CVE-2019-15107) 远程代码执行漏洞之 backdoor 探究](https://zhuanlan.zhihu.com/p/79287037)
@@ -1603,8 +2115,12 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
     ```
 
 **CVE-2019-15642 Webmin Remote Code Execution**
-- 影响范围
-    - 1.900 through 1.920
+- 简介
+
+    Webmin 到 1.920 中的 rpc.cgi 允许通过精心设计的对象名称进行经过身份验证的远程代码执行，因为 unserialise_variable 进行了 eval 调用。注意：Webmin_Servers_Index 文档指出“ RPC 可用于运行任何命令或修改服务器上的任何文件，这就是为什么不得将它的访问权限授予不可信的 Webmin 用户的原因。”
+
+- 影响版本
+    - Webmin < 1.920
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-15642](https://github.com/jas502n/CVE-2019-15642)
@@ -1618,5 +2134,13 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
 
 **CVE-2016-10134 zabbix latest.php SQL 注入漏洞**
+- 简介
+
+    Zabbix 的 latest.php 中的 toggle_ids[] 或 jsrpc.php 中的 profieldx2 参数存在 sql 注入，通过 sql 注入获取管理员账户密码，进入后台，进行 getshell 操作。
+
+- 影响版本
+    - zabbix < 2.2.13
+    - zabbix 3.0.0 ~ 3.0.3
+
 - 文章
     - [zabbix latest.php SQL注入漏洞 (CVE-2016-10134) ](https://vulhub.org/#/environments/zabbix/CVE-2016-10134/)

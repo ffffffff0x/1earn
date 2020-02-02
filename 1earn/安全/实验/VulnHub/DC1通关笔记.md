@@ -151,7 +151,7 @@ SSH 爆破
 - CVE-2019-6339
 - CVE-2019-6341
 
-漏洞信息和 POC 见 [web 服务和中间件渗透笔记](../../笔记/RedTeam/web服务和中间件渗透笔记.md#Drupal)
+漏洞信息和 POC 见 [CVE漏洞记录](../../笔记/RedTeam/CVE漏洞记录.md#Drupal)
 
 CVE-2018-7602、CVE-2019-6339、CVE-2019-6341 需要认证，这里就懒得测了，以 CVE-2014-3704 和 CVE-2018-7600 为例,Metasploit 自带这2个漏洞的 EXP
 ```bash

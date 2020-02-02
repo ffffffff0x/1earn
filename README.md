@@ -15,55 +15,130 @@
     <img src="./assets/img/readme.jpg">
 </p>
 
-**简介:** 本项目的初衷是分享知识资源,内容涉及安全、运维领域,目前主攻 ~~安全研究~~ 预防+治疗脱发问题,对于内容中有疑问或建议欢迎提交 issue,回应时间保证在 12 小时内 (麻烦不要在节假日和凌晨提).
+**简介:** 本项目的初衷是分享知识资源,内容涉及安全、运维领域,目前主攻 ~~安全研究~~ 预防+治疗脱发问题,对于内容中有疑问或建议欢迎提交 issue,回应时间保证在 12 小时内 (麻烦不要在凌晨提).
 
 **目标:** 成为最优秀的安全资源框架
 
 **更新时间:** 不定期
 
-**项目地址** https://github.com/No-Github/1earn
+**项目唯一地址** https://github.com/No-Github/1earn
 
 该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议.
 
 ---
 
-## Manual
-### 安全
+# 目录文件介绍
+## 安全
 
-- **[Power-PenTest](./1earn/安全/Power-PenTest.md)** : 记录渗透资源/知识点  `注: 该文档是连接其下各个目录子文件的树`
+- [Power-PenTest](./1earn/安全/Power-PenTest.md) : 安全知识的框架  `注: 该文档是连接其下各个目录子文件的树`
+- 笔记
+    - BlueTeam
+        - [加固笔记](./1earn/安全/笔记/BlueTeam/加固笔记.md) : 系统、应用加固的方法和工具资源
+        - [监察笔记](./1earn/安全/笔记/BlueTeam/监察笔记.md) : 有关查杀、监控、蜜罐的资源
+        - [取证笔记](./1earn/安全/笔记/BlueTeam/取证笔记.md) : 内容涉及操作系统的取证、web 的取证、文件的取证
+        - [应急笔记](./1earn/安全/笔记/BlueTeam/应急笔记.md) : 应急资源、溯源案例
+    - RedTeam
+        - [安防设备总结](./1earn/安全/笔记/RedTeam/安防设备总结.md)
+        - [端口渗透笔记](./1earn/安全/笔记/RedTeam/端口渗透笔记.md) : 记录一些端口渗透时的方法和思路
+        - [后渗透笔记](./1earn/安全/笔记/RedTeam/后渗透笔记.md)
+        - [逻辑类漏洞笔记](./1earn/安全/笔记/RedTeam/逻辑类漏洞笔记.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
+        - [权限维持笔记](./1earn/安全/笔记/RedTeam/权限维持笔记.md) : 权限维持的各种方法和资源
+        - [软件漏洞记录](./1earn/安全/笔记/RedTeam/软件漏洞记录.md)
+        - [搜索引擎Hacking笔记](./1earn/安全/笔记/RedTeam/搜索引擎Hacking笔记) : 搜索引擎语法资源
+        - [提权笔记](./1earn/安全/笔记/RedTeam/提权笔记.md)
+        - [物联网设备渗透笔记](./1earn/安全/笔记/RedTeam/物联网设备渗透笔记.md)
+        - [协议漏洞记录](./1earn/安全/笔记/RedTeam/协议漏洞记录.md)
+        - [信息收集笔记](./1earn/安全/笔记/RedTeam/信息收集笔记.md)
+        - [CVE漏洞记录](./1earn/安全/笔记/RedTeam/CVE漏洞记录.md) : 收集超多的 web 漏洞 POC | Payload | exp
+        - [Linux渗透笔记](./1earn/安全/笔记/RedTeam/Linux渗透笔记.md)
+        - [SQLi笔记](./1earn/安全/笔记/RedTeam/SQLi笔记.md) : SQL 注入知识点记录
+        - [web常见漏洞笔记](./1earn/安全/笔记/RedTeam/web常见漏洞笔记.md) : 常见 web 漏洞介绍,案例收集
+        - [windows渗透笔记](./1earn/安全/笔记/RedTeam/windows渗透笔记.md)
+        - [XSS笔记](./1earn/安全/笔记/RedTeam/XSS笔记.md)
+        - [XXE笔记](./1earn/安全/笔记/RedTeam/XXE笔记.md)
+    - [Crypto笔记](./1earn/安全/笔记/Crypto笔记.md) - 介绍各种加密算法和相关的工具
+- 工具
+    - [Burp笔记](./1earn/安全/工具/Burp笔记.md)
+    - [cobaltstrike笔记](./1earn/安全/工具/cobaltstrike笔记.md)
+    - [kali笔记](./1earn/安全/工具/kali笔记.md)
+    - [metasploit笔记](./1earn/安全/工具/metasploit笔记.md)
+    - [mimikatz笔记](./1earn/安全/工具/mimikatz笔记.md)
+    - [nmap笔记](./1earn/安全/工具/nmap笔记.md)
+    - [SET笔记](./1earn/安全/工具/SET笔记.md)
+    - [sqlmap笔记](./1earn/安全/工具/sqlmap笔记.md)
+    - [wireshark笔记](./1earn/安全/工具/wireshark笔记.md)
+- 实验
+    - HTB
+    - Misc
+        - [DVWA通关笔记](./1earn/安全/实验/Misc/DVWA通关笔记.md)
+        - [pikachu通关笔记](./1earn/安全/实验/Misc/pikachu通关笔记.md)
+        - [upload-labs通关笔记](./1earn/安全/实验/Misc/upload-labs通关笔记.md)
+        - [XSS挑战通关笔记](./1earn/安全/实验/Misc/XSS挑战通关笔记.md)
+    - VulnHub
+        - [DC1通关笔记](./1earn/安全/实验/VulnHub/DC1通关笔记.md)
+        - [Kioptrix4通关笔记](./1earn/安全/实验/VulnHub/Kioptrix4通关笔记.md)
 
-### 运维
+## 运维
+### Linux
 
-- **Linux**
-    - **[God-Linux](./1earn/运维/Linux/God-Linux.md)** : 记录一些 linux 下的骚操作,收集的较少,后面会慢慢添加
-    - **[Power-Linux](./1earn/运维/Linux/Power-Linux.md)** : 配置指南,记录各种服务搭建与配置过程
-    - **[Secure-Linux](./1earn/运维/Linux/Secure-Linux.md)** : 记录自己优化 linux 服务器性能与问题排查时用到的命令
-    - **[Speed-Linux](./1earn/运维/Linux/Speed-Linux.md)** : 命令速查手册,记录各种基本命令操作
+- [God-Linux](./1earn/运维/Linux/God-Linux.md) : 记录 Linux 下的骚操作,收集的较少,后面会慢慢添加
+- [Power-Linux](./1earn/运维/Linux/Power-Linux.md) : 配置指南,记录各种服务搭建与配置过程
+- [Secure-Linux](./1earn/运维/Linux/Secure-Linux.md) : 记录自己优化 Linux 服务器性能与问题排查时用到的命令
+- [Speed-Linux](./1earn/运维/Linux/Speed-Linux.md) : 命令速查手册,记录各种基本命令操作
+- 笔记
+    - [发行版](./1earn/运维/Linux/笔记/发行版.md) : Linux 各个发行版本之间的知识
+    - [工具](./1earn/运维/Linux/笔记/工具.md) : 收集有趣有用的 Linux 工具
+    - [进程](./1earn/运维/Linux/笔记/进程.md) : 科普 Linux 进程的知识
+    - [启动过程](./1earn/运维/Linux/笔记/启动过程.md) : 了解 Linux 的启动到底发生了什么
+    - [认证](./1earn/运维/Linux/笔记/认证.md) : 了解 Linux 下的认证体系
+    - [日志](./1earn/运维/Linux/笔记/日志.md) : 系统日志类型,日志工具
+    - [文件](./1earn/运维/Linux/笔记/文件.md) : 概括各文件夹的作用,属性
+    - [信息](./1earn/运维/Linux/笔记/信息.md) : 记录关于收集 Linux 系统信息的命令
+    - [shell编程](./1earn/运维/Linux/笔记/shell编程.md) : shell 编程的知识
+- 实验
+    - 很早以前写的内容了,略
 
-- **Network**
+### Network
 
-    `目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在今年再补充内容`
+`目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在今年再补充内容`
 
-    - **[不同厂商](./1earn/运维/Network/不同厂商🎲.md)** : 记录不同厂商配置服务命令的区别
-    - **[方向实验](./1earn/运维/Network/方向实验🔨.md)** : 按方向分类记录配置
-    - **[理论模型](./1earn/运维/Network/理论模型📕.md)** : 以科来网络通讯协议图为参照记录知识点
-    - **[速查](./1earn/运维/Network/速查.md)** : 速查各类帧、报文格式、掩码等
+- [不同厂商](./1earn/运维/Network/不同厂商🎲.md) : 记录不同厂商配置服务命令的区别
+- [方向实验](./1earn/运维/Network/方向实验🔨.md) : 按方向分类记录配置
+- [理论模型](./1earn/运维/Network/理论模型📕.md) : 以科来网络通讯协议图为参照记录知识点
+- [速查](./1earn/运维/Network/速查.md) : 速查各类帧、报文格式、掩码等
+- [SDN笔记](./1earn/运维/Network/SDN笔记.md) : 记录以前比赛时 SDN 的题目和命令
 
-- **Windows**
-    - **[CMD命令笔记](./1earn/运维/Windows/CMD命令笔记.md)** ： 记录一些 CMD 常用命令
-    - **[PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md)** ： 记录一些 powershell 常用命令
-    - **[Windows服务搭建笔记](./1earn/运维/Windows/Windows笔记.md)** : 记录 windows 搭建服务的步骤
+### Windows
 
-### Plan
+- [CMD命令笔记](./1earn/运维/Windows/CMD命令笔记.md) ： 记录一些 CMD 常用命令
+- [PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md) ： 记录一些 powershell 常用命令
+- [Windows服务搭建笔记](./1earn/运维/Windows/Windows服务搭建笔记.md) : 记录 windows 搭建服务的步骤
+- 笔记
+    - [角色权限](./1earn/运维/Windows/笔记/角色权限.md) : windows 角色内容
+    - [认证](./1earn/运维/Windows/笔记/认证.md) : 关于 windows 认证的知识
+- 实验
+    - 很早以前写的内容了,略
 
-- **[Misc-Plan](./1earn/Plan/Misc-Plan.md)** : 各种小技巧
-- **[Team-Plan](./1earn/Plan/Team-Plan.md)** : 团队协作解决方案
-- **[VM-Plan](./1earn/Plan/VM-Plan.md)** : 虚拟机定制规划、VMWare 常见问题记录
-- **[Web-Tools](./1earn/Plan/Web-Tools.md)** : 在线 web 工具集合
+## 开发
+### 版本控制
+- [Git学习笔记](./1earn/开发/版本控制/Git学习笔记.md) : 记录 git 的用法和平时使用 github 遇到的问题
+
+### 硬件
+- [硬件知识](./1earn/开发/硬件/硬件知识.md) : 一些硬件相关的小知识
+
+### 字符编码
+- [字符编码](./1earn/开发/字符编码/字符编码.md) : 字符编码相关的内容总结
+
+## Plan
+
+- [Misc-Plan](./1earn/Plan/Misc-Plan.md) : 各种小技巧
+- [Team-Plan](./1earn/Plan/Team-Plan.md) : 团队协作解决方案
+- [VM-Plan](./1earn/Plan/VM-Plan.md) : 虚拟机定制规划、VMWare 常见问题记录
+- [Web-Tools](./1earn/Plan/Web-Tools.md) : 在线 web 工具集合
 
 ---
 
-## 三板斧
+# 三板斧
 
 `收集、归纳、分享` 我认为这是知识学习的"三板斧"
 
@@ -77,22 +152,22 @@
 
 ---
 
-## 建议和吐槽
+# 建议和吐槽
 
 `本项目所有文档均在 VScode 编辑器中编写,故只兼容 VScode 侧边预览的 markdown 语法,暂不考虑兼容其他编辑器的 md 语法`
 
-~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是 clone 到本地阅读,项目整体约 30M,当然,也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
+~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是下载/clone到本地阅读,项目整体约 30M,当然,排版也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
 - [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
 - [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
 建议的阅读体验
-- [VScode](https://code.visualstudio.com/)+[Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)+[FiraCode](https://github.com/tonsky/FiraCode)
+- [VScode](https://code.visualstudio.com/)+[FiraCode](https://github.com/tonsky/FiraCode) (再次推荐,整个项目就是在vscode环境下写的,保证不会出现任何排版问题)
 - [Typora](https://www.typora.io/)
 
 ---
 
-## List
+# List
 
 以下是我平日收集知识与资源的渠道
 - [每日一文](https://meiriyiwen.com/)
@@ -152,6 +227,6 @@
 
 ---
 
-## 免责声明
+# 免责声明
 
 `本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`

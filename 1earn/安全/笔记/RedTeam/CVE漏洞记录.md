@@ -8,6 +8,66 @@
 
 ---
 
+# 大纲
+
+**各类论坛/CMS框架**
+* [dedeCMS](#dedeCMS)
+* [Discuz](#Discuz)
+* [Drupal](#Drupal)
+* [ECshop](#ECshop)
+* [Joomla](#Joomla)
+* [MetInfo](#MetInfo)
+* [ThinkCMF](#ThinkCMF)
+* [ThinkPHP](#ThinkPHP)
+* [WordPress](#WordPress)
+* [YxCMS](#YxCMS)
+* [zcncms](#zcncms)
+* [泛微](#泛微)
+* [致远](#致远)
+
+**框架和中间件**
+* [ActiveMQ](#ActiveMQ)
+* [ElasticSearch](#ElasticSearch)
+* [IIS](#IIS)
+* [JBOSS](#JBOSS)
+* [PHP](#PHP)
+* [Resin](#Resin)
+* [RocketMQ](#RocketMQ)
+* [shiro](#shiro)
+* [Solr](#Solr)
+* [Spring](#Spring)
+* [Struts2](#Struts2)
+* [Tomcat](#Tomcat)
+* [Weblogic](#Weblogic)
+
+**组件**
+* [编辑器](#编辑器)
+    * [ewebeditor](#ewebeditor)
+    * [FCKeditor](#FCKeditor)
+    * [kindeditor](#kindeditor)
+* [序列化](#序列化)
+    * [fastjson](#fastjson)
+* [其他](#其他)
+    * [webuploader](#webuploader)
+
+**服务**
+* [Aria2](#Aria2)
+* [Confluence](#Confluence)
+* [Crowd](#Crowd)
+* [Harbor](#Harbor)
+* [Jenkins](#Jenkins)
+* [Jira](#Jira)
+* [Jupyter](#Jupyter)
+* [Nexus](#Nexus)
+* [noVNC](#noVNC)
+* [phpMyAdmin](#phpMyAdmin)
+* [PHP-FPM](#PHP-FPM)
+* [Supervisord](#Supervisord)
+* [Webmin](#Webmin)
+* [zabbix](#zabbix)
+
+---
+
 # 各类论坛/CMS框架
 
 **什么是 CMS**
@@ -129,6 +189,7 @@
 
 - POC | Payload | exp
     - https://github.com/vulhub/vulhub/blob/master/drupal/CVE-2018-7600/README.zh-cn.md
+    - [pimps/CVE-2018-7600](https://github.com/pimps/CVE-2018-7600)
 
 - MSF Module
     ```bash
@@ -288,11 +349,41 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 > 官网 : https://wordpress.org/
 
+**Tips**
+
+- 默认的登录地址一般是 `/wp-admin` 或 `/wp-login.php`
+
 **工具**
-- [wpscanteam/wpscan](https://github.com/wpscanteam/wpscan)
+- [wpscanteam/wpscan](https://github.com/wpscanteam/wpscan) - kali 自带,漏洞扫描需要 API Token,可扫用户、漏洞、目录
+    ```bash
+    wpscan --url https://www.xxxxx.com/     # 直接扫描
+    wpscan --url https://www.xxxxx.com/ --enumerate u    # 枚举用户
+    wpscan --url https://www.xxxxx.com/ --passwords /tmp/password.txt   # 密码爆破
+    wpscan --url https://www.xxxxx.com/ --usernames admin --passwords out.txt  # 指定用户爆破
+    wpscan --url https://www.xxxxx.com/ --apt-token xxxxxxxxCX8TTkkgt2oIY   # 使用 API Token,扫描漏洞
+    ```
+    - [WPScan使用完整教程之记一次对WordPress的渗透过程](https://xz.aliyun.com/t/2794)
+
+**CVE-2019-8942 & CVE-2019-8943 WordPress Crop-image Shell Upload**
+- 简介
+
+    此模块利用 WordPress 版本5.0.0和<= 4.9.8上的路径遍历和本地文件包含漏洞。 裁剪图像功能允许用户（至少具有作者权限）通过在上载期间更改 _wp_attached_file 引用来调整图像大小并执行路径遍历。 利用的第二部分将通过在创建帖子时更改 _wp_page_template 属性，将该图像包含在当前主题中。 目前，此漏洞利用模块仅适用于基于 Unix 的系统。
+
+- 影响版本
+    - wordpress < 4.9.9
+    - wordpress 5.0 ~ 5.0:rc3
+
+- POC | Payload | exp
+    - [brianwrf/WordPress_4.9.8_RCE_POC: A simple PoC for WordPress RCE (author priviledge), refer to CVE-2019-8942 and CVE-2019-8943.](https://github.com/brianwrf/WordPress_4.9.8_RCE_POC)
+
+- MSF Module
+    ```
+    use exploit/multi/http/wp_crop_rce
+    ```
 
 **WordPress <= 5.3.? DoS**
-- https://github.com/roddux/wordpress-dos-poc
+- POC | Payload | exp
+    - [wordpress-dos-poc](https://github.com/roddux/wordpress-dos-poc)
 
 ---
 
@@ -312,6 +403,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 ---
 
 ## zcncms
+
 **文章**
 - [zcncms多个漏洞-Musec](http://musec.lofter.com/post/303379_d39f0c)
 - [ZCNCMS审计及漏洞分析](https://www.anquanke.com/post/id/179782)
@@ -369,7 +461,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 ---
 
-## 致远 OA
+## 致远
 
 > 官网 : http://www.seeyon.com/
 
@@ -392,7 +484,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [hatRiot/clusterd](https://github.com/hatRiot/clusterd)
 - [matthiaskaiser/jmet](https://github.com/matthiaskaiser/jmet) - Java Message Exploitation Tool
 
-## Apache ActiveMQ
+## ActiveMQ
 
 > 官网 : https://activemq.apache.org/
 
@@ -425,403 +517,6 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 - 文章
     - [ActiveMQ任意文件写入漏洞 (CVE-2016-3088) ](https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2016-3088/README.zh-cn.md)
-
----
-
-## Apache RocketMQ
-
-- 4.0.x ~ 4.3.x 存在 fastjson 1.2.29
-
----
-
-## Apache shiro
-
-> 官网 : https://shiro.apache.org/
-
-Apache Shiro 是一个功能强大且灵活的开源安全框架,主要功能包括用户认证、授权、会话管理以及加密.
-
-shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
-
-**工具**
-- [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
-- [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce)
-
-**SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
-- https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
-
-- 影响版本
-    - 1.2.4
-
-- POC | Payload | exp
-    - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
-
-**SHIRO-721 | Shiro RememberMe Padding Oracle Vulnerability RCE**
-- https://issues.apache.org/jira/browse/SHIRO-721
-
-- 描述
-
-    cookie 的 cookiememeMe 已通过 AES-128-CBC 模式加密，这很容易受到填充 oracle 攻击的影响。
-
-    攻击者可以使用有效的 RememberMe cookie 作为 Padding Oracle Attack 的前缀，然后制作精心制作的 RememberMe 来执行 Java 反序列化攻击。
-
-- 影响版本
-    - 1.2.5 ~ 1.2.6
-    - 1.3.0 ~ 1.3.2
-    - 1.4.0-RC2 ~ 1.4.1
-
-- POC | Payload | exp
-    - [3ndz/Shiro-721](https://github.com/3ndz/Shiro-721)
-    - [jas502n/SHIRO-721](https://github.com/jas502n/SHIRO-721)
-
----
-
-## Apache Solr
-
-> 官网 : https://lucene.apache.org/solr/
-
-Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其主要功能包括全文检索、命中标示、分面搜索、动态聚类、数据库集成,以及富文本的处理.
-
-Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
-
-**资源**
-- [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
-
-**CVE-2017-12629 Apache solr XML 实体注入漏洞**
-- 简介
-
-    原理大致是文档通过 Http 利用 XML 加到一个搜索集合中.查询该集合也是通过 http 收到一个 XML/JSON 响应来实现.此次 7.1.0 之前版本总共爆出两个漏洞:XML 实体扩展漏洞 (XXE) 和远程命令执行漏洞 (RCE) ,二者可以连接成利用链,编号均为 CVE-2017-12629.
-
-- 影响版本
-    - Apache solr 5.5.0 ~ 5.5.4
-    - Apache solr 6.0.0 ~ 6.6.1
-    - Apache solr 7.0.0 ~ 7.0.1
-
-- 文章
-    - [Apache solr XML 实体注入漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-XXE/)
-    - [Apache Solr 远程命令执行漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-RCE/)
-
-**CVE-2019-0192 Apache Solr RCE 5.0.0 to 5.5.5 and 6.0.0 to 6.6.5**
-- https://issues.apache.org/jira/browse/SOLR-13301
-
-- 简介
-
-    ConfigAPI 允许通过 HTTP POST 请求配置 Solr 的 JMX 服务器。通过将其指向恶意的 RMI 服务器，攻击者可以利用 Solr 的不安全反序列化功能在 Solr 端触发远程代码执行。
-
-- 影响版本
-    - Apache solr 5.0.0 ~ 5.5.5
-    - Apache solr 6.0.0 ~ 6.6.5
-
-- POC | Payload | exp
-    - https://github.com/mpgn/CVE-2019-0192/
-
-**CVE-2019-0193 Apache Solr 远程命令执行漏洞**
-- 简介
-
-    此次漏洞出现在 Apache Solr 的 DataImportHandler,该模块是一个可选但常用的模块,用于从数据库和其他源中提取数据.它具有一个功能,其中所有的 DIH 配置都可以通过外部请求的 dataConfig 参数来设置.由于 DIH 配置可以包含脚本,因此攻击者可以通过构造危险的请求,从而造成远程命令执行.
-
-- 影响版本
-    - Apache solr < 8.2.0
-
-- 文章
-    - [Apache Solr 远程命令执行漏洞 (CVE-2019-0193) ](https://vulhub.org/#/environments/solr/CVE-2019-0193/)
-
-- POC | Payload | exp
-    - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
-
-**Apache Solr Velocity 模版注入远程命令执行漏洞**
-- 简介
-
-    2019年10月30日，国外安全研究人员放出了一个关于 solr 模板注入的 exp，攻击者通过未授权访问 solr 服务器，发送特定的数据包开启 params.resource.loader.enabled，然后 get 访问接口导致服务器命令执行，命令回显结果在 response。
-
-- 影响版本
-    - Apache Solr < 8.2.0
-
-- 文章
-    - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
-
-- POC | Payload | exp
-    - [jas502n/solr_rce](https://github.com/jas502n/solr_rce)
-
----
-
-## Apache Spark
-
-> 官网 : https://spark.apache.org/
-
-Apache Spark 是一款集群计算系统,其支持用户向管理节点提交应用,并分发给集群执行.
-
-**未授权访问漏洞**
-- 简介
-
-    如果管理节点未启动 ACL (访问控制) ,我们将可以在集群中执行任意代码.
-
-- 文章
-    - [Apache Spark 未授权访问漏洞](https://vulhub.org/#/environments/spark/unacc/)
-
----
-
-## Apache Struts2
-
-> 官网 : https://struts.apache.org/
-
-Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+Bulletins
-
-**工具**
-- [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
-- [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
-- [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools)
-- [x51/STS2G](https://github.com/x51/STS2G) - Golang 版 Struts2 漏洞扫描利用工具
-
-**环境搭建**
-- [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
-- [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx)
-- [shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
-
-**文章**
-- [Struts2 历史 RCE 漏洞回顾不完全系列](http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities/)
-
-**S2-016 & CVE-2013-2251**
-- https://cwiki.apache.org/confluence/display/WW/S2-016
-
-- 描述
-
-    DefaultActionMapper 类支持以"action:"、"redirect:"、"redirectAction:"作为导航或是重定向前缀，但是这些前缀后面同时可以跟 OGNL 表达式，由于 struts2 没有对这些前缀做过滤，导致利用 OGNL 表达式调用 java 静态方法执行任意系统命令
-
-- 影响版本
-    - Struts 2.0.0 ~ 2.3.15
-
-- POC | Payload | exp
-    - [OneSourceCat/s2-016-exp](https://github.com/OneSourceCat/s2-016-exp)
-
-**S2-020 & CVE-2014-0094 & CNNVD-201403-191**
-- https://cwiki.apache.org/confluence/display/WW/S2-020
-
-- 简介
-
-    Apache Struts 2.0.0-2.3.16 版本的默认上传机制是基于 Commons FileUpload 1.3 版本，其附加的 ParametersInterceptor 允许访问'class' 参数（该参数直接映射到 `getClass()` 方法），并允许控制 ClassLoader。在具体的 Web 容器部署环境下（如：Tomcat），攻击者利用 Web 容器下的 Java Class 对象及其属性参数（如：日志存储参数），可向服务器发起远程代码执行攻击，进而植入网站后门控制网站服务器主机。
-
-- 影响版本
-    - Struts 2.0.0 ~ 2.3.16.1
-
-- 文章
-    - [Struts2 S2-020在Tomcat 8下的命令执行分析](https://www.freebuf.com/articles/web/31039.html)
-
-- POC | Payload | exp
-    - https://github.com/coffeehb/Some-PoC-oR-ExP/blob/master/Struts2/S2-020_POC.py
-
-**S2-045 & CVE-2017-5638**
-- https://cwiki.apache.org/confluence/display/WW/S2-045
-
-- 简介
-
-    恶意用户可在上传文件时通过修改 HTTP 请求头中的 Content-Type 值来触发该漏洞进而执行系统命令.
-
-- 影响版本
-    - Struts 2.3.5 ~ 2.3.31
-    - Struts 2.5 ~ 2.5.10
-
-- POC | Payload | exp
-    - [tengzhangchao/Struts2_045-Poc](https://github.com/tengzhangchao/Struts2_045-Poc)
-    - [iBearcat/S2-045](https://github.com/iBearcat/S2-045)
-
-**S2-046 & CVE-2017-5638**
-- https://cwiki.apache.org/confluence/display/WW/S2-046
-
-- 简介
-
-    该漏洞是由于上传功能的异常处理函数没有正确处理用户输入的错误信息,导致远程攻击者可通过修改 HTTP 请求头中的 Content-Type 值,构造发送恶意的数据包,利用该漏洞进而在受影响服务器上执行任意系统命令.
-
-- 影响版本
-    - Struts 2.3.5 ~ 2.3.31
-    - Struts 2.5 ~ 2.5.10
-
-- 修复方案
-    1. 官方已经发布版本更新,尽快升级到不受影响的版本(Struts 2.3.32 或 Struts 2.5.10.1),建议在升级前做好数据备份.
-    2. 临时修复方案
-    在用户不便进行升级的情况下,作为临时的解决方案,用户可以进行以下操作来规避风险:在 WEB-INF/classes 目录下的 struts.xml 中的 struts 标签下添加
-    `<constant name="struts.custom.i18n.resources" value="global" />`
-    在 WEB-INF/classes/ 目录下添加 global.properties,文件内容如下:
-    `struts.messages.upload.error.InvalidContentTypeException=1`
-
-- POC | Payload | exp
-    - [mazen160/struts-pwn](https://github.com/mazen160/struts-pwn)
-
-**S2-048 & CVE-2017-9791**
-- https://cwiki.apache.org/confluence/display/WW/S2-048
-
-- 简介
-
-    攻击者可以构造恶意的字段值通过 Struts2 的 struts2-struts1-plugin 插件，远程执行代码。
-
-- 影响版本
-    - Struts 2.1.x ~ 2.3.x
-
-- POC | Payload | exp
-    - [dragoneeg/Struts2-048](https://github.com/dragoneeg/Struts2-048)
-
-**S2-052 & CVE-2017-9805**
-- https://cwiki.apache.org/confluence/display/WW/S2-052
-
-- 简介
-
-    启用 Struts REST 插件并使用 XStream 组件对 XML 进行反序列操作时，未对数据内容进行有效验证，可被攻击者进行远程代码执行攻击(RCE)。
-
-- 影响版本
-    - Struts 2.1.6 ~ 2.3.33
-    - Struts 2.5 ~ 2.5.12
-
-- POC | Payload | exp
-    - [mazen160/struts-pwn_CVE-2017-9805](https://github.com/mazen160/struts-pwn_CVE-2017-9805)
-
-**S2-053 & CVE-2017-12611**
-- https://cwiki.apache.org/confluence/display/WW/S2-053
-
-- 简介
-
-    当开发者在 Freemarker 标签中使用如下代码时 `<@s.hidden name=”redirectUri” value=redirectUri /><@s.hidden name=”redirectUri” value=”${redirectUri}” />` Freemarker 会将值当做表达式进行执行，最后导致代码执行。
-
-- 影响版本
-    - Struts 2.0.0 ~ 2.3.33
-    - Struts 2.5 ~ 2.5.10.1
-
-- POC | Payload | exp
-    - [brianwrf/S2-053-CVE-2017-12611](https://github.com/brianwrf/S2-053-CVE-2017-12611)
-
-**S2-055 & CVE-2017-7525**
-- https://cwiki.apache.org/confluence/display/WW/S2-055
-
-- 简介
-
-    2017年12月1日，Apache Struts 发布最新的安全公告，Apache Struts 2.5.x REST 插件存在远程代码执行的中危漏洞，漏洞编号与 CVE-2017-7525 相关。漏洞的成因是由于使用的 Jackson 版本过低在进行 JSON 反序列化的时候没有任何类型过滤导致远程代码执行。。
-
-- 影响版本
-    - Struts 2.5 ~ 2.5.14
-
-- POC | Payload | exp
-    - [iBearcat/S2-055](https://github.com/iBearcat/S2-055)
-
-**S2-056 & CVE-2018-1327**
-- https://cwiki.apache.org/confluence/display/WW/S2-056
-
-- 简介
-
-    S2-056 漏洞发生于 Apache Struts 2的 REST 插件，当使用 XStream 组件对 XML 格式的数据包进行反序列化操作，且未对数据内容进行有效验证时，攻击者可通过提交恶意 XML 数据对应用进行远程 DoS 攻击。
-
-- 影响版本
-    - Struts 2.1.1 ~ 2.5.14.1
-
-- POC | Payload | exp
-    - [ iBearcat/S2-056-XStream](https://github.com/iBearcat/S2-056-XStream)
-
-**S2-057 & CVE-2018-11776**
-- https://cwiki.apache.org/confluence/display/WW/S2-057
-
-- 简介
-
-    该漏洞由 Semmle Security Research team 的安全研究员 Man YueMo 发现.该漏洞是由于在 Struts2 开发框架中使用 namespace 功能定义 XML 配置时,namespace 值未被设置且在上层动作配置(Action Configuration)中未设置或用通配符 namespace,可能导致远程代码执行.
-
-- 影响版本
-    - Struts 2.0.4 ~ 2.3.34
-    - Struts 2.5.0 ~ 2.5.16
-
-- POC | Payload | exp
-    - [Ivan1ee/struts2-057-exp](https://github.com/Ivan1ee/struts2-057-exp)
-
----
-
-## Apache Tomcat
-
-> 官网 : https://tomcat.apache.org/
-
-Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为 `/manager/html`,后台默认弱口令 admin/admin、tomcat/tomcat 等,若果配置不当,可通过"Tomcat Manager"连接部署 war 包的方式获取 webshell.
-
-**文章**
-- [Tomcat漏洞详解](http://www.mottoin.com/detail/389.html)
-
-**CVE-2017-12615/12616**
-- 简介
-
-    2017年9月19日,Apache Tomcat 官方确认并修复了两个高危漏洞,漏洞 CVE 编号:CVE-2017-12615 和 CVE-2017-12616,该漏洞受影响版本为7.0.0-7.0.80之间,官方评级为高危,在一定条件下,攻击者可以利用这两个漏洞,获取用户服务器上 JSP 文件的源代码,或是通过精心构造的攻击请求,向用户服务器上传恶意 JSP 文件,通过上传的 JSP 文件 ,可在用户服务器上执行任意代码,从而导致数据泄露或获取服务器权限,存在高安全风险.
-
-    - CVE-2017-12615:远程代码执行漏洞
-
-        当 Tomcat 运行在 Windows 操作系统时,且启用了 HTTP PUT 请求方法 (例如,将 readonly 初始化参数由默认值设置为 false) ,攻击者将有可能可通过精心构造的攻击请求数据包向服务器上传包含任意代码的 JSP 文件,JSP文件中的恶意代码将能被服务器执行.导致服务器上的数据泄露或获取服务器权限.
-
-    - CVE-2017-12616:信息泄露漏洞
-
-        当 Tomcat 中启用了 VirtualDirContext 时,攻击者将能通过发送精心构造的恶意请求,绕过设置的相关安全限制,或是获取到由 VirtualDirContext 提供支持资源服务的 JSP 源代码,从而造成代码信息泄露.
-
-- 漏洞利用条件
-
-    - CVE-2017-12615 漏洞利用需要在 Windows 环境,且需要将 readonly 初始化参数由默认值设置为 false,经过实际测试,Tomcat 7.x 版本内 web.xml 配置文件内默认配置无 readonly 参数,需要手工添加,默认配置条件下不受此漏洞影响.
-
-    - CVE-2017-12616 漏洞需要在 server.xml 文件配置 VirtualDirContext 参数,经过实际测试,Tomcat 7.x 版本内默认配置无 VirtualDirContext 参数,需要手工添加,默认配置条件下不受此漏洞影响.
-
-- 影响版本
-
-    - CVE-2017-12615 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.79 (windows 环境)
-    - CVE-2017-12616 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.80
-
-- 文章
-    - [CVE-2017-12615/CVE-2017-12616:Tomcat信息泄漏和远程代码执行漏洞分析报告](https://paper.seebug.org/399/)
-
-- POC | Payload | exp
-
-    - [iBearcat/CVE-2017-12615](https://github.com/iBearcat/CVE-2017-12615)
-    - [breaktoprotect/CVE-2017-12615](https://github.com/breaktoprotect/CVE-2017-12615)
-
-    ```
-    PUT /1.jsp/ HTTP/1.1
-    Host: your-ip:8080
-    Accept: */*
-    Accept-Language: en
-    User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
-    Connection: close
-    Content-Type: application/x-www-form-urlencoded
-    Content-Length: 5
-
-    <% out.write("<html><body><h3>[+] JSP upload successfully.</h3></body></html>"); %>
-    ```
-
-**CVE-2017-12617**
-- 简介
-
-    运行启用了 HTTP PUT 的 Apache Tomcat 特定版本时(例如，通过将默认 servlet 的只读初始化参数设置为 false)可以通过特制请求将 JSP 文件上载到服务器。然后可以请求此 JSP，并且服务器将执行其中包含的所有代码。
-
-- 影响版本
-    - Apache Tomcat 7.0.0 ~ 7.0.81
-    - Apache Tomcat 8.0.0 ~ 8.0.17
-
-- 文章
-    - [CVE-2017-12617-Tomcat远程代码执行漏洞复现测试](https://www.freebuf.com/vuls/150203.html)
-
-- POC | Payload | exp
-    - [cyberheartmi9/CVE-2017-12617](https://github.com/cyberheartmi9/CVE-2017-12617)
-
-- MSF Module
-    ```
-    use exploit/multi/http/tomcat_jsp_upload_bypass
-    ```
-
-**CVE-2019-0232**
-- 简介
-
-    该漏洞是由于 Tomcat CGI 将命令行参数传递给 Windows 程序的方式存在错误，使得 CGIServlet 被命令注入影响。
-
-    该漏洞只影响 Windows 平台，要求启用了 CGIServlet 和 enableCmdLineArguments 参数。但是 CGIServlet 和 enableCmdLineArguments 参数默认情况下都不启用。
-
-- 影响版本
-    - Apache Tomcat 7.0.0 ~ 7.0.93
-    - Apache Tomcat 8.0.0 ~ 8.5.39
-    - Apache Tomcat 9.0.1 ~ 9.0.17
-
-- 文章
-    - [CVE-2019-0232:Apache Tomcat RCE漏洞分析](https://xz.aliyun.com/t/4875)
-    - [复现CVE-2019-0232过程中遇到的坑 Apache Tomcat高危远程代码执行漏洞](http://www.nmd5.com/?p=375)
-
-- POC | Payload | exp
-    - [pyn3rd/CVE-2019-0232](https://github.com/pyn3rd/CVE-2019-0232)
-    - [jas502n/CVE-2019-0232](https://github.com/jas502n/CVE-2019-0232)
 
 ---
 
@@ -1086,7 +781,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     如果我们请求的文件/文件夹名同时存在大小写时,这个请求会被请求两次,一次是原封不动的请求,一次是全部使用小写的请求.
 
     下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-    ![image](../../../../assets/img/安全/1.jpg)
+    ![image](../../../../assets/img/安全/笔记/RedTeam/CVE漏洞记录/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
 - 简介
@@ -1269,6 +964,123 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
 ---
 
+## RocketMQ
+
+**Tips**
+- 4.0.x ~ 4.3.x 存在 fastjson 1.2.29
+
+---
+
+## shiro
+
+> 官网 : https://shiro.apache.org/
+
+Apache Shiro 是一个功能强大且灵活的开源安全框架,主要功能包括用户认证、授权、会话管理以及加密.
+
+shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
+
+**工具**
+- [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
+- [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce)
+
+**SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
+- https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
+
+- 影响版本
+    - 1.2.4
+
+- POC | Payload | exp
+    - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
+
+**SHIRO-721 | Shiro RememberMe Padding Oracle Vulnerability RCE**
+- https://issues.apache.org/jira/browse/SHIRO-721
+
+- 描述
+
+    cookie 的 cookiememeMe 已通过 AES-128-CBC 模式加密，这很容易受到填充 oracle 攻击的影响。
+
+    攻击者可以使用有效的 RememberMe cookie 作为 Padding Oracle Attack 的前缀，然后制作精心制作的 RememberMe 来执行 Java 反序列化攻击。
+
+- 影响版本
+    - 1.2.5 ~ 1.2.6
+    - 1.3.0 ~ 1.3.2
+    - 1.4.0-RC2 ~ 1.4.1
+
+- POC | Payload | exp
+    - [3ndz/Shiro-721](https://github.com/3ndz/Shiro-721)
+    - [jas502n/SHIRO-721](https://github.com/jas502n/SHIRO-721)
+
+---
+
+## Solr
+
+> 官网 : https://lucene.apache.org/solr/
+
+Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其主要功能包括全文检索、命中标示、分面搜索、动态聚类、数据库集成,以及富文本的处理.
+
+Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
+
+**资源**
+- [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
+
+**CVE-2017-12629 Apache solr XML 实体注入漏洞**
+- 简介
+
+    原理大致是文档通过 Http 利用 XML 加到一个搜索集合中.查询该集合也是通过 http 收到一个 XML/JSON 响应来实现.此次 7.1.0 之前版本总共爆出两个漏洞:XML 实体扩展漏洞 (XXE) 和远程命令执行漏洞 (RCE) ,二者可以连接成利用链,编号均为 CVE-2017-12629.
+
+- 影响版本
+    - Apache solr 5.5.0 ~ 5.5.4
+    - Apache solr 6.0.0 ~ 6.6.1
+    - Apache solr 7.0.0 ~ 7.0.1
+
+- 文章
+    - [Apache solr XML 实体注入漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-XXE/)
+    - [Apache Solr 远程命令执行漏洞 (CVE-2017-12629) ](https://vulhub.org/#/environments/solr/CVE-2017-12629-RCE/)
+
+**CVE-2019-0192 Apache Solr RCE 5.0.0 to 5.5.5 and 6.0.0 to 6.6.5**
+- https://issues.apache.org/jira/browse/SOLR-13301
+
+- 简介
+
+    ConfigAPI 允许通过 HTTP POST 请求配置 Solr 的 JMX 服务器。通过将其指向恶意的 RMI 服务器，攻击者可以利用 Solr 的不安全反序列化功能在 Solr 端触发远程代码执行。
+
+- 影响版本
+    - Apache solr 5.0.0 ~ 5.5.5
+    - Apache solr 6.0.0 ~ 6.6.5
+
+- POC | Payload | exp
+    - https://github.com/mpgn/CVE-2019-0192/
+
+**CVE-2019-0193 Apache Solr 远程命令执行漏洞**
+- 简介
+
+    此次漏洞出现在 Apache Solr 的 DataImportHandler,该模块是一个可选但常用的模块,用于从数据库和其他源中提取数据.它具有一个功能,其中所有的 DIH 配置都可以通过外部请求的 dataConfig 参数来设置.由于 DIH 配置可以包含脚本,因此攻击者可以通过构造危险的请求,从而造成远程命令执行.
+
+- 影响版本
+    - Apache solr < 8.2.0
+
+- 文章
+    - [Apache Solr 远程命令执行漏洞 (CVE-2019-0193) ](https://vulhub.org/#/environments/solr/CVE-2019-0193/)
+
+- POC | Payload | exp
+    - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
+
+**Apache Solr Velocity 模版注入远程命令执行漏洞**
+- 简介
+
+    2019年10月30日，国外安全研究人员放出了一个关于 solr 模板注入的 exp，攻击者通过未授权访问 solr 服务器，发送特定的数据包开启 params.resource.loader.enabled，然后 get 访问接口导致服务器命令执行，命令回显结果在 response。
+
+- 影响版本
+    - Apache Solr < 8.2.0
+
+- 文章
+    - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
+
+- POC | Payload | exp
+    - [jas502n/solr_rce](https://github.com/jas502n/solr_rce)
+
+---
+
 ## Spring
 
 > 官网 : https://spring.io/
@@ -1346,11 +1158,277 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
 ---
 
+## Struts2
+
+> 官网 : https://struts.apache.org/
+
+Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+Bulletins
+
+**工具**
+- [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
+- [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
+- [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools)
+- [x51/STS2G](https://github.com/x51/STS2G) - Golang 版 Struts2 漏洞扫描利用工具
+
+**环境搭建**
+- [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
+- [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx)
+- [shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
+
+**文章**
+- [Struts2 历史 RCE 漏洞回顾不完全系列](http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities/)
+
+**S2-016 & CVE-2013-2251**
+- https://cwiki.apache.org/confluence/display/WW/S2-016
+
+- 描述
+
+    DefaultActionMapper 类支持以"action:"、"redirect:"、"redirectAction:"作为导航或是重定向前缀，但是这些前缀后面同时可以跟 OGNL 表达式，由于 struts2 没有对这些前缀做过滤，导致利用 OGNL 表达式调用 java 静态方法执行任意系统命令
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.15
+
+- POC | Payload | exp
+    - [OneSourceCat/s2-016-exp](https://github.com/OneSourceCat/s2-016-exp)
+
+**S2-020 & CVE-2014-0094 & CNNVD-201403-191**
+- https://cwiki.apache.org/confluence/display/WW/S2-020
+
+- 简介
+
+    Apache Struts 2.0.0-2.3.16 版本的默认上传机制是基于 Commons FileUpload 1.3 版本，其附加的 ParametersInterceptor 允许访问'class' 参数（该参数直接映射到 `getClass()` 方法），并允许控制 ClassLoader。在具体的 Web 容器部署环境下（如：Tomcat），攻击者利用 Web 容器下的 Java Class 对象及其属性参数（如：日志存储参数），可向服务器发起远程代码执行攻击，进而植入网站后门控制网站服务器主机。
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.16.1
+
+- 文章
+    - [Struts2 S2-020在Tomcat 8下的命令执行分析](https://www.freebuf.com/articles/web/31039.html)
+
+- POC | Payload | exp
+    - https://github.com/coffeehb/Some-PoC-oR-ExP/blob/master/Struts2/S2-020_POC.py
+
+**S2-045 & CVE-2017-5638**
+- https://cwiki.apache.org/confluence/display/WW/S2-045
+
+- 简介
+
+    恶意用户可在上传文件时通过修改 HTTP 请求头中的 Content-Type 值来触发该漏洞进而执行系统命令.
+
+- 影响版本
+    - Struts 2.3.5 ~ 2.3.31
+    - Struts 2.5 ~ 2.5.10
+
+- POC | Payload | exp
+    - [tengzhangchao/Struts2_045-Poc](https://github.com/tengzhangchao/Struts2_045-Poc)
+    - [iBearcat/S2-045](https://github.com/iBearcat/S2-045)
+
+**S2-046 & CVE-2017-5638**
+- https://cwiki.apache.org/confluence/display/WW/S2-046
+
+- 简介
+
+    该漏洞是由于上传功能的异常处理函数没有正确处理用户输入的错误信息,导致远程攻击者可通过修改 HTTP 请求头中的 Content-Type 值,构造发送恶意的数据包,利用该漏洞进而在受影响服务器上执行任意系统命令.
+
+- 影响版本
+    - Struts 2.3.5 ~ 2.3.31
+    - Struts 2.5 ~ 2.5.10
+
+- 修复方案
+    1. 官方已经发布版本更新,尽快升级到不受影响的版本(Struts 2.3.32 或 Struts 2.5.10.1),建议在升级前做好数据备份.
+    2. 临时修复方案
+    在用户不便进行升级的情况下,作为临时的解决方案,用户可以进行以下操作来规避风险:在 WEB-INF/classes 目录下的 struts.xml 中的 struts 标签下添加
+    `<constant name="struts.custom.i18n.resources" value="global" />`
+    在 WEB-INF/classes/ 目录下添加 global.properties,文件内容如下:
+    `struts.messages.upload.error.InvalidContentTypeException=1`
+
+- POC | Payload | exp
+    - [mazen160/struts-pwn](https://github.com/mazen160/struts-pwn)
+
+**S2-048 & CVE-2017-9791**
+- https://cwiki.apache.org/confluence/display/WW/S2-048
+
+- 简介
+
+    攻击者可以构造恶意的字段值通过 Struts2 的 struts2-struts1-plugin 插件，远程执行代码。
+
+- 影响版本
+    - Struts 2.1.x ~ 2.3.x
+
+- POC | Payload | exp
+    - [dragoneeg/Struts2-048](https://github.com/dragoneeg/Struts2-048)
+
+**S2-052 & CVE-2017-9805**
+- https://cwiki.apache.org/confluence/display/WW/S2-052
+
+- 简介
+
+    启用 Struts REST 插件并使用 XStream 组件对 XML 进行反序列操作时，未对数据内容进行有效验证，可被攻击者进行远程代码执行攻击(RCE)。
+
+- 影响版本
+    - Struts 2.1.6 ~ 2.3.33
+    - Struts 2.5 ~ 2.5.12
+
+- POC | Payload | exp
+    - [mazen160/struts-pwn_CVE-2017-9805](https://github.com/mazen160/struts-pwn_CVE-2017-9805)
+
+**S2-053 & CVE-2017-12611**
+- https://cwiki.apache.org/confluence/display/WW/S2-053
+
+- 简介
+
+    当开发者在 Freemarker 标签中使用如下代码时 `<@s.hidden name=”redirectUri” value=redirectUri /><@s.hidden name=”redirectUri” value=”${redirectUri}” />` Freemarker 会将值当做表达式进行执行，最后导致代码执行。
+
+- 影响版本
+    - Struts 2.0.0 ~ 2.3.33
+    - Struts 2.5 ~ 2.5.10.1
+
+- POC | Payload | exp
+    - [brianwrf/S2-053-CVE-2017-12611](https://github.com/brianwrf/S2-053-CVE-2017-12611)
+
+**S2-055 & CVE-2017-7525**
+- https://cwiki.apache.org/confluence/display/WW/S2-055
+
+- 简介
+
+    2017年12月1日，Apache Struts 发布最新的安全公告，Apache Struts 2.5.x REST 插件存在远程代码执行的中危漏洞，漏洞编号与 CVE-2017-7525 相关。漏洞的成因是由于使用的 Jackson 版本过低在进行 JSON 反序列化的时候没有任何类型过滤导致远程代码执行。。
+
+- 影响版本
+    - Struts 2.5 ~ 2.5.14
+
+- POC | Payload | exp
+    - [iBearcat/S2-055](https://github.com/iBearcat/S2-055)
+
+**S2-056 & CVE-2018-1327**
+- https://cwiki.apache.org/confluence/display/WW/S2-056
+
+- 简介
+
+    S2-056 漏洞发生于 Apache Struts 2的 REST 插件，当使用 XStream 组件对 XML 格式的数据包进行反序列化操作，且未对数据内容进行有效验证时，攻击者可通过提交恶意 XML 数据对应用进行远程 DoS 攻击。
+
+- 影响版本
+    - Struts 2.1.1 ~ 2.5.14.1
+
+- POC | Payload | exp
+    - [ iBearcat/S2-056-XStream](https://github.com/iBearcat/S2-056-XStream)
+
+**S2-057 & CVE-2018-11776**
+- https://cwiki.apache.org/confluence/display/WW/S2-057
+
+- 简介
+
+    该漏洞由 Semmle Security Research team 的安全研究员 Man YueMo 发现.该漏洞是由于在 Struts2 开发框架中使用 namespace 功能定义 XML 配置时,namespace 值未被设置且在上层动作配置(Action Configuration)中未设置或用通配符 namespace,可能导致远程代码执行.
+
+- 影响版本
+    - Struts 2.0.4 ~ 2.3.34
+    - Struts 2.5.0 ~ 2.5.16
+
+- POC | Payload | exp
+    - [Ivan1ee/struts2-057-exp](https://github.com/Ivan1ee/struts2-057-exp)
+
+---
+
+## Tomcat
+
+> 官网 : https://tomcat.apache.org/
+
+Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为 `/manager/html`,后台默认弱口令 admin/admin、tomcat/tomcat 等,若果配置不当,可通过"Tomcat Manager"连接部署 war 包的方式获取 webshell.
+
+**文章**
+- [Tomcat漏洞详解](http://www.mottoin.com/detail/389.html)
+
+**CVE-2017-12615/12616**
+- 简介
+
+    2017年9月19日,Apache Tomcat 官方确认并修复了两个高危漏洞,漏洞 CVE 编号:CVE-2017-12615 和 CVE-2017-12616,该漏洞受影响版本为7.0.0-7.0.80之间,官方评级为高危,在一定条件下,攻击者可以利用这两个漏洞,获取用户服务器上 JSP 文件的源代码,或是通过精心构造的攻击请求,向用户服务器上传恶意 JSP 文件,通过上传的 JSP 文件 ,可在用户服务器上执行任意代码,从而导致数据泄露或获取服务器权限,存在高安全风险.
+
+    - CVE-2017-12615:远程代码执行漏洞
+
+        当 Tomcat 运行在 Windows 操作系统时,且启用了 HTTP PUT 请求方法 (例如,将 readonly 初始化参数由默认值设置为 false) ,攻击者将有可能可通过精心构造的攻击请求数据包向服务器上传包含任意代码的 JSP 文件,JSP文件中的恶意代码将能被服务器执行.导致服务器上的数据泄露或获取服务器权限.
+
+    - CVE-2017-12616:信息泄露漏洞
+
+        当 Tomcat 中启用了 VirtualDirContext 时,攻击者将能通过发送精心构造的恶意请求,绕过设置的相关安全限制,或是获取到由 VirtualDirContext 提供支持资源服务的 JSP 源代码,从而造成代码信息泄露.
+
+- 漏洞利用条件
+
+    - CVE-2017-12615 漏洞利用需要在 Windows 环境,且需要将 readonly 初始化参数由默认值设置为 false,经过实际测试,Tomcat 7.x 版本内 web.xml 配置文件内默认配置无 readonly 参数,需要手工添加,默认配置条件下不受此漏洞影响.
+
+    - CVE-2017-12616 漏洞需要在 server.xml 文件配置 VirtualDirContext 参数,经过实际测试,Tomcat 7.x 版本内默认配置无 VirtualDirContext 参数,需要手工添加,默认配置条件下不受此漏洞影响.
+
+- 影响版本
+
+    - CVE-2017-12615 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.79 (windows 环境)
+    - CVE-2017-12616 影响版本 : Apache Tomcat 7.0.0 ~ 7.0.80
+
+- 文章
+    - [CVE-2017-12615/CVE-2017-12616:Tomcat信息泄漏和远程代码执行漏洞分析报告](https://paper.seebug.org/399/)
+
+- POC | Payload | exp
+
+    - [iBearcat/CVE-2017-12615](https://github.com/iBearcat/CVE-2017-12615)
+    - [breaktoprotect/CVE-2017-12615](https://github.com/breaktoprotect/CVE-2017-12615)
+
+    ```
+    PUT /1.jsp/ HTTP/1.1
+    Host: your-ip:8080
+    Accept: */*
+    Accept-Language: en
+    User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+    Connection: close
+    Content-Type: application/x-www-form-urlencoded
+    Content-Length: 5
+
+    <% out.write("<html><body><h3>[+] JSP upload successfully.</h3></body></html>"); %>
+    ```
+
+**CVE-2017-12617**
+- 简介
+
+    运行启用了 HTTP PUT 的 Apache Tomcat 特定版本时(例如，通过将默认 servlet 的只读初始化参数设置为 false)可以通过特制请求将 JSP 文件上载到服务器。然后可以请求此 JSP，并且服务器将执行其中包含的所有代码。
+
+- 影响版本
+    - Apache Tomcat 7.0.0 ~ 7.0.81
+    - Apache Tomcat 8.0.0 ~ 8.0.17
+
+- 文章
+    - [CVE-2017-12617-Tomcat远程代码执行漏洞复现测试](https://www.freebuf.com/vuls/150203.html)
+
+- POC | Payload | exp
+    - [cyberheartmi9/CVE-2017-12617](https://github.com/cyberheartmi9/CVE-2017-12617)
+
+- MSF Module
+    ```
+    use exploit/multi/http/tomcat_jsp_upload_bypass
+    ```
+
+**CVE-2019-0232**
+- 简介
+
+    该漏洞是由于 Tomcat CGI 将命令行参数传递给 Windows 程序的方式存在错误，使得 CGIServlet 被命令注入影响。
+
+    该漏洞只影响 Windows 平台，要求启用了 CGIServlet 和 enableCmdLineArguments 参数。但是 CGIServlet 和 enableCmdLineArguments 参数默认情况下都不启用。
+
+- 影响版本
+    - Apache Tomcat 7.0.0 ~ 7.0.93
+    - Apache Tomcat 8.0.0 ~ 8.5.39
+    - Apache Tomcat 9.0.1 ~ 9.0.17
+
+- 文章
+    - [CVE-2019-0232:Apache Tomcat RCE漏洞分析](https://xz.aliyun.com/t/4875)
+    - [复现CVE-2019-0232过程中遇到的坑 Apache Tomcat高危远程代码执行漏洞](http://www.nmd5.com/?p=375)
+
+- POC | Payload | exp
+    - [pyn3rd/CVE-2019-0232](https://github.com/pyn3rd/CVE-2019-0232)
+    - [jas502n/CVE-2019-0232](https://github.com/jas502n/CVE-2019-0232)
+
+---
+
 ## Weblogic
 
 > 官网 : https://www.oracle.com/middleware/weblogic/
 
-`老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用.`
+**Tips**
+- 老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用.
 
 **工具**
 - [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan) - 增强版WeblogicScan、检测结果更精确、插件化、添加CVE-2019-2618，CVE-2019-2729检测，Python3支持
@@ -1652,7 +1730,7 @@ FCKeditor/_samples/asp/sample04.asp
 
 ---
 
-## Atlassian Confluence
+## Confluence
 
 > 官网 : https://www.atlassian.com/software/confluence
 
@@ -1674,7 +1752,7 @@ Confluence 是一个专业的企业知识管理与协同软件，也可以用于
 
 ---
 
-## Atlassian Crowd
+## Crowd
 
 > 官网 : https://www.atlassian.com/software/crowd
 
@@ -1697,106 +1775,6 @@ Atlassian Crowd 是一套基于 Web 的单点登录系统。该系统为多用�
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-11580](https://github.com/jas502n/CVE-2019-11580)
-
----
-
-## Atlassian Jira
-
-> 官网 : https://www.atlassian.com/software/jira
-
-JIRA 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集、流程审批、任务跟踪、项目跟踪和敏捷管理等工作领域。
-
-jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13085
-
-**CVE-2019-3403 信息泄露(用户名枚举)**
-- 简介
-
-    Atlassian Jira 7.13.3 之前版本、8.0.4 之前版本和 8.1.1 之前版本中存在用户名枚举漏洞，攻击者可利用该漏洞枚举用户名称。
-
-- 影响版本
-    - Atlassian Jira < 7.13.3
-    - Atlassian Jira 8.0.0 ~ 8.0.4
-    - Atlassian Jira 8.1.0 ~ 8.1.1
-
-- POC | Payload | exp
-    - https://blog.csdn.net/caiqiiqi/article/details/100094987
-
-**CVE-2019-8442 Jira 未授权敏感信息泄露**
-- 简介
-
-    Atlassian Jira 是澳大利亚 Atlassian 公司的一套缺陷跟踪管理系统.该系统主要用于对工作中各类问题、缺陷进行跟踪管理. Atlassian Jira 7.13.4 之前版本、8.0.4 之前版本和 8.1.1 之前版本中的CachingResourceDownloadRewriteRule 类存在安全漏洞.远程攻击者可利用该漏洞访问 Jira webroot 中的文件.
-
-- 影响版本
-    - Atlassian Jira < 7.13.3
-    - Atlassian Jira 8.0.0 ~ 8.0.4
-    - Atlassian Jira 8.1.0 ~ 8.1.1
-
-- POC | Payload | exp
-    - https://note.youdao.com/ynoteshare1/index.html?id=4189e6fb21fb097a4109ac22f33b16cb&type=note
-    - https://hackerone.com/reports/632808
-
-    `/s/thiscanbeanythingyouwant/_/META-INF/maven/com.atlassian.jira/atlassian-jira-webapp/pom.xml`
-
-**CVE-2019-8444 存储型 XSS**
-- 简介
-
-    Atlassian Jira 7.13.6之前版本和8.3.2之前的8.x版本中的 wikirenderer 组件存在跨站脚本漏洞。该漏洞源于 WEB 应用缺少对客户端数据的正确验证。攻击者可利用该漏洞执行客户端代码。
-
-- 影响版本
-    - Atlassian Jira 7.7 ~ 7.13.6
-    - Atlassian Jira 8.0.0 ~ 8.3.2
-
-- POC | Payload | exp
-    ```
-    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
-    Content-Type: application/json
-
-    {"body":"!image.png|width=\\\" οnmοuseοver=alert(333);//!"}
-    ```
-    ```
-    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
-    Content-Type: application/json
-
-    {"body":"!image.png|width=http://οnmοuseοver=alert(42&#x29;;//!"}
-    ```
-
-**CVE-2019-8446 信息泄露(用户名枚举)**
-- 简介
-
-    Atlassian Jira 8.3.2之前版本中的 /rest/issueNav/1/issueTable 资源存在授权问题漏洞。该漏洞源于网络系统或产品中缺少身份验证措施或身份验证强度不足。
-
-- 影响版本
-    - Atlassian Jira 7.6 ~ 8.3.2
-
-- POC | Payload | exp
-    - https://talosintelligence.com/vulnerability_reports/TALOS-2019-0839
-
-**CVE-2019-8451 Jira 未授权 SSRF 漏洞**
-- 简介
-
-    Atlassian Jira 8.4.0 之前版本中的 /plugins/servlet/gadgets/makeRequest 资源存在代码问题漏洞。该漏洞源于网络系统或产品的代码开发过程中存在设计或实现不当的问题。
-
-- 影响版本
-
-    - Atlassian Jira 7.6.0 ~ 8.4.0
-
-- POC | Payload | exp
-    - [jas502n/CVE-2019-8451](https://github.com/jas502n/CVE-2019-8451)
-
-**CVE-2019-11581 Atlassian Jira 模板注入漏洞**
-- 简介
-
-    Atlassian Jira 多个版本前存在利用模板注入执行任意命令
-
-- 影响版本
-    - Atlassian Jira 4.4 ~ 7.6.14
-    - Atlassian Jira 7.7.0 ~ 7.13.5
-    - Atlassian Jira 8.0.0 ~ 8.0.3
-    - Atlassian Jira 8.1.0 ~ 8.1.2
-    - Atlassian Jira 8.2.0 ~ 8.2.3
-
-- 文章
-    - [Atlassian Jira 模板注入漏洞 (CVE-2019-11581) ](https://vulhub.org/#/environments/jira/CVE-2019-11581/)
 
 ---
 
@@ -1926,7 +1904,107 @@ Jenkins 的漏洞参考 https://jenkins.io/security/advisories/
 
 ---
 
-## Jupyter Notebook
+## Jira
+
+> 官网 : https://www.atlassian.com/software/jira
+
+JIRA 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用于缺陷跟踪、客户服务、需求收集、流程审批、任务跟踪、项目跟踪和敏捷管理等工作领域。
+
+jira 的漏洞参考 https://jira.atlassian.com/browse/JRASERVER-69858?filter=13085
+
+**CVE-2019-3403 信息泄露(用户名枚举)**
+- 简介
+
+    Atlassian Jira 7.13.3 之前版本、8.0.4 之前版本和 8.1.1 之前版本中存在用户名枚举漏洞，攻击者可利用该漏洞枚举用户名称。
+
+- 影响版本
+    - Atlassian Jira < 7.13.3
+    - Atlassian Jira 8.0.0 ~ 8.0.4
+    - Atlassian Jira 8.1.0 ~ 8.1.1
+
+- POC | Payload | exp
+    - https://blog.csdn.net/caiqiiqi/article/details/100094987
+
+**CVE-2019-8442 Jira 未授权敏感信息泄露**
+- 简介
+
+    Atlassian Jira 是澳大利亚 Atlassian 公司的一套缺陷跟踪管理系统.该系统主要用于对工作中各类问题、缺陷进行跟踪管理. Atlassian Jira 7.13.4 之前版本、8.0.4 之前版本和 8.1.1 之前版本中的CachingResourceDownloadRewriteRule 类存在安全漏洞.远程攻击者可利用该漏洞访问 Jira webroot 中的文件.
+
+- 影响版本
+    - Atlassian Jira < 7.13.3
+    - Atlassian Jira 8.0.0 ~ 8.0.4
+    - Atlassian Jira 8.1.0 ~ 8.1.1
+
+- POC | Payload | exp
+    - https://note.youdao.com/ynoteshare1/index.html?id=4189e6fb21fb097a4109ac22f33b16cb&type=note
+    - https://hackerone.com/reports/632808
+
+    `/s/thiscanbeanythingyouwant/_/META-INF/maven/com.atlassian.jira/atlassian-jira-webapp/pom.xml`
+
+**CVE-2019-8444 存储型 XSS**
+- 简介
+
+    Atlassian Jira 7.13.6之前版本和8.3.2之前的8.x版本中的 wikirenderer 组件存在跨站脚本漏洞。该漏洞源于 WEB 应用缺少对客户端数据的正确验证。攻击者可利用该漏洞执行客户端代码。
+
+- 影响版本
+    - Atlassian Jira 7.7 ~ 7.13.6
+    - Atlassian Jira 8.0.0 ~ 8.3.2
+
+- POC | Payload | exp
+    ```
+    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
+    Content-Type: application/json
+
+    {"body":"!image.png|width=\\\" οnmοuseοver=alert(333);//!"}
+    ```
+    ```
+    POST /rest/api/2/issue/TEST-7/comment HTTP/1.1
+    Content-Type: application/json
+
+    {"body":"!image.png|width=http://οnmοuseοver=alert(42&#x29;;//!"}
+    ```
+
+**CVE-2019-8446 信息泄露(用户名枚举)**
+- 简介
+
+    Atlassian Jira 8.3.2之前版本中的 /rest/issueNav/1/issueTable 资源存在授权问题漏洞。该漏洞源于网络系统或产品中缺少身份验证措施或身份验证强度不足。
+
+- 影响版本
+    - Atlassian Jira 7.6 ~ 8.3.2
+
+- POC | Payload | exp
+    - https://talosintelligence.com/vulnerability_reports/TALOS-2019-0839
+
+**CVE-2019-8451 Jira 未授权 SSRF 漏洞**
+- 简介
+
+    Atlassian Jira 8.4.0 之前版本中的 /plugins/servlet/gadgets/makeRequest 资源存在代码问题漏洞。该漏洞源于网络系统或产品的代码开发过程中存在设计或实现不当的问题。
+
+- 影响版本
+
+    - Atlassian Jira 7.6.0 ~ 8.4.0
+
+- POC | Payload | exp
+    - [jas502n/CVE-2019-8451](https://github.com/jas502n/CVE-2019-8451)
+
+**CVE-2019-11581 Atlassian Jira 模板注入漏洞**
+- 简介
+
+    Atlassian Jira 多个版本前存在利用模板注入执行任意命令
+
+- 影响版本
+    - Atlassian Jira 4.4 ~ 7.6.14
+    - Atlassian Jira 7.7.0 ~ 7.13.5
+    - Atlassian Jira 8.0.0 ~ 8.0.3
+    - Atlassian Jira 8.1.0 ~ 8.1.2
+    - Atlassian Jira 8.2.0 ~ 8.2.3
+
+- 文章
+    - [Atlassian Jira 模板注入漏洞 (CVE-2019-11581) ](https://vulhub.org/#/environments/jira/CVE-2019-11581/)
+
+---
+
+## Jupyter
 
 > 官网 : https://jupyter.org/
 

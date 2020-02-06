@@ -17,11 +17,11 @@
 
 **简介:** 本项目的初衷是分享知识资源,内容涉及安全、运维领域,目前主攻 ~~安全研究~~ 预防+治疗脱发问题,对于内容中有疑问或建议欢迎提交 issue,回应时间保证在 12 小时内 (麻烦不要在凌晨提).
 
-**目标:** 成为最优秀的安全资源框架
+**定位:** 个人维护的安全知识框架,内容偏向于 web
 
 **更新时间:** 不定期
 
-**项目唯一地址** https://github.com/No-Github/1earn
+**项目地址** https://github.com/No-Github/1earn
 
 该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议.
 
@@ -43,13 +43,13 @@
         - [后渗透笔记](./1earn/安全/笔记/RedTeam/后渗透笔记.md)
         - [逻辑类漏洞笔记](./1earn/安全/笔记/RedTeam/逻辑类漏洞笔记.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
         - [权限维持笔记](./1earn/安全/笔记/RedTeam/权限维持笔记.md) : 权限维持的各种方法和资源
-        - [软件漏洞记录](./1earn/安全/笔记/RedTeam/软件漏洞记录.md)
-        - [搜索引擎Hacking笔记](./1earn/安全/笔记/RedTeam/搜索引擎Hacking笔记) : 搜索引擎语法资源
-        - [提权笔记](./1earn/安全/笔记/RedTeam/提权笔记.md)
-        - [物联网设备渗透笔记](./1earn/安全/笔记/RedTeam/物联网设备渗透笔记.md)
-        - [协议漏洞记录](./1earn/安全/笔记/RedTeam/协议漏洞记录.md)
-        - [信息收集笔记](./1earn/安全/笔记/RedTeam/信息收集笔记.md)
-        - [CVE漏洞记录](./1earn/安全/笔记/RedTeam/CVE漏洞记录.md) : 收集超多的 web 漏洞 POC | Payload | exp
+        - [软件漏洞记录](./1earn/安全/笔记/RedTeam/软件漏洞记录.md) : 记录软件、业务应用漏洞的cve
+        - [搜索引擎Hacking笔记](./1earn/安全/笔记/RedTeam/搜索引擎Hacking笔记) : 收集搜索引擎语法资源
+        - [提权笔记](./1earn/安全/笔记/RedTeam/提权笔记.md) : 操作系统和数据库的提权方法
+        - [物联网设备渗透笔记](./1earn/安全/笔记/RedTeam/物联网设备渗透笔记.md) : 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
+        - [协议漏洞记录](./1earn/安全/笔记/RedTeam/协议漏洞记录.md) : 按照协议归类漏洞
+        - [信息收集笔记](./1earn/安全/笔记/RedTeam/信息收集笔记.md) : 记录信息收集这一块的各种知识点
+        - [CVE漏洞记录](./1earn/安全/笔记/RedTeam/CVE漏洞记录.md) : 全面收集 web 漏洞 POC | Payload | exp
         - [Linux渗透笔记](./1earn/安全/笔记/RedTeam/Linux渗透笔记.md)
         - [SQLi笔记](./1earn/安全/笔记/RedTeam/SQLi笔记.md) : SQL 注入知识点记录
         - [web常见漏洞笔记](./1earn/安全/笔记/RedTeam/web常见漏洞笔记.md) : 常见 web 漏洞介绍,案例收集
@@ -60,6 +60,7 @@
 - 工具
     - [Burp笔记](./1earn/安全/工具/Burp笔记.md)
     - [cobaltstrike笔记](./1earn/安全/工具/cobaltstrike笔记.md)
+    - [hashcat笔记](./1earn/安全/工具/hashcat笔记.md)
     - [kali笔记](./1earn/安全/工具/kali笔记.md)
     - [metasploit笔记](./1earn/安全/工具/metasploit笔记.md)
     - [mimikatz笔记](./1earn/安全/工具/mimikatz笔记.md)
@@ -76,6 +77,7 @@
         - [XSS挑战通关笔记](./1earn/安全/实验/Misc/XSS挑战通关笔记.md)
     - VulnHub
         - [DC1通关笔记](./1earn/安全/实验/VulnHub/DC1通关笔记.md)
+        - [DC2通关笔记](./1earn/安全/实验/VulnHub/DC2通关笔记.md)
         - [Kioptrix4通关笔记](./1earn/安全/实验/VulnHub/Kioptrix4通关笔记.md)
 
 ## 运维
@@ -83,7 +85,7 @@
 
 - [God-Linux](./1earn/运维/Linux/God-Linux.md) : 记录 Linux 下的骚操作,收集的较少,后面会慢慢添加
 - [Power-Linux](./1earn/运维/Linux/Power-Linux.md) : 配置指南,记录各种服务搭建与配置过程
-- [Secure-Linux](./1earn/运维/Linux/Secure-Linux.md) : 记录自己优化 Linux 服务器性能与问题排查时用到的命令
+- [Secure-Linux](./1earn/运维/Linux/Secure-Linux.md) : Linux 加固+维护+应急响应参考
 - [Speed-Linux](./1earn/运维/Linux/Speed-Linux.md) : 命令速查手册,记录各种基本命令操作
 - 笔记
     - [发行版](./1earn/运维/Linux/笔记/发行版.md) : Linux 各个发行版本之间的知识
@@ -111,13 +113,14 @@
 ### Windows
 
 - [CMD命令笔记](./1earn/运维/Windows/CMD命令笔记.md) ： 记录一些 CMD 常用命令
-- [PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md) ： 记录一些 powershell 常用命令
-- [Windows服务搭建笔记](./1earn/运维/Windows/Windows服务搭建笔记.md) : 记录 windows 搭建服务的步骤
+- [Secure-Win](./1earn/运维/Windows/Secure-Win.md) : windows 加固+维护+应急响应参考
 - 笔记
     - [角色权限](./1earn/运维/Windows/笔记/角色权限.md) : windows 角色内容
     - [认证](./1earn/运维/Windows/笔记/认证.md) : 关于 windows 认证的知识
 - 实验
-    - 很早以前写的内容了,略
+    - [Windows服务搭建笔记](./1earn/运维/Windows/Windows服务搭建笔记.md) : 记录 windows 搭建服务的步骤
+- Powershell
+    - [PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md) ： 记录一些 powershell 常用命令
 
 ## 开发
 ### 版本控制
@@ -162,7 +165,7 @@
 - [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
 
 建议的阅读体验
-- [VScode](https://code.visualstudio.com/)+[FiraCode](https://github.com/tonsky/FiraCode) (再次推荐,整个项目就是在vscode环境下写的,保证不会出现任何排版问题)
+- [VScode](https://code.visualstudio.com/)+[FiraCode](https://github.com/tonsky/FiraCode) (推荐,整个项目在vscode环境下编写,基本不会出现排版问题)
 - [Typora](https://www.typora.io/)
 
 ---

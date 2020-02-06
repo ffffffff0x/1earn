@@ -10,7 +10,7 @@
 
 ---
 
-**地址**
+**靶机地址**
 - https://www.vulnhub.com/entry/kioptrix-level-13-4,25/
 
 **Description**

@@ -32,7 +32,7 @@
 
 # 用法
 
-常用: `nmap -T5 -A -vv <target ip>`
+常用: `nmap -T5 -A -v -p- <target ip>`
 
 TCP1:`nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN <target ip>`
 

@@ -17,7 +17,7 @@
 
 ---
 
-## 大纲
+# 大纲
 
 **👍基础使用**
 
@@ -60,6 +60,7 @@
 	* [时间](#时间)
 	* [语言](#语言)
 	* [启动项-计划任务](#启动项-计划任务)
+	* [SELinux](#SELinux)
 * [系统信息](#系统信息)
 * [账号管控](#账号管控)
 * [进程管理](#进程管理)
@@ -206,8 +207,8 @@ cd	# 切换工作目录
 ### 查看
 
 ```bash
-ls			# 查看文件
-	ls -a						# 查看隐藏文件
+ls			# 查看目录下文件
+	ls -a						# 查看目录隐藏文件
 
 cat			# 连接文件并打印到标准输出设备上
 	cat -n						# 带行号读
@@ -1160,7 +1161,7 @@ addgroup <username> <groupname>		# 移动用户到组
 newgrp <groupname>					# 创建组
 
 usermod -g <groupname> <username>	# 修改用户的主组
-usermod -G <附加组> <username>		# 修改用户的附加组
+usermod -G <supplementary> <username>	# 修改用户的附加组
 usermod -s /bin/bash <username>		# 修改用户登录的 Shell
 usermod -L <username>  				# 锁定用户
 usermod -U <username> 				# 解锁用户

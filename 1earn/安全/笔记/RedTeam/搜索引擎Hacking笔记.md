@@ -75,6 +75,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具,例如密码,私钥
 - [gwen001/github-search](https://github.com/gwen001/github-search) - 在GitHub上执行基本搜索的工具。
 - [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit) - 实时的监控 github 寻找敏感信息
+- [lightless233/geye](https://github.com/lightless233/geye) - 一款面向企业级以及白帽子的"More Fastest" Github监控工具
 
 **同类**
 ```

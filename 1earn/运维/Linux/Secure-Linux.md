@@ -18,207 +18,37 @@
 
 ---
 
-# Shell-Base
-## 密码重置
+# 大纲
 
-**centos7**
-
-1. 在启动菜单选择启动内核,按 e 编辑,找到 rhgb quiet 一行,把 `rhgb quiet` 替换为 `init=/bin/bash` (临时生效)
-2. 按 `CTRL+X` 进入单用户模式
-3. 挂载根文件系统: `mount -o remount,rw /`
-4. 使用 `passwd` 命令直接设置 root 密码: `passwd root` 输入两次新密码.
-5. 最后,执行如下命令更新 SELinux: `touch /.autorelabel`
-6. 进入正常模式: `exec /sbin/init`  现在可以使用新设置的 root 密码登录了.
+* [文件](#文件)
+    * [可疑文件](#可疑文件)
+    * [文件恢复](#文件恢复)
+* [系统](#系统)
+    * [密码重置](#密码重置)
+    * [会话](#会话)
+    * [开机启动](#开机启动)
+    * [账号](#账号)
+    * [SELinux](#SELinux)
+    * [进程](#进程)
+    * [日志](#日志)
+* [Net](#Net)
+    * [端口](#端口)
+    * [Firewall](#Firewall)
+    * [禁ping](#禁ping)
+    * [SSH](#SSH)
+* [加固](#加固)
 
 ---
 
-## 会话
+# 文件
+## 可疑文件
 
-**查**
 ```bash
-who     # 查看当前登录用户
-w       # 查看登录用户行为
-last    # 查看登陆用户历史
+find / -ctime -2                # 查找72小时内新增的文件
+find ./ -mtime 0 -name "*.jsp"  #​ 查找24小时内被修改的JSP文件
+find / *.jsp -perm 4777         # 查找777的权限的文件
+strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析sshd 文件，是否包括IP信息
 ```
-
-**防**
-```bash
-pkill -u linfengfeiye   # 直接剔除用户
-ps -ef| grep pts/0      # 得到用户登录相应的进程号 pid 后执行
-kill -9 pid             # 安全剔除用户
-```
-
-**修改账户超时值,设置自动注销时间**
-```
-vim /etc/profile
-
-TMOUT=600
-```
-
-**设置 BASH 保留历史命令的条目**
-
-检查方法 : `cat /etc/profile | grep HISTSIZE`
-
-加固方法:
-```
-vim /etc/profile
-
-修改 HISTSIZE=5 即保留最新执行的5条命令
-```
-
-**设置注销时删除命令记录**
-
-检查方法: `cat /etc/skel/.bash_logout`
-
-增加如下行 `rm -f $HOME/.bash_history`
-
-这样,系统中的所有用户注销时都会删除其命令记录,如果只需要针对某个特定用户,,如 root 用户进行设置,则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可.
-
----
-
-## 加固
-**查后门**
-- **添加 root 权限后门用户**
-
-   检查 `/etc/passwd` 文件是否有异常
-
-- **vim 后门**
-
-   检测对应 vim 进程号虚拟目录的 map 文件是否有 python 字眼.
-
-   查看连接情况 `netstat -antlp`
-
-   例如发现 vim pid 为 12
-   ```
-   file /proc/12/exe
-   more /proc/12/cmdline
-   more /proc/12/maps | grep python
-   ```
-
-- **strace记录**
-
-    通过排查 shell 的配置文件或者 `alias` 命令即可发现,例如 `~/.bashrc` 和 `~/.bash_profile` 文件查看是否有恶意的 alias 问题.
-
-- **定时任务和开机启动项**
-
-    一般通过 `crontab -l` 命令即可检测到定时任务后门.不同的 linux 发行版可能查看开机启动项的文件不大相同,Debian 系 linux 系统一般是通过查看 `/etc/init.d` 目录有无最近修改和异常的开机启动项.而 Redhat 系的 linux 系统一般是查看 `/etc/rc.d/init.d` 或者 `/etc/systemd/system` 等目录.
-
-- **预加载型动态链接库后门 ld.so.preload**
-
-    通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意:在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
-
-- **内核级 rootkit**
-
-    可以通过 unhide 等工具进行排查
-
-- **深信服 Web 后门扫描**
-
-    http://edr.sangfor.com.cn/backdoor_detection.html
-
-**杀毒**
-- **[ClamavNet](https://www.clamav.net/downloads)**
-
-**Reference**
-- [linux常见backdoor及排查技术](https://xz.aliyun.com/t/4090)
-
----
-
-## 系统管理
-### 系统设置
-#### 启动项-计划任务
-
-**开机启动**
-```bash
-chkconfig           # 查看开机启动服务命令
-ls /etc/init.d      # 查看开机启动配置文件命令
-cat /etc/rc.local   # 查看 rc 启动文件
-```
-
----
-
-#### 账号
-
-**/etc/passwd**
-- 若用户ID=0,则表示该用户拥有超级用户的权限
-- 检查是否有多个ID=0
-- 禁用或删除多余的账号
-
-**设置账户锁定登录失败锁定次数、锁定时间**
-```
-vim /etc/pam.d/system-auth
-
-auth required pam_tally.so onerr=fail deny=6 unlock_time=300
-# 设置为密码连续输错6次,锁定时间300秒
-```
-
-**/etc/login.defs**
-```bash
-PASS_MAX_DAYS   90  # 用户的密码最长使用天数
-PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
-PASS_MIN_LEN    7   # 密码的最小长度
-PASS_WARN_AGE   9   # 密码过期前多少天开始提示
-```
-
----
-
-#### SELinux
-
-**关闭 SELinux**
-- 需要重启
-	```vim
-	vim /etc/selinux/config
-
-	SELINUX=disabled
-	```
-
-- 不需要重启
-
-	`setenforce 0`
-
----
-
-### 系统信息
-#### 进程管理
-
-**进程定位**
-```bash
-ps -aux         # 列出所有进程以及相关信息命令
-top             # 总览系统全面信息命令
-pidof name      # 定位程序的 pid
-pidof -x name   # 定位脚本的 pid
-```
-
-**进程限制**
-```bash
-ulimit -u 20    # 临时性允许用户最多创建 20 个进程,预防类似 fork 炸弹
-```
-
-```vim
-vim /etc/security/limits.conf
-    user1 - nproc 20  # 退出后重新登录,就会发现最大进程数已经更改为 20 了
-```
-
-**负载**
-- **文章**
-    - [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
-
-- **查询负载、进程监控**
-    ```bash
-    ps aux | grep Z                                         # 列出进程表中所有僵尸进程
-    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head   # 获取占用CPU资源最多的10个进程
-    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
-    ```
-
-- **清理缓存**
-    ```bash
-    sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延迟的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
-    echo 1 > /proc/sys/vm/drop_caches   # 清理 pagecache(页面缓存)
-    echo 2 > /proc/sys/vm/drop_caches   # 清理 dentries(目录缓存)和inodes
-    echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
-    sync
-    ```
-
----
 
 ## 文件恢复
 
@@ -463,6 +293,188 @@ ext3grep /dev/sda3 --restore-all
 
 ---
 
+# 系统
+## 密码重置
+
+**centos7**
+
+1. 在启动菜单选择启动内核,按 e 编辑,找到 rhgb quiet 一行,把 `rhgb quiet` 替换为 `init=/bin/bash` (临时生效)
+2. 按 `CTRL+X` 进入单用户模式
+3. 挂载根文件系统: `mount -o remount,rw /`
+4. 使用 `passwd` 命令直接设置 root 密码: `passwd root` 输入两次新密码.
+5. 最后,执行如下命令更新 SELinux: `touch /.autorelabel`
+6. 进入正常模式: `exec /sbin/init`  现在可以使用新设置的 root 密码登录了.
+
+---
+
+## 会话
+
+**查**
+```bash
+who     # 查看当前登录用户
+w       # 查看登录用户行为
+last    # 查看登陆用户历史
+```
+
+**防**
+```bash
+pkill -u linfengfeiye   # 直接剔除用户
+ps -ef| grep pts/0      # 得到用户登录相应的进程号 pid 后执行
+kill -9 pid             # 安全剔除用户
+```
+
+**修改账户超时值,设置自动注销时间**
+```
+vim /etc/profile
+
+TMOUT=600
+```
+
+**设置 BASH 保留历史命令的条目**
+
+检查方法 : `cat /etc/profile | grep HISTSIZE`
+
+加固方法:
+```
+vim /etc/profile
+
+修改 HISTSIZE=5 即保留最新执行的5条命令
+```
+
+**设置注销时删除命令记录**
+
+检查方法: `cat /etc/skel/.bash_logout`
+
+增加如下行 `rm -f $HOME/.bash_history`
+
+这样,系统中的所有用户注销时都会删除其命令记录,如果只需要针对某个特定用户,,如 root 用户进行设置,则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可.
+
+---
+
+## 开机启动
+
+**查看**
+```bash
+chkconfig                   # 查看开机启动服务命令
+ls /etc/init.d              # 查看开机启动配置文件命令
+cat /etc/rc.local           # 查看 rc 启动文件
+
+crontab -l
+ls -alh /var/spool/cron
+ls -al /etc/ | grep cron
+ls -al /etc/cron*
+cat /etc/cron*
+cat /etc/at.allow
+cat /etc/at.deny
+cat /etc/cron.allow
+cat /etc/cron.deny
+cat /etc/crontab
+cat /etc/anacrontab
+cat /var/spool/cron/crontabs/root
+```
+
+---
+
+## 账号
+
+**简单查找**
+```bash
+awk -F: '{if($3==0)print $1}' /etc/passwd   # 查看 UID 为0的帐号
+cat /etc/passwd | grep -E "/bin/bash$"      # 查看能够登录的帐号
+awk '/$1|$6/{print $1}' /etc/shadow         # 查看能够登录的帐号
+lastlog                                     # 系统中所有用户最近一次登录信息
+lastb                                       # 显示用户错误的登录列表
+users                                       # 打印当前登录的用户，每个用户名对应一个登录会话。如果一个用户不止一个登录会话，其用户名显示相同次数
+```
+
+**/etc/passwd**
+- 若用户ID=0,则表示该用户拥有超级用户的权限
+- 检查是否有多个ID=0
+- 禁用或删除多余的账号
+
+**设置账户锁定登录失败锁定次数、锁定时间**
+```
+vim /etc/pam.d/system-auth
+
+auth required pam_tally.so onerr=fail deny=6 unlock_time=300
+# 设置为密码连续输错6次,锁定时间300秒
+```
+
+**/etc/login.defs**
+```bash
+PASS_MAX_DAYS   90  # 用户的密码最长使用天数
+PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
+PASS_MIN_LEN    7   # 密码的最小长度
+PASS_WARN_AGE   9   # 密码过期前多少天开始提示
+```
+
+---
+
+## SELinux
+
+**关闭 SELinux**
+- 需要重启
+	```vim
+	vim /etc/selinux/config
+
+	SELINUX=disabled
+	```
+
+- 不需要重启
+
+	`setenforce 0`
+
+---
+
+## 进程
+
+**进程定位**
+```bash
+ps -aux         # 列出所有进程以及相关信息命令
+top             # 总览系统全面信息命令
+pidof name      # 定位程序的 pid
+pidof -x name   # 定位脚本的 pid
+lsof -g gid     # 寻找恶意文件关联的 lib 文件
+```
+
+**进程限制**
+```bash
+ulimit -u 20    # 临时性允许用户最多创建 20 个进程,预防类似 fork 炸弹
+```
+
+```vim
+vim /etc/security/limits.conf
+    user1 - nproc 20  # 退出后重新登录,就会发现最大进程数已经更改为 20 了
+```
+
+**负载**
+- **文章**
+    - [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
+
+- **查询负载、进程监控**
+    ```bash
+    ps aux | grep Z                                         # 列出进程表中所有僵尸进程
+    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head   # 获取占用CPU资源最多的10个进程
+    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
+    ```
+
+- **清理缓存**
+    ```bash
+    sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延迟的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
+    echo 1 > /proc/sys/vm/drop_caches   # 清理 pagecache(页面缓存)
+    echo 2 > /proc/sys/vm/drop_caches   # 清理 dentries(目录缓存)和inodes
+    echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
+    sync
+    ```
+
+---
+
+# 日志
+
+内容见 [日志](./笔记/日志.md)
+
+---
+
 # Net
 ## 端口
 
@@ -526,7 +538,7 @@ firewall-cmd --reload
 
 ---
 
-## 禁 ping
+## 禁ping
 
 **临时性,重启后失效**
 ```bash
@@ -572,6 +584,28 @@ net.ipv4.icmp_echo_ignore_all=1
 
     # Red Hat 系的发行版
     sudo grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more
+    grep "Failed password" /var/log/secure | awk {'print $9'} | sort | uniq -c | sort -nr
+    grep -o "Failed password" /var/log/secure|uniq -c
+    grep "Accepted " /var/log/secure | awk '{print $1,$2,$3,$9,$11}
+    ```
+
+- **IP 信息**
+    ```bash
+    # Debian 系的发行版
+    grep "Failed password for root" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | more
+
+    # Red Hat 系的发行版
+    grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort
+    ```
+
+- **登录成功**
+    ```bash
+    # Debian 系的发行版
+    grep "Accepted " /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | more
+
+    # Red Hat 系的发行版
+    grep 'Accepted' /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr
+    grep "Accepted " /var/log/secure* | awk '{print $1,$2,$3,$9,$11}'
     ```
 
 **防**
@@ -649,3 +683,51 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **SSH 陷阱**
     - [skeeto/endlessh](https://github.com/skeeto/endlessh) - 蓝队 SSH 陷阱
+
+---
+
+# 加固
+
+**查后门**
+- **添加 root 权限后门用户**
+
+   检查 `/etc/passwd` 文件是否有异常
+
+- **vim 后门**
+
+   检测对应 vim 进程号虚拟目录的 map 文件是否有 python 字眼.
+
+   查看连接情况 `netstat -antlp`
+
+   例如发现 vim pid 为 12
+   ```
+   file /proc/12/exe
+   more /proc/12/cmdline
+   more /proc/12/maps | grep python
+   ```
+
+- **strace 记录**
+
+    通过排查 shell 的配置文件或者 `alias` 命令即可发现,例如 `~/.bashrc` 和 `~/.bash_profile` 文件查看是否有恶意的 alias 问题.
+
+- **定时任务和开机启动项**
+
+    一般通过 `crontab -l` 命令即可检测到定时任务后门.不同的 linux 发行版可能查看开机启动项的文件不大相同,Debian 系 linux 系统一般是通过查看 `/etc/init.d` 目录有无最近修改和异常的开机启动项.而 Redhat 系的 linux 系统一般是查看 `/etc/rc.d/init.d` 或者 `/etc/systemd/system` 等目录.
+
+- **预加载型动态链接库后门 ld.so.preload**
+
+    通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意:在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
+
+- **内核级 rootkit**
+
+    可以通过 unhide 等工具进行排查
+
+- **深信服 Web 后门扫描**
+
+    http://edr.sangfor.com.cn/backdoor_detection.html
+
+**杀毒**
+- **[ClamavNet](https://www.clamav.net/downloads)**
+
+**Reference**
+- [linux常见backdoor及排查技术](https://xz.aliyun.com/t/4090)

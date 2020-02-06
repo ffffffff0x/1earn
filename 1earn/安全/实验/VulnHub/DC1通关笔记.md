@@ -8,7 +8,7 @@
 
 ---
 
-**地址**
+**靶机地址**
 - https://www.vulnhub.com/entry/dc-1,292/
 
 **Description**
@@ -28,18 +28,18 @@ Depending on your skill level, you may be able to skip finding most of these fla
 Beginners may encounter challenges that they have never come across previously, but a Google search should be all that is required to obtain the information required to complete this challenge.
 
 **知识点**
-- drupal 漏洞利用
-- Linux 提权
-- hashcat 跑密码
-- drush 使用
+- drupal 漏洞利用 (flag1)
+- Linux 提权 (flag5)
+- hashcat 跑密码 (flag3)
+- drush 使用 (补充)
 
 **实验环境**
 
 `环境仅供参考`
 
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415
-- kali : NAT模式,192.168.141.134
-- 靶机 : NAT模式
+- kali : NAT 模式,192.168.141.134
+- 靶机 : NAT 模式
 
 ---
 
@@ -60,7 +60,7 @@ nmap -sP 192.168.141.0/24
 下面扫描开放端口,还是使用 nmap
 
 ```bash
-nmap -T5 -A -v 192.168.141.135
+nmap -T5 -A -v -p- 192.168.141.135
 ```
 
 扫描结果如下

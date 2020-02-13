@@ -54,6 +54,7 @@ Time-based blind SQL injection(基于时间延迟注入)
 
 # 按库
 ## MYSQL
+
 **手动注入**
 - 手工注入思路
 
@@ -94,6 +95,7 @@ Time-based blind SQL injection(基于时间延迟注入)
 
 # 按类型
 ## UA注入
+
 **文章**
 - [User Agent注入攻击及防御](https://www.freebuf.com/articles/web/105124.html)
 

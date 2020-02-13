@@ -26,7 +26,7 @@
 
 	解决方法如下:
 	1. 打开 notepad++ 编辑 .sh 文件
-    2. notepad++ 右下角将 windows 模式改为 linux 模式
+   2. notepad++ 右下角将 windows 模式改为 linux 模式
 
 ---
 

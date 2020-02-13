@@ -40,9 +40,11 @@
 * [OpenVPN](#OpenVPN)
 * [proxychains-ng](#proxychains-ng)
 * [SSH](#SSH)
+* [ttyd](#ttyd)
 
 **🍦web服务-中间件**
 
+* [ActiveMQ](#ActiveMQ)
 * [Apache](#Apache)
 * [Caddy](#Caddy)
 * [npm & Node](#npm&Node)
@@ -51,6 +53,7 @@
 * [PHP](#PHP)
 * [phpMyAdmin](#phpMyAdmin)
 * [RabbitMQ](#RabbitMQ)
+* [searx](#searx)
 * [Tomcat](#Tomcat)
 * [Wordpress](#Wordpress)
 * [Mijisou](#Mijisou)
@@ -105,6 +108,7 @@
 
 * [ClamAV](#ClamAV)
 * [Fail2ban](#Fail2ban)
+* [Snort](#Snort)
 
 ---
 
@@ -2530,8 +2534,18 @@ mysqladmin -u root -p shutdown
 # 系统将要求你输入在上一步中设置的 MySQL/MariaDB 用户密码.
 
 systemctl start mariadb
-mysql -u root -p
+mysql -u root -p  # 本地连接
 ```
+
+**连接远程数据库**
+
+`mysql -u 用户名 -p密码 -h 服务器IP地址 -P 服务器端口号 -D 数据库名`
+
+- 服务器端口标志 -P 一定要大些以区别于用户 -p,如果直接连接数据库标志 -D 也要大写；
+- 如果要直接输入密码 -p 后面不能留有空格如 -pmypassword;
+- 命令结束段没有';'分号。
+
+例如 : `mysql -u root -p123456 -h 192.168.1.1 -P 3306 -D test`
 
 ---
 

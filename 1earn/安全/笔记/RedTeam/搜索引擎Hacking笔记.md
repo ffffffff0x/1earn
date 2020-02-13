@@ -33,6 +33,20 @@ http://so.51cto.com/?keywords=
 
 ---
 
+# 大纲
+
+* [快照](#快照)
+* [Github](#Github)
+* [Google](#Google)
+* [Shodan](#Shodan)
+* [BinaryEdge](#BinaryEdge)
+* [Censys](#Censys)
+* [钟馗之眼](#钟馗之眼)
+* [FoFa](#FoFa)
+* [Dnsdb](#Dnsdb)
+
+---
+
 # 快照
 
 - http://2tool.top/
@@ -45,7 +59,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 
 ---
 
-# github
+# Github
 
 **例子**
 - 敏感信息
@@ -94,7 +108,7 @@ https://github.com/ | GitHub
 
 ---
 
-# google
+# Google
 
 **案例**
 - [GGvulnz — How I hacked hundreds of companies through Google Groups](https://medium.com/@milanmagyar/ggvulnz-how-i-hacked-hundreds-of-companies-through-google-groups-b69c658c8924) - 作者描述了如何通过 google group 的搜索结果获得未授权的访问链接
@@ -344,7 +358,7 @@ product:"Dropbear sshd"             # Product Dropbear sshd
 
 ---
 
-# censys
+# Censys
 
 - https://www.censys.io
 

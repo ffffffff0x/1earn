@@ -40,6 +40,7 @@
     - RedTeam
         - [安防设备总结](./1earn/安全/笔记/RedTeam/安防设备总结.md)
         - [端口渗透笔记](./1earn/安全/笔记/RedTeam/端口渗透笔记.md) : 记录一些端口渗透时的方法和思路
+        - [服务漏洞记录](./1earn/安全/笔记/RedTeam/服务漏洞记录.md)
         - [后渗透笔记](./1earn/安全/笔记/RedTeam/后渗透笔记.md)
         - [逻辑类漏洞笔记](./1earn/安全/笔记/RedTeam/逻辑类漏洞笔记.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
         - [权限维持笔记](./1earn/安全/笔记/RedTeam/权限维持笔记.md) : 权限维持的各种方法和资源
@@ -49,10 +50,10 @@
         - [物联网设备渗透笔记](./1earn/安全/笔记/RedTeam/物联网设备渗透笔记.md) : 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
         - [协议漏洞记录](./1earn/安全/笔记/RedTeam/协议漏洞记录.md) : 按照协议归类漏洞
         - [信息收集笔记](./1earn/安全/笔记/RedTeam/信息收集笔记.md) : 记录信息收集这一块的各种知识点
-        - [CVE漏洞记录](./1earn/安全/笔记/RedTeam/CVE漏洞记录.md) : 全面收集 web 漏洞 POC | Payload | exp
         - [Linux渗透笔记](./1earn/安全/笔记/RedTeam/Linux渗透笔记.md)
         - [SQLi笔记](./1earn/安全/笔记/RedTeam/SQLi笔记.md) : SQL 注入知识点记录
-        - [web常见漏洞笔记](./1earn/安全/笔记/RedTeam/web常见漏洞笔记.md) : 常见 web 漏洞介绍,案例收集
+        - [Web_CVE漏洞记录](./1earn/安全/笔记/RedTeam/Web_CVE漏洞记录.md) : 全面收集 web 漏洞 POC | Payload | exp
+        - [Web常见漏洞笔记](./1earn/安全/笔记/RedTeam/Web常见漏洞笔记.md) : 常见 web 漏洞介绍,案例收集
         - [windows渗透笔记](./1earn/安全/笔记/RedTeam/windows渗透笔记.md)
         - [XSS笔记](./1earn/安全/笔记/RedTeam/XSS笔记.md)
         - [XXE笔记](./1earn/安全/笔记/RedTeam/XXE笔记.md)
@@ -60,7 +61,7 @@
 - 工具
     - [Burp笔记](./1earn/安全/工具/Burp笔记.md)
     - [cobaltstrike笔记](./1earn/安全/工具/cobaltstrike笔记.md)
-    - [hashcat笔记](./1earn/安全/工具/hashcat笔记.md)
+    - [Hashcat笔记](./1earn/安全/工具/Hashcat笔记.md)
     - [kali笔记](./1earn/安全/工具/kali笔记.md)
     - [metasploit笔记](./1earn/安全/工具/metasploit笔记.md)
     - [mimikatz笔记](./1earn/安全/工具/mimikatz笔记.md)
@@ -71,14 +72,13 @@
 - 实验
     - HTB
     - Misc
-        - [DVWA通关笔记](./1earn/安全/实验/Misc/DVWA通关笔记.md)
-        - [pikachu通关笔记](./1earn/安全/实验/Misc/pikachu通关笔记.md)
-        - [upload-labs通关笔记](./1earn/安全/实验/Misc/upload-labs通关笔记.md)
-        - [XSS挑战通关笔记](./1earn/安全/实验/Misc/XSS挑战通关笔记.md)
+        - [DVWA-WalkThrough](./1earn/安全/实验/Misc/DVWA-WalkThrough.md) - 大名鼎鼎的 DVWA 靶场,新手入门培训必做实验项目
+        - [pikachu-WalkThrough](./1earn/安全/实验/Misc/pikachu-WalkThrough.md) - 非常优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
+        - [upload-labs-WalkThrough](./1earn/安全/实验/Misc/upload-labs-WalkThrough.md) - 一个总结了各种类型文件上传漏洞的靶场
+        - [XSS挑战-WalkThrough](./1earn/安全/实验/Misc/XSS挑战-WalkThrough.md)
     - VulnHub
-        - [DC1通关笔记](./1earn/安全/实验/VulnHub/DC1通关笔记.md)
-        - [DC2通关笔记](./1earn/安全/实验/VulnHub/DC2通关笔记.md)
-        - [Kioptrix4通关笔记](./1earn/安全/实验/VulnHub/Kioptrix4通关笔记.md)
+        - [DC Serial](./1earn/安全/实验/VulnHub/DC) - DC 系列靶场,推荐初学者挑战
+        - [Kioptrix Serial](./1earn/安全/实验/VulnHub/Kioptrix) - Kioptrix 系列靶场,推荐初学者挑战
 
 ## 运维
 ### Linux

@@ -237,6 +237,8 @@ file		# 探测给定文件的类型
 
 pwd			# 以绝对路径的方式显示用户当前工作目录
 	pwd -P						# 目录链接时,显示实际路径而非 link 路径
+
+wc			# wc 将计算指定文件的行数、字数，以及字节数。
 ```
 
 ### 创建
@@ -654,8 +656,11 @@ tcpdump -c 10 -A -i enp0s3
 
 **scp**
 ```bash
-scp root@xx.xx.xx.xx:/test/123.txt /test/123.txt	# 文件传输
+scp /home/space/music/1.mp3 root@192.168.1.1:/home/root/others/music	# 本地文件复制到远程
+scp root@192.168.1.1:/home/root/others/music /home/space/music/1.mp3	# 远程文件复制到本地
+
 scp -r 		# 文件夹传输
+	scp -r /home/space/music/ root@192.168.1.1:/home/root/others/	# 将本地 music 目录复制到远程 others 目录下
 ```
 
 **lrzsz**

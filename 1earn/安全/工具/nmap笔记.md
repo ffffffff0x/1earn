@@ -26,7 +26,7 @@
 - [honze-net/nmap-bootstrap-xsl](https://github.com/honze-net/nmap-bootstrap-xsl)
 
 **导图**
-- Nmap 渗透测试思维导图 [png](../../../assets/img/安全/Nmap渗透测试思维导图.png)
+- Nmap 渗透测试思维导图 [png](../../../assets/img/安全/工具/nmap/Nmap渗透测试思维导图.png)
 
 ---
 

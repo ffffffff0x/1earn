@@ -1,4 +1,4 @@
-# hashcat 笔记
+# Hashcat 笔记
 
 ---
 
@@ -72,7 +72,8 @@ hashcat --help
 
 # 例子
 
-爆破 drupal 7 的密码 hash
+**爆破 drupal 7 的密码 hash**
+
 ```bash
 
 echo "\$S\$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR" > source.txt
@@ -86,4 +87,4 @@ source.txt 你要爆破的 hash 列表
 pass01.txt 你的密码表
 ```
 
-![image](../../../assets/img/安全/实验/VulnHub/DC1/9.png)
+![image](../../../assets/img/安全/实验/VulnHub/DC/DC1/9.png)

@@ -1,4 +1,4 @@
-# web常见漏洞笔记
+# Web 常见漏洞笔记
 
 ---
 
@@ -10,6 +10,46 @@
 
 **文章**
 - [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
+
+---
+
+# 大纲
+
+* [点击劫持](#点击劫持)
+* [任意文件下载-读取](#任意文件下载-读取)
+* [文件包含漏洞](#文件包含漏洞)
+    * [日志中毒攻击](#日志中毒攻击)
+
+* [文件解析漏洞](#文件解析漏洞)
+    * [IIS](#IIS)
+    * [Nginx](#Nginx)
+    * [Apache](#Apache)
+    * [其他](#其他)
+
+* [文件上传漏洞](#文件上传漏洞)
+
+* [信息泄露漏洞](#信息泄露漏洞)
+    * [目录遍历](#目录遍历)
+    * [GIT源码泄露](#GIT源码泄露)
+    * [SVN源码泄露](#SVN源码泄露)
+    * [DS_Store文件泄漏](#DS_Store文件泄漏)
+    * [网站备份压缩文件](#网站备份压缩文件)
+    * [WEB-INF/web.xml信息泄露](#WEB-INF/web.xml信息泄露)
+    * [idea文件夹泄露](#idea文件夹泄露)
+    * [phpinfo信息泄露](#phpinfo信息泄露)
+    * [jsonp信息泄露](#jsonp信息泄露)
+
+* [CORS漏洞](#CORS漏洞)
+
+* [http参数污染](#http参数污染)
+
+* [php反序列化](#php反序列化)
+
+* [SSRF](#SSRF)
+
+* [URL跳转漏洞](#URL跳转漏洞)
+
+* [CRLF_Injection](#CRLF_Injection)
 
 ---
 
@@ -78,6 +118,16 @@
     当我们没法儿上传文件,但是又想读取文件的源码来寻找别的漏洞从而进一步利用该怎么做呐？同样的利用 php://filter/ 协议可以实现,要注意的是,因为编码问题,一般我们会将读取的文件先 Base64 编码一下输出:
 
     `Payload:http://www.test.com/test.php?file=php://filter/read=convert.base64-encode/resource=upload/shell.php`
+
+## 日志中毒攻击
+
+`log poisoning`
+
+**文章**
+- [RCE with LFI and SSH Log Poisoning](https://www.hackingarticles.in/rce-with-lfi-and-ssh-log-poisoning/)
+- [Apache Log Poisoning through LFI](https://www.hackingarticles.in/apache-log-poisoning-through-lfi/)
+- [From Local File Inclusion to Remote Code Execution - Part 1 | Outpost 24 blog](https://outpost24.com/blog/from-local-file-inclusion-to-remote-code-execution-part-1)
+- [SMTP Log Poisioning through LFI to Remote Code Execution](https://www.hackingarticles.in/smtp-log-poisioning-through-lfi-to-remote-code-exceution/)
 
 ---
 
@@ -163,7 +213,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 用 hex 功能在 1.php 后面添加一个 \x0A
 
-![image](../../../../assets/img/安全/笔记/RedTeam/web常见漏洞笔记/1.png)
+![image](../../../../assets/img/安全/笔记/RedTeam/Web常见漏洞笔记/1.png)
 
 访问 http://10.10.10.131:8080/1.php%0A ,成功解析
 
@@ -189,7 +239,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **靶场**
 - [upload-labs](https://github.com/c0ny1/upload-labs)
-    - writeup : [upload-labs 通关笔记](../../实验/Misc/upload-labs通关笔记.md)
+    - writeup : [upload-labs-WalkThrough](../../实验/Misc/upload-labs-WalkThrough.md)
 
 ---
 
@@ -208,7 +258,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 **案例**
 - [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
 
-## GIT 源码泄露
+## GIT源码泄露
 
 **简介**
 
@@ -223,7 +273,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [lijiejie/GitHack](https://github.com/lijiejie/GitHack)
 - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract)
 
-## SVN 源码泄露
+## SVN源码泄露
 
 - `/.svn/entries`
 
@@ -234,7 +284,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper)
 - [admintony/svnExploit](https://github.com/admintony/svnExploit)
 
-## DS_Store 文件泄漏
+## DS_Store文件泄漏
 
 **简介**
 
@@ -262,7 +312,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
-## WEB-INF/web.xml 信息泄露
+## WEB-INF/web.xml信息泄露
 
 **简介**
 
@@ -281,12 +331,12 @@ WEB-INF 主要包含一下文件或目录:
 **案例**
 - [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
 
-## idea 文件夹泄露
+## idea文件夹泄露
 
 **工具**
 - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit)
 
-## phpinfo
+## phpinfo信息泄露
 
 **文章**
 - [phpinfo 可以告诉我们什么](http://zeroyu.xyz/2018/11/13/what-phpinfo-can-tell-we/)
@@ -297,7 +347,7 @@ WEB-INF 主要包含一下文件或目录:
 **工具**
 - [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
 
-## jsonp 信息泄露
+## jsonp信息泄露
 
 **文章**
 - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
@@ -315,7 +365,7 @@ WEB-INF 主要包含一下文件或目录:
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
 
-## CORS 漏洞
+## CORS漏洞
 
 **文章**
 - [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
@@ -328,12 +378,12 @@ WEB-INF 主要包含一下文件或目录:
 **工具**
 - [chenjj/CORScanner](https://github.com/chenjj/CORScanner)
 
-## JS 敏感信息泄露
+## JS敏感信息泄露
 
 **文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
 
-## 各类 API key 泄露
+## 各类APIkey泄露
 
 **文章**
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
@@ -360,6 +410,7 @@ WEB-INF 主要包含一下文件或目录:
 ---
 
 # php反序列化
+
 **工具**
 - [php 在线反序列化工具](https://www.w3cschool.cn/tools/index?name=unserialize)
 
@@ -392,7 +443,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# CRLF Injection
+# CRLF_Injection
 
 **案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)

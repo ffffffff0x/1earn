@@ -3,7 +3,8 @@
 ---
 
 ## 案例 1
-- 配置 smb 服务，共享目录为 /smbshare，
+
+- 配置 smb 服务，共享目录为 `/smbshare` ，
 - 共享名必须为 smbshare，
 - 只有本网段内的所有主机可以访问，
 - smbshare 必须是可以浏览的，
@@ -64,12 +65,13 @@ systemctl restart smb
 ---
 
 ## 案例 2
+
 **服务端**
 - 修改工作组为 WORKGROUP
 - 注释 [homes] 和 [printers] 相关的所有内容
 - 共享名为 webdata
 - webdata 可以浏览且 webdata 可写
-- 共享目录为 /data/web_data，且 apache 用户对该目录有读写执行权限，用 setfacl 命令配置目录权限.
+- 共享目录为 `/data/web_data` ，且 apache 用户对该目录有读写执行权限，用 setfacl 命令配置目录权限.
 - 只有 192.168.1XX.33 的主机可以访问.
 - 添加一个 apache 用户(密码自定义)对外提供 Samba 服务.
 
@@ -131,7 +133,7 @@ mount -t cifs -o username=apache,password='123' //192.168.xx+1.xx/webdata
 **服务端**
 - 修改工作组为 WORKGROUP;
 - 注释 [homes] 和 [printers] 的内容;
-- 共享目录为 /data/web_data;
+- 共享目录为 `/data/web_data` ;
 - 共享名必须为 webdata;
 - 只有 192.168.XX+1.0/24 网段内的所有主机可以访问;
 - webdata 必须是可以浏览的;
@@ -177,7 +179,7 @@ systemctl start smb
 ```
 
 **客户端**
-- 配置 smb，使用 apache 用户挂载主机A共享的目录至 /data/web_data 目录下.
+- 配置 smb，使用 apache 用户挂载主机A共享的目录至 `/data/web_data` 目录下.
 
 ```bash
 yum -y install samba

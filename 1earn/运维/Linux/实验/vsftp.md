@@ -41,7 +41,9 @@ systemctl enable vsftpd
 ```
 
 现在就可以在客户端执行 ftp 命令连接到远程的 FTP 服务器了.
-在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空.而且在连接到 FTP 服务器后,默认访问的是 /var/ftp 目录.
+
+在 vsftpd 服务程序的匿名开放认证模式下,其账户统一为 anonymous,密码为空.而且在连接到 FTP 服务器后,默认访问的是 `/var/ftp` 目录.
+
 我们可以切换到该目录下的 pub 目录中,然后尝试创建一个新的目录文件,以检验是否拥有写入权限:
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
@@ -99,6 +101,7 @@ firewall-cmd --reload
 systemctl restart vsftpd
 systemctl enable vsftpd
 ```
+
 按理来讲,现在已经完全可以本地用户的身份登录 FTP 服务器了.但是在使用 root 管理员登录后,系统提示如下的错误信息:
 ```bash
 [root@linuxprobe ~]# ftp 192.168.10.10
@@ -109,6 +112,7 @@ Name (192.168.10.10:root): root
 Login failed.
 ftp>
 ```
+
 可见,在我们输入 root 管理员的密码之前,就已经被系统拒绝访问了.这是因为 vsftpd 服务程序所在的目录中默认存放着两个名为"用户名单"的文件 (ftpusers和user_list) .只要里面写有某位用户的名字,就不再允许这位用户登录到 FTP 服务器上.
 ```bash
 [root@linuxprobe ~]# cat /etc/vsftpd/user_list
@@ -116,7 +120,8 @@ ftp>
 [root@linuxprobe ~]# cat /etc/vsftpd/ftpusers
 ```
 如果你确认在生产环境中使用 root 管理员不会对系统安全产生影响,只需按照上面的提示删除掉 root 用户名即可.我们也可以选择 ftpusers 和 user_list 文件中没有的一个普通用户尝试登录 FTP 服务器
-在采用本地用户模式登录 FTP 服务器后,默认访问的是该用户的家目录,也就是说,访问的是 /home/username 目录.而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况.
+
+在采用本地用户模式登录 FTP 服务器后,默认访问的是该用户的家目录,也就是说,访问的是 `/home/username` 目录.而且该目录的默认所有者、所属组都是该用户自己,因此不存在写入权限不足的情况.
 
 ---
 
@@ -162,7 +167,7 @@ account    required     pam_userdb.so db=/etc/vsftpd/login
 ```
 在 vsftpd 服务程序的主配置文件中通过 pam_service_name 参数将 PAM 认证文件的名称修改为 vsftpd.vu,
 
-例如,在 vsftpd 服务程序的主配置文件中默认就带有参数 pam_service_name=vsftpd,表示登录 FTP 服务器时是根据 /etc/pam.d/vsftpd 文件进行安全认证的.现在我们要做的就是把 vsftpd 主配置文件中原有的 PAM 认证文件 vsftpd 修改为新建的 vsftpd.vu 文件即可.
+例如,在 vsftpd 服务程序的主配置文件中默认就带有参数 pam_service_name=vsftpd,表示登录 FTP 服务器时是根据 `/etc/pam.d/vsftpd` 文件进行安全认证的.现在我们要做的就是把 vsftpd 主配置文件中原有的 PAM 认证文件 vsftpd 修改为新建的 vsftpd.vu 文件即可.
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 
@@ -217,17 +222,17 @@ systemctl enable vsftpd
 # 案例
 ## 案例 1
 
-- 使用虚拟用户认证方式,创建用户 virtftp,该用户的家目录为 /data/ftp_data,shell 为 /sbin/nologin,并将虚拟用户映射至 virtftp 用户;
-- 允许属主对 /data/ftp_data 有写权限;
+- 使用虚拟用户认证方式,创建用户 virtftp,该用户的家目录为 `/data/ftp_data` ,shell 为 `/sbin/nologin` ,并将虚拟用户映射至 virtftp 用户;
+- 允许属主对 `/data/ftp_data` 有写权限;
 - 关闭 PASV 模式的安全检查;
 - 设置客户端最大连接数为 100,每个 IP 允许 3 个连接数;
 - ftpuser 虚拟用户可以下载与上传文件;
 - ftpadmin 虚拟用户可以下载与上传文件以及删除重命名操作,上传文件的 umask 为 022.
 - 配置文件要求:
 	- 以下文件除了 vsftpd.conf 文件其余文件均需要自行创建
-	- /etc/vsftpd/vsftpd.conf(ftp 配置文件)/etc/pam.d/vsftpd.vu, (pam 配置文件) 
-	- /etc/vsftpd/vlogin.db, (用户数据库) 
-	- /etc/vsftpd/ftp_user (该目录下 ftp 用户权限配置目录) 
+	- /etc/vsftpd/vsftpd.conf(ftp 配置文件)/etc/pam.d/vsftpd.vu, (pam 配置文件)
+	- /etc/vsftpd/vlogin.db, (用户数据库)
+	- /etc/vsftpd/ftp_user (该目录下 ftp 用户权限配置目录)
 	- ftpuser,ftpadmin 用户权限相关配置文件均在 /etc/vsftpd/ftp_user 目录下.
 
 **安装服务,配置虚拟用户认证**
@@ -312,13 +317,13 @@ systemctl enable vsftpd
 
 - 创建用户 tom,密码为 aaabbb.
 - 为 WEB 网站创建 FTP 站点,具体要求如下:
-- FTP 普通用户主目录:/data/web_data
+- FTP 普通用户主目录: `/data/web_data`
 - FTP 访问权限:通过扩展 acl 方式允许用户 tom 读取和写入
-- FTP 访问路径为:ftp://tom:aaabbb@公网IP/
+- FTP 访问路径为: ftp://tom:aaabbb@公网IP/
 - 为产品资料下载创建 FTP 站点,具体要求如下:
-- FTP 匿名用户主目录:/data/instructions
+- FTP 匿名用户主目录: `/data/instructions`
 - FTP 访问权限:允许匿名用户读取
-- FTP 访问路径为:ftp://公网IP/
+- FTP 访问路径为: ftp://公网IP/
 
 **修改配置文件**
 ```vim
@@ -354,7 +359,7 @@ systemctl enable vsftpd
 
 - 拒绝匿名访问,只允许本地系统用户登录;
 - 使用被动模式,设置主机B公网 IP 为被动模式数据传输地址
-- 所有用户主目录为 /data/ftp_data 宿主为 virtual 用户;
+- 所有用户主目录为 `/data/ftp_data` 宿主为 virtual 用户;
 - 将用户使用文件的方式记录账号以及密码;
 - ftpuser1 用户只能下载不能上传以及删除文件重命名操作;
 - ftpuser2 可以下载与上传文件以及删除重命名操作;
@@ -364,7 +369,7 @@ systemctl enable vsftpd
 	- /etc/vsftpd/vsftpd.conf(ftp配置文件)/etc/pam.d/vsftpd.vu, (pam 配置文件)
 	- /etc/vsftpd/vlogin.db, (用户数据库)
 	- /etc/vsftpd/user_conf (该目录下 ftp 用户权限配置目录)
-	- ftpuser1,ftpuser2,ftpadmin 用户权限相关配置文件均在 /etc/vsftpd/user_conf 目录下.
+	- ftpuser1,ftpuser2,ftpadmin 用户权限相关配置文件均在 `/etc/vsftpd/user_conf` 目录下.
 
 **安装服务,配置虚拟用户认证**
 ```bash
@@ -414,7 +419,7 @@ xferlog_enable=YES         # 启用上传和下载的日志功能,默认开启.
 xferlog_file=/var/log/xferlog         # vsftpd 的日志存放位置
 ```
 
-**创建家目录为 /data/ftp_data 的 virtual 用户;**
+**创建家目录为 `/data/ftp_data` 的 virtual 用户;**
 ```bash
 useradd -d /data/ftp_data -s /sbin/nologin virtual
 chmod -Rf 755 /data/ftp_data
@@ -463,9 +468,9 @@ systemctl enable vsftpd
 - 禁止匿名用户登录;
 - 使用被动模式,设置主机B公网 IP 为被动模式数据传输地址;
 - 为 mariadb 数据库创建 FTP 站点,具体要求如下:
-- FTP 普通用户主目录:/data/mariadb_data;
+- FTP 普通用户主目录: `/data/mariadb_data` ;
 - FTP 访问权限:通过扩展 acl 方式设置用户 tom 拥有读、写、执行权限;
-- FTP 访问路径为:ftp://tom:aaabbb@公网IP/.
+- FTP 访问路径为: ftp://tom:aaabbb@公网IP/.
 
 **修改配置文件**
 ```vim

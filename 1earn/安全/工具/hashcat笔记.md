@@ -18,6 +18,10 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 **文章**
 - [Hashcat的使用手册总结 ](https://xz.aliyun.com/t/4008)
 
+**工具**
+- [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具
+- [brannondorsey/naive-hashcat](https://github.com/brannondorsey/naive-hashcat) - 包括各种字典，组合，基于规则的攻击和掩码（暴力）攻击。hashcat 傻瓜版?
+
 ---
 
 # Hash id 对照表

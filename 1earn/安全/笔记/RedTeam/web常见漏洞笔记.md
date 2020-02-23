@@ -57,6 +57,9 @@
 
 - [click-jacking](https://www.hacksplaining.com/exercises/click-jacking) - 一个简单的讲解关于点击劫持的网站
 
+**案例**
+- [Uber XSS + clickjacking](https://www.youtube.com/watch?v=5Gg4t3clwys)
+
 ---
 
 # 任意文件下载-读取

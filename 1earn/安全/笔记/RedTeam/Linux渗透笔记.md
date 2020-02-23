@@ -13,6 +13,12 @@
 
 ---
 
+# 口令破解
+**文章**
+- [How to Crack Shadow Hashes After Getting Root on a Linux System](https://null-byte.wonderhowto.com/how-to/crack-shadow-hashes-after-getting-root-linux-system-0186386/)
+
+---
+
 # 漏洞利用
 ## 提权
 
@@ -28,6 +34,7 @@
 
 - POC | Payload | exp
     - [scottjpack/shellshock_scanner](https://github.com/scottjpack/shellshock_scanner)
+    - [Bash - 'Shellshock' Environment Variables Command Injection](https://www.exploit-db.com/exploits/34766)
 
 - 本地验证方法
 

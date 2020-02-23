@@ -12,6 +12,64 @@
 
 优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
 
+**地址**
+- https://github.com/zhuifengshaonianhanlu/pikachu
+
+**知识点**
+- Burte Force
+    - 基于表单的暴力破解
+    - 验证码绕过(on server)
+    - 验证码绕过(on client)
+    - token防爆破?
+- XSS
+    - 反射型 xss(get)
+    - 反射性 xss(post)
+    - 存储型 xss
+    - DOM 型 xss
+    - DOM 型 xss-x
+    - xss 之盲打
+    - xss 之过滤
+    - xss 之 htmlspecialchars
+    - xss 之 href 输出
+    - xss 之 js 输出
+- CSRF
+    - CSRF(get)
+    - CSRF(POST)
+    - CSRF Token
+- Sql Inject
+    - 数字型注入(post)
+    - 字符型注入(get)
+    - 搜索型注入
+    - xx 型注入
+    - "insert/update" 注入
+    - "delete" 注入
+    - "http header" 注入
+    - 盲注(base on boolian)
+    - 盲注(base on time)
+    - 宽字节注入
+- RCE
+    - exec "ping"
+    - exec "eval"
+- File Inclusion
+    - 本地文件包含
+    - 远程文件包含
+- Unsafe Filedownload
+- Unsafe Fileupload
+    - client check
+    - MIME type
+    - getimagesize
+- Over Permission
+    - 水平越权
+    - 垂直越权
+- ../../ 目录遍历
+- 敏感信息泄露
+- PHP 反序列化
+- XXE
+- URL 重定向
+- SSRF
+    - SSRF(curl)
+    - SSRF(file_get_content)
+
 **实验环境**
 
 `环境仅供参考`

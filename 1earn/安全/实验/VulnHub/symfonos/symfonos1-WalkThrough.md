@@ -23,7 +23,7 @@ Beginner real life based machine designed to teach a interesting way of obtainin
 Note: You may need to update your host file for symfonos.local
 
 **知识点**
-- smb 探测
+- smb 信息探测
 - wordpress 插件 LFI 漏洞
 - SMTP 日志投毒
 

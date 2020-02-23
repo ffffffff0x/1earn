@@ -17,18 +17,16 @@
 **payload**
 - [trietptm/SQL-Injection-Payloads](https://github.com/trietptm/SQL-Injection-Payloads)
 
-**SQLi 测试**
+**在线 SQLi 测试**
 - http://demo.testfire.net/
 - https://juice-shop.herokuapp.com/#/search
 - https://sqlchop.chaitin.cn/demo/
 
 **靶场**
-
-- [sqli-labs](https://github.com/Audi-1/sqli-labs)
+- [sqli-labs](../../实验/Misc/sqli-labs-WalkThrough.md)
 
 **sqlmap**
-- **笔记**
-    - [sqlmap 笔记](../../工具/sqlmap笔记.md)
+- [sqlmap 笔记](../../工具/sqlmap笔记.md)
 
 ---
 
@@ -83,13 +81,13 @@ Time-based blind SQL injection(基于时间延迟注入)
 
 ## MSSQL
 
-![image](../../../../assets/img/才怪.png)
+
 
 ---
 
 ## ORACLE
 
-![image](../../../../assets/img/才怪.png)
+
 
 ---
 

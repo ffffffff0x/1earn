@@ -96,9 +96,9 @@ nmap -T5 -A -v -p- 192.168.141.139
 
 直接使用 burp 跑参数字典+文件包含字典
 
-字典不要选错，Linux 的靶机选择 Linux 的 LFI Payload 字典 : https://github.com/No-Github/AboutSecurity/blob/master/payload/LFI/Linux.txt
+字典不要选错，Linux 的靶机选择 Linux 的 LFI Payload 字典 : https://github.com/No-Github/AboutSecurity/blob/master/payload/LFI/LFI_Linux.txt
 
-参数字典选择常见的 GET 参数字典 : https://github.com/No-Github/AboutSecurity/blob/master/%E5%AD%97%E5%85%B8/Web%E5%AD%97%E5%85%B8/api%26callback%26params/GET_params_Top99.txt
+参数字典选择常见的 GET 参数字典 : https://github.com/No-Github/AboutSecurity/blob/master/%E5%AD%97%E5%85%B8/Web%E5%AD%97%E5%85%B8/api%26params/GET_params_Top99.txt
 
 使用 burp 开始跑
 

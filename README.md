@@ -74,11 +74,13 @@
     - Misc
         - [DVWA-WalkThrough](./1earn/安全/实验/Misc/DVWA-WalkThrough.md) - 大名鼎鼎的 DVWA 靶场,新手入门培训必做实验项目
         - [pikachu-WalkThrough](./1earn/安全/实验/Misc/pikachu-WalkThrough.md) - 非常优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
+        - [sqli-labs](./1earn/安全/实验/Misc/sqli-labs-WalkThrough.md)
         - [upload-labs-WalkThrough](./1earn/安全/实验/Misc/upload-labs-WalkThrough.md) - 一个总结了各种类型文件上传漏洞的靶场
         - [XSS挑战-WalkThrough](./1earn/安全/实验/Misc/XSS挑战-WalkThrough.md)
     - VulnHub
-        - [DC Serial](./1earn/安全/实验/VulnHub/DC) - DC 系列靶场,推荐初学者挑战
-        - [Kioptrix Serial](./1earn/安全/实验/VulnHub/Kioptrix) - Kioptrix 系列靶场,推荐初学者挑战
+        - [DC Serial](./1earn/安全/实验/VulnHub/DC) - DC 系列靶场,难度简单至中等,推荐初学者挑战
+        - [Kioptrix Serial](./1earn/安全/实验/VulnHub/Kioptrix) - Kioptrix 系列靶场,难度简单至中等,推荐初学者挑战
+        - [symfonos Serial](./1earn/安全/实验/VulnHub/symfonos) - 挺有难度的靶场,内容丰富,难度中等,推荐有一定经验者挑战
 
 ## 运维
 ### Linux
@@ -104,9 +106,9 @@
 
 `目前实际工作基本饱和,无法抽出时间把这部分填坑,尽量在今年再补充内容`
 
-- [不同厂商](./1earn/运维/Network/不同厂商🎲.md) : 记录不同厂商配置服务命令的区别
-- [方向实验](./1earn/运维/Network/方向实验🔨.md) : 按方向分类记录配置
-- [理论模型](./1earn/运维/Network/理论模型📕.md) : 以科来网络通讯协议图为参照记录知识点
+- [不同厂商](./1earn/运维/Network/不同厂商.md) : 记录不同厂商配置服务命令的区别
+- [方向实验](./1earn/运维/Network/方向实验.md) : 按方向分类记录配置
+- [理论模型](./1earn/运维/Network/理论模型.md) : 以科来网络通讯协议图为参照记录知识点
 - [速查](./1earn/运维/Network/速查.md) : 速查各类帧、报文格式、掩码等
 - [SDN笔记](./1earn/运维/Network/SDN笔记.md) : 记录以前比赛时 SDN 的题目和命令
 

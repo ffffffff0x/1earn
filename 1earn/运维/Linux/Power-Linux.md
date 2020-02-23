@@ -87,6 +87,7 @@
 * [JDK](#JDK)
 * [Python3](#Python3)
   * [pip3](#pip3)
+  * [jupyterlab](#jupyterlab)
 * [Ruby](#Ruby)
 
 **🍞系统监管**
@@ -107,6 +108,7 @@
 **🍯安全服务**
 
 * [ClamAV](#ClamAV)
+* [openldap](#openldap)
 * [Fail2ban](#Fail2ban)
 * [Snort](#Snort)
 
@@ -1182,6 +1184,37 @@ sudo apt install apache2-utils
 yum install httpd-tools
 ```
 
+**php**
+```bash
+vim /etc/httpd/conf/httpd.conf
+
+# 将Require all denied 改为Require all granted
+<Directory />
+    AllowOverride none
+    Require all granted
+</Directory>
+
+# 增加一行 AddType application/x-httpd-php .php
+    AddType application/x-httpd-php .php
+
+# 增加索引页 index.php,在 DirectoryIndex index.html 后面 增加索引页 index.php
+<IfModule dir_module>
+    DirectoryIndex index.html index.php
+</IfModule>
+```
+
+检查配置文件 httpd.conf 的语法是否正确
+```bash
+apachectl -t
+```
+
+检测 php 是否正常解析
+```
+echo "<?php phpinfo(); ?>"  > /var/www/html/1.php
+```
+
+访问 `机器相应ip/1.php`
+
 **更多配置案例**
 
 见 [apache.md](./实验/apache.md)
@@ -1491,7 +1524,7 @@ yum remove php*
 rpm 安装 PHP7 相应的 yum 源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-yum install php70w
+yum install php70w php70w-fpm
 php -v                # 查看PHP版本
 
 service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
@@ -1504,7 +1537,7 @@ service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 **官网**
 - https://www.phpmyadmin.net/
 
-**建议搭配上面的 nginx+php 扩展笔记**
+`建议搭配上面的 nginx+php 扩展笔记`
 
 **创建数据库和一个用户**
 ```bash
@@ -1739,6 +1772,24 @@ Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核�
 **官网**
 - https://tomcat.apache.org
 
+**Tomcat 角色划分**
+- manager-gui：允许访问 Manager APP 页面和 Server Status
+- manager-script：允许访问纯文本接口和 Server Status
+- manager-jmx：允许访问 JMX 代理接口和 Server Status
+- manager-status：仅允许访问 Server Status 页面(即 URL 路径为 /manager/status/*)
+- admin-gui： 允许访问 Host Manager，GUI 界面(即 URL 路径为 /host-manager/html)
+- admin-script：允许访问 Host Manager，文本接口，(即 URL 路径为 /host-manager/text)
+
+**Tomcat manager 接口**
+- Server Status : 查看服务器状态，包括中间件及操作系统相关信息
+- Manager App : 管理服务器上部署的应用(Application),如将 WAR file 文件部署到 tomcat 中，还可以启用或停止项目
+- Host Manager : 管理物理主机和虚拟主机，可增加、删除虚拟主机，默认未安装，要访问 host manager 需要在安装页面勾选
+
+**部分文件介绍**
+- content.xml：Tomcat 默认的数据源在这里配置，一般存放连接数据库的信息；
+- server.xml：Tomcat 访问端口、域名绑定和数据源在这里配置；
+- web.xml：Tomcat 项目初始化会去调用的文件；
+
 **安装**
 
 Tomcat 依赖 JDK,在安装 Tomcat 之前需要先安装 Java JDK.输入命令 java -version,如果显示 JDK 版本,证明已经安装了 JDK
@@ -1826,11 +1877,6 @@ chkconfig --add /etc/rc.d/init.d/tomcat
 <role rolename="manager-status"/>
 <user username="admin" password="admin" roles="admin-gui,manager-gui,manager-jmx,manager-script,manager-status"/>
 ```
-
-- manager-gui - 允许访问 HTML GUI 和状态页面
-- manager-script - 允许访问文本界面和状态页面
-- manager-jmx - 允许访问 JMX 代理和状态页面
-- manager-status - 仅允许访问状态页面
 
 ```bash
 service tomcat stop
@@ -3403,6 +3449,7 @@ pip3 -V
 ```
 
 ### pip3
+
 ```
 wget https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
@@ -3422,6 +3469,24 @@ pip3 -V
 在 linux 安装了多版本 python 时(例如 python2.6 和 2.7),pip 安装的包不一定是用户想要的位置,此时可以用 -t 选项来指定位置
 
 `pip install -t /usr/local/lib/python2.7/site-packages/ docker`
+
+### jupyterlab
+
+**安装运行**
+```bash
+pip3 install jupyterlab
+
+jupyter lab --ip=0.0.0.0 --allow-root         # 运行
+# 或
+jupyter lab --ip=* --allow-root               # 允许所有IP访问
+```
+
+**管理**
+```bash
+jupyter-notebook list                         # 查看令牌
+jupyter-labextension list                     # 列出已安装扩展
+jupyter-labextension uninstall my-extension   # 卸载已安装扩展
+```
 
 ---
 
@@ -3758,6 +3823,8 @@ firewall-cmd --reload
 ---
 
 ## Zabbix
+
+zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
 
 **官网**
 - https://www.zabbix.com/
@@ -4232,6 +4299,234 @@ fail2ban-client status ssh-iptables                     # 检验一个特定监�
 fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地址
 ```
 注意,如果你停止了 Fail2ban 服务,那么所有的 IP 地址都会被解锁.当你重启 Fail2ban,它会从 `/etc/log/secure`(或 `/var/log/auth.log`)中找到异常的 IP 地址列表,如果这些异常地址的发生时间仍然在禁止时间内,那么 Fail2ban 会重新将这些 IP 地址禁止.
+
+---
+
+## openldap
+
+- 内容来自 https://blog.csdn.net/weixin_41004350/article/details/89521170 ,仅作排版处理和部分内容处理
+
+**安装**
+```bash
+yum install -y openldap openldap-clients openldap-servers
+
+# 复制一个默认配置到指定目录下,并授权，这一步一定要做，然后再启动服务，不然生产密码时会报错
+cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG
+
+# 授权给 ldap 用户,此用户 yum 安装时便会自动创建
+chown -R ldap. /var/lib/ldap/DB_CONFIG
+```
+
+```bash
+systemctl start slapd   # 启动服务，先启动服务，配置后面再进行修改
+systemctl enable slapd
+
+systemctl status slapd  # 查看状态，正常启动则ok
+```
+
+**修改配置**
+
+openldap2.4.23 版本开始，所有配置都保存在 `/etc/openldap/slapd.d` 目录下的 cn=config 文件夹内，不再使用 slapd.conf 作为配置文件。配置文件的后缀为 ldif，且每个配置文件都是通过命令自动生成的，任意打开一个配置文件，在开头都会有一行注释，说明此为自动生成的文件，请勿编辑，使用 ldapmodify 命令进行修改 `# AUTO-GENERATED FILE - DO NOT EDIT!! Use ldapmodify.`
+
+安装 openldap 后，会有三个命令用于修改配置文件，分别为 ldapadd, ldapmodify, ldapdelete，顾名思义就是添加，修改和删除。而需要修改或增加配置时，则需要先写一个 ldif 后缀的配置文件，然后通过命令将写的配置更新到 `slapd.d` 目录下的配置文件中去
+
+生成管理员密码
+```bash
+slappasswd -s 123456
+{SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
+```
+
+新增修改密码文件,ldif 为后缀，文件名随意，不要在 /etc/openldap/slapd.d/ 目录下创建类似文件,生成的文件为需要通过命令去动态修改 ldap 现有配置，如下
+```bash
+cd ~
+vim changepwd.ldif
+
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+add: olcRootPW
+olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
+```
+
+- 第一行执行配置文件，这里就表示指定为 cn=config/olcDatabase={0}config 文件。你到 `/etc/openldap/slapd.d/` 目录下就能找到此文件
+- 第二行 changetype 指定类型为修改
+- 第三行 add 表示添加 olcRootPW 配置项
+- 第四行指定 olcRootPW 配置项的值
+
+在执行下面的命令前，你可以先查看原本的 olcDatabase={0}config 文件，里面是没有 olcRootPW 这个项的，执行命令后，你再看就会新增了 olcRootPW 项，而且内容是我们文件中指定的值加密后的字符串
+
+执行命令，修改 ldap 配置，通过 -f 执行文件
+```bash
+ldapadd -Y EXTERNAL -H ldapi:/// -f changepwd.ldif
+```
+
+执行修改命令后，有类似如下输出则为正常
+```
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+modifying entry "olcDatabase={0}config,cn=config"
+```
+
+查看 olcDatabase={0}config 内容,应该会新增了一个 olcRootPW 项
+```bash
+cat /etc/openldap/slapd.d/cn\=config/olcDatabase\=\{0\}config.ldif
+```
+
+上面就是一个完整的修改配置的过程，切记不能直接修改 `/etc/openldap/slapd.d/` 目录下的配置。
+
+我们需要向 LDAP 中导入一些基本的 Schema。这些 Schema 文件位于 `/etc/openldap/schema/` 目录中，schema 控制着条目拥有哪些对象类和属性，可以自行选择需要的进行导入，
+
+依次执行下面的命令，导入基础的一些配置,我这里将所有的都导入一下，其中 core.ldif 是默认已经加载了的，不用导入
+```bash
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/cosine.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/nis.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/inetorgperson.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/collective.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/corba.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/duaconf.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/dyngroup.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/java.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/misc.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/openldap.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/pmi.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/ppolicy.ldif
+```
+
+修改域名，新增 changedomain.ldif, 这里我自定义的域名为 fox.com，管理员用户账号为 admin。
+
+如果要修改，则修改文件中相应的 dc=fox,dc=com 为自己的域名
+```bash
+vim changedomain.ldif
+
+dn: olcDatabase={1}monitor,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc=fox,dc=com" read by * none
+
+dn: olcDatabase={2}hdb,cn=config
+changetype: modify
+replace: olcSuffix
+olcSuffix: dc=fox,dc=com
+
+dn: olcDatabase={2}hdb,cn=config
+changetype: modify
+replace: olcRootDN
+olcRootDN: cn=admin,dc=fox,dc=com
+
+dn: olcDatabase={2}hdb,cn=config
+changetype: modify
+replace: olcRootPW
+olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
+
+dn: olcDatabase={2}hdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {0}to attrs=userPassword,shadowLastChange by dn="cn=admin,dc=fox,dc=com" write by anonymous auth by self write by * none
+olcAccess: {1}to dn.base="" by * read
+olcAccess: {2}to * by dn="cn=admin,dc=fox,dc=com" write by * read
+```
+
+执行命令，修改配置
+```bash
+ldapmodify -Y EXTERNAL -H ldapi:/// -f changedomain.ldif
+```
+
+然后，启用 memberof 功能,新增 add-memberof.ldif, 开启 memberof 支持并新增用户支持 memberof 配置
+```bash
+vim add-memberof.ldif
+
+dn: cn=module{0},cn=config
+cn: modulle{0}
+objectClass: olcModuleList
+objectclass: top
+olcModuleload: memberof.la
+olcModulePath: /usr/lib64/openldap
+
+dn: olcOverlay={0}memberof,olcDatabase={2}hdb,cn=config
+objectClass: olcConfig
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
+olcOverlay: memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfUniqueNames
+olcMemberOfMemberAD: uniqueMember
+olcMemberOfMemberOfAD: memberOf
+```
+
+新增 refint1.ldif 文件
+```bash
+vim refint1.ldif
+
+dn: cn=module{0},cn=config
+add: olcmoduleload
+olcmoduleload: refint
+```
+
+新增refint2.ldif文件
+```bash
+vim refint2.ldif
+
+dn: olcOverlay=refint,olcDatabase={2}hdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+objectClass: top
+olcOverlay: refint
+olcRefintAttribute: memberof uniqueMember  manager owner
+```
+
+依次执行下面命令，加载配置，顺序不能错
+```bash
+ldapadd -Q -Y EXTERNAL -H ldapi:/// -f add-memberof.ldif
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f refint1.ldif
+ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint2.ldif
+```
+
+到此，配置修改完了，在上述基础上，我们来创建一个叫做 fox company 的组织，并在其下创建一个 admin 的组织角色（该组织角色内的用户具有管理整个 LDAP 的权限）和 People 和 Group 两个组织单元,新增配置文件
+```bash
+vim base.ldif
+
+dn: dc=fox,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Fox Company
+dc: fox
+
+dn: cn=admin,dc=fox,dc=com
+objectClass: organizationalRole
+cn: admin
+
+dn: ou=People,dc=fox,dc=com
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Group,dc=fox,dc=com
+objectClass: organizationalRole
+cn: Group
+```
+
+执行命令，添加配置, 这里要注意修改域名为自己配置的域名，然后需要输入上面我们生成的密码
+```bash
+ldapadd -x -D cn=admin,dc=fox,dc=com -W -f base.ldif
+
+# 这里是 123456
+```
+
+通过以上的所有步骤，我们就设置好了一个 LDAP 目录树：其中基准 dc=fox,dc=com 是该树的根节点，其下有一个管理域 cn=admin,dc=fox,dc=com 和两个组织单元 ou=People,dc=fox,dc=com 及 ou=Group,dc=fox,dc=com。
+
+**测试连接**
+
+这里先关一下防火墙
+```
+service firewalld stop
+```
+
+连接工具使用 LdapAdmin
+
+![image](../../../assets/img/运维/Linux/Power/2.png)
 
 ---
 

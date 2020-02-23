@@ -366,7 +366,7 @@ echo "\$S\$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR" > source.txt
 echo "\$S\$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg" >> source.txt
 ```
 
-然后找个密码表,俺知道你可能有很NB的字典,可是俺还是要推荐一下我自己的字典项目 https://github.com/No-Github/AboutSecurity/tree/master/%E5%AD%97%E5%85%B8/%E8%AE%A4%E8%AF%81%E5%AD%97%E5%85%B8/password
+然后找个密码表,推荐一下我自己的字典项目 https://github.com/No-Github/AboutSecurity/tree/master/%E5%AD%97%E5%85%B8/%E8%AE%A4%E8%AF%81%E5%AD%97%E5%85%B8/password
 
 ```bash
 hashcat -m 7900 -a 0 source.txt pass01.txt

@@ -50,6 +50,7 @@
     * [kindeditor](#kindeditor)
 * [序列化](#序列化)
     * [fastjson](#fastjson)
+    * [Jackson](#Jackson)
 * [其他](#其他)
     * [webuploader](#webuploader)
 
@@ -79,10 +80,10 @@
 内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在您的网站上提供的软件. 它有助于编辑,发布和修改网站的内容.
 
 **工具包**
-- [SecWiki/CMS-Hunter](https://github.com/SecWiki/CMS-Hunter)
-- [Q2h1Cg/CMS-Exploit-Framework](https://github.com/Q2h1Cg/CMS-Exploit-Framework)
-- [Lucifer1993/AngelSword](https://github.com/Lucifer1993/AngelSword)
-- [foospidy/web-cve-tests](https://github.com/foospidy/web-cve-tests)
+- [SecWiki/CMS-Hunter](https://github.com/SecWiki/CMS-Hunter) - CMS漏洞测试用例集合
+- [Q2h1Cg/CMS-Exploit-Framework](https://github.com/Q2h1Cg/CMS-Exploit-Framework) - 一款 CMS 漏洞利用框架，通过它可以很容易地获取、开发 CMS 漏洞利用插件并对目标应用进行测试。
+- [Lucifer1993/AngelSword](https://github.com/Lucifer1993/AngelSword) - Python3编写的CMS漏洞检测框架
+- [foospidy/web-cve-tests](https://github.com/foospidy/web-cve-tests) - A simple framework for sending test payloads for known web CVEs.
 
 ## dedeCMS
 
@@ -109,7 +110,7 @@
 - [DiscuzX v3.4 排行页面存储型XSS漏洞 分析](https://xz.aliyun.com/t/2899)
 
 **CVE-2018-14729**
-- 描述
+- 简介
 
     Discuz！1.5 至 2.5 中的 `source/admincp/admincp_db.php` 中的数据库备份功能允许远程攻击者执行任意 PHP 代码。
 
@@ -130,7 +131,7 @@
 - [theLSA/discuz-ml-rce](https://github.com/theLSA/discuz-ml-rce)
 
 **CVE-2019-13956**
-- 描述
+- 简介
 
     该漏洞存在 discuz ml(多国语言版)中,cookie 中的 language 可控并且没有严格过滤,导致可以远程代码执行。
 
@@ -149,7 +150,7 @@
 
 > 官网 : https://www.drupal.org/
 
-**相关靶场**
+**存在该环境的靶场**
 - [DC: 1](../../实验/VulnHub/DC/DC1-WalkThrough.md)
 - [DC: 7](../../实验/VulnHub/DC/DC7-WalkThrough.md)
 - [DC: 8](../../实验/VulnHub/DC/DC8-WalkThrough.md)
@@ -186,7 +187,7 @@
     - [Drupal Core 8 PECL YAML 反序列化任意代码执行漏洞 (CVE-2017-6920) ](https://vulhub.org/#/environments/drupal/CVE-2017-6920/)
 
 **CVE-2018-7600 Drupal Drupalgeddon 2 远程代码执行漏洞**
-- 描述
+- 简介
 
     Drupal 是一款用量庞大的 CMS，其 6/7/8 版本的 Form API 中存在一处远程代码执行漏洞。
 
@@ -214,7 +215,7 @@
     - [CVE-2018-7600/drupa7-CVE-2018-7602.py](https://github.com/pimps/CVE-2018-7600/blob/master/drupa7-CVE-2018-7602.py)
 
 **CVE-2019-6339 远程代码执行漏洞**
-- 描述
+- 简介
 
     phar 反序列化 RCE
 
@@ -230,7 +231,7 @@
     - https://vulhub.org/#/environments/drupal/CVE-2019-6339/
 
 **CVE-2019-6341 XSS**
-- 描述
+- 简介
 
     通过文件模块或者子系统上传恶意文件触发 XSS 漏洞
 
@@ -271,7 +272,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 > 官网 : https://www.joomla.org/
 
-**相关靶场**
+**存在该环境的靶场**
 - [DC: 3](../../实验/VulnHub/DC/DC3-WalkThrough.md)
 
 **工具**
@@ -377,12 +378,17 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 ## WordPress
 
+WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
+
 > 官网 : https://wordpress.org/
 
-**相关靶场**
+**存在该环境的靶场**
 - [DC: 2](../../实验/VulnHub/DC/DC2-WalkThrough.md)
 - [DC: 6](../../实验/VulnHub/DC/DC6-WalkThrough.md)
 - [symfonos1-WalkThrough](../../实验/VulnHub/symfonos/symfonos1-WalkThrough.md)
+
+**搭建教程**
+- [WordPress 搭建](../../../运维/Linux/Power-Linux.md#WordPress)
 
 **Tips**
 
@@ -497,6 +503,9 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
     ```
 
 **泛微 ecology OA 系统接口存在数据库配置信息泄露漏洞**
+- 文章
+    - [泛微ecology OA数据库配置信息泄露漏洞复现](https://mp.weixin.qq.com/s/u8GIfMBRZFAN3HANSSSgQA)
+
 - POC | Payload | exp
     - [jas502n/DBconfigReader](https://github.com/jas502n/DBconfigReader)
 
@@ -522,7 +531,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 **工具包**
 - [1120362990/vulnerability-list](https://github.com/1120362990/vulnerability-list) - 在渗透测试中快速检测常见中间件、组件的高危漏洞.
-- [hatRiot/clusterd](https://github.com/hatRiot/clusterd)
+- [hatRiot/clusterd](https://github.com/hatRiot/clusterd) - application server attack toolkit
 - [matthiaskaiser/jmet](https://github.com/matthiaskaiser/jmet) - Java Message Exploitation Tool
 
 ## ActiveMQ
@@ -530,6 +539,9 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 > 官网 : https://activemq.apache.org/
 
 Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开源的消息中间件,它支持Java消息服务、集群、Spring Framework 等.
+
+**搭建教程**
+- [ActiveMQ 搭建](../../../运维/Linux/Power-Linux.md#ActiveMQ)
 
 **CVE-2015-5254 ActiveMQ 反序列化漏洞**
 - 简介
@@ -854,7 +866,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 > 官网 : http://www.jboss.org/
 
 **工具**
-- [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss)
+- [joaomatosf/jexboss](https://github.com/joaomatosf/jexboss) - JBoss(和其他Java反序列化漏洞)验证和利用工具
 
 **未授权访问漏洞**
 - 简介
@@ -1036,7 +1048,7 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 **SHIRO-721 | Shiro RememberMe Padding Oracle Vulnerability RCE**
 - https://issues.apache.org/jira/browse/SHIRO-721
 
-- 描述
+- 简介
 
     cookie 的 cookiememeMe 已通过 AES-128-CBC 模式加密，这很容易受到填充 oracle 攻击的影响。
 
@@ -1212,9 +1224,9 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 - [x51/STS2G](https://github.com/x51/STS2G) - Golang 版 Struts2 漏洞扫描利用工具
 
 **环境搭建**
-- [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment)
-- [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx)
-- [shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC)
+- [wh1t3p1g/Struts2Environment](https://github.com/wh1t3p1g/Struts2Environment) - Struts2 历史版本的漏洞环境
+- [sie504/Struts-S2-xxx](https://github.com/sie504/Struts-S2-xxx) - 整理收集Struts2漏洞环境
+- [shengqi158/S2-055-PoC](https://github.com/shengqi158/S2-055-PoC) - S2-055的环境，基于rest-show-case改造
 
 **文章**
 - [Struts2 历史 RCE 漏洞回顾不完全系列](http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities/)
@@ -1222,7 +1234,7 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 **S2-016 & CVE-2013-2251**
 - https://cwiki.apache.org/confluence/display/WW/S2-016
 
-- 描述
+- 简介
 
     DefaultActionMapper 类支持以"action:"、"redirect:"、"redirectAction:"作为导航或是重定向前缀，但是这些前缀后面同时可以跟 OGNL 表达式，由于 struts2 没有对这些前缀做过滤，导致利用 OGNL 表达式调用 java 静态方法执行任意系统命令
 
@@ -1374,8 +1386,66 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 
 Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为 `/manager/html`,后台默认弱口令 admin/admin、tomcat/tomcat 等,若果配置不当,可通过"Tomcat Manager"连接部署 war 包的方式获取 webshell.
 
+**搭建教程**
+- [Tomcat 搭建](../../../运维/Linux/Power-Linux.md#Tomcat)
+
 **文章**
 - [Tomcat漏洞详解](http://www.mottoin.com/detail/389.html)
+- [渗透测试-Tomcat常见漏洞总结](https://mp.weixin.qq.com/s/ZXoCJ9GhMaTvVFeYn8vMUA)
+
+**Tips**
+- tomcat5 默认有两个角色：tomcat 和 role1。其中账号 both、tomcat、role1 的默认密码都是 tomcat。不过不具备部署应用的权限，默认需要 manager 权限才能够直接部署 war 包.
+- tomcat6 默认没有配置任何用户以及角色，没办法用默认账号登录.
+- tomcat7 与6类似
+- tomcat8 其实从6开始，tomcat 就将默认的用户去掉了
+
+**爆破 Manager APP**
+
+base64 编码，口令形式为 username:password
+
+![image](../../../../assets/img/安全/笔记/RedTeam/Web_CVE漏洞记录/2.png)
+
+- MSF Module
+    ```
+    use auxiliary/scanner/http/tomcat_mgr_login
+    ```
+
+**CVE-2016-1240**
+- 简介
+
+    10月1日,Tomcat 爆出了一个本地提权漏洞。通过该漏洞,攻击者可以通过一个低权限的 Tomcat 用户获得系统的 root 权限。
+
+- 影响版本
+    - tomcat:6.0:*:*:*:*:*:*:*
+    - tomcat:7.0:*:*:*:*:*:*:*
+    - tomcat:8.0:*:*:*:*:*:*:*
+
+- POC | Payload | exp
+    - [Apache Tomcat 8/7/6 (Debian-Based Distros) - Local Privilege Escalation](https://www.exploit-db.com/exploits/40450/)
+
+**CVE-2016-8735**
+- 简介
+
+    Oracle 修复了 JmxRemoteLifecycleListener 反序列化漏洞(CVE-2016-3427)。 Tomcat 也使用了 JmxRemoteLifecycleListener 这个监听器,但是 Tomcat 并没有及时升级，存在这个远程代码执行漏洞。
+
+- 漏洞利用条件
+
+    外部需要开启 JmxRemoteLifecycleListener 监听的 10001 和 10002 端口来实现远程代码执行。
+
+- 影响版本
+    - Tomcat 9.0.0.M1 ~ 9.0.0.M11
+    - Tomcat 8.5.0 ~ 8.5.6
+    - Tomcat 8.0.0.RC1 ~ 8.0.38
+    - Tomcat 7.0.0 ~ 7.0.72
+    - Tomcat 6.0.0 ~ 6.0.47
+
+- 文章
+    - [复现tomcat远程代码执行漏洞（CVE-2016-8735） | 回忆飘如雪](http://gv7.me/articles/2018/CVE-2016-8735/)
+
+- POC | Payload | exp
+    ```
+    java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 192.168.48.21110001 Groovy1 "C:\Windows\System32\net.exe user  test 12345 /add "
+    ```
 
 **CVE-2017-12615/12616**
 - 简介
@@ -1461,6 +1531,38 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 - POC | Payload | exp
     - [pyn3rd/CVE-2019-0232](https://github.com/pyn3rd/CVE-2019-0232)
     - [jas502n/CVE-2019-0232](https://github.com/jas502n/CVE-2019-0232)
+
+**CVE-2020-1938 && CNVD-2020-10487 Apache Tomcat Ghostcat漏洞**
+
+- 概述
+
+    Apache Tomcat会开启AJP连接器,方便与其他Web服务器通过AJP协议进行交互。由于Tomcat本身也内含了HTTP服务器，因此也可以视作单独的Web服务器。
+
+    但Apache Tomcat在AJP协议的实现上存在漏洞,导致攻击者可以通过发送恶意的AJP请求,可以读取或者包含Web应用根目录下的任意文件,如果配合文件上传任意格式文件，将可能导致任意代码执行(RCE).该漏洞利用AJP服务端口实现攻击,未开启AJP服务对外不受漏洞影响（tomcat默认将AJP服务开启并绑定至0.0.0.0/0）。
+
+    此漏洞为文件包含漏洞，攻击者可利用该漏洞读取或包含 Tomcat 上所有 webapp 目录下的任意文件，如：webapp 配置文件、源代码等。
+
+- 影响版本
+    - Apache Tomcat = 6
+    - 7 <= Apache Tomcat < 7.0.100
+    - 8 <= Apache Tomcat < 8.5.51
+    - 9 <= Apache Tomcat < 9.0.31
+
+- 文章
+     - [【WEB安全】Tomcat-Ajp协议漏洞分析](https://mp.weixin.qq.com/s/GzqLkwlIQi_i3AVIXn59FQ)
+
+- POC | Payload | exp
+    - [0nise/CVE-2020-1938](https://github.com/0nise/CVE-2020-1938)
+    - [YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi](https://github.com/YDHCUI/CNVD-2020-10487-Tomcat-Ajp-lfi)
+
+- 修复建议
+    - 请尽快更新 Tomcat 到安全版本。
+    - 临时禁用AJP协议端口,打开 Tomcat 配置文件 `<CATALINA_BASE>/conf/service.xml`,注释掉如下行：
+        ```xml
+        <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+        ```
+        修改完后，重启tomcat即可。
+    - 除以上措施外，也可采用防火墙等方法阻止不可信任的来源访问 Tomcat AJP Connector 端口。
 
 ---
 
@@ -1741,7 +1843,47 @@ FCKeditor/_samples/asp/sample04.asp
 > 项目地址 : https://github.com/alibaba/fastjson
 
 **工具**
-- [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool)
+- [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool) - fastjson rce 命令执行综合利用工具，一键操作,fastjson remote code execute poc
+- [c0ny1/FastjsonExploit](https://github.com/c0ny1/FastjsonExploit) - fastjson漏洞快速利用框架
+
+### Jackson
+
+**CVE-2017-7525 Jackson-databind 反序列化漏洞**
+- 简介
+
+    Jackson-databind 支持 Polymorphic Deserialization 特性（默认情况下不开启），当 json 字符串转换的 Target class 中有 polymorph fields，即字段类型为接口、抽象类或 Object 类型时，攻击者可以通过在 json 字符串中指定变量的具体类型 (子类或接口实现类)，来实现实例化指定的类，借助某些特殊的 class，如 TemplatesImpl，可以实现任意代码执行。
+
+- 文章
+    - [Jackson-databind 反序列化漏洞（CVE-2017-7525）](https://vulhub.org/#/environments/jackson/CVE-2017-7525/)
+
+**CVE-2017-17485 Jackson-databind 反序列化**
+- 文章
+    - [CVE-2017-17485 Jackson-databind 反序列化](http://www.sec-redclub.com/archives/1058/)
+
+**CVE-2019-12086**
+- 简介
+
+    使用了jackson-databind 2.x before 2.9.9的Java应用，如果ClassPath中有com.mysql.cj.jdbc.admin.MiniAdmin（存在于MySQL的JDBC驱动中）这个类，那么Java应用所在的服务器上的文件，就可能被任意读取并传送到恶意的MySQL Server。
+
+- 文章
+    - [分析Jackson的安全漏洞CVE-2019-12086](https://www.cnblogs.com/xinzhao/p/11005419.html)
+
+**CVE-2019-12384 Jackson-databind RCE And SSRF**
+- 简介
+
+    6月21日，Redhat官方发布jackson-databind漏洞（CVE-2019-12384）安全通告，多个Redhat产品受此漏洞影响，CVSS评分为8.1，漏洞利用复杂度高。7月22日，安全研究员Andrea Brancaleoni对此漏洞进行分析，并公布了该漏洞的分析文章。
+
+    该漏洞是由于Jackson黑名单过滤不完整而导致，当开发人员在应用程序中通过ObjectMapper对象调用enableDefaultTyping方法时，程序就会受到此漏洞的影响，攻击者就可利用构造的包含有恶意代码的json数据包对应用进行攻击，直接获取服务器控制权限。
+
+- 影响版本
+    - Jackson-databind 2.X < 2.9.9.1
+
+- 文章
+    - [CVE-2019-12384：Jackson反序列化漏洞分析](https://www.anquanke.com/post/id/182695)
+    - [Jackson CVE-2019-12384 RCE 复现记录 ](http://scriptboy.cn/p/jackson-cve-2019-12384/)
+
+- POC | Payload | exp
+    - [jas502n/CVE-2019-12384](https://github.com/jas502n/CVE-2019-12384)
 
 ---
 
@@ -1789,7 +1931,7 @@ Confluence 是一个专业的企业知识管理与协同软件，也可以用于
     - Atlassian confluence 6.14.0 ~ 6.14.3
 
 - POC | Payload | exp
-    https://www.peerlyst.com/posts/cve-2019-3398-atlassian-confluence-download-attachments-remote-code-execution-juniper-networks?utm_source=twitter&utm_medium=social&utm_content=peerlyst_post&utm_campaign=peerlyst_shared_post
+    - https://www.peerlyst.com/posts/cve-2019-3398-atlassian-confluence-download-attachments-remote-code-execution-juniper-networks?utm_source=twitter&utm_medium=social&utm_content=peerlyst_post&utm_campaign=peerlyst_shared_post
 
 ---
 
@@ -1851,7 +1993,10 @@ Harbor 的漏洞参考 https://github.com/goharbor/harbor/security/advisories
 
 Jenkins 的漏洞参考 https://jenkins.io/security/advisories/
 
-**资源**
+**搭建教程**
+- [Jenkins 搭建](../../../运维/Linux/Power-Linux.md#Jenkins)
+
+**文章**
 - [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
 - [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
 - [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
@@ -2108,6 +2253,9 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 
 > 官网: https://www.phpmyadmin.net/
 
+**搭建教程**
+- [phpMyAdmin 搭建](../../../运维/Linux/Power-Linux.md#phpMyAdmin)
+
 **文章**
 - [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
 
@@ -2183,6 +2331,9 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 
 > 项目地址 : https://github.com/Supervisor/supervisor
 
+**搭建教程**
+- [Supervisord 搭建](../../../运维/Linux/Power-Linux.md#Supervisor)
+
 **测试链接**
 - `http://<ip>:9001`
 
@@ -2205,9 +2356,13 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 
 > 官网 : http://www.webmin.com/
 
+**搭建教程**
+- [Webmin 搭建](../../../运维/Linux/Power-Linux.md#Webmin)
+
 **CVE-2019-15107 Webmin Remote Code Execution**
-- 详情
-    - 在其找回密码页面中,存在一处无需权限的命令注入漏洞,通过这个漏洞攻击者即可以执行任意系统命令.
+- 简介
+
+    在其找回密码页面中,存在一处无需权限的命令注入漏洞,通过这个漏洞攻击者即可以执行任意系统命令.
 
 - 影响版本
     - Webmin < 1.920
@@ -2251,6 +2406,9 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 > 官网 : https://www.zabbix.com
 
 zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
+
+**搭建教程**
+- [zabbix 搭建](../../../运维/Linux/Power-Linux.md#zabbix)
 
 **CVE-2016-10134 zabbix latest.php SQL 注入漏洞**
 - 简介

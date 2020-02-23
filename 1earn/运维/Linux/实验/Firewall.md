@@ -3,6 +3,7 @@
 ---
 
 ## 区域
+
 **防火墙各个区说明**
 - **drop (丢弃)**
 
@@ -38,11 +39,12 @@
 
 - **trusted (信任)**
 
-    可接受所有的网络连接.
+    可接受所有的网络连接.适合在故障排除的情况下或者是在你绝对信任的网络上使用.
 
 ---
 
 ## 常用命令
+
 **服务管理**
 ```bash
 systemctl status firewalld	# 查看服务运行状态
@@ -65,10 +67,13 @@ firewall-cmd --zone=public --list-all   # 列出 zone public 当前设置
 
 **配置开放服务/端口**
 ```bash
-firewall-cmd --zone=public --add-service=http   # 增加 zone public 开放http service
-firewall-cmd --reload                           # 重新加载配置
+firewall-cmd --zone=public --add-service=http       # 增加 zone public 开放http service
+firewall-cmd --reload                               # 重新加载配置
 
-firewall-cmd --zone=internal --add-port=443/tcp # 增加 zone internal 开放 443/tcp 协议端口
+firewall-cmd --zone=public --remove-service=http    # 从 zone 中移除 http 服务
+
+firewall-cmd --zone=internal --add-port=443/tcp     # 增加 zone internal 开放 443/tcp 协议端口
+firewall-cmd --zone=internal --remove-port=443/tcp  # 从 zone 中移除 443 端口
 ```
 
 **设置黑/白名单**
@@ -86,4 +91,19 @@ firewall-cmd --permanent --zone=drop --remove-source=172.28.13.0/24 # 从zone dr
 ```
 
 - 使用命令的时候加上 --permanent 是永久生效的意思，在重启防火墙服务后依然生效.否则，只对重启服务之前有效.
-- 我们执行的命令，结果其实都体现在具体的配置文件中，其实我们可以直接修改对应的配置文件即可.以 public zone 为例，对应的配置文件是 /etc/firewalld/zones/public.xml
+- 我们执行的命令，结果其实都体现在具体的配置文件中，其实我们可以直接修改对应的配置文件即可.以 public zone 为例，对应的配置文件是 `/etc/firewalld/zones/public.xml`
+
+**自定义区域**
+
+你可以随意使用 firewalld 默认提供的这些区域，不过也完全可以创建自己的区域。比如如果希望有一个针对游戏的特别区域，你可以创建一个，然后只有在玩儿游戏的时候切换到该区域。
+
+如果想要创建一个新的空白区域，你可以创建一个名为 game 的新区域，然后重新加载防火墙规则，这样你的新区域就启用了：
+```bash
+firewall-cmd --new-zone game --permanent
+firewall-cmd --reload
+```
+
+---
+
+**Reference**
+- [使用防火墙让你的 Linux 更加强大 ](https://linux.cn/article-11093-1.html)

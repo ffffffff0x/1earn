@@ -8,10 +8,6 @@
 
 ---
 
-**前言**
-
-工具一下,exp 一连,shell 就有了,这谁都能学会,但在自己挖洞的过程中,基础的东西就很重要了,我觉得 dvwa 靶机的真正价值是带新人入门,将 web 各个方面都接触一些,这样有了开始,有了一个接触,之后就有方向了.
-
 **地址**
 - https://github.com/ethicalhack3r/DVWA
 
@@ -3799,3 +3795,9 @@ token_part_1("ABCD", 44);
 You can never trust anything that comes from the user or prevent them from messing with it and so there is no impossible level.
 ```
 你永远不要相信来自用户的任何东西或阻止他们搞乱它,所以没有不可能的等级.
+
+---
+
+**总结**
+
+工具一下,exp 一连,shell 就有了,这谁都能学会,但在自己挖洞的过程中,基础的东西就很重要了,我觉得 dvwa 靶机的真正价值是带新人入门,将 web 各个方面都接触一些,这样有了开始,有了一个接触,之后就有方向了.

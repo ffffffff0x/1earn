@@ -3,14 +3,17 @@
 ---
 
 ## 什么是x509证书链
+
 x509 证书一般会用到三类文件，key，csr，crt.
-Key 是私用密钥，openssl 格式，通常是 rsa 算法.
-csr 是证书请求文件，用于申请证书.在制作 csr 文件的时候，必须使用自己的私钥来签署申请，还可以设定一个密钥.
-crt 是 CA 认证后的证书文件(windows 下面的 csr，其实是 crt)，签署人用自己的 key 给你签署的凭证.
+
+- Key 是私用密钥，openssl 格式，通常是 rsa 算法.
+- csr 是证书请求文件，用于申请证书.在制作 csr 文件的时候，必须使用自己的私钥来签署申请，还可以设定一个密钥.
+- crt 是 CA 认证后的证书文件(windows 下面的 csr，其实是 crt)，签署人用自己的 key 给你签署的凭证.
 
 ---
 
 ## openssl 中有如下后缀名的文件
+
 - .key 格式:私有的密钥
 - .csr 格式:证书签名请求(证书请求文件)，含有公钥信息，certificate signing request 的缩写
 - .crt 格式:证书文件，certificate 的缩写
@@ -20,6 +23,7 @@ crt 是 CA 认证后的证书文件(windows 下面的 csr，其实是 crt)，签
 ---
 
 ## CA 根证书的生成步骤
+
 生成 CA 私钥(.key)-->生成 CA 证书请求(.csr)-->自签名得到根证书(.crt)(CA 给自已颁发的证书).
 ```flow
 st=>start: 生成 CA 私钥(.key)
@@ -35,7 +39,7 @@ cd /etc/pki/CA/private
 openssl genrsa 2048 > cakey.pem
 ```
 
-生成自签证书、用 openssl 中 req 这个命令、叫证书请求
+生成自签证书、用 openssl 中 req 这个命令
 ```
 openssl req -new -x509 -key cakey.pem -out /etc/pki/CA/cacert.pem
 ```

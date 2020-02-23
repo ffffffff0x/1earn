@@ -185,7 +185,7 @@ sudo -l
 
 ![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/14.png)
 
-Charles 可以使用 sudo 权限运行 teehee。teehee可以干嘛？可以将标准输入复制到我们选择的文件中。那么我可以直接写一个root权限的用户到 /etc/passwd 下，也可以直接在 sudoers 里给 charles 所有权限
+Charles 可以使用 sudo 权限运行 teehee。teehee 可以干嘛？可以将标准输入复制到我们选择的文件中。那么我可以直接写一个 root 权限的用户到 /etc/passwd 下，也可以直接在 sudoers 里给 charles 所有权限
 
 1. 直接写个 root 权限用户
     ```

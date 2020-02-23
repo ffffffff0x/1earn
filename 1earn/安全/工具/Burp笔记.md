@@ -119,6 +119,9 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > 从 HTTP 响应中发现资产的 Burp 扩展
 - [redhuntlabs/BurpSuite-Asset_Discover](https://github.com/redhuntlabs/BurpSuite-Asset_Discover)
 
+> 从HTTP响应中发现密钥/访问令牌和敏感数据的扩展
+- [m4ll0k/BurpSuite-Secret_Finder](https://github.com/m4ll0k/BurpSuite-Secret_Finder)
+
 ---
 
 ## 安装

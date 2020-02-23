@@ -114,8 +114,7 @@
     invoke-wcmdump
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
-- [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) -
-对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager系列产品(Xshell,Xftp)。
+- [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager系列产品(Xshell,Xftp)。
 
 **文章**
 - [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)

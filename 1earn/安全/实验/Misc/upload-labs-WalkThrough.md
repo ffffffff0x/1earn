@@ -8,7 +8,7 @@
 
 ---
 
-**小结**
+**前言**
 
 网上的文章写的很全了,主要点都有,没必要再发明轮子,在补充补充一些内容加深一下记忆
 
@@ -23,14 +23,6 @@
 - 中间件 : 设置 Apache 以 moudel 方式连接
 
 注 : 靶机自带 PHPstudy 环境,开个 win7 虚拟机,直接启动即可,mysql 起不来也没事,这个不需要数据库
-
-**Reference**
-- [Upload-labs 20关通关笔记](https://xz.aliyun.com/t/4029)
-- [upload-labs刷关记录](https://blog.csdn.net/u011377996/article/details/86776198)
-- [Upload-labs通关手册](https://xz.aliyun.com/t/2435)
-- [upload-labs之pass 16详细分析](https://xz.aliyun.com/t/2657#toc-10)
-- [聊聊安全测试中如何快速搞定Webshell](https://www.freebuf.com/articles/web/201421.html)
-- [从upload-labs总结上传漏洞及其绕过](http://poetichacker.com/writeup/%E4%BB%8Eupload-labs%E6%80%BB%E7%BB%93%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E7%BB%95%E8%BF%87.html)
 
 ---
 
@@ -693,3 +685,13 @@ $file_name = reset($file) . '.' . $file[count($file) - 1];
 因此 save_name 变量的两个值分别是 xx.php/,另外一个值是 jpg,其实从代码审计的角度上看,还是可控变量导致这样的后果
 
 ![image](../../../../assets/img/安全/实验/Misc/upload-labs/18.png)
+
+---
+
+**Reference**
+- [Upload-labs 20关通关笔记](https://xz.aliyun.com/t/4029)
+- [upload-labs刷关记录](https://blog.csdn.net/u011377996/article/details/86776198)
+- [Upload-labs通关手册](https://xz.aliyun.com/t/2435)
+- [upload-labs之pass 16详细分析](https://xz.aliyun.com/t/2657#toc-10)
+- [聊聊安全测试中如何快速搞定Webshell](https://www.freebuf.com/articles/web/201421.html)
+- [从upload-labs总结上传漏洞及其绕过](http://poetichacker.com/writeup/%E4%BB%8Eupload-labs%E6%80%BB%E7%BB%93%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%8F%8A%E5%85%B6%E7%BB%95%E8%BF%87.html)

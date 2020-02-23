@@ -74,6 +74,7 @@ systemctl restart named
 ---
 
 ## 案例 1
+
 配置 DNS 服务，将相关主机名添加 A 记录，分别为 www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com;
 
 **安装**
@@ -177,6 +178,7 @@ service named start
 ---
 
 ## 案例 2
+
 - 监听所有地址;
 - 允许所有机器查询;
 - 将 ftp.abc.com 解析至主机 B 公网 IP:1.1.1.1;
@@ -300,9 +302,10 @@ firewall-cmd --reload
 ---
 
 ## 案例 3
+
 - 监听当前主机的所有地址;
 - 允许所有主机查询和递归查询;
-- 区域定义均配置在 /etc/named.conf 文件中;
+- 区域定义均配置在 `/etc/named.conf` 文件中;
 - abc.com 的区域数据文件名为 abc.com.zone;
 - 配置反向域数据文件名为 172.16.0.zone
 - 为 www.abc.com 添加 A 记录解析，解析至 serverA 的公网 IP;
@@ -399,6 +402,7 @@ firewall-cmd --reload
 
 
 ## 案例 4
+
 - 配置 abc.com 域的从 DNS 服务，主 DNS 为主机 A;
 - 配置 0.16.172 反向域的从 DNS 服务，主 DNS 为主机 A;
 - 监听所有地址;

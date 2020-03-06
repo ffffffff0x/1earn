@@ -12,8 +12,9 @@
 - https://portswigger.net/
 
 **资源**
-- [Mr-xn/BurpSuite-collections](https://github.com/Mr-xn/BurpSuite-collections)
-- [snoopysecurity/awesome-burp-extensions](https://github.com/snoopysecurity/awesome-burp-extensions)
+- [Mr-xn/BurpSuite-collections](https://github.com/Mr-xn/BurpSuite-collections) - 有关 burpsuite 的插件(非商店),文章以及使用技巧的收集
+- [snoopysecurity/awesome-burp-extensions](https://github.com/snoopysecurity/awesome-burp-extensions) - burp 相关资源(英文版)
+- [alphaSeclab/awesome-burp-suite](https://github.com/alphaSeclab/awesome-burp-suite) - burp 相关资源(中文版)
 
 **教程**
 - [Burp Suite 实战指南](https://t0data.gitbooks.io/burpsuite/content/)
@@ -57,6 +58,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 - [hackvertor/taborator](https://github.com/hackvertor/taborator)
 - [NetSPI/BurpCollaboratorDNSTunnel](https://github.com/NetSPI/BurpCollaboratorDNSTunnel)
 - [nccgroup/CollaboratorPlusPlus](https://github.com/nccgroup/CollaboratorPlusPlus)
+- [PortSwigger/collaborator-everywhere](https://github.com/PortSwigger/collaborator-everywhere)
 
 > burpsuite 的日志插件,不过是增强版本
 - [nccgroup/BurpSuiteLoggerPlusPlus](https://github.com/nccgroup/BurpSuiteLoggerPlusPlus)
@@ -103,6 +105,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 > 通过 BurpSuite 来构建自己的爆破字典,可以通过字典爆破来发现隐藏资产.
 - [TEag1e/BurpCollector](https://github.com/TEag1e/BurpCollector)
+    - [orleven/BurpCollect](https://github.com/orleven/BurpCollect) - 基于 BurpCollector 的二次开发， 记录 Burp Map 记录的里的数据包中的目录路径参数名信息，并存入 Sqlite，并可导出 txt 文件。
 
 > 用于解码和修改任意的 protobuf 消息,而不需要定义 protobuf 类型.
 - [nccgroup/blackboxprotobuf](https://github.com/nccgroup/blackboxprotobuf)

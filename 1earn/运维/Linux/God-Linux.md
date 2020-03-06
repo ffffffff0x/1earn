@@ -39,6 +39,10 @@ alias please="sudo"
 # 没用但有趣的东西.
 P=(' ' █ ░ ▒ ▓)
 while :;do printf "\e[$[RANDOM%LINES+1];$[RANDOM%COLUMNS+1]f${P[$RANDOM%5]}";done
+
+# 让 freebad 机器叫出声
+echo “T250L8CE-GE-C” > /dev/speaker
+echo “O1L15aO2L15bO3L15cO4L15d” > /dev/speaker
 ```
 
 ## net

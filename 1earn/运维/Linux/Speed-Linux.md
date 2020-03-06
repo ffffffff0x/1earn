@@ -118,6 +118,11 @@
 ```bash
 *				# 匹配任意多个字符
 	*.txt       	# 匹配全部后缀为 .txt 的文件
+
+# * 这个通配符代表不以点 “.” 开头的所有文件。以 “.” 开头的文件默认属于 Linux 下的隐藏文件。
+# 因此，不会删除目录下以 . 开头的隐藏文件，以及 . 和 .. 两个目录。但是在递归操作时，会递归地删除子目录下除了 . 和 .. 目录之外的所以文件和子目录——无论是否以 . 开头——因为递归操作不是由 Bash 等 shell 进行通配展开的。
+# 至于为什么不在删除目录下的内容时也将 . 和 .. 一视同仁？因为自从 1979 年 rm 命令开始有删除目录的能力时，就专门避开了这两个特殊目录。
+
 **				# 匹配任意级别目录(bash 4.0以上版本支持，shopt -s globstar)
 	/etc/**/*.conf  # 查找 /etc/ 下所有 .conf 文件
 ?				# 匹配单个字符
@@ -244,28 +249,45 @@ wc			# wc 将计算指定文件的行数、字数，以及字节数。
 ### 创建
 
 ```bash
-touch -r test1.txt test2.txt 				# 更新 test2.txt 时间戳与 test1.txt 时间戳相同
-touch -c -t 202510191820 a.txt 				# 更改时间
-truncate -s 100k aaa.txt					# 创建指定大小文件
+touch								# 创建文件
+	touch -r test1.txt test2.txt 		# 更新 test2.txt 时间戳与 test1.txt 时间戳相同
+	touch -c -t 202510191820 a.txt 		# 更改时间
 
-mkdir -p /mnt/aaa/aaa/aaa 					# 创建指定路径一系列文件夹
-mkdir -m 777 /test							# 创建时指定权限
+truncate -s 100k aaa.txt			# 创建指定大小文件
+
+mkdir								# 创建文件夹
+	mkdir -p /mnt/aaa/aaa/aaa 			# 创建指定路径一系列文件夹
+	mkdir -m 777 /test					# 创建时指定权限
 ```
 
 ### 删除
 
 ```bash
-rm -i		# 确认
+rm			# 删除
+	rm -r		# 递归，对目录及其下的内容进行递归操作
+	rm -f		# 强制删除,无需确认操作
+	rm -i		# 确认
+```
+rm 命令有一对专门针对根目录的选项 `--preserve-root` 和 `--no-preserve-root`
+- `--preserve-root`：保护根目录，这是默认行为。
+- `--no-preserve-root`：不保护根目录。
+这对选项是后来添加到 rm 命令的。可能几乎每个系统管理员都犯过操作错误，而这其中删除过根目录的比比皆是
+
+那为什么还会专门出现 --no-preserve-root 选项呢？这可能主要是出于 UNIX 哲学的考虑，给予你想要的一切权力，犯傻是你的事情，而不是操作系统的事情。万一，你真的想删除根目录下的所有文件呢？
+
+```bash
 rmdir		# 删除空目录
+```
 
-# 删除巨大文件小 tips
-	echo "" >  bigfile
-	rm bigfile
+**删除巨大文件小 tips**
+```bash
+echo "" >  bigfile
+rm bigfile
 
-	> access.log			# 通过重定向到 Null 来清空文件内容
-	: > access.log
-	true > access.log
-	cat /dev/null > access.log
+> access.log			# 通过重定向到 Null 来清空文件内容
+: > access.log
+true > access.log
+cat /dev/null > access.log
 ```
 
 ### 查询
@@ -1279,8 +1301,12 @@ pidof program	    # 找出 program 程序的进程 PID
 pidof -x script     # 找出 shell 脚本 script 的进程 PID
 
 top					# 实时动态地查看系统的整体运行情况
-free-h				# 显示当前系统未使用的和已使用的内存数目
+
+free
+free -h			# 显示当前系统未使用的和已使用的内存数目
+
 vmstat 1			# 显示虚拟内存状态
+
 ps					# 报告当前系统的进程状态
 	ps -aux			# 显示现在所有用户所有程序
 	# 由于ps命令能够支持的系统类型相当的多,所以选项多的离谱,这里略

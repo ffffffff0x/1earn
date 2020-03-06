@@ -45,9 +45,9 @@
 
 ```bash
 find / -ctime -2                # 查找72小时内新增的文件
-find ./ -mtime 0 -name "*.jsp"  #​ 查找24小时内被修改的JSP文件
+find ./ -mtime 0 -name "*.jsp"  #​ 查找24小时内被修改的 JSP 文件
 find / *.jsp -perm 4777         # 查找777的权限的文件
-strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析sshd 文件，是否包括IP信息
+strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析 sshd 文件，是否包括IP信息
 ```
 
 ## 文件恢复

@@ -8,26 +8,18 @@
 
 ---
 
-**文章**
-- [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
-
----
-
 # 大纲
 
 * [点击劫持](#点击劫持)
 * [任意文件下载-读取](#任意文件下载-读取)
 * [文件包含漏洞](#文件包含漏洞)
     * [日志中毒攻击](#日志中毒攻击)
-
 * [文件解析漏洞](#文件解析漏洞)
     * [IIS](#IIS)
     * [Nginx](#Nginx)
     * [Apache](#Apache)
     * [其他](#其他)
-
 * [文件上传漏洞](#文件上传漏洞)
-
 * [信息泄露漏洞](#信息泄露漏洞)
     * [目录遍历](#目录遍历)
     * [GIT源码泄露](#GIT源码泄露)
@@ -38,18 +30,20 @@
     * [idea文件夹泄露](#idea文件夹泄露)
     * [phpinfo信息泄露](#phpinfo信息泄露)
     * [jsonp信息泄露](#jsonp信息泄露)
-
-* [CORS漏洞](#CORS漏洞)
-
+    * [JS敏感信息泄露](#JS敏感信息泄露)
+    * [各类APIkey泄露](#各类APIkey泄露)
+* [CORS](#CORS)
+* [CSRF](#CSRF)
 * [http参数污染](#http参数污染)
-
 * [php反序列化](#php反序列化)
-
 * [SSRF](#SSRF)
-
 * [URL跳转漏洞](#URL跳转漏洞)
-
 * [CRLF_Injection](#CRLF_Injection)
+
+---
+
+**文章**
+- [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
 
 ---
 
@@ -253,8 +247,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [敏感文件泄露](http://www.myh0st.cn/index.php/archives/62/)
 
 **工具**
-- [lijiejie/BBScan](https://github.com/lijiejie/BBScan)
-- [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH)
+- [lijiejie/BBScan](https://github.com/lijiejie/BBScan) - 用于渗透测试前期，快速地对大量目标进行扫描，发现信息泄露等常见漏洞，找到可能的突破入口。
+- [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH) - 网站个人敏感信息文件扫描器
+- [ring04h/weakfilescan](https://github.com/ring04h/weakfilescan) - 动态多线程敏感信息泄露检测工具
 
 ## 目录遍历
 
@@ -273,8 +268,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
 
 **工具**
-- [lijiejie/GitHack](https://github.com/lijiejie/GitHack)
-- [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract)
+- [lijiejie/GitHack](https://github.com/lijiejie/GitHack) - 一个 `.git` 泄露利用脚本，通过泄露的.git文件夹下的文件，重建还原工程源代码。
+- [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract) - 提取远程 git 泄露或本地 git 的工具
 
 ## SVN源码泄露
 
@@ -284,8 +279,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [我爱我家某处源码泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0149331)
 
 **工具**
-- [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper)
-- [admintony/svnExploit](https://github.com/admintony/svnExploit)
+- [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
+- [admintony/svnExploit](https://github.com/admintony/svnExploit) - 一款 SVN 源代码利用工具，其完美支持 SVN<1.7 版本和 SVN>1.7 版本的 SVN 源代码泄露
 
 ## DS_Store文件泄漏
 
@@ -301,7 +296,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [TCL 某网站 DS_Store 文件泄露敏感信息](http://www.anquan.us/static/bugs/wooyun-2015-091869.html)
 
 **工具**
-- [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp)
+- [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
 
 ## 网站备份压缩文件
 
@@ -337,7 +332,7 @@ WEB-INF 主要包含一下文件或目录:
 ## idea文件夹泄露
 
 **工具**
-- [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit)
+- [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit) - 一个 `.idea` 文件泄漏利用脚本
 
 ## phpinfo信息泄露
 
@@ -368,19 +363,6 @@ WEB-INF 主要包含一下文件或目录:
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
 
-## CORS漏洞
-
-**文章**
-- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
-- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
-
-**案例**
-- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
-- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
-
-**工具**
-- [chenjj/CORScanner](https://github.com/chenjj/CORScanner)
-
 ## JS敏感信息泄露
 
 **文章**
@@ -393,6 +375,21 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
+# CORS
+
+**文章**
+- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
+- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
+
+**案例**
+- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
+- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
+
+**工具**
+- [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的CORS错误配置漏洞的 python 工具
+
+---
+
 # CSRF
 
 **文章**
@@ -400,6 +397,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **案例**
 - [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
+- [Periscope android app deeplink leads to CSRF in follow action](https://hackerone.com/reports/583987)
 
 ---
 
@@ -443,6 +441,7 @@ WEB-INF 主要包含一下文件或目录:
 **文章**
 - [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
+- [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
 
 ---
 

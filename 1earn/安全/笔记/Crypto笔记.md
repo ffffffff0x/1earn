@@ -10,6 +10,89 @@
 
 ---
 
+# 大纲
+
+**常见编码**
+
+* [ASCII](#ASCII)
+* [Base64/32/16](#Base64/32/16)
+* [base92](#base92)
+* [Escape/Unescape](#Escape/Unescape)
+* [HtmlEncode](#HtmlEncode)
+* [Quoted-printable](#Quoted-printable)
+* [Unicode](#Unicode)
+* [URL](#URL)
+* [UTF](#UTF)
+* [UUencode](#UUencode)
+* [XXencode](#XXencode)
+* [shellcode](#shellcode)
+* [进制](#进制)
+* [敲击码](#敲击码)
+* [莫尔斯电码](#莫尔斯电码)
+* [曼彻斯特编码](#曼彻斯特编码)
+
+**现代密码**
+
+* [AES](#AES)
+* [MD5](#MD5)
+* [rc4](#rc4)
+* [RIPE_MD160](#RIPE_MD160)
+* [RSA](#RSA)
+* [SHA](#SHA)
+* [SM国密](#SM国密)
+
+**古典密码**
+
+* [换位加密](#换位加密)
+    * [栅栏密码](#栅栏密码)
+    * [曲路密码](#曲路密码)
+    * [列移位密码](#列移位密码)
+* [替换加密](#替换加密)
+    * [ADFGX](#ADFGX)
+    * [Bazeries](#Bazeries)
+    * [Digrafid](#Digrafid)
+    * [Porta](#Porta)
+    * [ROT5/13/18/47](#ROT5/13/18/47)
+    * [摩斯电码](#摩斯电码)
+    * [查尔斯加密](#查尔斯加密)
+    * [埃特巴什码](#埃特巴什码)
+    * [凯撒密码](#凯撒密码)
+    * [简单替换密码](#简单替换密码)
+    * [希尔密码](#希尔密码)
+    * [猪圈密码](#猪圈密码)
+    * [波利比奥斯方阵密码](#波利比奥斯方阵密码)
+    * [夏多密码](#夏多密码)
+    * [普莱菲尔密码](#普莱菲尔密码)
+    * [维吉尼亚密码](#维吉尼亚密码)
+    * [自动密钥密码](#自动密钥密码)
+    * [博福特密码](#博福特密码)
+    * [滚动密钥密码](#滚动密钥密码)
+    * [同音替换密码](#同音替换密码)
+    * [仿射密码](#仿射密码)
+    * [培根密码](#培根密码)
+    * [双密码](#双密码)
+    * [三分密码](#三分密码)
+    * [四方密码](#四方密码)
+    * [棋盘密码](#棋盘密码)
+    * [跨棋盘密码](#跨棋盘密码)
+    * [分组摩尔斯替换密码](#分组摩尔斯替换密码)
+    * [格朗普雷密码](#格朗普雷密码)
+    * [比尔密码](#比尔密码)
+    * [键盘密码](#键盘密码)
+    * [恩尼格玛密码](#恩尼格玛密码)
+
+**其他编码**
+* [Brainfuck](#Brainfuck)
+* [JSfuck](#JSfuck)
+* [JS加密/解密](#JS加密/解密)
+* [颜文字加密](#颜文字加密)
+* [与佛论禅](#与佛论禅)
+* [文本加密为汉字](#文本加密为汉字)
+* [随机密码生成](#随机密码生成)
+* [核心价值观加密](#核心价值观加密)
+
+---
+
 **教程资源**
 - http://www.practicalcryptography.com/
 - https://cryptopals.com/
@@ -97,89 +180,6 @@ https://cryptii.com/
 已知明文攻击 |	拥有密文与对应的明文
 选择明文攻击 |	拥有加密权限,能够对明文加密后获得相应密文
 选择密文攻击 |	拥有解密权限,能够对密文解密后获得相应明文
-
----
-
-# 大纲
-
-**常见编码**
-
-* [ASCII](#ASCII)
-* [Base64/32/16](#Base64/32/16)
-* [base92](#base92)
-* [Escape/Unescape](#Escape/Unescape)
-* [HtmlEncode](#HtmlEncode)
-* [Quoted-printable](#Quoted-printable)
-* [Unicode](#Unicode)
-* [URL](#URL)
-* [UTF](#UTF)
-* [UUencode](#UUencode)
-* [XXencode](#XXencode)
-* [shellcode](#shellcode)
-* [进制](#进制)
-* [敲击码](#敲击码)
-* [莫尔斯电码](#莫尔斯电码)
-* [曼彻斯特编码](#曼彻斯特编码)
-
-**现代密码**
-
-* [AES](#AES)
-* [MD5](#MD5)
-* [rc4](#rc4)
-* [RIPE_MD160](#RIPE_MD160)
-* [RSA](#RSA)
-* [SHA](#SHA)
-* [SM国密](#SM国密)
-
-**古典密码**
-
-* [换位加密](#换位加密)
-    * [栅栏密码](#栅栏密码)
-    * [曲路密码](#曲路密码)
-    * [列移位密码](#列移位密码)
-* [替换加密](#替换加密)
-    * [ADFGX](#ADFGX)
-    * [Bazeries](#Bazeries)
-    * [Digrafid](#Digrafid)
-    * [Porta](#Porta)
-    * [ROT5/13/18/47](#ROT5/13/18/47)
-    * [摩斯电码](#摩斯电码)
-    * [查尔斯加密](#查尔斯加密)
-    * [埃特巴什码](#埃特巴什码)
-    * [凯撒密码](#凯撒密码)
-    * [简单替换密码](#简单替换密码)
-    * [希尔密码](#希尔密码)
-    * [猪圈密码](#猪圈密码)
-    * [波利比奥斯方阵密码](#波利比奥斯方阵密码)
-    * [夏多密码](#夏多密码)
-    * [普莱菲尔密码](#普莱菲尔密码)
-    * [维吉尼亚密码](#维吉尼亚密码)
-    * [自动密钥密码](#自动密钥密码)
-    * [博福特密码](#博福特密码)
-    * [滚动密钥密码](#滚动密钥密码)
-    * [同音替换密码](#同音替换密码)
-    * [仿射密码](#仿射密码)
-    * [培根密码](#培根密码)
-    * [双密码](#双密码)
-    * [三分密码](#三分密码)
-    * [四方密码](#四方密码)
-    * [棋盘密码](#棋盘密码)
-    * [跨棋盘密码](#跨棋盘密码)
-    * [分组摩尔斯替换密码](#分组摩尔斯替换密码)
-    * [格朗普雷密码](#格朗普雷密码)
-    * [比尔密码](#比尔密码)
-    * [键盘密码](#键盘密码)
-    * [恩尼格玛密码](#恩尼格玛密码)
-
-**其他编码**
-* [Brainfuck](#Brainfuck)
-* [JSfuck](#JSfuck)
-* [JS加密/解密](#JS加密/解密)
-* [颜文字加密](#颜文字加密)
-* [与佛论禅](#与佛论禅)
-* [文本加密为汉字](#文本加密为汉字)
-* [随机密码生成](#随机密码生成)
-* [核心价值观加密](#核心价值观加密)
 
 ---
 
@@ -591,6 +591,7 @@ http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 ---
 
 ## rc4
+
 **在线工具**
 - https://www.sojson.com/encrypt_rc4.html
 - http://tool.chacuo.net/cryptrc4
@@ -598,12 +599,14 @@ http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 ---
 
 ## RIPE_MD160
+
 **在线工具**
 - http://www.convertstring.com/zh_CN/Hash/RIPE_MD160
 
 ---
 
 ## RSA
+
 **文章**
 - [RSA算法原理(一)](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html)
 - [RSA算法原理(二)](http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html)
@@ -613,6 +616,7 @@ http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 ---
 
 ## SHA
+
 **SHA1 碰撞**
 - [SHAttered](https://shattered.io/)
 - [SHA1 collider](https://alf.nu/SHA1)
@@ -637,13 +641,15 @@ http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 - [tjfoc/gmsm: GM SM2/3/4 library based on Golang (基于Go语言的国密SM2/SM3/SM4算法库)](https://github.com/tjfoc/gmsm)
 - [JuneAndGreen/sm-crypto: 国密算法js版](https://github.com/JuneAndGreen/sm-crypto)
 - [PopezLotado/SM2Java: 国密SM2,SM3 Java实现](https://github.com/PopezLotado/SM2Java)
-- [NEWPLAN/SMx: 国家商用加密算法 SMx(SM2,SM3,SM4)](https://github.com/NEWPLAN/SMx)
+- [NEWPLAN/SMx: 国家商用加密算法 SMx(SM2,SM3,SM4)](https://github.com/NEWPLAN/SMx) - C 的实现
 - [algorithmNation:国密算法 SM2加解密 SM2 SM3 SM4签名验签](https://gitee.com/xshuai/algorithmNation)
 - [ZZMarquis/gmhelper:基于BC库:国密SM2/SM3/SM4算法简单封装;实现SM2 X509v3证书的签发;实现SM2 pfx证书的签发 ](https://github.com/ZZMarquis/gmhelper)
+- [gotoworld/hsd-cipher-sm](https://github.com/gotoworld/hsd-cipher-sm) - JAVA 国产密码算法 SM2，SM3，SM4 实现
 
 ---
 
 # 古典密码
+
 **文章**
 - [Leet - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Leet)
 - [纳瓦霍密码](https://baike.baidu.com/item/%E7%BA%B3%E7%93%A6%E9%9C%8D%E5%AF%86%E7%A0%81/9482868)
@@ -1457,29 +1463,37 @@ I have deposited in the county of Bedford...
 
 # 其他编码
 ## Brainfuck
+
 - http://esoteric.sange.fi/brainfuck/impl/interp/i.html
 - https://www.nayuki.io/page/brainfuck-interpreter-javascript
 - https://www.splitbrain.org/services/ook
 
 ## JSfuck
+
 - http://discogscounter.getfreehosting.co.uk/js-noalnum.php
 - http://www.jsfuck.com/
 
 ## JS加密/解密
+
 - http://tool.chinaz.com/tools/scriptencode.aspx
 
 ## 颜文字加密
+
 - https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html
 - http://utf-8.jp/public/aaencode.html
 
 ## 与佛论禅
+
 - http://www.keyfc.net/bbs/tools/tudoucode.aspx
 
 ## 文本加密为汉字
+
 - http://www.qqxiuzi.cn/bianma/wenbenjiami.php
 
 ## 随机密码生成
+
 - https://utils.chrisyue.com/password-generator/
 
 ## 核心价值观加密
+
 - https://sym233.github.io/core-values-encoder/

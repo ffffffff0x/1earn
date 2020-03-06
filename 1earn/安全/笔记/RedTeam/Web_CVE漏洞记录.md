@@ -378,9 +378,9 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 
 ## WordPress
 
-WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
-
 > 官网 : https://wordpress.org/
+
+WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
 
 **存在该环境的靶场**
 - [DC: 2](../../实验/VulnHub/DC/DC2-WalkThrough.md)
@@ -812,7 +812,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 **.Net Framework 拒绝服务攻击**
 - 简介
 
-    当请求文件夹名称包含 ~1 的请求,会导致不存在该文件的 .Net Framework 去递归查询所有根目录.如果只有一个"~1"是无效的,当"~1"大于一个,比如像这样:
+    当请求文件夹名称包含 `~1` 的请求,会导致不存在该文件的 .Net Framework 去递归查询所有根目录.如果只有一个"~1"是无效的,当"~1"大于一个,比如像这样:
     `/wwwtest/fuck~1/~1/~1/~1.aspx`
     此时文件系统会这样调用:
     ```
@@ -1194,6 +1194,12 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
     - [Spring Messaging 远程命令执行漏洞 (CVE-2018-1270) ](https://vulhub.org/#/environments/spring/CVE-2018-1270/)
 
 **CVE-2018-1273 Spring Data Commons RCE 远程命令执行漏洞**
+- 简介
+
+    Pivotal Spring Data Commons 和 Spring Data REST 都是美国 Pivotal Software 公司的产品。Pivotal Spring Data Commons 是一个为数据访问提供基于 Spring 模型的项目。Spring Data REST 是一个建立在 Spring Data 存储库之上的用于分析应用程序的域模型并公开超媒体驱动的 HTTP 资源。
+
+    Pivotal Spring Data Commons 和 Spring Data REST 中存在安全漏洞。远程攻击者可利用该漏洞执行代码。以下产品和版本受到影响：Spring Data Commons 1.13 版本至 1.13.10 版本，2.0 版本至 2.0.5 版本及一些已不再支持的老版本；Spring Data REST 2.6 版本至 2.6.10 版本，3.0 版本至 3.0.5 版本及一些已不再支持的老版本。
+
 - 文章
     - [Spring Data Commons 远程命令执行漏洞 (CVE-2018-1273) ](https://vulhub.org/#/environments/spring/CVE-2018-1273/)
 
@@ -1532,13 +1538,13 @@ base64 编码，口令形式为 username:password
     - [pyn3rd/CVE-2019-0232](https://github.com/pyn3rd/CVE-2019-0232)
     - [jas502n/CVE-2019-0232](https://github.com/jas502n/CVE-2019-0232)
 
-**CVE-2020-1938 && CNVD-2020-10487 Apache Tomcat Ghostcat漏洞**
+**CVE-2020-1938 && CNVD-2020-10487 Apache Tomcat Ghostcat 漏洞**
 
 - 概述
 
-    Apache Tomcat会开启AJP连接器,方便与其他Web服务器通过AJP协议进行交互。由于Tomcat本身也内含了HTTP服务器，因此也可以视作单独的Web服务器。
+    Apache Tomcat 会开启 AJP 连接器,方便与其他 Web 服务器通过 AJP 协议进行交互。由于 Tomcat 本身也内含了 HTTP 服务器，因此也可以视作单独的 Web 服务器。
 
-    但Apache Tomcat在AJP协议的实现上存在漏洞,导致攻击者可以通过发送恶意的AJP请求,可以读取或者包含Web应用根目录下的任意文件,如果配合文件上传任意格式文件，将可能导致任意代码执行(RCE).该漏洞利用AJP服务端口实现攻击,未开启AJP服务对外不受漏洞影响（tomcat默认将AJP服务开启并绑定至0.0.0.0/0）。
+    但 Apache Tomcat在 AJP 协议的实现上存在漏洞,导致攻击者可以通过发送恶意的 AJP 请求,可以读取或者包含 Web 应用根目录下的任意文件,如果配合文件上传任意格式文件，将可能导致任意代码执行(RCE).该漏洞利用 AJP 服务端口实现攻击,未开启 AJP 服务对外不受漏洞影响（tomcat 默认将 AJP 服务开启并绑定至 0.0.0.0/0）。
 
     此漏洞为文件包含漏洞，攻击者可利用该漏洞读取或包含 Tomcat 上所有 webapp 目录下的任意文件，如：webapp 配置文件、源代码等。
 
@@ -1557,11 +1563,11 @@ base64 编码，口令形式为 username:password
 
 - 修复建议
     - 请尽快更新 Tomcat 到安全版本。
-    - 临时禁用AJP协议端口,打开 Tomcat 配置文件 `<CATALINA_BASE>/conf/service.xml`,注释掉如下行：
+    - 临时禁用 AJP 协议端口,打开 Tomcat 配置文件 `<CATALINA_BASE>/conf/service.xml`,注释掉如下行：
         ```xml
         <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
         ```
-        修改完后，重启tomcat即可。
+        修改完后，重启 tomcat 即可。
     - 除以上措施外，也可采用防火墙等方法阻止不可信任的来源访问 Tomcat AJP Connector 端口。
 
 ---
@@ -1569,6 +1575,10 @@ base64 编码，口令形式为 username:password
 ## Weblogic
 
 > 官网 : https://www.oracle.com/middleware/weblogic/
+
+Oracle Fusion Middleware（Oracle 融合中间件）是美国甲骨文（Oracle）公司的一套面向企业和云环境的业务创新平台。该平台提供了中间件、软件集合等功能。WebLogic Server 是其中的一个适用于云环境和传统环境的应用服务器组件。
+
+oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Oracle WebLogic Server](https://en.wikipedia.org/wiki/Oracle_WebLogic_Server)
 
 **Tips**
 - 老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用.
@@ -1652,6 +1662,10 @@ base64 编码，口令形式为 username:password
     - [pyn3rd/CVE-2018-2893](https://github.com/pyn3rd/CVE-2018-2893)
 
 **CVE-2018-2894 未授权访问致任意文件上传/RCE 漏洞**
+- 简介
+
+    Oracle Fusion Middleware 中的 Oracle WebLogic Server 组件的 WLS - Web Services 子组件存在安全漏洞。攻击者可利用该漏洞控制 Oracle WebLogic Server，影响数据的保密性、可用性和完整性。
+
 - 影响版本
     - weblogic_server 10.3.6.0.0
     - weblogic_server 12.1.3.0.0
@@ -1664,6 +1678,10 @@ base64 编码，口令形式为 username:password
     - [LandGrey/CVE-2018-2894](https://github.com/LandGrey/CVE-2018-2894)
 
 **CVE-2018-3191**
+- 简介
+
+    Oracle Fusion Middleware 中的 WebLogic Server 组件 10.3.6.0 版本、12.1.3.0 版本和 12.2.1.3 版本的 WLS Core Components 子组件存在安全漏洞。攻击者可利用该漏洞控制组件，影响数据的保密性、完整性和可用性。
+
 - 影响版本
     - weblogic_server 10.3.6.0.0
     - weblogic_server 12.1.3.0.0
@@ -1676,6 +1694,10 @@ base64 编码，口令形式为 username:password
     - [voidfyoo/CVE-2018-3191](https://github.com/voidfyoo/CVE-2018-3191)
 
 **CVE-2018-3245**
+- 简介
+
+    Oracle Fusion Middleware 中的 WebLogic Server 组件 10.3.6.0 版本、12.1.3.0 版本和 12.2.1.3 版本的 WLS Core Components 子组件存在安全漏洞。攻击者可利用该漏洞控制组件，影响数据的保密性、完整性和可用性。
+
 - 影响版本
     - weblogic_server 10.3.6.0.0
     - weblogic_server 12.1.3.0.0
@@ -1688,6 +1710,10 @@ base64 编码，口令形式为 username:password
     - [pyn3rd/CVE-2018-3245](https://github.com/pyn3rd/CVE-2018-3245)
 
 **CVE-2018-3246**
+- 简介
+
+    Oracle Fusion Middleware 中的 WebLogic Server 组件 12.1.3.0 版本和 12.2.1.3 版本的 WLS - Web Services 子组件存在安全漏洞。攻击者可利用该漏洞未授权访问数据，影响数据的保密性。
+
 - 影响版本
     - weblogic_server 12.1.3.0.0
     - weblogic_server 12.2.1.3.0
@@ -1701,6 +1727,10 @@ base64 编码，口令形式为 username:password
     - `http://127.0.0.1:8338/ws_utc/begin.do`
 
 **CVE-2019-2615 任意文件读取漏洞**
+- 简介
+
+    Oracle Fusion Middleware 中的 WebLogic Server 组件 10.3.6.0.0 版本、12.1.3.0.0 版本和 12.2.1.3.0 版本的 WLS Core Components 子组件存在安全漏洞。攻击者可利用该漏洞未授权访问数据，影响数据的保密性。
+
 - 影响版本
     - weblogic_server 10.3.6.0.0
     - weblogic_server 12.1.3.0.0
@@ -1710,6 +1740,10 @@ base64 编码，口令形式为 username:password
     - [chiaifan/CVE-2019-2615](https://github.com/chiaifan/CVE-2019-2615)
 
 **CVE-2019-2618 Weblogic Upload Vuln(Need username password)**
+- 简介
+
+    Oracle Fusion Middleware 中的 WebLogic Server 组件 10.3.6.0.0 版本和 12.1.3.0.0 版本和 12.2.1.3.0 版本的 WLS Core Components 子组件存在安全漏洞。攻击者可利用该漏洞未授权访问、更新、插入或删除数据，影响数据的保密性和完整性。
+
 - 影响版本
     - weblogic_server 10.3.6.0.0
     - weblogic_server 12.1.3.0.0
@@ -1845,8 +1879,16 @@ FCKeditor/_samples/asp/sample04.asp
 **工具**
 - [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool) - fastjson rce 命令执行综合利用工具，一键操作,fastjson remote code execute poc
 - [c0ny1/FastjsonExploit](https://github.com/c0ny1/FastjsonExploit) - fastjson漏洞快速利用框架
+- [Lonely-night/fastjson_gadgets_scanner](https://github.com/Lonely-night/fastjson_gadgets_scanner) - scanner 扫描反编译生成的源文件
 
 ### Jackson
+
+FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处理工具。
+
+主要的几个 jar 包：
+- jackson-core : 核心包
+- jackson-annotations : 注解包
+- jackson-databind : 数据绑定包
 
 **CVE-2017-7525 Jackson-databind 反序列化漏洞**
 - 简介
@@ -1857,6 +1899,12 @@ FCKeditor/_samples/asp/sample04.asp
     - [Jackson-databind 反序列化漏洞（CVE-2017-7525）](https://vulhub.org/#/environments/jackson/CVE-2017-7525/)
 
 **CVE-2017-17485 Jackson-databind 反序列化**
+- 简介
+
+    FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处理工具。jackson-databind 是其中的一个具有数据绑定功能的组件。
+
+    FasterXML Jackson-databind 2.8.10 及之前版本和 2.9.x 版本至 2.9.3 版本中存在代码问题漏洞。远程攻击者可通过向 ObjectMapper 的 readValue 方法发送恶意制作的 JSON 输入并绕过黑名单利用该漏洞执行代码。
+
 - 文章
     - [CVE-2017-17485 Jackson-databind 反序列化](http://www.sec-redclub.com/archives/1058/)
 
@@ -2062,7 +2110,7 @@ Jenkins 的漏洞参考 https://jenkins.io/security/advisories/
 - 文章
     - [安全研究 | Jenkins 任意文件读取漏洞分析](https://bbs.ichunqiu.com/thread-43283-1-1.html)
 
-**CVE-2019-1003000 未授权访问RCE漏洞**
+**CVE-2019-1003000 未授权访问 RCE 漏洞**
 - 简介
 
     脚本安全插件 1.49 和更早版本的 src/main/Java/org/jenkinsci/plugins/Script Security/sandbox/groovy/GroovysandBox.Java 中存在沙箱绕过漏洞，使得攻击者能够提供沙箱脚本在 Jenkins 主 JVM 上执行任意代码。
@@ -2288,7 +2336,7 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 
 **phpMyAdmin 4.7.x CSRF**
 - 文章
-    - [phpMyAdmin 4.7.x CSRF 漏洞利用](http://blog.vulnspy.com/2018/06/10/phpMyAdmin-4-7-x-XSRF-CSRF-vulnerability-exploit/)
+    - [phpMyAdmin 4.7.x CSRF 漏洞利用](https://blog.vulnspy.com/2018/06/10/phpMyAdmin-4-7-x-XSRF-CSRF-vulnerability-exploit/)
 
 **4.8.x 本地文件包含漏洞利用**
 - 文章

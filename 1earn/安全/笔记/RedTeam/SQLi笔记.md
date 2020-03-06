@@ -51,7 +51,7 @@ Time-based blind SQL injection(基于时间延迟注入)
 ---
 
 # 按库
-## MYSQL
+## Mysql
 
 **手动注入**
 - 手工注入思路
@@ -85,7 +85,9 @@ Time-based blind SQL injection(基于时间延迟注入)
 
 ---
 
-## ORACLE
+## Oracle
+
+
 
 
 

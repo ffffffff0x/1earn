@@ -220,7 +220,7 @@
 
 ---
 
-以下是直接或间接贡献过本项目的人员名单(排名不分先后)
+以下是直接或间接贡献过本项目的人员名单(排名不分先后)(也包含我参考过的部分作者)
 - [Survivor_ms](https://github.com/136510385)
 - [hhkk2334](https://www.thesteel.live/)
 - [幻羽灵殇](https://github.com/syl2293686270)
@@ -229,6 +229,7 @@
 - [BeakHyun](https://github.com/Alienware-OWO)
 - [cililianjie](https://github.com/cililianjie)
 - [mfslog](https://github.com/mfslog)
+- Tide安全团队
 
 ---
 

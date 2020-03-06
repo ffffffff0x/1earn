@@ -33,8 +33,8 @@
 - [挖洞经验 | 看我如何发现亚马逊网站的反射型XSS漏洞](https://www.freebuf.com/articles/web/175606.html)
 
 **工具**
-- [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - 凑合着用吧,效果一般
-    - 依赖
+- [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般
+    - 依赖安装
         ```bash
         pip3 install -r requirements.txt
 
@@ -43,21 +43,19 @@
         mv geckodriver /usr/local/temp
         PATH=$PATH:/usr/local/temp/
         ```
-
-    - **[Usage](https://github.com/s0md3v/XSStrike/wiki/Usage#scan-a-single-url)**
+    - [Usage](https://github.com/s0md3v/XSStrike/wiki/Usage#scan-a-single-url)
         ```bash
         python3 xsstrike.py -u "http://example.com/search.php?q=query"
         python3 xsstrike.py -u "http://example.com/search.php?q=query" --fuzzer
         python3 xsstrike.py -u "http://example.com/search.php?q=query" --crawl
         ```
-
-- [faizann24/XssPy](https://github.com/faizann24/XssPy)
-- [XSS Fuzzer](https://xssfuzzer.com/fuzzer.html)
+- [faizann24/XssPy](https://github.com/faizann24/XssPy) - Web 应用 XSS 扫描器
+- [XSS Fuzzer](https://xssfuzzer.com/fuzzer.html) - payload 生成器
 
 **xss 平台**
 - **开源平台**
-    - [firesunCN/BlueLotus_XSSReceiver](https://github.com/firesunCN/BlueLotus_XSSReceiver)
-    - [keyus/xss](https://github.com/keyus/xss)
+    - [firesunCN/BlueLotus_XSSReceiver](https://github.com/firesunCN/BlueLotus_XSSReceiver) - XSS 平台 CTF 工具 Web 安全工具
+    - [keyus/xss](https://github.com/keyus/xss) - php 写的个人研究测试用的 xss cookie 攻击管理平台
 
 - **在线平台**
     - http://xssye.com/index.php

@@ -1283,8 +1283,10 @@ echo -e "xxx.com {
 
 **包管理器方式**
 - apt
-
-  `apt-get install nodejs npm`
+  ```bash
+  curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -  # 添加Node.js PPA
+  apt-get install nodejs npm
+  ```
 
 - yum
 

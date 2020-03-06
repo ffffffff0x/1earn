@@ -8,6 +8,20 @@
 
 ---
 
+# 大纲
+
+* [快照](#快照)
+* [Github](#Github)
+* [Google](#Google)
+* [Shodan](#Shodan)
+* [BinaryEdge](#BinaryEdge)
+* [Censys](#Censys)
+* [钟馗之眼](#钟馗之眼)
+* [FoFa](#FoFa)
+* [Dnsdb](#Dnsdb)
+
+---
+
 **文章**
 - [Shodan BinaryEdge ZoomEye 网络空间搜索引擎测评](https://paper.seebug.org/970/)
 - [[渗透神器系列]搜索引擎](https://thief.one/2017/05/19/1/)
@@ -30,20 +44,6 @@ https://habr.com/en/search/?q=
 https://so.csdn.net/so/search/s.do?q=
 http://so.51cto.com/?keywords=
 ```
-
----
-
-# 大纲
-
-* [快照](#快照)
-* [Github](#Github)
-* [Google](#Google)
-* [Shodan](#Shodan)
-* [BinaryEdge](#BinaryEdge)
-* [Censys](#Censys)
-* [钟馗之眼](#钟馗之眼)
-* [FoFa](#FoFa)
-* [Dnsdb](#Dnsdb)
 
 ---
 
@@ -161,16 +161,27 @@ https://github.com/ | GitHub
     ```
 
 - **黑产 seo 关键词**
+    - 钱
+        - 博彩
+        - 私服
+        - 页游
+        - 棋牌
+        - 网贷
+    - 色
+        - 视频网站
+        - 直播
+        - 论坛
+        - 游戏
     ```
-    老虎机 site:*.gov.cn
-    澳门银行 site:*.gov.cn
-    万博亚洲官网 site:*.gov.cn
-    狗万app site:*.gov.cn
-    新万博官网 site:*.gov.cn
-    ylg9999 site:*.gov.cn
-    九州娱乐 site:*.gov.cn
-    澳门威尼斯人 site:*.gov.cn
-    威尼斯人 site:*.gov.cn
+    老虎机
+    澳门银行
+    万博亚洲官网
+    狗万app
+    新万博官网
+    ylg9999
+    九州娱乐
+    澳门威尼斯人
+    威尼斯人
     大红鹰葡京会
     振动盘
     澳门银河
@@ -189,6 +200,19 @@ https://github.com/ | GitHub
     外围女
     按摩服务
     大保健
+    亿鼎博
+    六合彩
+    pk10
+    bet365
+    扑克王
+    金殿
+    线上娱乐
+    时时彩
+    北京赛车
+    开奖结果
+    私家侦探
+    特码
+    枪改
     ```
 
 - **漏洞**

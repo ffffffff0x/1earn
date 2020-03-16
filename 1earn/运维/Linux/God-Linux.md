@@ -68,6 +68,7 @@ curl ifconfig.me
 ```
 
 **[Thanos](https://github.com/hotvulcan/Thanos.sh)**
+
 This command could delete half your files randomly
 ```bash
 #!/bin/sh

@@ -2,26 +2,6 @@
 
 ---
 
-**Reference**
-- [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
-- [git配置代理命令](https://www.cnblogs.com/gx1069/p/6840413.html)
-- [泪流满面的 11 个 Git 面试题](http://blog.jobbole.com/114297/)
-- [git操作及fatal: Authentication failed for错误解决](https://blog.csdn.net/u011394598/article/details/80256896)
-- [github开启二次验证后后，git push验证权限失败](https://www.jianshu.com/p/d7ae993b4506)
-- [Git Push 避免用户名和密码方法](https://www.cnblogs.com/ballwql/p/3462104.html)
-- [Git远程操作详解](https://www.ruanyifeng.com/blog/2014/06/git_remote.html)
-- [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
-- [Git初始配置和基本使用](https://blog.csdn.net/daily886/article/details/80140720)
-- [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
-- [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
-- [使用git pull文件时和本地文件冲突怎么办？](http://www.01happy.com/git-resolve-conflicts/)
-- [Git冲突：commit your changes or stash them before you can merge. ](https://blog.csdn.net/lincyang/article/details/21519333)
-- [git commit中输入message的几种方式 ](https://www.jianshu.com/p/ad461b99e860)
-- [git commit 提交多行message](https://blog.csdn.net/sinat_29891353/article/details/76674798)
-- [如何撤销 Git 操作？](http://www.ruanyifeng.com/blog/2019/12/git-undo.html)
-
----
-
 # 原理
 
 ![image](../../../assets/img/开发/版本控制/git/1.jpg)
@@ -389,3 +369,23 @@ git push --force origin
     ```
     git push
     ```
+
+---
+
+**Reference**
+- [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
+- [git配置代理命令](https://www.cnblogs.com/gx1069/p/6840413.html)
+- [泪流满面的 11 个 Git 面试题](http://blog.jobbole.com/114297/)
+- [git操作及fatal: Authentication failed for错误解决](https://blog.csdn.net/u011394598/article/details/80256896)
+- [github开启二次验证后后，git push验证权限失败](https://www.jianshu.com/p/d7ae993b4506)
+- [Git Push 避免用户名和密码方法](https://www.cnblogs.com/ballwql/p/3462104.html)
+- [Git远程操作详解](https://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+- [Git 的 .gitignore 配置](https://www.cnblogs.com/haiq/archive/2012/12/26/2833746.html)
+- [Git初始配置和基本使用](https://blog.csdn.net/daily886/article/details/80140720)
+- [让Git的输出更友好: 多种颜色和自定义log格式](https://blog.csdn.net/lts_cxl/article/details/17282725)
+- [Git 的 4 个阶段的撤销更改](http://blog.jobbole.com/113097/)
+- [使用git pull文件时和本地文件冲突怎么办？](http://www.01happy.com/git-resolve-conflicts/)
+- [Git冲突：commit your changes or stash them before you can merge. ](https://blog.csdn.net/lincyang/article/details/21519333)
+- [git commit中输入message的几种方式 ](https://www.jianshu.com/p/ad461b99e860)
+- [git commit 提交多行message](https://blog.csdn.net/sinat_29891353/article/details/76674798)
+- [如何撤销 Git 操作？](http://www.ruanyifeng.com/blog/2019/12/git-undo.html)

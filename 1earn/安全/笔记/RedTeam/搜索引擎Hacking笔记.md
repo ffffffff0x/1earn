@@ -76,7 +76,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 **语法**
 
 限定词 	            | 案例
-- | -
+| - | - |
 in:name 	        | `in:name python` 查出仓库名中有 python 的项目（python in:name 也是一样的）
 in:description 	    | `in:name,description python` 查出仓库名或者项目描述中有 python 的项目
 in:readme 	        | `in:readme python` 查出 `readme.md` 文件里有 python 的项目

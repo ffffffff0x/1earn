@@ -1,5 +1,9 @@
 # Team-Plan
 
+<p align="center">
+    <img src="../../assets/img/Misc/Team-Plan.jpg" width="70%"></a>
+</p>
+
 ---
 
 **免责声明**

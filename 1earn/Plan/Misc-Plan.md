@@ -1,7 +1,7 @@
 # Misc-Plan
 
 <p align="center">
-    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../assets/img/Misc/Misc-Plan.png" width="60%"></a>
+    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../assets/img/Misc/Misc-Plan.jpg" width="60%"></a>
 </p>
 
 ---

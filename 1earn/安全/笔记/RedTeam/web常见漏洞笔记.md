@@ -434,6 +434,9 @@ WEB-INF 主要包含一下文件或目录:
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
 
+**工具**
+- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
+
 ---
 
 # URL跳转漏洞

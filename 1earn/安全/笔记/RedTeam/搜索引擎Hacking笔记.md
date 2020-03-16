@@ -1,5 +1,9 @@
 # 搜索引擎 Hacking 笔记
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/1.jpg" width="75%"></a>
+</p>
+
 ---
 
 ## 免责声明
@@ -28,6 +32,7 @@
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
 - [shodan-manual](https://b404.gitbooks.io/shodan-manual/)
 - [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
+- [OSINT（一）：网络资产搜索引擎](https://mp.weixin.qq.com/s/9dy1hku9-fQ3Z5FduYbKIQ)
 
 **搜索引擎语法**
 - 包含关键字: `intitle:关键字`
@@ -61,8 +66,73 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 
 # Github
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/9.jpg" width="25%"></a>
+</p>
+
 **文章**
 - [Auditing GitHub users’ SSH key quality](https://blog.benjojo.co.uk/post/auditing-github-users-keys)
+
+**语法**
+
+限定词 	            | 案例
+- | -
+in:name 	        | `in:name python` 查出仓库名中有 python 的项目（python in:name 也是一样的）
+in:description 	    | `in:name,description python` 查出仓库名或者项目描述中有 python 的项目
+in:readme 	        | `in:readme python` 查出 `readme.md` 文件里有 python 的项目
+repo:owner/name 	| `repo:octocat/hello-world` 查出 octocat 的 hello-world 项目（指定了某个人的某个项目）
+user:USERNAME 	    | `user:1335951413 stars:<10` 查出用户 1335951413 名下 stars 少于 10 的项目
+org:ORGNAME 	    | `org:github` 查出 github 名下的项目
+stars:n 	        | `stars:>=5` 查出 star数大于等于 5 个 的项目（支持大于小于区间等）
+pushed:YYYY-MM-DD 	| `css pushed:>2013-02-01` 查出仓库中包含 css 关键字，并且在 2013年1月 之后更新过的项目
+language:LANGUAGE 	| `rails language:javascript` 查出仓库包含 rails 关键字，并且使用 javscript 语言的项目
+created:YYYY-MM-DD 	| `webos created:<2011-01-01` 查出仓库中包含 webos 关键字并且是在 2011 年之前创建的项目（也支持时分秒，支持大于小于区间等）
+followers:n         | `followers:1000` 查出有 1000 个拥护者（followers） 的项目（支持大于小于区间等）
+forks:n 	        | `forks:5` 查出有 5 个 forks 的项目（支持大于小于区间等）
+topic:TOPIC         | `topic:jekyll` 查出含有 jekyll 这个 topic 的项目（项目描述下面的东西，相当于标签、分类）
+topics:n 	        | `topics:>5` 查出有 5 个以上 topic 的项目（支持大于小于区间等）
+archived:true/false | `archived:true GNOME` 查出已经封存了并且含有 GNOME 关键字的项目（已经不再维护了的项目）
+license:LICENSE_KEYWORD | `license:apache-2.0` 查出仓库的开源协议是 apache-2.0 的
+size:n 	| `size:1000` 查出仓库大小等于 1MB 的项目
+size:n 	| `size:>=30000` 查出仓库大小至少大于 30MB 的项目
+size:n 	| `size:50..120` 查出仓库大小在 50KB 至 120KB 之间的项目
+is:public/private | `is:public org:github` 查出仓库所有组织是 github 并且公开的项目
+is:public/private | `is:private github` 查出含有 github 关键字并且是私有的项目（私有的别人看不到，所以这个是用来搜索自己的私有项目的）
+
+> 项目名字(name)里有 python 的
+```
+in:name python
+```
+
+> 名字(name)里有 python 的并且 stars 大于 3000 的
+```
+in:name python starts:>3000
+```
+
+> 名字(name)里有 python 的并且 stars 大于 3000 、forks 大于 200 的
+```
+in:name python starts:>3000 forks:>200
+```
+
+> 详情(readme)里面有 python 的并且 stars 大于 3000 的
+```
+in:readme python starts:>3000
+```
+
+> 描述(description)里面有 python 的并且 stars 大于 3000 的
+```
+in:description python starts:>3000
+```
+
+> 描述(description)里面有 python 的并且是 python 语言的
+```
+in:description python language:python
+```
+
+> 描述(description)里面有 python 的并且 2019-12-20 号之后有更新过的
+```
+in:description python pushed:>2019-12-20
+```
 
 **例子**
 - 敏感信息
@@ -112,6 +182,10 @@ https://github.com/ | GitHub
 ---
 
 # Google
+
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/8.png" width="25%"></a>
+</p>
 
 **案例**
 - [GGvulnz — How I hacked hundreds of companies through Google Groups](https://medium.com/@milanmagyar/ggvulnz-how-i-hacked-hundreds-of-companies-through-google-groups-b69c658c8924) - 作者描述了如何通过 google group 的搜索结果获得未授权的访问链接
@@ -265,9 +339,18 @@ https://github.com/ | GitHub
 
 # Shodan
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/2.png" width="35%"></a>
+</p>
+
+`Shodan 是目前最为知名的黑客搜索引擎，它是由计算机程序员约翰·马瑟利（John Matherly）于2009年推出的，他在2003年就提出了搜索与 Internet 链接的设备的想法。发展至今已经变成搜索资源最全，搜索性能最强的网络资产搜索引擎。简述下 shodan 的工作原理：通过其强大的爬虫能力每隔一定时间扫描全互联网设备并抓取相应的 banner 信息建立索引，通过这些巨大的数据，你基本可以找到任何你想象得到的连接到互联网的东西。`
+
+**官网**
 - https://www.shodan.io
 
-`搜索结果略不满意,会员实际较为鸡肋`
+> 搜索结果略不满意,会员实际较为鸡肋
+
+> 无论付费用户还是免费用户，都可以使用shodan的搜索功能，只不过付费用户可以获得更多的搜索结果和导出、监控等更多高级功能。
 
 **手册**
 - [shodan-manual](https://b404.gitbooks.io/shodan-manual/content/)
@@ -330,8 +413,8 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
     - [Shodan Command-Line Interface](https://cli.shodan.io/)
 
 - **浏览器插件**
-    - [Shodan](https://chrome.google.com/webstore/detail/shodan/jjalcfnidlmpjhdfepjhjbhnhkbgleap)
-    - [Shodan.io](https://addons.mozilla.org/en-US/firefox/addon/shodan_io/)
+    - [chrome插件](https://chrome.google.com/webstore/detail/shodan/jjalcfnidlmpjhdfepjhjbhnhkbgleap)
+    - [firefox插件](https://addons.mozilla.org/en-US/firefox/addon/shodan_io/)
 
 - **Metasploit**
     ```bash
@@ -359,6 +442,13 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
 
 # BinaryEdge
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/3.png" width="15%"></a>
+</p>
+
+`BinaryEdge 是一家来自瑞士的公司提供的资产搜索引擎，其为企业提供网络安全，工程和数据科学解决方案的评估。它利用机器学习技术收集有关基础设施的信息，并将收集的数据与从提要中获得的数据相关联。功能包括通过将发现结果与安全工具结合后从联网设备和运行于它们的服务中提取数据来提供通知，警报和报告功能。·`
+
+**官网**
 - https://www.binaryedge.io/
 
 **语法**
@@ -387,6 +477,13 @@ product:"Dropbear sshd"             # Product Dropbear sshd
 
 # Censys
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/6.png" width="25%"></a>
+</p>
+
+`Censys 搜索引擎能够扫描整个互联网，Censys 每天都会扫描 IPv4 地址空间，以搜索所有联网设备并收集相关的信息，并返回一份有关资源（如设备、网站和证书）配置和部署信息的总体报告。`
+
+**官网**
 - https://www.censys.io
 
 **例子**
@@ -405,6 +502,13 @@ autonomous_system.description: University   # 系统描述
 
 # 钟馗之眼
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/5.png" width="25%"></a>
+</p>
+
+`ZoomEye 是北京知道创宇公司发布的网络空间侦测引擎，积累了丰富的网络扫描与组件识别经验。在此网络空间侦测引擎的基础上，结合“知道创宇”漏洞发现检测技术和大数据情报分析能力，研制出网络空间雷达系统，为政府、企事业及军工单位客户建设全球网络空间测绘提供技术支持及产品支撑。`
+
+**官网**
 - https://www.zoomeye.org/
 
 **语法**
@@ -433,6 +537,13 @@ city:tokyo + app:weblogic   # weblogic反序列化来一波？
 
 # FoFa
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/4.png" width="30%"></a>
+</p>
+
+`FOFA 是白帽汇推出的一款网络空间搜索引擎，它通过进行网络空间测绘，能够帮助研究人员或者企业迅速进行网络资产匹配，例如进行漏洞影响范围分析、应用分布统计、应用流行度排名统计等。`
+
+**官网**
 - https://fofa.so
 
 **语法**
@@ -464,6 +575,13 @@ app="Solr" && title=="Solr Admin"
 
 # Dnsdb
 
+<p align="center">
+    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking笔记/7.png" width="30%"></a>
+</p>
+
+`这是一个搜索全网络所有 DNS 服务器的搜索引擎。`
+
+**官网**
 - https://www.dnsdb.io/
 
 **语法**

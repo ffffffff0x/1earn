@@ -107,7 +107,7 @@ wfuzz -v -w test.txt -d "username=admin&password=FUZZ" --hh 206 -u http://192.16
 wfuzz -z file,/usr/share/wfuzz/wordlist/general/common.txt -b cookie=value1 -b cookie2=value2 http://testphp.vulnweb.com/FUZZ
 ```
 
-以上命令可生成如下的HTTP请求：
+以上命令可生成如下的 HTTP 请求：
 ```
 GET /attach HTTP/1.1
 Host: testphp.vulnweb.com

@@ -234,6 +234,19 @@
     python
     ```
 
+**CVE-2020-0796 微软 SMBv3 协议远程代码执行漏洞**
+- 简介
+
+    2020年3月11日，思科 Talos 发布了一个威胁等级被标记为 Critical 的 SMB 服务远程代码执行漏洞（CVE-2020-0796）综述，攻击者可以利用此漏洞远程无需用户验证通过发送构造特殊的恶意数据导致在目标系统上执行恶意代码，从而获取机器的完全控制。
+
+    本次漏洞存在于微软 SMBv3.0 协议中，该漏洞是由 SMBv3 处理恶意压缩数据包时进入错误流程造成的。攻击者利用该漏洞无须权限即可实现远程代码执行，受黑客攻击的目标系统只需开机在线即可能被入侵。
+
+- POC | Payload | exp
+    - [ollypwn/SMBGhost](https://github.com/ollypwn/SMBGhost)
+
+- 修复工具
+    - https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2020-0796
+
 ---
 
 ## 其他

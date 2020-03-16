@@ -27,9 +27,37 @@
 - [kali 安装新版本burp 以及不能使用重新安装jdk的解决方法](https://blog.csdn.net/nzjdsds/article/details/81205184)
 - [Intercepting HSTS protected traffic using Burp suite and Firefox](https://abhijith.live/intercepting-hsts-protected-traffic-using-burp-suite-and-firefox/)
 
-**tips**
+---
+
+## tips
+
+**部分网页依靠前端 JS 判断回包信息，如何篡改返回值？**
+
+右键Do intercept -- Response to this request
+
+![image](../../../assets/img/安全/工具/burp/33.png)
+
+**firefox 下抓包一直出现浏览器自己本身的包怎么办？**
 
 Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `false` ,可以关闭火狐向 `http://detectportal.firefox.com/` 发包
+
+或
+
+右键 Request in brower -- In onginal session 也可以配置忽略掉这个域名的包。
+
+![image](../../../assets/img/安全/工具/burp/34.png)
+
+**在没有导证书的情况下，一直需要手动忽略不安全的域名，怎么调整自动忽略？**
+
+burp Proxy 组件 options 选项 TLS Pass Through 部分，勾选 automatically add entries on client SSL negotiation failure。
+
+![image](../../../assets/img/安全/工具/burp/35.png)
+
+**一些爆破使用前端 md5 加密，怎么在爆破模块快速 hash payload？**
+
+burp Intruder 组件 Payloads 选项 Payload Processing 部分,add -- Hash -- MD5
+
+![image](../../../assets/img/安全/工具/burp/36.png)
 
 ---
 
@@ -87,7 +115,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 > 一个 Burp 插件,实现用 AES 算法透明加密原版菜刀 Caidao.exe 与服务器端交互的 http 数据流
 - [ekgg/Caidao-AES-Version](https://github.com/ekgg/Caidao-AES-Version)
 
-> HTTP Desync Attacks 辅助工具
+> HTTP_request_smuggling 辅助工具
 - [PortSwigger/http-request-smuggler](https://github.com/PortSwigger/http-request-smuggler)
 
 > 一款兼容 Windows,mac,linux 多个系统平台的 Burp 与 sqlmap 联动插件
@@ -149,7 +177,7 @@ Firefox `about:config` 里 `network.captive-portal-service.enabled` 设置成 `f
 
 - **firefox**
 
-    浏览器访问 burp/ ,下载 cacert.der 证书,一路下一步安装,证书存储选择存储在 `受信任的根证书颁发机构`,firefox 需要到 隐私与安全->证书->查看证书->导入->全部勾选信任
+    浏览器访问 `burp/` ,下载 cacert.der 证书,一路下一步安装,证书存储选择存储在 `受信任的根证书颁发机构`,firefox 需要到 隐私与安全->证书->查看证书->导入->全部勾选信任
 
 ---
 

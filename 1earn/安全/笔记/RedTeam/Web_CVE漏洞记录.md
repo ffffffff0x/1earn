@@ -127,8 +127,9 @@
 
 > 官网 : https://discuz.ml/
 
-**工具**
-- [theLSA/discuz-ml-rce](https://github.com/theLSA/discuz-ml-rce)
+**discuzml-v-3-x-code-injection-vulnerability**
+- POC | Payload | exp
+    - [theLSA/discuz-ml-rce](https://github.com/theLSA/discuz-ml-rce)
 
 **CVE-2019-13956**
 - 简介
@@ -368,11 +369,12 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [ThinkPHP 5.x 远程命令执行漏洞利用过程](https://laucyun.com/a9142c328b103cd86a3715bd5073c4be.html)
 
 **工具**
-- [Lucifer1993/TPscan](https://github.com/Lucifer1993/TPscan)
+- [Lucifer1993/TPscan](https://github.com/Lucifer1993/TPscan) - 一键 ThinkPHP 漏洞检测
+- [theLSA/tp5-getshell](https://github.com/theLSA/tp5-getshell) - thinkphp5 rce 漏洞检测工具
 
 **资源**
-- [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln)
-- [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection)
+- [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln) - 关于ThinkPHP框架的历史漏洞分析集合
+- [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection) - thinkphp v5.x 远程代码执行漏洞-POC集合
 
 ---
 
@@ -543,6 +545,12 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 **搭建教程**
 - [ActiveMQ 搭建](../../../运维/Linux/Power-Linux.md#ActiveMQ)
 
+**CVE-2015-1830 Apache ActiveMQ 5.11.1 Directory Traversal / Shell Upload**
+- MSF Module
+    ```bash
+    use exploit/windows/http/apache_activemq_traversal_upload
+    ```
+
 **CVE-2015-5254 ActiveMQ 反序列化漏洞**
 - 简介
 
@@ -570,6 +578,17 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 
 - 文章
     - [ActiveMQ任意文件写入漏洞 (CVE-2016-3088) ](https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2016-3088/README.zh-cn.md)
+
+---
+
+## Dubbo
+
+> 官网 : https://dubbo.apache.org/zh-cn/
+
+Apache Dubbo 是一款高性能、轻量级的开源 Java RPC 框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。
+
+**工具**
+- [threedr3am/dubbo-exp](https://github.com/threedr3am/dubbo-exp) - Dubbo 反序列化一键快速攻击测试工具，支持 dubbo 协议和 http 协议，支持 hessian 反序列化和 java 原生反序列化。
 
 ---
 
@@ -1034,7 +1053,7 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 
 **工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
-- [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce)
+- [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce) - shiro rce 反序列 命令执行 一键工具
 
 **SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
 - https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
@@ -1226,7 +1245,7 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 **工具**
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
 - [HatBoy/Struts2-Scan](https://github.com/HatBoy/Struts2-Scan) - Python3 Struts2 全漏洞扫描利用工具
-- [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools)
+- [shack2/Struts2VulsTools](https://github.com/shack2/Struts2VulsTools) - Struts2 系列漏洞检查工具
 - [x51/STS2G](https://github.com/x51/STS2G) - Golang 版 Struts2 漏洞扫描利用工具
 
 **环境搭建**
@@ -1871,6 +1890,17 @@ FCKeditor/_samples/asp/sample04.asp
 
 ---
 
+### ueditor
+
+**CNVD-2017-20077 ueditor 上传漏洞**
+- 文章
+    - [UEditor编辑器两个版本任意文件上传漏洞分析](https://www.freebuf.com/vuls/181814.html)
+
+- POC | Payload | exp
+    - [theLSA/ueditor-getshell](https://github.com/theLSA/ueditor-getshell)
+
+---
+
 ## 序列化
 ### fastjson
 
@@ -1911,7 +1941,7 @@ FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处
 **CVE-2019-12086**
 - 简介
 
-    使用了jackson-databind 2.x before 2.9.9的Java应用，如果ClassPath中有com.mysql.cj.jdbc.admin.MiniAdmin（存在于MySQL的JDBC驱动中）这个类，那么Java应用所在的服务器上的文件，就可能被任意读取并传送到恶意的MySQL Server。
+    使用了 jackson-databind 2.x before 2.9.9 的 Java 应用，如果 ClassPath 中有 com.mysql.cj.jdbc.admin.MiniAdmin（存在于 MySQL 的 JDBC 驱动中）这个类，那么 Java 应用所在的服务器上的文件，就可能被任意读取并传送到恶意的MySQL Server。
 
 - 文章
     - [分析Jackson的安全漏洞CVE-2019-12086](https://www.cnblogs.com/xinzhao/p/11005419.html)
@@ -1919,9 +1949,9 @@ FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处
 **CVE-2019-12384 Jackson-databind RCE And SSRF**
 - 简介
 
-    6月21日，Redhat官方发布jackson-databind漏洞（CVE-2019-12384）安全通告，多个Redhat产品受此漏洞影响，CVSS评分为8.1，漏洞利用复杂度高。7月22日，安全研究员Andrea Brancaleoni对此漏洞进行分析，并公布了该漏洞的分析文章。
+    6月21日，Redhat 官方发布 jackson-databind 漏洞（CVE-2019-12384）安全通告，多个 Redhat 产品受此漏洞影响，CVSS 评分为 8.1，漏洞利用复杂度高。7月22日，安全研究员 Andrea Brancaleoni 对此漏洞进行分析，并公布了该漏洞的分析文章。
 
-    该漏洞是由于Jackson黑名单过滤不完整而导致，当开发人员在应用程序中通过ObjectMapper对象调用enableDefaultTyping方法时，程序就会受到此漏洞的影响，攻击者就可利用构造的包含有恶意代码的json数据包对应用进行攻击，直接获取服务器控制权限。
+    该漏洞是由于 Jackson 黑名单过滤不完整而导致，当开发人员在应用程序中通过 ObjectMapper 对象调用 enableDefaultTyping 方法时，程序就会受到此漏洞的影响，攻击者就可利用构造的包含有恶意代码的 json 数据包对应用进行攻击，直接获取服务器控制权限。
 
 - 影响版本
     - Jackson-databind 2.X < 2.9.9.1
@@ -1932,6 +1962,27 @@ FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-12384](https://github.com/jas502n/CVE-2019-12384)
+
+**CVE-2020-8840 FasterXML/jackson-databind 远程代码执行漏洞**
+- 影响版本
+    - Jackson-databind 2.X < 2.9.10.2
+
+- POC | Payload | exp
+    - [jas502n/CVE-2020-8840](https://github.com/jas502n/CVE-2020-8840)
+
+**CVE-2020-9547 FasterXML/jackson-databind 远程代码执行漏洞**
+- 影响版本
+    - Jackson-databind 2.X < 2.9.10.4
+
+- POC | Payload | exp
+    - [fairyming/CVE-2020-9547](https://github.com/fairyming/CVE-2020-9547)
+
+**CVE-2020-9548 FasterXML/jackson-databind 远程代码执行漏洞**
+- 影响版本
+    - Jackson-databind 2.X < 2.9.10.4
+
+- POC | Payload | exp
+    - [fairyming/CVE-2020-9548](https://github.com/fairyming/CVE-2020-9548)
 
 ---
 

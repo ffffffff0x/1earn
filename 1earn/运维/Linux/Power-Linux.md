@@ -9,14 +9,19 @@
 ░░        ░░░░░░  ░░░    ░░░  ░░░░░░ ░░░          ░░░░░░░░ ░░ ░░░   ░░  ░░░░░░ ░░   ░░
 ```
 
+<p align="center">
+    <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="65%"></a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+</p>
+
 - `Linux 下各种常见服务的搭建/配置指南`
 - `大部分适用于 Centos7`
 - `主要以安装搭建为主,更深一步的配置请自行研究`
 - `如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
-
-<p align="center">
-     <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="65%"></a>
-</p>
 
 ---
 
@@ -32,6 +37,7 @@
 **🍜网络服务**
 
 * [AdguardTeam](#AdguardTeam)
+* [Cacti](#Cacti)
 * [Chrony](#Chrony)
 * [cloud-torrent](#cloud-torrent)
 * [DHCP](#DHCP)
@@ -116,6 +122,8 @@
 
 # 常见服务
 ## Lvm
+
+`LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。`
 
 ```bash
 fdisk -l		        # 查看磁盘情况
@@ -282,6 +290,8 @@ mount | grep '^/dev'
 
 ## Vim
 
+`VIM 是 Linux 系统上一款文本编辑器，它是操作文本的一款利器。`
+
 **常用操作**
 ```bash
 Normal 模式下 i 进入 insert 模式
@@ -368,6 +378,227 @@ systemctl stop firewalld
 
 ---
 
+## Cacti
+
+`Cacti 是一套基于 PHP,MySQL,SNMP 及 RRDTool 开发的网络流量监测图形分析工具。它的主要功能是用 snmp 服务获取数据，然后用 rrdtool 储存和更新数据，当用户需要查看数据的时候用 rrdtool 生成图表呈现给用户。`
+
+**什么是 RRDtools**
+
+RRDtool 是指 Round Robin Database 工具（环状数据库）。Round robin 是一种处理定量数据、以及当前元素指针的技术。想象一个周边标有点的圆环－－这些点就是时间存储的位置。从圆心画一条到圆周的某个点的箭头－－这就是指针。就像我们在一个圆环上一样，没有起点和终点，你可以一直往下走下去。过来一段时间，所有可用的位置都会被用过，该循环过程会自动重用原来的位置。这样，数据集不会增大，并且不需要维护。RRDtool 处理 RRD 数据库。它用向 RRD 数据库存储数据、从 RRD 数据库中提取数据。
+
+**搭建 lamp**
+
+```bash
+yum install yum-utils
+wget https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
+rpm -ivh mysql80-community-release-el7-1.noarch.rpm
+yum-config-manager --disable mysql80-community
+yum-config-manager --enable mysql57-community
+yum install mysql-community-server mysql-community-devel httpd php php-mysql php-gd libjpeg* php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash libxml2-devel libevent-devel curl-devel net-snmp* php-snmp php-fpm
+
+systemctl enable mysqld && systemctl enable httpd
+```
+
+初始化 mysql
+```bash
+/usr/bin/mysqld –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+# 或
+/usr/bin/mysql –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+```
+```bash
+systemctl start mysqld
+
+vim /etc/my.cnf
+
+# 在末尾添加一行规则
+skip-grant-tables
+```
+```bash
+systemctl restart mysqld
+mysql -uroot -p
+
+use mysql;
+update user set authentication_string=password('123456') where user='root';
+# !!!注意这里添加了密码为123456的root用户
+
+exit
+```
+
+修改 php.ini 配置文件
+```
+vim /etc/php.ini
+
+date.timezone = "Asia/Shanghai"
+```
+```bash
+systemctl start httpd
+echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+service firewalld stop
+```
+
+然后在浏览器上访问 `ip/phpinfo.php` 能看到 phpinfo 信息就没问题
+
+**安装配置 cacti**
+
+编辑 `my.cnf` 配置文件
+```bash
+vim /etc/my.cn
+
+[mysqld]
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+```
+```bash
+systemctl restart mysqld
+
+mysql -uroot -p123456
+
+create database cacti character set utf8 ;
+ALTER DATABASE cacti CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+exit
+```
+```bash
+vim /etc/my.cnf
+
+# 删除末尾规则
+skip-grant-tables
+
+
+systemctl restart mysqld
+mysql -uroot -p123456
+
+set global validate_password_policy=LOW;
+set global validate_password_length=6;
+alter user 'root'@'localhost' identified by '123456';
+grant all privileges on cacti.* to cacti@localhost identified by '1qaz@WSX';
+GRANT SELECT ON mysql.time_zone_name TO cacti@localhost IDENTIFIED BY '1qaz@WSX';
+flush privileges ;
+mysql_tzinfo_to_sql /usr/share/zoneinfo
+exit;
+
+systemctl restart mysqld
+```
+
+导入 cacti 数据库脚本
+```bash
+cd /usr/local/src/
+wget https://www.cacti.net/downloads/cacti-1.2.8.zip
+unzip cacti-1.2.8.zip
+
+
+mysql -uroot -p123456
+use cacti ;
+source /usr/local/src/cacti-1.2.8/cacti.sql ;
+exit
+```
+
+```bash
+cd /var/www/html
+mkdir cacti
+cp -r /usr/local/src/cacti-1.2.8/* /var/www/html/cacti
+```
+```bash
+vim /var/www/html/cacti/include/config.php
+
+# 把原来的配置信息修改成以下信息：
+$database_type = 'mysql';
+$database_default = 'cacti';
+$database_hostname = 'localhost';
+$database_username = 'cacti';
+$database_password = '1qaz@WSX';
+$database_port = '3306';
+$database_ssl = false;
+```
+
+```bash
+useradd -s /sbin/nologin cacti
+mkdir /var/www/html/cacti/rra/log
+chown -R cacti /var/www/html/cacti/rra/log/
+```
+
+配置定时任务
+```bash
+crontab -e
+
+*/5 * * * * /usr/bin/php /var/www/html/cacti/poller.php > /dev/null 2>&1
+
+crontab -l # 查看是否写正确
+systemctl enable crond
+systemctl start crond
+```
+
+**安装其他组件**
+```bash
+cd /tmp
+wget https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz
+wget https://www.cacti.net/downloads/spine/cacti-spine-1.2.1.tar.gz
+
+yum install glib2-devel cairo-devel libxml2-devel pango pango-devel help2man
+```
+
+**安装 rrdtool 工具**
+```bash
+tar zxvf rrdtool-1.7.0.tar.gz
+cd rrdtool-1.7.0
+./configure --prefix=/usr/local/bin/rrdtool
+make
+make install
+```
+
+**安装 cacti-spine 工具**
+```bash
+cd ../
+tar zxvf cacti-spine-1.2.1.tar.gz
+cd cacti-spine-1.2.1
+./configure --prefix=/usr/local/spine
+make
+make install
+```
+```bash
+vim /usr/local/spine/etc/spine.conf
+
+DB_Host localhost
+DB_Database cacti
+DB_User cacti
+DB_Pass 1qaz@WSX
+DB_Port 3306
+```
+
+```bash
+setenforce 0
+
+cd /var/www/html/cacti/log
+ls
+# 如果发现没有 cacti.log 文件时，可以执行一下命令：
+touch cacti.log
+chmod 777 cacti.log
+
+chmod 777 /var/www/html/cacti/resource/snmp_queries/
+chmod 777 /var/www/html/cacti/resource/script_server/
+chmod 777 /var/www/html/cacti/resource/script_queries/
+chmod 777 /var/www/html/cacti/scripts/
+chmod 777 /var/www/html/cacti/log/
+chmod 777 /var/www/html/cacti/cache/boost/
+chmod 777 /var/www/html/cacti/cache/mibcache/
+chmod 777 /var/www/html/cacti/cache/realtime/
+chmod 777 /var/www/html/cacti/cache/spikekill/
+```
+
+**如果出现 csrf-secret.php not writable**
+```bash
+systemctl edit php-fpm.service
+
+[Service]
+ReadWritePaths = /usr/share/webapps/cacti/include/vendor/csrf
+
+chmod 777 /var/www/html/cacti/include/vendor/csrf
+systemctl restart php-fpm.service
+```
+
+在浏览器访问：`http://ip/cacti` 默认密码 admin/admin
+
+---
+
 ## Chrony
 
 `一个时间同步软件,可用于搭建类 NTP 时间服务`
@@ -434,24 +665,30 @@ chronyc             # 进入交互模式
 - https://github.com/jpillora/cloud-torrent
 
 **安装**
-
-`curl https://i.jpillora.com/cloud-torrent! | bash`
+```
+curl https://i.jpillora.com/cloud-torrent! | bash
+```
 
 **运行**
-
-`cloud-torrent -o`
+```
+cloud-torrent -o
+```
 
 ---
 
 ## DHCP
 
-**安装**
+`DHCP 服务程序用于为客户端主机分配可用的 IP 地址`
 
-`yum install dhcp`
+**安装**
+```
+yum install dhcp
+```
 
 **复制一份示例**
-
-`cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf`
+```
+cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf
+```
 
 **修改配置文件**
 ```vim
@@ -483,9 +720,12 @@ cat /var/lib/dhcpd/dhcpd.leases   # 查看租约文件,了解租用情况
 
 ## DNS
 
-**安装**
+`DNS 用于将人类可读的域名(例如，www.google.com) 进行域名解析为机器可读的 IP 地址`
 
-`yum install bind-*`
+**安装**
+```
+yum install bind-*
+```
 
 **主配置文件**
 ```vim
@@ -734,6 +974,8 @@ clearpart --all --initlabel
 
 ## OpenVPN
 
+`OpenVPN 是一个用于创建虚拟专用网络加密通道的软件包`
+
 **官网**
 - https://openvpn.net/
 
@@ -818,11 +1060,13 @@ socks5 127.0.0.1 1080   # 改成你懂的
 
 **使用**
 
-在需要代理的命令前加上 proxychains4 ,如:`proxychains4 wget https://www.google.com/`
+在需要代理的命令前加上 proxychains4 ,如 : `proxychains4 wget https://www.google.com/`
 
 ---
 
 ## SSH
+
+`Secure Shell 是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境。`
 
 **官网**
 - https://www.ssh.com
@@ -1015,7 +1259,7 @@ ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
 # web服务-中间件
 ## ActiveMQ
 
-Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.
+`Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.`
 
 **安装**
 
@@ -1056,6 +1300,8 @@ firewall-cmd --reload
 ---
 
 ## Apache
+
+`Apache HTTP Server 是 Apache 軟體基金會的一個開放原始碼的網頁伺服器軟體，可以在大多數電腦作業系統中運行。由於其跨平台和安全性，被廣泛使用，是最流行的 Web 伺服器軟體之一。`
 
 **官网**
 - https://www.apache.org/
@@ -1223,6 +1469,8 @@ echo "<?php phpinfo(); ?>"  > /var/www/html/1.php
 
 ## Caddy
 
+`Caddy 伺服器是一個開源的，使用 Golang 編寫，支持 HTTP/2 的 Web 服務端。`
+
 **官网**
 - https://caddyserver.com/
 
@@ -1277,6 +1525,10 @@ echo -e "xxx.com {
 
 ## npm&Node
 
+`npm 是 Node.js 預設的、以 JavaScript 編寫的軟體套件管理系統。`
+
+`Node.js 是能夠在伺服器端運行 JavaScript 的開放原始碼、跨平台 JavaScript 執行環境。`
+
 **官网**
 - https://www.npmjs.com/
 - https://nodejs.org
@@ -1321,6 +1573,8 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ---
 
 ## Nexus
+
+`Nexus 是一种 Maven 仓库管理软件用于搭建私服,私服是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构件。有了私服之后，当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。`
 
 **官网**
 - https://www.sonatype.com/nexus-repository-oss
@@ -1376,6 +1630,8 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 ---
 
 ## Nginx
+
+`Nginx 是非同步框架的網頁伺服器，也可以用作反向代理、負載平衡器和 HTTP 缓存。`
 
 **官网**
 - https://nginx.org/
@@ -2429,10 +2685,10 @@ source /etc/profile.d/oracle19c.sh
 ```
 
 ```bash
-# 修改Oracle用户的密码:
+# 修改 Oracle 用户的密码:
 passwd oracle
 
-# 使用Oracle登录进行相关的处理
+# 使用 Oracle 登录进行相关的处理
 su - oracle
 sqlplus / as sysdba
 
@@ -2466,7 +2722,7 @@ setenforce 0
 
 **注 : 报错 ORA-28547:connection to server failed, probable Oracle Net admin error**
 
-oci.dll 版本不对.因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的,Oracle 的客户端分为两种,一种是标准版,一种是简洁版,即 Oracle Install Client.而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI,如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时,多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的.
+`oci.dll` 版本不对.因为 Navicat 是通过 Oracle 客户端连接 Oracle 服务器的,Oracle 的客户端分为两种,一种是标准版,一种是简洁版,即 Oracle Install Client.而我们用 Navicat 时通常会在自己的安装路径下包含多个版本的 OCI,如果使用 Navicat 连接 Oracle 服务器出现 ORA-28547 错误时,多数是因为 Navicat 本地的 OCI 版本与 Oracle 服务器服务器不符造成的.
 
 OCI 下载地址 : https://www.oracle.com/database/technologies/instant-client/downloads.html ,解压 instantclient-basic-win-x64
 
@@ -2482,7 +2738,7 @@ OCI 下载地址 : https://www.oracle.com/database/technologies/instant-client/d
 
 **创建用户**
 
-oracle内部有两个默认的用户：system 和 sys。用户可直接登录到 system 用户以创建其他用户，因为 system 具有创建别的用户的权限。 在安装 oracle 时，用户或系统管理员首先可以为自己建立一个用户。
+oracle 内部有两个默认的用户：`system` 和 `sys`。用户可直接登录到 `system` 用户以创建其他用户，因为 `system` 具有创建别的用户的权限。 在安装 oracle 时，用户或系统管理员首先可以为自己建立一个用户。
 
 ```
 语法[创建用户]： create user 用户名 identified by 口令[即密码]；
@@ -2492,11 +2748,20 @@ oracle内部有两个默认的用户：system 和 sys。用户可直接登录到
 例子： alter user test identified by 123456;
 ```
 
-创建用户的时候用户名以c##或者C##开头即可。
+创建用户的时候用户名以 `c##` 或者 `C##` 开头即可。
 ```
 错误写法：create user test identified by oracle;
 正确写法：create user c##test identified by oracle;
 ```
+
+**关闭**
+```
+su - oracle
+sqlplus / as sysdba
+shutdown
+```
+
+整个启动和关闭的过程都会记录在 alert 日志文件中。
 
 ---
 
@@ -3587,7 +3852,7 @@ sudo apt-get install jenkins
 
 **安装**
 
-[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 写的很详细了,在此我只记录重点
+> 以下部分内容来自 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 在此只记录重点
 
 `注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
 
@@ -4106,7 +4371,7 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 **官网**
 - https://www.clamav.net
 
-`本部分来自 https://blog.51cto.com/11199460/2083697,在此仅作排版调整`
+> 以下部分内容来自 https://blog.51cto.com/11199460/2083697,在此仅作排版调整
 
 **安装**
 ```bash
@@ -4209,7 +4474,7 @@ clamscan -r --remove    # 查杀当前目录并删除感染的文件
 **项目地址**
 - https://github.com/fail2ban/fail2ban
 
-`本部分来自 https://linux.cn/article-5067-1.html,在此仅作排版调整`
+> 以下部分内容来自 https://linux.cn/article-5067-1.html,在此仅作排版调整
 
 **安装**
 
@@ -4306,7 +4571,9 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 ## openldap
 
-- 内容来自 https://blog.csdn.net/weixin_41004350/article/details/89521170 ,仅作排版处理和部分内容处理
+`OpenLDAP 是轻型目录访问协议（Lightweight Directory Access Protocol，LDAP）的自由和开源的实现，在其 OpenLDAP 许可证下发行，并已经被包含在众多流行的 Linux 发行版中。`
+
+> 以下部分内容来自 https://blog.csdn.net/weixin_41004350/article/details/89521170 ,仅作排版处理和部分内容处理
 
 **安装**
 ```bash
@@ -4529,6 +4796,47 @@ service firewalld stop
 连接工具使用 LdapAdmin
 
 ![image](../../../assets/img/运维/Linux/Power/2.png)
+
+**PhpLdapAdmin**
+
+> 以下部分内容来自 https://neversec.top/20180329/LDAP安装和基本管理手记.html ,仅作排版处理和部分内容处理
+
+```bash
+yum -y install epel-release
+yum -y install httpd
+yum -y install phpldapadmin
+```
+```vim
+vim /etc/httpd/conf.d/phpldapadmin.conf
+
+Alias /phpldapadmin /usr/share/phpldapadmin/htdocs
+Alias /ldapadmin /usr/share/phpldapadmin/htdocs
+
+<Directory /usr/share/phpldapadmin/htdocs>
+  <IfModule mod_authz_core.c>
+    # Apache 2.4
+    Require all granted
+    Allow from all
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Order Deny,Allow
+    Allow from all
+  </IfModule>
+</Directory>
+```
+```vim
+vim /etc/phpldapadmin/config.php
+# 去掉注释 并注释原来的配置
+$servers->setValue('login','attr','dn');
+//$servers->setValue('login','attr','uid');
+```
+```bash
+#重启服务
+systemctl restart httpd
+```
+
+访问 `http://ip/ldapadmin`，点击登陆。CN 填写域信息`cn=admin,dc=fox,dc=com`，密码填写自己设置的密码。
 
 ---
 

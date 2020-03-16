@@ -9,12 +9,17 @@
 ░░░░░░░░   ░░░░░░  ░░░░░   ░░░░░░ ░░░     ░░░░░░       ░░░░░░░░ ░░ ░░░   ░░  ░░░░░░ ░░   ░░
 ```
 
-- `Linux 加固+维护+应急响应参考`
-- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
-
 <p align="center">
     <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
 </p>
+
+<p align="center">
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+</p>
+
+- `Linux 加固+维护+应急响应参考`
+- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
 
 ---
 
@@ -43,12 +48,24 @@
 # 文件
 ## 可疑文件
 
+**最近文件**
 ```bash
 find / -ctime -2                # 查找72小时内新增的文件
 find ./ -mtime 0 -name "*.jsp"  #​ 查找24小时内被修改的 JSP 文件
 find / *.jsp -perm 4777         # 查找777的权限的文件
+```
+
+**临时文件**
+```bash
+ls -a /tmp                      # 查看临时目录
+```
+
+**配置文件**
+```bash
 strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析 sshd 文件，是否包括IP信息
 ```
+
+---
 
 ## 文件恢复
 
@@ -471,7 +488,14 @@ vim /etc/security/limits.conf
 
 # 日志
 
-内容见 [日志](./笔记/日志.md)
+**系统日志**
+- 内容见 [日志](./笔记/日志.md)
+
+**web日志**
+- 内容见 [取证笔记](../../安全/笔记/BlueTeam/取证笔记.md#中间件服务器程序日志) 中间件服务器程序日志部分
+
+**数据库日志**
+- 内容见 [取证笔记](../../安全/笔记/BlueTeam/取证笔记.md#数据库取证) 数据库取证部分
 
 ---
 

@@ -44,6 +44,7 @@
 
 **文章**
 - [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
+- [Web Service 渗透测试从入门到精通](https://www.anquanke.com/post/id/85910)
 
 ---
 
@@ -436,6 +437,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **工具**
 - [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
+- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
 
 ---
 

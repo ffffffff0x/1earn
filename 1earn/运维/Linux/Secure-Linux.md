@@ -347,37 +347,33 @@ vim /etc/profile
 TMOUT=600
 ```
 
-**设置 BASH 保留历史命令的条目**
+**命令记录**
 
-检查方法 : `cat /etc/profile | grep HISTSIZE`
-
-加固方法:
+```bash
+histroy                 # 查看 root 的历史命令
 ```
-vim /etc/profile
-
-修改 HISTSIZE=5 即保留最新执行的5条命令
-```
-
-**设置注销时删除命令记录**
-
-检查方法: `cat /etc/skel/.bash_logout`
-
-增加如下行 `rm -f $HOME/.bash_history`
-
-这样,系统中的所有用户注销时都会删除其命令记录,如果只需要针对某个特定用户,,如 root 用户进行设置,则可只在该用户的主目录下修改 `/$HOME/.bash_history` 文件增加相同的一行即可.
+进入 `/home` 各帐号目录下的 `.bash_history` 查看普通帐号的历史命令
 
 ---
 
 ## 开机启动
 
-**查看**
+**查看开机启动服务**
 ```bash
 chkconfig                   # 查看开机启动服务命令
+chkconfig --list | grep "3:启用\|3:开\|3:on\|5:启用\|5:开\|5:on"
+
 ls /etc/init.d              # 查看开机启动配置文件命令
 cat /etc/rc.local           # 查看 rc 启动文件
+ls /etc/rc.d/rc[0~6].d
 
-crontab -l
-ls -alh /var/spool/cron
+runlevel                    # 查看运行级别命令
+```
+
+**查看计划任务**
+```bash
+crontab -l                  # 计划任务列表
+ls -alh /var/spool/cron     # 默认编写的 crontab 文件会保存在 /var/spool/cron/用户名 下
 ls -al /etc/ | grep cron
 ls -al /etc/cron*
 cat /etc/cron*
@@ -396,17 +392,16 @@ cat /var/spool/cron/crontabs/root
 
 **简单查找**
 ```bash
-awk -F: '{if($3==0)print $1}' /etc/passwd   # 查看 UID 为0的帐号
-cat /etc/passwd | grep -E "/bin/bash$"      # 查看能够登录的帐号
-awk '/$1|$6/{print $1}' /etc/shadow         # 查看能够登录的帐号
-lastlog                                     # 系统中所有用户最近一次登录信息
-lastb                                       # 显示用户错误的登录列表
-users                                       # 打印当前登录的用户，每个用户名对应一个登录会话。如果一个用户不止一个登录会话，其用户名显示相同次数
+awk -F: '{if($3==0||$4==0)print $1}' /etc/passwd            # 查看 UID\GID 为0的帐号
+awk -F: '{if($7!="/usr/sbin/nologin")print $1}' /etc/passwd # 查看能够登录的帐号
+lastlog                                                     # 系统中所有用户最近一次登录信息
+lastb                                                       # 显示用户错误的登录列表
+users                                                       # 打印当前登录的用户，每个用户名对应一个登录会话。如果一个用户不止一个登录会话，其用户名显示相同次数
 ```
 
 **/etc/passwd**
-- 若用户ID=0,则表示该用户拥有超级用户的权限
-- 检查是否有多个ID=0
+- 若用户 ID=0,则表示该用户拥有超级用户的权限
+- 检查是否有多个 ID=0
 - 禁用或删除多余的账号
 
 **设置账户锁定登录失败锁定次数、锁定时间**
@@ -483,6 +478,32 @@ vim /etc/security/limits.conf
     echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
     sync
     ```
+
+## 系统完整性
+
+通过 rpm 自带的 -Va 来校验检查所有的 rpm 软件包，查看哪些命令是否被替换了
+```bash
+rpm -Va > rpm.log
+# 如果一切均校验正常将不会产生任何输出，如果有不一致的地方，就会显示出来，输出格式是8位长字符串，每个字符都用以表示文件与RPM数据库中一种属性的比较结果 ，如果是. (点) 则表示测试通过。
+
+验证内容中的8个信息的具体内容如下：
+- S         文件大小是否改变
+- M         文件的类型或文件的权限（rwx）是否被改变
+- 5         文件MD5校验是否改变（可以看成文件内容是否改变）
+- D         设备中，从代码是否改变
+- L         文件路径是否改变
+- U         文件的属主（所有者）是否改变
+- G         文件的属组是否改变
+- T         文件的修改时间是否改变
+```
+
+**还原替换命令**
+```bash
+rpm  -qf /bin/ls  # 查询 ls 命令属于哪个软件包
+mv  /bin/ls /tmp  # 先把 ls 转移到 tmp 目录下，造成 ls 命令丢失的假象
+rpm2cpio /mnt/cdrom/Packages/coreutils-8.4-19.el6.i686.rpm | cpio -idv ./bin/ls # 提取 rpm 包中 ls 命令到当前目录的/bin/ls下
+cp /root/bin/ls  /bin/ # 把 ls 命令复制到 /bin/ 目录,修复文件丢失
+```
 
 ---
 

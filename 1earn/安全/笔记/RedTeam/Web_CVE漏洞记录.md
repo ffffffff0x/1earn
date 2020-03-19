@@ -602,6 +602,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
 - `http://<ip>:9200`
 - `http://<ip>:9200/_plugin/head/` web管理界面
+- `http://<ip>:9200/hello/_search?pretty&size=50&from=50`
 - `http://<ip>:9200/_cat/indices`
 - `http://<ip>:9200/_river/_search` 查看数据库敏感信息
 - `http://<ip>:9200/_nodes` 查看节点数据
@@ -1574,7 +1575,8 @@ base64 编码，口令形式为 username:password
     - 9 <= Apache Tomcat < 9.0.31
 
 - 文章
-     - [【WEB安全】Tomcat-Ajp协议漏洞分析](https://mp.weixin.qq.com/s/GzqLkwlIQi_i3AVIXn59FQ)
+    - [【WEB安全】Tomcat-Ajp协议漏洞分析](https://mp.weixin.qq.com/s/GzqLkwlIQi_i3AVIXn59FQ)
+    - [如何更加精准地检测AJP协议文件包含漏洞(CVE-2020-1938)](http://gv7.me/articles/2020/how-to-detect-tomcat-ajp-lfi-more-accurately/)
 
 - POC | Payload | exp
     - [0nise/CVE-2020-1938](https://github.com/0nise/CVE-2020-1938)

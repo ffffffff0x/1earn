@@ -27,14 +27,14 @@
 
 # 大纲
 
-**🥩常见服务**
+**[🥩常见服务](#🥩常见服务)**
 
 * [Lvm](#Lvm)
 * [Net](#Net)
 * [RAID](#RAID)
 * [Vim](#Vim)
 
-**🍜网络服务**
+**[🍜网络服务](#🍜网络服务)**
 
 * [AdguardTeam](#AdguardTeam)
 * [Cacti](#Cacti)
@@ -48,7 +48,7 @@
 * [SSH](#SSH)
 * [ttyd](#ttyd)
 
-**🍦web服务-中间件**
+**[🍦web服务-中间件](#🍦web服务-中间件)**
 
 * [ActiveMQ](#ActiveMQ)
 * [Apache](#Apache)
@@ -64,7 +64,7 @@
 * [Wordpress](#Wordpress)
 * [Mijisou](#Mijisou)
 
-**🍉数据库**
+**[🍉数据库](#🍉数据库)**
 
 * [Relational](#Relational)
   * [Oracle](#Oracle)
@@ -79,14 +79,14 @@
 * [图形](#图形)
   * [Neo4j](#Neo4j)
 
-**🍣文件服务**
+**[🍣文件服务](#🍣文件服务)**
 
 * [filebrowser](#filebrowser)
 * [NFS](#NFS)
 * [Samba](#Samba)
 * [Vsftp](#Vsftp)
 
-**🍗编程语言**
+**[🍗编程语言](#🍗编程语言)**
 
 * [C](#C)
 * [Go](#Go)
@@ -96,7 +96,7 @@
   * [jupyterlab](#jupyterlab)
 * [Ruby](#Ruby)
 
-**🍞系统监管**
+**[🍞系统监管](#🍞系统监管)**
 
 * [BaoTa](#BaoTa)
 * [Jenkins](#Jenkins)
@@ -106,12 +106,12 @@
 * [Webmin](#Webmin)
 * [Zabbix](#Zabbix)
 
-**🌭虚拟化**
+**[🌭虚拟化](#🌭虚拟化)**
 
 * [Docker](#Docker)
   * [Docker-Compose](#Docker-Compose)
 
-**🍯安全服务**
+**[🍯安全服务](#🍯安全服务)**
 
 * [ClamAV](#ClamAV)
 * [openldap](#openldap)
@@ -120,7 +120,7 @@
 
 ---
 
-# 常见服务
+# 🥩常见服务
 ## Lvm
 
 `LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。`
@@ -347,7 +347,7 @@ set ignorecase smartcase  # 搜索时忽略大小写,但在有一个或以上大
 
 ---
 
-# 网络服务
+# 🍜网络服务
 ## AdguardTeam
 
 `一个 DNS 去广告、去跟踪的服务`
@@ -1256,7 +1256,7 @@ ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
 
 ---
 
-# web服务-中间件
+# 🍦web服务-中间件
 ## ActiveMQ
 
 `Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.`
@@ -1424,6 +1424,8 @@ firewall-cmd --reload
 
 **ab**
 
+ab 是 apache 的压力测试工具
+
 安装
 ```bash
 sudo apt install apache2-utils
@@ -1431,6 +1433,15 @@ yum install httpd-tools
 ```
 
 **php**
+```bash
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install php70w php70w-fpm
+
+php -v                # 查看PHP版本
+
+service php-fpm start
+```
 ```bash
 vim /etc/httpd/conf/httpd.conf
 
@@ -1457,6 +1468,10 @@ apachectl -t
 检测 php 是否正常解析
 ```
 echo "<?php phpinfo(); ?>"  > /var/www/html/1.php
+
+service httpd restart
+firewall-cmd --zone=public --add-service=http --permanent
+firewall-cmd --reload
 ```
 
 访问 `机器相应ip/1.php`
@@ -2126,7 +2141,7 @@ chkconfig --add /etc/rc.d/init.d/tomcat
 
 **设置用户名和密码登录**
 
-修改 conf 目录下 tomcat-user.xml
+修改 conf 目录下 tomcat-users.xml (部分版本是tomcat-user.xml)
 ```vim
 <role rolename="admin-gui"/>
 <role rolename="manager-gui"/>
@@ -2628,7 +2643,7 @@ stop-writes-on-bgsave-error no
 
 ---
 
-# 数据库
+# 🍉数据库
 ## Relational
 ### Oracle
 
@@ -3137,7 +3152,7 @@ firewall-cmd --reload
 
 ---
 
-# 文件服务
+# 🍣文件服务
 ## filebrowser
 
 `一个在线网盘服务,只能在线看图片,在线看视频是不支持的 ^w^`
@@ -3540,7 +3555,7 @@ systemctl enable vsftpd
 
 ---
 
-# 编程语言
+# 🍗编程语言
 ## C
 
 ```c
@@ -3784,7 +3799,7 @@ export PATH=$PATH:/usr/local/bin/
 
 ---
 
-# 系统监管
+# 🍞系统监管
 ## BaoTa
 
 **官网**
@@ -4091,7 +4106,7 @@ firewall-cmd --reload
 
 ## Zabbix
 
-zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
+`zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.`
 
 **官网**
 - https://www.zabbix.com/
@@ -4215,7 +4230,7 @@ setenforce 0    # 关闭 selinux
 
 ---
 
-# 虚拟化
+# 🌭虚拟化
 ## Docker
 
 **官网**
@@ -4363,7 +4378,7 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 
 ---
 
-# 安全服务
+# 🍯安全服务
 ## ClamAV
 
 `一个开源防病毒引擎,用于检测木马,病毒,恶意软件和其他恶意威胁.`

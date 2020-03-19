@@ -221,7 +221,7 @@
 
 ---
 
-以下是直接或间接贡献过本项目的人员名单(排名不分先后)(包含我参考过的部分文章作者)
+直接或间接贡献过本项目的人员名单(排名不分先后)
 - [Survivor_ms](https://github.com/136510385)
 - [hhkk2334](https://www.thesteel.live/)
 - [幻羽灵殇](https://github.com/syl2293686270)
@@ -230,7 +230,11 @@
 - [BeakHyun](https://github.com/Alienware-OWO)
 - [cililianjie](https://github.com/cililianjie)
 - [mfslog](https://github.com/mfslog)
-- Tide安全团队
+
+参考过的部分文章作者(排名不分先后)
+- Tide安全团队(取证笔记中很大程度参考其文章内容)
+- [theLSA](https://github.com/theLSA)(取证笔记和Secure-Win中很大程度参考其项目内容)
+- [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes)(应急笔记和Secure-Win中很大程度参考其项目内容)
 
 ---
 

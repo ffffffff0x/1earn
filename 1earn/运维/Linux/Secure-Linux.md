@@ -10,12 +10,12 @@
 ```
 
 <p align="center">
-    <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.png" width="90%"></a>
+    <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.jpg" width="90%"></a>
 </p>
 
 <p align="center">
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/open-source.png" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/bash.png" width="15%"></a>
 </p>
 
 - `Linux 加固+维护+应急响应参考`
@@ -556,6 +556,15 @@ nmap -sV -p 22 localhost
 **查**
 ```bash
 firewall-cmd --list-services    # 查看防火墙设置
+firewall-cmd --state                    # 显示防火墙状态
+firewall-cmd --get-zones                # 列出当前有几个 zone
+firewall-cmd --get-active-zones         # 取得当前活动的 zones
+firewall-cmd --get-default-zone         # 取得默认的 zone
+firewall-cmd --get-service              # 取得当前支持 service
+firewall-cmd --get-service --permanent  # 检查下一次重载后将激活的服务
+
+firewall-cmd --zone=public --list-ports # 列出 zone public 端口
+firewall-cmd --zone=public --list-all   # 列出 zone public 当前设置
 ```
 
 **防**
@@ -765,7 +774,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **内核级 rootkit**
 
-    可以通过 unhide 等工具进行排查
+    可以通过 unhide 等工具进行排查,更多内容见 [应急笔记](../../安全/笔记/BlueTeam/应急笔记.md#rootkit)
 
 - **深信服 Web 后门扫描**
 

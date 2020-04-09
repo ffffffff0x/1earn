@@ -802,8 +802,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
 - 修复方案
     1. 升级 .net framework 至 4.0 版本或以上
-    2. 修改 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
-    值 NtfsDisable8dot3NameCreation 为 1
+    2. 修改 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem 值 NtfsDisable8dot3NameCreation 为 1
 
 - 文章
     - [IIS短文件名漏洞](http://www.lonelyor.org/lonelyorWiki/15446866501207.html)
@@ -1095,6 +1094,7 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 
 **资源**
 - [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
+- [Imanfeng/Apache-Solr-RCE](https://github.com/Imanfeng/Apache-Solr-RCE)
 
 **CVE-2017-12629 Apache solr XML 实体注入漏洞**
 - 简介
@@ -1138,7 +1138,7 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 - POC | Payload | exp
     - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
 
-**Apache Solr Velocity 模版注入远程命令执行漏洞**
+**CVE-2019-17558 Apache Solr Velocity 模版注入远程命令执行漏洞**
 - 简介
 
     2019年10月30日，国外安全研究人员放出了一个关于 solr 模板注入的 exp，攻击者通过未授权访问 solr 服务器，发送特定的数据包开启 params.resource.loader.enabled，然后 get 访问接口导致服务器命令执行，命令回显结果在 response。
@@ -1148,9 +1148,11 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 
 - 文章
     - [Apache Solr最新漏洞复现](https://xz.aliyun.com/t/6679)
+    - [Microsoft Apache Solr RCE Velocity Template | Bug Bounty POC](https://blog.securitybreached.org/2020/03/31/microsoft-rce-bugbounty/)
 
 - POC | Payload | exp
     - [jas502n/solr_rce](https://github.com/jas502n/solr_rce)
+    - [SDNDTeam/CVE-2019-17558_Solr_Vul_Tool](https://github.com/SDNDTeam/CVE-2019-17558_Solr_Vul_Tool) - Solr模板注入漏洞图形化一键检测工具
 
 ---
 

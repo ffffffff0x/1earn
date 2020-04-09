@@ -205,7 +205,7 @@ npm config delete proxy  # 取消代理
 
 **配置**
 ```yml
-"editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black"
+"editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black",
 "editor.fontLigatures": true
 ```
 

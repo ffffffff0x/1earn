@@ -256,6 +256,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **案例**
 - [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
+- [2 Path Traversal Cases](https://jlajara.gitlab.io/posts/2020/03/29/Path_Traversal.html)
 
 ## GIT源码泄露
 
@@ -394,7 +395,7 @@ WEB-INF 主要包含一下文件或目录:
 # CSRF
 
 **文章**
-- [CSRF 的攻击与防御](http://www.secbox.cn/hacker/5742.html)
+- [CSRF攻击与防御](https://blog.csdn.net/stpeace/article/details/53512283)
 
 **案例**
 - [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)

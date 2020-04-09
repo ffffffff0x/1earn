@@ -10,12 +10,12 @@
 ```
 
 <p align="center">
-    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/运维/Linux/God-Linux.jpg" width="60%"></a>
+    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/运维/Linux/God-Linux.jpg" width="70%"></a>
 </p>
 
 <p align="center">
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/open-source.png" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/bash.png" width="15%"></a>
 </p>
 
 ---

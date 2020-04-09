@@ -17,7 +17,7 @@
 	或者用 vim 打开 sh 脚本文件, 重新设置文件的格式
     ```vim
 	:set ff=unix
-    :wq!
+   :wq!
 	```
 
 - linux 运行 shell 出现未预期的符号 `$'do\r'' 附近有语法错误
@@ -28,17 +28,14 @@
 	1. 打开 notepad++ 编辑 .sh 文件
    2. notepad++ 右下角将 windows 模式改为 linux 模式
 
----
-
 **source 命令与 `.` 的区别**
-
 - source 命令是 bash shell 的内置命令,从 C Shell 而来.
 - source 命令的另一种写法是点符号,用法和 source 相同,从 Bourne Shell 而来.
 - source 命令可以强行让一个脚本去立即影响当前的环境.
 - source 命令会强制执行脚本中的全部命令,而忽略文件的权限.
 - source 命令通常用于重新执行刚修改的初始化文件,如 .bash_profile 和 .profile 等等.
 - source 命令可以影响执行脚本的父 shell 的环境,而 export 则只能影响其子 shell 的环境.
-- source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 export $KKK=111 ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 `echo $KKK` ,发现没有值,如果你用 `source` 来执行 ,然后再 `echo` ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
+- source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 `export $KKK=111` ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 `echo $KKK` ,发现没有值,如果你用 `source` 来执行 ,然后再 `echo` ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
 
 ---
 

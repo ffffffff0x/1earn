@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/open-source.png" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/bash.png" width="15%"></a>
 </p>
 
 - `Linux 下各种常见服务的搭建/配置指南`
@@ -27,14 +27,14 @@
 
 # 大纲
 
-**[🥩常见服务](#🥩常见服务)**
+**[🥩常见服务](#常见服务)**
 
 * [Lvm](#Lvm)
 * [Net](#Net)
 * [RAID](#RAID)
 * [Vim](#Vim)
 
-**[🍜网络服务](#🍜网络服务)**
+**[🍜网络服务](#网络服务)**
 
 * [AdguardTeam](#AdguardTeam)
 * [Cacti](#Cacti)
@@ -42,21 +42,24 @@
 * [cloud-torrent](#cloud-torrent)
 * [DHCP](#DHCP)
 * [DNS](#DNS)
+* [frp](#frp)
 * [Kicktart](#Kicktart)
 * [OpenVPN](#OpenVPN)
 * [proxychains-ng](#proxychains-ng)
 * [SSH](#SSH)
 * [ttyd](#ttyd)
+* [vnc4server](#vnc4server)
 
-**[🍦web服务-中间件](#🍦web服务-中间件)**
+**[🍦web服务-中间件](#web服务-中间件)**
 
 * [ActiveMQ](#ActiveMQ)
 * [Apache](#Apache)
+  * [配置php](#配置php)
+  * [配置https](#配置https)
 * [Caddy](#Caddy)
 * [npm & Node](#npm&Node)
 * [Nexus](#Nexus)
 * [Nginx](#Nginx)
-* [PHP](#PHP)
 * [phpMyAdmin](#phpMyAdmin)
 * [RabbitMQ](#RabbitMQ)
 * [searx](#searx)
@@ -64,7 +67,7 @@
 * [Wordpress](#Wordpress)
 * [Mijisou](#Mijisou)
 
-**[🍉数据库](#🍉数据库)**
+**[🍉数据库](#数据库)**
 
 * [Relational](#Relational)
   * [Oracle](#Oracle)
@@ -79,14 +82,14 @@
 * [图形](#图形)
   * [Neo4j](#Neo4j)
 
-**[🍣文件服务](#🍣文件服务)**
+**[🍣文件服务](#文件服务)**
 
 * [filebrowser](#filebrowser)
 * [NFS](#NFS)
 * [Samba](#Samba)
 * [Vsftp](#Vsftp)
 
-**[🍗编程语言](#🍗编程语言)**
+**[🍗编程语言](#编程语言)**
 
 * [C](#C)
 * [Go](#Go)
@@ -96,7 +99,7 @@
   * [jupyterlab](#jupyterlab)
 * [Ruby](#Ruby)
 
-**[🍞系统监管](#🍞系统监管)**
+**[🍞系统监管](#系统监管)**
 
 * [BaoTa](#BaoTa)
 * [Jenkins](#Jenkins)
@@ -106,24 +109,27 @@
 * [Webmin](#Webmin)
 * [Zabbix](#Zabbix)
 
-**[🌭虚拟化](#🌭虚拟化)**
+**[🌭虚拟化](#虚拟化)**
 
 * [Docker](#Docker)
   * [Docker-Compose](#Docker-Compose)
 
-**[🍯安全服务](#🍯安全服务)**
+**[🥕分布式](#分布式)**
+* [zookeeper](#zookeeper)
+
+**[🍯安全服务](#安全服务)**
 
 * [ClamAV](#ClamAV)
-* [openldap](#openldap)
 * [Fail2ban](#Fail2ban)
+* [openldap](#openldap)
 * [Snort](#Snort)
 
 ---
 
-# 🥩常见服务
+# 常见服务
 ## Lvm
 
-`LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。`
+> LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。
 
 ```bash
 fdisk -l		        # 查看磁盘情况
@@ -168,7 +174,7 @@ mkfs.xfs /dev/datastore/database
 mkdir /mnt/database
 ```
 ```vim
-vi /etc/fstab
+vim /etc/fstab
 /dev/datastore/database /mnt/database/ xfs defaults 0 0
 ```
 
@@ -219,7 +225,9 @@ vim /etc/resolv.conf
 
 nameserver 8.8.8.8
 ```
-`service network restart`
+```bash
+service network restart
+```
 
 ---
 
@@ -249,28 +257,28 @@ w 写入
 **创建阵列**
 - RAID1
 
-	`mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1`
-	- -Cv: 创建一个阵列并打印出详细信息.
+	```bash
+  mdadm -Cv /dev/md0 -a yes -l1 -n2 /dev/sd[b,c]1
+  - -Cv: 创建一个阵列并打印出详细信息.
 	- /dev/md0: 阵列名称.
-	-a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建;
+	- -a　: 同意创建设备,如不加此参数时必须先使用 mknod 命令来创建一个 RAID 设备,不过推荐使用 -a yes 参数一次性创建;
 	- -l1 (l as in "level"): 指定阵列类型为 RAID-1 .
 	- -n2: 指定我们将两个分区加入到阵列中去,分别为/dev/sdb1 和 /dev/sdc1
+  ```
 
 - RAID5
 
-	`mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1`
-
-	可以使用以下命令查看进度:
-
-	`cat /proc/mdstat`
-
-	另外一个获取阵列信息的方法是:
-
-	`mdadm -D /dev/md0`
+	```bash
+  mdadm -Cv /dev/md0 -a yes -l5 -n3 /dev/sd[b,c,d]1
+	cat /proc/mdstat    # 查看进度
+	mdadm -D /dev/md0   # 获取阵列信息
+  ```
 
 **格式化为 xfs**
 
-`mkfs.xfs /dev/md0`
+```bash
+mkfs.xfs /dev/md0
+```
 
 **以 UUID 的形式开机自动挂载**
 ```bash
@@ -290,7 +298,7 @@ mount | grep '^/dev'
 
 ## Vim
 
-`VIM 是 Linux 系统上一款文本编辑器，它是操作文本的一款利器。`
+> VIM 是 Linux 系统上一款文本编辑器，它是操作文本的一款利器。
 
 **常用操作**
 ```bash
@@ -328,7 +336,9 @@ set ignorecase smartcase  # 搜索时忽略大小写,但在有一个或以上大
 
 **使用 vim 对比文件**
 
-`vimdiff  FILE_LEFT  FILE_RIGHT`
+```bash
+vimdiff  FILE_LEFT  FILE_RIGHT
+```
 
 **解决 ssh 后 vim 中不能使用小键盘的问题**
 - xshell
@@ -347,10 +357,10 @@ set ignorecase smartcase  # 搜索时忽略大小写,但在有一个或以上大
 
 ---
 
-# 🍜网络服务
+# 网络服务
 ## AdguardTeam
 
-`一个 DNS 去广告、去跟踪的服务`
+> 一个 DNS 去广告、去跟踪的服务
 
 **项目地址**
 - https://github.com/AdguardTeam/AdGuardHome
@@ -380,7 +390,7 @@ systemctl stop firewalld
 
 ## Cacti
 
-`Cacti 是一套基于 PHP,MySQL,SNMP 及 RRDTool 开发的网络流量监测图形分析工具。它的主要功能是用 snmp 服务获取数据，然后用 rrdtool 储存和更新数据，当用户需要查看数据的时候用 rrdtool 生成图表呈现给用户。`
+> Cacti 是一套基于 PHP,MySQL,SNMP 及 RRDTool 开发的网络流量监测图形分析工具。它的主要功能是用 snmp 服务获取数据，然后用 rrdtool 储存和更新数据，当用户需要查看数据的时候用 rrdtool 生成图表呈现给用户。
 
 **什么是 RRDtools**
 
@@ -601,7 +611,7 @@ systemctl restart php-fpm.service
 
 ## Chrony
 
-`一个时间同步软件,可用于搭建类 NTP 时间服务`
+> 一个时间同步软件,可用于搭建类 NTP 时间服务
 
 **官网**
 - https://chrony.tuxfamily.org/
@@ -659,7 +669,7 @@ chronyc             # 进入交互模式
 
 ## cloud-torrent
 
-`web torrent 下载服务`
+> web torrent 下载服务
 
 **项目地址**
 - https://github.com/jpillora/cloud-torrent
@@ -678,7 +688,7 @@ cloud-torrent -o
 
 ## DHCP
 
-`DHCP 服务程序用于为客户端主机分配可用的 IP 地址`
+> DHCP 服务程序用于为客户端主机分配可用的 IP 地址
 
 **安装**
 ```
@@ -720,7 +730,7 @@ cat /var/lib/dhcpd/dhcpd.leases   # 查看租约文件,了解租用情况
 
 ## DNS
 
-`DNS 用于将人类可读的域名(例如，www.google.com) 进行域名解析为机器可读的 IP 地址`
+> DNS 用于将人类可读的域名(例如，www.google.com) 进行域名解析为机器可读的 IP 地址
 
 **安装**
 ```
@@ -839,9 +849,97 @@ firewall-cmd --reload
 
 ---
 
+## frp
+
+> 快速反向代理，将本地服务器映射到公网。
+
+**项目地址**
+- https://github.com/fatedier/frp
+
+**服务端安装**
+```bash
+wget https://github.com/fatedier/frp/releases/download/v0.32.0/frp_0.32.0_linux_amd64.tar.gz
+tar -zxvf frp_0.32.0_linux_amd64.tar.gz
+cd frp_0.32.0_linux_amd64
+rm -rf frpc*
+```
+
+编辑 frps 配置文件
+```bash
+vim frps.ini
+
+[common]
+bind_port = 7000
+dashboard_port = 7500
+dashboard_user = admin
+dashboard_pwd = admin
+```
+
+第1行为 frps 和 frpc 之间端口,第 2 行为监控页面 web 地址,第 3.4 行为监控页面账号密码
+
+**服务端运行**
+
+运行 frps,-c 参数用于指定配置文件,在同级目录下的话可以直接运行 frps
+```bash
+service firewalld stop  # 先关闭防火墙
+
+./frps -c frps.ini
+```
+
+此时服务器已在运行,可以访问 服务器ip:7500 访问 web 监控界面
+
+**客户端安装**
+```bash
+wget https://github.com/fatedier/frp/releases/download/v0.32.0/frp_0.32.0_linux_amd64.tar.gz
+tar -zxvf frp_0.32.0_linux_amd64.tar.gz
+cd frp_0.32.0_linux_amd64
+rm -rf frps*
+```
+
+这里最后一句是 rm -rf frps* 与服务端操作的最后一句不相同。
+
+编辑 frpc 配置文件
+```bash
+vim frpc.ini
+
+[common]
+server_addr = 1.1.1.1   # 填服务器IP
+server_port = 7000      # 填服务器端口
+
+# ssh的配置
+[ssh]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+remote_port = 10000
+use_compression = true
+
+[DSM]
+type = tcp
+local_ip = 192.168.1.1 # 群晖 NAS 在局域网中的内网 IP
+local_port = 5000
+remote_port = 10002
+```
+
+这样就在本地上新增了“DSM”和“SSH”两个可供公网访问的服务了
+
+**客户端运行**
+```bash
+./frpc -c frpc.ini
+# -c 参数用于指定配置文件,在同级目录下的话 可以直接运行 .frpc
+```
+
+SSH 连接测试
+```bash
+ssh root@1.1.1.1 -p 10000
+```
+这个时候相当于在连接客户端的 SSH 服务
+
+---
+
 ## Kicktart
 
-`是 Kicktart 不是 kickstarter,这玩意不能众筹,这是用于联网安装系统时给 PXE 服务提供应答文件的`
+> 是 Kicktart 不是 kickstarter,这玩意不能众筹,这是用于联网安装系统时给 PXE 服务提供应答文件的
 
 - 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
 - 环境:VMWARE
@@ -854,7 +952,9 @@ firewall-cmd --reload
 
 DHCP 服务程序用于为客户端主机分配可用的 IP 地址,而且这是服务器与客户端主机进行文件传输的基础
 
-`yum install -y dhcp`
+```bash
+yum install -y dhcp
+```
 
 ```vim
 # 这里使用的配置文件有两个主要区别:允许了 BOOTP 引导程序协议,旨在让局域网内暂时没有操作系统的主机也能获取静态 IP 地址;在配置文件的最下面加载了引导驱动文件 pxelinux.0 (这个文件会在下面的步骤中创建) ,其目的是让客户端主机获取到 IP 地址后主动获取引导驱动文件,自行进入下一步的安装过程.
@@ -974,7 +1074,7 @@ clearpart --all --initlabel
 
 ## OpenVPN
 
-`OpenVPN 是一个用于创建虚拟专用网络加密通道的软件包`
+> OpenVPN 是一个用于创建虚拟专用网络加密通道的软件包
 
 **官网**
 - https://openvpn.net/
@@ -1036,7 +1136,7 @@ sz /data/openvpn/conf/whsir.ovpn
 
 ## proxychains-ng
 
-`通过 DLL 注入,使目标程序走代理`
+> 通过 DLL 注入,使目标程序走代理
 
 **项目地址**
 - https://github.com/rofl0r/proxychains-ng
@@ -1066,7 +1166,7 @@ socks5 127.0.0.1 1080   # 改成你懂的
 
 ## SSH
 
-`Secure Shell 是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境。`
+> Secure Shell 是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境。
 
 **官网**
 - https://www.ssh.com
@@ -1106,7 +1206,10 @@ apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
 apt install ssh
 ```
-`service ssh restart` 然后重启 SSH 服务
+```bash
+service ssh restart     # 启动ssh
+systemctl enable ssh    # 设置为开机自启
+```
 
 **加固**
 
@@ -1256,10 +1359,27 @@ ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
 
 ---
 
-# 🍦web服务-中间件
+## vnc4server
+
+`VNC 服务`
+
+**安装**
+```bash
+apt-get install vnc4server
+
+vncpasswd                                 # 设置vncserver密码
+vncserver :1 -geometry 1024x768 -depth 24 # 设置vnc连接时窗口的大小
+netstat -tnl | grep 5901                  # 查看vnc激活状态
+```
+
+windows 使用 tightVNC 测试连接,连接地址:<IP>:5901
+
+---
+
+# web服务-中间件
 ## ActiveMQ
 
-`Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.`
+> Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.
 
 **安装**
 
@@ -1301,7 +1421,7 @@ firewall-cmd --reload
 
 ## Apache
 
-`Apache HTTP Server 是 Apache 軟體基金會的一個開放原始碼的網頁伺服器軟體，可以在大多數電腦作業系統中運行。由於其跨平台和安全性，被廣泛使用，是最流行的 Web 伺服器軟體之一。`
+> Apache HTTP Server 是 Apache 軟體基金會的一個開放原始碼的網頁伺服器軟體，可以在大多數電腦作業系統中運行。由於其跨平台和安全性，被廣泛使用，是最流行的 Web 伺服器軟體之一。
 
 **官网**
 - https://www.apache.org/
@@ -1309,10 +1429,10 @@ firewall-cmd --reload
 **安装**
 ```bash
 yum install httpd
-yum install mod_ssl
+yum install mod_ssl openssl
 ```
 
-**配置文件**
+**简单配置**
 ```vim
 vim /etc/httpd/conf/httpd.conf
 
@@ -1321,7 +1441,7 @@ ServerName  xx.xx.xx.xx:80
 # 设置 Web 服务器的主机名和监听端口
 ```
 
-**启服务**
+启服务
 ```vim
 vim var/www/html/index.html
 
@@ -1332,6 +1452,8 @@ service httpd restart
 firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
+
+此时可以访问 ip/index.html
 
 **虚拟主机**
 
@@ -1372,59 +1494,9 @@ firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
 
-**mod_ssl**
-- **为 linux 提供 web 证书**
-  ```bash
-  cd /etc/pki/CA/private
-  openssl genrsa 2048 > cakey.pem
-  openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
-
-  cd /etc/pki/CA
-  touch index.txt     # 索引问文件
-  touch serial        # 给客户发证编号存放文件
-  echo 01 > serial
-
-  mkdir /etc/httpd/ssl
-  cd /etc/httpd/ssl
-  openssl genrsa 1024 > httpd.key
-  openssl req -new -key httpd.key > httpd.csr
-  openssl ca -days 365 -in httpd.csr > httpd.crt
-
-  # 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
-  cat /etc/pki/CA/index.txt
-  ```
-
-- **为 windows 提供 web 证书**
-  ```bash
-  cd /etc/pki/CA/private
-  openssl genrsa 2048 > cakey.pem
-  openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
-
-  cd /etc/pki/CA
-  touch index.txt   # 索引问文件
-  touch serial      # 给客户发证编号存放文件
-  echo 01 > serial
-
-  cd
-  openssl genrsa 1024 > httpd.key
-  openssl req -new -key httpd.key > httpd.csr
-  openssl ca -days 365 -in httpd.csr > httpd.crt
-
-  openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
-  # 自己把 server.pfx 导出给 windows2008 主机
-  ```
-
-- **向 windows CA 服务器申请证书**
-
-  `Openssl genrsa 2048 > httpd.key`
-
-  `openssl req -new -key httpd.key -out httpd.csr`
-
-  通过这个 csr 文件在内部的 windows CA 服务器上申请证书
-
 **ab**
 
-ab 是 apache 的压力测试工具
+> ab 是 apache 的压力测试工具
 
 安装
 ```bash
@@ -1432,15 +1504,23 @@ sudo apt install apache2-utils
 yum install httpd-tools
 ```
 
-**php**
+**更多配置案例**
+
+见 [apache.md](./实验/apache.md)
+
+### 配置php
 ```bash
+若之前安装过其他版本 PHP,先删除
+yum remove php*
+
+rpm 安装 PHP7 相应的 yum 源
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 yum install php70w php70w-fpm
 
 php -v                # 查看PHP版本
 
-service php-fpm start
+service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
 ```
 ```bash
 vim /etc/httpd/conf/httpd.conf
@@ -1476,15 +1556,75 @@ firewall-cmd --reload
 
 访问 `机器相应ip/1.php`
 
-**更多配置案例**
+### 配置https
 
-见 [apache.md](./实验/apache.md)
+**使用 Let’s Encrypt 直接上 https**
+```bash
+yum install -y yum-utils
+yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+yum install -y certbot python2-certbot-apache
+
+certbot --apache
+firewall-cmd --zone=public --add-service=https --permanent
+firewall-cmd --reload
+```
+
+**mod_ssl 为 linux 提供 web 证书**
+
+```bash
+cd /etc/pki/CA/private
+openssl genrsa 2048 > cakey.pem
+openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+
+cd /etc/pki/CA
+touch index.txt     # 索引问文件
+touch serial        # 给客户发证编号存放文件
+echo 01 > serial
+
+mkdir /etc/httpd/ssl
+cd /etc/httpd/ssl
+openssl genrsa 1024 > httpd.key
+openssl req -new -key httpd.key > httpd.csr
+openssl ca -days 365 -in httpd.csr > httpd.crt
+
+# 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
+cat /etc/pki/CA/index.txt
+```
+
+**mod_ssl 为 windows 提供 web 证书**
+
+```bash
+cd /etc/pki/CA/private
+openssl genrsa 2048 > cakey.pem
+openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
+
+cd /etc/pki/CA
+touch index.txt   # 索引问文件
+touch serial      # 给客户发证编号存放文件
+echo 01 > serial
+
+cd
+openssl genrsa 1024 > httpd.key
+openssl req -new -key httpd.key > httpd.csr
+openssl ca -days 365 -in httpd.csr > httpd.crt
+
+openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
+# 自己把 server.pfx 导出给 windows2008 主机
+```
+
+**向 windows CA 服务器申请证书**
+
+```bash
+Openssl genrsa 2048 > httpd.key
+openssl req -new -key httpd.key -out httpd.csr
+```
+通过这个 csr 文件在内部的 windows CA 服务器上申请证书
 
 ---
 
 ## Caddy
 
-`Caddy 伺服器是一個開源的，使用 Golang 編寫，支持 HTTP/2 的 Web 服務端。`
+> Caddy 伺服器是一個開源的，使用 Golang 編寫，支持 HTTP/2 的 Web 服務端。
 
 **官网**
 - https://caddyserver.com/
@@ -1540,9 +1680,9 @@ echo -e "xxx.com {
 
 ## npm&Node
 
-`npm 是 Node.js 預設的、以 JavaScript 編寫的軟體套件管理系統。`
+> npm 是 Node.js 預設的、以 JavaScript 編寫的軟體套件管理系統。
 
-`Node.js 是能夠在伺服器端運行 JavaScript 的開放原始碼、跨平台 JavaScript 執行環境。`
+> Node.js 是能夠在伺服器端運行 JavaScript 的開放原始碼、跨平台 JavaScript 執行環境。
 
 **官网**
 - https://www.npmjs.com/
@@ -1589,7 +1729,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 ## Nexus
 
-`Nexus 是一种 Maven 仓库管理软件用于搭建私服,私服是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构件。有了私服之后，当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。`
+> Nexus 是一种 Maven 仓库管理软件用于搭建私服,私服是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构件。有了私服之后，当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。
 
 **官网**
 - https://www.sonatype.com/nexus-repository-oss
@@ -1646,7 +1786,7 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 ## Nginx
 
-`Nginx 是非同步框架的網頁伺服器，也可以用作反向代理、負載平衡器和 HTTP 缓存。`
+> Nginx 是非同步框架的網頁伺服器，也可以用作反向代理、負載平衡器和 HTTP 缓存。
 
 **官网**
 - https://nginx.org/
@@ -1784,27 +1924,6 @@ vim /usr/share/nginx/test.com/info.php
 
 ---
 
-## PHP
-
-**官网**
-- https://www.php.net/
-
-**安装**
-```bash
-若之前安装过其他版本 PHP,先删除
-yum remove php*
-
-rpm 安装 PHP7 相应的 yum 源
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-yum install php70w php70w-fpm
-php -v                # 查看PHP版本
-
-service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
-```
-
----
-
 ## phpMyAdmin
 
 **官网**
@@ -1929,7 +2048,7 @@ rabbitmqctl set_user_tags <账号> administrator          # 修改用户角色
 
 ## searx
 
-`尊重隐私,可控的元搜索引擎.`
+> 尊重隐私,可控的元搜索引擎.
 
 **项目地址**
 - https://github.com/asciimoo/searx
@@ -2040,7 +2159,7 @@ sudo service uwsgi restart
 
 ## Tomcat
 
-Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核心项目,属于开源的轻量级 Web 应用服务器,是开发和调试 JSP 程序的首选,主要针对 Jave 语言开发的网页代码进行解析,Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样,具有处理 HTML 页面的功能,然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx,所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端.可以这样认为,当配置正确时,Apache 为 HTML 页面服务,而 Tomcat 实际上运行 JSP 页面和 Servlet.比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序.
+> Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核心项目,属于开源的轻量级 Web 应用服务器,是开发和调试 JSP 程序的首选,主要针对 Jave 语言开发的网页代码进行解析,Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样,具有处理 HTML 页面的功能,然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx,所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端.可以这样认为,当配置正确时,Apache 为 HTML 页面服务,而 Tomcat 实际上运行 JSP 页面和 Servlet.比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序.
 
 **官网**
 - https://tomcat.apache.org
@@ -2176,7 +2295,7 @@ tomcat 默认的发布 web 项目的目录是:webapps
 
 ## Wordpress
 
-WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
+> WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
 
 **官网**
 - https://wordpress.org/
@@ -2290,9 +2409,9 @@ service firewalld stop
 
 ## Mijisou
 
-`基于开源项目 Searx 二次开发的操作引擎`
+> 基于开源项目 Searx 二次开发的操作引擎
 
-`2019-11-17:不在推荐该开源项目,建议直接使用源项目` [searx](##searx)
+> 2019-11-17:不在推荐该开源项目,建议直接使用源项目 [searx](##searx)
 
 **项目地址**
 - https://github.com/entropage/mijisou
@@ -2597,8 +2716,6 @@ vim /root/mijisou/searx/templates/__common__/opensearch.xml
 
 **修改**
 
-`秘迹®️是熵加网络科技 (北京) 有限公司所持有的注册商标,任何组织或个人在使用代码前请去除任何和秘迹相关字段,去除秘迹搜索的UI设计,否则熵加网络科技 (北京) 有限公司保留追究法律责任的权利.`
-
 配置文件中改下名字 `mijisou/searx/static/themes/entropage/img` 中的 logo 图标自己换一下
 
 **管理**
@@ -2643,7 +2760,7 @@ stop-writes-on-bgsave-error no
 
 ---
 
-# 🍉数据库
+# 数据库
 ## Relational
 ### Oracle
 
@@ -2818,13 +2935,14 @@ mysql -u root -p
 
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
-
+# 这句话的意思 ，允许任何 IP 地址（上面的 % 就是这个意思）的电脑 用 root 帐户 和密码 toor 来访问这个数据库
 # !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 # !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 # !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 # !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 
 FLUSH PRIVILEGES;
+exit
 ```
 
 ```bash
@@ -2885,10 +3003,68 @@ mysql -u root -p  # 本地连接
 **安装**
 
 和 Mariadb 差不多,看 Mariadb 的就行了
-```bash
-apt install mysql-server mysql-client
 
-service mysql start
+- Ubuntu
+  ```
+  apt install mysql-server mysql-client
+  ```
+
+- Centos
+  ```bash
+  yum install yum-utils
+  wget https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
+  rpm -ivh mysql80-community-release-el7-1.noarch.rpm
+  yum-config-manager --disable mysql80-community
+  yum-config-manager --enable mysql57-community
+  yum install mysql-community-server mysql-community-devel
+  ```
+
+**配置**
+```bash
+systemctl enable mysqld
+
+# 初始化 mysql
+/usr/bin/mysqld –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+# 或
+/usr/bin/mysql –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+```
+```bash
+systemctl start mysqld
+mysql -uroot -p
+
+use mysql;
+update user set authentication_string=password('123456') where user='root';
+FLUSH PRIVILEGES;
+exit
+# !!!注意这里添加了密码为123456的root用户
+```
+
+**配置远程连接**
+```bash
+systemctl start mysqld
+mysql -u root -p
+
+select User, host from mysql.user;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '123456' WITH GRANT OPTION;
+
+# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
+# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
+
+FLUSH PRIVILEGES;
+exit
+```
+
+```bash
+firewall-cmd --permanent --add-service=mysql
+firewall-cmd --reload
+```
+
+**远程访问报错 Table 'performance_schema.session_variables' doesn't exist**
+```bash
+mysql_upgrade -u root -p --force
+systemctl restart mysqld
 ```
 
 ---
@@ -2954,7 +3130,9 @@ enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.0.asc
 ```
 
-`yum install -y mongodb-org`
+```bash
+yum install -y mongodb-org
+```
 
 **配置远程访问**
 ```vim
@@ -2963,8 +3141,9 @@ vim /etc/mongod.conf
 # Listen to all ip address
 bind_ip = 0.0.0.0
 ```
-
-`service mongod start`
+```bash
+service mongod start
+```
 
 **创建管理员用户**
 ```sql
@@ -2991,7 +3170,9 @@ security:
 authorization: enabled
 ```
 
-`service mongod restart	`
+```bash
+service mongod restart
+```
 
 ---
 
@@ -3014,21 +3195,16 @@ authorization: enabled
   ```
 
   在 debian 中
-
-  `apt install redis-server`
-
-  安装好后启动 Redis 服务即可
-
-  `systemctl start redis`
+  ```bash
+  apt install redis-server
+  systemctl start redis # 安装好后启动 Redis 服务即可
+  ```
 
 - **源代码编译方式安装**
 
   在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载
-
-  `wget http://download.redis.io/releases/redis-5.0.5.tar.gz`
-
-  安装
   ```bash
+  wget http://download.redis.io/releases/redis-5.0.5.tar.gz
   tar -zxvf redis-5.0.5.tar.gz
   cd redis-5.0.5
   make
@@ -3061,9 +3237,14 @@ vim /etc/redis.conf
 #bind 127.0.0.1
 requirepass 密码	      # 设置 redis 密码
 ```
-`service redis restart` 当然还要记得开防火墙
+```bash
+service redis restart   # 当然还要记得开防火墙
+```
 
-`redis-cli -h <ip> -p 6379 -a <PASSWORD>`
+连接测试
+```
+redis-cli -h <ip> -p 6379 -a <PASSWORD>
+```
 
 **压测**
 
@@ -3099,11 +3280,8 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
 - **源代码编译方式安装**
 
   在官网下载 tar.gz 的安装包,或者通过 wget 的方式下载
-
-  `wget http://memcached.org/latest`
-
-  安装
   ```bash
+  wget http://memcached.org/latest
   tar -zxvf memcached-1.x.x.tar.gz
   cd memcached-1.x.x
   ./configure --prefix=/usr/local/memcached
@@ -3152,21 +3330,25 @@ firewall-cmd --reload
 
 ---
 
-# 🍣文件服务
+# 文件服务
 ## filebrowser
 
-`一个在线网盘服务,只能在线看图片,在线看视频是不支持的 ^w^`
+> 一个在线网盘服务,只能在线看图片,在线看视频是不支持的 ^w^
 
 **项目地址**
 - https://github.com/filebrowser/filebrowser
 
 **安装**
 
-`curl -fsSL https://filebrowser.xyz/get.sh | bash`
+```bash
+curl -fsSL https://filebrowser.xyz/get.sh | bash
+```
 
 **使用**
 
+```bash
 filebrowser -a <你自己的IP> -r <文件夹路径>
+```
 
 默认账号密码 admin
 
@@ -3191,7 +3373,7 @@ vim /etc/exports
 ```bash
 mkdir /public
 
-vi /etc/selinux/config
+vim /etc/selinux/config
 	SELINUX=disabled
 
 firewall-cmd --zone=public --add-service=rpc-bind --permanent
@@ -3216,8 +3398,9 @@ passwd nfsuser1
 ```
 
 验证共享是否成功
-
-`showmount -e 192.168.xxx.xxx`
+```bash
+showmount -e 192.168.xxx.xxx
+```
 
 挂载共享目录
 ```vim
@@ -3225,8 +3408,9 @@ vim /etc/fstab
 
 192.168.xxx.xxx:/public /mnt/nfsfiles/	nfs defaults 0 0
 ```
-
-`su -l nfsuser1`
+```
+su -l nfsuser1
+```
 
 **验证**
 
@@ -3256,8 +3440,9 @@ cat hello.txt
 **服务端**
 
 安装
-
-`yum install samba `
+```
+yum install samba
+```
 
 修改配置文件
 ```vim
@@ -3271,9 +3456,9 @@ hosts deny = all
 create mask = 0770	              # 创建文件的权限为 0770;
 ```
 
-验证配置文件有没有错误
-
-`testparm`
+```bash
+testparm  # 验证配置文件有没有错误
+```
 
 **用户配置**
 ```bash
@@ -3318,7 +3503,6 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata
 **更多配置案例**
 
 见 [Samba.md](./实验/Samba.md)
-
 
 ---
 
@@ -3437,15 +3621,16 @@ ftp>
 **虚拟用户**
 
 安装
-
-`yum install vsftpd`
+```bash
+yum install vsftpd
+```
 
 认证
 
 创建虚拟用户文件,把这些用户名和密码存放在一个文件中.该文件内容格式是:用户名占用一行,密码占一行.
-
-`cd /etc/vsftp`
-
+```bash
+cd /etc/vsftp
+```
 ```vim
 vim login.list
 
@@ -3458,16 +3643,18 @@ Ftpadmin
 ```
 
 使用 db_load 命令生成 db 口令 login 数据库文件
-
-`db_load -T -t hash -f login.list login.db`
-
+```bash
+db_load -T -t hash -f login.list login.db
+```
 通过修改指定的配置文件,调整对该程序的认证方式
 ```vim
 vim /etc/vsftpd/vsftpd.conf
 
 pam_service_name=vsftpd.vu  # 设置 PAM 使用的名称,该名称就是 /etc/pam.d/ 目录下 vsfptd 文件的文件名
 ```
-`cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu`
+```bash
+cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.vu
+```
 ```vim
 vim /etc/pam.d/vsftpd.vu
 
@@ -3555,7 +3742,7 @@ systemctl enable vsftpd
 
 ---
 
-# 🍗编程语言
+# 编程语言
 ## C
 
 ```c
@@ -3594,7 +3781,7 @@ source ~/.bash_profile
 go version
 ```
 
-**Test your installation**
+**测试安装**
 ```bash
 mkdir -p $HOME/Applications/Go
 cd $HOME/Applications/Go
@@ -3700,8 +3887,9 @@ yum install -y zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel r
 ```
 
 下载Python3
-
-`wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz`
+```bash
+wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tgz
+```
 
 安装python3
 ```bash
@@ -3722,8 +3910,9 @@ vim ~/.bash_profile # 永久修改变量
 
 PATH=$PATH:/usr/local/python3/bin/
 ```
-`source ~/.bash_profile`
-
+```bash
+source ~/.bash_profile
+```
 检查 Python3 及 pip3 是否正常可用
 ```bash
 python3 -V
@@ -3749,8 +3938,9 @@ pip3 -V
 ```
 
 在 linux 安装了多版本 python 时(例如 python2.6 和 2.7),pip 安装的包不一定是用户想要的位置,此时可以用 -t 选项来指定位置
-
-`pip install -t /usr/local/lib/python2.7/site-packages/ docker`
+```bash
+pip install -t /usr/local/lib/python2.7/site-packages/ docker
+```
 
 ### jupyterlab
 
@@ -3795,11 +3985,56 @@ vim ~/.bash_profile
 
 export PATH=$PATH:/usr/local/bin/
 ```
-`source ~/.bash_profile` 不要忘了生效一下
+```bash
+source ~/.bash_profile  # 不要忘了生效一下
+```
 
 ---
 
-# 🍞系统监管
+## Rust
+
+**官网**
+- https://www.rust-lang.org
+
+**安装**
+```bash
+curl https://sh.rustup.rs -sSf | sh
+
+或
+
+dnf install rust cargo
+```
+
+**测试安装**
+```bash
+rustc --version
+cargo --version
+
+tee hello.rs <<-'EOF'
+fn main() {
+    println!("Hello, world!");
+}
+EOF
+rustc hello.rs    # 编译程序
+./hello           # 运行
+```
+
+**使用 Cargo 构建程序**
+```bash
+cargo new helloworld      # 创建一个新的包
+cd helloworld/
+cargo build               # 构建包
+./target/debug/helloworld # 直接运行二进制文件
+
+cargo run                 # 编译和运行
+
+cargo check               # 查看对目录进行了哪些更改
+cargo clean               # 清理目录
+```
+
+---
+
+# 系统监管
 ## BaoTa
 
 **官网**
@@ -3809,16 +4044,19 @@ export PATH=$PATH:/usr/local/bin/
 **安装**
 - **Centos**
 
-  `yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh`
+  ```bash
+  yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh
+  ```
 
 - **Ubuntu/Debian**
 
-  `wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh`
+  ```bash
+  wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh
+  ```
 
 **使用**
 
 - web: 安装完后会随机生成8位的管理路径,账号和密码,访问即可
-
 - shell: 使用 `bt` 命令
 
 ---
@@ -3839,8 +4077,9 @@ sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 ```
 
 使用 yum 命令安装 Jenkins:
-
-`yum install jenkins`
+```bash
+yum install jenkins
+```
 
 **使用 ppa/源方式安装**
 ```bash
@@ -3855,8 +4094,9 @@ sudo apt-get install jenkins
 安装后默认服务是启动的,默认是 8080 端口,在浏览器输入 : http://127.0.0.1:8080/即可打开主页
 
 查看密码
-
-`cat /var/lib/jenkins/secrets/initialAdminPassword`
+```
+cat /var/lib/jenkins/secrets/initialAdminPassword
+```
 
 ---
 
@@ -3939,6 +4179,8 @@ echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
 ---
 
 ## Loganalyzer
+
+> 日志收集系统
 
 **安装**
 
@@ -4024,12 +4266,14 @@ echo 1 > /var/log/syslog
 **安装**
 
 因为 Supervisor 是 Python 开发的,安装前先检查一下系统否安装了 Python2.4 以上版本.
-
-`pip install supervisor`
+```bash
+pip install supervisor
+```
 
 安装完成后,我们使用 echo_supervisord_conf 命令创建一个 Supervisor 配置文件
-
-`echo_supervisord_conf > /etc/supervisord.conf`
+```bash
+echo_supervisord_conf > /etc/supervisord.conf
+```
 
 **配置**
 
@@ -4058,8 +4302,9 @@ killasgroup=false     ;默认为 false,向进程组发送 kill 信号,包括子�
 注意修改 user = tomcat
 
 接着直接运行 Supervisor 即可让目标程序保持后台运行,运行服务时,需要指定 supervisor 配置文件
-
-`supervisord -c /etc/supervisord.conf`
+```bash
+supervisord -c /etc/supervisord.conf
+```
 
 ```bash
 supervisorctl status
@@ -4106,7 +4351,7 @@ firewall-cmd --reload
 
 ## Zabbix
 
-`zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.`
+> zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
 
 **官网**
 - https://www.zabbix.com/
@@ -4230,7 +4475,7 @@ setenforce 0    # 关闭 selinux
 
 ---
 
-# 🌭虚拟化
+# 虚拟化
 ## Docker
 
 **官网**
@@ -4256,13 +4501,16 @@ setenforce 0    # 关闭 selinux
 
 - **官方一条命令安装**
 
-  `curl -sSL https://get.docker.com/ | sh`
+  ```bash
+  curl -sSL https://get.docker.com/ | sh
+  ```
 
 **使用**
 
 默认情况下,只有管理员权限能够运行 docker 命令.考虑到安全问题,你不会想用 root 用户或使用 sudo 来运行 Docker 的.要解决这个问题,你需要将自己的用户加入到 docker 组中.
-
-`sudo usermod -a -G docker $USER`
+```bash
+sudo usermod -a -G docker $USER
+```
 
 完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下:
 ```bash
@@ -4299,7 +4547,7 @@ docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
 
 ### Docker-Compose
 
-Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
+> Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
 去下载二进制包 https://github.com/docker/compose/releases
 
@@ -4378,10 +4626,10 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 
 ---
 
-# 🍯安全服务
+# 安全服务
 ## ClamAV
 
-`一个开源防病毒引擎,用于检测木马,病毒,恶意软件和其他恶意威胁.`
+> 一个开源防病毒引擎,用于检测木马,病毒,恶意软件和其他恶意威胁.
 
 **官网**
 - https://www.clamav.net
@@ -4484,7 +4732,7 @@ clamscan -r --remove    # 查杀当前目录并删除感染的文件
 
 ## Fail2ban
 
-`禁止导致多次身份验证错误的主机`
+> 禁止导致多次身份验证错误的主机
 
 **项目地址**
 - https://github.com/fail2ban/fail2ban
@@ -4586,7 +4834,7 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 ## openldap
 
-`OpenLDAP 是轻型目录访问协议（Lightweight Directory Access Protocol，LDAP）的自由和开源的实现，在其 OpenLDAP 许可证下发行，并已经被包含在众多流行的 Linux 发行版中。`
+> OpenLDAP 是轻型目录访问协议（Lightweight Directory Access Protocol，LDAP）的自由和开源的实现，在其 OpenLDAP 许可证下发行，并已经被包含在众多流行的 Linux 发行版中。
 
 > 以下部分内容来自 https://blog.csdn.net/weixin_41004350/article/details/89521170 ,仅作排版处理和部分内容处理
 
@@ -4857,7 +5105,7 @@ systemctl restart httpd
 
 ## Snort
 
-`一个开源的 IDS`
+> 一个开源的 IDS
 
 **官网**
 - https://www.snort.org/

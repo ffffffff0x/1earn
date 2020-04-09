@@ -191,11 +191,15 @@ exploit -j  # 后台执行
 ### 信息收集
 
 **截屏**
-
 ```bash
 use espia
 screenshot
 screengrab
+```
+
+**摄像头**
+```bash
+webcam_snap -i 1 -v fales                               # 不开闪光灯拍照
 ```
 
 **环境检测**

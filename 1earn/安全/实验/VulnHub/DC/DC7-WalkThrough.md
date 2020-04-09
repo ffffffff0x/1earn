@@ -535,3 +535,7 @@ cat backups.sh
 root 上去看了下定时任务,果然啊,竟然尼玛15分钟。。。。
 
 ![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/19.png)
+
+---
+
+另外 pgp 可以解密出来 密钥好像是 PickYourOwnPassword 根据 /var/mail/dc7user 中邮件信息可以看出来

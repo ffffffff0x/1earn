@@ -79,9 +79,10 @@
         - [upload-labs-WalkThrough](./1earn/安全/实验/Misc/upload-labs-WalkThrough.md) - 一个总结了各种类型文件上传漏洞的靶场
         - [XSS挑战-WalkThrough](./1earn/安全/实验/Misc/XSS挑战-WalkThrough.md)
     - VulnHub
-        - [DC Serial](./1earn/安全/实验/VulnHub/DC) - DC 系列靶场,难度简单至中等,推荐初学者挑战
+        - [DC Serial](./1earn/安全/实验/VulnHub/DC) - DC 系列靶场,难度简单至中等,可以学习各种提权和CMS漏洞利用,推荐初学者挑战
         - [Kioptrix Serial](./1earn/安全/实验/VulnHub/Kioptrix) - Kioptrix 系列靶场,难度简单至中等,推荐初学者挑战
-        - [symfonos Serial](./1earn/安全/实验/VulnHub/symfonos) - 挺有难度的靶场,内容丰富,难度中等,推荐有一定经验者挑战
+        - [Mission-Pumpkin](./1earn/安全/实验/VulnHub/Mission-Pumpkin) - 难度适中,偏向于加解密比较多,漏洞利用内容较少
+        - [symfonos Serial](./1earn/安全/实验/VulnHub/symfonos) - 挺有难度的靶场,内容丰富,难度中等,漏洞利用内容很多,推荐有一定经验者挑战
 
 ## 运维
 ### Linux
@@ -91,6 +92,7 @@
 - [Secure-Linux](./1earn/运维/Linux/Secure-Linux.md) : Linux 加固+维护+应急响应参考
 - [Speed-Linux](./1earn/运维/Linux/Speed-Linux.md) : 命令速查手册,记录各种基本命令操作
 - 笔记
+    - [包管理](./1earn/运维/Linux/笔记/包管理.md) : Linux 各种包管理工具的知识点
     - [发行版](./1earn/运维/Linux/笔记/发行版.md) : Linux 各个发行版本之间的知识
     - [工具](./1earn/运维/Linux/笔记/工具.md) : 收集有趣有用的 Linux 工具
     - [进程](./1earn/运维/Linux/笔记/进程.md) : 科普 Linux 进程的知识
@@ -170,6 +172,8 @@
 建议的阅读体验
 - [VScode](https://code.visualstudio.com/)+[FiraCode](https://github.com/tonsky/FiraCode) (推荐,整个项目在vscode环境下编写,基本不会出现排版问题)
 - [Typora](https://www.typora.io/)
+
+> 如果 clone 速度太慢,可以先导入码云中(选择从 URL 中导入),再进行 clone ： https://blog.gitee.com/2018/06/05/github_to_gitee/?from=homepage
 
 ---
 

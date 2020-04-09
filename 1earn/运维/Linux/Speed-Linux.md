@@ -14,8 +14,8 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/os/v3/open-source.png?v=103" width="15%"></a>
-    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="https://badges.frapsoft.com/bash/v1/bash.png?v=103" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/open-source.png" width="15%"></a>
+    <a href="https://github.com/ellerbrock/open-source-badges/"><img src="../../../assets/img/运维/Linux/bash.png" width="15%"></a>
 </p>
 
 `基础 Linux 命令、操作指南`
@@ -24,7 +24,7 @@
 
 # 大纲
 
-**[👍基础使用](#👍基础使用)**
+**[👍基础使用](#基础使用)**
 
 * [环境变量](#环境变量)
 * [符号](#符号)
@@ -39,7 +39,7 @@
 	* [链接](#链接)
 	* [压缩备份](#压缩备份)
 
-**[📶网络管理](#📶网络管理)**
+**[📶网络管理](#网络管理)**
 
 * [配置](#配置)
 * [查看](#查看)
@@ -50,16 +50,16 @@
 	* [Firewalld](#Firewalld)
 	* [Iptables](#Iptables)
 * [软件包管理](#软件包管理)
-	* [源](#源)
 	* [apt](#apt)
 	* [Binary](#Binary)
 	* [dpkg](#dpkg)
 	* [Pacman](#Pacman)
 	* [rpm](#rpm)
+	* [snap](#snap)
 	* [yum](#yum)
 	* [常用软件](#常用软件)
 
-**[🦋系统管理](#🦋系统管理)**
+**[🦋系统管理](#系统管理)**
 
 * [系统设置](#系统设置)
 	* [时间](#时间)
@@ -74,12 +74,49 @@
 
 ---
 
-# 👍基础使用
+# 基础使用
+
+**帮助**
+```bash
+man		# man 是 manual 的缩写，将指令的具体信息显示出来。
+	man ls	# 显示 ls 命令的手册,按 q 退出
+```
 
 **命令风格**
 - Unix 风格的参数,前面加单破折线,例如: `-H`
 - BSD 风格的参数,前面不加破折线,例如: `h`
 - GNU 风格的长参数,前面加双破折线,例如: `--help`
+
+**关机**
+```bash
+shutdown	# 关机命令
+	shutdown now	# 立刻关机(需要 root 权限)
+# 选项说明
+# -k ： 不会关机，只是发送警告信息，通知所有在线的用户
+# -r ： 将系统的服务停掉后就重新启动
+# -h ： 将系统的服务停掉后就立即关机
+# -c ： 取消已经在进行的 shutdown 指令内容
+
+halt		# 立刻关机(无需 root 权限)
+poweroff	# 立刻关机(无需 root 权限)
+reboot 		# 重启
+```
+
+**别名**
+
+如果要执行命令太长又不符合用户的习惯，那么我们可以为它指定一个别名
+```bash
+alias please="sudo"						# 临时将 please 作为 sudo 的别名
+
+# 想让其永久生效只需要将这些 alias 别名设置保存到文件： ~/.bashrc 里面就可以了
+```
+
+**运行脚本**
+```bash
+source <filename>						# 在当前 bash 环境下读取并执行 FileName 中的命令。
+./xxx.sh								# 运行 xxx.sh 脚本
+bash xxx.sh								# 运行 xxx.sh 脚本
+```
 
 ## 环境变量
 
@@ -112,6 +149,7 @@
 
 ## 符号
 
+**基本符号**
 ```bash
 <				# 重定向输入
 >				# 重定向输出
@@ -138,13 +176,31 @@
 # 反斜杠(\)或引号(', ")都会使通配符失效。
 ```
 
+**grep**
+```bash
+grep		# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
+# 参数解释
+# -a ： 将 binary 文件以 text 文件的方式进行搜寻
+# -c ： 计算找到个数
+# -i ： 忽略大小写
+# -n ： 输出行号
+# -v ： 反向选择，亦即显示出没有 搜寻字符串 内容的那一行
+# --color=auto ：找到的关键字加颜色显示
+```
+
+**awk**
+```bash
+awk			# 可以根据字段的某些条件进行匹配，例如匹配字段小于某个值的那一行数据。
+awk '条件类型 1 {动作 1} 条件类型 2 {动作 2} ...' filename
+# awk 每次处理一行，处理的最小单位是字段，每个字段的命名方式为：\$n，n 为字段号，从 1 开始，\$0 表示一整行。
+```
+
+**其他符号工具**
 ```bash
 head		# 显示文件的开头的内容.默认下,显示文件的头 10 行内容.
 tail		# 显示文件中的尾部内容.默认下,显示文件的末尾 10 行内容.
-grep		# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
 sort		# 将文件进行排序,并将排序结果标准输出.
 uniq		# 用于报告或忽略文件中的重复行
-awk
 ```
 
 ---
@@ -238,8 +294,8 @@ tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾�
 sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
 	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
 
-tac			# 倒着读
-od			# 二进制读
+tac			# 是 cat 的反向操作，从最后一行开始打印。
+od			# 以字符或者十六进制的形式显示二进制文件。
 less		# 允许用户向前或向后浏览文件
 du			# 查看文件大小
 stat		# 查看文件属性
@@ -297,27 +353,39 @@ cat /dev/null > access.log
 
 ### 查询
 
+**搜索命令**
+```bash
+which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
+```
+
+**搜索文件**
+```bash
+find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
+locate <File>		# 查找文件或目录
+```
+
 ```bash
 fd					# 文件查找工具
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
 	fd <File>
 ```
-```bash
-find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
-locate <File>		# 查找文件或目录
-
-which <Command>		# 查找并显示给定命令的绝对路径
-```
 
 ### 修改
 
+**复制**
 ```bash
 cp <源文件> <目标文件/目标路径>			# 复制
 	cp -r <源目录> <目标目录/目标路径>	# 带目录复制
+```
 
+**移动**
+```bash
 mv <源文件> <目标文件/目标路径>			# 对文件或目录重命名,或移动
+```
 
+**编辑**
+```bash
 vi 									# 编辑器
 nano								# 编辑器
 gedit								# 图形化的编辑器
@@ -355,7 +423,9 @@ vimdiff <变动前的文件> <变动后的文件>
 
 **软连接**
 
-是一类特殊的文件， 其包含有一条以绝对路径或者相对路径的形式指向其它文件或者目录的引用。 符号链接最早在 4.2BSD 版本中出现（1983年）。今天 POSIX 操作系统标准、大多数类 Unix 系统、Windows Vista、Windows 7 都支持符号链接。Windows 2000 与 Windows XP 在某种程度上也支持符号链接。
+符号链接文件保存着源文件所在的绝对路径，在读取时会定位到源文件上，可以理解为 Windows 的快捷方式。
+
+软连接是一类特殊的文件， 其包含有一条以绝对路径或者相对路径的形式指向其它文件或者目录的引用。 符号链接最早在 4.2BSD 版本中出现（1983年）。今天 POSIX 操作系统标准、大多数类 Unix 系统、Windows Vista、Windows 7 都支持符号链接。Windows 2000 与 Windows XP 在某种程度上也支持符号链接。
 
 符号链接的操作是透明的：对符号链接文件进行读写的程序会表现得直接对目标文件进行操作。某些需要特别处理符号链接的程序（如备份程序）可能会识别并直接对其进行操作。
 
@@ -371,10 +441,14 @@ ln -s /etc/bashrc /tmp/bashrc
 
 **硬链接**
 
+它和普通文件类似，实体链接文件的 inode 都指向源文件所在的 block 上，也就是说读取文件直接从源文件的 block 上读取。
+
 指通过索引节点来进行连接。在 Linux 的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号(Inode Index)。在 Linux 中，多个文件名指向同一索引节点是存在的。一般这种连接就是硬连接。硬连接的作用是允许一个文件拥有多个有效路径名，这样用户就可以建立硬连接到重要文件，以防止“误删”的功能。其原因如上所述，因为对应该目录的索引节点有一个以上的连接。只删除一个连接并不影响索引节点本身和其它的连接，只有当最后一个连接被删除后，文件的数据块及目录的连接才会被释放。也就是说，文件真正删除的条件是与之相关的所有硬连接文件均被删除。
 
+删除任意一个条目，文件还是存在，只要引用数量不为 0。
+
 在 Linux 中，创建硬链接的方法是 ln:
-```
+```bash
 ln file1 file2
 ```
 
@@ -460,7 +534,7 @@ ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
 
 ---
 
-# 📶网络管理
+# 网络管理
 ## 查看
 
 **IP 地址**
@@ -606,7 +680,7 @@ ROUTES=(gateway)
 
 **ethtool**
 
-ethool 是一个实用的工具，用来给系统管理员以大量的控制网络接口的操作。
+`ethool 是一个实用的工具，用来给系统管理员以大量的控制网络接口的操作。`
 ```bash
 ethtool eth0		# 显示关于该网卡的基本设置
 ethtool -i eth0		# 查询该网卡的驱动相关信息
@@ -797,9 +871,161 @@ ls -alh /var/cache/yum/
 	update-alternatives --set java /opt/jdk1.8.0_91/bin/java	# 直接指定
 ```
 
-### 源
+### apt
 
-`最新版的 linux 系统下,yum 和 apt 都支持自动使用较快的源`
+> apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
+
+```bash
+# 更新源:
+apt-get update
+
+# 对软件进行一次整体更新:
+apt-get update & apt-get upgrade
+apt-get dist-upgrade
+apt-get clean
+
+# 无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
+rm -rf /var/cache/apt/archives/lock
+rm -rf /var/lib/dpkg/lock-frontend
+rm -rf /var/lib/dpkg/lock		# 强制解锁占用
+```
+
+**apt 换源**
+```vim
+vim /etc/apt/sources.list
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+```
+
+enable the "Universe" repository
+```bash
+add-apt-repository universe
+apt-get update
+```
+
+**Gdebi**
+
+> Gdebi 是一个安装 .deb 软件包的工具.提供了图形化的使用界面
+
+```bash
+apt update
+apt install gdebi
+```
+
+### Binary
+
+```bash
+yum install make
+yum install gcc
+yum install gcc-c++
+./configure --prefix=/opt	# 配置,表示安装到/opt目录
+make						# 编译
+make install				# 安装
+```
+
+### dnf
+
+> DNF(Dandified Yum)是一种的 RPM 软件包管理器。
+
+```bash
+yum install epel-release
+yum install dnf
+```
+
+### dpkg
+
+> dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具.
+
+```bash
+# deb 是 debian linux的安装格式,跟 red hat 的 rpm 非常相似,最基本的安装命令是:dpkg -i file.deb
+
+dpkg -i xxxxx.deb  			# 安装软件
+dpkg -R /usr/local/src		# 安装路径下所有包
+dpkg -L 					# 查看软件安装位置
+```
+
+### Pacman
+
+> pacman 是 Arch 的包管理工具.
+
+```bash
+pacman -S <package>			# 安装或者升级单个软件包
+pacman -R <package>			# 删除单个软件包,保留其全部已经安装的依赖关系
+pacman -Ss <package>		# 查询软件包
+
+# 常用软件
+pacman -S vim
+pacman -S fish
+```
+
+**Pacman 换源**
+```bash
+pacman-mirrors -i -c China -m rank		# 更新镜像排名
+pacman -Syy    							# 更新数据源
+pacman -S archlinux-keyring
+```
+
+### rpm
+
+> rpm 命令是 RPM 软件包的管理工具.
+
+```bash
+rpm -qa 					# 搜索 rpm 包
+rpm -qf /etc/my.conf		# 查询文件来自哪个包
+rpm –ivh xxxx.rpm			# 安装本地包
+rpm -e xxx					# 卸载
+rpm -U						# 升级
+rpm -V						# 验证
+```
+
+### snap
+
+> Snappy 是一个软件部署和软件包管理系统，最早由 Canonical 公司为了 Ubuntu 移动电话操作系统而设计和构建。其包称为“snap”，工具名为“snapd”，可在多种 Linux 发行版上运行，完成发行上游主导的软件部署。该系统的设计面向手机、云、物联网和台式机。
+
+**Centos**
+```bash
+sudo yum install epel-release
+sudo yum install snapd
+sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
+```
+
+**kali**
+```bash
+sudo apt-get update
+sudo apt install snapd
+systemctl start snapd
+export PATH=$PATH:/snap/bin
+```
+
+**Ubuntu**
+```bash
+sudo apt-get update
+sudo apt install snapd
+```
+
+### yum
+
+> yum 是在 Fedora 和 RedHat 以及 SUSE 中基于 rpm 的软件包管理器.
+
+**基础使用**
+```bash
+yum update && yum upgrade 	# 更新和升级 rpm 软件包
+yum repolist				# 查看仓库列表
+yum provides ifconfig 		# 查看哪个包提供 ifconfig
+
+# /var/run/yum.pid 已被锁定,PID 为 xxxx 的另一个程序正在运行.
+rm -f /var/run/yum.pid		# 强制解锁占用
+```
 
 **本地 yum 源**
 
@@ -824,7 +1050,9 @@ baseurl=file:///mnt/cdrom/	# 这里为本地源路径
 gpgcheck=0
 enabled=1					# 开启本地源
 ```
-`yum list` 看一下包
+```bash
+yum list    #  看一下包
+```
 
 **Alibaba yum 源**
 
@@ -839,161 +1067,12 @@ yum clean all
 yum makecache
 ```
 
-**ubuntu 源**
-```bash
-lsb_release -c		# 查看系统版号
-
-cd /etc/apt/
-mv sources.list sources.list.bak
-```
-```vim
-vim sources.list
-
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-```
-
-enable the "Universe" repository
-```bash
-add-apt-repository universe
-apt-get update
-```
-
-**Kali 源**
-```vim
-vim /etc/apt/sources.list
-
-# 清华源
-deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-
-# 官方源
-deb http://http.kali.org/kali kali-rolling main non-free contrib
-deb-src http://http.kali.org/kali kali-rolling main non-free contrib
-
-# 中科大
-deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
-deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
-
-# 浙大
-deb http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
-deb-src http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
-
-# 东软大学
-deb http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
-deb-src http://mirrors.neusoft.edu.cn/kali kali-rolling/main non-free contrib
-```
-`apt-get update && apt-get upgrade && apt-get dist-upgrade`
-
-**Pacman 源**
-```bash
-pacman-mirrors -i -c China -m rank		# 更新镜像排名
-pacman -Syy    						# 更新数据源
-pacman -S archlinux-keyring
-```
-
-### apt
-
-apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
-
-```bash
-# 更新源:
-apt-get update
-
-# 对软件进行一次整体更新:
-apt-get update & apt-get upgrade
-apt-get dist-upgrade
-apt-get clean
-
-# 无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
-rm -rf /var/cache/apt/archives/lock
-rm -rf /var/lib/dpkg/lock-frontend
-rm -rf /var/lib/dpkg/lock		# 强制解锁占用
-```
-
-**Gdebi**
-
-Gdebi 是一个安装 .deb 软件包的工具.提供了图形化的使用界面
-
-```bash
-apt update
-apt install gdebi
-```
-
-### Binary
-
-```bash
-yum install make
-yum install gcc
-yum install gcc-c++
-./configure --prefix=/opt	# 配置,表示安装到/opt目录
-make						# 编译
-make install				# 安装
-```
-
-### dpkg
-
-dpkg 命令是 Debian Linux 系统用来安装、创建和管理软件包的实用工具.
-
-```bash
-# deb 是 debian linux的安装格式,跟 red hat 的 rpm 非常相似,最基本的安装命令是:dpkg -i file.deb
-
-dpkg -i xxxxx.deb  			# 安装软件
-dpkg -R /usr/local/src		# 安装路径下所有包
-dpkg -L 					# 查看软件安装位置
-```
-
-### Pacman
-
-pacman 是 Arch 的包管理工具.
-
-```bash
-pacman -S <package>			# 安装或者升级单个软件包
-pacman -R <package>			# 删除单个软件包,保留其全部已经安装的依赖关系
-pacman -Ss <package>		# 查询软件包
-
-# 常用软件
-pacman -S vim
-pacman -S fish
-```
-
-### rpm
-
-rpm 命令是 RPM 软件包的管理工具.
-
-```bash
-rpm -qa 					# 搜索 rpm 包
-rpm -qf /etc/my.conf		# 查询文件来自哪个包
-rpm –ivh xxxx.rpm			# 安装本地包
-rpm -e xxx					# 卸载
-rpm -U						# 升级
-rpm -V						# 验证
-```
-
-### yum
-
-yum 命令是在 Fedora 和 RedHat 以及 SUSE 中基于 rpm 的软件包管理器
-
-```bash
-yum update && yum upgrade 	# 更新和升级 rpm 软件包
-yum repolist				# 查看仓库列表
-yum provides ifconfig 		# 查看哪个包提供 ifconfig
-
-# /var/run/yum.pid 已被锁定,PID 为 xxxx 的另一个程序正在运行.
-rm -f /var/run/yum.pid		# 强制解锁占用
-```
-
 ### 常用软件
 
 **bash-insulter**
+
+> 一个在你打错命令时候嘴臭你的工具
+
 ```bash
 git clone https://github.com/No-Github/bash-insulter.git bash-insulter
 cp bash-insulter/src/bash.command-not-found /etc/
@@ -1015,12 +1094,18 @@ echo "$(tput cuf 5) (Title 17, United States Code, Section 506)."
 ```
 
 **Fish**
+
+> 一个挺好用的 shell 环境
+
 ```bash
 echo /usr/bin/fish | sudo tee -a /etc/shells	# 加默认
 usermod -s /usr/bin/fish <USERNAME>
 ```
 
 **zsh**
+
+> 一个挺好用的 shell 环境
+
 ```bash
 apt install zsh		# 安装 zsh
 chsh -s /bin/zsh	# 切换默认的 shell 为 zsh
@@ -1039,7 +1124,11 @@ zsh					# 重新加载 zsh 配置
 
 **Powerline-shell**
 
-`pip install powerline-shell`
+> 用于美化 shell 环境
+
+```bash
+pip install powerline-shell
+```
 ```vim
 vim ~/.config/fish/config.fish
 
@@ -1048,11 +1137,11 @@ function fish_prompt
 end
 ```
 
-更多关于linux工具的内容参考笔记 [工具](./笔记/工具.md)
+更多关于 linux 工具的内容参考笔记 [工具](./笔记/工具.md)
 
 ---
 
-# 🦋系统管理
+# 系统管理
 ## 系统设置
 ### 时间
 
@@ -1086,7 +1175,9 @@ vim /etc/locale.conf
 set LANG en_US.UTF-8	# 更改默认语言
 	 zh_CN.UTF-8
 ```
-`source   /etc/locale.conf`
+```bash
+source   /etc/locale.conf
+```
 
 ### 启动项-计划任务
 **查看**
@@ -1396,8 +1487,15 @@ disown		# 使作业忽略 HUP 信号
 ## 设备管理
 ### 硬盘-数据
 
+**磁盘的文件名**
+
+Linux 中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘接口类型进行命名，常见磁盘的文件名如下：
+- IDE 磁盘 : /dev/hd[a-d]
+- SATA/SCSI/SAS 磁盘 : /dev/sd[a-p]
+其中文件名后面的序号的确定与系统侦测到磁盘的顺序有关，而与磁盘所插入的插槽位置无关。
+
 **磁盘配额**
-- quota
+- quota : 能对某一分区下指定用户或用户组进行磁盘限额。
 
 **分区**
 ```bash
@@ -1468,6 +1566,9 @@ du	# 报告目录的空间使用情况
 ```
 
 **dd**
+
+> dd 主要功能为转换和复制文件。
+
 ```bash
 dd
 	dd if=/dev/zero of=sun.txt bs=1M count=1
@@ -1481,6 +1582,9 @@ dd
 ```
 
 **LVM**
+
+> LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。
+
 ```bash
 pvcreate /dev/sdb1						# 初始化物理卷
 vgcreate -s 16M datastore /dev/sdb1		# 创建物理卷

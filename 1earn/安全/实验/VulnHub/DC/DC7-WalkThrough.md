@@ -61,7 +61,7 @@ Installation is simple - download it, unzip it, and then import it into VirtualB
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.142` 就是目标了
 
@@ -70,23 +70,23 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.142
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/2.png)
 
 开放了 SSH 和 WEB 服务,web 是 Drupal 搭建的站,和 DC1 的做法一样,测了几个 CVE,并没有成功
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/3.png)
 
 然后试了爆破账号和目录也没有结果,google 一圈后发现,尼玛需要去推特上搜索最底下的用户字符串 "DC7USER"
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/4.png)
 
 再找到他的 github 仓库 https://github.com/Dc7User/staffdb
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/5.png)
 
 看上去像是要代码审计？其实不是,里面有 config.php 其中有 mysql 凭证
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/6.png)
 
 ```
 dc7user
@@ -95,15 +95,15 @@ MdR3xOgB7#dW
 
 拿这个去连接它 mysql？扯淡,他没对外开数据库端口,那就用着连连其他的
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/7.png)
 
 后台登录不上,再换一个,之前扫出的 SSH 时下,果然成功
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/8.png)
 
 看看有没有可以利用的
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/9.png)
 
 数据库文件是 gpg 加密的,不管,看到有个邮件文件
 ```
@@ -332,7 +332,7 @@ Database dump saved to /home/dc7user/backups/website.sql               [success]
 cat /opt/scripts/backups.sh
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/10.png)
 
 很好,提到了个工具 drush,DC1 补充里我通过 drush 修改 admin 用户的密码,来直接改 admin 密码
 ```
@@ -348,21 +348,21 @@ drush user-password admin --password="admin"
 
 登录后台,这里参考 https://www.sevenlayers.com/index.php/164-drupal-to-reverse-shell Drupal 后台提权的方法,进入 Manage-->Extend-->List-->Install new module
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/11.png)
 
 访问下载插件 https://ftp.drupal.org/files/projects/php-8.x-1.0.tar.gz ,直接下载或手动上传都行,自选
 
 上传成功后,点击 Enable newly added modules
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/12.png)
 
 到 FILTERS 选项，勾选 PHP Filter，点击下方的 Install
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/13.png)
 
 回到主页，在左边的 Tools 栏中点击 Add content -> Basic page,Text format 选择 PHP code
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/14.png)
 
 写入一个 php 反向 shell 即可
 
@@ -484,7 +484,7 @@ function printit ($string) {
 ?>
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/15.png)
 
 kali 监听
 ```
@@ -493,7 +493,7 @@ nc -lvp 4444
 
 点击 preview,成功回弹
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/16.png)
 
 ---
 
@@ -506,7 +506,7 @@ cd /opt/scripts/
 ls -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/17.png)
 
 可见文件属组为 www-data,组权限 rwx,我们可以对脚本进行修改,期望通过定时任务尝试提权
 
@@ -524,7 +524,7 @@ cat backups.sh
 
 耐心等待几分钟,就反弹回来了
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/18.png)
 
 提权成功,感谢靶机作者 @DCUA7
 
@@ -534,7 +534,7 @@ cat backups.sh
 
 root 上去看了下定时任务,果然啊,竟然尼玛15分钟。。。。
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC7/19.png)
 
 ---
 

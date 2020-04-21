@@ -57,7 +57,7 @@
   * [配置php](#配置php)
   * [配置https](#配置https)
 * [Caddy](#Caddy)
-* [npm & Node](#npm&Node)
+* [npm & Node](#npmnode)
 * [Nexus](#Nexus)
 * [Nginx](#Nginx)
 * [phpMyAdmin](#phpMyAdmin)
@@ -95,7 +95,7 @@
 * [Go](#Go)
 * [JDK](#JDK)
 * [Python3](#Python3)
-  * [pip3](#pip3)
+  * [pip](#pip)
   * [jupyterlab](#jupyterlab)
 * [Ruby](#Ruby)
 
@@ -1173,6 +1173,8 @@ socks5 127.0.0.1 1080   # 改成你懂的
 
 一般主机安装完毕后 SSH 是默认开启的,使用 `/etc/init.d/ssh status` 查看主机 SSH 状态
 
+> 注: ssh_config 为客户端连接到服务端的配置文件；sshd_config 为服务端的配置。
+
 **Kali/Manjaro**
 
 安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
@@ -1199,8 +1201,7 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 
 **Ubuntu**
 
-如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `sudo
-apt-get install openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
+如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `sudo apt install openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
 apt install openssh-client=1:7.2p2-4ubuntu2.8
 apt install openssh-server=1:7.2p2-4ubuntu2.8
@@ -1211,6 +1212,29 @@ service ssh restart     # 启动ssh
 systemctl enable ssh    # 设置为开机自启
 ```
 
+配置允许 root 远程登录
+```vim
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+```
+
+**Debian**
+```
+apt install openssh-client=1:7.9p1-10+deb10u1
+apt install openssh-server=1:7.9p1-10+deb10u1
+apt install ssh
+```
+```bash
+service ssh restart
+systemctl enable ssh
+```
+
+配置允许 root 远程登录
+```vim
+echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+```
+
 **加固**
 
 本部分内容移步[Secure-Linux](./Secure-Linux#SSH) SSH 部分
@@ -1218,9 +1242,10 @@ systemctl enable ssh    # 设置为开机自启
 **排错**
 
 0. 先排查是不是客户端(自己)的问题,再排查是不是服务端(对面)的问题,最后在排查是不是传输中(中间)的问题.
-1. ping 试试,如果网络层可通,那么大概率是应用层的问题,检查 SSH 配置,是否有白名单限制,或者你他娘的意大利防火墙或selinux就没放行
+1. ping 试试,如果网络层可通,那么大概率是应用层的问题,检查 SSH 配置,是否有白名单限制,或者你他娘的意大利防火墙或 selinux 就没放行
 2. 假设这么一种情况,应用层配置正常,主机一切正常,但路由器/交换机在 ACL 上禁用了 SSH 的流量,这样就是传输层的问题了.内网 IPS/IDS 阻断同理.
-3. 麻烦你看下账号密码是不是写错了谢谢.或者是不是限制只使用密钥登陆的.
+4. 麻烦你看下账号密码是不是写错了谢谢.或者是不是限制只使用密钥登陆的.
+5. 注意下是不是配置文件或服务看错了是 sshd 不是 ssh
 
 **motd**
 - [Mithrilwoodrat/FBI-WARNING-in-console](https://github.com/Mithrilwoodrat/FBI-WARNING-in-console)
@@ -1696,10 +1721,10 @@ echo -e "xxx.com {
   ```
 
 - yum
-
-  `yum install epel-release`
-
-  `yum install nodejs npm`
+  ```bash
+  yum install epel-release
+  yum install nodejs npm
+  ```
 
 **源文件方式安装**
 
@@ -1724,6 +1749,19 @@ ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
 
 **加速**
 - [node&js](../../Plan/Misc-Plan.md#node&js)
+
+**forever**
+
+> forever 是一个简单的命令式 nodejs 的守护进程，能够启动，停止，重启 App 应用。forever 完全基于命令行操作，在forever进程之下，创建 node 的子进程，通过 monitor 监控 node 子进程的运行情况，一旦文件更新或进程挂掉，forever 会自动重启 node 服务器，确保应用正常运行。
+
+```bash
+npm install forever -g    # 全局安装
+forever start app.js      # 启动
+forever stop app.js       # 关闭
+forever start -l forever.log -o out.log -e err.log app.js # 输出日志和错误
+forever -w app.js         # 自动监控文件变化，文件修改保存之后自动重启app.js
+forever -h                # 查看帮助
+```
 
 ---
 
@@ -2154,6 +2192,27 @@ sudo service uwsgi restart
 ```
 
 现在访问 www.你的域名.com 查看你的搜索引擎服务把~
+
+**tips**
+
+搜索引擎设置在 settings_et_dev.yml 文件中
+
+建议删除或不使用的搜索接口(由于对请求速度的影响实在太大,并且经常抽风报错)
+- archive is
+- wikipedia
+- wikidata
+- faroo
+- library genesis
+- reddit
+- startpage
+- mymemory translated
+
+搜索结果定向,不适合日常使用
+- etymonline
+- gigablast
+- duden
+- seznam
+- erowid
 
 ---
 
@@ -2848,7 +2907,7 @@ setenforce 0
 
 默认 Oracle 数据库中的两个具有 DBA 权限的用户 Sys 和 System 的缺省密码是 manager。
 
-![image](../../../assets/img/运维/Linux/Power/1.png)
+![](../../../assets/img/运维/Linux/Power/1.png)
 
 `注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下,使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
 
@@ -3919,11 +3978,17 @@ python3 -V
 pip3 -V
 ```
 
-### pip3
+### pip
 
-```
+```bash
 wget https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py
+```
+
+debian 系可以直接用 apt 装
+
+```bash
+apt-get install python-pip
 ```
 
 **加速**
@@ -4481,6 +4546,14 @@ setenforce 0    # 关闭 selinux
 **官网**
 - https://www.docker.com
 
+**版本区别**
+最早的时候docker就是一个开源项目，主要由docker公司维护.
+
+- 2017年年初，docker 公司将原先的 docker 项目改名为 moby，并创建了docker-ce 和 docker-ee.
+- docker-ce 是社区版本，适用于刚刚开始 docker 和开发基于 docker 研发的应用开发者或者小型团队.
+- docker-ee 是企业版，适用于企业级开发，同样也适用于开发、分发和运行商务级别的应用的 IT 团队.
+- docker-io, docker-engin 是以前早期的版本.
+
 **安装**
 
 - **centos 下安装**
@@ -4490,19 +4563,25 @@ setenforce 0    # 关闭 selinux
   sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
   yum makecache fast
   yum install -y docker
+  sudo systemctl start docker
   ```
 
 - **debian 下安装**
   ```bash
-  sudo apt update
-  sudo apt install docker.io
+  apt remove docker docker-engine docker.io
+  sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common \
+    gnupg
+  curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+  echo 'deb https://download.docker.com/linux/debian stretch stable'> /etc/apt/sources.list.d/
+  apt update
+  apt install docker-ce
+  docker version
+  sudo systemctl start docker
   docker login  # 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
-  ```
-
-- **官方一条命令安装**
-
-  ```bash
-  curl -sSL https://get.docker.com/ | sh
   ```
 
 **使用**
@@ -4536,14 +4615,27 @@ docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
 
 常用命令
 ```bash
-docker run -it [docker_id] bash             # 运行一个容器实例
-docker ps                                   # 查看当前运行的 docker 容器的进程信息
-docker image rm [docker_image_id]           # 删除本地的 docker 镜像
-docker rmi -f [docker_image_id]             # 删除本地的 docker 镜像
-docker exec -it [docker_id] bash            # 获取容器的shell
+docker run -it <docker_id> bash             # 运行一个容器实例
+docker stop <docker_name/docker_id>         # 停止容器
+docker exec -it <docker_id> bash            # 获取容器的shell
 docker kill                                 # 杀死容器
-docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
+docker commit <docker_id> <docker_image_id> # 提交并保存容器状态
+docker rm <docker_name/docker_id>           # 删除容器
+docker ps                                   # 查看当前运行的 docker 容器的进程信息
+  docker ps -a                              # 查看当前容器
+docker stats                                # 统计信息
+
+docker search <keyword>                     # 搜索镜像
+docker image ls                             # 查看已下载的镜像列表
+docker image rm <docker_image_id>           # 删除本地的 docker 镜像
+docker rmi -f <docker_image_id>             # 删除本地的 docker 镜像
 ```
+
+**加速**
+- [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
+
+**扩展项目**
+- [instantbox](https://github.com/instantbox/instantbox) - 脚本实现的一个 docker 虚拟化平台,快速获得开箱即用的热乎乎的虚拟机😁
 
 ### Docker-Compose
 
@@ -4551,10 +4643,11 @@ docker commit [docker_id] [docker_image_id] # 提交并保存容器状态
 
 去下载二进制包 https://github.com/docker/compose/releases
 
-然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行:`chmod +x /usr/local/bin/docker-compose`
+然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行权限
 
 ```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+wget https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
+mv docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
@@ -4568,14 +4661,19 @@ docker-compose stop
 docker-compose ps     # 查看当前的使用 docker-compose up -d 开启的容器进程信息
 docker-compose up -d  # 使用本地的 docker-compose.yml 开启相关的容器
 docker-compose down   # 终止当前的使用 docker-compose up -d 开启的容器
-docker-compose exec <service> sh
+docker-compose exec <service> sh  # 进入容器内
 ```
 
-**加速**
-- [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
+### Docker-Portainer
 
-**扩展项目**
-- [instantbox](https://github.com/instantbox/instantbox) - 脚本实现的一个 docker 虚拟化平台,快速获得开箱即用的热乎乎的虚拟机😁
+> Portainer 是 Docker 一款可视化管理用具，部署简单，推荐。
+
+```bash
+docker pull portainer/portainer # 拉取镜像
+docker volume create portainer_data
+docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer   # 部署
+```
+访问 <ip>:9000 进入到设置密码界面.
 
 ---
 
@@ -5058,7 +5156,7 @@ service firewalld stop
 
 连接工具使用 LdapAdmin
 
-![image](../../../assets/img/运维/Linux/Power/2.png)
+![](../../../assets/img/运维/Linux/Power/2.png)
 
 **PhpLdapAdmin**
 

@@ -4,7 +4,7 @@
 
 # 原理
 
-![image](../../../assets/img/开发/版本控制/git/1.jpg)
+![](../../../assets/img/开发/版本控制/git/1.jpg)
 
 - **工作区(Working Directory)**
 
@@ -83,7 +83,7 @@ git push -f
 
 ## 分支管理
 
-![image](../../../assets/img/开发/版本控制/git/2.png)
+![](../../../assets/img/开发/版本控制/git/2.png)
 ```bash
 git branch                  # 查看分支
 git branch -r               # 查看远程分支
@@ -230,7 +230,7 @@ $ git checkout feature
 
 # 远程操作
 
-![image](../../../assets/img/开发/版本控制/git/3.png)
+![](../../../assets/img/开发/版本控制/git/3.png)
 多人协作的工作模式通常是这样:
 - 首先，可以试图用 `git push origin branch-name` 推送自己的修改;
 - 如果推送失败，则因为远程分支比你的本地更新，需要先用 `git pull` 试图合并;
@@ -335,7 +335,7 @@ git push --force origin
 
     在 windows 中添加一个用户变量，变量名:HOME,变量值:%USERPROFILE%
 
-    ![image](../../../assets/img/开发/版本控制/git/4.jpg)
+    ![](../../../assets/img/开发/版本控制/git/4.jpg)
 
     进入 `%HOME%` 目录，新建一个名为 `_netrc` 的文件，文件中内容格式如下:
     ```bash

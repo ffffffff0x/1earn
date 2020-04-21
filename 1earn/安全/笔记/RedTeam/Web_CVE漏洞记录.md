@@ -12,41 +12,41 @@
 
 **各类论坛/CMS框架**
 
-* [dedeCMS](#dedeCMS)
-* [Discuz](#Discuz)
-* [Drupal](#Drupal)
-* [ECshop](#ECshop)
-* [Joomla](#Joomla)
-* [MetInfo](#MetInfo)
-* [ThinkCMF](#ThinkCMF)
-* [ThinkPHP](#ThinkPHP)
-* [WordPress](#WordPress)
-* [YxCMS](#YxCMS)
+* [dedeCMS](#dedecms)
+* [Discuz](#discuz)
+* [Drupal](#drupal)
+* [ECshop](#ecshop)
+* [Joomla](#joomla)
+* [MetInfo](#metInfo)
+* [ThinkCMF](#thinkcmf)
+* [ThinkPHP](#thinkphp)
+* [WordPress](#wordpress)
+* [YxCMS](#yxcms)
 * [zcncms](#zcncms)
 * [泛微](#泛微)
 * [致远](#致远)
 
 **框架和中间件**
 
-* [ActiveMQ](#ActiveMQ)
-* [ElasticSearch](#ElasticSearch)
-* [IIS](#IIS)
-* [JBOSS](#JBOSS)
-* [PHP](#PHP)
-* [Resin](#Resin)
-* [RocketMQ](#RocketMQ)
+* [ActiveMQ](#activemq)
+* [ElasticSearch](#elasticsearch)
+* [IIS](#iis)
+* [JBOSS](#jboss)
+* [PHP](#php)
+* [Resin](#resin)
+* [RocketMQ](#rocketmq)
 * [shiro](#shiro)
-* [Solr](#Solr)
-* [Spring](#Spring)
-* [Struts2](#Struts2)
-* [Tomcat](#Tomcat)
-* [Weblogic](#Weblogic)
+* [Solr](#solr)
+* [Spring](#spring)
+* [Struts2](#struts2)
+* [Tomcat](#tomcat)
+* [Weblogic](#weblogic)
 
 **组件**
 
 * [编辑器](#编辑器)
     * [ewebeditor](#ewebeditor)
-    * [FCKeditor](#FCKeditor)
+    * [FCKeditor](#fckeditor)
     * [kindeditor](#kindeditor)
 * [序列化](#序列化)
     * [fastjson](#fastjson)
@@ -56,19 +56,19 @@
 
 **服务**
 
-* [Aria2](#Aria2)
-* [Confluence](#Confluence)
-* [Crowd](#Crowd)
-* [Harbor](#Harbor)
-* [Jenkins](#Jenkins)
-* [Jira](#Jira)
-* [Jupyter](#Jupyter)
-* [Nexus](#Nexus)
-* [noVNC](#noVNC)
-* [phpMyAdmin](#phpMyAdmin)
-* [PHP-FPM](#PHP-FPM)
-* [Supervisord](#Supervisord)
-* [Webmin](#Webmin)
+* [Aria2](#aria2)
+* [Confluence](#confluence)
+* [Crowd](#crowd)
+* [Harbor](#harbor)
+* [Jenkins](#jenkins)
+* [Jira](#jira)
+* [Jupyter](#jupyter)
+* [Nexus](#nexus)
+* [noVNC](#novnc)
+* [phpMyAdmin](#phpmyadmin)
+* [PHP-FPM](#php-fpm)
+* [Supervisord](#supervisord)
+* [Webmin](#webmin)
 * [zabbix](#zabbix)
 
 ---
@@ -198,6 +198,7 @@
 - POC | Payload | exp
     - https://github.com/vulhub/vulhub/blob/master/drupal/CVE-2018-7600/README.zh-cn.md
     - [pimps/CVE-2018-7600](https://github.com/pimps/CVE-2018-7600)
+    - [dreadlocked/Drupalgeddon2](https://github.com/dreadlocked/Drupalgeddon2)
 
 - MSF Module
     ```bash
@@ -348,6 +349,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 > 官网: http://www.thinkphp.cn/
 
 ### <5
+
 **文章**
 - [thinkphp一些版本的通杀漏洞payload](http://www.moonsec.com/post-853.html)
 - [代码审计 | ThinkPHP3.x、5.x框架任意文件包含](https://bbs.ichunqiu.com/forum.php?mod=viewthread&tid=39586)
@@ -357,7 +359,16 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [ThinkPHP3.2 框架sql注入漏洞分析(2018-08-23)](https://xz.aliyun.com/t/2629)
 - [ Thinkphp框架 3.2.x sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38901-1-12.html)
 
+**日志泄露**
+```bash
+/Application/Runtime/Logs/Home/16_09_06.log # 其中 Application 可能会变，比如 App
+/Runtime/Logs/Home/16_09_06.log # 年份_月份_日期
+/Runtime/Logs/User/16_09_06.log # 年份_月份_日期
+```
+- [whirlwind110/tphack](https://github.com/whirlwind110/tphack) - Thinkphp3/5 Log文件泄漏利用工具
+
 ### 5
+
 **文章**
 - [ThinkPHP 5.x (v5.0.23及v5.1.31以下版本) 远程命令执行漏洞利用 (GetShell) ](https://www.vulnspy.com/cn-thinkphp-5.x-rce/)
 - [代码审计 | ThinkPHP3.x、5.x框架任意文件包含](https://bbs.ichunqiu.com/forum.php?mod=viewthread&tid=39586)
@@ -375,6 +386,12 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 **资源**
 - [Mochazz/ThinkPHP-Vuln](https://github.com/Mochazz/ThinkPHP-Vuln) - 关于ThinkPHP框架的历史漏洞分析集合
 - [SkyBlueEternal/thinkphp-RCE-POC-Collection](https://github.com/SkyBlueEternal/thinkphp-RCE-POC-Collection) - thinkphp v5.x 远程代码执行漏洞-POC集合
+
+**日志泄露**
+```bash
+/runtime/log/202004/1.log       # 年月/数字
+```
+- [whirlwind110/tphack](https://github.com/whirlwind110/tphack) - Thinkphp3/5 Log文件泄漏利用工具
 
 ---
 
@@ -853,7 +870,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     如果我们请求的文件/文件夹名同时存在大小写时,这个请求会被请求两次,一次是原封不动的请求,一次是全部使用小写的请求.
 
     下表显示了每个请求的 FS 调用的数量(Windows 2008 R2, IIS 7.5(latest patch – June 2012), and .Net framework 4.0.30319 (在别的系统下可能会不同))
-    ![image](../../../../assets/img/安全/笔记/RedTeam/Web_CVE漏洞记录/1.jpg)
+    ![](../../../../assets/img/安全/笔记/RedTeam/Web_CVE漏洞记录/1.jpg)
 
 **CVE-2017-7269** IIS6.0 RCE
 - 简介
@@ -1054,6 +1071,7 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 **工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
 - [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce) - shiro rce 反序列 命令执行 一键工具
+- [feihong-cs/ShiroExploit](https://github.com/feihong-cs/ShiroExploit) - shiro550/721漏洞检测工具
 
 **SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
 - https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
@@ -1405,6 +1423,7 @@ Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+
 
 - POC | Payload | exp
     - [Ivan1ee/struts2-057-exp](https://github.com/Ivan1ee/struts2-057-exp)
+    - [mazen160/struts-pwn_CVE-2018-11776](https://github.com/mazen160/struts-pwn_CVE-2018-11776)
 
 ---
 
@@ -1431,7 +1450,7 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 
 base64 编码，口令形式为 username:password
 
-![image](../../../../assets/img/安全/笔记/RedTeam/Web_CVE漏洞记录/2.png)
+![](../../../../assets/img/安全/笔记/RedTeam/Web_CVE漏洞记录/2.png)
 
 - MSF Module
     ```
@@ -1607,6 +1626,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
 - 老版本 weblogic 有一些常见的弱口令,比如 weblogic、system、portaladmin 和 guest,Oracle@123 等,用户名密码交叉使用.
 
 **工具**
+- [0xn0ne/weblogicScanner](https://github.com/0xn0ne/weblogicScanner) - weblogic 漏洞扫描工具
 - [dr0op/WeblogicScan](https://github.com/dr0op/WeblogicScan) - 增强版WeblogicScan、检测结果更精确、插件化、添加CVE-2019-2618，CVE-2019-2729检测，Python3支持
 - [rabbitmask/WeblogicScan](https://github.com/rabbitmask/WeblogicScan) - Weblogic 一键漏洞检测工具
 - [rabbitmask/WeblogicScanLot](https://github.com/rabbitmask/WeblogicScanLot) - Weblogic 漏洞批量检测工具
@@ -1699,6 +1719,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
 
 - POC | Payload | exp
     - [LandGrey/CVE-2018-2894](https://github.com/LandGrey/CVE-2018-2894)
+    - [PayloadsAllTheThings/CVE Exploits/WebLogic CVE-2018-2894.py ](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/CVE%20Exploits/WebLogic%20CVE-2018-2894.py)
 
 **CVE-2018-3191**
 - 简介

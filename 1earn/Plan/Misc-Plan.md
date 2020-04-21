@@ -34,6 +34,28 @@ cscript ospp.vbs /act
 CSCRIPT OSPP.VBS /DSTATUS
 ```
 
+**愉快使用网易云音乐**
+
+- centos环境
+
+```bash
+yum install epel-release
+yum install nodejs npm
+git clone https://github.com/nondanee/UnblockNeteaseMusic.git
+cd UnblockNeteaseMusic
+npm install forever -g
+npm install
+forever start app.js -p 18080   # 启动
+firewall-cmd --permanent --zone=public --add-port=18080/tcp
+firewall-cmd --reload
+```
+
+客户端配置 http 代理 IP:18080
+
+```bash
+forever stop app.js             # 关闭
+```
+
 # DNS
 
 **快速刷新 DNS 缓存**

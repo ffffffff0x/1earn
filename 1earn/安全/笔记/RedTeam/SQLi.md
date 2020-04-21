@@ -27,7 +27,7 @@
 
 **辅助工具**
 - sqlmap
-    - [sqlmap 笔记](../../工具/sqlmap.md)
+    - [sqlmap 笔记](../../工具/Sqlmap.md)
 
     按 SQLMap 中的分类来看,SQL 注入类型有以下 5 种:
     ```

@@ -218,7 +218,7 @@ python -m SimpleHTTPServer
 wget 192.168.141.150:8000/ftp.pcap
 ```
 
-关于 wireshark 的简单用法见 [wireshark 笔记](../../../工具/wireshark.md)
+关于 wireshark 的简单用法见 [wireshark 笔记](../../../工具/Wireshark.md)
 
 分析了半天,啥都没有,突然想起来 127.0.0.1 应该是走环回口,妈的,还得再抓包
 

@@ -132,7 +132,7 @@ cewl http://dc-2 -w out.txt
 
 密码表有了,那么就应该爆破了,目标这个网站一看用的就是 wordpress,默认的登录地址一般是 `/wp-admin` 或 `/wp-login.php`
 
-不要使用 kali 自带的 burp 直接跑,你会急得想砸电脑,kali 默认的 burp 是社区版,那个爆破速度基本没用,burp 使用教程参考 [BurpSuite笔记](../../../工具/burpsuite.md#Intruder)
+不要使用 kali 自带的 burp 直接跑,你会急得想砸电脑,kali 默认的 burp 是社区版,那个爆破速度基本没用,burp 使用教程参考 [BurpSuite笔记](../../../工具/BurpSuite.md#Intruder)
 
 接下来使用一个工具 WPScan,同样 kali 自带
 ```bash

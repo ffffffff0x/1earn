@@ -60,16 +60,16 @@
     - [Crypto](./1earn/安全/笔记/Crypto.md) - 介绍各种编码和加密算法及相关的工具
 - 工具
     - [BurpSuite](./1earn/安全/工具/BurpSuite.md)
-    - [CobaltStrike](./1earn/安全/工具/cobaltstrike.md)
-    - [Hashcat](./1earn/安全/工具/hashcat.md)
-    - [Kali](./1earn/安全/工具/kali.md)
-    - [Metasploit](./1earn/安全/工具/metasploit.md)
+    - [CobaltStrike](./1earn/安全/工具/CobaltStrike.md)
+    - [Hashcat](./1earn/安全/工具/Hashcat.md)
+    - [Kali](./1earn/安全/工具/Kali.md)
+    - [Metasploit](./1earn/安全/工具/Metasploit.md)
     - [mimikatz](./1earn/安全/工具/mimikatz.md)
-    - [Nmap](./1earn/安全/工具/nmap.md)
-    - [SET](./1earn/安全/工具/set.md)
-    - [Sqlmap](./1earn/安全/工具/sqlmap.md)
-    - [Wfuzz](./1earn/安全/工具/wfuzz.md)
-    - [Wireshark](./1earn/安全/工具/wireshark.md)
+    - [Nmap](./1earn/安全/工具/Nmap.md)
+    - [SET](./1earn/安全/工具/SET.md)
+    - [Sqlmap](./1earn/安全/工具/Sqlmap.md)
+    - [Wfuzz](./1earn/安全/工具/Wfuzz.md)
+    - [Wireshark](./1earn/安全/工具/Wireshark.md)
 - 实验
     - HTB
     - Misc

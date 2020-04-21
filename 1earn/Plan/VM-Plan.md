@@ -111,17 +111,17 @@ yum install open-vm-tools-devel -y
 **安装软件**
 - [docker](../运维/Linux/Power-Linux.md#docker)
 - [docker-Compose](../运维/Linux/Power-Linux.md#Docker-Compose)
-- [pip & pip3](../安全/工具/kali.md#pip)
-- [proxychains-ng](../安全/工具/kali.md#proxychains-ng)
+- [pip & pip3](../安全/工具/Kali.md#pip)
+- [proxychains-ng](../安全/工具/Kali.md#proxychains-ng)
 - [SSH](../运维/Linux/Power-Linux.md#SSH)
 - [bash-insulter](../运维/Linux/Speed-Linux.md#常用软件)
-- [Nessus](../安全/工具/kali.md#Nessus) - 漏扫
+- [Nessus](../安全/工具/Kali.md#Nessus) - 漏扫
 - [shmilylty/OneForAll](https://github.com/shmilylty/OneForAll) - 子域名爆破工具
 - [greycatz/CloudUnflare](https://github.com/greycatz/CloudUnflare) - 用于绕过Cloudflare侦查真实IP地址
 - [gnebbia/halive](https://github.com/gnebbia/halive) - 快速对 URL 探活
 - [JDK](../运维/Linux/Power-Linux.md#JDK) - 用于运行 burp
-- [BurpSuite](../安全/工具/burpsuite.md#安装) - 抓包改包工具
-- [ncat](../安全/工具/kali.md#ncat)
+- [BurpSuite](../安全/工具/BurpSuite.md#安装) - 抓包改包工具
+- [ncat](../安全/工具/Kali.md#ncat)
 - lrzsz - 方便传文件
 - owasp-mantra-ff - 集成浏览器
 - parallel - 多线程工具
@@ -139,7 +139,7 @@ yum install open-vm-tools-devel -y
 - disk:100G
 
 **更多 Kali 配置记录**
-- [Kali](../安全/工具/kali.md)
+- [Kali](../安全/工具/Kali.md)
 
 ---
 

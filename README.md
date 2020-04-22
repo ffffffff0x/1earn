@@ -236,9 +236,10 @@
 - [mfslog](https://github.com/mfslog)
 
 参考过的部分文章作者(排名不分先后)
-- Tide安全团队(取证中很大程度参考其文章内容)
-- [theLSA](https://github.com/theLSA)(取证和Secure-Win中很大程度参考其项目内容)
-- [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes)(应急和Secure-Win中很大程度参考其项目内容)
+- [Tide安全团队](https://github.com/TideSecTeam?type=source) - 取证中很大程度参考其公众号文章内容
+- [theLSA](https://github.com/theLSA) - 取证和Secure-Win中很大程度参考其项目内容
+- [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes) - 应急和Secure-Win中很大程度参考其项目内容
+- [Jirairya](https://b404.xyz/) - windows认证渗透内容大部分参考其文章内容
 - 及其他一堆作者,我都记录在笔记文件末尾的 reference 中
 
 ---

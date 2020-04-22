@@ -1,7 +1,7 @@
 # Metasploit
 
 <p align="center">
-    <img src="../../../assets/img/logo/metasploit.jpg" width="20%"></a>
+    <img src="../../../assets/img/logo/metasploit.png" width="20%"></a>
 </p>
 
 ---

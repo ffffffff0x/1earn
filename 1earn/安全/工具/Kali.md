@@ -1,7 +1,7 @@
 # Kali
 
 <p align="center">
-    <img src="../../../assets/img/logo/kali.jpg" width="40%"></a>
+    <img src="../../../assets/img/logo/kali.png" width="40%"></a>
 </p>
 
 ---

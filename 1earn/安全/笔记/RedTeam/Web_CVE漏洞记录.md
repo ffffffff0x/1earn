@@ -25,10 +25,12 @@
 * [zcncms](#zcncms)
 * [泛微](#泛微)
 * [致远](#致远)
+* [通达](#通达)
 
 **框架和中间件**
 
 * [ActiveMQ](#activemq)
+* [Dubbo](#Dubbo)
 * [ElasticSearch](#elasticsearch)
 * [IIS](#iis)
 * [JBOSS](#jboss)
@@ -540,6 +542,19 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
 
 - POC | Payload | exp
     - [RayScri/A8-OA-seeyon-RCE](https://github.com/RayScri/A8-OA-seeyon-RCE)
+
+---
+
+## 通达
+
+> 官网 : https://www.tongda2000.com/
+
+**通达OA 任意用户登录漏洞**
+- 文章
+    - [通达OA < 11.5任意用户登录漏洞分析](https://mp.weixin.qq.com/s/yJuLhC1GxkMbGL0mRORIoA)
+
+- POC | Payload | exp
+    - [NS-Sp4ce/TongDaOA-Fake-User](https://github.com/NS-Sp4ce/TongDaOA-Fake-User)
 
 ---
 

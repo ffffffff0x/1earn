@@ -163,6 +163,7 @@ in:description python pushed:>2019-12-20
 - [gwen001/github-search](https://github.com/gwen001/github-search) - 在GitHub上执行基本搜索的工具。
 - [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit) - 实时的监控 github 寻找敏感信息
 - [lightless233/geye](https://github.com/lightless233/geye) - 一款面向企业级以及白帽子的"More Fastest" Github监控工具
+- [Securityautomation/DumpTheGit](https://github.com/Securityautomation/DumpTheGit) - 搜索公开的代码仓库, 查找敏感信息
 
 ---
 

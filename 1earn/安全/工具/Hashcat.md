@@ -19,8 +19,8 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 **官网**
 - https://hashcat.net/hashcat/
 
-**文章**
-- [Hashcat的使用手册总结 ](https://xz.aliyun.com/t/4008)
+**文章 & Reference**
+- [Hashcat的使用手册总结](https://xz.aliyun.com/t/4008)
 
 **工具**
 - [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具

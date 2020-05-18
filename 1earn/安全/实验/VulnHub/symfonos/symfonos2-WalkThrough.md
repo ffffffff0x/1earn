@@ -164,7 +164,7 @@ find / -perm -u=s 2>/dev/null
 
 没成功,看看 web 方面
 
-![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/16.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos2/16.jpg)
 
 又是啥都没有,直接翻 web 配置文件看看
 ```bash

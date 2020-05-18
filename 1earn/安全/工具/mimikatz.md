@@ -15,7 +15,7 @@
 **项目地址**
 - https://github.com/gentilkiwi/mimikatz
 
-**文章**
+**文章 & Reference**
 - [九种姿势运行 Mimikatz](https://www.freebuf.com/articles/web/176796.html)
 - [Mimikatz 使用小技巧](https://www.webshell.cc/5343.html)
 - [域渗透——Dump Clear-Text Password after KB2871997 installed](https://wooyun.js.org/drops/%E5%9F%9F%E6%B8%97%E9%80%8F%E2%80%94%E2%80%94Dump%20Clear-Text%20Password%20after%20KB2871997%20installed.html)

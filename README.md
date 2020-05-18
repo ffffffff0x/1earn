@@ -44,12 +44,12 @@
         - [后渗透](./1earn/安全/笔记/RedTeam/后渗透.md)
         - [逻辑类漏洞](./1earn/安全/笔记/RedTeam/逻辑类漏洞.md) : 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
         - [权限维持](./1earn/安全/笔记/RedTeam/权限维持.md) : 权限维持的各种方法和资源
-        - [软件服务安全](./1earn/安全/笔记/RedTeam/软件服务安全.md) : 记录软件、业务应用服务漏洞的渗透手段和cve漏洞
+        - [权限提升](./1earn/安全/笔记/RedTeam/权限提升.md) : 操作系统和数据库的提权方法
+        - [软件服务安全](./1earn/安全/笔记/RedTeam/软件服务安全.md) : 记录软件、业务应用服务漏洞的渗透手段和 cve 漏洞
         - [搜索引擎Hacking](./1earn/安全/笔记/RedTeam/搜索引擎Hacking.md) : 收集搜索引擎语法资源
-        - [提权](./1earn/安全/笔记/RedTeam/提权.md) : 操作系统和数据库的提权方法
         - [物联网设备渗透](./1earn/安全/笔记/RedTeam/物联网设备渗透.md) : 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
         - [协议安全](./1earn/安全/笔记/RedTeam/协议安全.md) : 按照协议归类各种漏洞、攻击手段
-        - [信息收集](./1earn/安全/笔记/RedTeam/信息收集.md) : 记录信息收集方面各类技术，如漏扫、IP扫描、端口扫描、DNS枚举、目录枚举、指纹等
+        - [信息收集](./1earn/安全/笔记/RedTeam/信息收集.md) : 记录信息收集方面各类技术，如漏扫、IP 扫描、端口扫描、DNS 枚举、目录枚举、指纹等
         - [Linux渗透](./1earn/安全/笔记/RedTeam/Linux渗透.md)
         - [SQLi](./1earn/安全/笔记/RedTeam/SQLi.md) : SQL 注入知识点记录
         - [Web_CVE漏洞记录](./1earn/安全/笔记/RedTeam/Web_CVE漏洞记录.md) : 全面收集 web 漏洞 POC | Payload | exp
@@ -58,6 +58,7 @@
         - [XSS](./1earn/安全/笔记/RedTeam/xss.md)
         - [XXE](./1earn/安全/笔记/RedTeam/xxe.md)
     - [Crypto](./1earn/安全/笔记/Crypto.md) - 介绍各种编码和加密算法及相关的工具
+    - [CTF](./1earn/安全/笔记/CTF.md) - 记录 CTF 相关的工具和 writeup 资源
 - 工具
     - [BurpSuite](./1earn/安全/工具/BurpSuite.md)
     - [CobaltStrike](./1earn/安全/工具/CobaltStrike.md)
@@ -74,8 +75,10 @@
     - HTB
     - Misc
         - [DVWA-WalkThrough](./1earn/安全/实验/Misc/DVWA-WalkThrough.md) - 大名鼎鼎的 DVWA 靶场,新手入门培训必做实验项目
+        - [HID-Digispark](./1earn/安全/实验/Misc/HID-Digispark.md) - 基于 ATTINY85 开发板的 Digispark 实验
         - [pikachu-WalkThrough](./1earn/安全/实验/Misc/pikachu-WalkThrough.md) - 非常优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
-        - [sqli-labs](./1earn/安全/实验/Misc/sqli-labs-WalkThrough.md)
+        - [SLMail溢出案例](./1earn/安全/实验/Misc/SLMail溢出案例.md) - SLMail 5.5.0 的缓冲区溢出利用实验
+        - [sqli-labs-WalkThrough](./1earn/安全/实验/Misc/sqli-labs-WalkThrough.md)
         - [upload-labs-WalkThrough](./1earn/安全/实验/Misc/upload-labs-WalkThrough.md) - 一个总结了各种类型文件上传漏洞的靶场
         - [XSS挑战-WalkThrough](./1earn/安全/实验/Misc/XSS挑战-WalkThrough.md)
     - VulnHub
@@ -100,10 +103,10 @@
     - [认证](./1earn/运维/Linux/笔记/认证.md) : 了解 Linux 下的认证体系
     - [日志](./1earn/运维/Linux/笔记/日志.md) : 系统日志类型,日志工具
     - [文件](./1earn/运维/Linux/笔记/文件.md) : 概括各文件夹的作用,属性
-    - [信息](./1earn/运维/Linux/笔记/信息.md) : 记录关于收集 Linux 系统信息的命令
+    - [信息](./1earn/运维/Linux/笔记/信息.md) : 记录收集 Linux 系统软硬件信息的命令
     - [shell编程](./1earn/运维/Linux/笔记/shell编程.md) : shell 编程的知识
 - 实验
-    - 各种linux服务的搭建过程和案例
+    - 各种 linux 服务的搭建过程和案例
 
 ### Network
 
@@ -175,6 +178,8 @@
 
 > 如果 clone 速度太慢,可以先导入码云中(选择从 URL 中导入),再进行 clone ： https://blog.gitee.com/2018/06/05/github_to_gitee/?from=homepage
 
+> 提高 release 速度,可以参考这篇文章 https://jinfeijie.cn/post-805.html
+
 ---
 
 # List
@@ -240,7 +245,7 @@
 - [theLSA](https://github.com/theLSA) - 取证和Secure-Win中很大程度参考其项目内容
 - [Bypass007](https://github.com/Bypass007/Emergency-Response-Notes) - 应急和Secure-Win中很大程度参考其项目内容
 - [Jirairya](https://b404.xyz/) - windows认证渗透内容大部分参考其文章内容
-- 及其他一堆作者,我都记录在笔记文件末尾的 reference 中
+- 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中
 
 ---
 

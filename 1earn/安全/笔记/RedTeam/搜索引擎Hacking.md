@@ -20,9 +20,10 @@
 * [Shodan](#Shodan)
 * [BinaryEdge](#BinaryEdge)
 * [Censys](#Censys)
-* [钟馗之眼](#钟馗之眼)
+* [Zoomeye](#zoomeye)
 * [FoFa](#FoFa)
 * [Dnsdb](#Dnsdb)
+* [知风](#知风)
 
 ---
 
@@ -67,7 +68,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 # Github
 
 <p align="center">
-    <img src="../../../../assets/img/logo/github.jpg" width="25%"></a>
+    <img src="../../../../assets/img/logo/github.png" width="25%"></a>
 </p>
 
 **文章**
@@ -169,7 +170,7 @@ in:description python pushed:>2019-12-20
 
 - [cve-search/git-vuln-finder](https://github.com/cve-search/git-vuln-finder) - 从 git 提交消息中寻找潜在的软件漏洞
 
-**同类**
+**同类代码托管网站**
 ```
 https://usersnap.com/ | Usersnap - Customer Feedback & Visual Bug Tracking
 https://www.assembla.com/home | Secure Git, Secure Software Development in the Cloud | Assembla
@@ -181,7 +182,11 @@ https://launchpad.net/ | Launchpad
 https://bitbucket.org/ | Bitbucket | The Git solution for professional teams
 https://coding.net/ | CODING - 一站式软件研发管理平台
 https://about.gitlab.com/ | The first single application for the entire DevOps lifecycle - GitLab | GitLab
-https://github.com/ | GitHub
+```
+
+**代码搜索网站**
+```
+https://searchcode.com/
 ```
 
 ---
@@ -343,6 +348,18 @@ https://github.com/ | GitHub
         inurl:exploit-db.com docker
     ```
 
+**CSE**
+
+> Google Custom Search(自定义搜索)是基于谷歌的核心搜索技术，对你的搜索引擎进行很多定制
+
+- TikTok : https://cse.google.com/cse?cx=011444696387487602669:aqf7d9w73om
+- IFTT : https://cse.google.com/cse?cx=000501358716561852263:xzfiqchwcj8
+- Google Album archives : https://cse.google.com/cse?cx=006205189065513216365:vp0ly0owiou
+- Social media : https://cse.google.com/cse?cx=016621447308871563343:0p9cd3f8p-k
+- LinkedIn : https://cse.google.com/cse?cx=000470283453218169915:hcrzdwsiwrc
+- Online bookmark sites : https://cse.google.com/cse?cx=005797772976587943970:3tu7im1-rdg
+- Forums : https://cse.google.com/cse?cx=002396771074467716933:gkp6fzl_dv0
+
 ---
 
 # Shodan
@@ -362,6 +379,7 @@ https://github.com/ | GitHub
 
 **手册**
 - [shodan-manual](https://b404.gitbooks.io/shodan-manual/content/)
+- [Shodan Pentesting Guide](https://community.turgensec.com/shodan-pentesting-guide/)
 
 **文章**
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
@@ -446,6 +464,19 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
     - [random-robbie/My-Shodan-Scripts](https://github.com/random-robbie/My-Shodan-Scripts)
     - [woj-ciech/LeakLooker](https://github.com/woj-ciech/LeakLooker) - 利用 shodan 寻找开放的数据库/服务
 
+**其他功能**
+- [ICS Radar](https://ics-radar.shodan.io/)
+
+    > ICS Radar 是 Shodan 的工业控制系统（ICS）设备的 3D 地图。
+
+- [Honeypot score](https://honeyscore.shodan.io/)
+
+    > 这个服务叫 Honeypot or not?，这个服务会把 Honeyscore 归属到一个 IP 地址上，也就是成为蜜罐的可能性。
+
+- [Shodan 2000](https://2000.shodan.io/#/)
+
+    > Sodan 2000 是一个类似 Tron 的界面，可以随机显示一个主机。
+
 ---
 
 # BinaryEdge
@@ -506,9 +537,14 @@ tags: scada                                 # 标签
 autonomous_system.description: University   # 系统描述
 ```
 
+**同类搜索引擎**
+- [Spyse](https://spyse.com/search/cert) - 扫描完整的数字证书数据库，获取 TLS 和 SSL 证书的相关数据。
+- [crt.sh](https://crt.sh/) - 证书搜索
+- [Google Transparency Report](https://transparencyreport.google.com/https/certificates) - Google监控的证书透明日志
+
 ---
 
-# 钟馗之眼
+# Zoomeye
 
 <p align="center">
     <img src="../../../../assets/img/logo/zoomeye.png" width="25%"></a>
@@ -521,24 +557,40 @@ autonomous_system.description: University   # 系统描述
 
 **语法**
 ```bash
-app:nginx           # 组件名
-ver:1.0             # 版本
-os:windows          # 操作系统
-country:"China"     # 国家
-city:"hangzhou"     # 城市
-port:80             # 端口
-hostname:google     # 主机名
-site:google.com     # 网站域名
-desc:nmask          # 描述
-keywords:passwd     # 关键词
-service:ftp         # 服务类型
-ip:8.8.8.8          # ip地址
-cidr:8.8.8.8/24     # ip地址段
+指定搜索的组件：
+    app：组件名称
+    ver：组件版本
+    例：搜索 apache组件版本2.4：app:apache var:2.4
+指定搜素的端口：
+    port:22
+指定搜索的操作系统：
+    OS:Linux
+指定搜索的服务：
+    service：服务名称
+    例：service：SSH
+指定搜索的地理位置范围：
+    country：国家名
+    city:城市名
+指定搜索的CIDR网段：
+    cidr:网段
+    例：CIDR：192.168.158.12/24
+指定网站域名进行搜索：
+    Site:网站域名
+    例：site:www.baidu.com
+指定主机名：
+    Hostname:主机名
+    例：hostname:zwl.cuit.edu.cn
+指定设备名：
+    device:设备名
+    例：device:router
+指定首页关键词：
+    keyword:关键词
+    例：keyword:technology
 ```
 
 **例子**
 ```bash
-city:tokyo + app:weblogic   # weblogic反序列化来一波？
+city:tokyo + app:weblogic
 ```
 
 ---
@@ -636,3 +688,42 @@ IP 最大范围限制 65536 个
 
 **官网**
 - https://zhifeng.io/monitor
+
+---
+
+# ONYPHE
+
+<p align="center">
+    <img src="../../../../assets/img/logo/ONYPHE.png" width="5%"></a>
+</p>
+
+>  很像Shodan，但除了扫描之外，它还可以从被动DNS查询、威胁列表查询和粘贴网站查询中抓取数据。不过免费版比起Shodan来说，它的局限性更大。
+
+**官网**
+- https://www.onyphe.io/
+
+---
+
+# GreyNoise
+
+<p align="center">
+    <img src="../../../../assets/img/logo/greynoise.png" width="15%"></a>
+</p>
+
+> 类似 shodan
+
+**官网**
+- https://viz.greynoise.io/
+
+---
+
+# Thingful
+
+<p align="center">
+    <img src="../../../../assets/img/logo/thingful.png" width="20%"></a>
+</p>
+
+> 仅针对物联网的搜索引擎
+
+**官网**
+- https://www.thingful.net/

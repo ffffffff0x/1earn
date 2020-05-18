@@ -2,27 +2,94 @@
 
 ---
 
+# 大纲
+
+* **[原理](#原理)**
+
+* **[基本操作](#基本操作)**
+    * [分支管理](#分支管理)
+    * [标签管理](#标签管理)
+    * [忽略文件](#忽略文件)
+    * [别名](#别名)
+    * [撤销Git操作](#撤销Git操作)
+
+* **[远程操作](#远程操作)**
+    * [clone](#clone)
+    * [remote](#remote)
+    * [fetch](#fetch)
+    * [pull](#pull)
+    * [push](#push)
+    * [github](#github)
+
+---
+
 # 原理
 
 ![](../../../assets/img/开发/版本控制/git/1.jpg)
 
-- **工作区(Working Directory)**
+**工作区(Working Directory)**
 
-    就是你在电脑里能看到的目录，比如我的 gitcode 文件夹就是一个工作区.
+就是你在电脑里能看到的目录，比如我的 gitcode 文件夹就是一个工作区.
 
-- **版本库(Repository)**
+**版本库(Repository)**
 
-    工作区有一个隐藏目录 .git，这个不算工作区，而是 Git 的版本库.
+工作区有一个隐藏目录 .git，这个不算工作区，而是 Git 的版本库.
 
-    Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或者叫 index)的暂存区，还有 Git 为我们自动创建的第一个分支 master，以及指向 master 的一个指针叫 HEAD .
+Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或者叫 index)的暂存区，还有 Git 为我们自动创建的第一个分支 master，以及指向 master 的一个指针叫 HEAD .
 
-    把文件往 Git 版本库里添加的时候，是分两步执行的:
-    - 第一步是用 git add 把文件添加进去，实际上就是把文件修改添加到暂存区;
-    - 第二步是用 git commit 提交更改，实际上就是把暂存区的所有内容提交到当前分支.
+把文件往 Git 版本库里添加的时候，是分两步执行的:
+- 第一步是用 git add 把文件添加进去，实际上就是把文件修改添加到暂存区;
+- 第二步是用 git commit 提交更改，实际上就是把暂存区的所有内容提交到当前分支.
 
-    因为我们创建 Git 版本库时，Git 自动为我们创建了唯一一个 master 分支，所以，现在，git commit 就是往 master 分支上提交更改.
+因为我们创建 Git 版本库时，Git 自动为我们创建了唯一一个 master 分支，所以，现在，git commit 就是往 master 分支上提交更改.
 
-    你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改.
+你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改.
+
+**.git 目录**
+
+结构展开类似
+```
+├── HEAD
+├── branches
+├── config
+├── description
+├── hooks
+│ ├── pre-commit.sample
+│ ├── pre-push.sample
+│ └── ...
+├── info
+│ └── exclude
+├── objects
+│ ├── info
+│ └── pack
+└── refs
+ ├── heads
+ └── tags
+```
+
+- conf
+
+    conf 文件中包含着 repository 的配置，包括 remote 的地址，提交时的 email, username, 等等，所有通过 git config .. 来设置的内容都在这里保存着。如果熟悉甚至可以直接修改该文件。
+
+- description
+
+    被 gitweb(github 之前）用来描述 repository 内容。
+
+- hooks
+
+    hooks，国内通常被翻译成钩子，git 中一个比较有趣的功能。可以编写一些脚本让 git 在各个阶段自动执行。这些脚本被称为 hooks, 脚本可以在 commit/rebase/pull 等等环节前后被执行。脚本的名字暗示了脚本被执行的时刻。一个比较常见的使用场景就是在 pre-push 阶段检查本地提交是否遵循了 remote 仓库的代码风格。
+
+- info exclude
+
+    该文件中定义的文件不会被 git 追踪，和 .gitignore 作用相同。大部分情况下 .gitignore 就足够了，但知道 info/exclude 文件的存在也是可以的。
+
+- object
+
+    每一次创建一些文件，提交，git 都会压缩并将其保存到自己的数据结构中。压缩的内容会拥有一个唯一的名字，一个 hash 值，该 hash 值会保存到 object 目录中。
+
+- HEAD
+
+    HEAD 可以比喻成一个指针，指向当前工作的分支。
 
 ---
 
@@ -142,7 +209,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 ```
 
-## 撤销 Git 操作
+## 撤销Git操作
 
 **撤销提交**
 
@@ -238,11 +305,11 @@ $ git checkout feature
 - 没有冲突或者解决掉冲突后，再用 `git push origin branch-name` 推送就能成功!
 - 如果 `git pull` 提示 `"no tracking information"`，则说明本地分支和远程分支的链接关系没有创建，用命令 `git branch --set-upstream branch-name origin/branch-name`
 
-## git clone
+## clone
 
 `git clone <版本库的网址> <本地目录名>`
 
-## git remote
+## remote
 
 ```bash
 git remote          # 命令列出所有远程主机
@@ -256,7 +323,7 @@ git remote rm <主机名>                  # 用于删除远程主机
 git remote rename <原主机名> <新主机名> # 用于远程主机的改名
 ```
 
-## git fetch
+## fetch
 
 git fetch 会使你与另一仓库同步，提取你本地所没有的数据，为你在同步时的该远端的每一分支提供书签. 这些分支被叫做 "远端分支"，除了 Git 不允许你检出(切换到该分支)之外，跟本地分支没区别 —— 你可以将它们合并到当前分支，与其他分支作比较差异，查看那些分支的历史日志，等等.同步之后你就可以在本地操作这些.
 ```bash
@@ -282,7 +349,7 @@ git rebase origin/master
 上面命令表示在当前分支上，合并 origin/master.
 ```
 
-## git pull
+## pull
 
 基本上，该命令就是在 `git fetch` 之后紧接着 `git merge` 远端分支到你所在的任意分支.
 ```bash
@@ -314,7 +381,7 @@ git reset --hard
 git pull
 ```
 
-## git push
+## push
 
 ```bash
 git push <远程主机名> <本地分支名>:<远程分支名>     # 将本地分支的更新，推送到远程主机
@@ -326,6 +393,10 @@ git push --force origin
 ```
 
 ## github
+
+<p align="center">
+    <img src="../../../assets/img/logo/github.png" width="25%"></a>
+</p>
 
 - **github 开启二次验证后后，git push 验证权限失败**
 
@@ -372,7 +443,7 @@ git push --force origin
 
 ---
 
-**Reference**
+**Source & Reference**
 - [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
 - [git配置代理命令](https://www.cnblogs.com/gx1069/p/6840413.html)
 - [git操作及fatal: Authentication failed for错误解决](https://blog.csdn.net/u011394598/article/details/80256896)
@@ -387,3 +458,4 @@ git push --force origin
 - [git commit中输入message的几种方式 ](https://www.jianshu.com/p/ad461b99e860)
 - [git commit 提交多行message](https://blog.csdn.net/sinat_29891353/article/details/76674798)
 - [如何撤销 Git 操作？](http://www.ruanyifeng.com/blog/2019/12/git-undo.html)
+- [关于 .git 目录你需要知道的一切](http://einverne.github.io/post/2020/02/everything-about-dot-git-directory.html)

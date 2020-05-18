@@ -15,7 +15,7 @@
 **官网**
 - https://nmap.org/
 
-**文章**
+**文章 & Reference**
 - [[渗透神器系列]nmap](https://thief.one/2017/05/02/1/)
 - [Nmap扫描原理与用法](https://blog.csdn.net/aspirationflow/article/details/7694274)
 - [Nmap 进阶使用 [ 脚本篇 ]](https://www.freebuf.com/column/149716.html)
@@ -145,6 +145,20 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 ---
 
 ## 脚本
+### 规避
+
+参考 : https://nmap.org/book/man-bypass-firewalls-ids.html
+
+- 分割数据包
+    - 利用 IP 分片进行端口扫描 : `nmap -f 192.168.100.1`
+        - 设置分片大小 : `nmap -f --mtu 8 192.168.100.1`
+    - 跨网段的扫描存活主机和 TOP1000 端口 : `nmap -v -Pn -n -e eth0 --min-hostgroup 1024 --min-parallelism 1024 -f 192.168.100.1/24 -oN /root/1.txt`
+
+- 欺骗 ip 和 mac 地址,不能跨网段
+    - `nmap -v -Pn -n -S 192.168.100.101 -e eth0 --spoof-mac 0 --min-hostgroup 1024 --min-parallelism 1024 -f 192.168.100.1/24 -oN /root/1.txt`
+
+---
+
 ### 常见
 
 - smb
@@ -190,6 +204,8 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 - dns
     - 域传送 : `nmap -p 53 --script dns-zone-transfer.nse -v <target ip>`
+
+---
 
 ### 数据库
 

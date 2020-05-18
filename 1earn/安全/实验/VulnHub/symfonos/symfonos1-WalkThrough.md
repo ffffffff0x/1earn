@@ -115,7 +115,7 @@ research.txt 没什么帮助,todo 里提示了 `/h3l105` ,这个 `/` 就很灵�
 echo "192.168.141.148 symfonos.local" >> /etc/hosts
 ```
 
-![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/6.png)
+![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos1/6.jpg)
 
 啥都没有, /h3l105 试试
 

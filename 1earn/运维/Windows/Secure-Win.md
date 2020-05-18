@@ -11,9 +11,11 @@
 # 大纲
 
 **[文件](#文件)**
+
 * [可疑文件](#可疑文件)
 
 **[系统](#系统)**
+
 * [开机启动](#开机启动)
 * [账号](#账号)
 * [进程](#进程)
@@ -24,7 +26,11 @@
     * [第三方程序日志](#第三方程序日志)
 
 **[Net](#Net)**
+
 * [端口](#端口)
+* [RDP](#rdp)
+* [DNS](#dns)
+
 
 ---
 
@@ -165,128 +171,69 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 ## 日志
 
 ### 系统日志
-**应用程序日志**
 
-包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误，程序开发人员可以自行决定监视哪些事件。如果某个应用程序出现崩溃情况，那么我们可以从程序事件日志中找到相应的记录，也许会有助于你解决问题。
+系统日志基本知识见 [日志](./笔记/日志.md)
 
-默认位置: `%SystemRoot%\System32\Winevt\Logs\Application.evtx`
+**导出日志**
+- 文章
+    - [Export corrupts Windows Event Log files](https://blog.fox-it.com/2019/06/04/export-corrupts-windows-event-log-files/) - 导出损坏的 Windows 事件日志文件
 
-**系统日志**
+**恢复 eventlogedit 删除的记录**
+- 文章
+    - [Detection and recovery of NSA’s covered up tracks](https://blog.fox-it.com/2017/12/08/detection-and-recovery-of-nsas-covered-up-tracks/)
 
-记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等。系统日志中记录的时间类型由Windows NT/2000操作系统预先定义。
-
-默认位置: `%SystemRoot%\System32\Winevt\Logs\System.evtx`
-
-**安全日志**
-
-包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件，例如数据库程序可以在应用程序日志中记录文件错误，程序开发人员可以自行决定监视哪些事件。如果某个应用程序出现崩溃情况，那么我们可以从程序事件日志中找到相应的记录，也许会有助于你解决问题。
-
-默认位置: `%SystemRoot%\System32\Winevt\Logs\Application.evtx`
-
-**转发事件**
-
-日志用于存储从远程计算机收集的事件。若要从远程计算机收集事件，必须创建事件订阅。
-
-默认位置: `%SystemRoot%\System32\Winevt\Logs\ForwardedEvents.evtx`
-
-**事件查看**
-开始-运行，输入 `eventvwr.msc`
-
-| 事件ID | 说明                             |
-| :----- | -------------------------------- |
-| 4624   | 登录成功                         |
-| 4625   | 登录失败                         |
-| 4634   | 注销成功                         |
-| 4647   | 用户启动的注销                   |
-| 4672   | 使用超级用户（如管理员）进行登录 |
-| 4720   | 创建用户                         |
-
-每个成功登录的事件都会标记一个登录类型，不同登录类型代表不同的方式：
-
-| 登录类型 | 描述                            | 说明                                             |
-| :------- | ------------------------------- | ------------------------------------------------ |
-| 2        | 交互式登录（Interactive）       | 用户在本地进行登录。                             |
-| 3        | 网络（Network）                 | 最常见的情况就是连接到共享文件夹或共享打印机时。 |
-| 4        | 批处理（Batch）                 | 通常表明某计划任务启动。                         |
-| 5        | 服务（Service）                 | 每种服务都被配置在某个特定的用户账号下运行。     |
-| 7        | 解锁（Unlock）                  | 屏保解锁。                                       |
-| 8        | 网络明文（NetworkCleartext）    | 登录的密码在网络上是通过明文传输的，如FTP。      |
-| 9        | 新凭证（NewCredentials）        | 使用带/Netonly参数的RUNAS命令运行一个程序。      |
-| 10       | 远程交互，（RemoteInteractive） | 通过终端服务、远程桌面或远程协助访问计算机。     |
-| 11       | 缓存交互（CachedInteractive）   | 以一个域用户登录而又没有域控制器可用             |
-
-Windows 的日志以事件 id 来标识具体发生的动作行为，可通过下列网站查询具体 id 对应的操作
-- https://docs.microsoft.com/en-us/windows/security/threat-protection/ 直接搜索 event + 相应的事件id 即可
-- https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/default.aspx?i=j
-
-案例:查看系统账号登录情况
-1. 开始-运行，输入 `eventvwr.msc`
-2. 在事件查看器中，`Windows日志` --> `安全`，查看安全日志；
-3. 在安全日志右侧操作中，点击 `筛选当前日志` ，输入事件 ID 进行筛选。
-    - 4624  --登录成功
-    - 4625  --登录失败
-    - 4634 -- 注销成功
-    - 4647 -- 用户启动的注销
-    - 4672 -- 使用超级用户（如管理员）进行登录
-4. 输入事件 ID：4625 进行日志筛选，发现事件 ID：4625，事件数 175904，即用户登录失败了 175904 次，那么这台服务器管理员账号可能遭遇了暴力猜解。
-
-案例:查看计算机开关机的记录
-1. 开始-运行，输入 `eventvwr.msc`
-2. 在事件查看器中，`Windows日志` --> `系统`，查看系统日志；
-3. 在系统日志右侧操作中，点击 `筛选当前日志` ，输入事件 ID 进行筛选。其中事件 ID 6006 ID6005、 ID 6009 就表示不同状态的机器的情况（开关机）。
-    - 6005 信息 EventLog 事件日志服务已启动。(开机)
-    - 6006 信息 EventLog 事件日志服务已停止。(关机)
-    - 6009 信息 EventLog 按ctrl、alt、delete键(非正常)关机
-4. 输入事件  ID：6005-6006进行日志筛选，发现了两条在 2018/7/6 17:53:51 左右的记录，也就是我刚才对系统进行重启的时间。
-
-**审核策略**
-
-Windows Server 2008 R2 系统的审核功能在默认状态下并没有启用 ，建议开启审核策略，若日后系统出现故障、安全事故则可以查看系统的日志文件，排除故障，追查入侵者的信息等。
-
-开始 --> 管理工具 --> 本地安全策略 --> 本地策略 --> 审核策略
+- 工具
+    - [fox-it/danderspritz-evtx](https://github.com/fox-it/danderspritz-evtx) - 解析 evtx 文件并检测 DanderSpritz eventlogedit 模块的使用
 
 ### 日志工具
+
+**Sysmon**
+- [Sysmon](../../安全/工具/Sysmon.md)
+
 **logparser**
+
 `logparser` 是一款 windows 日志分析工具，访问这里下载 https://www.microsoft.com/en-us/download/details.aspx?id=24659
 
 - 文章
     - [windows安全日志分析之logparser篇](https://wooyun.js.org/drops/windows%E5%AE%89%E5%85%A8%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E4%B9%8Blogparser%E7%AF%87.html)
 
-登录成功的所有事件
-```
-LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4624"
-```
+- 使用
 
-指定登录时间范围的事件
-```
-LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where TimeGenerated>'2018-06-19 23:32:11' and TimeGenerated<'2018-06-20 23:34:00' and EventID=4624"
-```
+    登录成功的所有事件
+    ```
+    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4624"
+    ```
 
-提取登录成功的用户名和IP
-```
-LogParser.exe -i:EVT –o:DATAGRID "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,'|') as Username,EXTRACT_TOKEN(Message,38,' ') as Loginip FROM c:\Security.evtx where EventID=4624"
-```
+    指定登录时间范围的事件
+    ```
+    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where TimeGenerated>'2018-06-19 23:32:11' and TimeGenerated<'2018-06-20 23:34:00' and EventID=4624"
+    ```
 
-登录失败的所有事件
-```
-LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4625"
-```
+    提取登录成功的用户名和IP
+    ```
+    LogParser.exe -i:EVT –o:DATAGRID "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,'|') as Username,EXTRACT_TOKEN(Message,38,' ') as Loginip FROM c:\Security.evtx where EventID=4624"
+    ```
 
-提取登录失败用户名进行聚合统计
-```
-LogParser.exe -i:EVT "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,EXTRACT_TOKEN(Message,19,' ') as user,count(EXTRACT_TOKEN(Message,19,' ')) as Times,EXTRACT_TOKEN(Message,39,' ') as Loginip FROM c:\Security.evtx where EventID=4625 GROUP BY Message”
-```
+    登录失败的所有事件
+    ```
+    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4625"
+    ```
 
-系统历史开关机记录
-```
-LogParser.exe -i:EVT –o:DATAGRID "SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006"
-```
+    提取登录失败用户名进行聚合统计
+    ```
+    LogParser.exe -i:EVT "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,EXTRACT_TOKEN(Message,19,' ') as user,count(EXTRACT_TOKEN(Message,19,' ')) as Times,EXTRACT_TOKEN(Message,39,' ') as Loginip FROM c:\Security.evtx where EventID=4625 GROUP BY Message”
+    ```
+
+    系统历史开关机记录
+    ```
+    LogParser.exe -i:EVT –o:DATAGRID "SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006"
+    ```
 
 **LogParser Lizard**
 
 对于 GUI 环境的 Log Parser Lizard，其特点是比较易于使用，甚至不需要记忆繁琐的命令，只需要做好设置，写好基本的 SQL 语句，就可以直观的得到结果。
 
-下载地址：http://www.lizard-labs.com/log_parser_lizard.aspx
+下载地址 : http://www.lizard-labs.com/log_parser_lizard.aspx
 
 依赖包：Microsoft .NET Framework 4 .5，下载地址：https://www.microsoft.com/en-us/download/details.aspx?id=42642
 
@@ -294,9 +241,16 @@ LogParser.exe -i:EVT –o:DATAGRID "SELECT TimeGenerated,EventID,Message FROM c:
 
 Event Log Explorer 是一款非常好用的 Windows 日志分析工具。可用于查看，监视和分析跟事件记录，包括安全，系统，应用程序和其他微软 Windows 的记录被记载的事件，其强大的过滤功能可以快速的过滤出有价值的信息。
 
-下载地址：https://event-log-explorer.en.softonic.com/
+下载地址 : https://event-log-explorer.en.softonic.com/
+
+**Win-Logs-Parse-tool**
+
+Python 开发的解析 windows 日志文件的工具，可采用手动添加文件的方式进行解析，解析后的文件为 XML，HTML 两种格式，HTML 已采用Bootstrap 架进行界面可视化优化，可直接查看重点日志数据，解析后的 HTML 数据文件保存在执行文件下的 logs/ 文件夹下 ( 自动创建 )，XML 数据文件保存在执行文件下的 logs/xml/ 文件夹下，
+
+项目地址 : https://github.com/Clayeee/Win-Logs-Parse-tool
 
 ### 第三方程序日志
+
 **web日志**
 - 内容见 [取证](../../安全/笔记/BlueTeam/取证.md#中间件服务器程序日志) 中间件服务器程序日志部分
 
@@ -330,3 +284,73 @@ netstat -ano
 ```
 tasklist  | findstr “PID”
 ```
+
+---
+
+## RDP
+
+**防爆破**
+- [y11en/BlockRDPBrute](https://github.com/y11en/BlockRDPBrute) - [HIPS]RDP(3389)爆破防护
+
+**连接记录**
+- [Windows RDP 连接记录](../../安全/笔记/RedTeam/Windows渗透.md#连接记录)
+
+---
+
+## DNS
+
+很多时候需要通过某个恶意域名来判断主机失陷情况。
+
+**文章**
+- [哪个进程在访问这个恶意域名???](https://mp.weixin.qq.com/s/mcK06AOWVkwOVR67_n4OGw)
+- [DNS日志记录方法](https://green-m.me/2017/08/21/windows-dns-log/)
+
+**工具**
+- **Sysmon**
+    - [Sysmon查看DNS记录](../../安全/工具/Sysmon.md#DNS记录)
+
+- **DNSQuerySniffer**
+
+    DNSQuerySniffer 是网络嗅探工具，显示 DNS 查询发送您的系统。每个 DNS 查询，显示以下信息：主机名，端口号，编号查询，请求类型（A，AAAA，NS，和 MX，等等），请求响应时间，时间，响应代码，数量的记录，并返回的 DNS 记录的内容。通过 DNSQuerySniffer 我们先确定访问恶意域名的端口号。这个工具的优点是可以将主机访问过的所有域名记录下来。
+
+    下载地址 : https://www.nirsoft.net/utils/dns_query_sniffer.html
+
+    配合 Process Monitor 可以定位进程
+
+- **[dnsdataview](https://www.nirsoft.net/utils/dns_records_viewer.html)** - 记录 DNS 记录
+
+**DNS cache log**
+- 文章
+    - [开启DNS Client Service日志](http://blog.nsfocus.net/open-dns-client-service-log/)
+
+- 开启命令
+    ```
+    net stop dnscache
+
+    type nul > %systemroot%\system32\dnsrsvlr.log
+    type nul > %systemroot%\system32\dnsrslvr.log
+    type nul > %systemroot%\system32\asyncreg.log
+
+    cacls %systemroot%\system32\dnsrsvlr.log /E /G "NETWORK SERVICE":W
+    cacls %systemroot%\system32\dnsrslvr.log /E /G "NETWORK SERVICE":W
+    cacls %systemroot%\system32\asyncreg.log /E /G "NETWORK SERVICE":W
+
+    net start dnscache
+    ```
+
+**ETW consumers**
+
+windows 8.1 和 windows server 2012 R2 及以上版本的操作系统，可以下载补丁直接以标准的 windows 日志格式记录 dns log，windows server 2016 可以直接开启。
+
+微软官方文档 : https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn800669(v=ws.11)
+
+**DNS Client Cached**
+- 文章
+    - [Getting DNS Client Cached Entries with CIM/WMI](https://www.darkoperator.com/blog/2020/1/14/getting-dns-client-cached-entries-with-cimwmi)
+
+- 工具
+    - https://github.com/PSGumshoe/PSGumshoe/blob/master/CIM/Get-CimDNSCache.ps1
+        ```powershell
+        .\Get-CimDNSCache.ps1 # include file
+        Get-CimDNSCache -Name *microsoft* -Type A
+        ```

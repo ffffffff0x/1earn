@@ -18,16 +18,6 @@
 **文章/相关**
 - [MSF基础命令新手指南](https://www.jianshu.com/p/77ffbfc3a06c)
 - [[渗透神器系列]Metasploit](https://thief.one/2017/08/01/1/)
-- [给kali的Metasploit下添加一个新的exploit](https://blog.csdn.net/SilverMagic/article/details/40978081)
-- [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
-- [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)
-
-**Module database cache not built yet, using slow search**
-```bash
-service postgresql start
-msfdb init
-db_rebuild_cache
-```
 
 **图形化 UI**
 - [WayzDev/Kage](https://github.com/WayzDev/Kage)
@@ -86,6 +76,14 @@ deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
 ```
 
 也可以直接使用 `msfupdate`
+
+**Module database cache not built yet, using slow search**
+> 注: 5.0.0 之后应该就不需要这个了
+```bash
+service postgresql start
+msfdb init
+db_rebuild_cache
+```
 
 **添加一个新的 exploit**
 
@@ -601,3 +599,10 @@ timestomp -v secist.txt                     # 查看当前目标文件 MACE 时�
 timestomp -f c:\\AVScanner.ini secist.txt   # 将模板文件 MACE 时间,复制给当前文件
 timestomp -v secist.txt
 ```
+
+---
+
+**Source & Reference**
+- [给kali的Metasploit下添加一个新的exploit](https://blog.csdn.net/SilverMagic/article/details/40978081)
+- [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
+- [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)

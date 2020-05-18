@@ -38,23 +38,25 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 - centos环境
 
-```bash
-yum install epel-release
-yum install nodejs npm
-git clone https://github.com/nondanee/UnblockNeteaseMusic.git
-cd UnblockNeteaseMusic
-npm install forever -g
-npm install
-forever start app.js -p 18080   # 启动
-firewall-cmd --permanent --zone=public --add-port=18080/tcp
-firewall-cmd --reload
-```
+    ```bash
+    yum install epel-release
+    yum install nodejs npm
+    git clone https://github.com/nondanee/UnblockNeteaseMusic.git
+    cd UnblockNeteaseMusic
+    npm install forever -g
+    npm install
+    forever start app.js -p 18080   # 启动
+    firewall-cmd --permanent --zone=public --add-port=18080/tcp
+    firewall-cmd --reload
+    ```
 
-客户端配置 http 代理 IP:18080
+    ```bash
+    forever stop app.js             # 关闭服务
+    ```
 
-```bash
-forever stop app.js             # 关闭
-```
+- 客户端
+
+    配置 http 代理 IP:18080
 
 # DNS
 
@@ -151,36 +153,38 @@ npm config delete proxy  # 取消代理
 
 常用的国内镜像包括:
 1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
-2. 豆瓣http://pypi.douban.com/simple/
+2. 豆瓣 http://pypi.douban.com/simple/
 3. 清华大学 https://pypi.tuna.tsinghua.edu.cn/simple/
 4. 中国科学技术大学 http://pypi.mirrors.ustc.edu.cn/simple/
-5. 华中科技大学http://pypi.hustunique.com/
+5. 华中科技大学 http://pypi.hustunique.com/
 
 - 临时使用:
-可以在使用 pip 的时候,加上参数 -i 和镜像地址 `https://pypi.tuna.tsinghua.edu.cn/simple`
+
+    可以在使用 pip 的时候,加上参数 -i 和镜像地址 `https://pypi.tuna.tsinghua.edu.cn/simple`
 例如:`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas`,这样就会从清华镜像安装 pandas 库.
 
 - 永久修改,一劳永逸:
+
     1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
-    ```bash
-    mkdir -p ~/.pip/
-    ```
-    ```bash
-    sudo tee ~/.pip/pip.conf <<-'EOF'
-    [global]
-    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-    [install]
-    trusted-host = https://pypi.tuna.tsinghua.edu.cn
-    EOF
-    ```
+        ```bash
+        mkdir -p ~/.pip/
+        ```
+        ```bash
+        sudo tee ~/.pip/pip.conf <<-'EOF'
+        [global]
+        index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+        [install]
+        trusted-host = https://pypi.tuna.tsinghua.edu.cn
+        EOF
+        ```
 
     2. windows 下,直接在 user 目录中创建一个 pip 目录,如:C:\Users\xx\pip,然后新建文件 pip.ini,即 %HOMEPATH%\pip\pip.ini,在 pip.ini 文件中输入以下内容:
-    ```vim
-    [global]
-    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
-    [install]
-    trusted-host = https://pypi.tuna.tsinghua.edu.cn
-    ```
+        ```vim
+        [global]
+        index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+        [install]
+        trusted-host = https://pypi.tuna.tsinghua.edu.cn
+        ```
 
 ## 终端
 
@@ -198,9 +202,10 @@ npm config delete proxy  # 取消代理
 ## GO
 
 **goproxy**
+
 - https://goproxy.io/
 
-    *linux*
+- *linux*
     ```bash
     # Enable the go modules feature
     export GO111MODULE=on
@@ -208,7 +213,7 @@ npm config delete proxy  # 取消代理
     export GOPROXY=https://goproxy.io
     ```
 
-    *windows*
+- *windows*
     ```PowerShell
     # Enable the go modules feature
     $env:GO111MODULE="on"
@@ -217,6 +222,7 @@ npm config delete proxy  # 取消代理
     ```
 
 **GoLand**
+
 > Setting-->Appearance & Behavior-->System Setting-->HTTP Proxy
 
 ---

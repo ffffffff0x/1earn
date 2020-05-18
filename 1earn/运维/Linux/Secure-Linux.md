@@ -393,7 +393,8 @@ cat /var/spool/cron/crontabs/root
 **简单查找**
 ```bash
 awk -F: '{if($3==0||$4==0)print $1}' /etc/passwd            # 查看 UID\GID 为0的帐号
-awk -F: '{if($7!="/usr/sbin/nologin")print $1}' /etc/passwd # 查看能够登录的帐号
+awk -F: '{if($7!="/usr/sbin/nologin"&&$7!="/sbin/nologin")print $1}' /etc/passwd # 查看能够登录的帐号
+awk '/\$1|\$6/{print $1}' /etc/shadow                       # 查询可以远程登录的帐号信息
 lastlog                                                     # 系统中所有用户最近一次登录信息
 lastb                                                       # 显示用户错误的登录列表
 users                                                       # 打印当前登录的用户，每个用户名对应一个登录会话。如果一个用户不止一个登录会话，其用户名显示相同次数
@@ -540,6 +541,8 @@ netstat -tnlp | grep ssh
 nmap -sV -p 22 localhost
 ```
 
+更多内容查看 [网络](./笔记/信息.md#网络)
+
 **防**
 - [EtherDream/anti-portscan: 使用 iptables 防止端口扫描](https://github.com/EtherDream/anti-portscan)
     ```bash
@@ -643,7 +646,6 @@ net.ipv4.icmp_echo_ignore_all=1
     sudo grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more
     grep "Failed password" /var/log/secure | awk {'print $9'} | sort | uniq -c | sort -nr
     grep -o "Failed password" /var/log/secure|uniq -c
-    grep "Accepted " /var/log/secure | awk '{print $1,$2,$3,$9,$11}
     ```
 
 - **IP 信息**
@@ -652,7 +654,7 @@ net.ipv4.icmp_echo_ignore_all=1
     grep "Failed password for root" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | more
 
     # Red Hat 系的发行版
-    grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort
+    grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr | more
     ```
 
 - **登录成功**
@@ -662,6 +664,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
     # Red Hat 系的发行版
     grep 'Accepted' /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr
+    grep "Accepted " /var/log/secure | awk '{print $1,$2,$3,$9,$11}'
     grep "Accepted " /var/log/secure* | awk '{print $1,$2,$3,$9,$11}'
     ```
 
@@ -786,5 +789,5 @@ net.ipv4.icmp_echo_ignore_all=1
 **杀毒**
 - **[ClamavNet](https://www.clamav.net/downloads)**
 
-**Reference**
+**Source & Reference**
 - [linux常见backdoor及排查技术](https://xz.aliyun.com/t/4090)

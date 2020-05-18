@@ -15,7 +15,7 @@
 **官网**
 - https://www.kali.org/downloads/
 
-**教程**
+**教程 & Reference**
 - [Kali-learning-notes Wiki](https://github.com/Keybird0/Kali-learning-notes/wiki)
 - [Kali Linux 渗透测试的艺术（中文版）](https://jobrest.gitbooks.io/kali-linux-cn/content/table_of_contents.html)
 - [大学霸 Kali Linux 安全渗透教程](https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/)
@@ -193,6 +193,15 @@ dpkg -i Nessus-8.8.0-ubuntu1110_amd64.deb
 ./nessuscli update nessus-updates-8.8.0.tar.gz
 ./nessusd   # 重新启动下
 ```
+
+**docker 部署**
+
+```
+docker run -d -p 3443:3443 -p 8834:8834  --name bobohacker -it yakoazz/bobohacker
+```
+- nesss地址 : https://127.0.0.1:8443 账号密码 bobohacker/bobohacker
+- awvs地址 : https://127.0.0.1:3443 账号密码 bobo@hacker.com/B0bohacker
+- nessus 应用自启 awvs13 要 attach 到容器里面 root 目录下运行下 awvs.sh
 
 ---
 

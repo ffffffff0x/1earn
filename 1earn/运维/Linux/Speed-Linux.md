@@ -24,53 +24,50 @@
 
 # 大纲
 
-**[👍基础使用](#基础使用)**
+* **[👍 基础使用](#基础使用)**
+	* [环境变量](#环境变量)
+	* [符号](#符号)
+	* [会话](#会话)
+	* [文件](#文件)
+		* [查看](#查看)
+		* [创建](#创建)
+		* [删除](#删除)
+		* [查询](#查询)
+		* [修改](#修改)
+		* [比较](#比较)
+		* [链接](#链接)
+		* [压缩备份](#压缩备份)
 
-* [环境变量](#环境变量)
-* [符号](#符号)
-* [会话](#会话)
-* [文件](#文件)
-	* [查看](#查看)
-	* [创建](#创建)
-	* [删除](#删除)
-	* [查询](#查询)
-	* [修改](#修改)
-	* [比较](#比较)
-	* [链接](#链接)
-	* [压缩备份](#压缩备份)
+* **[📶 网络管理](#网络管理)**
+	* [查看网络信息](#查看网络信息)
+	* [配置](#配置)
+	* [抓包](#抓包)
+	* [传输-下载](#传输-下载)
+		* [bt](#bt)
+	* [Firewall](#Firewall)
+		* [Firewalld](#Firewalld)
+		* [Iptables](#Iptables)
+	* [软件包管理](#软件包管理)
+		* [apt](#apt)
+		* [Binary](#Binary)
+		* [dpkg](#dpkg)
+		* [Pacman](#Pacman)
+		* [rpm](#rpm)
+		* [snap](#snap)
+		* [yum](#yum)
+		* [常用软件](#常用软件)
 
-**[📶网络管理](#网络管理)**
-
-* [配置](#配置)
-* [查看](#查看)
-* [抓包](#抓包)
-* [传输-下载](#传输-下载)
-	* [bt](#bt)
-* [Firewall](#Firewall)
-	* [Firewalld](#Firewalld)
-	* [Iptables](#Iptables)
-* [软件包管理](#软件包管理)
-	* [apt](#apt)
-	* [Binary](#Binary)
-	* [dpkg](#dpkg)
-	* [Pacman](#Pacman)
-	* [rpm](#rpm)
-	* [snap](#snap)
-	* [yum](#yum)
-	* [常用软件](#常用软件)
-
-**[🦋系统管理](#系统管理)**
-
-* [系统设置](#系统设置)
-	* [时间](#时间)
-	* [语言](#语言)
-	* [启动项-计划任务](#启动项-计划任务)
-	* [SELinux](#SELinux)
-* [系统信息](#系统信息)
-* [账号管控](#账号管控)
-* [进程管理](#进程管理)
-* [设备管理](#设备管理)
-	* [硬盘-数据](#硬盘-数据)
+* **[🦋 系统管理](#系统管理)**
+	* [系统设置](#系统设置)
+		* [时间](#时间)
+		* [语言](#语言)
+		* [启动项-计划任务](#启动项-计划任务)
+		* [SELinux](#SELinux)
+	* [系统信息](#系统信息)
+	* [账号管控](#账号管控)
+	* [进程管理](#进程管理)
+	* [设备管理](#设备管理)
+		* [硬盘-数据](#硬盘-数据)
 
 ---
 
@@ -272,10 +269,22 @@ cd	# 切换工作目录
 
 ### 查看
 
+**目录、文件信息**
 ```bash
 ls			# 查看目录下文件
 	ls -a						# 查看目录隐藏文件
 
+pwd			# 以绝对路径的方式显示用户当前工作目录
+	pwd -P						# 目录链接时,显示实际路径而非 link 路径
+
+wc			# wc 将计算指定文件的行数、字数，以及字节数
+du			# 查看文件大小
+stat		# 查看文件属性
+file		# 探测给定文件的类型
+```
+
+**文件内容**
+```bash
 cat			# 连接文件并打印到标准输出设备上
 	cat -n						# 带行号读
 	cat -b						# 带行号,越过空白行
@@ -294,17 +303,20 @@ tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾�
 sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
 	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
 
-tac			# 是 cat 的反向操作，从最后一行开始打印。
-od			# 以字符或者十六进制的形式显示二进制文件。
+tac			# 是 cat 的反向操作，从最后一行开始打印
 less		# 允许用户向前或向后浏览文件
-du			# 查看文件大小
-stat		# 查看文件属性
-file		# 探测给定文件的类型
+```
 
-pwd			# 以绝对路径的方式显示用户当前工作目录
-	pwd -P						# 目录链接时,显示实际路径而非 link 路径
+**二进制相关**
+```bash
+objdump		# 显示目标文件的信息,可以通过参数控制要显示的内容
+	objdump -p 					# 显示文件头内容
+	objdump -T					# 查看动态符号表的内容
 
-wc			# wc 将计算指定文件的行数、字数，以及字节数。
+od			# 以字符或者十六进制的形式显示二进制文件
+strings		# 在对象文件或二进制文件中查找可打印的字符串
+ldd			# 可以显示程序或者共享库所需的共享库
+nm			# 显示目标文件的符号
 ```
 
 ### 创建
@@ -370,6 +382,39 @@ fd					# 文件查找工具
 	dpkg -i fd-musl_7.3.0_amd64.deb
 	fd <File>
 ```
+
+**找出重复文件**
+
+- jdupes
+	- https://github.com/jbruchon/jdupes
+	```bash
+	git clone https://github.com/jbruchon/jdupes
+	cd jdupes
+	make
+	./jdupes -r /home	# 递归扫描目录,包括子目录
+	./jdupes -dr /home	# 挨个确认删除
+	```
+
+- rdfind
+	```bash
+	yum install epel-release && yum install rdfind
+	# 或
+	apt-get install rdfind
+
+	rdfind -dryrun true /home			# 结果会保存在 results.txt 文件中
+	rdfind -deleteduplicates true /home	# 删除
+	```
+
+- fdupes
+	```bash
+	yum install epel-release && yum install fdupes
+	# 或
+	apt install fdupes
+
+	fdupes /home
+	fdupes -r /			# 递归扫描目录,包括子目录
+	fdupes -rd /		# 删除重复内容
+	```
 
 ### 修改
 
@@ -535,7 +580,12 @@ ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
 ---
 
 # 网络管理
-## 查看
+## 查看网络信息
+
+**主机名**
+```
+hostname
+```
 
 **IP 地址**
 ```bash
@@ -656,6 +706,11 @@ systemctl enable NetworkManager
 	```bash
 	chattr +i /etc/resolv.conf		# 限制用户(包括 root)删除、修改、增加、链接等操作.要修改的话要先删掉这个设置 chattr -i /etc/resolv.conf
 	service network restart
+	```
+
+- **修改主机名**
+	```bash
+	hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	```
 
 **Arch**
@@ -911,14 +966,14 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 vim /etc/apt/sources.list
 
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
+deb http://mirrors.aliyun.com/debian/ buster main contrib non-free
+# deb-src http://mirrors.aliyun.com/debian/ buster main contrib non-free
+deb http://mirrors.aliyun.com/debian/ buster-updates main contrib non-free
+# deb-src http://mirrors.aliyun.com/debian/ buster-updates main contrib non-free
+deb http://mirrors.aliyun.com/debian/ buster-backports main contrib non-free
+# deb-src http://mirrors.aliyun.com/debian/ buster-backports main contrib non-free
+deb http://mirrors.aliyun.com/debian-security buster/updates main contrib non-free
+# deb-src http://mirrors.aliyun.com/debian-security buster/updates main contrib non-free
 ```
 
 **Kali apt 换源**
@@ -927,7 +982,7 @@ vim /etc/apt/sources.list
 
 # 清华源
 deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+deb-src http://mirrors.aliyun.com/kali kali-rolling main contrib non-free
 
 # 官方源
 deb http://http.kali.org/kali kali-rolling main non-free contrib

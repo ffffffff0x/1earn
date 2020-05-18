@@ -1,7 +1,7 @@
-# BadUSB-Digispark
+# HID-Digispark
 
 <p align="center">
-    <img src="../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/1.jpg"></a>
+    <img src="../../../../assets/img/安全/实验/Misc/HID-Digispark/1.jpg"></a>
 </p>
 
 ---
@@ -26,6 +26,7 @@
 - [PlatyPew/Digispark-Duckduino](https://github.com/PlatyPew/Digispark-Duckduino) - payload
 - [mame82/duck2spark](https://github.com/mame82/duck2spark) - payload 翻译脚本
 - [toxydose/Duckyspark](https://github.com/toxydose/Duckyspark) - payload 翻译脚本
+- [thewhiteh4t/flashsploit](https://github.com/thewhiteh4t/flashsploit) - 基于 ATtiny85 的 HID 攻击的开发框架
 
 ---
 
@@ -35,7 +36,11 @@ Digispark 是一个基于 ATTINY85 微控制器的 USB 开发板，体积小且�
 
 淘宝上直接搜索 Digispark 就能看到了，价格在7元左右。
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/2.jpg)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/2.jpg)
+
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/10.jpg)
+
+---
 
 # 配置环境
 
@@ -52,9 +57,9 @@ http://digistump.com/package_digistump_index.json
 
 > 注:如果速度慢可以配置代理
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/3.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/3.png)
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/4.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/4.png)
 
 安装 Digispark 的驱动(32位操作系统和64位操作系统安装程序不同)
 
@@ -64,24 +69,24 @@ https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.
 
 进入“工具”菜单，然后选择“开发板”子菜单 - 选择“开发板管理器”
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/5.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/5.png)
 
 然后从类型下拉菜单中选择“贡献”， 选择“Digistump AVR Boards”包，然后单击“安装”按钮
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/6.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/6.png)
 
 > 注:再次强调,如果速度慢可以配置代理
 
 最后，打开 Tools -> Board，然后选择 Digispark (Default — 16.5mhz)并将其设置为默认值。
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/7.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/7.png)
 
 ---
 
 # 使用
 
 用无害的 payload 演示
-```
+```c
 #include "DigiKeyboard.h"
 
 void setup() {
@@ -93,35 +98,49 @@ DigiKeyboard.println();
 delay(500);
 DigiKeyboard.sendKeyStroke(KEY_SPACE,MOD_CONTROL_LEFT);
 delay(200);
-DigiKeyboard.print("This is hack Fan.");
+DigiKeyboard.print("just test");
 DigiKeyboard.println();
-
-
- //badusb.pw
 }
 
 
 void loop() {
-  //badusb.pw
 }
 ```
 
 将上面的代码复制到软件中,点击左上角 "验证" 按钮,等待编译完成,检测代码是否有误.当然你可以跳过这一步直接点击上传 :)
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/8.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/8.png)
 
 > 注意：在调用上传之前，不需要插入Digispark
 
 点击上传按钮。底部状态框现在会要求插入Digispark - 插入它 - 或者拔下并重新插入它。
 
-![](../../../../assets/img/安全/实验/Misc/BadUSB-Digispark/9.png)
+![](../../../../assets/img/安全/实验/Misc/HID-Digispark/9.png)
 
 enjoy :)
+
+**关机**
+```c
+#include "DigiKeyboard.h"
+
+void setup() {
+
+  DigiKeyboard.delay(500);
+  DigiKeyboard.sendKeyStroke(KEY_R, MOD_GUI_LEFT);//win+r
+  DigiKeyboard.delay(100);
+  DigiKeyboard.println("cmd");
+  DigiKeyboard.delay(500);
+  DigiKeyboard.println("shutdown -f -s -t 10");
+}
+
+void loop() {
+
+}
+```
 
 ---
 
 # Tips
 
 - 可以使用一些热缩管来为你的 Digispark-Ducky 提供电绝缘，机械保护，密封及隐藏。
-
 - 键盘映射见 DigiKeyboard.h 文件

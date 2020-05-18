@@ -12,84 +12,86 @@
 
 # 大纲
 
-**常见编码**
+* **常见编码**
+    * [ASCII](#ASCII)
+    * [Base](#Base)
+        * [Base64/32/16](#Base643216)
+        * [base92](#base92)
+    * [Escape/Unescape](#EscapeUnescape)
+    * [HtmlEncode](#HtmlEncode)
+    * [Quoted-printable](#Quoted-printable)
+    * [Unicode](#Unicode)
+    * [URL](#URL)
+    * [UTF](#UTF)
+    * [UUencode](#UUencode)
+    * [XXencode](#XXencode)
+    * [shellcode](#shellcode)
+    * [进制](#进制)
+    * [敲击码](#敲击码)
+    * [曼彻斯特编码](#曼彻斯特编码)
+    * [图片码](#图片码)
+        * [条形码](#条形码)
+        * [二维码](#二维码)
+        * [汉信码](#汉信码)
+        * [PDF147](#PDF147)
 
-* [ASCII](#ASCII)
-* [Base64/32/16](#Base643216)
-* [base92](#base92)
-* [Escape/Unescape](#EscapeUnescape)
-* [HtmlEncode](#HtmlEncode)
-* [Quoted-printable](#Quoted-printable)
-* [Unicode](#Unicode)
-* [URL](#URL)
-* [UTF](#UTF)
-* [UUencode](#UUencode)
-* [XXencode](#XXencode)
-* [shellcode](#shellcode)
-* [进制](#进制)
-* [敲击码](#敲击码)
-* [莫尔斯电码](#莫尔斯电码)
-* [曼彻斯特编码](#曼彻斯特编码)
+* **现代密码**
+    * [AES](#AES)
+    * [MD5](#MD5)
+    * [rc4](#rc4)
+    * [RIPE_MD160](#RIPE_MD160)
+    * [RSA](#RSA)
+    * [SHA](#SHA)
+    * [SM国密](#SM国密)
 
-**现代密码**
+* **古典密码**
+    * [换位加密](#换位加密)
+        * [栅栏密码](#栅栏密码)
+        * [曲路密码](#曲路密码)
+        * [列移位密码](#列移位密码)
+    * [替换加密](#替换加密)
+        * [ADFGX](#ADFGX)
+        * [Bazeries](#Bazeries)
+        * [Digrafid](#Digrafid)
+        * [Porta](#Porta)
+        * [ROT5/13/18/47](#ROT5131847)
+        * [摩斯电码](#摩斯电码)
+        * [查尔斯加密](#查尔斯加密)
+        * [埃特巴什码](#埃特巴什码)
+        * [凯撒密码](#凯撒密码)
+        * [简单替换密码](#简单替换密码)
+        * [希尔密码](#希尔密码)
+        * [猪圈密码](#猪圈密码)
+        * [波利比奥斯方阵密码](#波利比奥斯方阵密码)
+        * [夏多密码](#夏多密码)
+        * [普莱菲尔密码](#普莱菲尔密码)
+        * [维吉尼亚密码](#维吉尼亚密码)
+        * [自动密钥密码](#自动密钥密码)
+        * [博福特密码](#博福特密码)
+        * [滚动密钥密码](#滚动密钥密码)
+        * [同音替换密码](#同音替换密码)
+        * [仿射密码](#仿射密码)
+        * [培根密码](#培根密码)
+        * [双密码](#双密码)
+        * [三分密码](#三分密码)
+        * [四方密码](#四方密码)
+        * [棋盘密码](#棋盘密码)
+        * [跨棋盘密码](#跨棋盘密码)
+        * [分组摩尔斯替换密码](#分组摩尔斯替换密码)
+        * [格朗普雷密码](#格朗普雷密码)
+        * [比尔密码](#比尔密码)
+        * [键盘密码](#键盘密码)
+        * [恩尼格玛密码](#恩尼格玛密码)
 
-* [AES](#AES)
-* [MD5](#MD5)
-* [rc4](#rc4)
-* [RIPE_MD160](#RIPE_MD160)
-* [RSA](#RSA)
-* [SHA](#SHA)
-* [SM国密](#SM国密)
-
-**古典密码**
-
-* [换位加密](#换位加密)
-    * [栅栏密码](#栅栏密码)
-    * [曲路密码](#曲路密码)
-    * [列移位密码](#列移位密码)
-* [替换加密](#替换加密)
-    * [ADFGX](#ADFGX)
-    * [Bazeries](#Bazeries)
-    * [Digrafid](#Digrafid)
-    * [Porta](#Porta)
-    * [ROT5/13/18/47](#ROT5131847)
-    * [摩斯电码](#摩斯电码)
-    * [查尔斯加密](#查尔斯加密)
-    * [埃特巴什码](#埃特巴什码)
-    * [凯撒密码](#凯撒密码)
-    * [简单替换密码](#简单替换密码)
-    * [希尔密码](#希尔密码)
-    * [猪圈密码](#猪圈密码)
-    * [波利比奥斯方阵密码](#波利比奥斯方阵密码)
-    * [夏多密码](#夏多密码)
-    * [普莱菲尔密码](#普莱菲尔密码)
-    * [维吉尼亚密码](#维吉尼亚密码)
-    * [自动密钥密码](#自动密钥密码)
-    * [博福特密码](#博福特密码)
-    * [滚动密钥密码](#滚动密钥密码)
-    * [同音替换密码](#同音替换密码)
-    * [仿射密码](#仿射密码)
-    * [培根密码](#培根密码)
-    * [双密码](#双密码)
-    * [三分密码](#三分密码)
-    * [四方密码](#四方密码)
-    * [棋盘密码](#棋盘密码)
-    * [跨棋盘密码](#跨棋盘密码)
-    * [分组摩尔斯替换密码](#分组摩尔斯替换密码)
-    * [格朗普雷密码](#格朗普雷密码)
-    * [比尔密码](#比尔密码)
-    * [键盘密码](#键盘密码)
-    * [恩尼格玛密码](#恩尼格玛密码)
-
-**其他编码**
-* [Brainfuck](#Brainfuck)
-* [JSfuck](#JSfuck)
-* [JS加密/解密](#JS加密解密)
-* [颜文字加密](#颜文字加密)
-* [与佛论禅](#与佛论禅)
-* [文本加密为汉字](#文本加密为汉字)
-* [随机密码生成](#随机密码生成)
-* [核心价值观加密](#核心价值观加密)
+* **其他编码**
+    * [Brainfuck](#Brainfuck)
+    * [JSfuck](#JSfuck)
+    * [JS加密/解密](#JS加密解密)
+    * [颜文字加密](#颜文字加密)
+    * [与佛论禅](#与佛论禅)
+    * [文本加密为汉字](#文本加密为汉字)
+    * [随机密码生成](#随机密码生成)
+    * [核心价值观加密](#核心价值观加密)
 
 ---
 
@@ -112,33 +114,12 @@
 - [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom) - 密码学的瑞士军刀
 
 **在线工具**
-```
-http://tool.bugku.com/
-http://ctf.ssleye.com/
-https://ctftools.com/down/
-https://gchq.github.io/CyberChef/
-https://www.sojson.com/encrypt/
-https://cryptii.com/
-```
-
-**功能类**
-- 数学
-    - https://zh.numberempire.com/factoringcalculator.php
-    - http://atool.org/quality_factor.php
-    - https://zh.numberempire.com/
-    - https://www.logcalculator.net/
-
-- 大小写
-    - http://www.convertstring.com/zh_CN/StringFunction/ToUpperCase
-    - http://www.convertstring.com/zh_CN/StringFunction/ToLowerCase
-    - https://convertcase.net/
-
-- 反向
-    - http://www.convertstring.com/zh_CN/StringFunction/ReverseString
-    - https://www.qqxiuzi.cn/zh/daoxu/
-
-- 时间戳
-    - http://tool.chinaz.com/tools/unixtime.aspx
+- http://tool.bugku.com/
+- http://ctf.ssleye.com/
+- https://ctftools.com/down/
+- https://gchq.github.io/CyberChef/
+- https://www.sojson.com/encrypt/
+- https://cryptii.com/
 
 ---
 
@@ -185,6 +166,27 @@ https://cryptii.com/
 
 ---
 
+**功能类**
+- 数学
+    - https://zh.numberempire.com/factoringcalculator.php
+    - http://atool.org/quality_factor.php
+    - https://zh.numberempire.com/
+    - https://www.logcalculator.net/
+
+- 大小写
+    - http://www.convertstring.com/zh_CN/StringFunction/ToUpperCase
+    - http://www.convertstring.com/zh_CN/StringFunction/ToLowerCase
+    - https://convertcase.net/
+
+- 反向
+    - http://www.convertstring.com/zh_CN/StringFunction/ReverseString
+    - https://www.qqxiuzi.cn/zh/daoxu/
+
+- 时间戳
+    - http://tool.chinaz.com/tools/unixtime.aspx
+
+---
+
 # 常见编码
 
 `更多内容可以参考` [字符编码](../../开发/字符编码/字符编码.md#编码)
@@ -199,19 +201,23 @@ ASCII 编码大致可以分作三部分组成:
 
 - 第三部分是:扩展 ASCII 打印字符.
 
-> 编码转换示例
->
->> 源文本: The quick brown fox jumps over the lazy dog
->
-> ASCII编码对应十进制:
->
->> 84 104 101 32 113 117 105 99 107 32 98 114 111 119 110 32 102111     120 32 106 117 109 112 115 32 111 118 101 114 32 116104  101 32    108 97 122 121 32 100 111 103
->
-> 对应可以转换成二进制,八进制,十六进制等.
+编码转换示例
+
+> 源文本: The quick brown fox jumps over the lazy dog
+
+ASCII编码对应十进制:
+
+> 84 104 101 32 113 117 105 99 107 32 98 114 111 119 110 32 102111     120 32 106 117 109 112 115 32 111 118 101 114 32 116104  101 32    108 97 122 121 32 100 111 103
+
+对应可以转换成二进制,八进制,十六进制等.
+
+**在线工具**
+- http://www.ab126.com/goju/1711.html
 
 ---
 
-## Base64/32/16
+## Base
+### Base64/32/16
 
 base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位.16,32,64 分别表示用多少个字符来编码,这里我注重介绍 base64.Base64 常用于在通常处理文本数据的场合,表示、传输、存储一些二进制数据.包括 MIME 的 email,email via MIME,在 XML 中存储复杂数据.
 
@@ -219,45 +225,36 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 ![](../../../assets/img/安全/笔记/Crypto/jiIR3yZ.png)
 
-> 例子(base64):
->
->> 源文本:T h e
->
-> 对应ascii码:84 104 101
->
-> 8位binary:01010100 01101000 01100101
->
-> 6位binary:010101 000110 100001 100101
->
-> 高位补0:000010101 00000110 00100001 00100101
->
-> 对应ascii码:21 6 33 37
->
->> 查表:V G h l
+例子(base64):
+```
+源文本 : T h e
+对应 ascii 码 : 84 104 101
+8 位 binary : 01010100 01101000 01100101
+6 位 binary : 010101 000110 100001 100101
+高位补 0 : 000010101 00000110 00100001 00100101
+对应 ascii 码 : 21 6 33 37
+查表 : V G h l
+```
 
 **在线工具**
 
 32
-```
-http://tomeko.net/online_tools/base32.php
-```
+- http://tomeko.net/online_tools/base32.php
+
 64
-```
-http://tool.chinaz.com/Tools/Base64.aspx
-https://base64.supfree.net/
-http://www1.tc711.com/tool/BASE64.htm
-http://decodebase64.com/
-http://web.chacuo.net/charsetbase64
-https://www.base64decode.org/
-```
+- http://tool.chinaz.com/Tools/Base64.aspx
+- https://base64.supfree.net/
+- http://www1.tc711.com/tool/BASE64.htm
+- http://decodebase64.com/
+- http://web.chacuo.net/charsetbase64
+- https://www.base64decode.org/
+
 base16
-```
-https://www.qqxiuzi.cn/bianma/base.php?type=16
-```
+- https://www.qqxiuzi.cn/bianma/base.php?type=16
 
 ---
 
-## base92
+### base92
 
 - https://github.com/thenoviceoof/base92
 
@@ -439,6 +436,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 ---
 
 ## 进制
+
 **在线工具**
 - https://js.tuisec.win/convert/ox2str/
 - http://www.5ixuexiwang.com/str/from-hex.php
@@ -457,39 +455,6 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ![](../../../assets/img/安全/笔记/Crypto/TIM截图20190814151752.png)
 ![](../../../assets/img/安全/笔记/Crypto/TIM截图20190814151904.png)
-
----
-
-## 莫尔斯电码
-
-摩尔斯电码(Morse Code)是由美国人萨缪尔·摩尔斯在1836年发明的一种时通时断的且通过不同的排列顺序来表达不同英文字母、数字和标点符号的信号代码,摩尔斯电码主要由以下5种它的代码组成:
-
-1. 点(.)
-1. 划(-)
-1. 每个字符间短的停顿(通常用空格表示停顿)
-1. 每个词之间中等的停顿(通常用 / 划分)
-1. 以及句子之间长的停顿
-
-摩尔斯电码字母和数字对应表:
--|-|-|-|-
--|-|-|-|-
-A  .-    |N  -.    |.  .-.-.-  |+  .-.-.   |1  .----
-B  -...  |O  ---   |,  --..--  |_  ..--.-  |2  ..---
-C  -.-.  |P  .--.  |:  ---...  |$  ...-..- |3  ...--
-D  -..   |Q  --.-  |"  .-..-.  |&  .-...   |4  ....-
-E  .     |R  .-.   |'  .----.  |/  -..-.   |5  .....
-F  ..-.  |S  ...   |!  -.-.--              |6  -....
-G  --.   |T  -     |?  ..--..              |7  --...
-H  ....  |U  ..-   |@  .--.-.              |8  ---..
-I  ..    |V  ...-  |-  -....-              |9  ----.
-J  .---  |W  .--   |;  -.-.-.              |0  -----
-K  -.-   |X  -..-  |(  -.--.
-L  .-..  |Y  -.--  |)  -.--.-
-M  --    |Z  --..  |=  -...-
-
-> 源文本: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
-
-> 编码后:- .... . / --.- ..- .. -.-. -.- / -... .-. --- .-- -. / ..-. --- -..- / .--- ..- -- .--. ... / --- ...- . .-. / - .... . / .-.. .- --.. -.-- / -.. --- --.
 
 ---
 
@@ -539,7 +504,32 @@ M  --    |Z  --..  |=  -...-
 
 ---
 
+## 图片码
+### 条形码
+
+![](../../../assets/img/才怪.png)
+
+### 二维码
+
+**在线工具**
+- http://tool.chinaz.com/qrcode/
+- http://jiema.wwei.cn/
+- https://cli.im/
+- https://www.beaconstac.com/qr-code-generator
+
+### 汉信码
+
+**在线工具**
+- http://www.efittech.com/hxdec.html
+
+### PDF147
+
+![](../../../assets/img/才怪.png)
+
+---
+
 # 现代密码
+
 **文章**
 - [安全体系(一)—— DES算法详解](https://www.cnblogs.com/songwenlong/p/5944139.html)
 - [安全体系(零)—— 加解密算法、消息摘要、消息认证技术、数字签名与公钥证书](http://www.cnblogs.com/songwenlong/p/6517165.html)
@@ -548,47 +538,48 @@ M  --    |Z  --..  |=  -...-
 - [这些hash你了解吗？](http://www.myh0st.cn/index.php/archives/304/)
 
 **在线工具**
-```
-http://tool.oschina.net/encrypt/
-http://encode.chahuo.com/
-http://tool.chacuo.net/cryptdes
-http://www.mxcz.net/tools/MD5.aspx
-https://hashtoolkit.com/
-```
+- http://tool.oschina.net/encrypt/
+- http://encode.chahuo.com/
+- http://tool.chacuo.net/cryptdes
+- http://www.mxcz.net/tools/MD5.aspx
+- https://hashtoolkit.com/
+
+---
 
 ## AES
+
 **在线工具**
 - [AES Encryption – Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
 
 ---
 
 ## MD5
+
 **文章**
 - [md5(unix)原理分析](https://www.leavesongs.com/PENETRATION/about-hash-password.html)
 - [一个文件变出六种格式？它比"格式工厂"厉害多了](https://www.pingwest.com/a/185806)
+- [MD5碰撞的一些例子](https://www.jianshu.com/p/c9089fd5b1ba)
 
 **在线工具**
-```
-https://md5.navisec.it/
-https://www.somd5.com/
-https://www.md5online.org/
-https://www.somd5.com/batch.html
-http://md5.tellyou.top/
-http://www.cmd5.com/
-http://hashtoolkit.com/
-http://hashcrack.com/
-https://md5.gromweb.com/
-http://tool.chinaz.com/Tools/MD5.aspx
-http://www.chamd5.org/
-https://cmd5.la/
-http://pmd5.com/
-http://www.ttmd5.com/
-http://www.xmd5.org/
-https://crackstation.net/
-http://www.md5this.com/index.php
-https://md5online.org/
-http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
-```
+- https://md5.navisec.it/
+- https://www.somd5.com/
+- https://www.md5online.org/
+- https://www.somd5.com/batch.html
+- http://md5.tellyou.top/
+- http://www.cmd5.com/
+- http://hashtoolkit.com/
+- http://hashcrack.com/
+- https://md5.gromweb.com/
+- http://tool.chinaz.com/Tools/MD5.aspx
+- http://www.chamd5.org/
+- https://cmd5.la/
+- http://pmd5.com/
+- http://www.ttmd5.com/
+- http://www.xmd5.org/
+- https://crackstation.net/
+- http://www.md5this.com/index.php
+- https://md5online.org/
+- http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
 
 ---
 
@@ -885,6 +876,35 @@ ROT47:对数字、字母、常用符号进行编码,按照它们的ASCII值进�
 ---
 
 ### 摩斯电码
+
+摩尔斯电码(Morse Code)是由美国人萨缪尔·摩尔斯在1836年发明的一种时通时断的且通过不同的排列顺序来表达不同英文字母、数字和标点符号的信号代码,摩尔斯电码主要由以下5种它的代码组成:
+
+1. 点(.)
+1. 划(-)
+1. 每个字符间短的停顿(通常用空格表示停顿)
+1. 每个词之间中等的停顿(通常用 / 划分)
+1. 以及句子之间长的停顿
+
+摩尔斯电码字母和数字对应表:
+-|-|-|-|-
+-|-|-|-|-
+A  .-    |N  -.    |.  .-.-.-  |+  .-.-.   |1  .----
+B  -...  |O  ---   |,  --..--  |_  ..--.-  |2  ..---
+C  -.-.  |P  .--.  |:  ---...  |$  ...-..- |3  ...--
+D  -..   |Q  --.-  |"  .-..-.  |&  .-...   |4  ....-
+E  .     |R  .-.   |'  .----.  |/  -..-.   |5  .....
+F  ..-.  |S  ...   |!  -.-.--              |6  -....
+G  --.   |T  -     |?  ..--..              |7  --...
+H  ....  |U  ..-   |@  .--.-.              |8  ---..
+I  ..    |V  ...-  |-  -....-              |9  ----.
+J  .---  |W  .--   |;  -.-.-.              |0  -----
+K  -.-   |X  -..-  |(  -.--.
+L  .-..  |Y  -.--  |)  -.--.-
+M  --    |Z  --..  |=  -...-
+
+> 源文本: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+
+> 编码后:- .... . / --.- ..- .. -.-. -.- / -... .-. --- .-- -. / ..-. --- -..- / .--- ..- -- .--. ... / --- ...- . .-. / - .... . / .-.. .- --.. -.-- / -.. --- --.
 
 **在线工具**
 - http://rumkin.com/tools/cipher/morse.php

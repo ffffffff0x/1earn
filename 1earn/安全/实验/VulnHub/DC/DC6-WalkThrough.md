@@ -93,7 +93,7 @@ echo "192.168.141.140 wordy" >> /etc/hosts
 
 访问 web,发现是个 wordpress 搭建的网站
 
-![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/3.png)
+![](../../../../../assets/img/安全/实验/VulnHub/DC/DC6/3.jpg)
 
 按照之前 DC2 的经验来,上 wpscan 扫他一波
 ```bash

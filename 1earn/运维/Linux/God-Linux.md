@@ -48,6 +48,13 @@ while :;do printf "\e[$[RANDOM%LINES+1];$[RANDOM%COLUMNS+1]f${P[$RANDOM%5]}";don
 # 让 freebad 机器叫出声
 echo “T250L8CE-GE-C” > /dev/speaker
 echo “O1L15aO2L15bO3L15cO4L15d” > /dev/speaker
+
+# 在不使用 chmod 的情况下运行脚本
+. ./test.sh
+{.,./test.sh}
+bash < test.sh
+cat test.sh|sh
+curl -s file://`pwd`/test.sh | sh
 ```
 
 ## net

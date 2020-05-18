@@ -10,17 +10,22 @@
 
 # 大纲
 
-* [点击劫持](#点击劫持)
-* [任意文件下载-读取](#任意文件下载-读取)
-* [文件包含漏洞](#文件包含漏洞)
+* **[点击劫持](#点击劫持)**
+
+* **[任意文件下载-读取](#任意文件下载-读取)**
+
+* **[文件包含漏洞](#文件包含漏洞)**
     * [日志中毒攻击](#日志中毒攻击)
-* [文件解析漏洞](#文件解析漏洞)
+
+* **[文件解析漏洞](#文件解析漏洞)**
     * [IIS](#IIS)
     * [Nginx](#Nginx)
     * [Apache](#Apache)
     * [其他](#其他)
-* [文件上传漏洞](#文件上传漏洞)
-* [信息泄露漏洞](#信息泄露漏洞)
+
+* **[文件上传漏洞](#文件上传漏洞)**
+
+* **[信息泄露漏洞](#信息泄露漏洞)**
     * [目录遍历](#目录遍历)
     * [GIT源码泄露](#GIT源码泄露)
     * [SVN源码泄露](#SVN源码泄露)
@@ -32,17 +37,28 @@
     * [jsonp信息泄露](#jsonp信息泄露)
     * [JS敏感信息泄露](#JS敏感信息泄露)
     * [各类APIkey泄露](#各类APIkey泄露)
-* [CORS](#CORS)
-* [CSRF](#CSRF)
-* [http参数污染](#http参数污染)
-* [php反序列化](#php反序列化)
-* [SSRF](#SSRF)
-* [URL跳转漏洞](#URL跳转漏洞)
-* [CRLF_Injection](#CRLF_Injection)
-* [jwt](#jwt)
-* [SQL_inje](#SQL_inje)
-* [XSS](#XSS)
-* [XEE](#XEE)
+
+* **[CORS](#CORS)**
+
+* **[CSRF](#CSRF)**
+
+* **[http参数污染](#http参数污染)**
+
+* **[php反序列化](#php反序列化)**
+
+* **[SSRF](#SSRF)**
+
+* **[URL跳转漏洞](#URL跳转漏洞)**
+
+* **[CRLF_Injection](#CRLF_Injection)**
+
+* **[jwt](#jwt)**
+
+* **[SQL_inje](#SQL_inje)**
+
+* **[XSS](#XSS)**
+
+* **[XEE](#XEE)**
 
 ---
 
@@ -303,6 +319,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **工具**
 - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
+- [anantshri/DS_Store_crawler_parser](https://github.com/anantshri/DS_Store_crawler_parser) - `.DS_Store` 文件解析脚本,递归地获取文件夹内的 `.ds_Store`
 
 ## 网站备份压缩文件
 
@@ -380,7 +397,7 @@ WEB-INF 主要包含一下文件或目录:
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
 - [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
 
-以下正则来自 https://bacde.me/post/Extract-API-Keys-From-Regex/
+以下正则来自 以下内容来自 <sup>[[一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)]</sup>
 ```re
 "aliyun_oss_url": "[\\w-.]\\.oss.aliyuncs.com"
 "azure_storage": "https?://[\\w-\.]\\.file.core.windows.net"
@@ -514,7 +531,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **Tips**
 
-搜索 JWT 的正则,来自 https://github.com/ticarpi/jwt_tool#tips
+搜索 JWT 的正则,来自 以下正则来自 以下内容来自 <sup>[[ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool#tips)]</sup>
 ```re
 [= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*         -稳定的 JWT 版本
 [= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*   -所有 JWT 版本（可能误报）
@@ -533,11 +550,12 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [brendan-rius/c-jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker)
 - [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
+- [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
 
 # SQL_inje
 
 **笔记**
-- [SQLi](./SQLi.md)
+- [SQLi 笔记](./SQLi.md)
 
 # XSS
 

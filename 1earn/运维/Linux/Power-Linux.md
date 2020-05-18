@@ -19,7 +19,7 @@
 </p>
 
 - `Linux 下各种常见服务的搭建/配置指南`
-- `大部分适用于 Centos7`
+- `大部分环境在 Centos7,少部分 Ubuntu`
 - `主要以安装搭建为主,更深一步的配置请自行研究`
 - `如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
 
@@ -27,102 +27,98 @@
 
 # 大纲
 
-**[🥩常见服务](#常见服务)**
+* **[🥩 常见服务](#常见服务)**
+  * [Lvm](#lvm)
+  * [Net](#net)
+  * [RAID](#raid)
+  * [Vim](#vim)
 
-* [Lvm](#Lvm)
-* [Net](#Net)
-* [RAID](#RAID)
-* [Vim](#Vim)
+* **[🍜 网络服务](#网络服务)**
+  * [AdguardTeam](#adguardteam)
+  * [Cacti](#cacti)
+  * [Chrony](#chrony)
+  * [cloud-torrent](#cloud-torrent)
+  * [DHCP](#dhcp)
+  * [DNS](#dns)
+  * [frp](#frp)
+  * [Kicktart](#kicktart)
+  * [nps](#nps)
+  * [OpenVPN](#openvpn)
+  * [PowerDNS](#powerdns)
+    * [PowerDNS-Admin](#powerdns-admin)
+  * [proxychains-ng](#proxychains-ng)
+  * [SSH](#ssh)
+  * [ttyd](#ttyd)
+  * [vnc4server](#vnc4server)
 
-**[🍜网络服务](#网络服务)**
+* **[🍦 web服务-中间件](#web服务-中间件)**
+  * [ActiveMQ](#activemq)
+  * [Apache](#apache)
+  * [Caddy](#caddy)
+  * [npm & Node](#npmnode)
+  * [Nexus](#nexus)
+  * [Nginx](#nginx)
+  * [phpMyAdmin](#phpmyadmin)
+  * [RabbitMQ](#rabbitmq)
+  * [searx](#searx)
+  * [Tomcat](#tomcat)
+  * [Wordpress](#wordpress)
+  * [Mijisou](#mijisou)
 
-* [AdguardTeam](#AdguardTeam)
-* [Cacti](#Cacti)
-* [Chrony](#Chrony)
-* [cloud-torrent](#cloud-torrent)
-* [DHCP](#DHCP)
-* [DNS](#DNS)
-* [frp](#frp)
-* [Kicktart](#Kicktart)
-* [OpenVPN](#OpenVPN)
-* [proxychains-ng](#proxychains-ng)
-* [SSH](#SSH)
-* [ttyd](#ttyd)
-* [vnc4server](#vnc4server)
+* **[🍉 数据库](#数据库)**
+  * [Relational](#relational)
+    * [Oracle](#oracle)
+    * [Mariadb](#mariadb)
+    * [MySQL](#mysql)
+    * [Postgresql](#postgresql)
+  * [Document](#document)
+    * [MongoDB](#mongodb)
+  * [Key-value](#key-value)
+    * [Redis](#redis)
+    * [Memcached](#Memcached)
+  * [图形](#图形)
+    * [Neo4j](#neo4j)
 
-**[🍦web服务-中间件](#web服务-中间件)**
+* **[🍣 文件服务](#文件服务)**
+  * [filebrowser](#filebrowser)
+  * [NFS](#nfs)
+  * [Samba](#samba)
+  * [Vsftp](#vsftp)
 
-* [ActiveMQ](#ActiveMQ)
-* [Apache](#Apache)
-  * [配置php](#配置php)
-  * [配置https](#配置https)
-* [Caddy](#Caddy)
-* [npm & Node](#npmnode)
-* [Nexus](#Nexus)
-* [Nginx](#Nginx)
-* [phpMyAdmin](#phpMyAdmin)
-* [RabbitMQ](#RabbitMQ)
-* [searx](#searx)
-* [Tomcat](#Tomcat)
-* [Wordpress](#Wordpress)
-* [Mijisou](#Mijisou)
+* **[🍗 编程语言](#编程语言)**
+  * [C](#c)
+  * [Go](#go)
+  * [JDK](#jdk)
+  * [Python3](#python3)
+    * [pip](#pip)
+    * [jupyterlab](#jupyterlab)
+  * [Ruby](#ruby)
 
-**[🍉数据库](#数据库)**
+* **[🍞 系统监管](#系统监管)**
+  * [BaoTa](#baota)
+  * [Jenkins](#jenkins)
+  * [Jumpserver](#jumpserver)
+  * [Loganalyzer](#loganalyzer)
+  * [Supervisor](#supervisor)
+  * [Webmin](#webmin)
+  * [Zabbix](#zabbix)
 
-* [Relational](#Relational)
-  * [Oracle](#Oracle)
-  * [Mariadb](#Mariadb)
-  * [MySQL](#MySQL)
-  * [Postgresql](#Postgresql)
-* [Document](#Document)
-  * [MongoDB](#MongoDB)
-* [Key-value](#Key-value)
-  * [Redis](#Redis)
-  * [Memcached](#Memcached)
-* [图形](#图形)
-  * [Neo4j](#Neo4j)
+* **[🌭 虚拟化](#虚拟化)**
+  * [Docker](#docker)
+    * [Docker-Compose](#docker-compose)
+  * [Qemu](#Qemu)
 
-**[🍣文件服务](#文件服务)**
+* **[🥕 分布式](#分布式)**
+  * [zookeeper](#zookeeper)
 
-* [filebrowser](#filebrowser)
-* [NFS](#NFS)
-* [Samba](#Samba)
-* [Vsftp](#Vsftp)
+* **[🍯 安全服务](#安全服务)**
+  * [ClamAV](#clamav)
+  * [Fail2ban](#fail2ban)
+  * [openldap](#openldap)
+    * [PhpLdapAdmin](#phpldapadmin)
+  * [Snort](#snort)
 
-**[🍗编程语言](#编程语言)**
-
-* [C](#C)
-* [Go](#Go)
-* [JDK](#JDK)
-* [Python3](#Python3)
-  * [pip](#pip)
-  * [jupyterlab](#jupyterlab)
-* [Ruby](#Ruby)
-
-**[🍞系统监管](#系统监管)**
-
-* [BaoTa](#BaoTa)
-* [Jenkins](#Jenkins)
-* [Jumpserver](#Jumpserver)
-* [Loganalyzer](#Loganalyzer)
-* [Supervisor](#Supervisor)
-* [Webmin](#Webmin)
-* [Zabbix](#Zabbix)
-
-**[🌭虚拟化](#虚拟化)**
-
-* [Docker](#Docker)
-  * [Docker-Compose](#Docker-Compose)
-
-**[🥕分布式](#分布式)**
-* [zookeeper](#zookeeper)
-
-**[🍯安全服务](#安全服务)**
-
-* [ClamAV](#ClamAV)
-* [Fail2ban](#Fail2ban)
-* [openldap](#openldap)
-* [Snort](#Snort)
+* **[🍥 各种依赖](#各种依赖)**
 
 ---
 
@@ -312,6 +308,7 @@ p                         # 粘贴
 :saveas <path/to/file>    # 另存为
 按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
 :%s/foo/bar               # 代表替换 foo 为 bar
+:%!xxd                    # 十六进制编辑模式, :%!xxd -r 切回去
 insert 模式按 ESC 键,返回 Normal 模式
 ```
 
@@ -429,10 +426,10 @@ mysql -uroot -p
 
 use mysql;
 update user set authentication_string=password('123456') where user='root';
-# !!!注意这里添加了密码为123456的root用户
-
 exit
 ```
+
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
 
 修改 php.ini 配置文件
 ```
@@ -1067,8 +1064,42 @@ clearpart --all --initlabel
 # 如果觉得系统默认自带的应答文件参数较少,不能满足生产环境的需求,则可以通过 Yum 软件仓库来安装 system-config-kickstart 软件包.这是一款图形化的 Kickstart 应答文件生成工具,可以根据自己的需求生成自定义的应答文件,然后将生成的文件放到 /var/ftp/pub 目录中并将名字修改为 ks.cfg 即可.
 ```
 
-**Reference**
+**Source & Reference**
 - [第19章 使用 PXE+Kickstart 无人值守安装服务.](https://www.linuxprobe.com/chapter-19.html)
+
+---
+
+## nps
+
+> 、一款轻量级、高性能、功能强大的内网穿透代理服务器。支持tcp、udp、socks5、http等几乎所有流量转发，可用来访问内网网站、本地支付接口调试、ssh访问、远程桌面，内网dns解析、内网socks5代理等等……，并带有功能强大的web管理端。
+
+**项目地址**
+- https://github.com/cnlh/nps
+
+**服务端安装**
+```bash
+mkdir nps
+cd nps
+wget https://github.com/ehang-io/nps/releases/download/v0.26.7/linux_amd64_server.tar.gz
+tar -zxvf linux_amd64_server.tar.gz
+./nps install
+nps start
+
+# 关闭防火墙
+systemctl stop firewalld
+```
+
+访问 <ip>:8080 ,默认用户名和密码 admin/123
+
+**客户端安装**
+
+在服务器端新增客户端,点击客户端列表前的+号，复制启动命令
+
+执行启动命令，linux 直接执行即可，windows 将 ./npc 换成 npc.exe 用 cmd 执行
+
+**使用示例**
+
+- https://ehang-io.github.io/nps/#/example
 
 ---
 
@@ -1100,6 +1131,8 @@ Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
 Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
 ```
 
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 12345678 这类弱口令
+
 **生成客户端证书 (这里的 user 改成你想要的名字)**
 ```bash
 docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
@@ -1129,8 +1162,260 @@ sz /data/openvpn/conf/whsir.ovpn
 
 在 openvpn 的安装目录下,有个 config 目录,将服务器上的 user.ovpn,放在该目录下,运行 OpenVPN GUI,右键 whsir 连接 connect
 
-**Reference**
+**Source & Reference**
 - [通过 docker 搭建 openvpn](https://blog.whsir.com/post-2809.html)
+
+---
+
+## PowerDNS
+
+> 一种 DNS 服务器, 优点, 支持 PHP 网页管理, 支持直接在数据库中添加 DNS 地址记录, 比较灵活, 方便
+
+**项目地址**
+- https://github.com/PowerDNS/pdns
+
+**安装**
+
+以 Ubuntu16.04 为例
+
+先配置好 mysql
+```bash
+apt -y install mariadb-server mariadb-client
+service mariadb start
+mysql_secure_installation   # 初始化下 Mysql,此时配置密码,这里举例为 123456
+```
+
+为 PowerDNS 创建一个数据库,并创建一个数据库用户 powerdns,密码 123456
+```sql
+mysql -u root -p
+
+CREATE DATABASE powerdns;
+GRANT ALL ON powerdns.* TO 'powerdns'@'localhost' IDENTIFIED BY '123456';
+GRANT ALL ON powerdns.* TO 'powerdns'@'localhost.localdomain' IDENTIFIED BY '123456';
+FLUSH PRIVILEGES;
+```
+
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
+
+创建 PowerDNS 所需的表
+```sql
+CREATE DATABASE IF NOT EXISTS powerdns;
+USE powerdns;
+
+CREATE TABLE domains (
+  id                    INT AUTO_INCREMENT,
+  name                  VARCHAR(255) NOT NULL,
+  master                VARCHAR(128) DEFAULT NULL,
+  last_check            INT DEFAULT NULL,
+  type                  VARCHAR(6) NOT NULL,
+  notified_serial       INT DEFAULT NULL,
+  account               VARCHAR(40) CHARACTER SET 'utf8' DEFAULT NULL,
+  PRIMARY KEY (id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE UNIQUE INDEX name_index ON domains(name);
+
+
+CREATE TABLE records (
+  id                    BIGINT AUTO_INCREMENT,
+  domain_id             INT DEFAULT NULL,
+  name                  VARCHAR(255) DEFAULT NULL,
+  type                  VARCHAR(10) DEFAULT NULL,
+  content               VARCHAR(64000) DEFAULT NULL,
+  ttl                   INT DEFAULT NULL,
+  prio                  INT DEFAULT NULL,
+  change_date           INT DEFAULT NULL,
+  disabled              TINYINT(1) DEFAULT 0,
+  ordername             VARCHAR(255) BINARY DEFAULT NULL,
+  auth                  TINYINT(1) DEFAULT 1,
+  PRIMARY KEY (id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE INDEX nametype_index ON records(name,type);
+CREATE INDEX domain_id ON records(domain_id);
+CREATE INDEX ordername ON records (ordername);
+
+
+CREATE TABLE supermasters (
+  ip                    VARCHAR(64) NOT NULL,
+  nameserver            VARCHAR(255) NOT NULL,
+  account               VARCHAR(40) CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (ip, nameserver)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+
+CREATE TABLE comments (
+  id                    INT AUTO_INCREMENT,
+  domain_id             INT NOT NULL,
+  name                  VARCHAR(255) NOT NULL,
+  type                  VARCHAR(10) NOT NULL,
+  modified_at           INT NOT NULL,
+  account               VARCHAR(40) CHARACTER SET 'utf8' DEFAULT NULL,
+  comment               TEXT CHARACTER SET 'utf8' NOT NULL,
+  PRIMARY KEY (id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE INDEX comments_name_type_idx ON comments (name, type);
+CREATE INDEX comments_order_idx ON comments (domain_id, modified_at);
+
+
+CREATE TABLE domainmetadata (
+  id                    INT AUTO_INCREMENT,
+  domain_id             INT NOT NULL,
+  kind                  VARCHAR(32),
+  content               TEXT,
+  PRIMARY KEY (id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE INDEX domainmetadata_idx ON domainmetadata (domain_id, kind);
+
+
+CREATE TABLE cryptokeys (
+  id                    INT AUTO_INCREMENT,
+  domain_id             INT NOT NULL,
+  flags                 INT NOT NULL,
+  active                BOOL,
+  content               TEXT,
+  PRIMARY KEY(id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE INDEX domainidindex ON cryptokeys(domain_id);
+
+
+CREATE TABLE tsigkeys (
+  id                    INT AUTO_INCREMENT,
+  name                  VARCHAR(255),
+  algorithm             VARCHAR(50),
+  secret                VARCHAR(255),
+  PRIMARY KEY (id)
+) Engine=InnoDB CHARACTER SET 'latin1';
+
+CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
+exit;
+```
+
+安装 PowerDNS
+```bash
+apt install -y pdns-recursor pdns-server pdns-backend-mysql
+```
+
+Ubuntu 18.04 附带 systemd-resolve，你需要禁用它，并删除 resolv.conf 文件，因为它绑定到端口 53 ，这将与 PowerDNS 端口冲突。
+```bash
+systemctl disable systemd-resolved
+systemctl stop systemd-resolved
+rm /etc/resolv.conf
+```
+
+```vim
+vim /etc/powerdns/pdns.d/pdns.local.gmysql.conf
+
+launch=gmysql
+
+gmysql-host=localhost
+gmysql-dbname=powerdns      # 改成之前创建的数据库
+gmysql-user=powerdns        # 改成之前创建的用户
+gmysql-password=123456      # 改成之前创建的密码
+```
+
+```
+sed -i "s|# local-port=.*|local-port=5300|" /etc/powerdns/pdns.conf
+sed -i "s|# config-dir=.*|config-dir=/etc/powerdns|" /etc/powerdns/pdns.conf
+sed -i "s|# daemon=.*|daemon=yes|" /etc/powerdns/pdns.conf
+sed -i "s|# guardian=.*|guardian=yes|" /etc/powerdns/pdns.conf
+sed -i "s|# master=.*|master=yes|" /etc/powerdns/pdns.conf
+sed -i "s|# max-tcp-connections=.*|max-tcp-connections=20|" /etc/powerdns/pdns.conf
+
+service pdns restart
+```
+
+此时记得将 /etc/resolv.conf 中的 nameserver 改为 127.0.0.1
+```bash
+cat /etc/resolv.conf
+# Generated by NetworkManager
+search localdomain
+nameserver 127.0.0.1
+```
+
+测试
+```
+dig @127.0.0.1
+dig www.baidu.com
+pdnsutil create-zone test-zone-1
+pdnsutil list-zone test-zone-1
+```
+
+### PowerDNS-Admin
+
+> PowerDNS-Admin是一个具有以下高级功能的PowerDNS Web界面
+
+**项目地址**
+- https://github.com/ngoduykhanh/PowerDNS-Admin
+
+**安装**
+
+设置数据库
+```sql
+mysql -u root -p
+CREATE DATABASE powerdnsadmin;
+GRANT ALL PRIVILEGES ON powerdnsadmin.* TO 'pdnsadminuser'@'%' IDENTIFIED BY '123456';
+FLUSH PRIVILEGES;
+quit
+```
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
+
+```bash
+# Install Python 3 devevelopment package
+apt install -y python3-dev
+# Install required packages for building python libraries from requirements.txt file
+apt install -y libmysqlclient-dev libsasl2-dev libldap2-dev libssl-dev libxml2-dev libxslt1-dev libxmlsec1-dev libffi-dev pkg-config apt-transport-https virtualenv build-essential
+
+# Install NodeJs
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+apt install -y nodejs
+
+# Install yarn to build asset files
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
+apt update -y
+apt install -y yarn
+
+# Checkout source code and create virtualenv
+git clone https://github.com/ngoduykhanh/PowerDNS-Admin.git /opt/web/powerdns-admin
+cd /opt/web/powerdns-admin
+virtualenv -p python3 flask
+
+# Activate your python3 environment and install libraries
+source ./flask/bin/activate
+pip install -r requirements.txt
+```
+
+Running PowerDNS-Admin
+
+```vim
+vim configs/development.py
+
+SQLA_DB_USER = 'powerdns'   # 改成之前创建的数据库
+SQLA_DB_PASSWORD = '123456' # 改成之前创建的用户
+SQLA_DB_HOST = '127.0.0.1'  # 改成之前创建的密码
+SQLA_DB_NAME = 'powerdns'
+```
+
+```bash
+export FLASK_CONF=../configs/development.py
+export FLASK_APP=powerdnsadmin/__init__.py
+flask db upgrade
+
+# generate asset files
+yarn install --pure-lockfile
+flask assets build
+
+# run PowerDNS-Admin by command
+./run.py
+```
+
+现在访问 <ip>:9191
+
+> 注: 这对于测试环境很有效，但是对于生产环境，应该使用 gunicorn 或 uwsgi
 
 ---
 
@@ -1533,118 +1818,6 @@ yum install httpd-tools
 
 见 [apache.md](./实验/apache.md)
 
-### 配置php
-```bash
-若之前安装过其他版本 PHP,先删除
-yum remove php*
-
-rpm 安装 PHP7 相应的 yum 源
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-yum install php70w php70w-fpm
-
-php -v                # 查看PHP版本
-
-service php-fpm start # 要运行 PHP 网页,要启动 php-fpm 解释器
-```
-```bash
-vim /etc/httpd/conf/httpd.conf
-
-# 将Require all denied 改为Require all granted
-<Directory />
-    AllowOverride none
-    Require all granted
-</Directory>
-
-# 增加一行 AddType application/x-httpd-php .php
-    AddType application/x-httpd-php .php
-
-# 增加索引页 index.php,在 DirectoryIndex index.html 后面 增加索引页 index.php
-<IfModule dir_module>
-    DirectoryIndex index.html index.php
-</IfModule>
-```
-
-检查配置文件 httpd.conf 的语法是否正确
-```bash
-apachectl -t
-```
-
-检测 php 是否正常解析
-```
-echo "<?php phpinfo(); ?>"  > /var/www/html/1.php
-
-service httpd restart
-firewall-cmd --zone=public --add-service=http --permanent
-firewall-cmd --reload
-```
-
-访问 `机器相应ip/1.php`
-
-### 配置https
-
-**使用 Let’s Encrypt 直接上 https**
-```bash
-yum install -y yum-utils
-yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
-yum install -y certbot python2-certbot-apache
-
-certbot --apache
-firewall-cmd --zone=public --add-service=https --permanent
-firewall-cmd --reload
-```
-
-**mod_ssl 为 linux 提供 web 证书**
-
-```bash
-cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem
-openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
-
-cd /etc/pki/CA
-touch index.txt     # 索引问文件
-touch serial        # 给客户发证编号存放文件
-echo 01 > serial
-
-mkdir /etc/httpd/ssl
-cd /etc/httpd/ssl
-openssl genrsa 1024 > httpd.key
-openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt
-
-# 使用 cat /etc/pki/CA/index.txt 查看 openssl 证书数据库文件
-cat /etc/pki/CA/index.txt
-```
-
-**mod_ssl 为 windows 提供 web 证书**
-
-```bash
-cd /etc/pki/CA/private
-openssl genrsa 2048 > cakey.pem
-openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
-
-cd /etc/pki/CA
-touch index.txt   # 索引问文件
-touch serial      # 给客户发证编号存放文件
-echo 01 > serial
-
-cd
-openssl genrsa 1024 > httpd.key
-openssl req -new -key httpd.key > httpd.csr
-openssl ca -days 365 -in httpd.csr > httpd.crt
-
-openssl pkcs12 -export -out server.pfx -inkey httpd.key -in httpd.crt
-# 自己把 server.pfx 导出给 windows2008 主机
-```
-
-**向 windows CA 服务器申请证书**
-
-```bash
-Openssl genrsa 2048 > httpd.key
-openssl req -new -key httpd.key -out httpd.csr
-```
-通过这个 csr 文件在内部的 windows CA 服务器上申请证书
-
 ---
 
 ## Caddy
@@ -1836,6 +2009,12 @@ forever -h                # 查看帮助
   systemctl start nginx.service
   ```
 
+- **Debian & Ubuntu 安装**
+  ```bash
+  apt update
+  apt-get -y install nginx
+  ```
+
 - **源代码编译安装**
 
   自己下载好包 https://nginx.org/en/download.html,传到服务器上,这里以1.14.2 举例
@@ -1851,11 +2030,6 @@ forever -h                # 查看帮助
   ```
 
   注:源代码安装你的默认目录在 /usr/local/nginx 下,配置文件在 conf/ 中,不要搞错了
-
-```bash
-firewall-cmd --permanent --zone=public --add-service=http
-firewall-cmd --reload
-```
 
 **虚拟主机**
 
@@ -1883,78 +2057,14 @@ firewall-cmd --reload
 systemctl start nginx.service
 ```
 
-如果服务器网址没有注册,那么应该在本机电脑的 /etc/hosts 添加设置: `192.168.1.112   www.test.com test.com`
+如果服务器网址没有注册,那么可以在本机电脑的 /etc/hosts 添加设置: `192.168.1.112   www.test.com test.com`
 
-`curl www.test.com`
+本地 curl 访问测试 `curl www.test.com`
 
-**https**
-```bash
-openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key    # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
-
-mv httpd.crt /etc/nginx
-mv httpd.key /etc/nginx
+**查看报错**
 ```
-```vim
-vim /etc/nginx/conf.d/test.com.conf
-
-server {
-        listen       443 ssl http2;
-        server_name  www.test.com test.com;
-        root         /usr/share/nginx/test.com;
-        index index.html;
-
-        ssl_certificate "/etc/nginx/httpd.crt";
-        ssl_certificate_key "/etc/nginx/httpd.key";
-        location / {
-        }
-
-        error_page 404 /404.html;
-            location = /40x.html {
-        }
-
-        error_page 500 502 503 504 /50x.html;
-            location = /50x.html {
-        }
-    }
+less /var/log/nginx/error.log
 ```
-`systemctl restart nginx`
-
-**添加 PHP/PHP-FPM 环境支持**
-```bash
-# 安装PHP源
-rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
-rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
-
-# 安装 PHP7.0
-yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
-
-systemctl start php-fpm.service
-netstat -tnlp   # 检查 php-fpm 默认监听端口:9000
-```
-```bash
-# 添加配置
-vim /etc/nginx/conf.d/test.com.conf
-
-        # php-fpm  (新增)
-        location ~\.php$ {
-                fastcgi_pass 127.0.0.1:9000;
-                fastcgi_param SCRIPT_FILENAME$document_root$fastcgi_script_name;
-                fastcgi_param PATH_INFO $fastcgi_script_name;
-                include fastcgi_params;
-          }
-```
-```bash
-systemctl restart nginx
-systemctl restart php-fpm
-```
-```vim
-vim /usr/share/nginx/test.com/info.php
-
-<?php
-     phpinfo();
- ?>
-```
-`curl http://www.test.com/info.php` 测试
 
 **更多配置案例**
 
@@ -2939,6 +3049,8 @@ oracle 内部有两个默认的用户：`system` 和 `sys`。用户可直接登�
 例子： alter user test identified by 123456;
 ```
 
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
+
 创建用户的时候用户名以 `c##` 或者 `C##` 开头即可。
 ```
 错误写法：create user test identified by oracle;
@@ -2963,9 +3075,15 @@ shutdown
 
 **安装**
 
-```bash
-yum install -y mariadb mariadb-server
-```
+- Centos下
+  ```bash
+  yum install -y mariadb mariadb-server
+  ```
+
+- Ubuntu下
+  ```bash
+  apt -y install mariadb-server mariadb-client
+  ```
 
 **数据库初始化**
 ```bash
@@ -2987,6 +3105,7 @@ Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回�
 **配置远程访问**
 
 Mariadb 数据库授权 root 用户能够远程访问
+
 ```bash
 systemctl start mariadb
 mysql -u root -p
@@ -2995,21 +3114,29 @@ mysql -u root -p
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
 # 这句话的意思 ，允许任何 IP 地址（上面的 % 就是这个意思）的电脑 用 root 帐户 和密码 toor 来访问这个数据库
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root toor 的远程用户,请自行更改密码!!!再次提示!!!
 
 FLUSH PRIVILEGES;
 exit
 ```
 
-```bash
-firewall-cmd --permanent --add-service=mysql
-firewall-cmd --reload
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 toor 这类弱口令
 
-systemctl enable mariadb
-```
+- Centos下
+  ```bash
+  firewall-cmd --permanent --add-service=mysql
+  firewall-cmd --reload
+
+  systemctl enable mariadb
+  systemctl restart mariadb
+  ```
+
+- Ubuntu下
+  ```bash
+  vim /etc/mysql/mariadb.conf.d/50-server.cnf
+
+  # 注释掉 bind-address = 127.0.0.1 这一行
+  systemctl restart mariadb
+  ```
 
 **重置密码**
 
@@ -3095,25 +3222,21 @@ use mysql;
 update user set authentication_string=password('123456') where user='root';
 FLUSH PRIVILEGES;
 exit
-# !!!注意这里添加了密码为123456的root用户
 ```
+
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
 
 **配置远程连接**
 ```bash
-systemctl start mysqld
 mysql -u root -p
 
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '123456' WITH GRANT OPTION;
-
-# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
-# !!!注意!!!这里配置了个账号密码 root 123456 的远程用户,请自行更改密码!!!再次提示!!!
-
 FLUSH PRIVILEGES;
 exit
 ```
+
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
 
 ```bash
 firewall-cmd --permanent --add-service=mysql
@@ -3792,7 +3915,7 @@ systemctl restart vsftpd
 systemctl enable vsftpd
 ```
 
-**Reference**
+**Source & Reference**
 - [第11章 使用Vsftpd服务传输文件.](https://www.linuxprobe.com/chapter-11.html)
 
 **更多配置案例**
@@ -4172,7 +4295,7 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 
 **安装**
 
-> 以下部分内容来自 [官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html) 在此只记录重点
+> 以下部分内容来自 <sup>[[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)]</sup> 在此只记录重点
 
 `注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
 
@@ -4276,7 +4399,7 @@ GRANT ALL ON Syslog.* TO 'Syslog'@'localhost' identified BY 'Syslog';
 FLUSH PRIVILEGES;
 ```
 
-`注:这里数据库账号的密码自己改一下`
+> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 Syslog 这类弱口令
 
 ```vim
 vim /etc/rsyslog.conf
@@ -4380,7 +4503,7 @@ supervisorctl reread
 supervisorctl update
 ```
 
-**Reference**
+**Source & Reference**
 - [Supervisor 安装与配置 (Linux/Unix 进程管理工具) ](https://blog.csdn.net/xyang81/article/details/51555473)
 
 ---
@@ -4535,7 +4658,7 @@ setenforce 0    # 关闭 selinux
 ```
 访问 `http://ip地址/zabbix/setup.php`
 
-**Reference**
+**Source & Reference**
 - [CentOS 7安装Zabbix 3.4](https://www.centos.bz/2017/11/centos-7%E5%AE%89%E8%A3%85zabbix-3-4/)
 
 ---
@@ -4569,7 +4692,7 @@ setenforce 0    # 关闭 selinux
 - **debian 下安装**
   ```bash
   apt remove docker docker-engine docker.io
-  sudo apt-get install \
+  sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -4677,6 +4800,26 @@ docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.
 
 ---
 
+## Qemu
+
+> QEMU 是一款开源的模拟器及虚拟机监管器(Virtual Machine Monitor, VMM)。QEMU 主要提供两种功能给用户使用。一是作为用户态模拟器，利用动态代码翻译机制来执行不同于主机架构的代码。二是作为虚拟机监管器，模拟全系统，利用其他VMM(Xen, KVM, etc)来使用硬件提供的虚拟化支持，创建接近于主机性能的虚拟机。
+
+**项目地址**
+- https://github.com/qemu/QEMU
+
+**安装**
+- Centos下
+  ```bash
+  yum install -y qemu
+  ```
+
+- Ubuntu下
+  ```bash
+  apt-get install -y qemu
+  ```
+
+---
+
 # 分布式
 ## zookeeper
 
@@ -4732,9 +4875,73 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 **官网**
 - https://www.clamav.net
 
-> 以下部分内容来自 https://blog.51cto.com/11199460/2083697,在此仅作排版调整
+**编译安装**
 
-**安装**
+推荐编译安装,时间长点,起码步骤不繁琐
+
+安装
+```bash
+yum -y install gcc-c++ pcre-devel zlib-devel openssl-devel llvm-devel libxml2 libxml2-devel libcurl-devel libcurl
+
+wget https://www.clamav.net/downloads/production/clamav-0.102.2.tar.gz
+tar -zxvf clamav-0.102.2.tar.gz
+cd clamav-0.102.2
+./configure --prefix=/opt/clamav --disable-clamonacc    # 忽略libcurl库的更新问题
+make && make install
+```
+```bash
+# 添加用户组clamav和组成员clamav
+groupadd clamav
+useradd -g clamav -s /bin/false clamav
+
+# 创建目录
+mkdir /opt/clamav/logs
+mkdir /opt/clamav/updata
+
+# 创建文件
+touch /opt/clamav/logs/freshclam.log
+touch /opt/clamav/logs/clamd.log
+
+# 初始化配置文件
+cp /opt/clamav/etc/clamd.conf.sample /opt/clamav/etc/clamd.conf
+cp /opt/clamav/etc/freshclam.conf.sample /opt/clamav/etc/freshclam.conf
+```
+
+编辑配置文件
+```vim
+vim /opt/clamav/etc/clamd.conf
+
+# Example 注释掉这一行
+增加以下内容
+LogFile /opt/clamav/logs/clamd.log
+PidFile /opt/clamav/updata/clamd.pid
+DatabaseDirectory /opt/clamav/updata
+```
+```vim
+vim /opt/clamav/etc/freshclam.conf
+
+# Example 注释掉这一行
+```
+
+升级病毒库
+```bash
+mkdir -p /opt/clamav/share/clamav
+chown clamav:clamav /opt/clamav/share/clamav
+/opt/clamav/bin/freshclam
+```
+
+使用
+```bash
+/opt/clamav/bin/clamscan -h                 # 查看相应的帮助信息
+/opt/clamav/bin/clamscan -r /               # 扫描计算机上的所有文件并且显示所有的文件的扫描结果
+/opt/clamav/bin/clamscan -r --bell -i /·    # 扫描计算机上的所有文件并且显示有问题的文件的扫描结果
+/opt/clamav/bin/clamscan -r /home           # 扫描所有用户的主目录
+```
+
+**yum 安装**
+
+以下部分内容来自 <sup>[[Centos7安装和使用ClamAV杀毒软件](https://blog.51cto.com/11199460/2083697)]</sup> 在此仅作排版调整
+
 ```bash
 yum install -y epel-release
 yum install -y clamav-server clamav-data clamav-update clamav-filesystem clamav clamav-scanner-systemd clamav-devel clamav-lib clamav-server-systemd
@@ -4747,17 +4954,12 @@ cp /etc/clamd.d/scan.conf /etc/clamd.d/scan.conf.bak
 sed -i -e "s/^Example/#Example/" /etc/clamd.d/scan.conf
 ```
 
-**病毒库操作**
-
 关闭自动更新
 freshclam 命令通过文件 /etc/cron.d/clamav-update 来自动运行
-```vim
-vim /etc/cron.d/clamav-update
-```
 
 但默认情况下是禁止了自动更新功能,需要移除文件 /etc/sysconfig/freshclam 最后一行的配置才能启用
 ```vim
-vim /etc/cron.d/clamav-update
+vim /etc/sysconfig/freshclam
 
 # FRESHCLAM_DELAY=
 ```
@@ -4770,6 +4972,15 @@ LocalSocket /var/run/clamd.scan/clamd.sock
 ```
 
 下载病毒库 https://www.clamav.net/downloads 将 main.cvd\daily.cvd\bytecode.cvd 三个文件下载后上传到 /var/lib/clamav 目录下
+```bash
+wget http://database.clamav.net/main.cvd
+wget http://database.clamav.net/daily.cvd
+wget http://database.clamav.net/bytecode.cvd
+
+mv main.cvd /var/lib/clamav -f
+mv daily.cvd /var/lib/clamav -f
+mv bytecode.cvd /var/lib/clamav -f
+```
 ```vim
 vim /etc/freshclam.conf
 
@@ -4835,7 +5046,7 @@ clamscan -r --remove    # 查杀当前目录并删除感染的文件
 **项目地址**
 - https://github.com/fail2ban/fail2ban
 
-> 以下部分内容来自 https://linux.cn/article-5067-1.html,在此仅作排版调整
+以下部分内容来自 <sup>[[如何使用 fail2ban 防御 SSH 服务器的暴力破解攻击](https://linux.cn/article-5067-1.html)]</sup> 在此仅作排版调整
 
 **安装**
 
@@ -4934,7 +5145,7 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 > OpenLDAP 是轻型目录访问协议（Lightweight Directory Access Protocol，LDAP）的自由和开源的实现，在其 OpenLDAP 许可证下发行，并已经被包含在众多流行的 Linux 发行版中。
 
-> 以下部分内容来自 https://blog.csdn.net/weixin_41004350/article/details/89521170 ,仅作排版处理和部分内容处理
+以下部分内容来自 <sup>[[Centos7 搭建openldap完整详细教程](https://blog.csdn.net/weixin_41004350/article/details/89521170)]</sup> 仅作排版处理和部分内容处理
 
 **安装**
 ```bash
@@ -5158,9 +5369,9 @@ service firewalld stop
 
 ![](../../../assets/img/运维/Linux/Power/2.png)
 
-**PhpLdapAdmin**
+### PhpLdapAdmin
 
-> 以下部分内容来自 https://neversec.top/20180329/LDAP安装和基本管理手记.html ,仅作排版处理和部分内容处理
+以下部分内容来自 <sup>[[LDAP安装和基本管理手记](https://neversec.top/20180329/LDAP安装和基本管理手记.html)]</sup> 仅作排版处理和部分内容处理
 
 ```bash
 yum -y install epel-release
@@ -5276,4 +5487,25 @@ Snort 官方提供的三类规则
 下载完,解压至相应目录
 ```
 tar -xvf snortrules-snapshot-<version>.tar.gz -C /etc/snort/rules
+```
+
+---
+
+# 各种依赖
+
+**libboost-program-options1.58.0**
+```bash
+echo "deb http://cz.archive.ubuntu.com/ubuntu xenial main" >> /etc/apt/sources.list
+apt update && apt install -y libboost-program-options1.58.0
+```
+
+**libsodium18**
+```bash
+wget https://download.opensuse.org/repositories/home:/nsec/xUbuntu_16.04/amd64/libsodium18_1.0.11-1_amd64.deb
+dpkg -i libsodium18_1.0.11-1_amd64.deb
+```
+
+**ERROR: pkg-config binary 'pkg-config' not found**
+```bash
+apt-get install pkg-config
 ```

@@ -76,6 +76,7 @@
 ---
 
 # 工具箱
+
 - https://123apps.com/cn/
 - http://tool.nmask.cn/
 - http://tool.oschina.net/
@@ -89,7 +90,9 @@
 ---
 
 # 开发
+
 ## 开发沙盒环境
+
 - https://rextester.com/
 - http://www.compileonline.com/
 - https://www.tutorialspoint.com/codingground.htm
@@ -103,17 +106,21 @@
 ---
 
 ## pcb
+
 - http://kicad-pcb.org/
 - https://lceda.cn/
 
 ---
 
 ## 网站
+
 ### 测速-性能检测
+
 - https://asm.ca.com/
 - https://www.17ce.com/
 
 ### ping工具
+
 - https://www.cdnplanet.com/tools/cdnfinder/
 - https://myssl.com/cdn_check.html
 - http://ping.chinaz.com/
@@ -121,6 +128,7 @@
 - http://itools.com/tool/just-ping
 
 ### 指纹
+
 - http://www.yunsee.cn/
 - https://toolbar.netcraft.com/site_report?url=/
 - http://www.siteinfotool.com/
@@ -128,6 +136,7 @@
 - http://finger.tidesec.net/
 
 ### 旁站
+
 - https://dns.aizhan.com/
 - http://www.sameip.org/
 - https://www.robtex.com/
@@ -138,14 +147,17 @@
 - https://dnsdumpster.com/
 
 ### 子域
+
 - http://z.zcjun.com/
 
 ### DNS记录
+
 - https://x.threatbook.cn/nodev4/vb4/list
 - https://viewdns.info/iphistory/
 - https://securitytrails.com/
 
 ### whois查询
+
 - http://wq.apnic.net/apnic-bin/whois.pl
 - https://centralops.net/co/
 - https://www.register.com/whois.rcmx
@@ -170,6 +182,7 @@
 - https://viewdns.info/whois/
 
 ### 备案查询
+
 - http://www.beianbeian.com/
 - http://beian.gov.cn/portal/recordQuery
 - http://www.miitbeian.gov.cn/publish/query/indexFirst.action
@@ -177,7 +190,9 @@
 ---
 
 ## Crypto
+
 ### 功能类
+
 **数学**
 - https://zh.numberempire.com/factoringcalculator.php
 - http://atool.org/quality_factor.php
@@ -197,6 +212,7 @@
 - http://tool.chinaz.com/tools/unixtime.aspx
 
 ### 编码
+
 **ASCII转换**
 - http://www.ab126.com/goju/1711.html
 
@@ -258,6 +274,7 @@
 - http://tool.chinaz.com/tools/scriptencode.aspx
 
 ### 现代密码
+
 - http://www.mxcz.net/tools/MD5.aspx
 - http://tool.oschina.net/encrypt/
 - http://encode.chahuo.com/
@@ -305,6 +322,7 @@
 - https://alf.nu/SHA1
 
 ### 古典密码
+
 **ADFGX**
 - http://www.practicalcryptography.com/ciphers/adfgx-cipher/
 
@@ -365,6 +383,7 @@
 - https://sym233.github.io/core-values-encoder/
 
 ### 其他编码
+
 **Brainfuck**
 - http://esoteric.sange.fi/brainfuck/impl/interp/i.html
 - https://www.nayuki.io/page/brainfuck-interpreter-javascript
@@ -396,7 +415,9 @@
 ---
 
 ## 转换/优化
+
 ### 代码格式化
+
 - https://codebeautify.org/
 - https://tool.lu/php
 - http://tools.jb51.net/code
@@ -405,6 +426,7 @@
 - https://tool.lu/html/
 
 ### 图片压缩
+
 - http://gifcompressor.com/
 - https://goimg.io/
 - http://www.iloveimg.com/zh_cn
@@ -421,6 +443,7 @@
 - https://docsmall.com/pdf-compress
 
 ### 图片放大
+
 - https://www.vectorizer.io/
 - https://vectormagic.com/
 - http://waifu2x.udp.jp/
@@ -428,6 +451,7 @@
 - https://bigjpg.com/
 
 ### 文件格式转换
+
 - https://pandoc.org/index.html
 - https://cloudconvert.com/
 - https://convertio.co/zh/
@@ -447,27 +471,33 @@
 - https://docsmall.com/pdf-split
 
 ### tts
+
 - https://ttsreader.com/
 - http://ocr.wdku.net/
 
 ---
 
 # 设计
+
 ## 智能填充
+
 - https://www.nvidia.com/research/inpainting/
 
 ## 抠图
+
 - https://www.gaoding.com/koutu
 - https://www.remove.bg/
 - https://burner.bonanza.com/
 
 ## 二维码
+
 - http://tool.chinaz.com/qrcode/
 - http://jiema.wwei.cn/
 - https://cli.im/
 - https://www.beaconstac.com/qr-code-generator
 
 ## 脑图-流程图-各种图
+
 - https://www.draw.io/
 - http://v3.processon.com/diagrams
 - https://coggle.it/#pricing
@@ -477,10 +507,12 @@
 - https://gallery.echartsjs.com/
 
 ## 表情包
+
 - https://sorry.xuty.tk/sorry/
 - http://www.gifntext.com/
 
 ## emoji
+
 - https://getemoji.com/
 - https://emojipedia.org/
 - http://www.openmoji.org/
@@ -491,6 +523,7 @@
 - https://unicode.org/emoji/charts/full-emoji-list.html
 
 ## 海报-ps
+
 - https://www.photopea.com/
 - https://ps.gaoding.com/#/
 - https://yijiangaitu.com/
@@ -503,6 +536,7 @@
 - https://pixlr.com/x/
 
 ## 美图-功能
+
 - https://pissang.github.io/voxelize-image/
 - http://www.polaxiong.com/editor
 - http://www.makepic.net/Tool/Image2ascii.html
@@ -526,17 +560,20 @@
 - https://resizing.app/
 
 ## 数据图
+
 - http://tinychart.co/
 - https://gallery.echartsjs.com/explore.html#sort=rank~timeframe=all~author=all
 - https://tushuo.baidu.com/
 
 ## 带壳截图
+
 - https://screen.guru/
 - https://www.screely.com/
 - https://browserframe.com/
 - https://codeimg.io/
 
 ## AI
+
 - https://artbreeder.com/browse
 - https://comixify.ii.pw.edu.pl/
 - https://thispersondoesnotexist.com/
@@ -550,8 +587,11 @@
 ---
 
 # Misc
+
 ## 分享
+
 ### 图床
+
 - http://upload.otar.im/
 - https://sm.ms/
 - https://imageshack.com/
@@ -565,6 +605,7 @@
 - http://www.tietuku.com/
 
 ### 文件
+
 - https://bitsend.jp/
 - https://file.pizza/
 - https://www.4shared.com/
@@ -580,6 +621,7 @@
 - https://wetransfer.com/
 
 ### 文档
+
 - https://notepin.co/
 - https://asciinema.org/
 - http://paste.debian.net/
@@ -596,6 +638,7 @@
 - https://paste.ubuntu.com/
 
 ### 短链
+
 - https://justpaste.it/
 - https://crz.im/
 - https://bitly.com/
@@ -617,7 +660,9 @@
 ---
 
 ## 测试
+
 ### net
+
 - https://wondernetwork.com/pings/
 - https://fast.com/
 - http://ping.pe/
@@ -629,6 +674,7 @@
 - https://test-ipv6.com/
 
 ### web
+
 - https://html5test.com/
 - https://- http2.akamai.com/demo
 - https://browserbench.org/JetStream/
@@ -636,6 +682,7 @@
 - https://caniuse.com/#home
 
 ### 硬件
+
 - https://zowie.benq.com/en/support/mouse-rate-checker.html
 - https://www.testufo.com/framerates#count=3&background=none&pps=120
 - http://pingmu.zh-ang.com/
@@ -643,6 +690,7 @@
 ---
 
 ## 娱乐
+
 - https://144blocks.com/
 - http://asoftmurmur.com/
 - https://www.calm.com/
@@ -658,12 +706,14 @@
 ---
 
 ## 化学
+
 - https://www.profilmonline.com/
 - https://ptable.com/
 
 ---
 
 ## 排行榜
+
 - https://www.harddrivebenchmark.net/high_end_drives.html
 - https://www.passmark.com/index.html
 - http://guozhivip.com/rank/
@@ -673,29 +723,34 @@
 - http://distrowatch.com/
 
 ### cpu
+
 - https://www.cpubenchmark.net/high_end_cpus.html
 - http://www.mydrivers.com/zhuanti/tianti/01/index.html
 - http://www.mydrivers.com/zhuanti/tianti/cpu/index.html
 - http://www.mydrivers.com/zhuanti/tianti/cpum/index.html
 
 ### 显卡
+
 - https://www.videocardbenchmark.net/high_end_gpus.html
 - http://www.mydrivers.com/zhuanti/tianti/gpu/index.html
 - http://www.mydrivers.com/zhuanti/tianti/gpum/index.html
 
 ### 网站排行
+
 - https://www.alexa.com/
 - https://www.similarweb.com/
 
 ---
 
 ## 随机
+
 - https://www.random.org/
 - https://www.uuidgenerator.net/
 
 ---
 
 ## 身份生成
+
 - https://www.fakenamegenerator.com/
 - https://www.fakeaddressgenerator.com/Index/index
 - http://jbjb.zouri.jp/

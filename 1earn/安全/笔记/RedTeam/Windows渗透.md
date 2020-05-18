@@ -8,29 +8,28 @@
 
 ---
 
-**[RDP](#RDP)**
+# 大纲
 
-* [多开](#多开)
-* [连接记录](#连接记录)
+* **[RDP](#rdp)**
+    * [多开](#多开)
+    * [连接记录](#连接记录)
 
-**[口令获取及破解](#口令获取及破解)**
+* **[Hash](#hash)**
+    * [本地](#本地)
+    * [域](#域)
+        * [NTDS.DIT](ntdsdit)
+        * [PTHPTKPTT](#pthptkptt)
+            * [PTH](#pth)
+            * [PTT](#ptt)
+        * [Kerberoast](#kerberoast)
+        * [Kerberoasting](#kerberoasting)
+        * [委派](#委派)
+            * [查找域中委派主机或账户](#查找域中委派主机或账户)
 
-* [本地](#本地)
-* [域](#域)
-    * [SPN扫描](#SPN扫描)
-    * [PTHPTKPTT](#pthptkptt)
-        * [PTH](#pth)
-        * [PTT](#ptt)
-    * [Kerberoast](#kerberoast)
-    * [Kerberoasting](#kerberoasting)
-    * [委派](#委派)
-        * [查找域中委派主机或账户](#查找域中委派主机或账户)
-
-**[漏洞利用](#漏洞利用)**
-
-* [提权](#提权)
-* [远程](#远程)
-* [其他](#其他)
+* **[漏洞利用](#漏洞利用)**
+    * [权限提升](#提权)
+    * [远程](#远程)
+    * [其他](#其他)
 
 ---
 
@@ -110,13 +109,14 @@
 ---
 
 ## 多开
-- 文章
-    - [Win7 双开 3389](https://blog.csdn.net/SysProgram/article/details/11810889)
-    - [渗透技巧——Windows 系统远程桌面的多用户登录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-Windows%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E7%9A%84%E5%A4%9A%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/)
-    - [Multi-User login in Windows 7/Vista/XP using Remote Desktop](http://zahirkhan.com/tools-utilities/multi-user-login-in-windows-7)
 
-- 工具
-    - [stascorp/rdpwrap](https://github.com/stascorp/rdpwrap)
+**文章**
+- [Win7 双开 3389](https://blog.csdn.net/SysProgram/article/details/11810889)
+- [渗透技巧——Windows 系统远程桌面的多用户登录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-Windows%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E7%9A%84%E5%A4%9A%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/)
+- [Multi-User login in Windows 7/Vista/XP using Remote Desktop](http://zahirkhan.com/tools-utilities/multi-user-login-in-windows-7)
+
+**工具**
+- [stascorp/rdpwrap](https://github.com/stascorp/rdpwrap)
 
 - mimikatz
     ```
@@ -135,17 +135,18 @@
 ---
 
 ## 连接记录
-- 文章
-    - [渗透技巧——获得 Windows 系统的远程桌面连接历史记录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%BE%97Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95/)
-    - [关于 windows 的 RDP 连接记录](http://rcoil.me/2018/05/%E5%85%B3%E4%BA%8Ewindows%E7%9A%84RDP%E8%BF%9E%E6%8E%A5%E8%AE%B0%E5%BD%95/)
-    - [How to Clear RDP Connections History in Windows](http://woshub.com/how-to-clear-rdp-connections-history/#h2_3)
 
-- 工具
-    - [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History)
+**文章**
+- [渗透技巧——获得 Windows 系统的远程桌面连接历史记录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%BE%97Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95/)
+- [关于 windows 的 RDP 连接记录](http://rcoil.me/2018/05/%E5%85%B3%E4%BA%8Ewindows%E7%9A%84RDP%E8%BF%9E%E6%8E%A5%E8%AE%B0%E5%BD%95/)
+- [How to Clear RDP Connections History in Windows](http://woshub.com/how-to-clear-rdp-connections-history/#h2_3)
+
+**工具**
+- [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History)
 
 ---
 
-# 口令获取及破解
+# Hash
 
 **笔记**
 
@@ -178,130 +179,13 @@
 
 ## 域
 
-> 域部分内容来自 https://b404.xyz/2019/07/23/Study-Windows-Authentication/
+域部分内容来自 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)]</sup>
 
-### SPN扫描
+### NTDS.DIT
 
-要使用 Active Directory 作为 Kerberos 实现，可以使用 `setspn` 命令来注册 SPN。要运行此命令，必须满足下列条件：
-
-- 必须登录到域控制器
-- 必须运行提升了特权的命令提示符（以管理员身份运行）
-- 必须是 Domain Admins 组的成员（或者域管理员已授予您适当的许可权）
-
-SPN 分为两种：
-
-- 当一个服务的权限为 Local System 或 Network Service，则 SPN 注册在域内机器帐户(Computers)下
-- 当一个服务的权限为一个域用户，则 SPN 注册在域用户帐户(Users)下
-
-SPN 对域控制器进行 LDAP 查询，是 Kerberos 的行为之一，域内的主机都能查询 SPN。
-
-所以在域内不用做端口扫描也可以隐蔽地探测域内的服务。当利用 SPN 扫描找到域管登录过的系统，对渗透权限扩展有很大的帮助。
-
-- AGPMServer：通常具有所有 GPO 的完全控制权。
-- MSSQL/MSSQLSvc：具有管理员权限的 SQL 服务器通常会有一些有趣的数据。
-- FIMService：通常对多个 AD 林具有管理权限。
-- STS：VMWare SSO 服务，可以提供访问 VMWare 的后门。
-
-对于 RC4 加密的使用 tgsrepcrack 解密
-
-对于 AES 加密的使用 Kirbi2john 转换为 hash，通过 hashcat 爆破
-
-**案例**
-
-用户 AAA 要访问 MSSQL 服务的资源，进行到 Kerberos 认证的第四步(TGS-REP)时，KDC 查询 MSSQL 服务的 SPN，若该 SPN 注册在机器账户(Computers)下，TGS 将会查询数据库中所有机器账户(Computers)的 ServicePrincipalName 属性，找到对应的账户，使用该账户的 NTLM Hash 对 `Client/Server Session Key`、`Client Info`（包含Client ID）、`TimeStamp` 加密得到 `Client-To-Server Ticket`（也称为 ST 票据）。若查询服务的 SPN 注册在域用户账户(Users)下，TGS 将会查询数据库中所有域用户账户(Users)的 `ServicePrincipalName` 属性，找到对应的账户，使用该账户的 NTLM Hash 对 Client/Server Session Key、`Client Info`（包含 Client ID）、`TimeStamp` 加密得到 `Client-To-Server Ticket`（也称为 ST 票据）
-
-**内置工具 setspn 查询**
-
-setspn 是 Windows 内置工具，可以检索用户账户和服务之间的映射，此工具可以添加、删除、查看 SPN 的注册情况。
-
-为账户 god.org/dbadmin 注册 SPNMSSQLSvc/SqlServer.god.org：
-```
-setspn -A MSSQLSvc/SqlServer.god.org dbadmin
-```
-
-查看 SPN：
-```
-//查看当前域内的所有SPN
-setspn.exe -q */*
-
-//查看god域内的所有SPN
-setspn.exe -T god -q */*
-
-//查看 dbadmin账户的SPN
-setspn -l dbadmin
-```
-
-> 以 CN 开头的每一行代表一个账户，紧跟下面的信息是与该账户有关的SPN。
-
-机器账户(Computers)为：
-```
-CN=OWA2010CN-GOD,OU=Domain Controllers,DC=god,DC=org
-CN=MARY-PC,CN=Computers,DC=god,DC=org
-CN=SQLSERVER,CN=Computers,DC=god,DC=org
-...
-```
-
-域用户账户(Users)为：
-```
-CN=krbtgt,CN=Users,DC=god,DC=org
-CN=dbadmin,CN=Users,DC=god,DC=org
-```
-
-> 注册在域用户账户下的 SPNMSSQLSvc/SqlServer.god.org 和 kadmin/changepw
-
-**GetUserSPNs**
-- https://github.com/nidem/kerberoast
-    ```
-    .\GetUserSPNs.ps1
-    cscript.exe GetUserSPNs.vbs # 利用GetUserSPNs.vbs进行SPN信息查询
-    ```
-
-**PowerView**
-- https://github.com/PowerShellMafia/PowerSploit/tree/master/Recon
-    ```powershell
-    PS C:\Users\Administrator\Desktop\Recon> Import-Module .\PowerView.ps1
-    PS C:\Users\Administrator\Desktop\Recon> Get-NetUser -SPN
-    ```
-
-**Powershell AD Recon**
-- https://github.com/PyroTek3/PowerShell-AD-Recon
-    ```powershell
-    //如查看MSSQL（其他的同理）：
-
-    //导入脚本
-    Import-Module .\Discover-PSMSSQ
-    LServers.ps1
-    //查找MSSQL所有实例
-    Discover-PSMSSQLServers
-    ```
-
-**PowerShellery**
-- https://github.com/nullbind/Powershellery
-    ```powershell
-    PS C:\Users\dbadmin\Desktop\Get-SPN> Import-Module .\Get-SPN.psm1
-    PS C:\Users\dbadmin\Desktop\Get-SPN> Get-SPN -type service -search "*"
-
-    //查找所有的SPN服务
-    Get-SPN -type service -search "*" -List yes | Format-Table
-    //查找MSSQL服务
-    Get-SPN -type service -search "MSSQLSvc*" -List yes
-    //若在一个非域系统上，可以使用以下命令执行
-    Get-SPN -type service -search "*" -List yes -DomainController 域控IP -Credential domainuser| Format-Table -Autosize
-    ```
-
-**RiskySPN**
-- https://github.com/cyberark/RiskySPN
-    ```powershell
-    Import-Module .\RiskySPNs.psm1
-    Find-PotentiallyCrackableAccounts
-    ```
-
-**Adfind**
-- http://www.joeware.net/freetools/tools/adfind/
-    ```
-    Adfind -f "ServicePrincipalName=MSSQLSvc*"
-    Adfind -h 域控地址 -sc spn:*
-    ```
+**文章**
+- [从NTDS.dit获取密码hash的三种方法](https://www.freebuf.com/sectool/176876.html)
+- [导出域密码哈希值的多种方法介绍](https://www.freebuf.com/articles/system/177764.html)
 
 ### PTH/PTK/PTT
 
@@ -647,7 +531,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
 
 ## 提权
 
-关于 windows 更多提权内容,见笔记 [提权](./提权.md#win) windows 提权部分
+关于 windows 更多提权内容,见笔记 [权限提升](./权限提升.md#win) windows 提权部分
 
 ---
 

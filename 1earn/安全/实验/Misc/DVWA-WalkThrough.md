@@ -1,7 +1,7 @@
 # DVWA-WalkThrough
 
 <p align="center">
-    <img src="../../../../assets/img/logo/dvwa.png" width="15%"></a>
+    <img src="../../../../assets/img/logo/dvwa.png" width="15%">
 </p>
 
 ---
@@ -12,7 +12,7 @@
 
 ---
 
-**地址**
+**靶场项目地址**
 - https://github.com/ethicalhack3r/DVWA
 
 **知识点**

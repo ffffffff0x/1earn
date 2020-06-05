@@ -1,7 +1,7 @@
 # Sysmon
 
 <p align="center">
-    <img src="../../../assets/img/logo/sysmon.png" width="50%"></a>
+    <img src="../../../assets/img/logo/sysmon.png" width="50%">
 </p>
 
 ---

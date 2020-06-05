@@ -1,7 +1,7 @@
 # VM-Plan
 
 <p align="center">
-    <a href="https://www.flickr.com/photos/sofi01/4667759854"><img src="../../assets/img/Misc/VM-Plan.jpg" width="60%"></a>
+    <a href="https://twitter.com/mittye97/status/1237293281202978817"><img src="../../assets/img/banner/VM-Plan.jpg" width="90%"></a>
 </p>
 
 ---
@@ -56,12 +56,16 @@ yum install open-vm-tools-devel -y
 **常见报错**
 - **该虚拟机似乎正在使用中.如果该虚拟机未在使用,请按"获取所有权(T)**
 
-    将虚拟机路径下后缀为 .lck 的文件夹删除
+  将虚拟机路径下后缀为 .lck 的文件夹删除
 
 - **无法将 Ethernet0 连接到虚拟网络"VMnet0"**
 
-    在 vmware"编辑->虚拟网络设置"里面,点"恢复默认"可解决.
+  在 vmware"编辑->虚拟网络设置"里面,点"恢复默认"可解决.
 
 - **无法获得 VMCI 驱动程序的版本: 句柄无效.驱动程序"vmci.sys"的版本不正确.....**
 
-    找到虚拟机路径下对应的 .vmx 文件,用编辑器打开,找到 `vmci0.present = "TRUE"`一项,将该项修改为:`vmci0.present = "FALSE"`
+  找到虚拟机路径下对应的 .vmx 文件,用编辑器打开,找到 `vmci0.present = "TRUE"`一项,将该项修改为:`vmci0.present = "FALSE"`
+
+- **安装vmware-tools出现”what is the location of the “ifconfig”program on your machine?”**
+
+  出现此问题的错误是因为网络问题,连通网络,安装 ifconfig 即可

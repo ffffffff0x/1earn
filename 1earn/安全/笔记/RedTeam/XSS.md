@@ -85,7 +85,7 @@
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
 - [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 
-**tips**
+**Tips**
 - **Firefox 关闭 xss 过滤器**
 
     about:config 把 rowser.urlbar.filter.javascript 改为 false

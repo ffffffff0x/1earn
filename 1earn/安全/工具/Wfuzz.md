@@ -1,7 +1,7 @@
 # Wfuzz
 
 <p align="center">
-    <img src="../../../assets/img/logo/wfuzz.svg" width="30%"></a>
+    <img src="../../../assets/img/logo/wfuzz.svg" width="30%">
 </p>
 
 ---

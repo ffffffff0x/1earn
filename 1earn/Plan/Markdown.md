@@ -149,11 +149,11 @@ This is an H2
 
 The <abbr title="Hyper Text Markup Language">HTML</abbr> specification is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.
 
-### 引用 Blockquotes
+### 引用 Blockquote
 
-> 引用文本 Blockquotes
+> 引用文本 Blockquote
 
-引用的行内混合 Blockquotes
+引用的行内混合 Blockquote
 
 > 引用:如果想要插入空白换行`即<br />标签`,在插入处先键入两个以上的空格然后回车即可,[普通链接](http://localhost/).
 
@@ -470,7 +470,7 @@ Andrew->>China: I am good thanks!
 # 转html方案
 
 - https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced
-    - 从浏览器打开,cstl+s
+    - 从浏览器打开,ctrl+s
 
 ---
 

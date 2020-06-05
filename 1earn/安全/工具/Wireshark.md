@@ -1,8 +1,10 @@
 # Wireshark
 
 <p align="center">
-    <img src="../../../assets/img/logo/wireshark.png" width="22%"></a>
+    <img src="../../../assets/img/logo/wireshark.png" width="22%">
 </p>
+
+> 注 : 笔记中流量包 pcapng 源文件在其图片目录下
 
 ---
 
@@ -28,8 +30,9 @@
 - [CaptureSetup/USB - The Wireshark Wiki](https://wiki.wireshark.org/CaptureSetup/USB)
 - [图解Wireshark协议分析实例](https://blog.csdn.net/bcbobo21cn/article/details/51454170)
 
-**插件**
+**插件/增强工具**
 - [pentesteracademy/patoolkit](https://github.com/pentesteracademy/patoolkit) - Wireshark 插件，增强分析能力
+- [leolovenet/qqwry2mmdb](https://github.com/leolovenet/qqwry2mmdb) - 为 Wireshark 能使用纯真网络 IP 数据库(QQwry)而提供的格式转换工具,不支持 windows
 
 ---
 
@@ -209,6 +212,8 @@ udp contains 7c:7c:7d:7d    # 匹配 payload 中含有 0x7c7c7d7d 的 UDP 数据
 
 # 案例
 
+**SampleCaptures**
+
 案例来自 <sup>[[SampleCaptures - The Wireshark Wiki](https://wiki.wireshark.org/SampleCaptures#MPTCP)]</sup>
 
 下载 [iperf-mptcp-0-0.pcap](https://wiki.wireshark.org/SampleCaptures?action=AttachFile&do=get&target=iperf-mptcp-0-0.pcap)
@@ -256,3 +261,46 @@ TCP 重传的机制：指数后退，比如第一次等待 1s，第二次等 待
 点击 统计 -- I/O 图表
 
 ![](../../../assets/img/安全/工具/Wireshark/9.png)
+
+**NTLMv2**
+
+192.168.141.1(WIN10)——>192.168.141.139(WIN2008)
+
+![](../../../assets/img/安全/工具/Wireshark/10.png)
+
+查看第一个数据包协商
+
+![](../../../assets/img/安全/工具/Wireshark/11.png)
+
+查看第二个数据包质询,获得 Challenge
+
+![](../../../assets/img/安全/工具/Wireshark/12.png)
+
+查看第三个数据包身份验证,其中可以获得客户端加密后的 Challenge
+
+![](../../../assets/img/安全/工具/Wireshark/13.png)
+
+- username（要访问服务器的用户名）：Administrator
+- domain（访问者主机名或者 ip）：DESKTOP-QKM4NK7
+- challenge（数据包 2 中服务器返回的 challenge 值）：18f77b6fe9f8d876
+- HMAC-MD5（数据包 3 中的 NTProofStr）: 0ecfccd87d3bdb81713dc8c07e6705b6
+- blob（blob 对应数据为 NTLMv2 Response 开头去掉 NTProofStr 的后半部分）：01010000000000002a470d3bc233d6017eb1f527b5e7bd4d0000000002001e00570049004e002d0041003500470050004400430050004a0037004f00540001001e00570049004e002d0041003500470050004400430050004a0037004f00540004001e00570049004e002d0041003500470050004400430050004a0037004f00540003001e00570049004e002d0041003500470050004400430050004a0037004f005400070008002a470d3bc233d601060004000200000008003000300000000000000001000000002000003737fbe7dbcbd2c8e5d7a030f44586c91423d9c5202f827f3f6cf26f69adbfe80a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100340031002e003100330039000000000000000000
+
+所以构造，Net-NTLM v2 Hash 值为：
+```
+Administrator::DESKTOP-QKM4NK7:18f77b6fe9f8d876:0ecfccd87d3bdb81713dc8c07e6705b6:01010000000000002a470d3bc233d6017eb1f527b5e7bd4d0000000002001e00570049004e002d0041003500470050004400430050004a0037004f00540001001e00570049004e002d0041003500470050004400430050004a0037004f00540004001e00570049004e002d0041003500470050004400430050004a0037004f00540003001e00570049004e002d0041003500470050004400430050004a0037004f005400070008002a470d3bc233d601060004000200000008003000300000000000000001000000002000003737fbe7dbcbd2c8e5d7a030f44586c91423d9c5202f827f3f6cf26f69adbfe80a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100340031002e003100330039000000000000000000
+```
+
+**域环境中 NTLM 认证方式**
+
+192.168.141.140(WIN2008)——>192.168.141.135(WIN2008)
+
+域控 : 192.168.141.139
+
+FQDN : ffffffff0x.com
+
+账号密码:Administrator  Abcd1234
+
+![](../../../assets/img/安全/工具/Wireshark/14.png)
+
+![](../../../assets/img/安全/工具/Wireshark/15.png)

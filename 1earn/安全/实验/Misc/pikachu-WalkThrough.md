@@ -12,7 +12,7 @@
 
 优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
 
-**地址**
+**靶场项目地址**
 - https://github.com/zhuifengshaonianhanlu/pikachu
 
 **知识点**

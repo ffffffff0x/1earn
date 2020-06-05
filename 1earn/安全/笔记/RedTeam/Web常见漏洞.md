@@ -187,6 +187,8 @@ IIS 6.0 解析利用方法有两种
     - [网站安全狗IIS6.0解析webshell访问拦截bypass](https://shuimugan.com/bug/view?bug_no=128432)
     - [桃源网络硬盘&IIS6.0解析漏洞](https://shuimugan.com/bug/view?bug_no=2632)
 
+---
+
 ## Nginx
 
 **IIS 7.0/IIS 7.5/Nginx <8.03 畸形解析漏洞**
@@ -207,6 +209,8 @@ IIS 6.0 解析利用方法有两种
 影响版:0.5.,0.6., 0.7 <= 0.7.65, 0.8 <= 0.8.37
 
 Nginx 在图片中嵌入 PHP 代码然后通过访问 `xxx.jpg%00.php` 来执行其中的代码
+
+---
 
 ## Apache
 
@@ -272,11 +276,15 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH) - 网站个人敏感信息文件扫描器
 - [ring04h/weakfilescan](https://github.com/ring04h/weakfilescan) - 动态多线程敏感信息泄露检测工具
 
+---
+
 ## 目录遍历
 
 **案例**
 - [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
 - [2 Path Traversal Cases](https://jlajara.gitlab.io/posts/2020/03/29/Path_Traversal.html)
+
+---
 
 ## GIT源码泄露
 
@@ -293,6 +301,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [lijiejie/GitHack](https://github.com/lijiejie/GitHack) - 一个 `.git` 泄露利用脚本，通过泄露的.git文件夹下的文件，重建还原工程源代码。
 - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract) - 提取远程 git 泄露或本地 git 的工具
 
+---
+
 ## SVN源码泄露
 
 - `/.svn/entries`
@@ -303,6 +313,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 **工具**
 - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
 - [admintony/svnExploit](https://github.com/admintony/svnExploit) - 一款 SVN 源代码利用工具，其完美支持 SVN<1.7 版本和 SVN>1.7 版本的 SVN 源代码泄露
+
+---
 
 ## DS_Store文件泄漏
 
@@ -321,6 +333,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
 - [anantshri/DS_Store_crawler_parser](https://github.com/anantshri/DS_Store_crawler_parser) - `.DS_Store` 文件解析脚本,递归地获取文件夹内的 `.ds_Store`
 
+---
+
 ## 网站备份压缩文件
 
 **简介**
@@ -332,6 +346,8 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 **案例**
 - [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
+
+---
 
 ## WEB-INF/web.xml信息泄露
 
@@ -352,10 +368,14 @@ WEB-INF 主要包含一下文件或目录:
 **案例**
 - [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
 
+---
+
 ## idea文件夹泄露
 
 **工具**
 - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit) - 一个 `.idea` 文件泄漏利用脚本
+
+---
 
 ## phpinfo信息泄露
 
@@ -367,6 +387,8 @@ WEB-INF 主要包含一下文件或目录:
 
 **工具**
 - [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
+
+---
 
 ## jsonp信息泄露
 
@@ -386,10 +408,14 @@ WEB-INF 主要包含一下文件或目录:
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
 
+---
+
 ## JS敏感信息泄露
 
 **文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
+
+---
 
 ## 各类APIkey泄露
 

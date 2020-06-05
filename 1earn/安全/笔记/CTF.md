@@ -12,14 +12,12 @@
 - https://www.ichunqiu.com/battalion?t=1
 - http://ctf.bugku.com/
 - http://www.hetianlab.com/CTFrace.html
-- http://www.shiyanbar.com/ctf/practice
 - https://www.wechall.net/
 - https://ctftime.org/
 - https://pwnhub.cn/index
-- http://ctf.nuptzj.cn/
-- https://www.xctf.org.cn/
 - http://hackinglab.cn/
 - https://new.bugku.com/
+- https://buuoj.cn/
 
 **学习资源**
 - https://cgctf.nuptsast.com/login
@@ -40,6 +38,10 @@
 **基础知识**
 - [Crypto 笔记](./Crypto.md)
 
+**writup**
+- [IDF实验室-特殊的日子](https://blog.csdn.net/ab748998806/article/details/46382017) - 知识点 : CRC
+- [曼切斯特与差分曼切斯特](https://skysec.top/2017/07/10/%E6%9B%BC%E5%88%87%E6%96%AF%E7%89%B9%E4%B8%8E%E5%B7%AE%E5%88%86%E6%9B%BC%E5%88%87%E6%96%AF%E7%89%B9/) - 知识点 : 曼切斯特编码与差分曼切斯特编码
+
 ---
 
 # Misc
@@ -51,10 +53,22 @@
 - foremost - 文件分离工具
     - kali 自带, `foremost -i 1.png`
 
+---
+
 ### 流量包取证
+
 **流量包取证专用工具**
 - Wireshark
     - [Wireshark 笔记](../工具/Wireshark.md)
+
+---
+
+### 压缩包取证
+
+**密码爆破工具**
+- [pyrofex/breakzip](https://gitlab.com/pyrofex/breakzip) - 用于破解使用弱加密的加密压缩文件的实用工具。
+- Advanced Archive Password Recovery - 一个灵活的，适用于 ZIP 和 RAR 档案的高度优化的口令恢复工具。
+- Ziperello - zip 爆破工具
 
 ---
 
@@ -65,6 +79,7 @@
 - [CTF中常见图片隐写](http://zjw.dropsec.xyz/uncategorized/2016/08/18/CTF%E4%B8%AD%E5%B8%B8%E8%A7%81%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99.html)
 - [隐写术总结](http://drops.xmd5.com/static/drops/tips-4862.html)
 - [Steganography](http://datagenetics.com/blog/march12012/index.html)
+- [misc-stegaBasic](https://www.jianshu.com/p/fe7a5fff2a95)
 
 **图片隐写通用工具**
 - Stegsolve - 隐写图片查看的利器
@@ -89,6 +104,8 @@
 ---
 
 #### LSB隐写
+
+> LSB(英文 least significant bit)即最低有效位，位于二进制数的最右侧。图像的每一个像素点都是由RGB（红、绿、蓝）三原色组成，每个颜色占8位(如#FFFFFF)。由于修改最后1位对人眼不敏感，这样一个像素点就可以携带3位信息。应用LSB算法的图像格式需为无损压缩数据格式，例如图像中的bmp、png格式和音频的wav格式。
 
 **LSB隐写专用工具**
 - [livz/cloacked-pixel](https://github.com/livz/cloacked-pixel) - LSB 隐写和检测
@@ -140,6 +157,8 @@
     - [网鼎杯 2020 Web Writeup](https://www.xmsec.cc/wang-ding-bei-2020-web-writeup/)
     - [网鼎杯青龙组2020部分题解](https://www.cnblogs.com/kevinbruce656/p/12869764.html)
     - [网鼎杯 2020 第一场 signal writeup](http://dreamcracker.today/2020/05/11/%e7%bd%91%e9%bc%8e%e6%9d%af-2020-%e7%ac%ac%e4%b8%80%e5%9c%ba-signal-writeup/)
+    - [2020-网鼎杯(青龙组)-Web题目-AreUserialz Writeup](https://mp.weixin.qq.com/s/16QfU8lZYChSckJWtcLiqg)
+    - [网鼎杯-青龙组web题目writeup](https://mp.weixin.qq.com/s/E-lRUm1zPkEIxSoV7cHfow)
 
 - 白虎组
     - [2020年第二届“网鼎杯”网络安全大赛 白虎组 部分题目Writeup](https://codingnote.cc/p/113802)
@@ -152,6 +171,26 @@
     - [网鼎杯CTF——白虎组 (week 4) ](https://l0x1c.github.io/2020/05/15/2020-5-14/#HERO)
     - [[原创]网鼎杯2020 白虎组 CY 解题](https://bbs.pediy.com/thread-259529.htm)
     - [网鼎杯白虎组部分题目复盘](https://www.secquan.org/Notes/1071122)
+    - [网鼎杯2020白虎组Misc题目hidden总结](https://mp.weixin.qq.com/s/G1NttGYTUsQ1i8wNJQ667g)
+    - [网鼎杯-白虎组web题目writeup](https://mp.weixin.qq.com/s/v2C4BtZSYJDT64_ByrDhoA)
+
+- 朱雀组
+    - [2020网鼎杯朱雀组云顿WP(入门向)](https://mp.weixin.qq.com/s/TpKXezPMZLx3VlejxlFyiQ)
+    - [【网鼎杯2020朱雀组】Web WriteUp](https://www.cnblogs.com/vege/p/12907941.html)
+    - [[re]go语言逆向：2020网鼎杯朱雀组re what wp](https://blog.csdn.net/Breeze_CAT/article/details/106195499)
+    - [2020网鼎杯朱雀组_PHPweb](https://blog.csdn.net/gd_9988/article/details/106181577)
+    - [2020网鼎杯-朱雀组-部分wp](https://www.anquanke.com/post/id/205578)
+    - [2020网鼎杯-朱雀组部分题目Writeup](https://www.kkzevip.com/?post=51)
+    - [2020网鼎杯-朱雀组-Crypto、Misc(带视频) ](https://mp.weixin.qq.com/s/XYkgD_5Y0FcgsNqRAb_1Yw)
+
+- 玄武组
+    - [网鼎杯2020-玄武组签到题](https://blog.csdn.net/slavik_/article/details/106264509)
+    - [网鼎杯玄武组部分web题解](https://mp.weixin.qq.com/s/Kr2AlygNpeM7UYiLPINcrA)
+    - [网鼎杯-玄武组-writeup-简单思路讲究](https://mp.weixin.qq.com/s/PlpG6maNObxvRaXuaVSwIA)
+    - [2020网鼎杯玄武组_babyvm](https://bbs.pediy.com/thread-259714.htm)
+    - [2020网鼎杯玄武组部分题writeup（签到/vulcrack/java/js_on）](https://blog.csdn.net/w1590191166/article/details/106314499/)
+    - [2020网鼎杯-玄武组-部分WriteUp](https://mp.weixin.qq.com/s/xNDUYkxCIEJuvHJWQwtflw)
+    - [【CTF】网鼎杯【玄武组】CTF部分题](https://blog.csdn.net/God_XiangYu/article/details/106306773)
 
 **2018**
 - 青龙组

@@ -1,7 +1,7 @@
 # Sqlmap
 
 <p align="center">
-    <img src="../../../assets/img/logo/Sqlmap.png" width="25%"></a>
+    <img src="../../../assets/img/logo/Sqlmap.png" width="25%">
 </p>
 
 ---

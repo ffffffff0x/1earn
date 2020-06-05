@@ -1,7 +1,7 @@
 # Hashcat
 
 <p align="center">
-    <img src="../../../assets/img/logo/hashcat.jpg" width="20%"></a>
+    <img src="../../../assets/img/logo/hashcat.jpg" width="20%">
 </p>
 
 ---
@@ -83,6 +83,11 @@ hashcat --help
 
 # 例子
 
+**查看爆破案例**
+```bash
+hashcat --example-hashes | less
+```
+
 **爆破 drupal 7 的密码 hash**
 ```bash
 
@@ -102,4 +107,14 @@ pass01.txt 你的密码表
 **爆破wifi握手包**
 ```bash
 hashcat -m 2500 wireless.hccapx pass.txt --force
+```
+
+**爆破 NTLM-hash**
+```bash
+hashcat -m 1000 hash.txt pass1.txt
+```
+
+**爆破 net-NTLMv2**
+```bash
+hashcat -m 5600 hash.txt pass1.txt
 ```

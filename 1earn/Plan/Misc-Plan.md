@@ -1,14 +1,14 @@
 # Misc-Plan
 
 <p align="center">
-    <a href="https://www.pixiv.net/member_illust.php?mode=medium&illust_id=69281543"><img src="../../assets/img/Misc/Misc-Plan.jpg" width="60%"></a>
+    <a href="https://twitter.com/mittye97/status/1235824863857659905"><img src="../../assets/img/banner/Misc-Plan.jpg" width="90%"></a>
 </p>
 
 ---
 
 # 激活
 
-注意:Windows 系统和 Micrsoft Office 软件都必须是 VOL 版本.
+> 注意 : Windows 系统和 Microsoft Office 软件都必须是 VOL 版本.
 
 **激活 Windows**
 
@@ -267,9 +267,9 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 
 **视频压缩**
 
-`ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"` 常规用法
+常规用法 : `ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"`
 
-`ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4` 优秀用法
+优秀用法 : `ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4`
 
 `ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
 ```

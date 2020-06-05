@@ -1,7 +1,7 @@
 # HID-Digispark
 
 <p align="center">
-    <img src="../../../../assets/img/安全/实验/Misc/HID-Digispark/1.jpg"></a>
+    <img src="../../../../assets/img/banner/HID-Digispark.jpg">
 </p>
 
 ---

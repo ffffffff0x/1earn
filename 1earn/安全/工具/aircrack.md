@@ -1,7 +1,7 @@
 # Aircrack
 
 <p align="center">
-    <img src="../../../assets/img/logo/aircrack-ng.jpg" width="25%"></a>
+    <img src="../../../assets/img/logo/aircrack-ng.jpg" width="25%">
 </p>
 
 ---

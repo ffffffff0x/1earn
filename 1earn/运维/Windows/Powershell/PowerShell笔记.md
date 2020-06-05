@@ -17,12 +17,14 @@ Windows PowerShell 需要用于管理 .NET 对象的语言.该语言需要为使
 
 **常见报错**
 - **无法加载文件 `******.ps1`,因为在此系统中禁止执行脚本.有关详细信息,请参阅 "get-help about_signing"**
-
-    `set-ExecutionPolicy RemoteSigned`
+    ```powershell
+    set-ExecutionPolicy RemoteSigned
+    ```
 
 - **使用 powershell 运行脚本报错:进行数字签名.无法在当前系统上运行该脚本.有关运行脚本和设置执行策略的详细信息**
-
-    `powershell "Set-ExecutionPolicy -ExecutionPolicy Unrestricted -force |Out-null"`
+    ```powershell
+    powershell "Set-ExecutionPolicy -ExecutionPolicy Unrestricted -force |Out-null"
+    ```
 
 ---
 

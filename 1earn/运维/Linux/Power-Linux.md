@@ -10,7 +10,7 @@
 ```
 
 <p align="center">
-    <a href="https://www.wikiart.org/en/gustave-caillebotte/the-garden-at-petit-gennevilliers"><img src="../../../assets/img/运维/Linux/Power-Linux.jpg" width="65%"></a>
+    <a href="https://www.pixiv.net/en/artworks/77495663"><img src="../../../assets/img/banner/Power-Linux.jpg" width="90%"></a>
 </p>
 
 <p align="center">
@@ -366,7 +366,7 @@ vimdiff  FILE_LEFT  FILE_RIGHT
 ```bash
 mkdir -p /opt/adguard && cd /opt/adguard
 wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.95-hotfix/AdGuardHome_v0.95-hotfix_linux_amd64.tar.gz
-tar -xzvf AdGuardHome_v0.94_linux_amd64.tar.gz
+tar -xzvf AdGuardHome_v0.95-hotfix_linux_amd64.tar.gz
 cd AdGuardHome
 ./AdGuardHome -s install
 
@@ -1346,7 +1346,7 @@ pdnsutil list-zone test-zone-1
 
 ### PowerDNS-Admin
 
-> PowerDNS-Admin是一个具有以下高级功能的PowerDNS Web界面
+> PowerDNS-Admin 是一个具有以下高级功能的 PowerDNS Web 界面
 
 **项目地址**
 - https://github.com/ngoduykhanh/PowerDNS-Admin
@@ -1648,7 +1648,7 @@ echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 ## ttyd
 
-`在 web 上访问终端`
+> 用于在 web 上访问终端
 
 **项目地址**
 - https://github.com/tsl0922/ttyd
@@ -1671,7 +1671,7 @@ ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
 
 ## vnc4server
 
-`VNC 服务`
+> 为主机提供 VNC 服务
 
 **安装**
 ```bash
@@ -1904,24 +1904,29 @@ echo -e "xxx.com {
 首先下载 NodeJS 的二进制文件,http://nodejs.org/download/ .在 Linux Binaries (.tar.gz) 行处根据自己系统的位数选择
 ```bash
 # 解压到当前文件夹下运行
-tar zxvf node-v0.10.26-linux-x64.tar.gz
+tar xvJf node-v12.17.0-linux-x64.tar
 
 进入解压后的目录 bin 目录下,执行 ls 会看到两个文件 node,npm. 然后执行 ./node -v ,如果显示出 版本号说明我们下载的程序包是没有问题的.依次运行如下三条命令
-cd node-v0.10.26-linux-x64/bin
+cd node-v12.17.0-linux-x64/bin
 ls
 ./node -v
 ```
-因为 /home/kun/mysofltware/node-v0.10.26-linux-x64/bin 这个目录是不在环境变量中的,所以只能到该目录下才能 node 的程序.如果在其他的目录下执行 node 命令的话 ,必须通过绝对路径访问才可以的
+因为 /home/node-v12.17.0-linux-x64/bin 这个目录是不在环境变量中的,所以只能到该目录下才能 node 的程序.如果在其他的目录下执行 node 命令的话 ,必须通过绝对路径访问才可以的
 
 如果要在任意目录可以访问的话,需要将 node 所在的目录,添加 PATH 环境变量里面,或者通过软连接的形式将 node 和 npm 链接到系统默认的 PATH 目录下的一个
 在终端执行 echo $PATH 可以获取 PATH 变量包含的内容,系统默认的 PATH 环境变量包括 /usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin: ,冒号为分隔符.所以我们可以将 node 和 npm 链接到 /usr/local/bin 目录下如下执行
 ```bash
-ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/node /usr/local/bin/node
-ln -s /home/kun/mysofltware/node-v0.10.26-linux-x64/bin/npm /usr/local/bin/npm
+ln -s /home/node-v12.17.0-linux-x64/bin/node /usr/local/bin/node
+ln -s /home/node-v12.17.0-linux-x64/bin/npm /usr/local/bin/npm
 ```
 
 **加速**
 - [node&js](../../Plan/Misc-Plan.md#node&js)
+
+**强制安装**
+```bash
+npm install --unsafe-perm=true --allow-root
+```
 
 **forever**
 
@@ -2121,7 +2126,7 @@ systemctl restart nginx
 
 ## RabbitMQ
 
-RabbitMQ 是流行的开源消息队列系统,是 AMQP(Advanced Message Queuing Protocol 高级消息队列协议)的标准实现,用 erlang 语言开发.RabbitMQ 据说具有良好的性能和时效性,同时还能够非常好的支持集群和负载部署,非常适合在较大规模的分布式系统中使用.
+> RabbitMQ 是流行的开源消息队列系统,是 AMQP(Advanced Message Queuing Protocol 高级消息队列协议)的标准实现,用 erlang 语言开发.RabbitMQ 据说具有良好的性能和时效性,同时还能够非常好的支持集群和负载部署,非常适合在较大规模的分布式系统中使用.
 
 **官网**
 - https://www.rabbitmq.com/
@@ -2303,7 +2308,7 @@ sudo service uwsgi restart
 
 现在访问 www.你的域名.com 查看你的搜索引擎服务把~
 
-**tips**
+**Tips**
 
 搜索引擎设置在 settings_et_dev.yml 文件中
 

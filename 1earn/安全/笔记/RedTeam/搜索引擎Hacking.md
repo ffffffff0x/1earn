@@ -1,7 +1,7 @@
 # 搜索引擎 Hacking
 
 <p align="center">
-    <img src="../../../../assets/img/安全/笔记/RedTeam/搜索引擎Hacking/1.jpg" width="75%"></a>
+    <img src="../../../../assets/img/banner/搜索引擎Hacking.jpg" width="90%">
 </p>
 
 ---
@@ -68,7 +68,7 @@ https://webcache.googleusercontent.com/search?q=cache:www.baidu.com
 # Github
 
 <p align="center">
-    <img src="../../../../assets/img/logo/github.png" width="25%"></a>
+    <img src="../../../../assets/img/logo/github.png" width="25%">
 </p>
 
 **文章**
@@ -194,7 +194,7 @@ https://searchcode.com/
 # Google
 
 <p align="center">
-    <img src="../../../../assets/img/logo/google.png" width="25%"></a>
+    <img src="../../../../assets/img/logo/google.png" width="25%">
 </p>
 
 **案例**
@@ -365,7 +365,7 @@ https://searchcode.com/
 # Shodan
 
 <p align="center">
-    <img src="../../../../assets/img/logo/shodan.png" width="35%"></a>
+    <img src="../../../../assets/img/logo/shodan.png" width="35%">
 </p>
 
 > Shodan 是目前最为知名的黑客搜索引擎，它是由计算机程序员约翰·马瑟利（John Matherly）于2009年推出的，他在2003年就提出了搜索与 Internet 链接的设备的想法。发展至今已经变成搜索资源最全，搜索性能最强的网络资产搜索引擎。简述下 shodan 的工作原理：通过其强大的爬虫能力每隔一定时间扫描全互联网设备并抓取相应的 banner 信息建立索引，通过这些巨大的数据，你基本可以找到任何你想象得到的连接到互联网的东西。
@@ -482,7 +482,7 @@ port:"2375" country:"JP" Docker                 # docker-remote-api未授权
 # BinaryEdge
 
 <p align="center">
-    <img src="../../../../assets/img/logo/binaryedge.png" width="15%"></a>
+    <img src="../../../../assets/img/logo/binaryedge.png" width="15%">
 </p>
 
 > BinaryEdge 是一家来自瑞士的公司提供的资产搜索引擎，其为企业提供网络安全，工程和数据科学解决方案的评估。它利用机器学习技术收集有关基础设施的信息，并将收集的数据与从提要中获得的数据相关联。功能包括通过将发现结果与安全工具结合后从联网设备和运行于它们的服务中提取数据来提供通知，警报和报告功能。·
@@ -517,7 +517,7 @@ product:"Dropbear sshd"             # Product Dropbear sshd
 # Censys
 
 <p align="center">
-    <img src="../../../../assets/img/logo/censys.png" width="25%"></a>
+    <img src="../../../../assets/img/logo/censys.png" width="25%">
 </p>
 
 > Censys 搜索引擎能够扫描整个互联网，Censys 每天都会扫描 IPv4 地址空间，以搜索所有联网设备并收集相关的信息，并返回一份有关资源（如设备、网站和证书）配置和部署信息的总体报告。
@@ -547,7 +547,7 @@ autonomous_system.description: University   # 系统描述
 # Zoomeye
 
 <p align="center">
-    <img src="../../../../assets/img/logo/zoomeye.png" width="25%"></a>
+    <img src="../../../../assets/img/logo/zoomeye.png" width="25%">
 </p>
 
 > ZoomEye 是北京知道创宇公司发布的网络空间侦测引擎，积累了丰富的网络扫描与组件识别经验。在此网络空间侦测引擎的基础上，结合“知道创宇”漏洞发现检测技术和大数据情报分析能力，研制出网络空间雷达系统，为政府、企事业及军工单位客户建设全球网络空间测绘提供技术支持及产品支撑。
@@ -598,7 +598,7 @@ city:tokyo + app:weblogic
 # FoFa
 
 <p align="center">
-    <img src="../../../../assets/img/logo/4.png" width="30%"></a>
+    <img src="../../../../assets/img/logo/4.png" width="30%">
 </p>
 
 > FOFA 是白帽汇推出的一款网络空间搜索引擎，它通过进行网络空间测绘，能够帮助研究人员或者企业迅速进行网络资产匹配，例如进行漏洞影响范围分析、应用分布统计、应用流行度排名统计等。
@@ -636,7 +636,7 @@ app="Solr" && title=="Solr Admin"
 # Dnsdb
 
 <p align="center">
-    <img src="../../../../assets/img/logo/dnsdb.png" width="30%"></a>
+    <img src="../../../../assets/img/logo/dnsdb.png" width="30%">
 </p>
 
 > 这是一个搜索全网络所有 DNS 服务器的搜索引擎。
@@ -681,7 +681,7 @@ IP 最大范围限制 65536 个
 # 知风
 
 <p align="center">
-    <img src="../../../../assets/img/logo/zhifen.png" width="15%"></a>
+    <img src="../../../../assets/img/logo/zhifen.png" width="15%">
 </p>
 
 > “知风”提出了一种互联网联网工控资产自动化分析方式，基于分析结果将可真正帮助用户了解目前接入互联网的工控资产是何企业所属，接入时间，系统名称等。利用“知风”积累的企业和系统数据，您使用“知风”时只需输入企业简称或系统简称，即可了解目标系统企业和系统是否有工控资产联网情况，借助“知风”您也可以了解您的企业、系统是否存在遭受互联网攻击的可能。
@@ -694,7 +694,7 @@ IP 最大范围限制 65536 个
 # ONYPHE
 
 <p align="center">
-    <img src="../../../../assets/img/logo/ONYPHE.png" width="5%"></a>
+    <img src="../../../../assets/img/logo/ONYPHE.png" width="5%">
 </p>
 
 >  很像Shodan，但除了扫描之外，它还可以从被动DNS查询、威胁列表查询和粘贴网站查询中抓取数据。不过免费版比起Shodan来说，它的局限性更大。
@@ -707,7 +707,7 @@ IP 最大范围限制 65536 个
 # GreyNoise
 
 <p align="center">
-    <img src="../../../../assets/img/logo/greynoise.png" width="15%"></a>
+    <img src="../../../../assets/img/logo/greynoise.png" width="15%">
 </p>
 
 > 类似 shodan
@@ -720,7 +720,7 @@ IP 最大范围限制 65536 个
 # Thingful
 
 <p align="center">
-    <img src="../../../../assets/img/logo/thingful.png" width="20%"></a>
+    <img src="../../../../assets/img/logo/thingful.png" width="20%">
 </p>
 
 > 仅针对物联网的搜索引擎

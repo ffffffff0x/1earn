@@ -1,7 +1,7 @@
 # Nmap
 
 <p align="center">
-    <img src="../../../assets/img/logo/nmap.png" width="20%"></a>
+    <img src="../../../assets/img/logo/nmap.png" width="20%">
 </p>
 
 ---
@@ -36,47 +36,47 @@
 
 # 用法
 
-常用: `nmap -T5 -A -v -p- <target ip>`
+常用 : `nmap -T5 -A -v -p- <target ip>`
 
-TCP1:`nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN <target ip>`
+TCP1 : `nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN <target ip>`
 
-TCP2:`nmap -nvv -Pn -sSV -p <port> --version-intensity 9 -A ip -oN <target ip>`
+TCP2 : `nmap -nvv -Pn -sSV -p <port> --version-intensity 9 -A ip -oN <target ip>`
 
-UDP:`nmap -Pn --top-ports 1000 -sU --stats-every 3m -T3 ip -oN <target ip>`
+UDP : `nmap -Pn --top-ports 1000 -sU --stats-every 3m -T3 ip -oN <target ip>`
 
 ## 常用参数
 
 ```
--F             端口扫描
--sT            tcp 端口扫描
--sU            udp 扫描
--A             综合扫描
--O             系统扫描
--p             指定端口扫描
--T             优化时间 1-5 强度
--sV            端口对应的服务探测
--sP            发现扫描网络存活主机
--sS            半隐藏式隐蔽扫描
---iL           从主机/网络列表输入
---tr           路由跟踪模式
--P0            (无 ping)
--sP            (Ping 扫描)
-
---script=vuln  利用脚本漏洞探测
---script=>>>>>>>   调用一个脚本
--oG  nmap.txt  将结果保存到 nmap.txt
+-F              端口扫描
+-sT             tcp 端口扫描
+-sU             udp 扫描
+-A              综合扫描
+-O              系统扫描
+-p              指定端口扫描
+-T              优化时间 1-5 强度
+-sV             端口对应的服务探测
+-sP             发现扫描网络存活主机
+-sS             半隐藏式隐蔽扫描
+--iL            从主机/网络列表输入
+--tr            路由跟踪模式
+-P0             (无 ping)
+-sP             (Ping 扫描)
+-iL             读取文件作为主机/网络列表
+-oN             将扫描输出到指定文件(包括报错)
+-oG             将扫描结果保存到指定文件(仅结果信息)
+--script=<xxx>  利用脚本漏洞探测
 ```
 
 **返回值**
 ```
-|返回状态            |说明
-| ----------------- |-----
-|open               |端口开启,数据有到达主机,有程序在端口上监控
-|close              |端口关闭,数据有到达主机,没有程序在端口上监控
-|filtered           |未到达主机,返回的结果为空,被防火墙或IDS过滤
-|unfiltered         |到达主机,但是不能识别端口当前状态
-|open\|filtered     |端口没有返回值,主要发生在UDP,IP,FIN,NULL和Xmas扫描
-|closed\|filtered   |只发生在IP,ID,idle扫描
+| 返回状态            | 说明
+| ----------------- | -----
+| open               | 端口开启,数据有到达主机,有程序在端口上监控
+| close              | 端口关闭,数据有到达主机,没有程序在端口上监控
+| filtered           | 未到达主机,返回的结果为空,被防火墙或 IDS 过滤
+| unfiltered         | 到达主机,但是不能识别端口当前状态
+| open\|filtered     | 端口没有返回值,主要发生在 UDP,IP,FIN,NULL 和 Xmas 扫描
+| closed\|filtered   | 只发生在 IP,ID,idle 扫描
 ```
 
 ---
@@ -124,6 +124,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 `nmap -vv -p1-100 -O <target ip>`
 
 **用一组 IP 地址掩盖真实地址**
+
 `namp -D <IP地址1,IP地址2... IP地址,ME> <target ip>`
 
 **伪装 MAC 地址**
@@ -156,6 +157,35 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 - 欺骗 ip 和 mac 地址,不能跨网段
     - `nmap -v -Pn -n -S 192.168.100.101 -e eth0 --spoof-mac 0 --min-hostgroup 1024 --min-parallelism 1024 -f 192.168.100.1/24 -oN /root/1.txt`
+
+参考 : https://github.com/al0ne/Nmap_Bypass_IDS
+
+- nmap 系统识别绕过 ids 检测
+    - 修改 [osscan2.cc](https://github.com/nmap/nmap/blob/master/osscan2.cc)
+
+        将 `static u8 patternbyte = 0x43; /* character 'C' /` ,替换为 `static u8 patternbyte = 0x46; / character 'F' */`
+
+- nmap UA 修改
+    - 修改 [nselib/http.lua](https://github.com/nmap/nmap/blob/master/nselib/http.lua)
+
+        `USER_AGENT = stdnse.get_script_args('http.useragent') or "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)""`
+
+- TCP window 修改tcp window 窗口大小
+    - 修改 [tcpip.cc](https://github.com/nmap/nmap/blob/master/tcpip.cc)
+
+        将 `tcp->th_win = htons(1024);` ,替换为 `tcp->th_win = htons(10240);`
+
+- 修改 3389 cookie
+    - 修改 [nselib/rdp.lua](https://github.com/nmap/nmap/blob/master/nselib/rdp.lua)
+
+        `local cookie = "mstshash=nmap"`
+
+- Zmap识别
+    - 修改 [src/probe_modules/packet.c](https://github.com/zmap/zmap/blob/master/src/probe_modules/packet.c)
+        ```
+        tcp_header->th_win = htons(65535);
+        iph->ip_id = htons(54321);
+        ```
 
 ---
 

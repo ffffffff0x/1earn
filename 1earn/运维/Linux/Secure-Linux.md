@@ -10,7 +10,7 @@
 ```
 
 <p align="center">
-    <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/运维/Linux/Secure-Linux.jpg" width="90%"></a>
+    <a href="https://commons.wikimedia.org/wiki/File:William_J._McCloskey_(1859%E2%80%931941),_Wrapped_Oranges,_1889._Oil_on_canvas._Amon_Carter_Museum_of_American_Art.jpg"><img src="../../../assets/img/banner/Secure-Linux.jpg" width="90%"></a>
 </p>
 
 <p align="center">

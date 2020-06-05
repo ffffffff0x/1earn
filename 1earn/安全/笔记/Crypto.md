@@ -13,18 +13,18 @@
 # 大纲
 
 * **常见编码**
-    * [ASCII](#ASCII)
-    * [Base](#Base)
-        * [Base64/32/16](#Base643216)
+    * [ASCII](#ascii)
+    * [Base](#base)
+        * [Base64/32/16](#base643216)
         * [base92](#base92)
-    * [Escape/Unescape](#EscapeUnescape)
-    * [HtmlEncode](#HtmlEncode)
-    * [Quoted-printable](#Quoted-printable)
-    * [Unicode](#Unicode)
-    * [URL](#URL)
-    * [UTF](#UTF)
-    * [UUencode](#UUencode)
-    * [XXencode](#XXencode)
+    * [Escape/Unescape](#escapeunescape)
+    * [HtmlEncode](#htmlencode)
+    * [Quoted-printable](#quoted-printable)
+    * [Unicode](#unicode)
+    * [URL](#url)
+    * [UTF](#utf)
+    * [UUencode](#uuencode)
+    * [XXencode](#xxencode)
     * [shellcode](#shellcode)
     * [进制](#进制)
     * [敲击码](#敲击码)
@@ -33,16 +33,16 @@
         * [条形码](#条形码)
         * [二维码](#二维码)
         * [汉信码](#汉信码)
-        * [PDF147](#PDF147)
+        * [PDF147](#pdf147)
 
 * **现代密码**
-    * [AES](#AES)
-    * [MD5](#MD5)
+    * [AES](#aes)
+    * [MD5](#md5)
     * [rc4](#rc4)
-    * [RIPE_MD160](#RIPE_MD160)
-    * [RSA](#RSA)
-    * [SHA](#SHA)
-    * [SM国密](#SM国密)
+    * [RIPE_MD160](#ripe_md160)
+    * [RSA](#rsa)
+    * [SHA](#sha)
+    * [SM](#sm)
 
 * **古典密码**
     * [换位加密](#换位加密)
@@ -50,22 +50,20 @@
         * [曲路密码](#曲路密码)
         * [列移位密码](#列移位密码)
     * [替换加密](#替换加密)
-        * [ADFGX](#ADFGX)
-        * [Bazeries](#Bazeries)
-        * [Digrafid](#Digrafid)
-        * [Porta](#Porta)
-        * [ROT5/13/18/47](#ROT5131847)
-        * [摩斯电码](#摩斯电码)
-        * [查尔斯加密](#查尔斯加密)
+        * [ADFGX](#adfgx)
+        * [Bazeries](#bazeries)
+        * [Digrafid](#digrafid)
+        * [Porta](#porta)
+        * [ROT](#rot)
         * [埃特巴什码](#埃特巴什码)
+        * [查尔斯加密](#查尔斯加密)
         * [凯撒密码](#凯撒密码)
+        * [摩斯电码](#摩斯电码)
         * [简单替换密码](#简单替换密码)
         * [希尔密码](#希尔密码)
-        * [猪圈密码](#猪圈密码)
         * [波利比奥斯方阵密码](#波利比奥斯方阵密码)
         * [夏多密码](#夏多密码)
         * [普莱菲尔密码](#普莱菲尔密码)
-        * [维吉尼亚密码](#维吉尼亚密码)
         * [自动密钥密码](#自动密钥密码)
         * [博福特密码](#博福特密码)
         * [滚动密钥密码](#滚动密钥密码)
@@ -82,11 +80,13 @@
         * [比尔密码](#比尔密码)
         * [键盘密码](#键盘密码)
         * [恩尼格玛密码](#恩尼格玛密码)
+        * [维吉尼亚密码](#维吉尼亚密码)
+        * [猪圈密码](#猪圈密码)
 
 * **其他编码**
-    * [Brainfuck](#Brainfuck)
-    * [JSfuck](#JSfuck)
-    * [JS加密/解密](#JS加密解密)
+    * [Brainfuck](#brainfuck)
+    * [JSfuck](#jsfuck)
+    * [JS加密/解密](#js加密解密)
     * [颜文字加密](#颜文字加密)
     * [与佛论禅](#与佛论禅)
     * [文本加密为汉字](#文本加密为汉字)
@@ -112,14 +112,10 @@
 - [gchq/CyberChef](https://github.com/gchq/CyberChef) - 一个用于加密、编码、压缩和数据分析的网络应用
 - [guyoung/CaptfEncoder](https://github.com/guyoung/CaptfEncoder) - 一款跨平台网络安全工具套件
 - [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom) - 密码学的瑞士军刀
+- [Acmesec/CTFCrackTools](https://github.com/Acmesec/CTFCrackTools) - CTF工具框架
 
 **在线工具**
-- http://tool.bugku.com/
-- http://ctf.ssleye.com/
-- https://ctftools.com/down/
-- https://gchq.github.io/CyberChef/
-- https://www.sojson.com/encrypt/
-- https://cryptii.com/
+- [Crypto在线工具](../../Plan/Web-Tools.md#Crypto)
 
 ---
 
@@ -166,27 +162,6 @@
 
 ---
 
-**功能类**
-- 数学
-    - https://zh.numberempire.com/factoringcalculator.php
-    - http://atool.org/quality_factor.php
-    - https://zh.numberempire.com/
-    - https://www.logcalculator.net/
-
-- 大小写
-    - http://www.convertstring.com/zh_CN/StringFunction/ToUpperCase
-    - http://www.convertstring.com/zh_CN/StringFunction/ToLowerCase
-    - https://convertcase.net/
-
-- 反向
-    - http://www.convertstring.com/zh_CN/StringFunction/ReverseString
-    - https://www.qqxiuzi.cn/zh/daoxu/
-
-- 时间戳
-    - http://tool.chinaz.com/tools/unixtime.aspx
-
----
-
 # 常见编码
 
 `更多内容可以参考` [字符编码](../../开发/字符编码/字符编码.md#编码)
@@ -212,7 +187,7 @@ ASCII编码对应十进制:
 对应可以转换成二进制,八进制,十六进制等.
 
 **在线工具**
-- http://www.ab126.com/goju/1711.html
+- [ASCII转换在线工具](../../Plan/Web-Tools.md#ASCII转换)
 
 ---
 
@@ -237,20 +212,7 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 ```
 
 **在线工具**
-
-32
-- http://tomeko.net/online_tools/base32.php
-
-64
-- http://tool.chinaz.com/Tools/Base64.aspx
-- https://base64.supfree.net/
-- http://www1.tc711.com/tool/BASE64.htm
-- http://decodebase64.com/
-- http://web.chacuo.net/charsetbase64
-- https://www.base64decode.org/
-
-base16
-- https://www.qqxiuzi.cn/bianma/base.php?type=16
+- [Base转换在线工具](../../Plan/Web-Tools.md#Base)
 
 ---
 
@@ -259,7 +221,7 @@ base16
 - https://github.com/thenoviceoof/base92
 
 **在线工具**
-- http://ctf.ssleye.com/base92.html
+- [Base转换在线工具](../../Plan/Web-Tools.md#Base)
 
 ---
 
@@ -299,7 +261,7 @@ ISO-8859-1 的较高部分(从 160 到 255 之间的代码)全都有实体名称
 `>` |	greater-than|	`&gt;`|	`&#62;`
 
 **在线工具**
-- http://www.convertstring.com/zh_CN/EncodeDecode/HtmlEncode
+- [HtmlEncode转换在线工具](../../Plan/Web-Tools.md#HTML编码)
 
 ---
 
@@ -338,8 +300,7 @@ rawurlencode($string)));
 一个函数就可以,将所有字符串urlencode转换后,%号替换为"="号,然后对非\r\n超过73连续字符,后面加一个=\r\n.这个是简单实现方法.按照该编码详细说明里面,有些空格、换行,还有一些特殊字符可以不用转换.不过一起转换了,也不会有影响
 
 **在线工具**
-- http://web.chacuo.net/charsetquotedprintable
-- http://www.mxcz.net/tools/QuotedPrintable.aspx
+- [Quoted-Printable转换在线工具](../../Plan/Web-Tools.md#Quoted-Printable)
 
 ---
 
@@ -358,8 +319,7 @@ Unicode 编码有以下四种编码方式:
 >> \U+ [Hex]: \U+0054\U+0068\U+0065
 
 **在线工具**
-- http://tool.chinaz.com/tools/unicode.aspx
-- http://www.mxcz.net/tools/Unicode.aspx
+- [Unicode编码在线转换工具](../../Plan/Web-Tools.md#Unicode编码)
 
 ---
 
@@ -376,18 +336,14 @@ url 编码又叫百分号编码,是统一资源定位(URL)编码方式.URL地址
 >%54%68%65%20%71%75%69%63%6b%20%62%72%6f%77%6e%20%66%6f%78%20%6a%75%6d%70%73%20%6f%76%65%72%20%74%68%65%20%6c%61%7a%79%20%64%6f%67
 
 **在线工具**
-- http://web.chacuo.net/charseturlencode
-- https://meyerweb.com/eric/tools/dencoder/
-- http://tool.oschina.net/encode?type=4
-- http://www.mxcz.net/tools/Url.aspx
+- [url编码在线转换工具](../../Plan/Web-Tools.md#url编码)
 
 ---
 
 ## UTF
 
 **在线工具**
-- http://tool.chinaz.com/Tools/UTF-8.aspx
-- http://tool.oschina.net/encode?type=2
+- [utf编码在线转换工具](../../Plan/Web-Tools.md#utf)
 
 ---
 
@@ -400,8 +356,7 @@ UUencode 是一种二进制到文字的编码,最早在 unix 邮件系统中使�
 > 编码后: `M5&AE('%U:6-K(&)R;W=N(&9O>"!J=6UP<R!O=F5R('1H92!L87IY(&1O9PH*`
 
 **在线工具**
-- http://web.chacuo.net/charsetuuencode
-- http://www.mxcz.net/tools/UUEncode.aspx
+- [uuencode编码在线转换工具](../../Plan/Web-Tools.md#uuencode编码)
 
 ---
 
@@ -417,7 +372,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 > hJ4VZ653pOKBf647mPrRi64NjS0-eRKpkQm-jRaJm65FcNG-gMLdt64FjNkc+
 
 **在线工具**
-- http://web.chacuo.net/charsetxxencode
+- [XXencode编码在线转换工具](../../Plan/Web-Tools.md#XXencode编码)
 
 ---
 
@@ -438,12 +393,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 ## 进制
 
 **在线工具**
-- https://js.tuisec.win/convert/ox2str/
-- http://www.5ixuexiwang.com/str/from-hex.php
-- http://www.convertstring.com/zh_CN/EncodeDecode/HexDecode
-- http://www.5ixuexiwang.com/str/hex.php
-- http://tool.oschina.net/hexconvert/
-- http://www.mxcz.net/tools/Hex.aspx
+- [进制在线转换工具](../../Plan/Web-Tools.md#进制)
 
 ---
 
@@ -460,7 +410,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ## 曼彻斯特编码
 
-**文章**
+**科普介绍**
 - [曼彻斯特编码](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81)
 
 在电信与数据存储中, 曼彻斯特编码(Manchester coding),又称自同步码、相位编码(phase encoding,PE),能够用信号的变化来保持发送设备和接收设备之间的同步.
@@ -511,16 +461,17 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ### 二维码
 
-**在线工具**
-- http://tool.chinaz.com/qrcode/
-- http://jiema.wwei.cn/
-- https://cli.im/
-- https://www.beaconstac.com/qr-code-generator
+**在线制作/识别二维码工具**
+- [二维码在线制作/识别工具](../../Plan/Web-Tools.md#二维码)
+
+**二维码分析与恢复工具包**
+- [Merricx/qrazybox](https://github.com/Merricx/qrazybox)
+    - 在线使用 : https://merricx.github.io/qrazybox/
 
 ### 汉信码
 
-**在线工具**
-- http://www.efittech.com/hxdec.html
+**在线识别汉信码工具**
+- [汉信码在线识别工具](../../Plan/Web-Tools.md#汉信码)
 
 ### PDF147
 
@@ -538,18 +489,15 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 - [这些hash你了解吗？](http://www.myh0st.cn/index.php/archives/304/)
 
 **在线工具**
-- http://tool.oschina.net/encrypt/
-- http://encode.chahuo.com/
-- http://tool.chacuo.net/cryptdes
-- http://www.mxcz.net/tools/MD5.aspx
-- https://hashtoolkit.com/
+
+- [现代密码在线工具](../../Plan/Web-Tools.md#现代密码)
 
 ---
 
 ## AES
 
 **在线工具**
-- [AES Encryption – Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
+- [AES在线工具](../../Plan/Web-Tools.md#AES)
 
 ---
 
@@ -561,40 +509,21 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 - [MD5碰撞的一些例子](https://www.jianshu.com/p/c9089fd5b1ba)
 
 **在线工具**
-- https://md5.navisec.it/
-- https://www.somd5.com/
-- https://www.md5online.org/
-- https://www.somd5.com/batch.html
-- http://md5.tellyou.top/
-- http://www.cmd5.com/
-- http://hashtoolkit.com/
-- http://hashcrack.com/
-- https://md5.gromweb.com/
-- http://tool.chinaz.com/Tools/MD5.aspx
-- http://www.chamd5.org/
-- https://cmd5.la/
-- http://pmd5.com/
-- http://www.ttmd5.com/
-- http://www.xmd5.org/
-- https://crackstation.net/
-- http://www.md5this.com/index.php
-- https://md5online.org/
-- http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
+- [MD5在线工具](../../Plan/Web-Tools.md#MD5)
 
 ---
 
 ## rc4
 
 **在线工具**
-- https://www.sojson.com/encrypt_rc4.html
-- http://tool.chacuo.net/cryptrc4
+- [rc4在线工具](../../Plan/Web-Tools.md#rc4)
 
 ---
 
 ## RIPE_MD160
 
 **在线工具**
-- http://www.convertstring.com/zh_CN/Hash/RIPE_MD160
+- [RIPE_MD160在线工具](../../Plan/Web-Tools.md#RIPE_MD160)
 
 ---
 
@@ -615,14 +544,11 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 - [SHA1 collider](https://alf.nu/SHA1)
 
 **在线工具**
-- [SHA1哈希 - 在线SHA1散列发生器](http://www.convertstring.com/zh_CN/Hash/SHA1)
-- [SHA256哈希 - 在线SHA256哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA256)
-- [SHA3​​84哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
-- [SHA512哈希 - 在线SHA512哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA512)
+- [SHA在线工具](../../Plan/Web-Tools.md#SHA)
 
 ---
 
-## SM国密
+## SM
 
 国密即国家密码局认定的国产密码算法.主要有 SM1,SM2,SM3,SM4.密钥长度和分组长度均为 128 位.
 - SM1 为对称加密.其加密强度与 AES 相当.该算法不公开,调用该算法时,需要通过加密芯片的接口进行调用.
@@ -737,6 +663,9 @@ ADFGVX 密码实际上就是 ADFGX 密码的扩充升级版,一样具有 ADFGX �
 
 加密过程完全类似
 
+**在线工具**
+- [ADFGX在线工具](../../Plan/Web-Tools.md#ADFGX)
+
 ---
 
 ### Bazeries
@@ -850,9 +779,9 @@ Porta 密码可以被以 维吉尼亚密码 破解相类似方式进行自动攻
 
 ---
 
-### ROT5/13/18/47
+### ROT
 
-ROT5/13/18/47是一种简单的码元位置顺序替换暗码.此类编码具有可逆性,可以自我解密,主要用于应对快速浏览,或者是机器的读取.
+ROT5/13/18/47 是一种简单的码元位置顺序替换暗码.此类编码具有可逆性,可以自我解密,主要用于应对快速浏览,或者是机器的读取.
 
 ROT5 是 rotate by 5 places 的简写,意思是旋转5个位置,其它皆同.下面分别说说它们的编码方式:
 
@@ -869,9 +798,50 @@ ROT47:对数字、字母、常用符号进行编码,按照它们的ASCII值进�
 > 密文: gur dhvpx oebja sbk whzcf bire gur ynml qbt
 
 **在线工具**
-- https://www.qqxiuzi.cn/bianma/ROT5-13-18-47.php
-- http://www.mxcz.net/tools/rot13.aspx
-- https://www.rot13.com/
+- [ROT在线工具](../../Plan/Web-Tools.md#ROT)
+
+---
+
+### 埃特巴什码
+
+埃特巴什码(Atbash Cipher)是一种以字母倒序排列作为特殊密钥的替换加密,也就是下面的对应关系:
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+ZYXWVUTSRQPONMLKJIHGFEDCBA
+
+差不多就是把A换成Z,Z换成A
+> 明文: the quick brown fox jumps over the lazy dog
+
+> 密文: gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt
+
+---
+
+### 查尔斯加密
+
+`playfair`
+
+**在线工具**
+- [查尔斯加密在线工具](../../Plan/Web-Tools.md#查尔斯加密)
+
+---
+
+### 凯撒密码
+
+凯撒密码(Caesar Cipher或称恺撒加密、恺撒变换、变换加密、位移加密)是一种替换加密,明文中的所有字母都在字母表上向后(或向前)按照一个固定数目进行偏移后被替换成密文.例,当偏移量是3的时候,所有的字母A将被替换成D,B变成E,以此类推.
+
+实例:
+
+> 明文: The quick brown fox jumps over the lazy dog
+
+> 偏移量:1
+
+> 密文: Uif rvjdl cspxo gpy kvnqt pwfs uif mbaz eph
+
+![](../../../assets/img/安全/笔记/Crypto/凯撒密码参照表.jpg)
+
+**在线工具**
+- [凯撒密码在线工具](../../Plan/Web-Tools.md#凯撒密码)
 
 ---
 
@@ -907,58 +877,7 @@ M  --    |Z  --..  |=  -...-
 > 编码后:- .... . / --.- ..- .. -.-. -.- / -... .-. --- .-- -. / ..-. --- -..- / .--- ..- -- .--. ... / --- ...- . .-. / - .... . / .-.. .- --.. -.-- / -.. --- --.
 
 **在线工具**
-- http://rumkin.com/tools/cipher/morse.php
-- https://morsecode.scphillips.com/translator.html
-- https://morsify.net/
-- http://www.atool.org/morse.php
-- http://www.zou114.com/mesm/
-- http://zhongguosou.com/zonghe/moErSiCodeConverter.aspx
-- https://www.jb51.net/tools/morse.htm
-
----
-
-### 查尔斯加密
-
-`playfair解密`
-
-**在线工具**
-- http://rumkin.com/tools/cipher/playfair.php
-
----
-
-### 埃特巴什码
-
-埃特巴什码(Atbash Cipher)是一种以字母倒序排列作为特殊密钥的替换加密,也就是下面的对应关系:
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-
-ZYXWVUTSRQPONMLKJIHGFEDCBA
-
-差不多就是把A换成Z,Z换成A
-> 明文: the quick brown fox jumps over the lazy dog
-
-> 密文: gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt
-
----
-
-### 凯撒密码
-
-凯撒密码(Caesar Cipher或称恺撒加密、恺撒变换、变换加密、位移加密)是一种替换加密,明文中的所有字母都在字母表上向后(或向前)按照一个固定数目进行偏移后被替换成密文.例,当偏移量是3的时候,所有的字母A将被替换成D,B变成E,以此类推.
-
-实例:
-
-> 明文: The quick brown fox jumps over the lazy dog
-
-> 偏移量:1
-
-> 密文: Uif rvjdl cspxo gpy kvnqt pwfs uif mbaz eph
-
-![](../../../assets/img/安全/笔记/Crypto/凯撒密码参照表.jpg)
-
-**在线工具**
-- https://www.xarg.org/tools/caesar-cipher/
-- https://planetcalc.com/1434/
-- http://www.zjslove.com/3.decode/kaisa/index.html
+- [摩斯电码在线工具](../../Plan/Web-Tools.md#摩斯电码)
 
 ---
 
@@ -986,30 +905,6 @@ ZYXWVUTSRQPONMLKJIHGFEDCBA
 希尔密码(`Hill Cipher`)是基于线性代数多重代换密码,由Lester S. Hill在1929年发明.每个字母转换成26进制数字:A=0, B=1, C=2...Z=25一串字母当成n维向量,跟一个n×n的矩阵相乘,再将得出的结果MOD26
 ![](../../../assets/img/安全/笔记/Crypto/希儿密码加密.png)
 ![](../../../assets/img/安全/笔记/Crypto/希儿密码解密.png)
-
----
-
-### 猪圈密码
-
-猪圈密码(Pigpen Cipher或称九宫格密码、朱高密码、共济会密码或共济会员密码),是一种以格子为基础的简单替代式密码.
-
-![](../../../assets/img/安全/笔记/Crypto/猪圈密码.jpg)
-
-变种
-
-圣堂武士密码(Templar Cipher)是共济会的"猪圈密码"的一个变种,一直被共济会圣殿骑士用.
-
-![](../../../assets/img/安全/笔记/Crypto/templar_cipher.png)
-
-**OTHER CIPHER**
-
-![](../../../assets/img/安全/笔记/Crypto/othercipher1.png)
-![](../../../assets/img/安全/笔记/Crypto/othercipher2.png)
-![](../../../assets/img/安全/笔记/Crypto/othercipher3.png)
-![](../../../assets/img/安全/笔记/Crypto/othercipher4.png)
-
-**在线工具**
-- http://www.simonsingh.net/The_Black_Chamber/pigpen.html
 
 ---
 
@@ -1078,39 +973,6 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 3. 如果两个字母在不同的行或列,则应在密码表中找两个字母使四个字母组成一个矩形,明文占据两个顶点,需用另外两个顶点的字母替换,如明文为" HX ",可以替换为" WI/J "或" I/JW "(下面的例子将按照横向替换原则即同行优先).
 
 按照上述原则,将明文 TH EQ UI CK BR OW NF OX JU MP SO VE RT HE LA ZY DO GX 加以转换得到 KU ND LH GT LF WU ES PW LH SI/J NP CG CR AG BU VZ QA I/JV (/表示或者,不过一般用I不用J,所以分析密文时你看25个字母都有而只差一个字母没有用到可以考虑一下这种加密方式)将得到的字母改为大写并五个一组列好,得到密文 KUNDL HGTLF WUESP WLHSI NPCGC RAGBU VZQAI V .
-
----
-
-### 维吉尼亚密码
-
-维吉尼亚密码(`Vigenère Cipher`)是在单一恺撒密码的基础上扩展出多表代换密码,根据密钥(当密钥长度小于明文长度时可以循环使用)来决定用哪一行的密表来进行替换,以此来对抗字频统计
-
-![](../../../assets/img/安全/笔记/Crypto/维吉尼亚密码密表.png)
-
-**已知秘钥加密解密**
-
-> 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
->
->> 密钥(循环使用,密钥越长相对破解难度越大): CULTURE
->
->> 加密过程:如果第一行为明文字母,第一列为密钥字母,那么明文字母'T'列和密钥字母'C'行的交点就是密文字母'V',以此类推.
->
-> 密文: VBP JOZGM VCHQE JQR UNGGW QPPK NYI NUKR XFK
-
-**未知秘钥破解**
-
-破解维吉尼亚密码第一步是确定密钥长度,在确定密钥长度后就可以尝试确定密钥,通常我们可以使用 卡方检验 来找到每个字母的偏移量
-
-/////[URL](http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher/)/////
-
-**变种**
-
-有几种密码和维吉尼亚密码相似,格罗斯费尔德密码(`Gronsfeld cipher`)实际上和维吉尼亚密码相同,除了使用了数字来代替字母以外没有什么区别.数字可以选择一种数列,如斐波那契数列,或者一些其他的伪随机序列.格罗斯费尔德密码密码分析过程和维吉尼亚密码大同小异,不过,自动密钥密码不能使用 卡西斯基算法 (kasiski)来破译,因为自动密钥密码的密钥不重复循环使用,破译自动密钥密码最好的方法的就是从密文不断尝试和猜测其中明文或密钥的一部分.
-
-![](../../../assets/img/安全/笔记/Crypto/格罗斯菲尔德密码.png)
-
-**在线工具**
-- https://planetcalc.com/2468/
 
 ---
 
@@ -1212,7 +1074,7 @@ G = aabba | P = abbba   | Y = babba
 H = aabbb | Q = abbbb   | Z = babbb
 
 **在线工具**
-- http://rumkin.com/tools/cipher/baconian.php
+- [培根密码在线工具](../../Plan/Web-Tools.md#培根密码)
 
 ---
 
@@ -1483,39 +1345,92 @@ I have deposited in the county of Bedford...
 
 ---
 
+### 维吉尼亚密码
+
+维吉尼亚密码(`Vigenère Cipher`)是在单一恺撒密码的基础上扩展出多表代换密码,根据密钥(当密钥长度小于明文长度时可以循环使用)来决定用哪一行的密表来进行替换,以此来对抗字频统计
+
+![](../../../assets/img/安全/笔记/Crypto/维吉尼亚密码密表.png)
+
+**已知秘钥加密解密**
+
+> 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+>
+>> 密钥(循环使用,密钥越长相对破解难度越大): CULTURE
+>
+>> 加密过程:如果第一行为明文字母,第一列为密钥字母,那么明文字母'T'列和密钥字母'C'行的交点就是密文字母'V',以此类推.
+>
+> 密文: VBP JOZGM VCHQE JQR UNGGW QPPK NYI NUKR XFK
+
+**未知秘钥破解**
+
+破解维吉尼亚密码第一步是确定密钥长度,在确定密钥长度后就可以尝试确定密钥,通常我们可以使用 卡方检验 来找到每个字母的偏移量
+
+/////[URL](http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher/)/////
+
+**变种**
+
+有几种密码和维吉尼亚密码相似,格罗斯费尔德密码(`Gronsfeld cipher`)实际上和维吉尼亚密码相同,除了使用了数字来代替字母以外没有什么区别.数字可以选择一种数列,如斐波那契数列,或者一些其他的伪随机序列.格罗斯费尔德密码密码分析过程和维吉尼亚密码大同小异,不过,自动密钥密码不能使用 卡西斯基算法 (kasiski)来破译,因为自动密钥密码的密钥不重复循环使用,破译自动密钥密码最好的方法的就是从密文不断尝试和猜测其中明文或密钥的一部分.
+
+![](../../../assets/img/安全/笔记/Crypto/格罗斯菲尔德密码.png)
+
+**在线工具**
+- [维吉尼亚密码在线工具](../../Plan/Web-Tools.md#维吉尼亚密码)
+
+---
+
+### 猪圈密码
+
+猪圈密码(Pigpen Cipher或称九宫格密码、朱高密码、共济会密码或共济会员密码),是一种以格子为基础的简单替代式密码.
+
+![](../../../assets/img/安全/笔记/Crypto/猪圈密码.jpg)
+
+变种
+
+圣堂武士密码(Templar Cipher)是共济会的"猪圈密码"的一个变种,一直被共济会圣殿骑士用.
+
+![](../../../assets/img/安全/笔记/Crypto/templar_cipher.png)
+
+**OTHER CIPHER**
+
+![](../../../assets/img/安全/笔记/Crypto/othercipher1.png)
+![](../../../assets/img/安全/笔记/Crypto/othercipher2.png)
+![](../../../assets/img/安全/笔记/Crypto/othercipher3.png)
+![](../../../assets/img/安全/笔记/Crypto/othercipher4.png)
+
+**在线工具**
+- [猪圈密码在线工具](../../Plan/Web-Tools.md#猪圈密码)
+
+---
+
 # 其他编码
 ## Brainfuck
 
-- http://esoteric.sange.fi/brainfuck/impl/interp/i.html
-- https://www.nayuki.io/page/brainfuck-interpreter-javascript
-- https://www.splitbrain.org/services/ook
+- [Brainfuck在线工具](../../Plan/Web-Tools.md#Brainfuck)
 
 ## JSfuck
 
-- http://discogscounter.getfreehosting.co.uk/js-noalnum.php
-- http://www.jsfuck.com/
+- [JSfuck在线工具](../../Plan/Web-Tools.md#JSfuck)
 
 ## JS加密/解密
 
-- http://tool.chinaz.com/tools/scriptencode.aspx
+- [JS加密/解密在线工具](../../Plan/Web-Tools.md#JS加密解密)
 
 ## 颜文字加密
 
-- https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html
-- http://utf-8.jp/public/aaencode.html
+- [颜文字加密在线工具](../../Plan/Web-Tools.md#颜文字加密)
 
 ## 与佛论禅
 
-- http://www.keyfc.net/bbs/tools/tudoucode.aspx
+- [与佛论禅在线工具](../../Plan/Web-Tools.md#与佛论禅)
 
 ## 文本加密为汉字
 
-- http://www.qqxiuzi.cn/bianma/wenbenjiami.php
+- [文本加密为汉字在线工具](../../Plan/Web-Tools.md#文本加密为汉字)
 
 ## 随机密码生成
 
-- https://utils.chrisyue.com/password-generator/
+- [在线随机密码生成工具](../../Plan/Web-Tools.md#随机密码生成)
 
 ## 核心价值观加密
 
-- https://sym233.github.io/core-values-encoder/
+- [核心价值观加密在线工具](../../Plan/Web-Tools.md#核心价值观加密)

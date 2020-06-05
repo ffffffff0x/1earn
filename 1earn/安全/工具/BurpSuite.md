@@ -1,7 +1,7 @@
 # Burp Suite
 
 <p align="center">
-    <img src="../../../assets/img/logo/burpsuite.svg" width="30%"></a>
+    <img src="../../../assets/img/logo/burpsuite.svg" width="30%">
 </p>
 
 ---

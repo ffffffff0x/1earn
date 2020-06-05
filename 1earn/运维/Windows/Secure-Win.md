@@ -1,7 +1,7 @@
 # Secure-Win
 
 <p align="center">
-    <img src="../../../assets/img/运维/Windows/Secure-Win.jpg" width="85%"></a>
+    <img src="../../../assets/img/banner/Secure-Win.jpg" width="90%">
 </p>
 
 - `windows 加固+维护+应急响应参考`
@@ -10,26 +10,23 @@
 
 # 大纲
 
-**[文件](#文件)**
+* **[文件](#文件)**
+    * [可疑文件](#可疑文件)
 
-* [可疑文件](#可疑文件)
+* **[系统](#系统)**
+    * [开机启动](#开机启动)
+    * [账号](#账号)
+    * [进程](#进程)
+    * [注册表](#注册表)
+    * [日志](#日志)
+        * [系统日志](#系统日志)
+        * [日志工具](#日志工具)
+        * [第三方程序日志](#第三方程序日志)
 
-**[系统](#系统)**
-
-* [开机启动](#开机启动)
-* [账号](#账号)
-* [进程](#进程)
-* [注册表](#注册表)
-* [日志](#日志)
-    * [系统日志](#系统日志)
-    * [日志工具](#日志工具)
-    * [第三方程序日志](#第三方程序日志)
-
-**[Net](#Net)**
-
-* [端口](#端口)
-* [RDP](#rdp)
-* [DNS](#dns)
+* **[Net](#Net)**
+    * [端口](#端口)
+    * [RDP](#rdp)
+    * [DNS](#dns)
 
 
 ---
@@ -120,7 +117,12 @@ REG query HKEY_LOCAL_MACHINE/SAM/SAM/Domains/Account/Users
 
 **查看服务器是否存在隐藏账号、克隆账号**
 
-使用D盾工具，集成了对克隆账号检测的功能。
+可以使用 D 盾工具，其集成了对克隆账号检测的功能。
+
+**加固**
+
+- Microsoft本地管理员密码解决方案（LAPS）
+    - 参考文章:[Microsoft Local Administrator Password Solution (LAPS)](https://adsecurity.org/?p=1790)
 
 ## 进程
 
@@ -130,7 +132,7 @@ REG query HKEY_LOCAL_MACHINE/SAM/SAM/Domains/Account/Users
 
 开始-运行，输入 `services.msc`
 
-**cmd 下使用**
+**cmd 下查看可疑进程**
 ```
 tasklist /svc | findstr pid
 netstat -ano
@@ -143,7 +145,7 @@ wmic process get CreationDate,name,processid,commandline,ExecutablePath /value
 wmic process get name,processid,executablepath| findstr "7766"
 ```
 
-**powershell 下使用**
+**powershell 下查看可疑进程**
 ```
 Get-WmiObject -Class Win32_Process
 Get-WmiObject -Query "select * from win32_service where name='WinRM'" -ComputerName Server01, Server02 | Format-List -Property PSComputerName, Name, ExitCode, Name, ProcessID, StartMode, State, Status
@@ -155,6 +157,12 @@ Get-WmiObject -Query "select * from win32_service where name='WinRM'" -ComputerN
 - 进程的属主
 - 进程的路径是否合法
 - CPU 或内存资源占用长时间过高的进程
+
+**令牌假冒防御**
+
+禁止 Domain Admins 登录对外且未做安全加固的服务器，因为一旦服务器被入侵，域管理员的令牌可能会被攻击者假冒，从控制 DC。
+
+如果想清除假冒令牌，重启服务器即可。
 
 ## 注册表
 

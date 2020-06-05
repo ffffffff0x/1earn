@@ -395,7 +395,7 @@ git push --force origin
 ## github
 
 <p align="center">
-    <img src="../../../assets/img/logo/github.png" width="25%"></a>
+    <img src="../../../assets/img/logo/github.png" width="25%">
 </p>
 
 - **github 开启二次验证后后，git push 验证权限失败**

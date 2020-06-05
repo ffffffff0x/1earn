@@ -1,7 +1,7 @@
 # Kali
 
 <p align="center">
-    <img src="../../../assets/img/logo/kali.png" width="40%"></a>
+    <img src="../../../assets/img/logo/kali.png" width="40%">
 </p>
 
 ---
@@ -196,12 +196,21 @@ dpkg -i Nessus-8.8.0-ubuntu1110_amd64.deb
 
 **docker 部署**
 
-```
+```bash
 docker run -d -p 3443:3443 -p 8834:8834  --name bobohacker -it yakoazz/bobohacker
 ```
 - nesss地址 : https://127.0.0.1:8443 账号密码 bobohacker/bobohacker
 - awvs地址 : https://127.0.0.1:3443 账号密码 bobo@hacker.com/B0bohacker
 - nessus 应用自启 awvs13 要 attach 到容器里面 root 目录下运行下 awvs.sh
+
+---
+
+## rdesktop
+
+kali 自带
+```bash
+rdesktop <目标IP>
+```
 
 ---
 

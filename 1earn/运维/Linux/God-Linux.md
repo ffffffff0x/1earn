@@ -10,7 +10,7 @@
 ```
 
 <p align="center">
-    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/运维/Linux/God-Linux.jpg" width="70%"></a>
+    <a href="https://en.wikipedia.org/wiki/The_Portrait_(Magritte)"><img src="../../../assets/img/banner/God-Linux.jpg" width="90%"></a>
 </p>
 
 <p align="center">

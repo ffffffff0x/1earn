@@ -20,6 +20,8 @@
 **样本**
 - [SpiderLabs/IOCs-IDPS](https://github.com/SpiderLabs/IOCs-IDPS) - 该存储库将保存与已知恶意软件样本相关的 PCAP IOC 数据
 - [Web 2.0 for packets | pcapr](https://www.pcapr.net/home) - 提供大量样本的社区
+- [automayt/ICS-pcap](https://github.com/automayt/ICS-pcap) - 各类工控的 pcap 包
+- [ICS-Security-Tools/pcaps](https://github.com/ITI/ICS-Security-Tools/tree/master/pcaps) - 各类工控的 pcap 包
 
 **在线分析**
 - [NetworkTotal - Free Online Network Traffic Scanner](https://www.networktotal.com/index.html)
@@ -127,7 +129,7 @@ bootp
 
 **过滤 MAC**
 
-太以网头过滤
+以太网头过滤
 ```bash
 eth.dst == A0:00:00:04:C5:84    # 过滤目标 mac
 eth.src eq A0:00:00:04:C5:84    # 过滤来源 mac
@@ -212,9 +214,7 @@ udp contains 7c:7c:7d:7d    # 匹配 payload 中含有 0x7c7c7d7d 的 UDP 数据
 
 # 案例
 
-**SampleCaptures**
-
-案例来自 <sup>[[SampleCaptures - The Wireshark Wiki](https://wiki.wireshark.org/SampleCaptures#MPTCP)]</sup>
+## SampleCaptures
 
 下载 [iperf-mptcp-0-0.pcap](https://wiki.wireshark.org/SampleCaptures?action=AttachFile&do=get&target=iperf-mptcp-0-0.pcap)
 
@@ -262,7 +262,9 @@ TCP 重传的机制：指数后退，比如第一次等待 1s，第二次等 待
 
 ![](../../../assets/img/安全/工具/Wireshark/9.png)
 
-**NTLMv2**
+---
+
+## NTLMv2
 
 192.168.141.1(WIN10)——>192.168.141.139(WIN2008)
 
@@ -291,7 +293,9 @@ TCP 重传的机制：指数后退，比如第一次等待 1s，第二次等 待
 Administrator::DESKTOP-QKM4NK7:18f77b6fe9f8d876:0ecfccd87d3bdb81713dc8c07e6705b6:01010000000000002a470d3bc233d6017eb1f527b5e7bd4d0000000002001e00570049004e002d0041003500470050004400430050004a0037004f00540001001e00570049004e002d0041003500470050004400430050004a0037004f00540004001e00570049004e002d0041003500470050004400430050004a0037004f00540003001e00570049004e002d0041003500470050004400430050004a0037004f005400070008002a470d3bc233d601060004000200000008003000300000000000000001000000002000003737fbe7dbcbd2c8e5d7a030f44586c91423d9c5202f827f3f6cf26f69adbfe80a001000000000000000000000000000000000000900280063006900660073002f003100390032002e003100360038002e003100340031002e003100330039000000000000000000
 ```
 
-**域环境中 NTLM 认证方式**
+---
+
+## 域环境中NTLM认证方式
 
 192.168.141.140(WIN2008)——>192.168.141.135(WIN2008)
 
@@ -299,8 +303,288 @@ Administrator::DESKTOP-QKM4NK7:18f77b6fe9f8d876:0ecfccd87d3bdb81713dc8c07e6705b6
 
 FQDN : ffffffff0x.com
 
-账号密码:Administrator  Abcd1234
+账号密码 : Administrator  Abcd1234
 
 ![](../../../assets/img/安全/工具/Wireshark/14.png)
 
 ![](../../../assets/img/安全/工具/Wireshark/15.png)
+
+---
+
+## S7Comm
+
+**s7comm_downloading_block_db1**
+
+下载 [SampleCaptures/s7comm_downloading_block_db1.pcap](https://wiki.wireshark.org/SampleCaptures?action=AttachFile&do=get&target=s7comm_downloading_block_db1.pcap)
+
+下载后双击用 wireshark 打开。
+
+*COTP Connection Packet*
+- COTP 连接请求包
+
+    ![](../../../assets/img/安全/工具/Wireshark/16.png)
+
+- COTP 请求确认包
+
+    ![](../../../assets/img/安全/工具/Wireshark/17.png)
+
+*COTP Fuction Packet*
+- 数据传输包
+
+    ![](../../../assets/img/安全/工具/Wireshark/18.png)
+
+*S7Comm*
+- S7Comm Header
+
+    ![](../../../assets/img/安全/工具/Wireshark/19.png)
+
+    其中最重要的字段就是 ROSCTR，它决定了后续参数的结构
+
+    在响应数据包中，还有可能存在错误信息
+
+    ![](../../../assets/img/安全/工具/Wireshark/20.png)
+
+    可见图中的错误类型就是 No error
+
+- Parameter
+
+    ![](../../../assets/img/安全/工具/Wireshark/21.png)
+
+- 建立通信（Setup communication [0xF0]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/22.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/23.png)
+
+    其协商结果为：ACK 队列的大小为 1；最大 PDU 长度为 240。
+
+- 请求下载（Request download [0x1A]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/28.png)
+
+        如图所示，文件标识是 _ (Complete Module)，块类型为 OB，块的编号为 00001，目标块的文件系统是 P (Passive (copied, but not chained) module)，所以文件名为 _0A00001P。
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/29.png)
+
+- 下载块（Download block [0x1B]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/30.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/31.png)
+
+- 下载结束（Download ended [0x1C]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/32.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/33.png)
+
+- 程序调用服务（PI service [0x28]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/34.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/35.png)
+
+**snap7_s300_everything**
+
+下载 [ICS-Security-Tools/pcaps/s7/snap7_s300_everything.pcapng](https://github.com/ITI/ICS-Security-Tools/blob/master/pcaps/s7/snap7_s300_everything.pcapng)
+
+*S7Comm*
+
+- 开始上传（Start upload [0x1D]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/50.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/51.png)
+
+- 上传（Upload [0x1E]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/52.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/53.png)
+
+- 上传结束（End upload [0x1F]）
+
+    - 请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/54.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/55.png)
+
+**s7comm_varservice_libnodavedemo**
+
+下载 [SampleCaptures/s7comm_varservice_libnodavedemo.pcap](https://wiki.wireshark.org/SampleCaptures?action=AttachFile&do=get&target=s7comm_varservice_libnodavedemo.pcap)
+
+下载后双击用 wireshark 打开。
+
+*S7Comm*
+- 读取值（Read Var [0x04]）
+
+    - 读值操作的作业请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/24.png)
+
+    - 响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/25.png)
+
+- 写入值（Write Var [0x05]）
+
+    - 向地址为 0×000020 的 Flags（M）写入 0×0103 的作业请求
+
+        ![](../../../assets/img/安全/工具/Wireshark/26.png)
+
+    - 向地址为 0×000020 的 Flags（M）写入 0×0103 的确认响应
+
+        ![](../../../assets/img/安全/工具/Wireshark/27.png)
+
+    图中的 item1，说明向地址为 0×000020 的Flags（M）写入 0×0103 成功！
+
+**PLC STOP [0x29]**
+
+192.168.141.1(WIN10)——>192.168.141.128(WIN2019)
+
+snap7 client --> snap7 server
+
+- 请求
+
+    ![](../../../assets/img/安全/工具/Wireshark/36.png)
+
+- 响应
+
+    ![](../../../assets/img/安全/工具/Wireshark/37.png)
+
+**Userdata 协议拓展**
+
+192.168.100.56(WIN10)——>192.168.100.56(WIN10)
+
+snap7 client --> snap7 server
+
+*S7Comm*
+- 块功能（Block functions [0x3]）
+
+    - 列举所有块（List blocks）
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/38.png)
+
+        - 响应
+
+            ![](../../../assets/img/安全/工具/Wireshark/39.png)
+
+    - 列举块类型（List blocks of type）
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/40.png)
+
+        - 响应
+
+            ![](../../../assets/img/安全/工具/Wireshark/41.png)
+
+    - 读取模块的信息（Get block info）
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/42.png)
+
+- CPU功能（CPU functions [0x4]）
+
+    - 系统状态列表（SZL）
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/43.png)
+
+        - 响应
+
+            ![](../../../assets/img/安全/工具/Wireshark/44.png)
+
+- 安全功能（Security [0x5]）
+
+    - PLC密码（PLC password）
+
+        ![](../../../assets/img/安全/工具/Wireshark/45.png)
+
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/46.png)
+
+            Data 是 64 67 02 06 62 65 17 10
+            - 第1位：0x64 ^ 0x55 = 0x31，则值是‘1’；
+            - 第2位：0x67 ^ 0x55 = 0x32，则值是‘2’；
+            - 第3位：0x02 ^ 0x55 ^ 0x64 = 0x33，则值是‘3’；
+            - 第4位：0x06 ^ 0x55 ^ 0x67 = 0x34，则值是‘4’；
+            - 第5位：0x62 ^ 0x55 ^ 0x02 = 0x35，则值是‘5’；
+            - 第6位：0x65 ^ 0x55 ^ 0x06 = 0x36，则值是‘6’；
+            - 第7位：0x17 ^ 0x55 ^ 0x62 = 0x20，则值是‘ ’；
+            - 第8位：0x10 ^ 0x55 ^ 0x65 = 0x20，则值是‘ ’；
+
+        - 响应
+
+            ![](../../../assets/img/安全/工具/Wireshark/47.png)
+
+- 时间功能（Time functions [0x7]）
+
+    - 读时间（Read clock）；
+
+        - 请求
+
+            ![](../../../assets/img/安全/工具/Wireshark/48.png)
+
+        - 响应
+
+            ![](../../../assets/img/安全/工具/Wireshark/49.png)
+
+---
+
+## Ethernet/IP
+
+下载 [ICS-Security-Tools/pcaps/EthernetIP/enip_test.pcap](https://github.com/ITI/ICS-Security-Tools/blob/master/pcaps/EthernetIP/enip_test.pcap)
+
+- 请求
+
+    ![](../../../assets/img/安全/工具/Wireshark/56.png)
+
+    - Command:命令，list identify 表示检测到 Ethernet/IP 列表身份的命令。
+    - Length:长度为 0，因为这个是一个请求包，没有数据长度。
+    - Session Handle：记住这里为0，后续的返回包我们看看是不是一样的。
+    - Status: Success(0×00000000)
+    - Max Response Delay:0,这个包发送是实时的。
+    - Sender Context:0000c1debed1,正好6个字节的内容，等看看是不是一样的。
+    - Options:0,这里为始终为0。
+
+- 响应
+
+    ![](../../../assets/img/安全/工具/Wireshark/57.png)
+
+    - Length:长度不是0了，因为后面有了数据内容。
+    - Session Handle:还是0，和请求包是一样的。
+    - Sender Context:和请求包一样，证明是对应的返回包。
+    - Command Specific Data:数据内容，这部分不需要细看了，里面是一些设备信息，这些在工控渗透时可能会用到。

@@ -1,7 +1,7 @@
 # Hashcat
 
 <p align="center">
-    <img src="../../../assets/img/logo/hashcat.jpg" width="20%">
+    <img src="../../../assets/img/logo/Hashcat.jpg" width="20%">
 </p>
 
 ---

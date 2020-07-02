@@ -97,7 +97,7 @@
 * **[🍞 系统监管](#系统监管)**
   * [BaoTa](#baota)
   * [Jenkins](#jenkins)
-  * [Jumpserver](#jumpserver)
+  * [JumpServer](#jumpserver)
   * [Loganalyzer](#loganalyzer)
   * [Supervisor](#supervisor)
   * [Webmin](#webmin)
@@ -106,15 +106,15 @@
 * **[🌭 虚拟化](#虚拟化)**
   * [Docker](#docker)
     * [Docker-Compose](#docker-compose)
-  * [Qemu](#Qemu)
+  * [QEMU](#qemu)
 
 * **[🥕 分布式](#分布式)**
-  * [zookeeper](#zookeeper)
+  * [ZooKeeper](#zookeeper)
 
 * **[🍯 安全服务](#安全服务)**
   * [ClamAV](#clamav)
-  * [Fail2ban](#fail2ban)
-  * [openldap](#openldap)
+  * [Fail2Ban](#fail2ban)
+  * [OpenLDAP](#openldap)
     * [PhpLdapAdmin](#phpldapadmin)
   * [Snort](#snort)
 
@@ -294,6 +294,10 @@ mount | grep '^/dev'
 
 ## Vim
 
+<p align="center">
+    <img src="../../../assets/img/logo/Vim.png" width="15%">
+</p>
+
 > VIM 是 Linux 系统上一款文本编辑器，它是操作文本的一款利器。
 
 **常用操作**
@@ -357,6 +361,10 @@ vimdiff  FILE_LEFT  FILE_RIGHT
 # 网络服务
 ## AdguardTeam
 
+<p align="center">
+    <img src="../../../assets/img/logo/AdguardTeam.svg" width="25%">
+</p>
+
 > 一个 DNS 去广告、去跟踪的服务
 
 **项目地址**
@@ -381,13 +389,42 @@ systemctl stop firewalld
 ./AdGuardHome -s restart
 ./AdGuardHome -s status
 ```
-无误的话访问服务器 IP+端口 3000 就可以看到管理页面了
+无误的话访问服务器 IP:3000 就可以看到管理页面了
+
+---
+
+## butterfly
+
+> 基于 websocket 和 tornado 的 web 终端
+
+**项目地址**
+- https://github.com/paradoxxxzero/butterfly
+
+**安装**
+```bash
+pip install butterfly
+```
+
+**使用**
+```bash
+# 走 http,使用系统认证
+butterfly.server.py --host=192.168.1.1 --port=57575 --login --unsecure
+```
+
+访问 IP:57575 , 在 web 页面中 Alt+s 可以切换主题样式
 
 ---
 
 ## Cacti
 
+<p align="center">
+    <img src="../../../assets/img/logo/Cacti.png" width="30%">
+</p>
+
 > Cacti 是一套基于 PHP,MySQL,SNMP 及 RRDTool 开发的网络流量监测图形分析工具。它的主要功能是用 snmp 服务获取数据，然后用 rrdtool 储存和更新数据，当用户需要查看数据的时候用 rrdtool 生成图表呈现给用户。
+
+**官网**
+- https://www.cacti.net/
 
 **什么是 RRDtools**
 
@@ -938,7 +975,7 @@ ssh root@1.1.1.1 -p 10000
 
 > 是 Kicktart 不是 kickstarter,这玩意不能众筹,这是用于联网安装系统时给 PXE 服务提供应答文件的
 
-- 调用服务:PXE + TFTP +FTP + DHCP + Kickstart
+- 调用服务:PXE + TFTP +FTP + DHCP + Kicktart
 - 环境:VMWARE
 - 1台无人值守系统——RHEL 7——192.168.10.10
 - 1台客户端——未安装操作系统
@@ -1105,6 +1142,10 @@ systemctl stop firewalld
 
 ## OpenVPN
 
+<p align="center">
+    <img src="../../../assets/img/logo/OpenVPN.png" width="30%">
+</p>
+
 > OpenVPN 是一个用于创建虚拟专用网络加密通道的软件包
 
 **官网**
@@ -1168,6 +1209,10 @@ sz /data/openvpn/conf/whsir.ovpn
 ---
 
 ## PowerDNS
+
+<p align="center">
+    <img src="../../../assets/img/logo/PowerDNS.png" width="33%">
+</p>
 
 > 一种 DNS 服务器, 优点, 支持 PHP 网页管理, 支持直接在数据库中添加 DNS 地址记录, 比较灵活, 方便
 
@@ -1575,73 +1620,26 @@ echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
   ```-----....._____```---...___(__\_\_|_)/__)___...---'''_____.....-----'''
 ```
 ```
-############################################################################################################&
-############################################################################################################&
-############################################################################################################&
-############################################################################################################&
-############################################################################################################&
-############################################################################################################&
-############################################################################################################&
-##########################################################@#################################################&
-#####################################################$;`.:|%@###############################################&
-#################################################$:....`:;;!$##$;::!@#######################################&
-##############################################|`......':'':;|&%:':;:::'%####################################&
-###########################################$'........``......`:;!;'`.''..'$#################################&
-#######################################@$!`.........``........`'`...'::'...`|###############################&
-###################################|'.`:'.........``.............``.....`'`...!#############################&
-###############################&;....:;...............``..........``.......':`..;$@#########################&
-############################@!.....`;:................``............``.....```'`..';$#######################&
-##########################&:......'!'..........``.....``.............``.....``.`'`.```%#####################&
-########################&:.......:;`..........''......`...............``......``.':`.`.`$###################&
-######################@;........':`..........''......``................```.....``..''.`. '&#################&
-#####################!........:!:`..........`'`......``..................`......``..``...  :@###############&
-###################$'.....`!$%|!`...........':`..........''..............`'......``..``..`.  !##############&
-##################!.....;$&%||!:...........`'``......``''`'`..............;;.....``...''..`.  .%############&
-#######@%;|$@###@;....!&&%|||%;...........````.......`'':`  ..............`'......``...''..`. '|%@##########&
-########&|!$%|&&;...`|$$$||||;`...........````.......```:.   .....................``....''.... `$###########&
-#########$|$|!%||;.`:|%%|!||!'``.........``.``.......:!!|!`   ..............  ....::.....''..`` '&##########&
-#########@$|%%|||%%%%%|||!|%;;!`.........``.``...'%&@@$|!;|&#&' ............  ....`:'.....``..'' ;##########&
-###########$%%|!!%$%$%|||!||%%:.........``..``.`|&&!'.'$###!  |%. ..........   ....``.....``..`;:'$#########&
-##########@$$%|!!!;:|%||||%$$!`........``....``:%!.`;@#######%.`;.   `......    ... .`..``.'`.'|&%$#########&
-##########&%$$|!|%:.;%|%$||$$;.........``....''``..:$###@%$@##| ..     .`.`.   .|####|`.''.''.`%############&
-##########&$$%$|!|:.;%!!$&&@&;........``.....`'....!##@@! .%##&`          .   ':``  .!|'`'`''.`%############&
-##########@$&$$||%:.;%||$@|'''........``......''...|@####$$###$`             ..;#####!::`'`''.'|############&
-#########%;%%$&%|;..;|'      .`......``.......`;'.``;&@#######;               ;######@!''.`:'.:;|###########&
-########$'..`!%%!`.`         .'......``.......'`.``.  !#####&'                |##$';##$!:.`!;.:::&##########&
-#######&:........`.          `;;.....''.......'`  :'                         .%#@$`:@#@%:.';:;:..!##########&
-######&:..'`.....`.           `!:...``........'`                              ;#######%;'..`::`..'%#########&
-#####&:.!|`......`.         . .`''..`'........'`                               !#####&'`'`.`'`....;@########&
-####$:|#%`........`           .`..'````.......'`                                 '|!`   `;'...``..`%########&
-###@@##$'..........`        . .`....`'`.......'`                                          ''..:!'..:&#######&
-######$'............`.        .`.....``.......'.          '`...`'''`                      `'...|#!..!#######&
-#####%`...............'`      .`..............`.                     !|                   ':...:&#&:.|######&
-####%`...................`::` .`.::...........'`                    .|;                   ::....!###&:|#####&
-###|..............``..........`'`;:...........'`                    ':                   ;;``...`%####@@####&
-#@;.....````......''''.........`:'`...........'`         ..        ..                  .:`'%$:...'$#########&
-%`...`';|:   .`....'` ':.......`:`''..........'`           `'   .`.                  `;'..!###&:..'$########&
-#########&'     .`.'`   `;`...;%;':!'.........'`                                  .;:.....!######|`'$#######&
-#&' `!@###|        `:.    .::':' .'::`........:'                              `;:`........|&&######@|$######&
-##&'      '.        ..       '''    '!'.......;&&|'                     ';!;'''..........`%;`$##############&
-###$`                         .:.     ::......:|%$%'          `%&&$!`...````.`'........'''!' :@#############&
-                                        ''....'!|%$&$$$$&&$!: :|;!!:....``''.''`.......':;:   !###@#########&
-#&'                                      ':`..'|%||%||||||%|;!|$&|!:.````:|:.||`......'`.;'   .%#&!$########&
-####@;                                     ;;.'!|!||!|||||%|!||%$|!:```'!&|'!&|'.....'` `;`    :@%.!########&
-####@$%!.                                   :|:;$|%$%%%%$$%!|%%$$$|:``!%|%!!$%!'....:'  ::      !; :@#######&
-####&'                            .'         :$$$||;.               .`:!|%$%%%!'..`'.   ``         `$#######&
-######%.   ';;'                               :|'                   ..     '|%;`.`.                .$#######&
-######@&!.       .                             ''                   ..       :|:.                  .%#######&
-######;             .                           .                    .       '%:                   ..'&#####&
-######@:               .                        .`                   .       .:`                  .`';``$###&
-######@%'                 .                      ';'.                         '.                  `''`   |##&
-#####$'`;'           .    ..''                     .`.'!;`           ..    `%&:                  '` ``  `&##&
-#####!..'|'             ..                          ........';!!`    .. :|!` `.                    ``  '&###&
-#####&:.:;                  .                       ...............''`....'`                      ``  :@####&
-######$!'        .             ..                  .`............``   .```'`                     .`  ;######&
-######@:             .            .                 ''..........`'.  .``..'`                    .`  '&######&
-######;                              .              ':``..........      ..`.                   ''   .%######&
-###$%:                      .           .            ;%%!:'`......  `. ...'.                  ``     :@#####&
-#$';:                                     .          :||%%%%|;'``.``.````;%'                .`        :@####&
-#&%;                                         .       .!||%||%%%$&|:'.`;%|!!`               '.          ;####&
+         .-.                     .-.
+      .--' /                     \ '--.
+      '--. \       _______       / .--'
+          \ \   .-"       "-.   / /
+           \ \ /             \ / /
+            \ /               \ /
+             \|   .--. .--.   |/
+              | )/   | |   \( |
+              |/ \__/   \__/ \|
+              /      /^\      \
+              \__    '='    __/
+                |\         /|
+                |\'"VUUUV"'/|
+                \ `"""""""` /
+                 `-._____.-'
+                   / / \ \
+                  / /   \ \
+                 / /     \ \
+              ,-' (       ) `-.
+              `-'._)     (__._.)
 ```
 
 ---
@@ -1664,8 +1662,10 @@ make && make install
 
 **运行**
 ```bash
-ttyd -p 8080 bash -x    # 现在访问 http://localhost:8080 即可
+ttyd -p 8080 bash -x
 ```
+
+现在访问 http://localhost:8080 即可
 
 ---
 
@@ -1689,7 +1689,14 @@ windows 使用 tightVNC 测试连接,连接地址:<IP>:5901
 # web服务-中间件
 ## ActiveMQ
 
+<p align="center">
+    <img src="../../../assets/img/logo/ActiveMQ.png" width="23%">
+</p>
+
 > Apache ActiveMQ 是 Apache 软件基金会所研发的开放源代码消息中间件;由于 ActiveMQ 是一个纯 Java 程序,因此只需要操作系统支持 Java 虚拟机,ActiveMQ 便可执行.
+
+**官网**
+- http://activemq.apache.org/
 
 **安装**
 
@@ -1730,6 +1737,10 @@ firewall-cmd --reload
 ---
 
 ## Apache
+
+<p align="center">
+    <img src="../../../assets/img/logo/Apache.png" width="25%">
+</p>
 
 > Apache HTTP Server 是 Apache 軟體基金會的一個開放原始碼的網頁伺服器軟體，可以在大多數電腦作業系統中運行。由於其跨平台和安全性，被廣泛使用，是最流行的 Web 伺服器軟體之一。
 
@@ -1822,6 +1833,10 @@ yum install httpd-tools
 
 ## Caddy
 
+<p align="center">
+    <img src="../../../assets/img/logo/Caddy.png" width="30%">
+</p>
+
 > Caddy 伺服器是一個開源的，使用 Golang 編寫，支持 HTTP/2 的 Web 服務端。
 
 **官网**
@@ -1878,6 +1893,10 @@ echo -e "xxx.com {
 
 ## npm&Node
 
+<p align="center">
+    <img src="../../../assets/img/logo/npm&Node.png" width="40%">
+</p>
+
 > npm 是 Node.js 預設的、以 JavaScript 編寫的軟體套件管理系統。
 
 > Node.js 是能夠在伺服器端運行 JavaScript 的開放原始碼、跨平台 JavaScript 執行環境。
@@ -1889,7 +1908,7 @@ echo -e "xxx.com {
 **包管理器方式**
 - apt
   ```bash
-  curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -  # 添加Node.js PPA
+  curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -  # 添加 Node.js PPA
   apt-get install nodejs npm
   ```
 
@@ -1944,6 +1963,10 @@ forever -h                # 查看帮助
 ---
 
 ## Nexus
+
+<p align="center">
+    <img src="../../../assets/img/logo/Nexus.png" width="28%">
+</p>
 
 > Nexus 是一种 Maven 仓库管理软件用于搭建私服,私服是架设在局域网的一种特殊的远程仓库，目的是代理远程仓库及部署第三方构件。有了私服之后，当 Maven 需要下载构件时，直接请求私服，私服上存在则下载到本地仓库；否则，私服请求外部的远程仓库，将构件下载到私服，再提供给本地仓库下载。
 
@@ -2001,6 +2024,10 @@ forever -h                # 查看帮助
 ---
 
 ## Nginx
+
+<p align="center">
+    <img src="../../../assets/img/logo/Nginx.png" width="25%">
+</p>
 
 > Nginx 是非同步框架的網頁伺服器，也可以用作反向代理、負載平衡器和 HTTP 缓存。
 
@@ -2079,6 +2106,10 @@ less /var/log/nginx/error.log
 
 ## phpMyAdmin
 
+<p align="center">
+    <img src="../../../assets/img/logo/phpMyAdmin.png" width="30%">
+</p>
+
 **官网**
 - https://www.phpmyadmin.net/
 
@@ -2125,6 +2156,10 @@ systemctl restart nginx
 ---
 
 ## RabbitMQ
+
+<p align="center">
+    <img src="../../../assets/img/logo/RabbitMQ.svg" width="33%">
+</p>
 
 > RabbitMQ 是流行的开源消息队列系统,是 AMQP(Advanced Message Queuing Protocol 高级消息队列协议)的标准实现,用 erlang 语言开发.RabbitMQ 据说具有良好的性能和时效性,同时还能够非常好的支持集群和负载部署,非常适合在较大规模的分布式系统中使用.
 
@@ -2200,6 +2235,10 @@ rabbitmqctl set_user_tags <账号> administrator          # 修改用户角色
 
 
 ## searx
+
+<p align="center">
+    <img src="../../../assets/img/logo/searx.png" width="20%">
+</p>
 
 > 尊重隐私,可控的元搜索引擎.
 
@@ -2332,6 +2371,10 @@ sudo service uwsgi restart
 ---
 
 ## Tomcat
+
+<p align="center">
+    <img src="../../../assets/img/logo/Tomcat.jpg" width="30%">
+</p>
 
 > Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核心项目,属于开源的轻量级 Web 应用服务器,是开发和调试 JSP 程序的首选,主要针对 Jave 语言开发的网页代码进行解析,Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样,具有处理 HTML 页面的功能,然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx,所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端.可以这样认为,当配置正确时,Apache 为 HTML 页面服务,而 Tomcat 实际上运行 JSP 页面和 Servlet.比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序.
 
@@ -2469,6 +2512,10 @@ tomcat 默认的发布 web 项目的目录是:webapps
 
 ## Wordpress
 
+<p align="center">
+    <img src="../../../assets/img/logo/Wordpress.png" width="30%">
+</p>
+
 > WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
 
 **官网**
@@ -2582,6 +2629,10 @@ service firewalld stop
 ---
 
 ## Mijisou
+
+<p align="center">
+    <img src="../../../assets/img/logo/Mijisou.png" width="50%">
+</p>
 
 > 基于开源项目 Searx 二次开发的操作引擎
 
@@ -2975,7 +3026,7 @@ cd /etc/sysconfig/
 cp oracledb_ORCLCDB-19c.conf  oracledb_ORA19C-19c.conf
 
 /etc/init.d/oracledb_ORCLCDB-19c configure
-# 等待Oracle数据库执行初始化操作即可
+# 等待 Oracle 数据库执行初始化操作即可
 ```
 
 增加环境变量处理
@@ -2998,7 +3049,7 @@ passwd oracle
 su - oracle
 sqlplus / as sysdba
 
-# 查看pdb信息
+# 查看 pdb 信息
 show pdbs
 
 # 修改密码
@@ -3025,6 +3076,10 @@ setenforce 0
 ![](../../../assets/img/运维/Linux/Power/1.png)
 
 `注:我在 oracle-database-ee-19c-1.0-1.x86_64 环境下,使用 Navicat Premium 12.1.18 安装 instantclient-basic-windows.x64-12.1.0.2.0 可以成功连接`
+
+**注 : 报错 ORA-03135**
+
+把本机防火墙关掉,顺便看下数据库服务器防火墙有没有放行
 
 **注 : 报错 ORA-28547:connection to server failed, probable Oracle Net admin error**
 
@@ -3075,6 +3130,10 @@ shutdown
 
 ### Mariadb
 
+<p align="center">
+    <img src="../../../assets/img/logo/Mariadb.svg" width="25%">
+</p>
+
 **官网**
 - https://mariadb.org/
 
@@ -3102,10 +3161,10 @@ Enter current password for root (enter for none) |	输入 root 密码 	| 初次�
 Set root password? [Y/n] |	是设置 root 密码 |	可以 y 或者 回车
 New password |	输入新密码
 Re-enter new password |	再次输入新密码
-Remove anonymous users? [Y/n] |	是否删除匿名用户 | 可以 y 或者回车 本题y
-Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 y 或者回车 本题n
-Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本题y
-Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本题y
+Remove anonymous users? [Y/n] |	是否删除匿名用户 | 可以 y 或者回车 本次 y
+Disallow root login remotely? [Y/n]  |	是否禁止 root 远程登录 |  可以 y 或者回车 本次 n
+Remove test database and access to it? [Y/n]  |	是否删除 test 数据库 | y 或者回车 本次 y
+Reload privilege tables now? [Y/n] | 是否重新加载权限表 | y 或者回车 本次 y
 
 **配置远程访问**
 
@@ -3188,6 +3247,10 @@ mysql -u root -p  # 本地连接
 
 ### MySQL
 
+<p align="center">
+    <img src="../../../assets/img/logo/MySQL.png" width="20%">
+</p>
+
 **官网**
 - https://www.mysql.com
 
@@ -3258,6 +3321,10 @@ systemctl restart mysqld
 
 ### Postgresql
 
+<p align="center">
+    <img src="../../../assets/img/logo/Postgresql.png" width="18%">
+</p>
+
 **官网**
 - https://www.postgresql.org
 
@@ -3301,6 +3368,10 @@ host    all             all             0.0.0.0/0               md5
 
 ## Document
 ### MongoDB
+
+<p align="center">
+    <img src="../../../assets/img/logo/MongoDB.png" width="27%">
+</p>
 
 **官网**
 - https://www.mongodb.com/
@@ -3365,6 +3436,10 @@ service mongod restart
 
 ## Key-value
 ### Redis
+
+<p align="center">
+    <img src="../../../assets/img/logo/Redis.png" width="27%">
+</p>
 
 **官网**
 - https://redis.io/
@@ -3454,6 +3529,10 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
 
 ### Memcached
 
+<p align="center">
+    <img src="../../../assets/img/logo/Memcached.png" width="30%">
+</p>
+
 **官网**
 - https://memcached.org/
 
@@ -3490,6 +3569,10 @@ firewall-cmd --reload
 ## 图形
 ### Neo4j
 
+<p align="center">
+    <img src="../../../assets/img/logo/Neo4j.png" width="25%">
+</p>
+
 **官网**
 - https://neo4j.com
 
@@ -3519,6 +3602,10 @@ firewall-cmd --reload
 
 # 文件服务
 ## filebrowser
+
+<p align="center">
+    <img src="../../../assets/img/logo/filebrowser.png" width="32%">
+</p>
 
 > 一个在线网盘服务,只能在线看图片,在线看视频是不支持的 ^w^
 
@@ -4256,6 +4343,10 @@ cargo clean               # 清理目录
 
 ## Jenkins
 
+<p align="center">
+    <img src="../../../assets/img/logo/Jenkins.png" width="27%">
+</p>
+
 **官网**
 - https://jenkins.io/
 
@@ -4293,85 +4384,32 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 
 ---
 
-## Jumpserver
+## JumpServer
+
+<p align="center">
+    <img src="../../../assets/img/logo/JumpServer.png" width="30%">
+</p>
 
 **官网**
 - http://www.jumpserver.org/
 
 **安装**
 
-> 以下部分内容来自 <sup>[[官方文档](http://docs.jumpserver.org/zh/docs/setup_by_centos.html)]</sup> 在此只记录重点
+> 以下部分内容来自 <sup>[[官方文档](https://docs.jumpserver.org/zh/master/install/docker_install/)]</sup> 在此只记录重点
 
 `注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
 
 ```bash
-echo -e "\033[31m 1. 防火墙 Selinux 设置 \033[0m" \
-  && if [ "$(systemctl status firewalld | grep running)" != "" ]; then firewall-cmd --zone=public --add-port=80/tcp --permanent; firewall-cmd --zone=public --add-port=2222/tcp --permanent; firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="172.17.0.0/16" port protocol="tcp" port="8080" accept"; firewall-cmd --reload; fi \
-  && if [ "$(getenforce)" != "Disabled" ]; then setsebool -P httpd_can_network_connect 1; fi
-```
-```bash
-echo -e "\033[31m 2. 部署环境 \033[0m" \
-  && yum update -y \
-  && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-  && yum install -y kde-l10n-Chinese \
-  && localedef -c -f UTF-8 -i zh_CN zh_CN.UTF-8 \
-  && export LC_ALL=zh_CN.UTF-8 \
-  && echo 'LANG="zh_CN.UTF-8"' > /etc/locale.conf \
-  && yum install -y wget gcc epel-release git \
-  && yum install -y yum-utils device-mapper-persistent-data lvm2 \
-  && yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo \
-  && yum makecache fast \
-  && rpm --import https://mirrors.aliyun.com/docker-ce/linux/centos/gpg \
-  && echo -e "[nginx-stable]\nname=nginx stable repo\nbaseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/\ngpgcheck=1\nenabled=1\ngpgkey=https://nginx.org/keys/nginx_signing.key" > /etc/yum.repos.d/nginx.repo \
-  && rpm --import https://nginx.org/keys/nginx_signing.key \
-  && yum install -y redis mariadb mariadb-devel mariadb-server nginx docker-ce \
-  && systemctl enable redis mariadb nginx docker \
-  && systemctl start redis mariadb \
-  && yum install -y python36 python36-devel \
-  && python3.6 -m venv /opt/py3
-```
-```bash
-echo -e "\033[31m 3. 下载组件 \033[0m" \
-  && cd /opt \
-  && if [ ! -d "/opt/jumpserver" ]; then git clone --depth=1 https://github.com/jumpserver/jumpserver.git; fi \
-  && if [ ! -f "/opt/luna.tar.gz" ]; then wget https://demo.jumpserver.org/download/luna/1.4.9/luna.tar.gz; tar xf luna.tar.gz; chown -R root:root luna; fi \
-  && yum install -y $(cat /opt/jumpserver/requirements/rpm_requirements.txt) \
-  && source /opt/py3/bin/activate \
-  && pip install --upgrade pip setuptools -i https://mirrors.aliyun.com/pypi/simple/ \
-  && pip install -r /opt/jumpserver/requirements/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/ \
-  && curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io \
-  && systemctl restart docker \
-  && docker pull jumpserver/jms_coco:1.4.9 \
-  && docker pull jumpserver/jms_guacamole:1.4.9 \
-  && rm -rf /etc/nginx/conf.d/default.conf \
-  && curl -o /etc/nginx/conf.d/jumpserver.conf https://demo.jumpserver.org/download/nginx/conf.d/jumpserver.conf
-```
-```bash
-echo -e "\033[31m 4. 处理配置文件 \033[0m" \
-  && if [ "$DB_PASSWORD" = "" ]; then DB_PASSWORD=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 24`; fi \
-  && if [ "$SECRET_KEY" = "" ]; then SECRET_KEY=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 50`; echo "SECRET_KEY=$SECRET_KEY" >> ~/.bashrc; fi \
-  && if [ "$BOOTSTRAP_TOKEN" = "" ]; then BOOTSTRAP_TOKEN=`cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 16`; echo "BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN" >> ~/.bashrc; fi \
-  && if [ "$Server_IP" = "" ]; then Server_IP=`ip addr | grep inet | egrep -v '(127.0.0.1|inet6|docker)' | awk '{print $2}' | tr -d "addr:" | head -n 1 | cut -d / -f1`; fi \
-  && if [ ! -d "/var/lib/mysql/jumpserver" ]; then mysql -uroot -e "create database jumpserver default charset 'utf8';grant all on jumpserver.* to 'jumpserver'@'127.0.0.1' identified by '$DB_PASSWORD';flush privileges;"; fi \
-  && if [ ! -f "/opt/jumpserver/config.yml" ]; then cp /opt/jumpserver/config_example.yml /opt/jumpserver/config.yml; sed -i "s/SECRET_KEY:/SECRET_KEY: $SECRET_KEY/g" /opt/jumpserver/config.yml; sed -i "s/BOOTSTRAP_TOKEN:/BOOTSTRAP_TOKEN: $BOOTSTRAP_TOKEN/g" /opt/jumpserver/config.yml; sed -i "s/# DEBUG: true/DEBUG: false/g" /opt/jumpserver/config.yml; sed -i "s/# LOG_LEVEL: DEBUG/LOG_LEVEL: ERROR/g" /opt/jumpserver/config.yml; sed -i "s/# SESSION_EXPIRE_AT_BROWSER_CLOSE: false/SESSION_EXPIRE_AT_BROWSER_CLOSE: true/g" /opt/jumpserver/config.yml; sed -i "s/DB_PASSWORD: /DB_PASSWORD: $DB_PASSWORD/g" /opt/jumpserver/config.yml; fi
-```
-```bash
-echo -e "\033[31m 5. 启动 Jumpserver \033[0m" \
-  && systemctl start nginx \
-  && cd /opt/jumpserver \
-  && ./jms start all -d \
-  && docker run --name jms_coco -d -p 2222:2222 -p 5000:5000 -e CORE_HOST=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_coco:1.4.9 \
-  && docker run --name jms_guacamole -d -p 8081:8081 -e JUMPSERVER_SERVER=http://$Server_IP:8080 -e BOOTSTRAP_TOKEN=$BOOTSTRAP_TOKEN jumpserver/jms_guacamole:1.4.9 \
-  && echo -e "\033[31m 你的数据库密码是 $DB_PASSWORD \033[0m" \
-  && echo -e "\033[31m 你的SECRET_KEY是 $SECRET_KEY \033[0m" \
-  && echo -e "\033[31m 你的BOOTSTRAP_TOKEN是 $BOOTSTRAP_TOKEN \033[0m" \
-  && echo -e "\033[31m 你的服务器IP是 $Server_IP \033[0m" \
-  && echo -e "\033[31m 请打开浏览器访问 http://$Server_IP 用户名:admin 密码:admin \033[0m"
+curl -sSL https://github.com/jumpserver/jumpserver/releases/download/2.0.1/quick_start.sh | sh
 ```
 
 ---
 
 ## Loganalyzer
+
+<p align="center">
+    <img src="../../../assets/img/logo/Loganalyzer.png" width="50%">
+</p>
 
 > 日志收集系统
 
@@ -4515,6 +4553,10 @@ supervisorctl update
 
 ## Webmin
 
+<p align="center">
+    <img src="../../../assets/img/logo/Webmin.png" width="35%">
+</p>
+
 **官网**
 - http://www.webmin.com/index.html
 
@@ -4543,6 +4585,10 @@ firewall-cmd --reload
 ---
 
 ## Zabbix
+
+<p align="center">
+    <img src="../../../assets/img/logo/Zabbix.svg" width="25%">
+</p>
 
 > zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组成,其中 web 模块由 PHP 编写,用来显示数据库中的结果.
 
@@ -4671,6 +4717,10 @@ setenforce 0    # 关闭 selinux
 # 虚拟化
 ## Docker
 
+<p align="center">
+    <img src="../../../assets/img/logo/Docker.png" width="30%">
+</p>
+
 **官网**
 - https://www.docker.com
 
@@ -4767,9 +4817,18 @@ docker rmi -f <docker_image_id>             # 删除本地的 docker 镜像
 
 ### Docker-Compose
 
+<p align="center">
+    <img src="../../../assets/img/logo/Compose.png" width="50%">
+</p>
+
 > Docker-Compose 是一个部署多个容器的简单但是非常必要的工具.
 
-去下载二进制包 https://github.com/docker/compose/releases
+**项目地址**
+- https://github.com/docker/compose
+
+**安装**
+
+下载二进制包 https://github.com/docker/compose/releases
 
 然后将文件上传到 `/usr/local/bin/` 文件夹下,然后将其重命名为 docker-compose,修改此文件的权限,增加可执行权限
 
@@ -4794,8 +4853,16 @@ docker-compose exec <service> sh  # 进入容器内
 
 ### Docker-Portainer
 
+<p align="center">
+    <img src="../../../assets/img/logo/Portainer.png" width="30%">
+</p>
+
 > Portainer 是 Docker 一款可视化管理用具，部署简单，推荐。
 
+**官网**
+- https://www.portainer.io/
+
+**部署**
 ```bash
 docker pull portainer/portainer # 拉取镜像
 docker volume create portainer_data
@@ -4805,9 +4872,16 @@ docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.
 
 ---
 
-## Qemu
+## QEMU
 
-> QEMU 是一款开源的模拟器及虚拟机监管器(Virtual Machine Monitor, VMM)。QEMU 主要提供两种功能给用户使用。一是作为用户态模拟器，利用动态代码翻译机制来执行不同于主机架构的代码。二是作为虚拟机监管器，模拟全系统，利用其他VMM(Xen, KVM, etc)来使用硬件提供的虚拟化支持，创建接近于主机性能的虚拟机。
+<p align="center">
+    <img src="../../../assets/img/logo/QEMU.png" width="25%">
+</p>
+
+> QEMU 是一款开源的模拟器及虚拟机监管器。QEMU 主要提供两种功能给用户使用。一是作为用户态模拟器，利用动态代码翻译机制来执行不同于主机架构的代码。二是作为虚拟机监管器，模拟全系统，利用其他VMM(Xen, KVM, etc)来使用硬件提供的虚拟化支持，创建接近于主机性能的虚拟机。
+
+**官网**
+- https://www.qemu.org/
 
 **项目地址**
 - https://github.com/qemu/QEMU
@@ -4826,11 +4900,19 @@ docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.
 ---
 
 # 分布式
-## zookeeper
+## ZooKeeper
+
+<p align="center">
+    <img src="../../../assets/img/logo/ZooKeeper.png" width="35%">
+    <p align="center">这个Logo是什么鬼啊🤣🤣🤣,笑死我了
+</p>
+
+**官网**
+- https://zookeeper.apache.org/
 
 **安装**
 
-依赖 jdk,安装过程见 [JDK](#JDK)
+依赖 jdk,安装过程见 [JDK](#jdk)
 
 zookeeper 支持两种运行模式:独立模式(standalone)和复制模式(replicated).
 
@@ -4874,6 +4956,10 @@ dataLogDir=/usr/local/zookeeper/zookeeper-3.4.14/dataLogDir
 
 # 安全服务
 ## ClamAV
+
+<p align="center">
+    <img src="../../../assets/img/logo/ClamAV.webp" width="25%">
+</p>
 
 > 一个开源防病毒引擎,用于检测木马,病毒,恶意软件和其他恶意威胁.
 
@@ -5044,7 +5130,11 @@ clamscan -r --remove    # 查杀当前目录并删除感染的文件
 
 ---
 
-## Fail2ban
+## Fail2Ban
+
+<p align="center">
+    <img src="../../../assets/img/logo/Fail2Ban.jpg" width="25%">
+</p>
 
 > 禁止导致多次身份验证错误的主机
 
@@ -5146,7 +5236,11 @@ fail2ban-client set ssh-iptables unbanip 192.168.72.130 # 解锁特定的 IP 地
 
 ---
 
-## openldap
+## OpenLDAP
+
+<p align="center">
+    <img src="../../../assets/img/logo/OpenLDAP.png" width="25%">
+</p>
 
 > OpenLDAP 是轻型目录访问协议（Lightweight Directory Access Protocol，LDAP）的自由和开源的实现，在其 OpenLDAP 许可证下发行，并已经被包含在众多流行的 Linux 发行版中。
 
@@ -5376,6 +5470,10 @@ service firewalld stop
 
 ### PhpLdapAdmin
 
+<p align="center">
+    <img src="../../../assets/img/logo/PhpLdapAdmin.png" width="25%">
+</p>
+
 以下部分内容来自 <sup>[[LDAP安装和基本管理手记](https://neversec.top/20180329/LDAP安装和基本管理手记.html)]</sup> 仅作排版处理和部分内容处理
 
 ```bash
@@ -5419,80 +5517,7 @@ systemctl restart httpd
 
 ## Snort
 
-> 一个开源的 IDS
-
-**官网**
-- https://www.snort.org/
-
-**安装**
-- **源代码编译安装**
-
-    安装依赖
-    ```bash
-    yum install -y gcc flex bison zlib zlib-devel libpcap libpcap-devel pcre pcre-devel libdnet libdnet-devel tcpdump openssl openssl-devel
-    ```
-
-    ```bash
-    wget https://www.snort.org/downloads/snort/daq-2.0.6.tar.gz
-    wget https://www.snort.org/downloads/snort/snort-2.9.15.tar.gz
-    ```
-    ```bash
-    tar xvzf daq-2.0.6.tar.gz
-
-    cd daq-2.0.6
-    ./configure && make && sudo make install
-    cd ../
-    ```
-    ```bash
-    wget http://luajit.org/download/LuaJIT-2.0.5.tar.gz
-    tar xvzf LuaJIT-2.0.5.tar.gz
-    cd LuaJIT-2.0.5
-    make install
-    ```
-    ```bash
-    tar xvzf snort-2.9.15.tar.gz
-
-    cd snort-2.9.15
-    ./configure --enable-sourcefire && make && sudo make install
-    ```
-
-- **rpm 包安装**
-
-    这里以 2.9.15-1 为例,最新版访问官网了解 https://www.snort.org
-    ```bash
-    yum install https://www.snort.org/downloads/snort/snort-2.9.15-1.centos7.x86_64.rpm
-    ```
-
-    安装 snort 的时候可能会报错 : `缺少 libnghttp2.so.14()(64bit)`
-    ```bash
-    yum install epel-release -y
-    yum install nghttp2
-    ```
-
-    测试: `snort` ,如果没有报错则安装成功.
-
-    如果报错 `snort: error while loading shared libraries: libdnet.1: cannot open shared object file: No such file or directory`
-    ```bash
-    wget http://prdownloads.sourceforge.net/libdnet/libdnet-1.11.tar.gz
-    tar -xzvf libdnet-1.11.tar.gz
-    ./configure
-    make && make install
-    ```
-
-**规则下载**
-
-Snort 官方提供的三类规则
-
-- Community rules : 无需注册 or 购买,可直接下载使用
-- Registered rules : 需要注册才可以下载
-- Subscriber rules : 需要注册花钱购买
-
-访问官网 https://www.snort.org/ 下载规则
-
-下载完,解压至相应目录
-```
-tar -xvf snortrules-snapshot-<version>.tar.gz -C /etc/snort/rules
-```
+搭建内容移至 [安防设施搭建使用](../../安全/实验/BlueTeam/安防设施搭建使用.md#Snort)
 
 ---
 

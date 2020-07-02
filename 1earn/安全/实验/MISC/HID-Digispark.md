@@ -22,7 +22,7 @@
 - [Linux Conflict w/ Digistump DigiKeyboard.h include](https://forum.arduino.cc/index.php?topic=565616.msg3853561)
 
 **资源**
-- [DigiKeyboard_DE/DigiKeyboard.h](https://github.com/BesoBerlin/DigiKeyboard_DE/blob/master/DigiKeyboard.h) - keyboard库文件
+- [DigiKeyboard_DE/DigiKeyboard.h](https://github.com/BesoBerlin/DigiKeyboard_DE/blob/master/DigiKeyboard.h) - keyboard 库文件
 - [PlatyPew/Digispark-Duckduino](https://github.com/PlatyPew/Digispark-Duckduino) - payload
 - [mame82/duck2spark](https://github.com/mame82/duck2spark) - payload 翻译脚本
 - [toxydose/Duckyspark](https://github.com/toxydose/Duckyspark) - payload 翻译脚本

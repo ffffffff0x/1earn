@@ -928,6 +928,14 @@ ls -alh /var/cache/yum/
 	update-alternatives --set java /opt/jdk1.8.0_91/bin/java	# 直接指定
 ```
 
+**alien**
+
+alien 是一个用于在各种不同的 Linux 包格式相互转换的工具，其最常见的用法是将 .rpm 转换成 .deb（或者反过来）。
+```bash
+apt install alien			# 安装 alien
+alien --to-deb oracle-instantclient19.6-basic-19.6.0.0.0-1.x86_64.rpm	# 将 oracle Basic Package 从 rpm 转为 deb 格式
+```
+
 ### apt
 
 > apt 的全称是 Advanced Packaging Tool 是 Linux 系统下的一款安装包管理工具.
@@ -950,10 +958,11 @@ apt-get clean
 ```
 
 **无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)**
-```
+```bash
 rm -rf /var/cache/apt/archives/lock
 rm -rf /var/lib/dpkg/lock-frontend
 rm -rf /var/lib/dpkg/lock		# 强制解锁占用
+rm /var/lib/dpkg/lock
 ```
 
 **禁用 Ubuntu 自动更新**

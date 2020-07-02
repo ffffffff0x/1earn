@@ -151,7 +151,7 @@ SSH 爆破
 - CVE-2019-6339
 - CVE-2019-6341
 
-漏洞信息和 POC 见 [Web_CVE漏洞记录](../../../笔记/RedTeam/Web_CVE漏洞记录.md#Drupal)
+漏洞信息和 POC 见 [Web_CVE漏洞记录](../../../笔记/RedTeam/Web安全/Web_CVE漏洞记录.md#Drupal)
 
 CVE-2018-7602、CVE-2019-6339、CVE-2019-6341 需要认证，这里就懒得测了，以 CVE-2014-3704 和 CVE-2018-7600 为例,Metasploit 自带这2个漏洞的 EXP
 ```bash
@@ -366,7 +366,7 @@ echo "\$S\$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR" > source.txt
 echo "\$S\$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg" >> source.txt
 ```
 
-然后找个密码表,推荐一下我自己的字典项目 https://github.com/No-Github/AboutSecurity/tree/master/%E5%AD%97%E5%85%B8/%E8%AE%A4%E8%AF%81%E5%AD%97%E5%85%B8/password
+然后找个密码表,推荐一下我自己的字典项目 https://github.com/ffffffff0x/AboutSecurity/tree/master/Dic/Auth/password
 
 ```bash
 hashcat -m 7900 -a 0 source.txt pass01.txt

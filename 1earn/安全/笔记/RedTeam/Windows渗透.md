@@ -468,6 +468,12 @@ path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常
 
 在内网中，获取不到明文密码，且破解不了 hash 又想扩大战果时，可以使用 hash 传递，扩展权限。
 
+**相关文章**
+- [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
+- [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
+- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
+- [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
+
 **必要条件**
 
 - 哈希传递需要被认证的主机能够访问到服务器
@@ -532,11 +538,24 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
     ```
 
-**kb2871997**
+#### kb2871997
 
-> 以下部分内容来自 <sup>[[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)]</sup>
+> 以下部分内容来自 <sup>[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)、[KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)</sup>
 
-在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁kb2871997，能够缓解 PTH,同时，当服务器安装 KB2871997 补丁后，系统默认禁用 Wdigest Auth,内存（lsass 进程）不再保存明文口令。Mimikatz 将读不到密码明文。
+在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。
+
+微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁 kb2871997，能够缓解 PTH,具体更改为以下几点。
+- 支持“Protected Users”组；
+    - “Protected Users”组是 Windows Server 2012 R2 域中的安全组，“Protected Users”组的成员会被强制使用 Kerberos 身份验证，并且对 Kerberos 强制执行 AES 加密。
+- Restricted Admin RDP 模式的远程桌面客户端支持；
+    - Restricted Admin RDP 模式是为了避免将 Client 端的凭据暴露给远程系统，同时也产生一种变种的 Pass The Hash（Passing the Hash with Remote Desktop）
+- 注销后删除 LSASS 中的凭据；
+    - 在这个更新之前，只要用户登录系统，Windows 就会在 lsass 中缓存用户的凭据，包括用户的明文密码、LM/NTLM HASH、Kerberos 的 TGT 票据/Session Key。
+- 添加两个新的 SID；
+    - 本地帐户，LOCAL_ACCOUNT（S-1-5-113），所有本地帐户继承自此 SID；
+    - 本地帐户和管理组成员，LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP（S-1-5-114），所有管理员组的本地用户继承此 SID。
+    - 注意：S-1-5-114 这里在中文操作系统中提供的翻译是“NT AUTHORITY\本地帐户和管理员组成员”，但实际上是“所有本地 Administrators 组中的本地帐户”，即域用户即使被加入到了本地 Administrators 组也不继承此 SID。
+- LSASS 中只允许 wdigest 存储明文密码。
 
 但 kb2871997 对于本地 Administrator(rid 为 500，操作系统只认 rid 不认用户名，接下来我们统称 RID 500 帐户)和本地管理员组的域用户是没有影响的。
 
@@ -544,20 +563,27 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 真正罪魁祸首是远程访问上下文中的用户帐户控制（UAC）令牌筛选
 
-对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌。
-
-管理员组的非 RID500 账户登录之后是没有过 UAC 的，所有特权都被移除，除了 Change Notify 之类的。而 RID500 账户登录之后也以完全管理特权（”完全令牌模式”）运行所有应用程序，实际是不用过 UAC 的，这个可以自己测试下。
+根据微软官方关于远程访问和用户帐户控制的相关文档可以了解到，UAC 为了更好的保护 Administrators 组的帐户，会在网络上进行限制。
 
 对于本地“管理员”组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
 
-如果 HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
+对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌，但是在域用户被加入到本地管理员组之后，域用户可以使用完全管理员（full administrator）的 Access Token 运行，并且 UAC 不会生效。
 
-默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，我们之前提过一嘴的，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
+实验中域用户 test 能够成功 PTH，而本地用户 test1 pth 无法成功，是因为以 test1 pth 的身份发起的请求被 UAC 拒绝。而 administrator 用户成功的原因同样是因为 UAC。
 
-**相关文章**
-- [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
-- [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
-- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
+- **FilterAdministratorToken**
+
+    那如何限制 administrator 的远程登录呢？那就是直接把 FilterAdministratorToken 开启就可以了。路径 ：`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\FilterAdministratorToken` 设置为 1,修改之后策略会立即生效，使用 administrator 的远程连接也被拒绝了
+
+- **LocalAccountTokenFilterPolicy**
+
+    那如何禁用 UAC 的限制？如果注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy` 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
+
+    默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
+
+#### PTH with RDP
+
+![](../../../../assets/img/才怪.png)
 
 ---
 
@@ -730,7 +756,7 @@ mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#ptk)
 
 ### Kerberoast
 
-`Kerberos TGS票据离线破解`
+`Kerberos TGS 票据离线破解`
 
 > 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoast)]</sup>
 
@@ -951,7 +977,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
 
 ## 提权
 
-关于 windows 更多提权内容,见笔记 [权限提升](./权限提升.md#win) windows 提权部分
+关于 windows 更多提权内容,见笔记 [权限提升](./后渗透/权限提升.md#win) windows 提权部分
 
 ---
 

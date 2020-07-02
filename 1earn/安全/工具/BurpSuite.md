@@ -156,6 +156,9 @@ burp Intruder 组件 Payloads 选项 Payload Processing 部分,add -- Hash -- MD
 > 用于 GraphQL 安全测试的扩展
 - [doyensec/inql](https://github.com/doyensec/inql)
 
+> Shiro 反序列化检查 Burp 插件
+- [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check)
+
 ### 插件开发
 
 - [rsrdesarrollo/generator-burp-extension](https://github.com/rsrdesarrollo/generator-burp-extension) - 帮助 burp 插件开发的工具

@@ -94,7 +94,7 @@ db_rebuild_cache
 
 **msfvenom**
 
-使用 msfvenom 生成 payload 内容见 [权限维持](../笔记/RedTeam/权限维持.md#msfvenom)
+使用 msfvenom 生成 payload 内容见 [权限维持](../笔记/RedTeam/后渗透/权限维持.md#msfvenom)
 
 ---
 

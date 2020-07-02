@@ -1,5 +1,9 @@
 # Git 学习笔记
 
+<p align="center">
+    <a href="http://turnoff.us/geek/when-ai-meets-git/"><img src="../../../assets/img/banner/ai-meets-git.jpg" width="65%"></a>
+</p>
+
 ---
 
 # 大纲

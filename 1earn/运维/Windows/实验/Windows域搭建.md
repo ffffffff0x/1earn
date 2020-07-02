@@ -1,9 +1,5 @@
 # Windows 域搭建
 
-<p align="center">
-    <a href="https://www.pixiv.net/en/artworks/45083849"><img src="../../../../assets/img/banner/Windows.jpg" width="90%"></a>
-</p>
-
 ---
 
 # 域结构

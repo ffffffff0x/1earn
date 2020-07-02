@@ -57,7 +57,7 @@ SSH、web、ldap,ldap 一般比较少见,先从熟悉的 web 开始把
 
 ![](../../../../../assets/img/安全/实验/VulnHub/symfonos/symfonos5/4.png)
 
-老样子,啥都没有,爆破目录,字典自 https://github.com/No-Github/AboutSecurity/blob/master/%E5%AD%97%E5%85%B8/Web%E5%AD%97%E5%85%B8/%E7%9B%AE%E5%BD%95/fast-scan.txt
+老样子,啥都没有,爆破目录,字典自 https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/Directory/fast-scan.txt
 ```bash
 ./gobuster dir -u 192.168.141.151 -w fast-scan.txt
 ```

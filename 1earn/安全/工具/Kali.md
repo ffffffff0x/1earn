@@ -117,8 +117,9 @@ pip3 -V
 ```
 
 在 linux 安装了多版本 python 时(例如 python2.6 和 2.7),pip 安装的包不一定是用户想要的位置,此时可以用 -t 选项来指定位置
-
-`pip install -t /usr/local/lib/python2.7/site-packages/ docker`
+```bash
+pip install -t /usr/local/lib/python2.7/site-packages/ docker
+```
 
 ---
 
@@ -137,7 +138,7 @@ vim /etc/proxychains.conf
 
 socks5 127.0.0.1 1080   # 改成你懂的
 ```
-在需要代理的命令前加上 proxychains4 ,如:`proxychains4 wget https://www.google.com/`
+在需要代理的命令前加上 proxychains4 ,如 : `proxychains4 wget https://www.google.com/`
 
 ---
 

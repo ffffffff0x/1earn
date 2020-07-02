@@ -79,6 +79,24 @@ UDP : `nmap -Pn --top-ports 1000 -sU --stats-every 3m -T3 ip -oN <target ip>`
 | closed\|filtered   | 只发生在 IP,ID,idle 扫描
 ```
 
+**Nmap 脚本参数的规则**
+```
+-sC: 等价于 –script=default，使用默认类别的脚本进行扫描。
+–script=: 使用某个或某类脚本进行扫描，支持通配符描述
+–script-args=: 为脚本提供默认参数
+–script-args-file=filename: 使用文件来为脚本提供参数
+–script-trace: 显示脚本执行过程中发送与接收的数据
+–script-updatedb: 更新脚本数据库
+–script-help=: 显示脚本的帮助信息，其中部分可以逗号分隔的文件或脚本类别。
+```
+
+**Nmap 脚本执行格式**
+```
+执行单个脚本：nmap –script /path/to/script.nse
+执行多个脚本：nmap –script /path/to/script.nse,/another/path/script2.nse
+执行文件夹包含的所有脚本：nmap –script/path/to/folder/
+```
+
 ---
 
 ## 基本操作
@@ -146,6 +164,23 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 ---
 
 ## 脚本
+
+**脚本类型**
+- auth : 与用户认证相关的 NSE 脚本
+- broadcast : 使用广播收集网络信息
+- brute : 暴力破解
+- default : 默认,执行脚本(-sC)
+- discovery : 与主机和服务发现相关的脚本
+- dos : 与拒绝服务攻击有关的脚本
+- exploit : 用于利用安全漏洞的脚本
+- external : 此类别适用于第三方服务的脚本
+- fuzzer : 专注于模糊测试的 NES 脚本
+- intrusive : 入侵脚本
+- malware : 与恶意软件检测相关的脚本类别
+- safe : 在所有情况下默认为是安全的脚本
+- vuln : 与检测和利用安全漏洞相关的脚本
+- version : 高级系统脚本
+
 ### 规避
 
 参考 : https://nmap.org/book/man-bypass-firewalls-ids.html
@@ -245,6 +280,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
     - mysql root 弱口令简单爆破 : `nmap -p 3306 --script mysql-brute.nse -v <target ip>`
 
 - mssql
+    - 信息收集 : `nmap -p 1433 --script ms-sql-info --script-args mssql.instance-port=1433 <target ip>`
     - 扫描 sa 空密码 : `nmap -p 1433 --script ms-sql-empty-password.nse -v <target ip>/24`
     - sa 弱口令爆破 : `nmap -p 1433 --script ms-sql-brute.nse -v <target ip>/24`
     - 利用 xp_cmdshell,远程执行系统命令 : `nmap -p 1433 --script ms-sql-xp-cmdshell --script-args mssql.username=sa,mssql.password=sa,ms-sql-xp-cmdshell.cmd=net user test test add <target ip>/24`
@@ -253,6 +289,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
     - 爆破 : `nmap -p 5432 --script pgsql-brute -v <target ip>/24`
 
 - oracle
+    - 信息收集 : `nmap --script oracle-tns-version -p 1521 <target ip>`
     - 爆破 : `nmap --script oracle-brute-stealth -p 1521 --script-args oracle-brute-stealth.sid=ORCL  -v <target ip>/24`
     - 爆破 : `nmap --script oracle-brute -p 1521 --script-args oracle-brute.sid=ORCL -v <target ip>/24`
 
@@ -261,3 +298,66 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 - redis
     - 爆破 : `nmap -p 6379 --script redis-brute.nse <target ip>/24`
+
+---
+
+### 工控探测
+
+- S7
+    - 探测 : `nmap -p 102 --script s7-info.nse <target ip>`
+
+- modbus
+    - 探测 : `nmap -sV -p 502 --script modbus-discover <target ip>`
+
+- EthernetIP
+    - 探测 : `nmap -p 44818 --script enip-info.nse <target ip>`
+
+- NiagaraFox
+    - 探测 : `nmap -p 1911 --script fox-info <target ip>`
+
+该项目提供大量探测脚本 [digitalbond/Redpoint](https://github.com/digitalbond/Redpoint)
+- 识别和枚举 BACnet 设备 : `nmap --script BACnet-discover-enumerate.nse -sU  -p 47808 <target ip>`
+- 探测 CoDeSyS V2 控制器 : `nmap -p 1200,2455 --script codesys-v2-discover <target ip>`
+- 探测 EthernetIP 设备 : `nmap -p 44818 --script enip-enumerate.nse <target ip>`
+- 识别并枚举施耐德电气 Modicon PLC : `nmap --script modicon-info -p 502 <target ip>`
+- 识别并枚举 Omron PLC
+    - `nmap --script ormontcp-info -p 9600 <target ip>`
+    - `nmap --script ormonudp-info -sU -p 9600 <target ip>`
+- 识别并枚举启用 PC Worx 协议的 PLC : `nmap --script pcworx-info -p 1962 <target ip>`
+- 识别并枚举支持 ProConOS 的 PLC : `nmap --script proconos-info -p 20547 <target ip>`
+- 探测 S7 : `nmap -p 102 --script s7-enumerate.nse <target ip>`
+
+该项目提供工控常见协议识别脚本 [digitalbond/Redpoint](https://github.com/digitalbond/Redpoint)
+- Siemens S7 : `nmap -sS -Pn -n --min-hostgroup 1024 --min-parallelism 1024 -p 102 --script s7-info -iL 123.txt -oX 123.xml`
+- Modbus : `nmap -sS -Pn -p 502 --script modicon-info -iL 123.txt -oX 123.xml`
+- IEC 60870-5-104
+    - `nmap -Pn -n -d --script iec-identify.nse  --script-args='iec-identify.timeout=500' -p 2404 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -d --script iec-identify-2014.nse  --script-args='iec-identify.timeout=500' -p 2404 -iL 2404.txt -oX 2404.xml`
+- DNP3
+    - `nmap --script dnp3-info -p 20000 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 --script dnp3-info.nse -p 20000 -iL 20000.txt -oX 20000.xml`
+- EtherNet/IP
+    - `nmap --script enip-info -sU  -p 44818 <host>`
+    - `nmap -Pn -n -sU --min-hostgroup 1024 --min-parallelism 3000 --script enip-info.nse -p 44818 -iL 44818.txt -oX 44818.xml`
+- BACnet
+    - `nmap --script bacnet-info -sU -p 47808 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -sU -p 47808 --script bacnet-info.nse -iL 47808.txt -oX 47808.xml`
+- Tridium Niagara Fox
+    - `nmap --script fox-info.nse -p 1911 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -p 1911 --script fox-info.nse -iL 1911.txt -oX 1911.xml`
+- Crimson V3
+    - `nmap --script cr3-fingerprint -p 789 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -p 789 --script cr3-fingerprint.nse -iL 789.txt -oX 789.xml`
+- OMRON FINS
+    - `nmap --script omron-info -sU -p 9600 <host>`
+    - `nmap --script ormontcp-info -p 9600 <host>`
+    - `nmap --script ormonudp-info -sU -p 9600 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -sU -p 9600 --script ormonudp-info.nse -iL 9600.txt -oX 9600.xml`
+- PCWorx
+    - `nmap --script pcworx-info -p 1962 <host>`
+    - `nmap -Pn -n --min-hostgroup 1024 --min-parallelism 3000 -p 1962 --script pcworx-info.nse -iL 1962.txt -oX 1962.xml`
+- ProConOs
+    - `nmap --script proconos-info -p 20547 <host>`
+- MELSEC-Q
+    - `nmap -script melsecq-discover -sT -p 5007 <host>`
+    - `nmap -script melsecq-discover-udp.nse -sU -p 5006 <host>`

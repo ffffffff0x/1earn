@@ -1,4 +1,4 @@
-# mimikatz
+# Mimikatz
 
 <p align="center">
     <img src="../../../assets/img/logo/mimikatz.jpg" width="25%">

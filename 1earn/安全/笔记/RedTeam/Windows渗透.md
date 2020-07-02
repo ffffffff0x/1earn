@@ -178,7 +178,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 
 **相关工具**
 - [mimikatz](https://github.com/gentilkiwi/mimikatz) - 抓密码神器
-    - [mimikatz](../../工具/mimikatz.md)
+    - [mimikatz](../../工具/Mimikatz.md)
 - [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 用纯 Python 实现的 Mimikatz
 - [AlessandroZ/LaZagne](https://github.com/AlessandroZ/LaZagne) - 凭证抓取神器
 - [Arvanaghi/SessionGopher](https://github.com/Arvanaghi/SessionGopher) - 使用 WMI 提取 WinSCP、PuTTY、SuperPuTTY、FileZilla 和 Microsoft remote Desktop 等远程访问工具保存的会话信息的 ps 脚本
@@ -214,7 +214,7 @@ ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
 
 **mimikatz**
 
-mimikatz 的 NTDS.DIT 攻击操作见 [mimikatz 笔记](../../工具/mimikatz.md#ntdsdit)
+mimikatz 的 NTDS.DIT 攻击操作见 [mimikatz 笔记](../../工具/Mimikatz.md#ntdsdit)
 
 #### 使用VSS卷影副本提取ntds.dit
 
@@ -497,7 +497,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - **mimikatz**
 
-    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#pth)
+    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../工具/Mimikatz.md#pth)
 
 - **wmiexec**
     - [Invoke-WMIExec](https://github.com/wsfengfan/Invoke-TheHash)
@@ -638,7 +638,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 - **mimikatz**
 
-    mimikatz 的 Silver_Tickets 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#Silver_Tickets)
+    mimikatz 的 Silver_Tickets 相关操作见 [mimikatz 笔记](../../工具/Mimikatz.md#Silver_Tickets)
 
 - **ktutil**
     ```bash
@@ -723,7 +723,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 可以通过使用 mimikatz 的 DCSync 获取伪造黄金票据需要的 krbtgt 账号的 hash。该方法中，mimikatz 会模拟域控，向目标域控请求密码账号，不用登录域控，也不用提取 NTDS.DIT 文件。但是该操作需要域管在或者其他高权限账户下进行。
 
-mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#Golden_Tickets)
+mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../工具/Mimikatz.md#Golden_Tickets)
 
 **其他途径**
 - https://pentestlab.blog/tag/dcsync/
@@ -750,7 +750,7 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../工具/mimik
 
 ### PTK
 
-mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../工具/mimikatz.md#ptk)
+mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../工具/Mimikatz.md#ptk)
 
 ---
 

@@ -38,6 +38,10 @@
             * [监察](./1earn/安全/笔记/BlueTeam/监察.md) : 有关查杀、监控、蜜罐的资源
             * [取证](./1earn/安全/笔记/BlueTeam/取证.md) : 内容涉及操作系统的取证、web 的取证、文件的取证
             * [应急](./1earn/安全/笔记/BlueTeam/应急.md) : 应急资源、溯源案例
+        - Crypto
+            * [Crypto](./1earn/安全/笔记/Crypto/Crypto.md) - 介绍各种编码和加密算法及相关的工具
+        - CTF
+            * [CTF](./1earn/安全/笔记/CTF/CTF.md) - 记录 CTF 相关的工具和 writeup 资源
         - ICS
             * [工控协议](./1earn/安全/笔记/ICS/工控协议.md) : 总结各类工控协议的知识点
             * [S7comm相关](./1earn/安全/笔记/ICS/S7comm相关.md) : 记录S7comm相关错误类型、功能码和相关参数
@@ -66,8 +70,6 @@
             * [协议安全](./1earn/安全/笔记/RedTeam/协议安全.md) : 按照协议归类各种漏洞、攻击手段
             * [Linux渗透](./1earn/安全/笔记/RedTeam/Linux渗透.md) : 包含 Linux 口令破解，远程漏洞利用、本地提权的笔记
             * [Windows渗透](./1earn/安全/笔记/RedTeam/windows渗透.md) : 包含 windows pth、ptt，远程漏洞利用、提权等内容的笔记
-        * [Crypto](./1earn/安全/笔记/Crypto.md) - 介绍各种编码和加密算法及相关的工具
-        * [CTF](./1earn/安全/笔记/CTF.md) - 记录 CTF 相关的工具和 writeup 资源
     - **工具**
         * [Aircrack](./1earn/安全/工具/Aircrack.md)
         * [BurpSuite](./1earn/安全/工具/BurpSuite.md)
@@ -75,7 +77,7 @@
         * [Hashcat](./1earn/安全/工具/Hashcat.md)
         * [Kali](./1earn/安全/工具/Kali.md)
         * [Metasploit](./1earn/安全/工具/Metasploit.md)
-        * [mimikatz](./1earn/安全/工具/mimikatz.md)
+        * [Mimikatz](./1earn/安全/工具/Mimikatz.md)
         * [Nmap](./1earn/安全/工具/Nmap.md)
         * [SET](./1earn/安全/工具/SET.md)
         * [Sqlmap](./1earn/安全/工具/Sqlmap.md)
@@ -83,9 +85,11 @@
         * [Wfuzz](./1earn/安全/工具/Wfuzz.md)
         * [Wireshark](./1earn/安全/工具/Wireshark.md)
     - **实验**
+        - BlueTeam
+            * [安防设施搭建使用](./1earn/安全/实验/BlueTeam/安防设施搭建使用.md) - 记录蜜罐、IDS、IPS 的搭建过程与使用方法
         - HTB
         - ICS
-            * [S7-300启停实验](./1earn/安全/实验/ICS/S7-300启停实验.md) : 利用 ISF 框架和 snap7 模拟的西门子 S7-300 PLC 启停实验
+            * [S7-300启停实验](./1earn/安全/实验/ICS/S7-300启停实验.md) - 利用 ISF 框架和 snap7 模拟的西门子 S7-300 PLC 启停实验
         - Misc
             * [HID-Digispark](./1earn/安全/实验/Misc/HID-Digispark.md) - 基于 ATTINY85 开发板的 Digispark 实验
         - Reverse

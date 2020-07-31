@@ -34,13 +34,8 @@
     * [WEB-INF/web.xml信息泄露](#web-infwebxml信息泄露)
     * [idea文件夹泄露](#idea文件夹泄露)
     * [phpinfo信息泄露](#phpinfo信息泄露)
-    * [jsonp信息泄露](#jsonp信息泄露)
     * [JS敏感信息泄露](#js敏感信息泄露)
     * [各类APIkey泄露](#各类apikey泄露)
-
-* **[CORS](#cors)**
-
-* **[CSRF](#csrf)**
 
 * **[http参数污染](#http参数污染)**
 
@@ -52,13 +47,21 @@
 
 * **[CRLF_Injection](#crlf_injection)**
 
-* **[jwt](#jwt)**
-
 * **[SQL_inje](#sql_inje)**
 
 * **[XSS](#xss)**
 
 * **[XXE](#xxe)**
+
+* **[配置不当](#配置不当)**
+    * [jwt攻击](#jwt攻击)
+    * [代理配置不当](#代理配置不当)
+
+* **[未验证来源](#未验证来源)**
+    * [二维码劫持](#二维码劫持)
+    * [CORS](#cors)
+    * [CSRF](#csrf)
+    * [jsonp信息泄露](#jsonp信息泄露)
 
 ---
 
@@ -88,8 +91,13 @@
 
 # 文件包含漏洞
 
-**案例**
-- [IKEA官网本地文件包含(LFI)漏洞分析 - 嘶吼 RoarTalk](http://www.4hou.com/vulnerable/13759.html)
+文件包含，是一个功能。在各种开发语言中都提供了内置的文件包含函数，其可以使开发人员在一个代码文件中直接包含（引入）另外一个代码文件。 比如 在 PHP 中，提供了：`include()`,`include_once()`,`require()`,`require_once()` 这些文件包含函数，这些函数在代码设计中被经常使用到。
+
+大多数情况下，文件包含函数中包含的代码文件是固定的，因此也不会出现安全问题。 但是，有些时候，文件包含的代码文件被写成了一个变量，且这个变量可以由前端用户传进来，这种情况下，如果没有做足够的安全考虑，则可能会引发文件包含漏洞。 攻击着会指定一个“意想不到”的文件让包含函数去执行，从而造成恶意操作。 根据不同的配置环境，文件包含漏洞分为如下两种情况：
+1. 本地文件包含漏洞：仅能够对服务器本地的文件进行包含，由于服务器上的文件并不是攻击者所能够控制的，因此该情况下，攻击着更多的会包含一些固定的系统配置文件，从而读取系统敏感信息。很多时候本地文件包含漏洞会结合一些特殊的文件上传漏洞，从而形成更大的威力。
+2. 远程文件包含漏洞：能够通过 url 地址对远程的文件进行包含，这意味着攻击者可以传入任意的代码，这种情况没啥好说的，准备挂彩
+
+因此，在 web 应用系统的功能设计上尽量不要让前端用户直接传变量给包含函数，如果非要这么做，也一定要做严格的白名单策略进行过滤。
 
 **文章**
 - [LFI、RFI、PHP 封装协议安全问题学习 - 骑着蜗牛逛世界](https://www.cnblogs.com/LittleHann/p/3665062.html#3831621)
@@ -105,6 +113,9 @@
 - [Positive Technologies - learn and secure : Another alternative for NULL byte](https://blog.ptsecurity.com/2010/08/another-alternative-for-null-byte.html)
 - [远程包含和本地包含漏洞的原理 - Kevins 的天空](https://blog.csdn.net/iiprogram/article/details/2349322)
 - [聊聊安全测试中如何快速搞定Webshell](https://www.freebuf.com/articles/web/201421.html)
+
+**案例**
+- [IKEA官网本地文件包含(LFI)漏洞分析 - 嘶吼 RoarTalk](http://www.4hou.com/vulnerable/13759.html)
 
 **几种利用方法**
 - 常规利用
@@ -263,6 +274,10 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [upload-labs](https://github.com/c0ny1/upload-labs)
     - writeup : [upload-labs-WalkThrough](../../../实验/Web/upload-labs-WalkThrough.md)
 
+**案例**
+- [实战渗透-看我如何拿下自己学校的大屏幕(Bypass) ](https://xz.aliyun.com/t/7786) - 大量字符 bypass waf 文件上传
+- [渗透测试tips：两处有趣的文件上传到getshell](https://zhuanlan.zhihu.com/p/100871520) - 多个漏洞组合利用，无视 OSS 存储 getshell
+
 ---
 
 # 信息泄露漏洞
@@ -390,30 +405,13 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## jsonp信息泄露
-
-**文章**
-- [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
-
-**案例**
-- [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](https://shuimugan.com/bug/view?bug_no=172305)
-- [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
-- [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
-- [唯品会某处 JSONP+CSRF 泄露重要信息](https://shuimugan.com/bug/view?bug_no=122755)
-- [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](https://shuimugan.com/bug/view?bug_no=204941)
-- [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](https://shuimugan.com/bug/view?bug_no=118712)
-- [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](https://shuimugan.com/bug/view?bug_no=70690)
-- [利用 JSONP 劫持可以泄漏 QQ 号](https://shuimugan.com/bug/view?bug_no=65177)
-- [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
-- [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
-- [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
-
----
-
 ## JS敏感信息泄露
 
 **文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
+
+**案例**
+- [从JS信息泄露到Webshell](http://r3start.net/index.php/2019/07/15/546)
 
 **相关工具**
 - [m4ll0k/SecretFinder](https://github.com/m4ll0k/SecretFinder) - 通过正则在 JS 中发现敏感数据，如 apikeys、accesstoken、authorizations、jwt，..等等
@@ -469,32 +467,6 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# CORS
-
-**文章**
-- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
-- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
-
-**案例**
-- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
-- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
-
-**工具**
-- [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的CORS错误配置漏洞的 python 工具
-
----
-
-# CSRF
-
-**文章**
-- [CSRF攻击与防御](https://blog.csdn.net/stpeace/article/details/53512283)
-
-**案例**
-- [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
-- [Periscope android app deeplink leads to CSRF in follow action](https://hackerone.com/reports/583987)
-
----
-
 # http参数污染
 
 **文章**
@@ -515,6 +487,8 @@ WEB-INF 主要包含一下文件或目录:
 
 很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
 
+一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
+
 **文章**
 - [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
 - [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
@@ -528,6 +502,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
+- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
 
 **工具**
 - [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
@@ -551,7 +526,30 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# jwt
+# SQL_inje
+
+**笔记**
+- [SQLi 笔记](./SQLi.md)
+
+---
+
+# XSS
+
+**笔记**
+- [XSS 笔记](./xss.md)
+
+---
+
+# XXE
+
+**笔记**
+- [XXE 笔记](./xxe.md)
+
+---
+
+# 配置不当
+
+## jwt攻击
 
 **文章**
 - [全程带阻:记一次授权网络攻防演练 (上) ](https://www.freebuf.com/vuls/211842.html)
@@ -583,17 +581,66 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
 - [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
 
-# SQL_inje
+## 代理配置不当
 
-**笔记**
-- [SQLi 笔记](./SQLi.md)
+**案例**
+- [新浪HTTP代理配置不当漫游内网](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0131169)
+- [陌陌一处代理配置不当，已验证可绕过IP过滤探测敏感资源](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-083202)
+- [陌陌web服务器Path处理不当可以正向代理(idc机器/打不到办公网)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0191121)
+- [挖洞经验之代理不当日进内网](https://mp.weixin.qq.com/s/EtUmfMxxJjYNl7nIOKkRmA)
+- [价值1万美金的谷歌内部主机信息泄露漏洞](https://mp.weixin.qq.com/s/hYZr6EjwE99uTQpzoJRp0g)
 
-# XSS
+---
 
-**笔记**
-- [XSS 笔记](./xss.md)
+# 未验证来源
 
-# XXE
+## 二维码劫持
 
-**笔记**
-- [XXE 笔记](./xxe.md)
+**案例**
+- [二维码劫持案例分析](https://www.freebuf.com/vuls/234121.html)
+
+---
+
+## CORS
+
+**文章**
+- [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
+- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
+
+**案例**
+- [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
+- [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
+
+**工具**
+- [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的CORS错误配置漏洞的 python 工具
+
+---
+
+## CSRF
+
+**文章**
+- [CSRF攻击与防御](https://blog.csdn.net/stpeace/article/details/53512283)
+
+**案例**
+- [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
+- [Periscope android app deeplink leads to CSRF in follow action](https://hackerone.com/reports/583987)
+
+---
+
+## jsonp信息泄露
+
+**文章**
+- [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
+
+**案例**
+- [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)
+- [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
+- [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
+- [唯品会某处 JSONP+CSRF 泄露重要信息](https://shuimugan.com/bug/view?bug_no=122755)
+- [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](https://shuimugan.com/bug/view?bug_no=204941)
+- [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](https://shuimugan.com/bug/view?bug_no=118712)
+- [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](https://shuimugan.com/bug/view?bug_no=70690)
+- [利用 JSONP 劫持可以泄漏 QQ 号](https://shuimugan.com/bug/view?bug_no=65177)
+- [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
+- [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
+- [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)

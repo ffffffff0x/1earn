@@ -117,8 +117,10 @@
   * [OpenLDAP](#openldap)
     * [PhpLdapAdmin](#phpldapadmin)
   * [Snort](#snort)
+  * [Suricata](#suricata)
 
 * **[🍥 各种依赖](#各种依赖)**
+  * [LuaJIT](#luajit)
 
 ---
 
@@ -295,7 +297,7 @@ mount | grep '^/dev'
 ## Vim
 
 <p align="center">
-    <img src="../../../assets/img/logo/Vim.png" width="15%">
+    <img src="../../../assets/img/logo/vim.svg" width="15%">
 </p>
 
 > VIM 是 Linux 系统上一款文本编辑器，它是操作文本的一款利器。
@@ -731,7 +733,7 @@ yum install dhcp
 
 **复制一份示例**
 ```
-cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf
+cp /usr/share/doc/dhcp-4*/dhcpd.conf.example /etc/dhcp/dhcpd.conf
 ```
 
 **修改配置文件**
@@ -739,7 +741,6 @@ cp /usr/share/doc/dhcp-4.1.1/dhcpd.conf.sample /etc/dhcp/dhcpd.conf
 vim /etc/dhcp/dhcpd.conf
 
 ddns-update-style interim;      # 设置 DNS 的动态更新方式为 interim
-option domain-name "abc.edu";
 option domain-name-servers  8.8.8.8;           # 指定 DNS 服务器地址
 default-lease-time  43200;                          # 指定默认租约的时间长度,单位为秒
 max-lease-time  86400;  # 指定最大租约的时间长度
@@ -1513,7 +1514,7 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 ```
 ```bash
-service ssh restart     # 启动ssh
+systemctl start ssh     # 启动ssh
 systemctl enable ssh    # 设置为开机自启
 
 # 或
@@ -1739,7 +1740,7 @@ firewall-cmd --reload
 ## Apache
 
 <p align="center">
-    <img src="../../../assets/img/logo/Apache.png" width="25%">
+    <img src="../../../assets/img/logo/apache.svg" width="8%">
 </p>
 
 > Apache HTTP Server 是 Apache 軟體基金會的一個開放原始碼的網頁伺服器軟體，可以在大多數電腦作業系統中運行。由於其跨平台和安全性，被廣泛使用，是最流行的 Web 伺服器軟體之一。
@@ -2026,7 +2027,7 @@ forever -h                # 查看帮助
 ## Nginx
 
 <p align="center">
-    <img src="../../../assets/img/logo/Nginx.png" width="25%">
+    <img src="../../../assets/img/logo/nginx.svg" width="20%">
 </p>
 
 > Nginx 是非同步框架的網頁伺服器，也可以用作反向代理、負載平衡器和 HTTP 缓存。
@@ -2158,7 +2159,7 @@ systemctl restart nginx
 ## RabbitMQ
 
 <p align="center">
-    <img src="../../../assets/img/logo/RabbitMQ.svg" width="33%">
+    <img src="../../../assets/img/logo/rabbitmq.svg" width="10%">
 </p>
 
 > RabbitMQ 是流行的开源消息队列系统,是 AMQP(Advanced Message Queuing Protocol 高级消息队列协议)的标准实现,用 erlang 语言开发.RabbitMQ 据说具有良好的性能和时效性,同时还能够非常好的支持集群和负载部署,非常适合在较大规模的分布式系统中使用.
@@ -2373,7 +2374,7 @@ sudo service uwsgi restart
 ## Tomcat
 
 <p align="center">
-    <img src="../../../assets/img/logo/Tomcat.jpg" width="30%">
+    <img src="../../../assets/img/logo/tomcat.svg" width="15%">
 </p>
 
 > Tomcat 类似与一个 apache 的扩展型,属于 apache 软件基金会的核心项目,属于开源的轻量级 Web 应用服务器,是开发和调试 JSP 程序的首选,主要针对 Jave 语言开发的网页代码进行解析,Tomcat 虽然和 Apache 或者 Nginx 这些 Web 服务器一样,具有处理 HTML 页面的功能,然而由于其处理静态 HTML 的能力远不及 Apache 或者 Nginx,所以 Tomcat 通常做为一个 Servlet 和 JSP 容器单独运行在后端.可以这样认为,当配置正确时,Apache 为 HTML 页面服务,而 Tomcat 实际上运行 JSP 页面和 Servlet.比如 apache 可以通过 cgi 接口直接调取 Tomcat 中的程序.
@@ -2513,7 +2514,7 @@ tomcat 默认的发布 web 项目的目录是:webapps
 ## Wordpress
 
 <p align="center">
-    <img src="../../../assets/img/logo/Wordpress.png" width="30%">
+    <img src="../../../assets/img/logo/wordpress.svg" width="30%">
 </p>
 
 > WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
@@ -2989,6 +2990,10 @@ stop-writes-on-bgsave-error no
 ## Relational
 ### Oracle
 
+<p align="center">
+    <img src="../../../assets/img/logo/oracle.svg" width="25%">
+</p>
+
 - 机器物理内存应不少于 1GB,如果是 VMWARE 虚拟机建议不少于 1200MB.
 - 对于64位的oracle11g数据库,若程序文件和数据文件安装在同一个分区,则该分区的硬盘空间要求分别为:企业版 5.65GB、标准版 5.38GB;除此以外,还应确保 `/tmp` 目录所在分区的空间不少于1GB,总的来说,建议为 oracle11g 准备至少 8GB 的硬盘空间
 
@@ -3248,7 +3253,7 @@ mysql -u root -p  # 本地连接
 ### MySQL
 
 <p align="center">
-    <img src="../../../assets/img/logo/MySQL.png" width="20%">
+    <img src="../../../assets/img/logo/mysql.svg" width="10%">
 </p>
 
 **官网**
@@ -3438,7 +3443,7 @@ service mongod restart
 ### Redis
 
 <p align="center">
-    <img src="../../../assets/img/logo/Redis.png" width="27%">
+    <img src="../../../assets/img/logo/redis.svg" width="15%">
 </p>
 
 **官网**
@@ -3530,7 +3535,7 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
 ### Memcached
 
 <p align="center">
-    <img src="../../../assets/img/logo/Memcached.png" width="30%">
+    <img src="../../../assets/img/logo/memcached.svg" width=10%">
 </p>
 
 **官网**
@@ -3570,7 +3575,7 @@ firewall-cmd --reload
 ### Neo4j
 
 <p align="center">
-    <img src="../../../assets/img/logo/Neo4j.png" width="25%">
+    <img src="../../../assets/img/logo/neo4j.svg" width="10%">
 </p>
 
 **官网**
@@ -4019,6 +4024,10 @@ systemctl enable vsftpd
 # 编程语言
 ## C
 
+<p align="center">
+    <img src="../../../assets/img/logo/c.svg" width="10%">
+</p>
+
 ```c
 vim world.c
 
@@ -4036,6 +4045,10 @@ gcc helloworld.c -o execFile
 ---
 
 ## Go
+
+<p align="center">
+    <img src="../../../assets/img/logo/go.svg" width="20%">
+</p>
 
 **官网**
 - https://golang.org/
@@ -4080,6 +4093,10 @@ go build
 ---
 
 ## JDK
+
+<p align="center">
+    <img src="../../../assets/img/logo/java.svg" width="10%">
+</p>
 
 **rpm 包方式安装**
 
@@ -4141,6 +4158,10 @@ javac
 ---
 
 ## Python3
+
+<p align="center">
+    <img src="../../../assets/img/logo/python.svg" width="10%">
+</p>
 
 **官网**
 - https://www.python.org/
@@ -4244,6 +4265,10 @@ jupyter-labextension uninstall my-extension   # 卸载已安装扩展
 
 ## Ruby
 
+<p align="center">
+    <img src="../../../assets/img/logo/ruby.svg" width="8%">
+</p>
+
 **官网**
 - https://www.ruby-lang.org
 
@@ -4272,6 +4297,10 @@ source ~/.bash_profile  # 不要忘了生效一下
 ---
 
 ## Rust
+
+<p align="center">
+    <img src="../../../assets/img/logo/rust.svg" width="10%">
+</p>
 
 **官网**
 - https://www.rust-lang.org
@@ -5025,7 +5054,7 @@ chown clamav:clamav /opt/clamav/share/clamav
 ```bash
 /opt/clamav/bin/clamscan -h                 # 查看相应的帮助信息
 /opt/clamav/bin/clamscan -r /               # 扫描计算机上的所有文件并且显示所有的文件的扫描结果
-/opt/clamav/bin/clamscan -r --bell -i /·    # 扫描计算机上的所有文件并且显示有问题的文件的扫描结果
+/opt/clamav/bin/clamscan -r --bell -i /.    # 扫描计算机上的所有文件并且显示有问题的文件的扫描结果
 /opt/clamav/bin/clamscan -r /home           # 扫描所有用户的主目录
 ```
 
@@ -5517,7 +5546,13 @@ systemctl restart httpd
 
 ## Snort
 
-搭建内容移至 [安防设施搭建使用](../../安全/实验/BlueTeam/安防设施搭建使用.md#Snort)
+Snort 搭建与使用内容访问 [安防设施搭建使用](../../安全/实验/BlueTeam/安防设施搭建使用.md#snort) Snort 部分
+
+---
+
+## Suricata
+
+Suricata 搭建与使用内容访问 [安防设施搭建使用](../../安全/实验/BlueTeam/安防设施搭建使用.md#suricata) Suricata 部分
 
 ---
 
@@ -5538,4 +5573,21 @@ dpkg -i libsodium18_1.0.11-1_amd64.deb
 **ERROR: pkg-config binary 'pkg-config' not found**
 ```bash
 apt-get install pkg-config
+```
+
+---
+
+## LuaJIT
+
+> LuaJIT 是采用 C 语言写的 Lua 代码的解释器，LuaJIT 试图保留 Lua 的精髓--轻量级,高效和可扩展。
+
+**官网地址**
+- https://luajit.org/
+
+**安装**
+```bash
+wget https://luajit.org/download/LuaJIT-2.0.5.tar.gz
+tar -zxf LuaJIT-2.0.5.tar.gz
+cd LuaJIT-2.0.5/
+sudo make && make install
 ```

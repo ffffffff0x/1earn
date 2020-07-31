@@ -373,6 +373,7 @@
 #### AES
 
 - [AES Encryption – Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
+- [在线AES加密解密、AES在线加密解密、AES encryption and decryption--查错网](http://tool.chacuo.net/cryptaes)
 
 #### MD160
 
@@ -413,7 +414,7 @@
 
 - [SHA1哈希 - 在线SHA1散列发生器](http://www.convertstring.com/zh_CN/Hash/SHA1)
 - [SHA256哈希 - 在线SHA256哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA256)
-- [SHA3​​84哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
+- [SHA384哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
 - [SHA512哈希 - 在线SHA512哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA512)
 
 ---

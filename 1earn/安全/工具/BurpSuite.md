@@ -63,10 +63,6 @@ burp Intruder 组件 Payloads 选项 Payload Processing 部分,add -- Hash -- MD
 
 ## 插件
 
-- [BApp Store](https://portswigger.net/bappstore)
-
----
-
 > 使用堆栈跟踪进行 Java 指纹识别
 - [x41sec/BeanStack](https://github.com/x41sec/beanstack)
 
@@ -158,6 +154,12 @@ burp Intruder 组件 Payloads 选项 Payload Processing 部分,add -- Hash -- MD
 
 > Shiro 反序列化检查 Burp 插件
 - [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check)
+
+> a burp extension to find where use fastjson
+- [p1g3/Fastjson-Scanner](https://github.com/p1g3/Fastjson-Scanner)
+
+> 一款基于 BurpSuite 的被动式 shiro 检测插件
+- [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan)
 
 ### 插件开发
 
@@ -304,9 +306,9 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 
 **Proxy listeners**
 
-代理侦听器是本地 HTTP 代理服务器,用于侦听来自浏览器的传入连接.它使您能够监视和拦截所有请求和响应,并且是 Burp 用户驱动的工作流程的核心.默认情况下,Burp 在环回接口的端口 8080 上创建一个侦听器.要使用此侦听器,您需要将浏览器配置为使用 127.0.0.1:8080 作为其代理服务器.测试几乎所有基于浏览器的 Web 应用程序都需要此默认侦听器.
+代理侦听器是本地 HTTP 代理服务器,用于侦听来自浏览器的传入连接.它使你能够监视和拦截所有请求和响应,并且是 Burp 用户驱动的工作流程的核心.默认情况下,Burp 在环回接口的端口 8080 上创建一个侦听器.要使用此侦听器,你需要将浏览器配置为使用 127.0.0.1:8080 作为其代理服务器.测试几乎所有基于浏览器的 Web 应用程序都需要此默认侦听器.
 
-Burp 允许您创建多个代理侦听器,并提供了大量配置选项来控制其行为.在测试异常应用程序或与某些非基于浏览器的 HTTP 客户端一起使用时,有时可能需要使用这些选项.
+Burp 允许你创建多个代理侦听器,并提供了大量配置选项来控制其行为.在测试异常应用程序或与某些非基于浏览器的 HTTP 客户端一起使用时,有时可能需要使用这些选项.
 
 特别是当我们测试非浏览器应用时,无法使用浏览器代理的方式去拦截客户端与服务器端通信的数据流量,这种情况下,我们会使用自己的 Proxy 监听设置,而不会使用默认设置.
 
@@ -326,7 +328,7 @@ Burp 允许您创建多个代理侦听器,并提供了大量配置选项来控�
 
     当我们配置了端口的转发时,所有的请求都会被转发到这个端口上;如果我们配置了主机或域名的转发,则所有的请求会转发到指定的主机或域名上.同时,我们可以指定,通过 Burp Proxy 的消息是否强制使用 SSL,如果设置了此项,则请求若是 http 协议,经 Burp proxy 代理后将转换为 https 协议.隐形代理主要是用于测试富客户端应用或者是非浏览器代理方式的应用,当我们设置了它,访问这些应用时,将通过非代理的方式,直接连接 Burp Proxy 的监听端口.
 
-    注意,每个重定向选项都可以单独使用.因此,例如,您可以将所有请求重定向到特定主机,同时保留每个原始请求中使用的原始端口和协议.
+    注意,每个重定向选项都可以单独使用.因此,例如,你可以将所有请求重定向到特定主机,同时保留每个原始请求中使用的原始端口和协议.
 
     *隐形代理*
 
@@ -358,8 +360,8 @@ Burp 允许您创建多个代理侦听器,并提供了大量配置选项来控�
     2. 可以与该拒绝无效的 SSL 证书连接到服务器胖客户机应用程序的工作.
 
     它有下列选项可供设置:
-    - 使用自签名证书(Use a self-signed certificate ) —— 一个简单的自签名 SSL 证书呈现给您的浏览器,它总是会导致 SSL 警告.
-    - 生成每个主机的 CA 签名证书(Generate CA-signed per-host certificates)—— 这是默认选项.在安装时,Burp 创造了一个独特的自签名的证书颁发机构(CA)证书,并将此计算机上使用.当你的浏览器发出的 SSL 连接指定主机,Burp 生成该主机的 SSL 证书,由 CA 证书签名.您可以安装 Burp 的 CA 证书作为浏览器中的受信任的根,从而使每个主机证书没有任何警报接受.
+    - 使用自签名证书(Use a self-signed certificate ) —— 一个简单的自签名 SSL 证书呈现给你的浏览器,它总是会导致 SSL 警告.
+    - 生成每个主机的 CA 签名证书(Generate CA-signed per-host certificates)—— 这是默认选项.在安装时,Burp 创造了一个独特的自签名的证书颁发机构(CA)证书,并将此计算机上使用.当你的浏览器发出的 SSL 连接指定主机,Burp 生成该主机的 SSL 证书,由 CA 证书签名.你可以安装 Burp 的 CA 证书作为浏览器中的受信任的根,从而使每个主机证书没有任何警报接受.
     - 生成与特定的主机名 CA 签发的证书(Generate a CA-signed certificate with a specific hostname)—— -是类似于前面的选项;不同的是,Burp 会生成一个主机证书与每一个 SSL 连接使用,使用指定的主机名.
     - 使用自定义证书(Use a custom certificate)—— 此选项可以加载一个特定的证书(在 PKCS＃12 格式)呈现给浏览器.如果应用程序使用这需要一个特定的服务器证书(例如,与给定的序列号或证书链)的客户端应该使用这个选项.
 
@@ -381,9 +383,9 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 - **Strip Sec-WebSocket-Extensions headers in incoming requests** - 浏览器可能会提供支持与 WebSocket 连接有关的各种扩展的信息,例如 压缩内容.在 Burp 中处理响应时,某些编码会引起问题.默认情况下,Burp 删除此标头以减少使用扩展名的机会.如果服务器要求特定的扩展名,则可能需要取消选中此选项.
 - **Unpack GZIP / deflate in requests** - 某些应用程序(通常使用自定义客户端组件的应用程序)会压缩请求中的消息正文.此选项控制 Burp 代理是否自动解包压缩的请求主体.如果某些应用程序预期会有压缩体,并且压缩已被 Burp 移除,则它们可能会中断.
 - **Unpack GZIP / deflate in responses** - 大多数浏览器在响应中接受 GZIP 和压缩压缩的内容.此选项控制 Burp 代理是否自动解压缩压缩的响应主体.注意,通常可以通过从请求中删除 Accept-Encoding 标头(可能使用Burp Proxy的匹配和替换功能)来防止服务器尝试压缩响应.
-- **Disable web interface at http://BurpSuite** - 如果您被迫将侦听器配置为接受不受保护的接口上的连接,并希望防止其他人访问Burp的浏览器内接口,则此选项可能很有用.
-- **Suppress Burp error messages in browser** - 当发生某些错误时,默认情况下 Burp 会向浏览器返回有意义的错误消息. 如果您希望以隐身模式运行 Burp,以对受害用户进行中间人攻击,那么抑制这些错误消息以掩盖 Burp 的事实可能很有用.
-- **Don't send items to Proxy history or live tasks** - 此选项可防止 Burp 将任何请求记录到代理历史记录或将其发送到实时任务,例如被动爬网或实时审核. 如果您将 Burp Proxy 用于某些特定目的(例如,对上游服务器进行身份验证或执行匹配和替换操作),并且希望避免引起日志记录所需的内存和存储开销,则这可能会很有用.
+- **Disable web interface at http://BurpSuite** - 如果你被迫将侦听器配置为接受不受保护的接口上的连接,并希望防止其他人访问Burp的浏览器内接口,则此选项可能很有用.
+- **Suppress Burp error messages in browser** - 当发生某些错误时,默认情况下 Burp 会向浏览器返回有意义的错误消息. 如果你希望以隐身模式运行 Burp,以对受害用户进行中间人攻击,那么抑制这些错误消息以掩盖 Burp 的事实可能很有用.
+- **Don't send items to Proxy history or live tasks** - 此选项可防止 Burp 将任何请求记录到代理历史记录或将其发送到实时任务,例如被动爬网或实时审核. 如果你将 Burp Proxy 用于某些特定目的(例如,对上游服务器进行身份验证或执行匹配和替换操作),并且希望避免引起日志记录所需的内存和存储开销,则这可能会很有用.
 - **Don't send items to Proxy history or live tasks, if out of scope** - 此选项可防止 Burp 将任何范围外的请求记录到 Proxy 历史记录中或将其发送到实时任务,例如 被动抓取 或 实时审计. 避免积累范围外项目的项目数据很有用.
 
 ---
@@ -414,88 +416,240 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 
 ## Payloads
 
-- Payload Sets 配置 payload 规则
-    - Simple list : 这是最简单的 Payload 类型，可以让你配置一个简单的字符串列表作为 Payload。你可以使用文本框和 "添加 "按钮手动添加项目到列表中，也可以从剪贴板中粘贴列表，或者从文件中加载。
-    - Runtime file : 这个有 Payload 类型可以让你配置一个文件，在运行时从该文件中读取 Payload 字符串。这在需要一个非常大的 Payload 列表时非常有用，可以避免在内存中保留整个列表。每行文件只读一个 Payload，因此 Payload 可能不包含换行字符。
-    - Custom iterator : 这种 Payload 类型可以让您配置多个项目列表，并使用列表中的所有项目的组合生成 Payload 。它提供了一种强大的方法，可以根据给定的模板生成字符或其他项目的自定义组合。例如，一个工资单应用程序可能会使用AB/12形式的人员编号来识别个人；你可能需要迭代所有可能的人员编号来获取所有个人的详细信息。自定义的迭代器最多定义了8个不同的 "位置"，用于生成permutations。每个位置都配置了一个项目列表和一个可选的 "分隔符 "字符串，在该位置和下一个位置之间插入。在前面提到的例子中，位置1和2被配置为A-Z，位置3和4被配置为0-9，位置2被设置为分隔符/。因此，在这个例子中，总的 Payload 数等于26*26*10*10。列表项的编辑方法与简单列表 Payload 类型的编辑方法相同。"Clear all "按钮可以删除自定义迭代器的所有位置的所有配置。"Choose a preset scheme"下拉菜单可用于选择自定义迭代器的预配置设置。这些方案可用于各种标准攻击，也可修改为自定义攻击。可用的方案有 "目录/文件.扩展名"，可用于生成URL，以及 "密码+数字"，可用于生成一个扩展的词表，用于密码猜测攻击。
-    - Character substitution : 这种 Payload 类型可以让你配置一个字符串列表，并对每个项目进行不同的字符替换。它可能在密码猜测攻击中很有用，用于生成常见的字典词的变体。在用户界面中，您可以配置一些字符替换。当攻击被执行时， Payload 类型会依次对每个配置的列表项进行处理。对于每一个项目，它都会生成一些 Payload ，包括根据定义的替换字符的所有变体。例如，在默认的替换规则下（包括e > 3和t > 7），"peter "项将产生以下 Payload 。
-        ```
-        peter
-        p3ter
-        pe7er
-        p37er
-        pet3r
-        p3t3r
-        pe73r
-        p373r
-        ```
-    - Case modification : 这种 Payload 类型可以让你配置一个字符串列表，并对每个项目进行不同的大小写修改。这在密码猜测攻击中可能很有用，用于生成字典单词的大小写变化。可以选择以下的大小写修改规则。
-        - No change : 该项目在使用时没有被修改。
-        - To lower case : 将项目中的所有字母转换为小写。
-        - To upper case : 项目中的所有字母都会被转换为大写。
-        - To Propername : 项目中的第一个字母转换成大写，后面的字母转换成小写。
-        - To ProperName : 项目中的第一个字母转换成大写，后面的字母不变。
-    - Recursive grep : 这种 Payload 类型可以让你从攻击中的前一个请求的响应中提取每个 Payload 。在一些需要递归地提取有用数据或传递漏洞的情况下，它很有用。该 Payload 类型与 extract grep 函数一起工作，用于提取包含有趣信息的响应中的一部分。从攻击中的前一个响应中提取的文本被用作当前请求的 Payload 。这可以用来执行各种任务。例如，通过递归注入SQL注入形式的查询，可以通过SQL注入来提取数据库的内容。
-        ```
-        union select name from sysobjects where name > 'a'
-        ```
-        服务器的错误信息披露了第一个数据库对象的名称。
-        ```
-        Syntax error converting the varchar value 'accounts' to a column of data type int.
-        ```
-        然后使用 "account "重复查询，以确定下一个对象。这个任务可以使用递归的grep Payload 来快速列出数据库中的所有对象。必须选择以下选项：
-        - Extract grep item from which to derive payloads : 提取grep项，用于提取 Payload
-        - Initial payload for first request : 初始请求中要使用的 Payload (当没有之前的响应时，将用于派生 Payload )。
-        - Stop if duplicate payload found : 当连续两次派生相同的 Payload 时，该选项会导致攻击停止。
-    - Illegal Unicode : 这种有效载荷类型可以用来生成非法的 Unicode 字符表示。它有时可以有效地绕过旨在阻止某些字符的过滤器，例如对文件路径遍历攻击的防御措施，这些文件路径遍历攻击符合预期的 ./ 和 .// 序列的编码。有效载荷类型是在一个项目列表上运行，通过用另一个字符的非法 Unicode-encodings 替换每个项目中的指定字符，从每个项目中生成一些有效载荷。
+**Payload Sets 配置 payload 规则**
+- Simple list : 这是最简单的 Payload 类型，可以让你配置一个简单的字符串列表作为 Payload。你可以使用文本框和 "添加 "按钮手动添加项目到列表中，也可以从剪贴板中粘贴列表，或者从文件中加载。
 
-![](../../../assets/img/才怪.png)
+- Runtime file : 这个有 Payload 类型可以让你配置一个文件，在运行时从该文件中读取 Payload 字符串。这在需要一个非常大的 Payload 列表时非常有用，可以避免在内存中保留整个列表。每行文件只读一个 Payload，因此 Payload 可能不包含换行字符。
 
-- Payload Processing 配置加密规则,优先级由上往下,自动给字典编码
+- Custom iterator : 这种 Payload 类型可以让你配置多个项目列表，并使用列表中的所有项目的组合生成 Payload 。它提供了一种强大的方法，可以根据给定的模板生成字符或其他项目的自定义组合。例如，一个工资单应用程序可能会使用AB/12形式的人员编号来识别个人；你可能需要迭代所有可能的人员编号来获取所有个人的详细信息。自定义的迭代器最多定义了8个不同的 "位置"，用于生成permutations。每个位置都配置了一个项目列表和一个可选的 "分隔符 "字符串，在该位置和下一个位置之间插入。在前面提到的例子中，位置1和2被配置为A-Z，位置3和4被配置为0-9，位置2被设置为分隔符/。因此，在这个例子中，总的 Payload 数等于26*26*10*10。列表项的编辑方法与简单列表 Payload 类型的编辑方法相同。"Clear all "按钮可以删除自定义迭代器的所有位置的所有配置。"Choose a preset scheme"下拉菜单可用于选择自定义迭代器的预配置设置。这些方案可用于各种标准攻击，也可修改为自定义攻击。可用的方案有 "目录/文件.扩展名"，可用于生成URL，以及 "密码+数字"，可用于生成一个扩展的词表，用于密码猜测攻击。
 
-- Payload Encoding 配置字典进行 URL 编码
+- Character substitution : 这种 Payload 类型可以让你配置一个字符串列表，并对每个项目进行不同的字符替换。它可能在密码猜测攻击中很有用，用于生成常见的字典词的变体。在用户界面中，你可以配置一些字符替换。当攻击被执行时， Payload 类型会依次对每个配置的列表项进行处理。对于每一个项目，它都会生成一些 Payload ，包括根据定义的替换字符的所有变体。例如，在默认的替换规则下（包括e > 3和t > 7），"peter "项将产生以下 Payload 。
+    ```
+    peter
+    p3ter
+    pe7er
+    p37er
+    pet3r
+    p3t3r
+    pe73r
+    p373r
+    ```
+
+- Case modification : 这种 Payload 类型可以让你配置一个字符串列表，并对每个项目进行不同的大小写修改。这在密码猜测攻击中可能很有用，用于生成字典单词的大小写变化。可以选择以下的大小写修改规则。
+    - No change : 该项目在使用时没有被修改。
+    - To lower case : 将项目中的所有字母转换为小写。
+    - To upper case : 项目中的所有字母都会被转换为大写。
+    - To Propername : 项目中的第一个字母转换成大写，后面的字母转换成小写。
+    - To ProperName : 项目中的第一个字母转换成大写，后面的字母不变。
+
+- Recursive grep : 这种 Payload 类型可以让你从攻击中的前一个请求的响应中提取每个 Payload 。在一些需要递归地提取有用数据或传递漏洞的情况下，它很有用。该 Payload 类型与 extract grep 函数一起工作，用于提取包含有趣信息的响应中的一部分。从攻击中的前一个响应中提取的文本被用作当前请求的 Payload 。这可以用来执行各种任务。例如，通过递归注入 SQL 注入形式的查询，可以通过 SQL 注入来提取数据库的内容。
+    ```
+    union select name from sysobjects where name > 'a'
+    ```
+    服务器的错误信息披露了第一个数据库对象的名称。
+    ```
+    Syntax error converting the varchar value 'accounts' to a column of data type int.
+    ```
+    然后使用 "account "重复查询，以确定下一个对象。这个任务可以使用递归的grep Payload 来快速列出数据库的所有对象。必须选择以下选项：
+    - Extract grep item from which to derive payloads : 提取grep项，用于提取 Payload
+    - Initial payload for first request : 初始请求中要使用的 Payload (当没有之前的响应时，将用于生 Payload )。
+    - Stop if duplicate payload found : 当连续两次派生相同的 Payload 时，该选项会导致攻击停止。
+
+- Illegal Unicode : 这种 payload 类型可以用来生成非法的 Unicode 字符表示。它有时可以有效地绕过旨在阻止某些字符的过滤器，例如对文件路径遍历攻击的防御措施，这些文件路径遍历攻击符合预期的 ./ 和 .// 序列的编码。 payload 类型是在一个项目列表上运行，通过用另一个字符的非法 Unicode-encodings 替换每个项目中的指定字符，从每个项目中生成一些 payload 。
+
+- Character blocks : 这种 payload 类型基于指定字符或字符串的块生成 payload 。在检测缓冲区溢出和其他边界条件漏洞时，它可以在本机（非托管）环境下运行的软件中发挥作用。它还可用于利用一些逻辑缺陷，即特定长度的输入绕过输入过滤器或触发意外的代码路径。以下是可用的选项。
+    - Base string - 这是生成字符块的输入字符串。
+    - Min length - 这是要生成的最小字符块的大小。
+    - Max length - 这是可生成的最大字符块的大小。
+    - Step - 这是每个字符块长度的增量。
+
+- Numbers : 该 payload 类型在给定范围内以指定格式生成数字 payload 。可提供以下选项
+    - Number range
+        - Type - 这个选项指定数字是否应该以定义的顺序生成，还是随机生成。
+        - From - 如果数字是按顺序生成的，这是将生成的第一个数字的值，否则，它是可能随机生成的最小数字。否则，它是可能被随机生成的最小的数字。
+        - To - 如果数字是按顺序生成的，这是将生成的最后一个数字的值（或最接近的阶梯值的较低增量）。否则，它是可能随机生成的最高数字。
+        - Step - 这个选项在按顺序生成数字时可用，并指定连续数字之间的增量。该值可能是负数，在这种情况下，生成的数字将向下递增。
+        - How many - 这个选项在随机生成数字时可用，并指定将生成的 payload 的数量。请注意，可能会生成重复的 payload 。
+    > 注意：Burp对数字范围配置和运行时 payload 生成器的内部状态都使用双精度浮点数。在处理非常大的数字或非常精确的小数时，一些精度损失是可以预期的。如果你需要循环浏览一个包含许多总数字（超过大约12位）的数字范围，那么使用你的 payload 定位标记来突出攻击模板内较大数字的一个子部分，并生成包含相应较少数字的数字 payload 是比较可靠的。
+    - Number format
+        - Base - 这个选项指定数字是以十进制还是十六进制形式生成。
+        - Min integer digits - 这是每个数字的最小整数位数。整数位数较少的数字将在左手边用0填充。
+        - Max integer digits - 这是每个数字的最大整数位数。有更多整数位数的数字将被截断，失去最重要的整数位数。
+        - Min fraction digits - 这是每个数字的最小分数位数（小数点后）。小数位数较少的数字将在右手边用0填充。这个选项在生成十六进制数字时不可用。
+        - Max fraction digits - 这是每个数字的最大分数位数（小数点后）。有更多分数位数的数字将被截断，失去其最不重要的分数位数。这个选项在生成十六进制数字时不可用。
+    > 每一个数字选项都可以留空，表示不应强制执行最小或最大尺寸。还显示了当前数字格式配置所产生的数字的例子。
+
+- Dates : 这种 payload 类型在给定范围内以指定格式生成日期 payload 。这种 payload 类型在数据挖掘（例如，搜索订单簿中不同日期的条目）或粗暴强迫（例如，猜测用户凭证的出生日期部分）时可能很有用。以下是可用的选项：
+    - From - 这是要生成的第一个（也是最早的）日期。
+    - To - 这是将要生成的最后（也是最晚）日期的值（或最接近步长值的较低增量）。
+    - Step - 这是连续日期之间的增量，以天、周、月或年为单位。它必须是一个正值。
+    - Format - 这是日期的表示格式。可以选择一些预定义的日期格式，或者在文本字段中输入一个自定义的日期格式。下面的例子说明了可以用来指定自定义日期格式的语法。
+        ```
+        E	Sat
+        EEEE	Saturday
+        d	7
+        dd	07
+        M	6
+        MM	06
+        MMM	Jun
+        MMMM	June
+        yy	03
+        yyyy	2003
+        / . : etc.	/ . :
+        ```
+- Brute forcer : 该 payload 类型生成指定长度的 payload ，其中包含指定字符集的所有排列组合。以下是可用的选项：
+    - Character set -  payload 中要使用的字符集。请注意， payload 的总数随着这组字符的大小而成倍增加。
+    - Min length - 最短 payload 的长度。
+    - Max length - 最长 payload 的长度。
+
+- Null payloads : 这种 payload 类型产生的 payload 的值是一个空字符串。
+
+    当攻击要求重复发出相同的请求，而不对基本模板进行任何修改时，这种 payload 类型是有用的。这可以用于各种攻击，例如，采集cookie用于排序分析，应用层拒绝服务攻击，其中重复发送请求，在服务器上启动高工作量的任务，或者保持在其他间歇性测试中使用的会话令牌的活力。
+
+    使用这种有效负载类型，甚至不需要在请求模板中使用有效负载位置标记。
+
+    你可以配置 Burp 生成指定数量的空有效负载，或者无限期地继续。
+
+- Character frobber ： 这种 payload 类型对字符串输入进行操作，并依次修改每个字符位置的值。它可以在每个 payload 位置的现有基础值或指定的字符串上操作。它每次只对基础字符串循环一个字符，将该字符的 ASCII 码递增一个。
+
+    当测试哪些参数值或部分值对应用程序的响应有影响时，这种 payload 类型非常有用。特别是在测试复杂的会话令牌的哪些部分实际上被用于跟踪会话状态时，它可以很有用。如果修改会话令牌中单个字符的值，仍然会导致你的请求在你的会话中被处理，那么很可能令牌中的这个字符实际上并没有被用来跟踪你的会话。
+
+- Bit flipper ： 这种 payload 类型对输入进行操作，并依次修改每个比特位置的值。它可以在每个 payload 位置的现有基础值上操作，也可以在指定的字符串上操作。它一次一个字符循环浏览基础字符串，依次翻转每个（指定）位。
+    - Operate on - 这个选项让你指定是在 payload 位置的基值上操作，还是在其他字符串上操作。
+    - Format of original data - 这个选项让你指定生成器是对原始数据的字面值进行操作，还是将其视为 ASCII 十六进制数据（下文将进一步解释）。
+    - Select bits to flip - 这个选项让你指定每个字节中的哪些位应该被翻转，从最不重要的位（即0000000X）到最重要的位（即X0000000）。
+
+    你可以配置比特翻转器，使其对基础值进行操作，或者将基础值视为 ASCII 十六进制字符串。例如，如果基础值是 "ab"，那么对字面字符串进行操作并翻转所有位，将产生以下 payload 。
+    ```
+    `b
+    cb
+    eb
+    ib
+    qb
+    Ab
+    !b
+    áb
+    ac
+    a`
+    af
+    aj
+    ar
+    aB
+    a"
+    aâ
+    ```
+    而将 "ab "作为一个 ASCII 十六进制字符串，并翻转所有位，将导致以下 payload 。
+    ```
+    aa
+    a9
+    af
+    a3
+    bb
+    8b
+    eb
+    2b
+    ```
+    这种 payload 类型在类似于字符冻结器的情况下很有用，但在这种情况下，你需要更精细的控制。例如，如果会话令牌或其他参数值包含用 CBC 模式下的块密码加密的有意义的数据，那么可能会通过修改前一个密码块中的位来系统地改变解密数据的部分。在这种情况下，你可以使用比特翻转器 payload 类型来确定修改加密值内各个比特的效果，并了解应用程序是否可能存在漏洞。
+
+- Username generator : 这个 payload 类型让你配置一个名字或电子邮件地址的列表，并使用各种常见的方案从这些列表中获取潜在的用户名。
+
+    例如，提供 "peter weiner"这个名字，就会得到多达 115 个可能的用户名，如下所示：
+    ```
+    peterweiner
+    peter.weiner
+    weinerpeter
+    weiner.peter
+    peter
+    weiner
+    peterw
+    peter.w
+    wpeter
+    w.peter
+    pweiner
+    p.weiner
+    weinerp
+    weiner.p
+    etc...
+    ```
+    如果你的目标是特定的人类用户，而你又不知道应用程序中使用的用户名或电子邮件地址方案，那么这种 payload 类型就会很有用。
+
+    列表项的编辑方式与简单列表 payload 类型相同。你还可以配置列表中每个项目生成的最大 payload 数量。
+
+- ECB block shuffler : 这种 payload 类型可以用来洗牌ECB加密数据中的密文块，以便有意义地修改解密后的明文，并有可能干扰应用逻辑。
+
+    由于 ECB 密码器将每个明文块独立于其他明文块加密，相同的明文块加密成相同的密文块（只要使用相同的密钥），反之亦然。因此，可以在一大段密文中对块进行洗牌，其效果是对解密后的明文的相应块进行洗牌。在某些数据中（如结构化的会话令牌，其中有用户名、用户ID、角色和时间戳等字段），可能会有意义地改变解密数据的内容，从而干扰应用程序的处理，并进行未经授权的操作。以下是可用的选项：
+    - Encrypted data to shuffle -这个选项让你指定是在 payload 位置的基值上操作，还是在另一个字符串上操作。
+    - Format of original data - 这个选项让你指定生成器是否应该对原始数据的字面值进行操作，还是应该将其作为ASCII十六进制处理。
+    - Block size - 这是加密块的字节大小。在大多数情况下，块的大小是8或16字节。如果你不确定，你应该使用可能使用的每个块大小多次运行攻击。
+    - Additional encrypted strings - 这个列表让你可以选择提供一个使用相同密码和密钥的加密字符串列表，以提供额外的区块来洗牌到加密数据中。因为这种类型的成功攻击通常需要相当程度的运气，即找到一个具有合适明文值的块，可以洗牌到结构中的正确点，因此，通过获得大量的由相同应用函数加密的字符串样本，成功的几率通常会提高。例如，如果你使用这种 payload 类型来攻击一个会话令牌，那么从应用程序中收获大量的其他会话令牌，以提供额外的密文块是有益的。
+
+- Extension-generated : 该 payload 类型调用 Burp 扩展来生成 payload 。该扩展必须已经注册了 Intruder payload 生成器。你可以从当前加载的扩展注册的可用生成器列表中选择所需的生成器。
+
+- Copy other payload : 这种 payload 类型在另一个 payload 位置复制当前 payload 的值。它可用于具有多个 payload 集的攻击类型（集束炸弹和撞锤）。你也可以定义 payload 处理规则，这样你就可以从另一个位置的 payload 值系统地推导出当前的 payload ，而不是仅仅复制其字面值。这种 payload 类型在各种情况下都会有用，例如：
+    - 两个不同的参数必须始终具有相同的值，才能命中目标代码路径（例如，新密码和确认密码的字段），你想使用集束炸弹攻击类型来同时操纵其他参数。
+    - 请求中的一个参数值包含了另一个参数值的校验值，这个校验值通常是由客户端脚本根据用户输入计算出来的。
+
+**Payload Processing**
+
+配置加密规则,优先级由上往下,自动给字典编码
+
+你可以定义规则，以便在使用每个 payload 之前对其执行各种处理任务。所定义的规则将按顺序执行，并可打开和关闭，以帮助调试配置中的任何问题。 payload 处理规则在许多情况下都很有用，在这些情况下，你需要生成不寻常的 payload ，或需要在使用前将 payload 包裹在更广泛的结构或编码方案中。
+
+有以下类型的规则：
+- Add prefix - 在 payload 前添加一个字面前缀。
+- Add suffix - 在 payload 后添加文字后缀。
+- Match / replace - 这将用一个字面字符串替换 payload 中与特定正则表达式匹配的任何部分。
+- Substring - 从指定的偏移量(0-indexed)开始，提取 payload 的子部分，直到指定的长度。
+- Reverse substring - 这个功能和子串规则一样，但是指定的结束偏移量是从 payload 的末端开始向后计算，而长度则是从结束偏移量开始向后计算。
+- Modify case - 如果适用的话，它将修改 payload 的大小写。与修改大小写 payload 类型的选项相同。
+- Encode - 该选项使用各种方案对 payload 进行编码。URL、HTML、Base64、ASCII 十六进制或各种平台的构造字符串。
+- Decode - 使用不同的方案对 payload 进行解码：URL、HTML、Base64 或 ASCII 十六进制或各种平台的构造字符串。URL、HTML、Base64 或 ASCII 十六进制。
+- Hash - 对 payload 进行 Hash 操作。
+- Add raw payload - 在当前处理值之前或之后添加原始 payload 值。例如，如果你需要以原始和散列形式提交相同的 payload ，它可能会很有用。
+- Skip if matches regex - 这将检查当前处理后的值是否与指定的正则表达式相匹配，如果是，则跳过该 payload 并转到下一个。例如，如果你知道一个参数值必须有一个最小的长度，并且想跳过列表中任何短于这个长度的值，那么这个功能就很有用。
+- Invoke Burp extension - 这将调用Burp扩展来处理 payload 。该扩展必须已经注册了一个 Intruder payload 处理器。你可以从当前加载的扩展注册的可用处理器列表中选择所需的处理器。
+
+**Payload Encoding**
+
+配置字典进行 URL 编码
 
 ## Options
 
-- 请求消息头设置 (Request Headers)
+**请求消息头设置 (Request Headers)**
 
-    这个设置主要用来控制请求消息的头部信息,它由 Update Content-Length header和Set Connection: close两个选项组成.
+这个设置主要用来控制请求消息的头部信息,它由 Update Content-Length header和Set Connection: close两个选项组成.
 
-    其中 Update Content-Length header 如果被选中,Burp Intruder 在每个请求添加或更新 Content-Length 头为该次请求的 HTTP 体的长度正确的值.这个功能通常是为插入可变长度的 Payload 到模板的 HTTP 请求的主体的攻击中,如果没有指定正确的值,则目标服务器可能会返回一个错误,可能会到一个不完整的请求做出响应,或者可能会无限期地等待请求继续接收数据.
+其中 Update Content-Length header 如果被选中,Burp Intruder 在每个请求添加或更新 Content-Length 头为该次请求的 HTTP 体的长度正确的值.这个功能通常是为插入可变长度的 Payload 到模板的 HTTP 请求的主体的攻击中,如果没有指定正确的值,则目标服务器可能会返回一个错误,可能会到一个不完整的请求做出响应,或者可能会无限期地等待请求继续接收数据.
 
-    Set Connection: close 如果被选中,表示 Burp Intruder 在每个请求消息中添加或更新值为"关闭"的连接头,这将更迅速地执行.在某些情况下 (当服务器本身并不返回一个有效的 Content-Length 或 Transfer-Encoding 头) ,选中此选项可能允许攻击.
+Set Connection: close 如果被选中,表示 Burp Intruder 在每个请求消息中添加或更新值为"关闭"的连接头,这将更迅速地执行.在某些情况下 (当服务器本身并不返回一个有效的 Content-Length 或 Transfer-Encoding 头) ,选中此选项可能允许攻击.
 
-- 请求引擎设置 (Request Engine)
+**请求引擎设置 (Request Engine)**
 
-    这个设置主要用来控制 Burp Intruder 攻击,合理地使用这些参数能更加有效地完成攻击过程.它有如下参数:Number of threads 并发的线程数,Number of retries on network failure 网络失败时候重试次数,Pause before retry 重试前的暂停时间间隔 (毫秒) ,Throttle between requests 请求延时 (毫秒) ,Start time 开始时间,启动攻击之后多久才开始执行.
+这个设置主要用来控制 Burp Intruder 攻击,合理地使用这些参数能更加有效地完成攻击过程.它有如下参数:Number of threads 并发的线程数,Number of retries on network failure 网络失败时候重试次数,Pause before retry 重试前的暂停时间间隔 (毫秒) ,Throttle between requests 请求延时 (毫秒) ,Start time 开始时间,启动攻击之后多久才开始执行.
 
-- 攻击结果设置 (Attack Results)
+**攻击结果设置 (Attack Results)**
 
-    这个设置主要用来控制从攻击结果中抓取哪些信息.它的参数有:Store requests / responses 保存请求/应答消息,Make unmodified baseline request 记录请求母板的消息内容,Use denial-of-service mode 使用 Dos 方式,tore full payloads 存储所有的 Payload 值.
+这个设置主要用来控制从攻击结果中抓取哪些信息.它的参数有:Store requests / responses 保存请求/应答消息,Make unmodified baseline request 记录请求母板的消息内容,Use denial-of-service mode 使用 Dos 方式,tore full payloads 存储所有的 Payload 值.
 
-- Grep Match
+**Grep Match**
 
-    这个设置主要用来从响应消息中提取结果项,如果匹配,则在攻击结果中添加的新列中标明,便于排序和数据提取.比如说,在密码猜测攻击,扫描诸如"密码不正确"或"登录成功",可以找到成功的登录;在测试 SQL 注入漏洞,扫描包含"ODBC","错误"等消息可以识别脆弱的参数.
+这个设置主要用来从响应消息中提取结果项,如果匹配,则在攻击结果中添加的新列中标明,便于排序和数据提取.比如说,在密码猜测攻击,扫描诸如"密码不正确"或"登录成功",可以找到成功的登录;在测试 SQL 注入漏洞,扫描包含"ODBC","错误"等消息可以识别脆弱的参数.
 
-    Match type 表示匹配表达式还是简单的字符串,Case sensitive match 是否大小写敏感,Exclude HTTP headers 匹配的时候,是否包含 http 消息头.
+Match type 表示匹配表达式还是简单的字符串,Case sensitive match 是否大小写敏感,Exclude HTTP headers 匹配的时候,是否包含 http 消息头.
 
-- Grep Extract
+**Grep Extract**
 
-    这些设置可用于提取响应消息中的有用信息.对于列表中配置的每个项目,Burp 会增加包含提取该项目的文本的新结果列.然后,您可以排序此列 (通过单击列标题) 命令所提取的数据.此选项是从应用数据挖掘有用的,能够支持广泛的攻击.例如,如果你是通过一系列文档 ID 的循环,可以提取每个文档寻找有趣的项目的页面标题.如果您发现返回的其他应用程序用户详细信息的功能,可以通过用户 ID 重复和检索有关用户寻找管理帐户,甚至密码.如果"遗忘密码"的功能需要一个用户名作为参数,并返回一个用户配置的密码提示,您可以通过共同的用户名列表运行和收获的所有相关密码的提示,然后直观地浏览列表寻找容易被猜到密码.
+这些设置可用于提取响应消息中的有用信息.对于列表中配置的每个项目,Burp 会增加包含提取该项目的文本的新结果列.然后,你可以排序此列 (通过单击列标题) 命令所提取的数据.此选项是从应用数据挖掘有用的,能够支持广泛的攻击.例如,如果你是通过一系列文档 ID 的循环,可以提取每个文档寻找有趣的项目的页面标题.如果你发现返回的其他应用程序用户详细信息的功能,可以通过用户 ID 重复和检索有关用户寻找管理帐户,甚至密码.如果"遗忘密码"的功能需要一个用户名作为参数,并返回一个用户配置的密码提示,你可以通过共同的用户名列表运行和收获的所有相关密码的提示,然后直观地浏览列表寻找容易被猜到密码.
 
-- Grep Payloads
+**Grep Payloads**
 
-    这些设置可用于提取响应消息中是否包含 Payload 的值,比如说,你想验证反射性的 XSS 脚本是否成功,可以通过此设置此项.当此项设置后,会在响应的结果列表中,根据 Payload 组的数目,添加新的列,显示匹配的结果,你可以通过点击列标题对结果集进行排序和查找.
+这些设置可用于提取响应消息中是否包含 Payload 的值,比如说,你想验证反射性的 XSS 脚本是否成功,可以通过此设置此项.当此项设置后,会在响应的结果列表中,根据 Payload 组的数目,添加新的列,显示匹配的结果,你可以通过点击列标题对结果集进行排序和查找.
 
-    其设置项跟上一个类似,需要注意的是 Match against pre-URL-encoded payloads,如果你在请求消息时配置了 URL-encode payloads ,则这里表示匹配未编码之前的 Payload 值,而不是转码后的值.
+其设置项跟上一个类似,需要注意的是 Match against pre-URL-encoded payloads,如果你在请求消息时配置了 URL-encode payloads ,则这里表示匹配未编码之前的 Payload 值,而不是转码后的值.
 
-- 重定向 (Redirections)
+**重定向 (Redirections)**
 
-    这些设置主要是用来控制执行攻击时 Burp 如何处理重定向,在实际使用中往往是必须遵循重定向,才能实现你的攻击目的.例如,在密码猜测攻击,每次尝试的结果可能是密码错误会重定向响应到一个错误消息提示页面,如果密码正确会重定向到用户中心的首页. 但设置了重定向也可能会遇到其他的问题,比如说,在某些情况下,应用程序存储您的会话中初始请求的结果,并提供重定向响应时检索此值,这时可能有必要在重定向时只使用一个单线程攻击.也可能会遇到,当你设置重定向,应用程序响应会重定向到注销页面,这时候,按照重定向可能会导致您的会话被终止时. 因其设置选项跟其他模块的重定向设置基本一致,此处就不再重叙.
-
-- **结果选项卡**
-
-    可以使用过滤器进行筛选
+这些设置主要是用来控制执行攻击时 Burp 如何处理重定向,在实际使用中往往是必须遵循重定向,才能实现你的攻击目的.例如,在密码猜测攻击,每次尝试的结果可能是密码错误会重定向响应到一个错误消息提示页面,如果密码正确会重定向到用户中心的首页. 但设置了重定向也可能会遇到其他的问题,比如说,在某些情况下,应用程序存储你的会话中初始请求的结果,并提供重定向响应时检索此值,这时可能有必要在重定向时只使用一个单线程攻击.也可能会遇到,当你设置重定向,应用程序响应会重定向到注销页面,这时候,按照重定向可能会导致你的会话被终止时. 因其设置选项跟其他模块的重定向设置基本一致,此处就不再重叙.
 
 ---
 

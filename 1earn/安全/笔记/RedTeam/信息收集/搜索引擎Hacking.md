@@ -29,20 +29,8 @@
 
 ---
 
-**文章**
+**相关文章**
 - [Shodan BinaryEdge ZoomEye 网络空间搜索引擎测评](https://paper.seebug.org/970/)
-- [[渗透神器系列]搜索引擎](https://thief.one/2017/05/19/1/)
-- [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
-- [shodan-manual](https://b404.gitbooks.io/shodan-manual/)
-- [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
-
-**搜索引擎语法**
-- 包含关键字: `intitle:关键字`
-- 包含多个关键字: `allintitle:关键字 关键字2`
-- 搜索特定类型的文件: `关键字 filetype:扩展名` 例如 `人类简史 filetype:pdf`
-- 搜索特定网站的内容: `关键字 site:网址`
-- 排除不想要的结果: `关键字 -排查条件`,例如搜索 "运动相机",但只想看 GoPro 品牌以外的产品 `运动相机 -GoPro`
-- 双引号的用处:例如: `"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
 
 **常用搜索接口**
 ```
@@ -188,6 +176,14 @@ https://searchcode.com/
 **案例**
 - [GGvulnz — How I hacked hundreds of companies through Google Groups](https://medium.com/@milanmagyar/ggvulnz-how-i-hacked-hundreds-of-companies-through-google-groups-b69c658c8924) - 作者描述了如何通过 google group 的搜索结果获得未授权的访问链接
 
+**搜索引擎语法**
+- 包含关键字: `intitle:关键字`
+- 包含多个关键字: `allintitle:关键字 关键字2`
+- 搜索特定类型的文件: `关键字 filetype:扩展名` 例如 `人类简史 filetype:pdf`
+- 搜索特定网站的内容: `关键字 site:网址`
+- 排除不想要的结果: `关键字 -排查条件`,例如搜索 "运动相机",但只想看 GoPro 品牌以外的产品 `运动相机 -GoPro`
+- 双引号的用处:例如: `"how to write a code"` 如果没有引号,搜索的大部分结果是以 `write code` 为关键字.包含引号后,会确保将完整的字符串做为期望的检索结果提交给搜索引擎.
+
 **搜索语法合集**
 - [Google Hacking Database](https://www.exploit-db.com/google-hacking-database)
 - [K0rz3n/GoogleHacking-Page](https://github.com/K0rz3n/GoogleHacking-Page)
@@ -292,6 +288,16 @@ https://searchcode.com/
         按摩服务
         大保健
         ```
+    - [fwwdn/sensitive-stop-words](https://github.com/fwwdn/sensitive-stop-words) - 互联网常用敏感词、停止词词库
+    - [observerss/textfilter](https://github.com/observerss/textfilter) - 敏感词过滤的几种实现+某1w词敏感词
+    - [lining0806/TextMining](https://github.com/lining0806/TextMining) - 敏感词过滤系统
+    - [funNLP/data/敏感词库](https://github.com/fighting41love/funNLP/tree/master/data/%E6%95%8F%E6%84%9F%E8%AF%8D%E5%BA%93) - 反动词表、暴恐词表
+    - [IllegalWordsDetection/blob/master/MinGanCi.txt](https://github.com/NewbieGameCoder/IllegalWordsDetection/blob/master/MinGanCi.txt) - 敏感词
+    - [Ldundun/DFA/blob/master/sw.txt](https://github.com/Ldundun/DFA/blob/master/sw.txt) - 敏感词
+    - [qloog/sensitive_words](https://github.com/qloog/sensitive_words) - 敏感词库整理
+    - [57ing/Sensitive-word](https://github.com/57ing/Sensitive-word) -  收集的一些敏感词汇，细分了暴恐词库、反动词库、民生词库、色情词库、贪腐词库、其他词库等
+    - [bzvs1992/SensitiveWordFilter](https://github.com/bzvs1992/SensitiveWordFilter)
+    - [adlered/DangerousSpamWords](https://github.com/adlered/DangerousSpamWords) - 超轻量的中文敏感字、敏感词库，字典词典
 
 - **漏洞**
     ```
@@ -385,6 +391,8 @@ https://searchcode.com/
 **文章**
 - [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
 - [How to Discover MongoDB and Elasticsearch Open Databases](https://habr.com/en/post/443132/)
+- [Shodan新手入坑指南](https://www.freebuf.com/sectool/121339.html)
+- [shodan-manual](https://b404.gitbooks.io/shodan-manual/)
 
 **搜索语法合集**
 - [jakejarvis/awesome-shodan-queries](https://github.com/jakejarvis/awesome-shodan-queries)
@@ -489,7 +497,7 @@ module: s7 port:102                             # S7设备
     <img src="../../../../../assets/img/logo/binaryedge.png" width="15%">
 </p>
 
-> BinaryEdge 是一家来自瑞士的公司提供的资产搜索引擎，其为企业提供网络安全，工程和数据科学解决方案的评估。它利用机器学习技术收集有关基础设施的信息，并将收集的数据与从提要中获得的数据相关联。功能包括通过将发现结果与安全工具结合后从联网设备和运行于它们的服务中提取数据来提供通知，警报和报告功能。·
+> BinaryEdge 是一家来自瑞士的公司提供的资产搜索引擎，其为企业提供网络安全，工程和数据科学解决方案的评估。它利用机器学习技术收集有关基础设施的信息，并将收集的数据与从提要中获得的数据相关联。功能包括通过将发现结果与安全工具结合后从联网设备和运行于它们的服务中提取数据来提供通知，警报和报告功能。
 
 **官网**
 - https://www.binaryedge.io/
@@ -615,6 +623,9 @@ port:102 +app:"Siemens S7 PLC"
 **官网**
 - https://fofa.so
 
+**相关文章**
+- [工具的使用 | 网络空间搜索引擎Fofa的简单使用](https://mp.weixin.qq.com/s/2uLSOZHvIX_KLTwpp9sGfA)
+
 **语法**
 ```bash
 title="abc"         # 从标题中搜索 abc.例:标题中有北京的网站.
@@ -638,7 +649,8 @@ title!="powered by" && body=discuz
 (body="content=\"WordPress" || (header="X-Pingback" && header="/xmlrpc.php" && body="/wp-includes/") ) && host="gov.cn"
 
 app="Solr" && title=="Solr Admin"   # 找 solr 服务
-
+app="Coremail" &&  country=CN       # 查找使用 coremail 并且在中国境内的网站
+title="管理后台" ||  title="登录后台"  # 查找 title 中含有管理后台或者登录后台的网站
 port=”102″ && protocol==”s7″        # 找 S7comm设备
 ```
 

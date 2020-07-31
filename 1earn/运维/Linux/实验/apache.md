@@ -387,6 +387,10 @@ openssl req -new -key httpd.key -out httpd.csr
 
 # 配置php
 
+<p align="center">
+    <img src="../../../../assets/img/logo/php.svg" width="20%">
+</p>
+
 ```bash
 若之前安装过其他版本 PHP,先删除
 yum remove php*

@@ -102,7 +102,7 @@ source.txt 你要爆破的 hash 列表
 pass01.txt 你的密码表
 ```
 
-![](../../../assets/img/安全/实验/VulnHub/DC/DC1/9.png)
+![](../../../assets/img/安全/实验/靶机/VulnHub/DC/DC1/9.png)
 
 **爆破wifi握手包**
 ```bash

@@ -12,7 +12,9 @@
     - 提供 Kioptrix4 靶机的 WalkThrough
 * [the-fog](https://github.com/the-fog)
     - 提供逆向实验的内容
+    - 提供无线安全相关的内容
 * [BeakHyun](https://github.com/Alienware-OWO)
+    - 提供信息收集笔记的部分内容
 * [cililianjie](https://github.com/cililianjie)
 * [mfslog](https://github.com/mfslog)
 

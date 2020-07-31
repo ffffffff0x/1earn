@@ -1,7 +1,7 @@
 # Speed-Win
 
 <p align="center">
-    <a href="https://www.pixiv.net/en/artworks/45083849"><img src="../../../assets/img/banner/Windows.jpg" width="90%"></a>
+    <a href="https://www.pixiv.net/en/artworks/45083849"><img src="../../../assets/img/banner/Speed-Win.jpg" width="90%"></a>
 </p>
 
 ---
@@ -162,10 +162,10 @@ dir bin 2>nul
 屏幕上不打印命令的错误信息（stderr），输出结果（stdout）仍会打印（注：bin 目录不存在时，会输出错误信息）
 
 dir bin >nul 2>&1
-将命令的错误信息（stderr）重定向到输出结果（stdout），然后不打印输出结果（stdout）【屏幕上错误信息（stderr）和输出结果（stdout）都不打印】（注：bin 目录不存在时，会输出错误信息）
+将命令的错误信息（stderr）重定向到输出结果（stdout），然后不打印输出结果（stdout）[屏幕上错误信息（stderr）和输出结果（stdout）都不打印]（注：bin 目录不存在时，会输出错误信息）
 
 dir bin 2>nul 1>&2
-将命令的输出结果（stdout）重定向到错误信息（stderr），然后不打印错误信息（stderr）【屏幕上错误信息（stderr）和输出结果（stdout）都不打印】（注：bin 目录不存在时，会输出错误信息）
+将命令的输出结果（stdout）重定向到错误信息（stderr），然后不打印错误信息（stderr）[屏幕上错误信息（stderr）和输出结果（stdout）都不打印]（注：bin 目录不存在时，会输出错误信息）
 ```
 
 **>>**
@@ -301,7 +301,7 @@ dir             显示目录中的内容
 tree            显示目录结构
     tree d:\myfiles     显示 d:\myfiles 目录结构
 
-attrib          查看或修改文件或目录的属性  【A：存档  R：只读  S：系统  H：隐藏】
+attrib          查看或修改文件或目录的属性  [A：存档  R：只读  S：系统  H：隐藏]
     attrib 1.txt        查看当前目录下 1.txt 的属性
     attrib -R 1.txt     去掉 1.txt 的只读属性
     attrib +H movie     隐藏 movie 文件夹
@@ -316,7 +316,7 @@ type            显示文本文件内容
 
 more            逐屏的显示文本文件内容
 
-    more conf.ini       逐屏的显示当前目录下conf.ini的文本内容   【空格：下一屏 q：退出 】
+    more conf.ini       逐屏的显示当前目录下conf.ini的文本内容   [空格：下一屏 q：退出 ]
 ```
 
 ---
@@ -428,7 +428,7 @@ move            移动文件
     move test d:\new
     若 d 盘中存在 new 文件夹，将当前目录下的 test 文件夹移动到 d 盘 new 文件夹中；若不存在，将当前目录下的 test 文件夹移动到 d 盘，并重命名为 new
 
-replace         替换文件【即使这个文件在使用，仍然可以替换成功】
+replace         替换文件[即使这个文件在使用，仍然可以替换成功]
     replace d:\love.mp3 d:\mp3
     使用 d 盘下的 love.mp3 强制替换 d 盘 mp3 目录中的 love.mp3 文件
 ```
@@ -931,7 +931,7 @@ label       显示当前分区的卷标，同时提示输入新卷标
 **格式化**
 ```cmd
 format      格式化磁盘
-    format J: /FS:ntfs      以 ntfs 类型格式化 J 盘 【类型有:FAT、FAT32、exFAT、NTFS 或 UDF】
+    format J: /FS:ntfs      以 ntfs 类型格式化 J 盘 [类型有:FAT、FAT32、exFAT、NTFS 或 UDF]
     format J: /FS:fat32 /Q  以 fat32 类型快速格式化J盘
 ```
 

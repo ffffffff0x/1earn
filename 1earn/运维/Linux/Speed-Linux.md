@@ -72,6 +72,12 @@
 
 ---
 
+**在线查询命令**
+- [Linux命令搜索引擎](https://wangchujiang.com/linux-command/) - 非常牛逼,推荐
+- [Linux命令大全(手册)](https://man.linuxde.net/)
+
+---
+
 # 基础使用
 
 **帮助**
@@ -733,6 +739,25 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	iface enp7s0 inet dhcp		# dhcp 配置
 	```
 
+**配置无线网卡**
+- WM Ware(开机后)
+
+    虚拟机->可移动设备->Ralink 802.11 n Wlan(显卡型号)->连接(断开与主机的连接)
+
+- VBox
+
+    虚拟机关机状态下->将设备插入主机->设置->USB设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
+
+- 验证是否连接成功
+
+    ```bash
+    lsusb
+    airmon-ng
+    ifconfig
+    iwconfig
+    ```
+    出现无线网卡型号即为成功
+
 **ethtool**
 
 `ethool 是一个实用的工具，用来给系统管理员以大量的控制网络接口的操作。`
@@ -769,7 +794,7 @@ tcpdump -i enp0s3 -c 12
 # 使用 -D 选项显示 tcpdump 命令的所有可用接口
 tcpdump -D
 
-# 默认情况下,在 tcpdump 命令输出中,不显示可读性好的时间戳,如果您想将可读性好的时间戳与每个捕获的数据包相关联,那么使用 -tttt 选项,示例如下所示
+# 默认情况下,在 tcpdump 命令输出中,不显示可读性好的时间戳,如果你想将可读性好的时间戳与每个捕获的数据包相关联,那么使用 -tttt 选项,示例如下所示
 tcpdump -i enp0s3 -c 12 -tttt
 
 # 使用 tcpdump 命令中的 -w 选项将捕获的 TCP/IP 数据包保存到一个文件中
@@ -963,6 +988,7 @@ rm -rf /var/cache/apt/archives/lock
 rm -rf /var/lib/dpkg/lock-frontend
 rm -rf /var/lib/dpkg/lock		# 强制解锁占用
 rm /var/lib/dpkg/lock
+rm /var/lib/apt/lists/lock
 ```
 
 **禁用 Ubuntu 自动更新**

@@ -23,7 +23,7 @@
 - https://sqlchop.chaitin.cn/demo/
 
 **靶场**
-- [sqli-labs](../../../实验/Web/sqli-labs-WalkThrough.md)
+- [sqli-labs](../../../实验/Web/靶场/sqli-labs-WalkThrough.md)
 
 **辅助工具**
 - sqlmap

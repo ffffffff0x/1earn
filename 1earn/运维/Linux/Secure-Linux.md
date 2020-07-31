@@ -51,7 +51,7 @@
 **最近文件**
 ```bash
 find / -ctime -2                # 查找72小时内新增的文件
-find ./ -mtime 0 -name "*.jsp"  #​ 查找24小时内被修改的 JSP 文件
+find ./ -mtime 0 -name "*.jsp"  # 查找24小时内被修改的 JSP 文件
 find / *.jsp -perm 4777         # 查找777的权限的文件
 ```
 
@@ -701,33 +701,45 @@ net.ipv4.icmp_echo_ignore_all=1
 - **配置使用 RSA 私钥登陆**
 
     1. 先生成你的客户端的密钥,包括一个私钥和公钥
+        ```bash
+        ssh-keygen -t rsa
+        ```
+
     2. 把公钥拷贝到服务器上,注意,生成私钥的时候,文件名是可以自定义的,且可以再加一层密码,所以建议文件名取自己能识别出哪台机器的名字.
+        ```bash
+        cd .ssh
+        scp id_rsa.pub root@XX.XX.XX.XX:~/
+        ```
+
     3. 然后在服务器上,你的用户目录下,新建 `.ssh` 文件夹,并将该文件夹的权限设为 700
+        ```bash
+        cd /
+        mkdir .ssh
+        chmod 700 .ssh
+        ```
+
     4. 新建一个 authorized_keys,这是默认允许的 key 存储的文件.如果已经存在,则只需要将上传的 id_rsa.pub 文件内容追加进去即可,如果不存在则新建并改权限为 400 即可. 然后编辑 ssh 的配置文件
+        ```bash
+        mv id_rsa.pub .ssh
+        cd .ssh
+        cat id_rsa.pub >> authorized_keys
+        chmod 600 authorized_keys
+        ```
+        ```bash
+        vim /etc/ssh/sshd_config
 
-    ```bash
-    ssh-keygen -t rsa
-    scp id_rsa.pub root@XX.XX.XX.XX:~/
-    ```
-    ```bash
-    cd /
-    mkdir .ssh
-    chmod 700 .ssh
-    mv id_rsa.pub .ssh
-    cd .ssh
-    cat id_rsa.pub >> authorized_keys
-    chmod 600 authorized_keys
-    ```
-    ```bash
-    vim /etc/ssh/sshd_config
+        RSAAuthentication yes                           # RSA 认证
+        PubkeyAuthentication yes                        # 开启公钥验证
+        AuthorizedKeysFile /root/.ssh/authorized_keys   # 验证文件路径
+        PasswordAuthentication no                       # 禁止密码登录
+        ```
 
-    RSAAuthentication yes                           # RSA 认证
-    PubkeyAuthentication yes                        # 开启公钥验证
-    AuthorizedKeysFile /root/.ssh/authorized_keys   # 验证文件路径
-    PasswordAuthentication no                       # 禁止密码登录
-    ```
+        `sudo service sshd restart` 重启 sshd 服务
 
-    `sudo service sshd restart` 重启 sshd 服务
+    5. 测试使用私钥登陆
+        ```bash
+        ssh root@x.x.x.x -i id_rsa
+        ```
 
 - **禁止 root 用户登录**
 
@@ -780,7 +792,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **内核级 rootkit**
 
-    可以通过 unhide 等工具进行排查,更多内容见 [应急](../../安全/笔记/BlueTeam/应急.md#rootkit)
+    可以通过 unhide 等工具进行排查,更多内容见 [应急溯源](../../安全/笔记/BlueTeam/应急溯源.md#rootkit)
 
 - **深信服 Web 后门扫描**
 

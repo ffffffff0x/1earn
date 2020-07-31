@@ -150,7 +150,7 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 ```
 ```bash
-service ssh restart     # 启动 ssh
+systemctl start ssh     # 启动 ssh
 systemctl enable ssh    # 设置为开机自启
 
 # 或

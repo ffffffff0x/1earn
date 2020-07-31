@@ -36,13 +36,19 @@
 
 # 用法
 
-常用 : `nmap -T5 -A -v -p- <target ip>`
+常用 : `nmap -T4 -A -v -p- --min-rate=1000 <target ip>`
 
 TCP1 : `nmap -Pn -sS --stats-every 3m --max-scan-delay 20 -T4 -p1-65535 ip -oN <target ip>`
 
 TCP2 : `nmap -nvv -Pn -sSV -p <port> --version-intensity 9 -A ip -oN <target ip>`
 
 UDP : `nmap -Pn --top-ports 1000 -sU --stats-every 3m -T3 ip -oN <target ip>`
+
+组合使用(效果一般) :
+```bash
+ports=$(nmap -p- --min-rate=1000 -sT -T4 <target ip> | grep ^[0-9] | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)
+nmap -sC -sV -p$ports -sT --min-rate=1000 <target ip>
+```
 
 ## 常用参数
 
@@ -327,7 +333,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 - 识别并枚举支持 ProConOS 的 PLC : `nmap --script proconos-info -p 20547 <target ip>`
 - 探测 S7 : `nmap -p 102 --script s7-enumerate.nse <target ip>`
 
-该项目提供工控常见协议识别脚本 [digitalbond/Redpoint](https://github.com/digitalbond/Redpoint)
+该项目提供工控常见协议识别脚本 [hi-KK/ICS-Protocol-identify](https://github.com/hi-KK/ICS-Protocol-identify)
 - Siemens S7 : `nmap -sS -Pn -n --min-hostgroup 1024 --min-parallelism 1024 -p 102 --script s7-info -iL 123.txt -oX 123.xml`
 - Modbus : `nmap -sS -Pn -p 502 --script modicon-info -iL 123.txt -oX 123.xml`
 - IEC 60870-5-104

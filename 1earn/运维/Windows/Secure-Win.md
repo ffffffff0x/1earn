@@ -113,7 +113,7 @@ REG query HKEY_LOCAL_MACHINE/SAM/SAM/Domains/Account/Users
 
 新建账号会在以下目录生成一个用户目录，查看是否有新建用户目录。
 - Window 2003 : `C:\Documents and Settings`
-- ​Window 2008R2 : `C:\Users\`
+- Window 2008R2 : `C:\Users\`
 
 **查看服务器是否存在隐藏账号、克隆账号**
 
@@ -193,6 +193,9 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 - 工具
     - [fox-it/danderspritz-evtx](https://github.com/fox-it/danderspritz-evtx) - 解析 evtx 文件并检测 DanderSpritz eventlogedit 模块的使用
 
+**Windows Defender 日志**
+- Windows Defender 应用程序使用 `MpCmdRun.log` 和 `MpSigStub.log` 两个日志文件，在 `C:\Windows\Temp` 文件夹下。该文件夹为默认的 SYSTEM 账户临时文件夹，但是每一个用户都拥有写权限。Administrators （管理员）和 SYSTEM 账户拥有这个文件夹的所有权限，一般用户甚至没有读的权限。
+
 ### 日志工具
 
 **Sysmon**
@@ -265,6 +268,9 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 **数据库日志**
 - 内容见 [取证](../../安全/笔记/BlueTeam/取证.md#数据库取证) 数据库取证部分
 
+**应用程序日志**
+- 内容见 [取证](../../安全/笔记/BlueTeam/取证.md#应用程序取证) 应用程序取证部分
+
 ---
 
 # Net
@@ -319,7 +325,7 @@ tasklist  | findstr “PID”
 
 - **DNSQuerySniffer**
 
-    DNSQuerySniffer 是网络嗅探工具，显示 DNS 查询发送您的系统。每个 DNS 查询，显示以下信息：主机名，端口号，编号查询，请求类型（A，AAAA，NS，和 MX，等等），请求响应时间，时间，响应代码，数量的记录，并返回的 DNS 记录的内容。通过 DNSQuerySniffer 我们先确定访问恶意域名的端口号。这个工具的优点是可以将主机访问过的所有域名记录下来。
+    DNSQuerySniffer 是网络嗅探工具，显示 DNS 查询发送你的系统。每个 DNS 查询，显示以下信息：主机名，端口号，编号查询，请求类型（A，AAAA，NS，和 MX，等等），请求响应时间，时间，响应代码，数量的记录，并返回的 DNS 记录的内容。通过 DNSQuerySniffer 我们先确定访问恶意域名的端口号。这个工具的优点是可以将主机访问过的所有域名记录下来。
 
     下载地址 : https://www.nirsoft.net/utils/dns_query_sniffer.html
 

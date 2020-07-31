@@ -10,6 +10,10 @@
 
 > 注意 : Windows 系统和 Microsoft Office 软件都必须是 VOL 版本.
 
+- [Wind4/vlmcsd](https://github.com/Wind4/vlmcsd) - kms 服务器
+- [TGSAN/CMWTAT_Digital_Edition](https://github.com/TGSAN/CMWTAT_Digital_Edition) - 数字权利激活工具
+- [kkkgo/KMS_VL_ALL](https://github.com/kkkgo/KMS_VL_ALL) - kms 激活脚本
+
 **激活 Windows**
 
 用管理员权限运行 CMD 或 PowerShell,输入如下命令:
@@ -91,6 +95,10 @@ ipconfig /flushdns
 # 各种代理/源
 ## git
 
+<p align="center">
+    <img src="../../assets/img/logo/git.svg" width="15%">
+</p>
+
 ```git
 // 查看当前代理设置
 git config --global http.proxy
@@ -106,6 +114,10 @@ git config --global --unset https.proxy
 ```
 
 ## Docker
+
+<p align="center">
+    <img src="../../assets/img/logo/Docker.png" width="20%">
+</p>
 
 - 阿里云 : https://cr.console.aliyun.com/#/accelerator
 - DaoCloud : https://www.daocloud.io/mirror#accelerator-doc
@@ -138,6 +150,10 @@ Windows 安装文件:http://mirrors.aliyun.com/docker-toolbox/windows/docker-for
 编辑完成后点击 Apply 保存按钮,等待 Docker 重启并应用配置的镜像加速器.
 
 ## node&js
+
+<p align="center">
+    <img src="../../assets/img/logo/npm&Node.png" width="25%">
+</p>
 
 ```bash
 npm install -g nrm
@@ -188,6 +204,10 @@ npm config delete proxy  # 取消代理
 
 ## 终端
 
+<p align="center">
+    <img src="../../assets/img/logo/terminal.svg" width="15%">
+</p>
+
 **proxychains**
 
 详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../运维/Linux/Power-Linux.md##proxychains)
@@ -229,6 +249,10 @@ npm config delete proxy  # 取消代理
 
 # vscode
 
+<p align="center">
+    <img src="../../assets/img/logo/vscode.svg" width="15%">
+</p>
+
 `谁和我一起吹 vscode 我们就是永远的好朋友🤞`
 
 **配置**
@@ -252,6 +276,23 @@ npm config delete proxy  # 取消代理
 ---
 
 # ffmpeg
+
+<p align="center">
+    <img src="../../assets/img/logo/ffmpeg.png" width="15%">
+</p>
+
+**视频剪切**
+```bash
+ffmpeg -ss 00:00:00 -t 00:00:30 -i test.mp4 -vcodec copy -acodec copy output.mp4
+* -ss 指定从什么时间开始
+* -t 指定需要截取多长时间
+* -i 指定输入文件
+```
+
+**格式转换**
+```bash
+ffmpeg -i input.mp4 output.avi
+```
 
 **视频合并**
 ```bash

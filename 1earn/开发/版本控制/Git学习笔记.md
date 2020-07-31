@@ -99,6 +99,10 @@ Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或
 
 # 基本操作
 
+<p align="center">
+    <img src="../../../assets/img/logo/git.svg" width="25%">
+</p>
+
 ```bash
 git config --global user.name "username"
 git config --global user.email user@aaa.com
@@ -152,6 +156,8 @@ git reset --hard HEAD^
 git push -f
 ```
 
+---
+
 ## 分支管理
 
 ![](../../../assets/img/开发/版本控制/git/2.png)
@@ -170,6 +176,8 @@ git stash list
 git stash pop               # 恢复的同时把 stash 内容也删了
 ```
 
+---
+
 ## 标签管理
 
 ```bash
@@ -184,6 +192,8 @@ git push origin --tags 可以推送全部未推送过的本地标签;
 git tag -d <tagname> 可以删除一个本地标签;
 git push origin :refs/tags/<tagname> 可以删除一个远程标签.
 ```
+
+---
 
 ## 忽略文件
 
@@ -204,6 +214,8 @@ git push origin :refs/tags/<tagname> 可以删除一个远程标签.
 ```
 此外，git 对于 `.ignore` 配置文件是按行从上到下进行规则匹配的，意味着如果前面的规则匹配的范围更大，则后面的规则将不会生效;
 
+---
+
 ## 别名
 
 ```bash
@@ -212,6 +224,8 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
 
 git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
 ```
+
+---
 
 ## 撤销Git操作
 
@@ -299,6 +313,16 @@ $ git checkout feature
 
 ---
 
+## 跳转
+
+```bash
+git log     # 查看 commit 历史
+
+git checkout xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  # 跳转到指定的 commit 版本中
+```
+
+---
+
 # 远程操作
 
 ![](../../../assets/img/开发/版本控制/git/3.png)
@@ -309,9 +333,13 @@ $ git checkout feature
 - 没有冲突或者解决掉冲突后，再用 `git push origin branch-name` 推送就能成功!
 - 如果 `git pull` 提示 `"no tracking information"`，则说明本地分支和远程分支的链接关系没有创建，用命令 `git branch --set-upstream branch-name origin/branch-name`
 
+---
+
 ## clone
 
 `git clone <版本库的网址> <本地目录名>`
+
+---
 
 ## remote
 
@@ -326,6 +354,8 @@ git remote add <主机名> <网址>          # 用于添加远程主机
 git remote rm <主机名>                  # 用于删除远程主机
 git remote rename <原主机名> <新主机名> # 用于远程主机的改名
 ```
+
+---
 
 ## fetch
 
@@ -352,6 +382,8 @@ git merge origin/master
 git rebase origin/master
 上面命令表示在当前分支上，合并 origin/master.
 ```
+
+---
 
 ## pull
 
@@ -385,6 +417,8 @@ git reset --hard
 git pull
 ```
 
+---
+
 ## push
 
 ```bash
@@ -395,6 +429,8 @@ git push origin master  # 本地的 master 分支推送到 origin 主机的 mast
 git push --force origin
 上面命令使用 --force 选项，结果导致远程主机上更新的版本被覆盖.除非你很确定要这样做，否则应该尽量避免使用 --force 选项.
 ```
+
+---
 
 ## github
 
@@ -463,3 +499,4 @@ git push --force origin
 - [git commit 提交多行message](https://blog.csdn.net/sinat_29891353/article/details/76674798)
 - [如何撤销 Git 操作？](http://www.ruanyifeng.com/blog/2019/12/git-undo.html)
 - [关于 .git 目录你需要知道的一切](http://einverne.github.io/post/2020/02/everything-about-dot-git-directory.html)
+- [git checkout到历史某个版本_赶路人儿-CSDN博客_git checkout指定版本](https://blog.csdn.net/liuxiao723846/article/details/70313287)

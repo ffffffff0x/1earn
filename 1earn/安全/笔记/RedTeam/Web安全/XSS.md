@@ -8,7 +8,7 @@
 
 ---
 
-**文章**
+**相关文章**
 - [XSS 插入绕过一些方式总结](https://blog.csdn.net/qq_29277155/article/details/51320064)
 - [XSS 总结](https://xz.aliyun.com/t/4067)
 - [WAF的 XSS 绕过姿势](https://www.freebuf.com/articles/web/81959.html)
@@ -22,7 +22,7 @@
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 - [坑死我的HTTPOnly](http://gv7.me/articles/2017/Session-Cookie-without-Secure-flag-set/)
 
-**案例**
+**相关案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
 - [T00LS帖子正文XSS](https://www.hackersb.cn/hacker/235.html)
 - [The adventures of xss vectors in curious places](https://github.com/Dliv3/Venom)
@@ -87,7 +87,7 @@
 - https://xsschop.chaitin.cn/demo/
 
 **靶场**
-- [XSS 挑战-WalkThrough](../../../实验/Web/XSS挑战-WalkThrough.md)
+- [XSS 挑战-WalkThrough](../../../实验/Web/靶场/XSS挑战-WalkThrough.md)
 
 **payload**
 - [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)

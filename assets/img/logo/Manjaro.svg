@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="256" height="256" viewBox="0 0 256 256" id="svg0" version="1.1">
+  <defs id="defs0"/>
+  
+  <metadata id="metadata0">
+    
+  </metadata>
+  <g id="layer0" transform="translate(0,192)">
+    <g id="logo" transform="matrix(4,0,0,4,0,-192)">
+      <path id="rect4138" d="m 0,0 0,64 18,0 0,-46 23,0 0,-18 z" style="opacity:1;fill:#35bf5c;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <path id="rect4140" d="m 22.999999,23 2e-6,41 L 41,64 41,23 Z" style="opacity:1;fill:#35bf5c;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <path id="rect4142" d="M 46,1e-6 46,64 64,64 64,1e-6 Z" style="opacity:1;fill:#35bf5c;fill-opacity:1;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+    </g>
+  </g>
+</svg>

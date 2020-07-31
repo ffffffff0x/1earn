@@ -141,6 +141,20 @@
 
 ---
 
+## 不做清单 - Not-To-Do list
+
+<img src="../../assets/img/Plan/Thinking-Plan/22.png" width="15%" align="right">
+
+> 不做什么决定了可以做什么。
+
+你可能和大多数人一样会有 to-do 列表，你用它来帮助你集中精力完成事情，如果你没有，你可能也会想试着建立一个，因为它在心里上对你帮助很大，不过，not-to-do 列表也同样非常重要。
+
+这个清单与todo 列表相辅相成，并且可能更加重要一些。
+
+有时候，你选择不做什么，比你绝对做什么更重要。通过减少一种行为，你实际上是在增加另一种行为，你会创造一个空白的时间段，需要通过某种形式来填充，通过限制某些活动，你实际上是在给自己机会，让你完全专注于最重要的方面，有太多的自由会有不利的一面。
+
+---
+
 # 决策制定 - DECISION MAKING
 
 <img src="../../assets/img/Plan/Thinking-Plan/21.png" width="15%" align="right">
@@ -216,6 +230,20 @@
 
 ---
 
+## 沉没成本 - Sunk Cost
+
+<img src="../../assets/img/Plan/Thinking-Plan/23.png" width="35%" align="right">
+
+> 沉没成本是指已发生或承诺、无法回收的成本支出，如因失误造成的不可收回的投资。
+
+举例来说，如果某人预订了一张电影票，已经付了票款且假设不能退票。此时付的价钱已经不能收回，就算不看电影钱也收不回来，电影票的价钱算作沉没成本。
+
+随着电影的播放，你发现电影非常难看，简直就是在浪费你的时间，但是你觉得应该要值回票价，所以还是觉得看完剩下的2小时，这个绝对考虑的是之前10元损失，但这不是最佳决定，更符合逻辑的行为是：当你意识到这部电影并不是你想看的，就应该起身离席，这样你只浪费10元和15分钟，而不是10元和2小时，那不是更好吗？
+
+如果你能早早离开，你本来能够拥有额外的2小时，这种思考就是基于未来的收益，你花掉的10元已经消失或沉没了，无论你看不看剩下的电影，也没法挽回，这就是沉没成本误区的原理，所以我们通常浪费资源做某事，即使毫无益处，也更愿意坚持下去，这不仅体现在金钱上，时间和精力也是如此。
+
+---
+
 # 问题处理 - PROBLEM SOLVING
 
 ## Issue trees
@@ -258,3 +286,5 @@ Issue 树基本上是问题的地图。它们为你提供了一种清晰而系�
 - [Tools for better thinking | Untools](https://untools.co/)
 - [Iceberg Model - Systems Innovation](https://systemsinnovation.io/iceberg-model/)
 - [心智与认知(1): 反馈循环(Feedback loop) ](https://www.cnblogs.com/math/p/cognition-001.html)
+- [沉没成本如何影响你做决定？](https://www.bilibili.com/video/BV1kZ4y1u7wn)
+- [为什么不要做事务清单很重要？](https://www.bilibili.com/video/BV1vv411q7L3)

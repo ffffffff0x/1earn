@@ -98,9 +98,6 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 # APK渗透
 
-**在线反编译器**
-- [APK decompiler - decompile Android .apk ✓ ONLINE ✓](http://www.javadecompilers.com/apk)
-
 **在线检测**
 - [360显危镜](http://appscan.360.cn/)
 - [腾讯金刚](https://service.security.tencent.com/kingkong)
@@ -117,8 +114,23 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 - [360手机应用检测](http://scan.shouji.360.cn/index.html)
 - [腾讯手机管家官方网站](https://m.qq.com/security_lab/scans_online.jsp)
 
+**在线反编译器**
+- [APK decompiler - decompile Android .apk ✓ ONLINE ✓](http://www.javadecompilers.com/apk)
+
+**反编译工具**
+- [Apktool](https://ibotpeaches.github.io/Apktool/)
+    - 参考文章 : [使用apktool反编译apk文件](https://blog.csdn.net/ruancoder/article/details/51924179)
+    ```
+    apktool d xxx.apk -o xxx
+    ```
+
 **信息收集**
 - [TheKingOfDuck/ApkAnalyser](https://github.com/TheKingOfDuck/ApkAnalyser) - 一键提取安卓应用中可能存在的敏感信息。
+- 从反编译的 apk 文件中提取相关域名链接/IP
+    ```
+    grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" -r xxx --color=auto
+    grep -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*" -r xxx --color=auto
+    ```
 
 ## 案例
 - [Attacking the attackers – Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)

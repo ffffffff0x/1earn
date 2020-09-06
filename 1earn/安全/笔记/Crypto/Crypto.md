@@ -19,13 +19,14 @@
         * [base92](#base92)
     * [Escape/Unescape](#escapeunescape)
     * [HtmlEncode](#htmlencode)
+    * [Punycode](#punycode)
     * [Quoted-printable](#quoted-printable)
+    * [shellcode](#shellcode)
     * [Unicode](#unicode)
     * [URL](#url)
     * [UTF](#utf)
     * [UUencode](#uuencode)
     * [XXencode](#xxencode)
-    * [shellcode](#shellcode)
     * [进制](#进制)
     * [敲击码](#敲击码)
     * [曼彻斯特编码](#曼彻斯特编码)
@@ -261,7 +262,19 @@ ISO-8859-1 的较高部分(从 160 到 255 之间的代码)全都有实体名称
 `>` |	greater-than|	`&gt;`|	`&#62;`
 
 **在线工具**
-- [HtmlEncode转换在线工具](../../../Plan/Web-Tools.md#HTML编码)
+- [HtmlEncode转换在线工具](../../../Plan/Web-Tools.md#html编码)
+
+---
+
+## Punycode
+
+Punycode 是一种特殊的编码，用于将 Unicode 字符转换为ASCII码，这是一个较小的、受限制的字符集。Punycode 用于编码国际化域名（IDN）。
+
+**相关文章**
+- [PunyCode](https://www.jianshu.com/p/5eb5351ca705)
+
+**在线工具**
+- [Punycode转换在线工具](../../../Plan/Web-Tools.md#punycode)
 
 ---
 
@@ -301,6 +314,20 @@ rawurlencode($string)));
 
 **在线工具**
 - [Quoted-Printable转换在线工具](../../../Plan/Web-Tools.md#Quoted-Printable)
+
+---
+
+## shellcode
+
+源文本:
+
+`The quick brown fox jumps over the lazy dog`
+
+编码后:
+
+```
+\x54\x68\x65\x7f\x71\x75\x69\x63\x6b\x7f\x62\x72\x6f\x77\x6e\x7f\x66\x6f\x78\x7f\x6a\x75\x6d\x70\x73\x7f\x6f\x76\x65\x72\x7f\x74\x68\x65\x7f\x6c\x61\x7a\x79\x7f\x64\x6f\x67
+```
 
 ---
 
@@ -376,21 +403,15 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ---
 
-## shellcode
-
-源文本:
-
-`The quick brown fox jumps over the lazy dog`
-
-编码后:
-
-```
-\x54\x68\x65\x7f\x71\x75\x69\x63\x6b\x7f\x62\x72\x6f\x77\x6e\x7f\x66\x6f\x78\x7f\x6a\x75\x6d\x70\x73\x7f\x6f\x76\x65\x72\x7f\x74\x68\x65\x7f\x6c\x61\x7a\x79\x7f\x64\x6f\x67
-```
-
----
-
 ## 进制
+
+十六进制 -在数字前使用“0x”或在数字后使用“，h”，“，x”或“h”。例如，'0x100'或'3f，h'，'d2，x'或'FFh'表示十六进制数。
+
+八进制 -在数字后面输入'，o'。例如，'377，o'是八进制数。
+
+二进制 -在数字后面输入'，b'。例如，'0101，b'是二进制数。
+
+十进制 -在数字后面输入'，d'。例如，'123，d'是十进制数。
 
 **在线工具**
 - [进制在线转换工具](../../../Plan/Web-Tools.md#进制)
@@ -410,7 +431,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ## 曼彻斯特编码
 
-**科普介绍**
+**相关文章**
 - [曼彻斯特编码](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81)
 
 在电信与数据存储中, 曼彻斯特编码(Manchester coding),又称自同步码、相位编码(phase encoding,PE),能够用信号的变化来保持发送设备和接收设备之间的同步.
@@ -495,6 +516,27 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 ---
 
 ## AES
+
+AES 加密的模式主要有五种：ECB (电子密码本模式)、CBC（密码分组连接模式）、CTR（计算器模式）、CFB（密码反馈模式）、OFB (输出反馈模式)。这五种工作模式主要是在加密器的使用上有所区别。
+
+**ECB 模式**
+
+其使用方式是一个明文分组加密成一个密文分组，相同的明文分组永远被加密成相同的密文分组。直接利用加密算法分别对每个 64 位明文分组使用相同的 64 位密钥进行加密。每个明文分组的处理是相互独立的。
+
+- 优点：
+    - 简单。
+    - 有利于并行计算。
+
+- 缺点：
+    - 相同的明文块会加密成相同的密文块，安全性低。
+
+**CBC 模式**
+
+引入一个初始向量 IV，它的作用跟 MD5 加盐有些类似，可以防止相同的明文块加密成同样的密文块。IV 是初始向量，参与第一个明文块的异或，后续的每一个明文块，都与它前一个密文块相异或。这样就能保证相同的明文块不会被加密为相同的密文块。
+
+- 优点：能隐蔽明文的数据模式，在某种程度上能防止数据篡改, 诸如明文组的重放,嵌入和删除等，安全性高。
+- 缺点：无法并行计算，性能相对 ECB 低，会出现错误传播(errorpropagation)。
+
 
 **在线工具**
 - [AES在线工具](../../../Plan/Web-Tools.md#AES)

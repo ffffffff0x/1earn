@@ -690,6 +690,7 @@ data:  loginid=CasterJs&password=CasterJs&clienttype=Webclient&clientver=4.5&lan
 **文章**
 - [中间件漏洞合集](https://mp.weixin.qq.com/s/yN8lxwL-49OKfVR86JF01g)
 - [2020攻防演练弹药库-您有主机上线请注意](https://blog.riskivy.com/2020%e6%94%bb%e9%98%b2%e6%bc%94%e7%bb%83%e5%bc%b9%e8%8d%af%e5%ba%93-%e6%82%a8%e6%9c%89%e4%b8%bb%e6%9c%ba%e4%b8%8a%e7%ba%bf%e8%af%b7%e6%b3%a8%e6%84%8f/?from=timeline&isappinstalled=0)
+- [企业常见服务漏洞检测&修复整理](https://paper.seebug.org/126/)
 
 **工具包**
 - [1120362990/vulnerability-list](https://github.com/1120362990/vulnerability-list) - 在渗透测试中快速检测常见中间件、组件的高危漏洞.
@@ -744,6 +745,18 @@ Apache ActiveMQ 是美国阿帕奇 (Apache) 软件基金会所研发的一套开
     ```
     telnet ip 61616
     ```
+
+---
+
+## Axis
+
+> 官网 : http://axis.apache.org/
+
+Axis 是一个开源的基于 XML 的 Web 服务架构。它包含了 Java 和 C++ 语言实现的 SOAP 服务器，以及各种公用服务及 API 以生成和部署 Web 服务应用。
+
+**Axis-1.4-RCE**
+- POC | Payload | exp
+    - [KibodWapon/Axis-1.4-RCE-Poc](https://github.com/KibodWapon/Axis-1.4-RCE-Poc)
 
 ---
 
@@ -886,7 +899,7 @@ ElasticSearch 是一个基于 Lucene 的搜索服务器.它提供了一个分布
 **CVE-2015-3337 目录穿越漏洞**
 - 简介
 
-    在安装了具有"site"功能的插件以后,插件目录使用../即可向上跳转,导致目录穿越漏洞,可读取任意文件.没有安装任意插件的 elasticsearch 不受影响.
+    在安装了具有"site"功能的插件以后,插件目录使用 ../ 即可向上跳转,导致目录穿越漏洞,可读取任意文件.没有安装任意插件的 elasticsearch 不受影响.
 
 - 影响版本
 
@@ -1404,6 +1417,28 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 - `X-Application-Context:`
 
 **Spring Boot Actuators**
+```
+/actuator/env
+env
+/trace
+/api-docs
+/v2/api-docs
+/swagger-ui.html
+/api.html
+/sw/swagger-ui.html
+/api/swagger-ui.html
+/template/swagger-ui.html
+/spring-security-rest/api/swagger-ui.html
+/spring-security-oauth-resource/swagger-ui.html
+/mappings
+/actuator/mappings
+/metrics
+/actuator/metrics
+/beans
+/actuator/beans
+/configprops
+/actuator/configprops
+```
 - [Exploiting Spring Boot Actuators](https://www.veracode.com/blog/research/exploiting-spring-boot-actuators)
 - [Spring Boot Actuators配置不当导致RCE漏洞复现](https://jianfensec.com/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/Spring%20Boot%20Actuators%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4RCE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/)
 - [mpgn/Spring-Boot-Actuator-Exploit: Spring Boot Actuator (jolokia) XXE/RCE](https://github.com/mpgn/Spring-Boot-Actuator-Exploit)
@@ -1411,7 +1446,7 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 **CVE-2016-4977 Spring Security OAuth2 远程命令执行漏洞**
 - 简介
 
-    Spring Security OAuth 是为 Spring 框架提供安全认证支持的一个模块.在其使用 whitelabel views 来处理错误时,由于使用了Springs Expression Language (SpEL),攻击者在被授权的情况下可以通过构造恶意参数来远程执行命令.
+    Spring Security OAuth 是为 Spring 框架提供安全认证支持的一个模块.在其使用 whitelabel views 来处理错误时,由于使用了 Springs Expression Language (SpEL),攻击者在被授权的情况下可以通过构造恶意参数来远程执行命令.
 
 - 影响版本
     - spring_security_oauth 1.0.0 ~ 1.0.5
@@ -1426,7 +1461,7 @@ Solr 的漏洞参考 https://issues.apache.org/jira/projects/SOLR/issues
 **CVE-2017-4971 Spring WebFlow 远程代码执行漏洞**
 - 简介
 
-    Spring WebFlow 是一个适用于开发基于流程的应用程序的框架 (如购物逻辑) ,可以将流程的定义和实现流程行为的类和视图分离开来.在其 2.4.x 版本中,如果我们控制了数据绑定时的field,将导致一个 SpEL 表达式注入漏洞,最终造成任意命令执行.
+    Spring WebFlow 是一个适用于开发基于流程的应用程序的框架 (如购物逻辑) ,可以将流程的定义和实现流程行为的类和视图分离开来.在其 2.4.x 版本中,如果我们控制了数据绑定时的 field,将导致一个 SpEL 表达式注入漏洞,最终造成任意命令执行.
 
 - 影响版本
     - spring_web_flow 2.4.0 ~ 2.4.4
@@ -1693,6 +1728,7 @@ base64 编码，口令形式为 username:password
 
 ![](../../../../../assets/img/安全/笔记/RedTeam/Web安全/Web_CVE漏洞记录/2.png)
 
+- http://user:password@xxx.xxx.xxx.xxx:xxx/manager/html
 - MSF Module
     ```
     use auxiliary/scanner/http/tomcat_mgr_login
@@ -2131,7 +2167,7 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
     - [jas502n/CVE-2020-2551](https://github.com/jas502n/CVE-2020-2551)
     - [Y4er/CVE-2020-2551](https://github.com/Y4er/CVE-2020-2551)
 
-**CVE-2020-2555 Oracle Coherence 反序列化漏洞分析**
+**CVE-2020-2555 && CVE-2020-2883 Oracle Coherence 反序列化漏洞分析**
 - 简介
 
     Oracle 官方在1月补丁中修复了 CVE-2020-2555 漏洞，该漏洞位于 Oracle Coherence 组件中。该组件是业内领先的用于解决集群应用程序数据的缓存的解决方案，其默认集成在 Weblogic12c 及以上版本中。
@@ -2140,9 +2176,11 @@ oracle 版本号是真的乱,Weblogic 数据库版本号请看维基百科 [Orac
 
 - 文章
     - [Oracle Coherence 反序列化漏洞分析（CVE-2020-2555）](https://paper.seebug.org/1141/)
+    - [Weblogic ChainedExtractor葫芦兄弟漏洞分析（CVE-2020-2555、CVE-2020-2883）](https://www.secpulse.com/archives/140206.html)
 
 - POC | Payload | exp
     - [Y4er/CVE-2020-2555](https://github.com/Y4er/CVE-2020-2555)
+    - [Y4er/CVE-2020-2883](https://github.com/Y4er/CVE-2020-2883)
 
 ---
 
@@ -2234,6 +2272,8 @@ FCKeditor/_samples/asp/sample04.asp
 **CNVD-2017-20077 ueditor 上传漏洞**
 - 文章
     - [UEditor编辑器两个版本任意文件上传漏洞分析](https://www.freebuf.com/vuls/181814.html)
+    - [【漏洞预警】UEditor编辑器任意文件上传可getshell](https://nosec.org/home/detail/1758.html)
+    - [Ueditor编辑器漏洞（文件上传）](https://www.jianshu.com/p/681162ed0374)
 
 - POC | Payload | exp
     - [theLSA/ueditor-getshell](https://github.com/theLSA/ueditor-getshell)

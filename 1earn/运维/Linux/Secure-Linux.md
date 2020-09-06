@@ -406,19 +406,33 @@ users                                                       # 打印当前登录
 - 禁用或删除多余的账号
 
 **设置账户锁定登录失败锁定次数、锁定时间**
-```
+```bash
 vim /etc/pam.d/system-auth
 
-auth required pam_tally.so onerr=fail deny=6 unlock_time=300
-# 设置为密码连续输错6次,锁定时间300秒
+auth required pam_tally.so onerr=fail deny=6 unlock_time=300  # 设置为密码连续输错6次,锁定时间300秒
+auth required pam_tally.so deny=2 unlock_time=60 even_day_root root_unlock_time=60
 ```
 
 **/etc/login.defs**
 ```bash
-PASS_MAX_DAYS   90  # 用户的密码最长使用天数
-PASS_MIN_DAYS   0   # 两次修改密码的最小时间间隔
-PASS_MIN_LEN    7   # 密码的最小长度
-PASS_WARN_AGE   9   # 密码过期前多少天开始提示
+PASS_MAX_DAYS   90              # 用户的密码最长使用天数
+PASS_MIN_DAYS   0               # 两次修改密码的最小时间间隔
+PASS_MIN_LEN    7               # 密码的最小长度
+PASS_WARN_AGE   9               # 密码过期前多少天开始提示
+```
+
+**安全审计功能**
+```bash
+ps -ef | grep auditd            # 查看是否开启系统安全审计功能
+more /etc/audit/audit.rules     # 查看审计的规则文件
+    - w 文件 -p 权限(r读 w写 x执行 a修改文件属性) -k 关键字
+    - w /etc/passwd -p wa -k passwd_changes             # 对重要文件的操作行为进行监控
+    - a -系列动作 -S 系统调用名称 -F 字段-值 -k 关键字
+    - a exit,always -S mount -S umount                  # 对系统调用进行监控
+more /etc/audit/auditd.conf     # 查看安全事件配置
+
+ausearch -i | less              # 查看审计日志
+more /var/log/audit/audit.log   # 查看审计日志
 ```
 
 ---
@@ -444,6 +458,7 @@ PASS_WARN_AGE   9   # 密码过期前多少天开始提示
 **进程定位**
 ```bash
 ps -aux         # 列出所有进程以及相关信息命令
+ps -ef
 top             # 总览系统全面信息命令
 pidof name      # 定位程序的 pid
 pidof -x name   # 定位脚本的 pid
@@ -479,6 +494,14 @@ vim /etc/security/limits.conf
     echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
     sync
     ```
+
+**启动项**
+```
+service --status-all | grep running
+chkconfig --list
+```
+
+---
 
 ## 系统完整性
 
@@ -568,6 +591,9 @@ firewall-cmd --get-service --permanent  # 检查下一次重载后将激活的�
 
 firewall-cmd --zone=public --list-ports # 列出 zone public 端口
 firewall-cmd --zone=public --list-all   # 列出 zone public 当前设置
+
+cat /etc/hosts.deny                     # tcp_Wrappers 防火墙的配置文件
+cat /etc/hosts.allow                    # tcp_Wrappers 防火墙的配置文件
 ```
 
 **防**
@@ -707,7 +733,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
     2. 把公钥拷贝到服务器上,注意,生成私钥的时候,文件名是可以自定义的,且可以再加一层密码,所以建议文件名取自己能识别出哪台机器的名字.
         ```bash
-        cd .ssh
+        cd /root/.ssh
         scp id_rsa.pub root@XX.XX.XX.XX:~/
         ```
 

@@ -29,7 +29,8 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 
 ---
 
-# Hash id 对照表
+# 常见 Hash id 对照表
+
 ```bash
 hashcat --help
 
@@ -104,7 +105,7 @@ pass01.txt 你的密码表
 
 ![](../../../assets/img/安全/实验/靶机/VulnHub/DC/DC1/9.png)
 
-**爆破wifi握手包**
+**爆破 wifi 握手包**
 ```bash
 hashcat -m 2500 wireless.hccapx pass.txt --force
 ```
@@ -117,4 +118,40 @@ hashcat -m 1000 hash.txt pass1.txt
 **爆破 net-NTLMv2**
 ```bash
 hashcat -m 5600 hash.txt pass1.txt
+```
+
+**爆破 pdf 文件**
+
+获取文件 hash
+```bash
+cd /usr/share/john/
+./pdf2john.pl xxx.pdf
+```
+
+接下来就是一个一个的试,看是哪种加密算法,比如 word 自带的加密用的就是 10500
+```bash
+hashcat.exe -m 10400 hash.txt pass1.txt
+hashcat.exe -m 10410 hash.txt pass1.txt
+hashcat.exe -m 10420 hash.txt pass1.txt
+hashcat.exe -m 10500 hash.txt pass1.txt
+hashcat.exe -m 10600 hash.txt pass1.txt
+hashcat.exe -m 10700 hash.txt pass1.txt
+
+MODE: 10400
+TYPE: PDF 1.1 - 1.3 (Acrobat 2 - 4)
+
+MODE: 10410
+TYPE: PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1
+
+MODE: 10420
+TYPE: PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #2
+
+MODE: 10500
+TYPE: PDF 1.4 - 1.6 (Acrobat 5 - 8)
+
+MODE: 10600
+TYPE: PDF 1.7 Level 3 (Acrobat 9)
+
+MODE: 10700
+TYPE: PDF 1.7 Level 8 (Acrobat 10 - 11)
 ```

@@ -15,9 +15,7 @@
 **简介**
 
 aircrack 是一个比较出名的用于破解 WEP 和 WPA 加密的无线网络的一款工具，由 6 个不同的部分组成：
-1. aircrack-ng
-用于破解 WEP 以及 WPA-PSK 密钥。一旦 aircrack-ng 工具收集了足够的信息，aircrack-ng 将会分析这些数据，
-并试图确定使用中的密钥。
+1. aircrack-ng 用于破解 WEP 以及 WPA-PSK 密钥。一旦 aircrack-ng 工具收集了足够的信息，aircrack-ng 将会分析这些数据，并试图确定使用中的密钥。
 2. airdecap-ng 解读被破解的网络数据包
 3. airmon-ng 为使用整个 aircrack-ng 套件配置一个网卡
 4. aireplay-ng 在无线网络中产生可能在恢复中的 WEP 密钥所需的流量
@@ -36,7 +34,7 @@ aircrack 是一个比较出名的用于破解 WEP 和 WPA 加密的无线网络�
 
 - VBox
 
-    虚拟机关机状态下->将设备插入主机->设置->USB设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
+    虚拟机关机状态下->将设备插入主机->设置->USB 设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
 
 - 验证是否连接成功
 

@@ -2396,7 +2396,7 @@ sudo service uwsgi restart
 - Host Manager : 管理物理主机和虚拟主机，可增加、删除虚拟主机，默认未安装，要访问 host manager 需要在安装页面勾选
 
 **部分文件介绍**
-- content.xml：Tomcat 默认的数据源在这里配置，一般存放连接数据库的信息；
+- context.xml：Tomcat 默认的数据源在这里配置，一般存放连接数据库的信息；
 - server.xml：Tomcat 访问端口、域名绑定和数据源在这里配置；
 - web.xml：Tomcat 项目初始化会去调用的文件；
 
@@ -2478,7 +2478,7 @@ chkconfig --add /etc/rc.d/init.d/tomcat
 
 **设置用户名和密码登录**
 
-修改 conf 目录下 tomcat-users.xml (部分版本是tomcat-user.xml)
+修改 conf 目录下 tomcat-users.xml (部分版本是 tomcat-user.xml)
 ```vim
 <role rolename="admin-gui"/>
 <role rolename="manager-gui"/>
@@ -4750,13 +4750,16 @@ setenforce 0    # 关闭 selinux
     <img src="../../../assets/img/logo/Docker.png" width="30%">
 </p>
 
+> 更多 Docker 相关知识参考 [docker学习笔记](../虚拟化/Docker/Speed-Docker.md)
+
 **官网**
 - https://www.docker.com
 
 **版本区别**
-最早的时候docker就是一个开源项目，主要由docker公司维护.
 
-- 2017年年初，docker 公司将原先的 docker 项目改名为 moby，并创建了docker-ce 和 docker-ee.
+最早的时候 docker 就是一个开源项目，主要由 docker 公司维护.
+
+- 2017年年初，docker 公司将原先的 docker 项目改名为 moby，并创建了 docker-ce 和 docker-ee.
 - docker-ce 是社区版本，适用于刚刚开始 docker 和开发基于 docker 研发的应用开发者或者小型团队.
 - docker-ee 是企业版，适用于企业级开发，同样也适用于开发、分发和运行商务级别的应用的 IT 团队.
 - docker-io, docker-engin 是以前早期的版本.
@@ -4841,9 +4844,6 @@ docker rmi -f <docker_image_id>             # 删除本地的 docker 镜像
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
 
-**扩展项目**
-- [instantbox](https://github.com/instantbox/instantbox) - 脚本实现的一个 docker 虚拟化平台,快速获得开箱即用的热乎乎的虚拟机😁
-
 ### Docker-Compose
 
 <p align="center">
@@ -4893,7 +4893,7 @@ docker-compose exec <service> sh  # 进入容器内
 
 **部署**
 ```bash
-docker pull portainer/portainer # 拉取镜像
+docker pull portainer/portainer         # 拉取镜像
 docker volume create portainer_data
 docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer   # 部署
 ```

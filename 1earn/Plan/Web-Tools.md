@@ -34,6 +34,7 @@
             * [ASCII转换](#ascii转换)
             * [Base](#base)
             * [HTML编码](#html编码)
+            * [Punycode](#punycode)
             * [Quoted-Printable](#quoted-printable)
             * [Unicode编码](#unicode编码)
             * [url编码](#url编码)
@@ -305,6 +306,11 @@
 - http://www.convertstring.com/zh_CN/EncodeDecode/HtmlEncode
 - https://tool.oschina.net/encode
 
+#### Punycode
+
+- https://www.punycoder.com/
+- https://myssl.com/punycode.html
+
 #### Quoted-Printable
 
 - http://web.chacuo.net/charsetquotedprintable
@@ -339,12 +345,11 @@
 #### 进制
 
 - https://js.tuisec.win/convert/ox2str/
-- http://www.5ixuexiwang.com/str/from-hex.php
 - http://www.convertstring.com/zh_CN/EncodeDecode/HexDecode
-- http://www.5ixuexiwang.com/str/hex.php
 - http://tool.oschina.net/hexconvert/
 - http://www.mxcz.net/tools/Hex.aspx
-
+- https://www.bejson.com/convert/ox2str/
+- https://www.sojson.com/hexadecimal.html
 
 #### 图片码
 ##### 二维码

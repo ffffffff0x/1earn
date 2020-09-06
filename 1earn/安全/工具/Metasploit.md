@@ -369,18 +369,18 @@ getuid                              # 查看是否切换成功
 
 **操作文件系统**
 ```bash
-ls:列出当前路径下的所有文件和文件夹.
-pwd 或 getwd:查看当前路径
-search:搜索文件,使用 search -h查看帮助.
-cat:查看文件内容,比如 cat test.txt.
-edit:编辑或者创建文件.和 Linux 系统的 vm 命令类似,同样适用于目标系统是 windows 的情况.
-rm:删除文件.
-cd:切换路径.
-mkdir:创建文件夹.
-rmdir:删除文件夹.
-getlwd 或 lpwd:查看自己系统的当前路径.
-lcd:切换自己当前系统的目录.
-lls:显示自己当前系统的所有文件和文件夹.
+ls                  # 列出当前路径下的所有文件和文件夹.
+pwd/getwd           # 查看当前路径
+search              # 搜索文件,使用 search -h 查看帮助.
+cat                 # 查看文件内容,比如 cat test.txt.
+edit                # 编辑或者创建文件.和 Linux 系统的 vm 命令类似,同样适用于目标系统是 windows 的情况.
+rm                  # 删除文件.
+cd                  # 切换路径.
+mkdir               # 创建文件夹.
+rmdir               # 删除文件夹.
+getlwd/lpwd         # 查看自己系统的当前路径.
+lcd                 # 切换自己当前系统的目录.
+lls                 # 显示自己当前系统的所有文件和文件夹.
 ```
 
 **上传和下载**

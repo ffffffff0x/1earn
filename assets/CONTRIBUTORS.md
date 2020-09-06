@@ -13,10 +13,16 @@
 * [the-fog](https://github.com/the-fog)
     - 提供逆向实验的内容
     - 提供无线安全相关的内容
+* [Sarah-Briggs](https://github.com/Sarah-Briggs)
+    - 提供 IOT 实验的内容
+* [Atomic-Crash](https://github.com/Atomic-Crash)
+    - 提供 IOT 实验的内容
 * [BeakHyun](https://github.com/Alienware-OWO)
     - 提供信息收集笔记的部分内容
 * [cililianjie](https://github.com/cililianjie)
 * [mfslog](https://github.com/mfslog)
+
+---
 
 参考过的部分文章作者(排名不分先后)
 * [Tide安全团队](https://github.com/TideSecTeam?type=source)

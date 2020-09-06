@@ -14,6 +14,7 @@
 
 # 大纲
 
+* [语料收集](#语料收集)
 * [Github](#github)
 * [Google](#google)
 * [Shodan](#shodan)
@@ -42,6 +43,140 @@ http://so.51cto.com/?keywords=
 
 ---
 
+# 语料收集
+
+**杂项**
+- [haiyangma/dics](https://github.com/haiyangma/dics)
+
+**人名**
+- [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus) - 中文人名语料库。中文姓名,姓氏,名字,称呼,日本人名,翻译人名,英文人名。可用于中文分词、人名实体识别。
+
+**地名**
+- [modood/Administrative-divisions-of-China: 中华人民共和国行政区划:省级(省份直辖市自治区)、 地级(城市)、 县级(区县)、 乡级(乡镇街道)、 村级(村委会居委会) ,中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫.](https://github.com/modood/Administrative-divisions-of-China)
+
+**黑产 seo 关键词**
+- 钱
+    - 博彩
+    - 私服
+    - 页游
+    - 棋牌
+    - 网贷
+    ```
+    老虎机
+    澳门银行
+    万博亚洲官网
+    狗万app
+    新万博官网
+    ylg9999
+    九州娱乐
+    澳门威尼斯人
+    威尼斯人
+    大红鹰葡京会
+    振动盘
+    澳门银河
+    永利娱乐场
+    太阳城集团
+    金沙娱乐
+    Bet365
+    钱柜娱乐
+    永利娱乐
+    百家乐
+    博必发
+    亿鼎博
+    六合彩
+    pk10
+    bet365
+    扑克王
+    金殿
+    线上娱乐
+    时时彩
+    北京赛车
+    开奖结果
+    私家侦探
+    特码
+    枪改
+    九鼎娱乐
+    光速下载
+    公平信誉
+    千亿体育
+    亚博体育
+    亚博娱乐
+    真人电子
+    千億体育
+    澳门大牌
+    龙8国际
+    乐虎国际
+    优发国际
+    齐发国际
+    优乐国际
+    AG直营
+    免费在线
+    ```
+- 色
+    ```
+    商务模特
+    会所推荐
+    洗浴休闲
+    找鸡上门
+    外围女
+    按摩服务
+    大保健
+    在线_免费午夜一级
+    亚洲日韩
+    影音先锋
+    ```
+- [fwwdn/sensitive-stop-words](https://github.com/fwwdn/sensitive-stop-words) - 互联网常用敏感词、停止词词库
+- [observerss/textfilter](https://github.com/observerss/textfilter) - 敏感词过滤的几种实现+某1w词敏感词
+- [lining0806/TextMining](https://github.com/lining0806/TextMining) - 敏感词过滤系统
+- [funNLP/data/敏感词库](https://github.com/fighting41love/funNLP/tree/master/data/%E6%95%8F%E6%84%9F%E8%AF%8D%E5%BA%93) - 反动词表、暴恐词表
+- [IllegalWordsDetection/blob/master/MinGanCi.txt](https://github.com/NewbieGameCoder/IllegalWordsDetection/blob/master/MinGanCi.txt) - 敏感词
+- [Ldundun/DFA/blob/master/sw.txt](https://github.com/Ldundun/DFA/blob/master/sw.txt) - 敏感词
+- [qloog/sensitive_words](https://github.com/qloog/sensitive_words) - 敏感词库整理
+- [57ing/Sensitive-word](https://github.com/57ing/Sensitive-word) -  收集的一些敏感词汇，细分了暴恐词库、反动词库、民生词库、色情词库、贪腐词库、其他词库等
+- [bzvs1992/SensitiveWordFilter](https://github.com/bzvs1992/SensitiveWordFilter)
+- [adlered/DangerousSpamWords](https://github.com/adlered/DangerousSpamWords) - 超轻量的中文敏感字、敏感词库，字典词典
+
+**系统名称**
+- 治安/监督
+    ```
+    网格化
+    社会治安
+    综合治理
+    社会治理平台
+    多元化解系统
+    数字城管系统
+    智慧党建系统
+    安全生产系统
+    智慧园区平台
+    平安城市云
+    社会综合治理平台
+    ```
+
+- 医疗
+    ```
+    iOffice
+    阳光采购和综合监管平台
+    体检档案查询系统
+    医疗器械追溯管理系统
+    科研项目管理系统
+    后勤综合管理平台
+    电子票据管理平台
+    统一身份认证平台
+    品德信息管理系统
+    pdsci系统
+    研究生管理系统
+    进修生管理系统
+    规范化培训管理平台
+    医师规范化管理系统
+    规培临床技能考核管理系统
+    住院医师规范化培训
+    临床技能考核管理系统
+    临床试验信息管理系统(CTMS)
+    电子化注册信息系统
+    ```
+
+---
+
 # Github
 
 <p align="center">
@@ -50,6 +185,7 @@ http://so.51cto.com/?keywords=
 
 **文章**
 - [Auditing GitHub users’ SSH key quality](https://blog.benjojo.co.uk/post/auditing-github-users-keys)
+- [Github搜索语法-信息搜集指南](https://payloads.online/archivers/2019-01-31/2)
 
 **语法**
 
@@ -67,6 +203,7 @@ http://so.51cto.com/?keywords=
 | created:YYYY-MM-DD 	| `webos created:<2011-01-01` 查出仓库中包含 webos 关键字并且是在 2011 年之前创建的项目（也支持时分秒，支持大于小于区间等） |
 | followers:n         | `followers:1000` 查出有 1000 个拥护者（followers） 的项目（支持大于小于区间等） |
 | forks:n 	        | `forks:5` 查出有 5 个 forks 的项目（支持大于小于区间等） |
+| filename:n        | `filename:xxx.txt` 查找xxx.txt文件 |
 | topic:TOPIC         | `topic:jekyll` 查出含有 jekyll 这个 topic 的项目（项目描述下面的东西，相当于标签、分类） |
 | topics:n 	        | `topics:>5` 查出有 5 个以上 topic 的项目（支持大于小于区间等） |
 | archived:true/false | `archived:true GNOME` 查出已经封存了并且含有 GNOME 关键字的项目（已经不再维护了的项目） |
@@ -118,6 +255,9 @@ in:description python pushed:>2019-12-20
     create user identified by
     create user zabbix@'%' identified by
     各单位
+    XX市XX局版权所有
+    技术支持：xxxx公司
+    去github上搜开发公司的客服电话
     ```
 
     - [leaky-repo](https://github.com/Plazmaz/leaky-repo) - 仓库收集了泄露文件的案例
@@ -128,12 +268,6 @@ in:description python pushed:>2019-12-20
     钉钉群
     ```
 
-- 人名
-    - [wainshine/Chinese-Names-Corpus](https://github.com/wainshine/Chinese-Names-Corpus) - 中文人名语料库。中文姓名,姓氏,名字,称呼,日本人名,翻译人名,英文人名。可用于中文分词、人名实体识别。
-
-- 地名
-    - [modood/Administrative-divisions-of-China: 中华人民共和国行政区划:省级(省份直辖市自治区)、 地级(城市)、 县级(区县)、 乡级(乡镇街道)、 村级(村委会居委会) ,中国省市区镇村二级三级四级五级联动地址数据 Node.js 爬虫.](https://github.com/modood/Administrative-divisions-of-China)
-
 **工具**
 - [BishopFox/GitGot](https://github.com/BishopFox/GitGot) - 快速搜索 GitHub 上公共数据的敏感信息
 - [UKHomeOffice/repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner)- 查找意外提交给 git 仓库的秘密的 CLI 工具,例如密码,私钥
@@ -141,6 +275,7 @@ in:description python pushed:>2019-12-20
 - [eth0izzle/shhgit](https://github.com/eth0izzle/shhgit) - 实时的监控 github 寻找敏感信息
 - [lightless233/geye](https://github.com/lightless233/geye) - 一款面向企业级以及白帽子的"More Fastest" Github监控工具
 - [Securityautomation/DumpTheGit](https://github.com/Securityautomation/DumpTheGit) - 搜索公开的代码仓库, 查找敏感信息
+- [4x99/code6](https://github.com/4x99/code6)
 
 ---
 
@@ -227,77 +362,6 @@ https://searchcode.com/
     intitle:"index of" htpasswd
     inurl:service.pwd
     ```
-
-- **黑产 seo 关键词**
-    - 钱
-        - 博彩
-        - 私服
-        - 页游
-        - 棋牌
-        - 网贷
-        ```
-        老虎机
-        澳门银行
-        万博亚洲官网
-        狗万app
-        新万博官网
-        ylg9999
-        九州娱乐
-        澳门威尼斯人
-        威尼斯人
-        大红鹰葡京会
-        振动盘
-        澳门银河
-        永利娱乐场
-        太阳城集团
-        金沙娱乐
-        Bet365
-        钱柜娱乐
-        永利娱乐
-        百家乐
-        博必发
-        亿鼎博
-        六合彩
-        pk10
-        bet365
-        扑克王
-        金殿
-        线上娱乐
-        时时彩
-        北京赛车
-        开奖结果
-        私家侦探
-        特码
-        枪改
-        九鼎娱乐
-        光速下载
-        公平信誉
-        千亿体育
-        ```
-    - 色
-        - 视频网站
-        - 直播
-        - 论坛
-        - 游戏
-        ```
-        商务模特
-        会所推荐
-        洗浴休闲
-        找鸡上门
-        外围女
-        按摩服务
-        大保健
-        ```
-    - [fwwdn/sensitive-stop-words](https://github.com/fwwdn/sensitive-stop-words) - 互联网常用敏感词、停止词词库
-    - [observerss/textfilter](https://github.com/observerss/textfilter) - 敏感词过滤的几种实现+某1w词敏感词
-    - [lining0806/TextMining](https://github.com/lining0806/TextMining) - 敏感词过滤系统
-    - [funNLP/data/敏感词库](https://github.com/fighting41love/funNLP/tree/master/data/%E6%95%8F%E6%84%9F%E8%AF%8D%E5%BA%93) - 反动词表、暴恐词表
-    - [IllegalWordsDetection/blob/master/MinGanCi.txt](https://github.com/NewbieGameCoder/IllegalWordsDetection/blob/master/MinGanCi.txt) - 敏感词
-    - [Ldundun/DFA/blob/master/sw.txt](https://github.com/Ldundun/DFA/blob/master/sw.txt) - 敏感词
-    - [qloog/sensitive_words](https://github.com/qloog/sensitive_words) - 敏感词库整理
-    - [57ing/Sensitive-word](https://github.com/57ing/Sensitive-word) -  收集的一些敏感词汇，细分了暴恐词库、反动词库、民生词库、色情词库、贪腐词库、其他词库等
-    - [bzvs1992/SensitiveWordFilter](https://github.com/bzvs1992/SensitiveWordFilter)
-    - [adlered/DangerousSpamWords](https://github.com/adlered/DangerousSpamWords) - 超轻量的中文敏感字、敏感词库，字典词典
 
 - **漏洞**
     ```
@@ -605,6 +669,7 @@ autonomous_system.description: University   # 系统描述
 city:tokyo + app:weblogic
 
 port:102 +app:"Siemens S7 PLC"
+"<title>信息中心 /</title>"
 ```
 
 **ZoomEye工控专题**

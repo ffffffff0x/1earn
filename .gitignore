@@ -8,7 +8,7 @@
 /1earn/开发/Assembly
 /1earn/开发/标记语言
 /1earn/开发/C#
-/1earn/运维/数据库
+/1earn/安全/笔记/RedTeam/Web安全/upload.md
 /1earn/安全/笔记/Reverse
 /1earn/安全/实验/Web/靶场/sqli-labs-WalkThrough.md
 /1earn/安全/实验/靶机/VulnHub/symfonos/symfonos6-WalkThrough.md
@@ -17,5 +17,4 @@
 /assets/img/开发/golang
 /assets/img/开发/Ruby
 /assets/img/开发/Rust
-/assets/img/运维/数据库
 /assets/img/安全/笔记/Reverse

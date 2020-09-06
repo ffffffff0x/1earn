@@ -26,6 +26,8 @@
     - 好用,有时需科学上网,免费版够用
 - [wekan](https://github.com/wekan/wekan)
     - 开源的看板工具方案,还行
+- [JordanKnott/taskcafe](https://github.com/JordanKnott/taskcafe)
+    - 开源的看板工具方案
 - [日事清](https://www.rishiqing.com/)
     - bug贼多,还不能实时刷新,价格不高
 - [teambition](https://www.teambition.com/)

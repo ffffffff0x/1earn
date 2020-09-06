@@ -297,7 +297,7 @@ cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 - VBox
 
-    虚拟机关机状态下->将设备插入主机->设置->USB设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
+    虚拟机关机状态下->将设备插入主机->设置->USB 设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
 
 - 验证是否连接成功
 
@@ -358,7 +358,7 @@ reboot
 检测是否安装成功:
 ```bash
 glxinfo | grep -i "direct rendering"
-direct rendering: Yes   # 出现yes安装成功
+direct rendering: Yes   # 出现 yes 安装成功
 ```
 
 检测原本的 Oclhashcat-plus 是否运行正常:

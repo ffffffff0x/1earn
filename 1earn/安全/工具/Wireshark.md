@@ -30,6 +30,7 @@
 - [SampleCaptures - The Wireshark Wiki](https://wiki.wireshark.org/SampleCaptures)
 - [CaptureSetup/USB - The Wireshark Wiki](https://wiki.wireshark.org/CaptureSetup/USB)
 - [图解Wireshark协议分析实例](https://blog.csdn.net/bcbobo21cn/article/details/51454170)
+- [Wireshark Cheat Sheet – Commands, Captures, Filters & Shortcuts](https://www.comparitech.com/net-admin/wireshark-cheat-sheet/)
 
 **插件/增强工具**
 - [pentesteracademy/patoolkit](https://github.com/pentesteracademy/patoolkit) - Wireshark 插件，增强分析能力
@@ -62,10 +63,15 @@ eq   ==     # 等于
 gt   >      # 大于
 ge   >=     # 大于等于
 ne   !=     # 不等
-and         # 两个条件同时满足
-or          # 其中一个条件被满足
-xor         # 有且仅有一个条件被满足
-not         # 没有条件被满足
+```
+
+**逻辑操作符**
+```bash
+and  &&     # 两个条件同时满足
+or   ||     # 其中一个条件被满足
+xor  ^^     # 有且仅有一个条件被满足
+not  !      # 没有条件被满足
+[n] [...]   # 过滤特定的单词或文字
 ```
 
 **快速使用**

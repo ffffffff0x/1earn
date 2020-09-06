@@ -123,7 +123,7 @@
 - [Audacity](https://sourceforge.net/projects/audacity/) - 一款易于使用的多轨音频编辑器和记录器
 - [MP3stego](https://www.petitcolas.net/steganography/mp3stego/) - MP3Stego 将在压缩过程中隐藏 MP3 文件中的信息。
 
-**write**
+**writup**
 - [音频隐写 MP3stego+wav隐写+题目](https://m3tar.github.io/2017/08/20/%E9%9F%B3%E9%A2%91%E9%9A%90%E5%86%99-MP3stego-wav%E9%9A%90%E5%86%99-%E9%A2%98%E7%9B%AE/)
 
 ---
@@ -146,7 +146,15 @@
 
 ---
 
-# Writeup
+# ICS
+
+**writup**
+- [CTF工业信息安全大赛实践与分析](https://www.freebuf.com/articles/ics-articles/210687.html)
+- [2019工业信息安全技能大赛个人线上赛第一场writeup](https://login546.github.io/2019/07/29/2019%E5%B7%A5%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E7%BA%BF%E4%B8%8A%E8%B5%9BNO-1writeup/)
+
+---
+
+# 大型赛事Writeup
 ## 网鼎杯
 
 **2020**

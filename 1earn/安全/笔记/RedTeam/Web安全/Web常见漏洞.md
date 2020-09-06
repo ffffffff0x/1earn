@@ -10,23 +10,20 @@
 
 # 大纲
 
-* **[点击劫持](#点击劫持)**
-
-* **[任意文件下载-读取](#任意文件下载-读取)**
-
-* **[文件包含漏洞](#文件包含漏洞)**
+* **[文件包含](#文件包含)**
     * [日志中毒攻击](#日志中毒攻击)
 
-* **[文件解析漏洞](#文件解析漏洞)**
+* **[文件解析](#文件解析)**
     * [IIS](#iis)
     * [Nginx](#nginx)
     * [Apache](#apache)
     * [其他](#其他)
 
-* **[文件上传漏洞](#文件上传漏洞)**
+* **[文件上传](#文件上传)**
 
-* **[信息泄露漏洞](#信息泄露漏洞)**
+* **[信息泄露](#信息泄露)**
     * [目录遍历](#目录遍历)
+        * [任意文件下载-读取](#任意文件下载-读取)
     * [GIT源码泄露](#git源码泄露)
     * [SVN源码泄露](#snv源码泄露)
     * [DS_Store文件泄漏](#ds_store文件泄漏)
@@ -37,59 +34,36 @@
     * [JS敏感信息泄露](#js敏感信息泄露)
     * [各类APIkey泄露](#各类apikey泄露)
 
-* **[http参数污染](#http参数污染)**
-
-* **[php反序列化](#php反序列化)**
-
-* **[SSRF](#ssrf)**
-
-* **[URL跳转漏洞](#url跳转漏洞)**
-
-* **[CRLF_Injection](#crlf_injection)**
-
-* **[SQL_inje](#sql_inje)**
-
-* **[XSS](#xss)**
-
-* **[XXE](#xxe)**
+* **[注入](#注入)**
+    * [http参数污染](#http参数污染)
+    * [CRLF_Injection](#crlf_injection)
+    * [SQL_inje](#sql_inje)
+    * [XSS](#xss)
+    * [XXE](#xxe)
+    * [php反序列化](#php反序列化)
 
 * **[配置不当](#配置不当)**
     * [jwt攻击](#jwt攻击)
     * [代理配置不当](#代理配置不当)
-
-* **[未验证来源](#未验证来源)**
-    * [二维码劫持](#二维码劫持)
     * [CORS](#cors)
     * [CSRF](#csrf)
-    * [jsonp信息泄露](#jsonp信息泄露)
+    * [jsonp劫持](#jsonp劫持)
+
+* **[未验证输入](#未验证输入)**
+    * [URL跳转漏洞](#url跳转漏洞)
+    * [SSRF](#ssrf)
+    * [二维码劫持](#二维码劫持)
+    * [点击劫持](#点击劫持)
 
 ---
 
-**文章**
+**相关文章**
 - [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
 - [Web Service 渗透测试从入门到精通](https://www.anquanke.com/post/id/85910)
 
 ---
 
-# 点击劫持
-
-- [click-jacking](https://www.hacksplaining.com/exercises/click-jacking) - 一个简单的讲解关于点击劫持的网站
-
-**案例**
-- [Uber XSS + clickjacking](https://www.youtube.com/watch?v=5Gg4t3clwys)
-
----
-
-# 任意文件下载-读取
-
-**案例**
-- [电信某分站配置不当导致敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-095088)
-- [一个任意文件读取漏洞记录](https://toutiao.io/posts/423535/app_preview)
-- [南方周末邮件服务器任意文件读取漏洞](http://wooyun.jozxing.cc/static/bugs/wooyun-2013-045426.html)
-
----
-
-# 文件包含漏洞
+# 文件包含
 
 文件包含，是一个功能。在各种开发语言中都提供了内置的文件包含函数，其可以使开发人员在一个代码文件中直接包含（引入）另外一个代码文件。 比如 在 PHP 中，提供了：`include()`,`include_once()`,`require()`,`require_once()` 这些文件包含函数，这些函数在代码设计中被经常使用到。
 
@@ -99,7 +73,7 @@
 
 因此，在 web 应用系统的功能设计上尽量不要让前端用户直接传变量给包含函数，如果非要这么做，也一定要做严格的白名单策略进行过滤。
 
-**文章**
+**相关文章**
 - [LFI、RFI、PHP 封装协议安全问题学习 - 骑着蜗牛逛世界](https://www.cnblogs.com/LittleHann/p/3665062.html#3831621)
 - [php 文件包含漏洞 | Chybeta](https://chybeta.github.io/2017/10/08/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/)
 - [文件包含漏洞](https://blog.csdn.net/le0nis/article/details/52043732)
@@ -114,7 +88,7 @@
 - [远程包含和本地包含漏洞的原理 - Kevins 的天空](https://blog.csdn.net/iiprogram/article/details/2349322)
 - [聊聊安全测试中如何快速搞定Webshell](https://www.freebuf.com/articles/web/201421.html)
 
-**案例**
+**相关案例**
 - [IKEA官网本地文件包含(LFI)漏洞分析 - 嘶吼 RoarTalk](http://www.4hou.com/vulnerable/13759.html)
 
 **几种利用方法**
@@ -152,7 +126,7 @@
 
 `log poisoning`
 
-**文章**
+**相关文章**
 - [RCE with LFI and SSH Log Poisoning](https://www.hackingarticles.in/rce-with-lfi-and-ssh-log-poisoning/)
 - [Apache Log Poisoning through LFI](https://www.hackingarticles.in/apache-log-poisoning-through-lfi/)
 - [From Local File Inclusion to Remote Code Execution - Part 1 | Outpost 24 blog](https://outpost24.com/blog/from-local-file-inclusion-to-remote-code-execution-part-1)
@@ -160,9 +134,9 @@
 
 ---
 
-# 文件解析漏洞
+# 文件解析
 
-**文章**
+**相关文章**
 - [解析漏洞总结 – erevus](http://www.vuln.cn/7070)
 
 ## IIS
@@ -192,7 +166,7 @@ IIS 6.0 解析利用方法有两种
 /wooyun.cdx
 ```
 
-- **案例**
+- **相关案例**
     - [网站安全狗IIS6.0解析webshell访问限制bypass](https://shuimugan.com/bug/view?bug_no=71861)
     - [网站安全狗免杀神技+IIS6.0解析WebShell访问限制Bypass](https://shuimugan.com/bug/view?bug_no=104444)
     - [网站安全狗IIS6.0解析webshell访问拦截bypass](https://shuimugan.com/bug/view?bug_no=128432)
@@ -210,7 +184,7 @@ IIS 6.0 解析利用方法有两种
 
 然后访问 wooyun.jpg/.php,在这个目录下就会生成一句话木马 shell.php
 
-- **案例**
+- **相关案例**
     - [用友软件某分站SQL注入漏洞+nginx解析漏洞](http://www.anquan.us/static/bugs/wooyun-2013-032250.html)
     - [新浪网分站多处安全漏洞(nginx解析+SQL注射等)小礼包 ](http://www.anquan.us/static/bugs/wooyun-2013-021064.html)
     - [kingsoft.com某x级域名nginx解析漏洞+爆路径 ](http://www.anquan.us/static/bugs/wooyun-2013-019253.html)
@@ -231,7 +205,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 如何判断是不是合法的后缀就是这个漏洞的利用关键,测试时可以尝试上传一个 wooyun.php.rara.jpg.png…(把你知道的常见后缀都写上…)去测试是否是合法后缀
 
-- **案例**
+- **相关案例**
     - [安卓开发平台存在上传漏洞和 Apache 解析漏洞,成功获取 webshell](http://www.anquan.us/static/bugs/wooyun-2013-018433.html)
 
 **.htaccess**
@@ -262,9 +236,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-# 文件上传漏洞
+# 文件上传
 
-**文章**
+**相关文章**
 - [简单粗暴的文件上传漏洞](https://paper.seebug.org/560/)
 - [BookFresh Tricky File Upload Bypass to RCE](https://secgeek.net/bookfresh-vulnerability/)
 - [Upload_Attack_Framework](https://www.slideshare.net/insight-labs/upload-attack-framework)
@@ -274,30 +248,38 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [upload-labs](https://github.com/c0ny1/upload-labs)
     - writeup : [upload-labs-WalkThrough](../../../实验/Web/upload-labs-WalkThrough.md)
 
-**案例**
+**相关案例**
 - [实战渗透-看我如何拿下自己学校的大屏幕(Bypass) ](https://xz.aliyun.com/t/7786) - 大量字符 bypass waf 文件上传
 - [渗透测试tips：两处有趣的文件上传到getshell](https://zhuanlan.zhihu.com/p/100871520) - 多个漏洞组合利用，无视 OSS 存储 getshell
 
 ---
 
-# 信息泄露漏洞
+# 信息泄露
 
-**文章**
+**相关文章**
 - [谈谈源码泄露](https://blog.csdn.net/GitChat/article/details/79014538)
 - [敏感文件泄露](http://www.myh0st.cn/index.php/archives/62/)
 
-**工具**
+**相关工具**
 - [lijiejie/BBScan](https://github.com/lijiejie/BBScan) - 用于渗透测试前期，快速地对大量目标进行扫描，发现信息泄露等常见漏洞，找到可能的突破入口。
 - [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH) - 网站个人敏感信息文件扫描器
 - [ring04h/weakfilescan](https://github.com/ring04h/weakfilescan) - 动态多线程敏感信息泄露检测工具
+- [0xHJK/dumpall](https://github.com/0xHJK/dumpall) - 一款信息泄漏利用工具，适用于 .git/.svn 源代码泄漏和 .DS_Store 泄漏
 
 ---
 
 ## 目录遍历
 
-**案例**
+**相关案例**
 - [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
-- [2 Path Traversal Cases](https://jlajara.gitlab.io/posts/2020/03/29/Path_Traversal.html)
+- [2 Path Traversal Cases](https://jlajara.gitlab.io/web/2020/03/29/Path_Traversal.html)
+
+### 任意文件下载-读取
+
+**相关案例**
+- [电信某分站配置不当导致敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-095088)
+- [一个任意文件读取漏洞记录](https://toutiao.io/posts/423535/app_preview)
+- [南方周末邮件服务器任意文件读取漏洞](http://wooyun.jozxing.cc/static/bugs/wooyun-2013-045426.html)
 
 ---
 
@@ -309,10 +291,10 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 - `/.git/config`
 
-**案例**
+**相关案例**
 - [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
 
-**工具**
+**相关工具**
 - [lijiejie/GitHack](https://github.com/lijiejie/GitHack) - 一个 `.git` 泄露利用脚本，通过泄露的.git文件夹下的文件，重建还原工程源代码。
 - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract) - 提取远程 git 泄露或本地 git 的工具
 
@@ -322,10 +304,10 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 - `/.svn/entries`
 
-**案例**
+**相关案例**
 - [我爱我家某处源码泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0149331)
 
-**工具**
+**相关工具**
 - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
 - [admintony/svnExploit](https://github.com/admintony/svnExploit) - 一款 SVN 源代码利用工具，其完美支持 SVN<1.7 版本和 SVN>1.7 版本的 SVN 源代码泄露
 
@@ -341,10 +323,10 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 因为里面包含了一些目录信息,如果没有删除,攻击者通过 `.DS_Store` 可以知道这个目录里面所有文件名称,从而让攻击者掌握了更多的信息.　
 
-**案例**
+**相关案例**
 - [TCL 某网站 DS_Store 文件泄露敏感信息](http://www.anquan.us/static/bugs/wooyun-2015-091869.html)
 
-**工具**
+**相关工具**
 - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
 - [anantshri/DS_Store_crawler_parser](https://github.com/anantshri/DS_Store_crawler_parser) - `.DS_Store` 文件解析脚本,递归地获取文件夹内的 `.ds_Store`
 
@@ -358,7 +340,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 该漏洞往往会导致服务器整站源代码或者部分页面的源代码被下载,利用源代码中所包含的各类敏感信息,如服务器数据库连接信息,服务器配置信息等会因此而泄露,造成巨大的损失.
 
-**案例**
+**相关案例**
 - [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
@@ -380,37 +362,37 @@ WEB-INF 主要包含一下文件或目录:
 ```
 不过在一些特定的场合却会让攻击者能读取到其中的内容,从而造成源码泄露.
 
-**案例**
+**相关案例**
 - [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
 
 ---
 
 ## idea文件夹泄露
 
-**工具**
+**相关工具**
 - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit) - 一个 `.idea` 文件泄漏利用脚本
 
 ---
 
 ## phpinfo信息泄露
 
-**文章**
+**相关文章**
 - [phpinfo 可以告诉我们什么](http://zeroyu.xyz/2018/11/13/what-phpinfo-can-tell-we/)
 - [PHPINFO 中的重要信息](https://www.k0rz3n.com/2019/02/12/PHPINFO%20%E4%B8%AD%E7%9A%84%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF/)
 - [amazing phpinfo() ](https://skysec.top/2018/04/04/amazing-phpinfo/)
 - [phpinfo 中值得注意的信息](https://seaii-blog.com/index.php/2017/10/25/73.html)
 
-**工具**
+**相关工具**
 - [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
 
 ---
 
 ## JS敏感信息泄露
 
-**文章**
+**相关文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
 
-**案例**
+**相关案例**
 - [从JS信息泄露到Webshell](http://r3start.net/index.php/2019/07/15/546)
 
 **相关工具**
@@ -421,7 +403,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ## 各类APIkey泄露
 
-**文章**
+**相关文章**
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
 - [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
 
@@ -467,83 +449,49 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# http参数污染
+# 注入
 
-**文章**
+## http参数污染
+
+**相关文章**
 - [Web 应用里的 HTTP 参数污染 (HPP) 漏洞](https://blog.csdn.net/eatmilkboy/article/details/6761407)
 - [浅谈绕过 waf 的数种方法](https://www.waitalone.cn/waf-bypass.html)
 - [通过 HTTP 参数污染绕过 WAF 拦截](http://www.freebuf.com/articles/web/5908.html)
 
 ---
 
-# php反序列化
+## CRLF_Injection
 
-**工具**
-- [php 在线反序列化工具](https://www.w3cschool.cn/tools/index?name=unserialize)
-
----
-
-# SSRF
-
-很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
-
-一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
-
-**文章**
-- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
-- [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
-- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
-- [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
-- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
-
-**案例**
-- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
-- [SSRF in Exchange leads to ROOT access in all instances](https://hackerone.com/reports/341876) - 通过对 ssrf 访问 Google Cloud Metadata,直至 RCE
-
-**payload**
-- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
-- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
-
-**工具**
-- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
-- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
-
----
-
-# URL跳转漏洞
-
-**文章**
-- [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
-- [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
-- [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
-
----
-
-# CRLF_Injection
-
-**案例**
+**相关案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
 
 ---
 
-# SQL_inje
+## SQL_inje
 
 **笔记**
 - [SQLi 笔记](./SQLi.md)
 
 ---
 
-# XSS
+## XSS
 
 **笔记**
 - [XSS 笔记](./xss.md)
 
 ---
 
-# XXE
+## XXE
 
 **笔记**
 - [XXE 笔记](./xxe.md)
+
+---
+
+## php反序列化
+
+**相关工具**
+- [php 在线反序列化工具](https://www.w3cschool.cn/tools/index?name=unserialize)
 
 ---
 
@@ -551,7 +499,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ## jwt攻击
 
-**文章**
+**相关文章**
 - [全程带阻:记一次授权网络攻防演练 (上) ](https://www.freebuf.com/vuls/211842.html)
 - [对jwt的安全测试方式总结](https://saucer-man.com/information_security/377.html)
 - [攻击JWT的一些方法 ](https://xz.aliyun.com/t/6776)
@@ -571,7 +519,7 @@ import jwt
 jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 ```
 
-**工具**
+**相关工具**
 - [JSON Web Tokens - jwt.io](https://jwt.io/) - 在线的 jwt 生成
 - [ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool) - 一个用于验证，伪造和破解JWT（JSON Web令牌）的工具包。
 - [Ch1ngg/JWTPyCrack](https://github.com/Ch1ngg/JWTPyCrack)
@@ -583,7 +531,7 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 
 ## 代理配置不当
 
-**案例**
+**相关案例**
 - [新浪HTTP代理配置不当漫游内网](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0131169)
 - [陌陌一处代理配置不当，已验证可绕过IP过滤探测敏感资源](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-083202)
 - [陌陌web服务器Path处理不当可以正向代理(idc机器/打不到办公网)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0191121)
@@ -592,47 +540,72 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 
 ---
 
-# 未验证来源
-
-## 二维码劫持
-
-**案例**
-- [二维码劫持案例分析](https://www.freebuf.com/vuls/234121.html)
-
----
-
 ## CORS
 
-**文章**
+**简介**
+
+CORS 跨域漏洞的本质是服务器配置不当，即 Access-Control-Allow-Origin 设置为 * 或是直接取自请求头 Origin 字段，Access-Control-Allow-Credentials 设置为 true。
+
+**CORS 与 CSRF 的区别**
+
+CORS 机制的目的是为了解决脚本的跨域资源请求问题，不是为了防止 CSRF。
+
+CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单进行同源拦截的，因为这是无响应的请求，浏览器认为无响应请求是安全的。
+
+脚本的跨域请求在同源策略的限制下，响应会被拦截，即阻止获取响应，但是请求还是发送到了后端服务器。
+- 相同点：都需要第三方网站；都需要借助 Ajax 的异步加载过程；一般都需要用户登录目标站点。
+- 不同点：一般 CORS 漏洞用于读取受害者的敏感信息，获取请求响应的内容；而 CSRF 则是诱使受害者点击提交表单来进行某些敏感操作，不用获取请求响应内容。
+
+**相关文章**
 - [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
 - [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
 
-**案例**
+**相关案例**
 - [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
 - [看我如何绕过Yahoo！View的CORS限制策略](https://www.freebuf.com/articles/web/158529.html)
 
-**工具**
-- [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的CORS错误配置漏洞的 python 工具
+**相关工具**
+- [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的 CORS 错误配置漏洞的 python 工具
 
 ---
 
 ## CSRF
 
-**文章**
+**相关文章**
 - [CSRF攻击与防御](https://blog.csdn.net/stpeace/article/details/53512283)
 
-**案例**
+**相关案例**
 - [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
 - [Periscope android app deeplink leads to CSRF in follow action](https://hackerone.com/reports/583987)
 
 ---
 
-## jsonp信息泄露
+## jsonp劫持
 
-**文章**
+**简介**
+
+JSONP 劫持实际上也算是 CSRF 的一种。当某网站使用 JSONP 的方式来跨域传递一些敏感信息时，攻击者可以构造恶意的 JSONP 调用页面，诱导被攻击者访问来达到截取用户敏感信息的目的。
+
+JSON 实际应用的时候会有两种传输数据的方式：
+
+- xmlhttp 获取数据方式：
+    ```
+    {"username":"twosmi1e","password":"test123"}
+    ```
+    当在前端获取数据的时候，由于数据获取方和数据提供方属于同一个域下面，所以可以使用 xmlhttp 的方式来获取数据，然后再用 xmlhttp 获取到的数据传入自己的 js 逻辑如 eval。
+
+- script 获取数据方式：
+    ```
+    userinfo={"username":"twosmi1e","password":"test123"}
+    ```
+    如果传输的数据在两个不同的域，由于在 javascript 里无法跨域获取数据，所以一般采取 script 标签的方式获取数据，传入一些 callback 来获取最终的数据，如果缺乏有效地控制(对 referer 或者 token 的检查)就有可能造成敏感信息被劫持。
+
+<script src="http://www.test.com/userdata.php?callback=userinfo"></script>
+
+**相关文章**
 - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
 
-**案例**
+**相关案例**
 - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)
 - [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
 - [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
@@ -644,3 +617,84 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
+
+**简单 POC**
+```html
+＜script＞
+function jsonph(json){
+alert(JSON.stringify(json))
+  }
+＜/script＞
+
+＜script src="https://target.com?callback=jsonph"＞＜/script＞
+```
+
+### SOME
+
+> 同源方式执行
+
+**简介**
+
+SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗取用户 cookie 为目的，直接劫持 cookie 经行操作，和 CSRF 攻击很类似，不同的是 CSRF 是构造一个请求，而 SOME 则希望脚本代码被执行。
+
+**相关文章**
+- [浅析同源方式执行（SOME）攻击](https://www.freebuf.com/articles/web/169873.html)
+
+**靶场**
+- [Same Origin Method Execution](https://www.someattack.com/Playground/About)
+
+---
+
+# 未验证输入
+
+## URL跳转漏洞
+
+**相关文章**
+- [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
+- [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
+- [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
+
+---
+
+## SSRF
+
+**简介**
+
+很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
+
+一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
+
+**相关文章**
+- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
+- [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
+- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
+- [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
+- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
+
+**相关案例**
+- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
+- [SSRF in Exchange leads to ROOT access in all instances](https://hackerone.com/reports/341876) - 通过对 ssrf 访问 Google Cloud Metadata,直至 RCE
+
+**payload**
+- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
+- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
+
+**相关工具**
+- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
+- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
+
+---
+
+## 二维码劫持
+
+**相关案例**
+- [二维码劫持案例分析](https://www.freebuf.com/vuls/234121.html)
+
+---
+
+## 点击劫持
+
+- [click-jacking](https://www.hacksplaining.com/exercises/click-jacking) - 一个简单的讲解关于点击劫持的网站
+
+**相关案例**
+- [Uber XSS + clickjacking](https://www.youtube.com/watch?v=5Gg4t3clwys)

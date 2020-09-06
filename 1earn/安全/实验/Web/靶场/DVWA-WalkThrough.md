@@ -2076,7 +2076,7 @@ if( isset( $_REQUEST[ 'Submit' ] ) ) {
 
     注: 关于数字型,字符型,搜索型的区别可以参考如下文章:https://blog.csdn.net/change518/article/details/8116920
 
-2. 猜解SQL查询语句中的字段数
+2. 猜解 SQL 查询语句中的字段数
 
     输入 `1' or 1=1 order by 1 #`,查询成功:
 

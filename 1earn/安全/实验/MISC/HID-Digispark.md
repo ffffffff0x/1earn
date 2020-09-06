@@ -111,9 +111,9 @@ void loop() {
 
 ![](../../../../assets/img/安全/实验/Misc/HID-Digispark/8.png)
 
-> 注意：在调用上传之前，不需要插入Digispark
+> 注意：在调用上传之前，不需要插入 Digispark
 
-点击上传按钮。底部状态框现在会要求插入Digispark - 插入它 - 或者拔下并重新插入它。
+点击上传按钮。底部状态框现在会要求插入 Digispark - 插入它 - 或者拔下并重新插入它。
 
 ![](../../../../assets/img/安全/实验/Misc/HID-Digispark/9.png)
 

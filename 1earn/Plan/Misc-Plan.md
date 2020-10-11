@@ -145,7 +145,7 @@ Windows 安装文件:http://mirrors.aliyun.com/docker-toolbox/windows/docker-for
 
 在系统右下角托盘图标内右键菜单选择 Settings,打开配置窗口后左侧导航菜单选择 Docker Daemon.编辑窗口内的 JSON 串,填写下方加速器地址:
 {
-  "registry-mirrors": ["https://hpcqgbsb.mirror.aliyuncs.com"]
+  "registry-mirrors": ["https://<你的>.mirror.aliyuncs.com"]
 }
 编辑完成后点击 Apply 保存按钮,等待 Docker 重启并应用配置的镜像加速器.
 
@@ -210,7 +210,7 @@ npm config delete proxy  # 取消代理
 
 **proxychains**
 
-详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../运维/Linux/Power-Linux.md##proxychains)
+详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../Integrated/Linux/Power-Linux.md##proxychains)
 - 使用方法:
 
     在需要代理的命令前加上 proxychains4,如 : `proxychains4 wget http://xxx.com/xxx.zip`
@@ -227,10 +227,15 @@ npm config delete proxy  # 取消代理
 
 - *linux*
     ```bash
+    # Go version >= 1.13 (RECOMMENDED)
+    go env -w GO111MODULE=on
+    go env -w GOPROXY="https://goproxy.io,direct"
+
+    # Go version <= 1.12
     # Enable the go modules feature
-    export GO111MODULE=on
+    export GO111MODULE="on"
     # Set the GOPROXY environment variable
-    export GOPROXY=https://goproxy.io
+    export GOPROXY="https://goproxy.io"
     ```
 
 - *windows*
@@ -257,7 +262,7 @@ npm config delete proxy  # 取消代理
 
 **配置**
 ```yml
-"editor.fontFamily": "Fira Code Retina, 'Microsoft YaHei UI', Arial Black",
+"editor.fontFamily": "Fira Code Retina",
 "editor.fontLigatures": true
 ```
 

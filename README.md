@@ -160,16 +160,17 @@
         * [Secure-Linux](./1earn/Integrated/Linux/Secure-Linux.md) - Linux 加固+维护+应急响应参考
         * [Speed-Linux](./1earn/Integrated/Linux/Speed-Linux.md) - 命令速查手册,记录各种基本命令操作
         * 笔记
-            * [包管理](./1earn/Integrated/Linux/包管理.md) - Linux 各种包管理工具的知识点
-            * [发行版](./1earn/Integrated/Linux/发行版.md) - Linux 各个发行版本之间的知识
-            * [工具](./1earn/Integrated/Linux/工具.md) - 收集有趣有用的 Linux 工具
-            * [进程](./1earn/Integrated/Linux/进程.md) - 科普 Linux 进程的知识
-            * [启动过程](./1earn/Integrated/Linux/启动过程.md) - 了解 Linux 的启动到底发生了什么
-            * [认证](./1earn/Integrated/Linux/认证.md) - 了解 Linux 下的认证体系
-            * [日志](./1earn/Integrated/Linux/日志.md) - 系统日志类型,日志工具
-            * [文件](./1earn/Integrated/Linux/文件.md) - 概括各文件夹的作用,属性
-            * [信息](./1earn/Integrated/Linux/信息.md) - 记录收集 Linux 系统软硬件信息的命令
-            * [shell编程](./1earn/Integrated/Linux/shell编程.md) - shell 编程的知识
+            * [包管理](./1earn/Integrated/Linux/笔记/包管理.md) - Linux 各种包管理工具的知识点
+            * [发行版](./1earn/Integrated/Linux/笔记/发行版.md) - Linux 各个发行版本之间的知识
+            * [工具](./1earn/Integrated/Linux/笔记/工具.md) - 收集有趣有用的 Linux 工具
+            * [进程](./1earn/Integrated/Linux/笔记/进程.md) - 科普 Linux 进程的知识
+            * [启动过程](./1earn/Integrated/Linux/笔记/启动过程.md) - 了解 Linux 的启动到底发生了什么
+            * [认证](./1earn/Integrated/Linux/笔记/认证.md) - 了解 Linux 下的认证体系
+            * [日志](./1earn/Integrated/Linux/笔记/日志.md) - 系统日志类型,日志工具
+            * [文件](./1earn/Integrated/Linux/笔记/文件.md) - 概括各文件夹的作用,属性
+            * [信息](./1earn/Integrated/Linux/笔记/信息.md) - 记录收集 Linux 系统软硬件信息的命令
+            * [shell编程](./1earn/Integrated/Linux/笔记/shell编程.md) - shell 编程的知识
+            * [shell编程](./1earn/Integrated/Linux/笔记/shell编程.md) - shell 编程的知识
         * 实验
             * 各种 linux 服务的搭建过程和案例
 
@@ -187,17 +188,17 @@
         * [Secure-Win](./1earn/Integrated/Windows/Secure-Win.md) - Windows 加固+维护+应急响应参考
         * [Speed-Win](./1earn/Integrated/Windows/Speed-Win.md) - 记录 windows 下 CMD 常用命令
         * 笔记
-            * [工作组](./1earn/Integrated/Windows/工作组.md) - 关于 Windows 工作组的概念、相关操作
-            * [角色权限](./1earn/Integrated/Windows/角色权限.md) - Windows 角色内容和 Windows Access Token 的相关知识
-            * [认证](./1earn/Integrated/Windows/认证.md) - 总结 Windows 本地认证、网络认证和域认证的知识点
-            * [日志](./1earn/Integrated/Windows/日志.md) - 总结 Windows 事件日志的相关内容
-            * [信息](./1earn/Integrated/Windows/信息.md) - 记录收集 Windows 系统软硬件信息的命令
-            * [域](./1earn/Integrated/Windows/域.md) - 记录 Windows 域原理、域结构的知识点
-            * [组策略](./1earn/Integrated/Windows/组策略.md) - 总结 Windows 组策略的相关知识点
+            * [工作组](./1earn/Integrated/Windows/笔记/工作组.md) - 关于 Windows 工作组的概念、相关操作
+            * [角色权限](./1earn/Integrated/Windows/笔记/角色权限.md) - Windows 角色内容和 Windows Access Token 的相关知识
+            * [认证](./1earn/Integrated/Windows/笔记/认证.md) - 总结 Windows 本地认证、网络认证和域认证的知识点
+            * [日志](./1earn/Integrated/Windows/笔记/日志.md) - 总结 Windows 事件日志的相关内容
+            * [信息](./1earn/Integrated/Windows/笔记/信息.md) - 记录收集 Windows 系统软硬件信息的命令
+            * [域](./1earn/Integrated/Windows/笔记/域.md) - 记录 Windows 域原理、域结构的知识点
+            * [组策略](./1earn/Integrated/Windows/笔记/组策略.md) - 总结 Windows 组策略的相关知识点
         * 实验
-            * [Windows故障转移集群](./1earn/Integrated/Windows/安全资源/Windows故障转移集群.md) - 记录群集节点的操作
-            * [Windows基础服务搭建](./1earn/Integrated/Windows/安全资源/Windows基础服务搭建.md) - 记录 Windows 搭建基础服务的步骤
-            * [Windows域搭建](./1earn/Integrated/Windows/安全资源/Windows域搭建.md) - 记录 Windows 搭建域环境的步骤和知识点
+            * [Windows故障转移集群](./1earn/Integrated/Windows/实验/Windows故障转移集群.md) - 记录群集节点的操作
+            * [Windows基础服务搭建](./1earn/Integrated/Windows/实验/Windows基础服务搭建.md) - 记录 Windows 搭建基础服务的步骤
+            * [Windows域搭建](./1earn/Integrated/Windows/实验/Windows域搭建.md) - 记录 Windows 搭建域环境的步骤和知识点
         * Powershell
             * [PowerShell笔记](./1earn/Integrated/Windows/PowerShell/PowerShell笔记.md) - 记录一些 powershell 常用命令
 

@@ -170,7 +170,6 @@
             * [文件](./1earn/Integrated/Linux/笔记/文件.md) - 概括各文件夹的作用,属性
             * [信息](./1earn/Integrated/Linux/笔记/信息.md) - 记录收集 Linux 系统软硬件信息的命令
             * [shell编程](./1earn/Integrated/Linux/笔记/shell编程.md) - shell 编程的知识
-            * [shell编程](./1earn/Integrated/Linux/笔记/shell编程.md) - shell 编程的知识
         * 实验
             * 各种 linux 服务的搭建过程和案例
 

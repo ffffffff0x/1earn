@@ -710,7 +710,7 @@ net.ipv4.icmp_echo_ignore_all=1
     ```
 
 **防**
-- **骚操作:ping 钥匙**
+- **ping 钥匙**
     - [使用 ping 钥匙临时开启 SSH:22 端口,实现远程安全 SSH 登录管理就这么简单](https://www.cnblogs.com/martinzhang/p/5348769.html)
 
     ```bash
@@ -833,7 +833,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **内核级 rootkit**
 
-    可以通过 unhide 等工具进行排查,更多内容见 [应急](../../Security/笔记/BlueTeam/应急.md#rootkit)
+    可以通过 unhide 等工具进行排查,更多内容见 [应急](../../Security/BlueTeam/应急.md#rootkit)
 
 - **深信服 Web 后门扫描**
 

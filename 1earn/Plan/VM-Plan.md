@@ -6,7 +6,7 @@
 
 ---
 
-## VMware
+# 虚拟机建议
 
 **Linux 虚拟机建议**
 - 适用于 : 实验
@@ -22,7 +22,9 @@
   - 版本: Win10 2019 Ltsc
   - 版本: Win7
 
-### VMware 常见问题
+---
+
+# VMware 常见问题
 
 **关闭虚拟内存**
 
@@ -69,3 +71,10 @@ yum install open-vm-tools-devel -y
 - **安装vmware-tools出现”what is the location of the “ifconfig”program on your machine?”**
 
   出现此问题的错误是因为网络问题,连通网络,安装 ifconfig 即可
+
+# VirtualBox
+
+**常见报错**
+- **Implementation of the USB 2.0 controller not found!**
+
+  设置中关闭 USB控制器 选项即可

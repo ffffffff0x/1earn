@@ -4068,6 +4068,8 @@ export GOPATH=$HOME/Applications/Go
 source $HOME/.profile
 source ~/.bash_profile
 # $GOPATH 可以包含多个工作目录,取决于你的个人情况.如果你设置了多个工作目录,那么当你在之后使用 go get (远程包安装命令) 时远程包将会被安装在第一个目录下.
+
+ln -s /usr/local/go/bin/go /usr/bin/go
 go version
 ```
 

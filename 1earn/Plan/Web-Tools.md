@@ -129,8 +129,8 @@
 - [CDN检测](https://myssl.com/cdn_check.html)
 - [多个地点Ping服务器,网站测速 - 站长工具](http://ping.chinaz.com/)
 - [网站测速工具_超级ping _多地点ping检测 - 爱站网](https://ping.aizhan.com/)
-- [just-ping › Ping an internet host from 50 locations worldwide - iTools](http://itools.com/tool/just-ping)
 - [DNSMap](https://dnsmap.io/) - 检查来自世界各地的多个DNS名称服务器和解析器的域名或主机名的当前IP
+- [Ping.cn:网站测速-ping检测-dns查询-ipv6网站测试-路由跟踪查询](https://www.ping.cn/)
 
 ### 指纹
 
@@ -189,6 +189,7 @@
 - https://domainbigdata.com/
 - https://whoer.net/checkwhois
 - https://viewdns.info/whois/
+- https://www.reversewhois.io/
 
 ### 备案查询
 

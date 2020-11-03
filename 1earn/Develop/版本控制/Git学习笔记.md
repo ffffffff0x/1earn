@@ -488,6 +488,11 @@ git push --force origin
     git push
     ```
 
+    如果报错可以强行推送
+    ```
+    git push --force origin
+    ```
+
 ---
 
 **Source & Reference**

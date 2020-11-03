@@ -34,12 +34,13 @@
     * [JS敏感信息泄露](#js敏感信息泄露)
     * [各类APIkey泄露](#各类apikey泄露)
 
-* **[注入](#注入)**
+* **[不安全的输入](#不安全的输入)**
     * [http参数污染](#http参数污染)
     * [CRLF_Injection](#crlf_injection)
     * [SQL_inje](#sql_inje)
     * [XSS](#xss)
     * [XXE](#xxe)
+    * [SSRF](#ssrf)
     * [php反序列化](#php反序列化)
 
 * **[配置不当](#配置不当)**
@@ -49,9 +50,8 @@
     * [CSRF](#csrf)
     * [jsonp劫持](#jsonp劫持)
 
-* **[未验证输入](#未验证输入)**
+* **[钓鱼欺骗](#钓鱼欺骗)**
     * [URL跳转漏洞](#url跳转漏洞)
-    * [SSRF](#ssrf)
     * [二维码劫持](#二维码劫持)
     * [点击劫持](#点击劫持)
 
@@ -60,6 +60,8 @@
 **相关文章**
 - [聊聊安全测试中如何快速搞定 Webshell](https://www.freebuf.com/articles/web/201421.html)
 - [Web Service 渗透测试从入门到精通](https://www.anquanke.com/post/id/85910)
+- [我的Web应用安全模糊测试之路](https://web.archive.org/web/20180814113607/https://gh0st.cn/archives/2018-07-25/1)
+- [聊聊近期公开的几个GitLab高额奖金漏洞](https://mp.weixin.qq.com/s/m8AZuqXgGGitcwsP4l-sVQ)
 
 ---
 
@@ -253,6 +255,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH) - 网站个人敏感信息文件扫描器
 - [ring04h/weakfilescan](https://github.com/ring04h/weakfilescan) - 动态多线程敏感信息泄露检测工具
 - [0xHJK/dumpall](https://github.com/0xHJK/dumpall) - 一款信息泄漏利用工具，适用于 .git/.svn 源代码泄漏和 .DS_Store 泄漏
+- [donot-wong/sensinfor](https://github.com/donot-wong/sensinfor) - 一个自动扫描敏感文件的chrome扩展.
 
 ---
 
@@ -332,6 +335,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
+**相关工具**
+- [oscommonjs/scan-backup-langzi-](https://github.com/oscommonjs/scan-backup-langzi-) - 扫描备份文件和敏感信息泄漏的扫描器，速度快，器大活好
+
 ---
 
 ## WEB-INF/web.xml信息泄露
@@ -386,6 +392,10 @@ WEB-INF 主要包含一下文件或目录:
 **相关工具**
 - [m4ll0k/SecretFinder](https://github.com/m4ll0k/SecretFinder) - 通过正则在 JS 中发现敏感数据，如 apikeys、accesstoken、authorizations、jwt，..等等
 - [Threezh1/JSFinder](https://github.com/Threezh1/JSFinder) - 通过在 js 文件中提取 URL,子域名
+    ```bash
+    python JSFinder.py -u http://www.xxx.com -d -ou url.txt -os subdomain.txt
+    python JSFinder.py -u http://www.xxx.com -d -c "session=xxx"    # -c 指定cookie来爬取页面
+    ```
 
 ---
 
@@ -442,7 +452,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# 注入
+# 不安全的输入
 
 ## http参数污染
 
@@ -450,6 +460,9 @@ WEB-INF 主要包含一下文件或目录:
 - [Web 应用里的 HTTP 参数污染 (HPP) 漏洞](https://blog.csdn.net/eatmilkboy/article/details/6761407)
 - [浅谈绕过 waf 的数种方法](https://www.waitalone.cn/waf-bypass.html)
 - [通过 HTTP 参数污染绕过 WAF 拦截](http://www.freebuf.com/articles/web/5908.html)
+
+**相关案例**
+- [通过 HTTP 参数污染绕过 reCAPTCHA 认证](https://www.anquanke.com/post/id/146570)
 
 ---
 
@@ -462,22 +475,51 @@ WEB-INF 主要包含一下文件或目录:
 
 ## SQL_inje
 
-**笔记**
 - [SQLi 笔记](./SQLi.md)
 
 ---
 
 ## XSS
 
-**笔记**
 - [XSS 笔记](./xss.md)
 
 ---
 
 ## XXE
 
-**笔记**
 - [XXE 笔记](./xxe.md)
+
+---
+
+## SSRF
+
+**简介**
+
+很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
+
+一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
+
+**相关文章**
+- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
+- [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
+- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
+- [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
+- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
+
+**相关案例**
+- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
+- [SSRF in Exchange leads to ROOT access in all instances](https://hackerone.com/reports/341876) - 通过对 ssrf 访问 Google Cloud Metadata,直至 RCE
+
+**payload**
+- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
+- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
+
+**相关工具**
+- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
+- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
+
+**Bypass IP 限制**
+- [IP限制绕过](./IDOR.md#ip限制绕过)
 
 ---
 
@@ -562,17 +604,6 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 ---
 
-## CSRF
-
-**相关文章**
-- [CSRF攻击与防御](https://blog.csdn.net/stpeace/article/details/53512283)
-
-**相关案例**
-- [“借刀杀人”之CSRF拿下盗图狗后台](https://bbs.ichunqiu.com/thread-31779-1-20.html)
-- [Periscope android app deeplink leads to CSRF in follow action](https://hackerone.com/reports/583987)
-
----
-
 ## jsonp劫持
 
 **简介**
@@ -638,7 +669,11 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 
 ---
 
-# 未验证输入
+# 钓鱼欺骗
+
+**相关案例**
+- [$7.5k Google Cloud Platform organization issue](https://www.ezequiel.tech/2019/01/75k-google-cloud-platform-organization.html)
+- [从微信群不良广告到酷我音乐存储型XSS再到乐视url跳转](https://darkless.cn/2019/12/23/kuwomusic-xss/)
 
 ## URL跳转漏洞
 
@@ -646,38 +681,6 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 - [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
 - [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
-
----
-
-## SSRF
-
-**简介**
-
-很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
-
-一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
-
-**相关文章**
-- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
-- [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
-- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
-- [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
-- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
-
-**相关案例**
-- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
-- [SSRF in Exchange leads to ROOT access in all instances](https://hackerone.com/reports/341876) - 通过对 ssrf 访问 Google Cloud Metadata,直至 RCE
-
-**payload**
-- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
-- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
-
-**相关工具**
-- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
-- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
-
-**Bypass IP 限制**
-- [IP限制绕过](./IDOR.md#ip限制绕过)
 
 ---
 

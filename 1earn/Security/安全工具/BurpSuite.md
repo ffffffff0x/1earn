@@ -28,6 +28,7 @@
 - [商业web漏扫神器——burp suite篇详解](https://blog.csdn.net/dongfei2033/article/details/78323010)
 - [【奇技淫巧】关于Burp Intruder模块的小技巧](https://mp.weixin.qq.com/s/E-Dlhbduf5TSjKeZWL25xw)
 - [Burp Suite使用的几个小技巧【更新】](https://www.t00ls.net/thread-49051-1-1.html)
+- [基于BurpSuit插件打造渗透测试自动化之路](https://www.freebuf.com/sectool/243617.html)
 
 ---
 
@@ -145,7 +146,7 @@ Proxy – Options – Match and Replace – Add
 - [c0ny1/passive-scan-client](https://github.com/c0ny1/passive-scan-client)
 
 > 高亮标记敏感信息并展示相关匹配的信息,然后针对高亮的请求进行深度挖掘
-- [gh0stkey/BurpSuiteSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuiteSuite-Extender-MarkInfo)
+- [gh0stkey/BurpSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuite-Extender-MarkInfo)
 
 > 通过 BurpSuite 来构建自己的爆破字典,可以通过字典爆破来发现隐藏资产.
 - [TEag1e/BurpSuiteCollector](https://github.com/TEag1e/BurpSuiteCollector)
@@ -184,13 +185,16 @@ Proxy – Options – Match and Replace – Add
 > 可即时解密移动应用程序的 AES 加密流量的 Burp 插件
 - [Ebryx/AES-Killer](https://github.com/Ebryx/AES-Killer)
 
+> 一款快速修改HTTP数据包头的Burp Suite插件
+- [c0ny1/HTTPHeadModifer](https://github.com/c0ny1/HTTPHeadModifer)
+
 ### 插件开发
 
 - [rsrdesarrollo/generator-burp-extension](https://github.com/rsrdesarrollo/generator-burp-extension) - 帮助 burp 插件开发的工具
 
 ---
 
-## 安装
+# 安装及维护
 
 **windows**
 
@@ -204,9 +208,9 @@ Proxy – Options – Match and Replace – Add
 
 没问题就直接运行即可 `java -jar <burp文件名>.jar`
 
----
+## 证书配置
 
-## 配置
+对于 HTTPS 的包需要在浏览器中导入证书进行解密
 
 **证书**
 

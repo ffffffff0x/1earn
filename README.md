@@ -20,8 +20,6 @@
 * **更新时间** : 不定期
 * **项目地址** : https://github.com/No-Github/1earn
 
-该仓库采用 **[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)** 协议.
-
 ---
 
 ## 项目文件一览
@@ -75,19 +73,21 @@
 
     * **ICS**
         * [工控协议](./1earn/Security/ICS/工控协议.md) - 总结各类工控协议的知识点
+        * [上位机安全](./1earn/Security/ICS/上位机安全.md) - 总结上位机安全相关的知识点
         * [PLC攻击](./1earn/Security/ICS/PLC攻击.md) - 总结 PLC 攻击的相关知识点
         * [S7comm相关](./1earn/Security/ICS/S7comm相关.md) - 记录 S7comm 相关错误类型、功能码和相关参数
         * 实验
+            * [OpenPLC环境搭建](./1earn/Security/ICS/实验/OpenPLC环境搭建.md) - 搭建 OpenPLC 环境的实验
             * [S7-300启停实验](./1earn/Security/ICS/实验/S7-300启停实验.md) - 利用 ISF 框架和 snap7 模拟的西门子 S7-300 PLC 启停实验
             * [siemens仿真搭建实验](./1earn/Security/ICS/实验/siemens仿真搭建实验.md) - 利用 STEP7+plcsim 搭建西门子仿真环境的实验
 
     * **IOT**
-        * 硬件设备
-            * [Device-Exploits](./1earn/Security/IOT/硬件设备/Device-Exploits.md) - 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
-            * 固件分析
-                * [固件分析](./1earn/Security/IOT/硬件设备/固件分析/固件分析.md) - 记录IOT固件分析的知识点,包括固件提取、固件分析、固件解密等
-                * 实验
-                    * [Dlink_DWR-932B路由器固件分析](./1earn/Security/IOT/硬件设备/固件分析/实验/Dlink_DWR-932B路由器固件分析.md) - Dlink_DWR-932B 路由器固件后面漏洞分析实验
+        * 固件安全
+            * [固件安全](./1earn/Security/IOT/固件安全/固件安全.md) - 记录 IOT 固件分析的知识点,包括固件提取、固件分析、固件解密等
+            * 实验
+                * [Dlink_DWR-932B路由器固件分析](./1earn/Security/IOT/固件安全/实验/Dlink_DWR-932B路由器固件分析.md) - Dlink_DWR-932B 路由器固件后面漏洞分析实验
+        * 硬件安全
+            * [Device-Exploits](./1earn/Security/IOT/硬件安全/Device-Exploits.md) - 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
             * HID
                 * 不一一列举
 
@@ -116,9 +116,9 @@
             * [空间测绘](./1earn/Security/RedTeam/信息收集/空间测绘.md) - 收集搜索引擎语法资源
             * [信息收集](./1earn/Security/RedTeam/信息收集/信息收集.md) - 记录信息收集方面各类技术，如漏扫、IP 扫描、端口扫描、DNS 枚举、目录枚举、指纹等
         * OS安全
-            * [Linux安全](./1earn/Security/RedTeam/OS安全/Linux安全.md) - 包含 Linux 口令破解，远程漏洞利用、本地提权的笔记
+            * [Linux安全](./1earn/Security/RedTeam/OS安全/Linux安全.md) - 包含 Linux 口令破解，漏洞利用、获取Shell
             * [OS-Exploits](./1earn/Security/RedTeam/OS安全/OS-Exploits.md) - 记录操作系统的 cve 漏洞
-            * [Windows安全](./1earn/Security/RedTeam/OS安全/Windows安全.md) - 包含 windows pth、ptt，远程漏洞利用、提权等内容的笔记
+            * [Windows安全](./1earn/Security/RedTeam/OS安全/Windows安全.md) - 包含 windows pth、ptt，漏洞利用、提权、远程执行命令等内容的笔记
         * Web 安全
             * [IDOR](./1earn/Security/RedTeam/Web安全/IDOR.md) - 整个部分结构大部分基于乌云的几篇密码找回、逻辑漏洞类文章,在其基础上记录和归纳
             * [BS-Exploits](./1earn/Security/RedTeam/Web安全/BS-Exploits.md) - 全面收集 web 漏洞 POC | Payload | exp
@@ -128,14 +128,17 @@
                 * [sqli-labs-WalkThrough](./1earn/Security/RedTeam/Web安全/靶场/sqli-labs-WalkThrough.md)
                 * [upload-labs-WalkThrough](./1earn/Security/RedTeam/Web安全/靶场/upload-labs-WalkThrough.md) - 一个总结了各种类型文件上传漏洞的靶场
                 * [XSS挑战-WalkThrough](./1earn/Security/RedTeam/Web安全/靶场/XSS挑战-WalkThrough.md)
-            * PHP代码审计
-                * 不一一列举
+            * 语言特性
             * Web_Generic
                 * [文件上传漏洞](./1earn/Security/RedTeam/Web安全/Web_Generic/文件上传漏洞.md) - 文件上传漏洞相关内容,目前较少,后续会更新
                 * [SQLi](./1earn/Security/RedTeam/Web安全/Web_Generic/SQLi.md) - SQL 注入知识点记录
                 * [Web_Generic](./1earn/Security/RedTeam/Web安全/Web_Generic/Web_Generic.md) - 常见 web 漏洞介绍,案例收集
                 * [XSS](./1earn/Security/RedTeam/Web安全/Web_Generic/xss.md) - XSS 相关内容,目前较少,后续会更新
                 * [XXE](./1earn/Security/RedTeam/Web安全/Web_Generic/xxe.md) - XXE 相关内容,目前较少,后续会更新
+            * Web_Tricks
+                * [前端攻防](./1earn/Security/RedTeam/Web安全/Web_Tricks/前端攻防.md)
+                * [HTTP_request_smuggling](./1earn/Security/RedTeam/Web安全/Web_Tricks/HTTP_request_smuggling.md)
+                * [OOB](./1earn/Security/RedTeam/Web安全/Web_Tricks/OOB.md)
 
 * **Develop**
 
@@ -253,7 +256,7 @@
 
 ---
 
-## 贡献&感谢
+## Attributions&Thanks
 
 - [CONTRIBUTORS](./assets/CONTRIBUTORS.md)
 
@@ -265,6 +268,11 @@
 
 ---
 
-## 免责声明
+## Disclaimer&License
 
-`本人撰写的手册,仅供学习和研究使用,请勿使用项目中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
+- <sup>本项目采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.zh) 协议.</sup>
+    - <sup>共享 — 在任何媒介以任何形式复制、发行本作品。</sup>
+    - <sup>演绎 — 修改、转换或以本作品为基础进行创作在任何用途下，甚至商业目的。</sup>
+    - <sup>署名 — 您必须给出适当的署名，提供指向本许可协议的链接，同时标明是否（对原始作品）作了修改。您可以用任何合理的方式来署名，但是不得以任何方式暗示许可人为您或您的使用背书。</sup>
+    - <sup>没有附加限制 — 您不得适用法律术语或者 技术措施 从而限制其他人做许可协议允许的事情。</sup>
+- <sup>注: 本项目所有文件仅供学习和研究使用,请勿使用项目中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.</sup>

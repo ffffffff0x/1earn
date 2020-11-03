@@ -1,5 +1,9 @@
 # XSS
 
+<p align="center">
+    <img src="../../../../../assets/img/banner/xss.jpg" width="65%">
+</p>
+
 ---
 
 ## 免责声明
@@ -31,6 +35,7 @@
 - [Reflected XSS in graph.facebook.com leads to account takeover in IE/Edge](https://ysamm.com/?p=343)
 - [XSS attacks on Googlebot allow search index manipulation](https://www.tomanthony.co.uk/blog/xss-attacks-googlebot-index-manipulation/)
 - [挖洞经验 | 看我如何发现亚马逊网站的反射型XSS漏洞](https://www.freebuf.com/articles/web/175606.html)
+- [How I alert(1) in Azure DevOps](https://5alt.me/2019/02/xss-in-azure-devops/)
 
 **工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般

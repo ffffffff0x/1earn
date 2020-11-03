@@ -28,7 +28,8 @@
 
 ---
 
-# 配置与设置
+# 软件配置
+
 ## apt
 
 **换源**
@@ -61,9 +62,73 @@ apt update && apt -y full-upgrade
 [ -f /var/run/reboot-required ] && reboot -f
 ```
 
+## 谷歌输入法
+
+```bash
+apt-get update && apt-get upgrade
+apt-get install fcitx
+apt-get install fcitx-googlepinyin
+reboot
+
+# 所有应用程序中选中 fcitx 输入法配置即可
+```
+
+## ncat
+
+```bash
+apt install ncat
+update-alternatives --config nc
+1
+```
+
+## Nessus
+
+以安装 sc 版本为例,访问 https://www.tenable.com/downloads/nessus 下载安装包
+
+我这里下的是 Nessus-8.8.0-ubuntu1110_amd64.deb
+
+```bash
+dpkg -i Nessus-8.8.0-ubuntu1110_amd64.deb
+```
+
+安装完成后
+```bash
+/etc/init.d/nessusd start   # 开启
+/etc/init.d/nessusd status  # 查看状态
+/etc/init.d/nessusd stop    # 关闭
+```
+
+然后访问 https://127.0.0.1:8834 即可打开Nessus主页,一路配置安装版本,账号密码
+
+如果下载插件出错,就安装离线包,访问 https://www.tenable.com/downloads/nessus 下载离线包
+
+我这里下的是 nessus-updates-8.8.0.tar.gz,复制到目录 /opt/nessus/sbin/ 下
+```bash
+./nessuscli update nessus-updates-8.8.0.tar.gz
+./nessusd   # 重新启动下
+```
+
+**docker 部署**
+
+```bash
+docker run -d -p 3443:3443 -p 8834:8834  --name bobohacker -it yakoazz/bobohacker
+```
+- nesss地址 : https://127.0.0.1:8443 账号密码 bobohacker/bobohacker
+- awvs地址 : https://127.0.0.1:3443 账号密码 bobo@hacker.com/B0bohacker
+- nessus 应用自启 awvs13 要 attach 到容器里面 root 目录下运行下 awvs.sh
+
 ---
 
-## 显示
+## rdesktop
+
+kali 自带
+```bash
+rdesktop <目标IP>
+```
+
+---
+
+# 显示配置
 
 **切换 undercover 模式**
 ```bash
@@ -100,51 +165,7 @@ source .bashrc      # 终端颜色替换成功
 
 ---
 
-## 网卡
-
-**配置网卡**
-
-- WM Ware(开机后)
-
-    虚拟机->可移动设备->Ralink 802.11 n Wlan(显卡型号)->连接(断开与主机的连接)
-
-- VBox
-
-    虚拟机关机状态下->将设备插入主机->设置->USB 设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
-
-- 验证是否连接成功
-
-    ```bash
-    lsusb
-    airmon-ng
-    iwconfig
-    ```
-    出现无线网卡型号即为成功
-
----
-
-## ncat
-
-```bash
-apt install ncat
-update-alternatives --config nc
-1
-```
-
----
-
-## 谷歌输入法
-
-```bash
-apt-get update && apt-get upgrade
-apt-get install fcitx
-apt-get install fcitx-googlepinyin
-reboot
-
-# 所有应用程序中选中 fcitx 输入法配置即可
-```
-
----
+# 设备配置
 
 ## 虚拟机驱动
 
@@ -228,63 +249,52 @@ cd /usr/share/oclhashcat-plus/
 
 ---
 
+## 配置网卡
 
-## Nessus
+- WM Ware(开机后)
 
-以安装 sc 版本为例,访问 https://www.tenable.com/downloads/nessus 下载安装包
+    虚拟机->可移动设备->Ralink 802.11 n Wlan(显卡型号)->连接(断开与主机的连接)
 
-我这里下的是 Nessus-8.8.0-ubuntu1110_amd64.deb
+- VBox
 
-```bash
-dpkg -i Nessus-8.8.0-ubuntu1110_amd64.deb
-```
+    虚拟机关机状态下->将设备插入主机->设置->USB 设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
 
-安装完成后
-```bash
-/etc/init.d/nessusd start   # 开启
-/etc/init.d/nessusd status  # 查看状态
-/etc/init.d/nessusd stop    # 关闭
-```
+- 验证是否连接成功
 
-然后访问 https://127.0.0.1:8834 即可打开Nessus主页,一路配置安装版本,账号密码
-
-如果下载插件出错,就安装离线包,访问 https://www.tenable.com/downloads/nessus 下载离线包
-
-我这里下的是 nessus-updates-8.8.0.tar.gz,复制到目录 /opt/nessus/sbin/ 下
-```bash
-./nessuscli update nessus-updates-8.8.0.tar.gz
-./nessusd   # 重新启动下
-```
-
-**docker 部署**
-
-```bash
-docker run -d -p 3443:3443 -p 8834:8834  --name bobohacker -it yakoazz/bobohacker
-```
-- nesss地址 : https://127.0.0.1:8443 账号密码 bobohacker/bobohacker
-- awvs地址 : https://127.0.0.1:3443 账号密码 bobo@hacker.com/B0bohacker
-- nessus 应用自启 awvs13 要 attach 到容器里面 root 目录下运行下 awvs.sh
+    ```bash
+    lsusb
+    airmon-ng
+    iwconfig
+    ```
+    出现无线网卡型号即为成功
 
 ---
 
-## rdesktop
+## 配置蓝牙
 
-kali 自带
+查看usb设备
 ```bash
-rdesktop <目标IP>
+lsusb
+```
+
+启动蓝牙服务
+```bash
+service bluetooth start
+```
+
+激活蓝牙设备
+```bash
+hciconfig hci0 up	# 激活蓝牙设备
+hciconfig hci0		# 查看属性
 ```
 
 ---
 
 # 用户管理
 
-**kali Linux 2020.1 添加 root 用户**
+**kali 2020 版后使用 root 账号**
 
-安装 Kali Linux 2020.1 系统后，由于 root 用户的默认密码未知，所以需要在单用户模式下重新设置 root 用户密码。操作步骤如下：
+直接设置 root 密码
 ```
-1.开机选择第一项 Kali GNU/Linux 按键盘 e 键进入 Grub
-2.找到 Linux 行，将 ro 修改为 rw，并在末尾添加 init=/bin/bash
-3.Ctrl+X 或 f10 重启进单用户
-4.用 passwd 命令修改密码
-5.关机重启。登陆 root 用户
+sudo passwd root
 ```

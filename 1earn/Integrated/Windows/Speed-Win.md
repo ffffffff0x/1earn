@@ -44,14 +44,15 @@
 
 # 基础使用
 
-```cmd
-echo "Hello World"      输出 Hello World 到终端屏幕
-cls                     清除屏幕
-chcp 65001              修改字符编码,修复乱码
+```bash
+echo "Hello World"          输出 Hello World 到终端屏幕
+cls                         清除屏幕
+chcp 65001                  修改字符编码,修复乱码
+Add-AppxPackage xxx.Msixbundle   安装 msixbundle 文件
 ```
 
 **shutdown**
-```cmd
+```bash
 shutdown    关闭、重启、注销、休眠计算机
     shutdown -s -t 60       60秒后关机
     shutdown -s -t 3600     1小时后关机
@@ -62,7 +63,7 @@ shutdown    关闭、重启、注销、休眠计算机
 ```
 
 **运行脚本**
-```cmd
+```bash
 cscript     执行 vbs 脚本
     cscript /Nologo test.vbs    执行 test.vbs 脚本
 
@@ -80,7 +81,7 @@ start  运行某程序或命令
 
 ## 环境变量
 
-```cmd
+```bash
 set         显示当前用户所有的环境变量
 
     set path            查看 path 的环境变量值（准确的说是查看以 path 开头的环境变量）
@@ -103,7 +104,7 @@ path        显示当前 path 变量的值
 ## 符号
 
 **&**
-```cmd
+```bash
 顺序执行多条命令，而不管命令是否执行成功
 
 cd /d d:\src&work.exe /o c:\result.txt
@@ -111,7 +112,7 @@ cd /d d:\src&work.exe /o c:\result.txt
 ```
 
 **&&**
-```cmd
+```bash
 顺序执行多条命令，当碰到执行出错的命令后将不执行后面的命令
 
 find "ok" c:\test.txt && echo 成功
@@ -119,7 +120,7 @@ find "ok" c:\test.txt && echo 成功
 ```
 
 **||**
-```cmd
+```bash
 顺序执行多条命令，当碰到执行正确的命令后将不执行后面的命令
 
 find "ok" c:\test.txt || echo 不成功
@@ -127,7 +128,7 @@ find "ok" c:\test.txt || echo 不成功
 ```
 
 **|**
-```cmd
+```bash
 管道命令
 
 dir *.* /s/a | find /c ".exe"
@@ -138,7 +139,7 @@ dir *.* /s/a 2>&1 | find /c ".exe"
 ```
 
 **>**
-```cmd
+```bash
 将当前命令输出以覆盖的方式重定向
 
 tasklist > p1.txt
@@ -170,7 +171,7 @@ dir bin 2>nul 1>&2
 ```
 
 **>>**
-```cmd
+```bash
 将当前命令输出以追加的方式重定向
 
 tasklist >> p2.txt
@@ -190,7 +191,7 @@ dir bin 2>> p2.txt 1>&2
 ```
 
 **<**
-```cmd
+```bash
 从文件中获得输入信息，而不是从屏幕上，一般用于 date time label 等需要等待输入的命令
 
 date <temp.txt
@@ -198,7 +199,7 @@ temp.txt 中的内容为 2005-05-01
 ```
 
 **@**
-```cmd
+```bash
 命令修饰符  在执行命令前，不打印出该命令的内容
 
 @cd /d d:\me
@@ -206,7 +207,7 @@ temp.txt 中的内容为 2005-05-01
 ```
 
 **,**
-```cmd
+```bash
 在某些特殊的情况下可以用来代替空格使用
 
 dir,c:\
@@ -214,7 +215,7 @@ dir,c:\
 ```
 
 **;**
-```cmd
+```bash
 当命令相同的时候,可以将不同的目标用 ; 隔离开来但执行效果不变。如执行过程中发生错误则只返回错误报告但程序还是会继续执行
 
 dir c:\;d:\;e:\
@@ -226,7 +227,7 @@ dir c:\;d:\;e:\
 ## 会话
 
 **会话信息**
-```cmd
+```bash
 query user                                  查看会话
 ```
 
@@ -236,7 +237,7 @@ logoff <ID号>                               踢掉
 ```
 
 **会话设置**
-```cmd
+```bash
 title 正在做命令行测试        修改当前 cmd 窗口的标题栏文字为正在做命令行测试
 prompt orz:                 将命令提示符修改为 orz:
 
@@ -273,7 +274,7 @@ regedit
 ## 文件和目录
 
 **目录**
-```cmd
+```bash
 cd              切换目录
     cd ..               进入父目录
     cd /d d:            进入上次d盘所在的目录（或在直接输入：d:）
@@ -286,7 +287,7 @@ cd              切换目录
 ### 查看
 
 **目录、文件信息**
-```cmd
+```bash
 dir             显示目录中的内容
     dir                 显示当前目录中的子文件夹与文件
     dir /b              只显示当前目录中的子文件夹与文件的文件名
@@ -298,6 +299,7 @@ dir             显示目录中的内容
     dir /S              递归显示当前目录中的内容
     dir key*            显示当前目录下以 key 开头的文件和文件夹的信息
     dir /AH /OS         只显示当前目录中隐藏的文件和目录，并按照文件大小从小到大排序
+    dir \\[IP]\c$       查看建立IPC连接的主机的C盘目录
 
 tree            显示目录结构
     tree d:\myfiles     显示 d:\myfiles 目录结构
@@ -309,7 +311,7 @@ attrib          查看或修改文件或目录的属性  [A：存档  R：只读
 ```
 
 **文件内容**
-```cmd
+```bash
 type            显示文本文件内容
     type c:\11.txt          显示c盘中11.txt的文本内容
     type conf.ini           显示当前目录下conf.ini的文本内容
@@ -324,18 +326,21 @@ more            逐屏的显示文本文件内容
 
 ### 创建
 
-```cmd
+```bash
 md              用于创建文件夹，不能创建文本文档或者其他
     md movie music          在当前目录中创建名为 movie 和 music 的文件夹
     md c:\aaa               在 C 盘的根目录下创建名为 aaa 的子目录；
     md c:\aaa\USER          在 aaa 子目录下再创建 USER 子目录。
+
+fsutil          可用于执行多种与FAT 和NTFS 文件系统相关的任务
+    fsutil file createnew D:\test-500.t1 524288000      创建512MB的文件示例
 ```
 
 ---
 
 ### 删除
 
-```cmd
+```bash
 del             删除文件   注意：目录及子目录都不会删除
     del test
     删除当前目录下的 test 文件夹中的所有非只读文件（子目录下的文件不删除；删除前会进行确认；等价于 del test\*）
@@ -355,7 +360,7 @@ del             删除文件   注意：目录及子目录都不会删除
 
 ### 查询
 
-```cmd
+```bash
 find        文件中搜索字符串
     find /N /I "pid" 1.txt  在 1.txt 文件中忽略大小写查找 pid 字符串，并带行号显示查找后的结果
     find /C "exe" 1.txt     只显示在 1.txt 文件中查找到 exe 字符串的次数
@@ -373,11 +378,13 @@ findstr     文件中搜索字符串
 
 ### 修改
 
-```cmd
+```bash
 ren             文件或目录重命名
     ren rec.txt rec.ini     将当前目录下的 rec.txt 文件重命名为 rec.ini
     ren c:\test test_01     将 c 盘下的 test 文件夹重命名为 test_01
+```
 
+```
 copy            拷贝文件
     copy /Y key.txt c:\doc  将当前目录下的 key.txt 拷贝到 c:\doc 下（不询问，直接覆盖写）
     copy key.txt +          复制文件到自己，实际上是修改了文件日期
@@ -401,7 +408,9 @@ copy            拷贝文件
     将当前目录下的 art_2.7z.001、art_2.7z.002 文件合并生成 art_2.7z
 
     copy test.txt \\host\c$\windows\temp\test.txt       远程拷贝
+```
 
+```
 xcopy           更强大的复制命令
     xcopy c:\bat\hai d:\hello\ /y /h /e /f /c
     将 c:\bat\hai 中的所有内容拷贝到 d:\hello 中  注意：需要在 hello 后加上 \ 表示 hello 为一个目录，否则 xcopy 会询问 hello 是 F，还是 D
@@ -434,7 +443,7 @@ replace         替换文件[即使这个文件在使用，仍然可以替换成
     使用 d 盘下的 love.mp3 强制替换 d 盘 mp3 目录中的 love.mp3 文件
 ```
 
-```cmd
+```bash
 assoc           设置'文件扩展名'关联到的'文件类型'
     assoc                   显示所有'文件扩展名'关联
     assoc .txt              显示.txt代表的'文件类型'，结果显示.txt=txtfile
@@ -482,7 +491,7 @@ win7 下的 mklink 命令通过指定参数可以建立出不同形式的文件�
 2. 硬链接只能用于文件，不能用于目录；目录联接只能用于目录；符号链接则均可以；
 3. 硬链接不允许对空文件建立链接，符号（软链接可以。
 ）
-```cmd
+```bash
 mklink          创建符号链接（win7 引入）；创建的符号链接文件上会有一个类似快捷方式的箭头
     mklink /j "C:\Users" "D:\Users"     创建 D 盘 Users 目录联接到 C 盘，并命名为 Users
 ```
@@ -492,124 +501,155 @@ mklink          创建符号链接（win7 引入）；创建的符号链接文�
 # 网络管理
 
 **net**
-```cmd
-net use \\IP\ipc$ " " /user:" "             建立 IPC 空链接
-net use \\IP\ipc$ "密码" /user:"用户名"       建立 IPC 非空链接
-net use z: \\ip\ipc$ "pass" /user:"user"    直接登陆后映射对方 C: 到本地为 H:
-net use h: ipc$                             登陆后映射对方 C: 到本地为 H:
-net use \\IP\ipc$ /del                      删除 IPC 链接
-net use h: /del                             删除映射对方到本地的为 H: 的映射
-net user 用户名　密码　/add                    建立用户
-net user guest /active:yes                  激活 guest 用户
-net user                                    查看有哪些用户
-net user 帐户名                              查看帐户的属性
-net localgroup administrators 用户名 /add    把"用户"添加到管理员中使其具有管理员权限
-net start                                   查看开启了哪些服务
-net start 服务名　                           开启服务;(如:net start telnet, net start schedule)
-net stop 服务名                              停止某服务
-net time 目标ip                              查看对方时间
-net time 目标ip /set                         设置本地计算机时间与"目标IP"主机的时间同步,加上参数 /yes 可取消确认
-net view                                    查看本地局域网内开启了哪些共享
-net view [ip]                               查看对方局域网内开启了哪些共享
-net config                                  显示系统网络设置
-net logoff                                  断开连接的共享
-net pause 服务名                             暂停某服务
-net send ip "文本信息"                       向对方发信息
-net ver                                     局域网内正在使用的网络连接类型和信息
-net share                                   查看本地开启的共享
-net share ipc$                              开启 ipc$ 共享
-net share db$=d:\config                     开启一个共享名为 db$，在 d:\config
-net share ipc$ /del                         删除 ipc$ 共享
-net share c$ /del                           删除 C: 共享
-net user guest 12345                        用 guest 用户登陆后用将密码改为 12345
-net password 密码                            更改系统登陆密码
+```bash
+net use                                         # 查看建立的连接
+net use \\IP\ipc$ " " /user:" "                 # 建立 IPC 空链接
+
+net use \\IP\ipc$ "[pass]" /user:"[username]"   # 建立 IPC 非空链接
+    net use \\192.168.1.1\ipc$ "123456" /user:"administrator"
+
+net use z: \\ip\ipc$ "pass" /user:"user"        # 直接登陆后映射对方 C: 到本地为 H:
+net use h: ipc$                                 # 登陆后映射对方 C: 到本地为 H:
+net use \\IP\ipc$ /del                          # 删除 IPC 链接
+net use h: /del                                 # 删除映射对方到本地的为 H: 的映射
+net user [username] [pass] /add                 # 建立用户
+net user guest /active:yes                      # 激活 guest 用户
+net user                                        # 查看有哪些用户
+net user [username]                             # 查看帐户的属性
+net localgroup administrators [username] /add   # 把"用户"添加到管理员中使其具有管理员权限
+net start                                       # 查看开启了哪些服务
+
+net start [servername]                          # 开启服务
+    net start telnet
+    net start schedule
+
+net stop [servername]       # 停止某服务
+net time [IP]               # 查看对方时间
+net time [IP] /set          # 设置本地计算机时间与"目标IP"主机的时间同步,加上参数 /yes 可取消确认
+net view                    # 查看本地局域网内开启了哪些共享
+net view [IP]               # 查看对方局域网内开启了哪些共享
+net config                  # 显示系统网络设置
+net logoff                  # 断开连接的共享
+net pause [servername]      # 暂停某服务
+net send ip "xxx"           # 向对方发信息
+net ver                     # 局域网内正在使用的网络连接类型和信息
+net share                   # 查看本地开启的共享
+net share ipc$              # 开启 ipc$ 共享
+net share db$=d:\config     # 开启一个共享名为 db$，在 d:\config
+net share ipc$ /del         # 删除 ipc$ 共享
+net share c$ /del           # 删除 C: 共享
+net user guest 12345        # 用 guest 用户登陆后用将密码改为 12345
+net password [pass]         # 更改系统登陆密码
 ```
 
 ## 查看网络信息
 
 **ipconfig**
-```cmd
-ipconfig /all       显示完整配置信息
-ipconfig /release   释放指定适配器的 IPv4 地址
-ipconfig /release6  释放指定适配器的 IPv6 地址
-ipconfig /renew     更新指定适配器的 IPv4 地址
-ipconfig /renew6    更新指定适配器的 IPv6 地址
-ipconfig /flushdns  清除 DNS 解析程序缓存
+```bash
+ipconfig /all               # 显示完整配置信息
+ipconfig /release           # 释放指定适配器的 IPv4 地址
+ipconfig /release6          # 释放指定适配器的 IPv6 地址
+ipconfig /renew             # 更新指定适配器的 IPv4 地址
+ipconfig /renew6            # 更新指定适配器的 IPv6 地址
+ipconfig /flushdns          # 清除 DNS 解析程序缓存
 ```
 
 **netstat**
-```cmd
-netstat -a          查看开启了哪些端口,常用 netstat -an
-netstat -n          查看端口的网络连接情况,常用 netstat -an
-netstat -v          查看正在进行的工作
-netstat -p 协议名    例:netstat -p tcq/ip 查看某协议使用情况
-netstat -s          查看正在使用的所有协议使用情况
-netstat -A ip       对方136到139其中一个端口开了的话,就可查看对方最近登陆的用户名
-
-netstat -bn         查看每个程序的连接
+```bash
+netstat -a                  # 查看开启了哪些端口,常用 netstat -an
+netstat -n                  # 查看端口的网络连接情况,常用 netstat -an
+netstat -v                  # 查看正在进行的工作
+netstat -p [protocol]       # 例:netstat -p tcq/ip 查看某协议使用情况
+netstat -s                  # 查看正在使用的所有协议使用情况
+netstat -A ip               # 对方136到139其中一个端口开了的话,就可查看对方最近登陆的用户名
+netstat -bn                 # 查看每个程序的连接
 ```
 
 **route**
-```cmd
+```bash
 route print
-route print 192.*
-route add 0.0.0.0 mask 0.0.0.0 192.168.6.1          增加网关
-route delete 0.0.0.0 mask 0.0.0.0 192.168.6.1       删除网关
-route change 16.21.0.0 mask 255.255.0.0 16.28.0.25  将 16.21.0.0 段的网关改为 0.25
+    route print 192.*
+route add 0.0.0.0 mask 0.0.0.0 192.168.6.1          # 增加网关
+route delete 0.0.0.0 mask 0.0.0.0 192.168.6.1       # 删除网关
+route change 16.21.0.0 mask 255.255.0.0 16.28.0.25  # 将 16.21.0.0 段的网关改为 0.25
 ```
 
 **arp**
-```cmd
-arp -a      查看全部 arp 条目
-arp -d ip   删除
+```bash
+arp -a      # 查看全部 arp 条目
+arp -d ip   # 删除
 ```
 
 **nslookup**
-```cmd
-nslookup domain [dns-server]            查询域名A记录
-nslookup -qt=type domain [dns-server]   查询其他记录
-    A           地址记录
-    AAAA        地址记录
-    AFSDB       Andrew文件系统数据库服务器记录
-    ATMA        ATM地址记录
-    CNAME       别名记录
-    HINFO       硬件配置记录,包括 CPU、操作系统信息
-    ISDN        域名对应的 ISDN 号码
-    MB          存放指定邮箱的服务器
-    MG          邮件组记录
-    MINFO       邮件组和邮箱的信息记录
-    MR          改名的邮箱记录
-    MX          邮件服务器记录
-    NS          名字服务器记录
-    PTR         反向记录
-    RP          负责人记录
-    RT          路由穿透记录
-    SRV         TCP服务器信息记录
-    TXT         域名对应的文本信息
-    X25         域名对应的X.25地址记录
+```bash
+nslookup domain [dns-server]            # 查询域名A记录
+nslookup -qt=type domain [dns-server]   # 查询其他记录
+#    A           地址记录
+#    AAAA        地址记录
+#    AFSDB       Andrew文件系统数据库服务器记录
+#    ATMA        ATM地址记录
+#    CNAME       别名记录
+#    HINFO       硬件配置记录,包括 CPU、操作系统信息
+#    ISDN        域名对应的 ISDN 号码
+#    MB          存放指定邮箱的服务器
+#    MG          邮件组记录
+#    MINFO       邮件组和邮箱的信息记录
+#    MR          改名的邮箱记录
+#    MX          邮件服务器记录
+#    NS          名字服务器记录
+#    PTR         反向记录
+#    RP          负责人记录
+#    RT          路由穿透记录
+#    SRV         TCP服务器信息记录
+#    TXT         域名对应的文本信息
+#    X25         域名对应的X.25地址记录
 ```
 
 ## 网络排错工具
 
 **ping**
-```cmd
-ping ip(或域名)          向对方主机发送默认大小为32字节的数据
+```bash
+ping ip(或域名)             # 向对方主机发送默认大小为32字节的数据
 ping -l 数据包大小 ip
-ping -n                 发送数据次数 ip
-ping -t ip              一直 ping.
-ping -t -l 65500 ip     发送大于64K的文件并一直 ping
+ping -n                     # 发送数据次数 ip
+ping -t ip                  # 一直 ping.
+ping -t -l 65500 ip         # 发送大于64K的文件并一直 ping
 ```
 
 **tracert**
-```cmd
--d                 不将地址解析成主机名.
--h maximum_hops    搜索目标的最大跃点数.
--j host-list       与主机列表一起的松散源路由(仅适用于 IPv4).
--w timeout         等待每个回复的超时时间(以毫秒为单位).
--R                 跟踪往返行程路径(仅适用于 IPv6).
--S srcaddr         要使用的源地址(仅适用于 IPv6).
--4                 强制使用 IPv4.
--6                 强制使用 IPv6.
+```bash
+tracert -d                 # 不将地址解析成主机名.
+tracert -h maximum_hops    # 搜索目标的最大跃点数.
+tracert -j host-list       # 与主机列表一起的松散源路由(仅适用于 IPv4).
+tracert -w timeout         # 等待每个回复的超时时间(以毫秒为单位).
+tracert -R                 # 跟踪往返行程路径(仅适用于 IPv6).
+tracert -S srcaddr         # 要使用的源地址(仅适用于 IPv6).
+tracert -4                 # 强制使用 IPv4.
+tracert -6                 # 强制使用 IPv6.
+```
+
+---
+
+## RDP
+
+**开启rdp**
+```
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f
+REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f
+
+wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
+```
+
+**更改终端端口为 2008(十六进制为:0x7d8)**
+```
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\Wds\rdpwd\Tds\tcp /v PortNumber /t REG_DWORD /d 0x7d8 /f
+
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber /t REG_DWORD /d 0x7D8 /f
+```
+
+**查看 RDP 服务端口**
+```
+REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
 ```
 
 ---
@@ -619,70 +659,70 @@ ping -t -l 65500 ip     发送大于64K的文件并一直 ping
 **netsh**
 
 查看防火墙状态
-```cmd
+```bash
 netsh firewall show state
 netsh advfirewall show allprofiles
 ```
 
 开启防火墙
-```cmd
+```bash
 netsh firewall set opmode enable
 netsh firewall set allprofiles state on
 ```
 
 关闭防火墙
-```cmd
+```bash
 netsh firewall set opmode disable
 netsh advfirewall set allprofiles state off
 ```
 
 设置防火墙日志路径
-```cmd
+```bash
 netsh advfirewall set currentprofile logging filename "C:\Windows\firewall.log"
 ```
 
 添加防火墙规则
-```cmd
-netsh advfirewall firewall add rule name="Remote Desktop" dir=in action=allow protocol=tcp localport=3389
+```bash
+netsh advfirewall firewall add rule name="Remote Desktop" dir=in action=allow protocol=tcp localport=3389           允许 3389 端口
 ```
 
 删除防火墙规则
-```cmd
+```bash
 netsh advfirewall firewall delete rule name="rule_name"
 ```
 
 添加端口规则
-```cmd
+```bash
 netsh firewall portopening tcp 1234 rule_name
 ```
 
 删除端口规则
-```cmd
+```bash
 netsh firewall delete portopening tcp 1234
 ```
 
 添加程序规则
-```cmd
+```bash
 netsh firewall add allowedprogram "C:\\nc.exe" "allow nc" enable
 ```
 
 删除程序规则
-```cmd
+```bash
 netsh firewall delete allowedprogram "C:\\nc.exe"
 ```
 
 添加端口转发
-```cmd
+```bash
 netsh interface portproxy add v4tov4 [listenaddress=victim_ip] listenport=victim_port connectaddress=attack_ip connectport=attack_port
 ```
 
 删除端口转发
-```cmd
+```bash
 netsh interface portproxy delete v4tov4 [listenaddress=victim_ip] listenport=victim_port
 ```
 
 查看端口转发
-```cmd
+```bash
 netsh interface portproxy show all
 netsh interface portproxy show v4tov4
 netsh interface portproxy show v4tov6
@@ -691,17 +731,17 @@ netsh interface portproxy show v6tov6
 ```
 
 安装 IPv6
-```cmd
+```bash
 netsh interface ipv6 install
 ```
 
 查看无线网络信息
-```cmd
+```bash
 netsh wlan show profiles
 ```
 
 查看指定 WIFI 密码
-```cmd
+```bash
 netsh wlan show profiles wifi_name key=clear
 ```
 
@@ -723,144 +763,140 @@ netsh wlan show profiles wifi_name key=clear
 
 ### 时间
 
-```cmd
-time    显示或设置当前时间
+```bash
+time    # 显示或设置当前时间
+    time /t             # 显示当前时间
+    time                # 设置新的当前时间（格式：hh:mm:ss），直接回车则表示放弃设置
 
-    time /t             显示当前时间
-    time                设置新的当前时间（格式：hh:mm:ss），直接回车则表示放弃设置
-
-date    显示或设置当前日期
-
-    date /t             显示当前日期
-    date                设置新的当前日期（格式：YYYY/MM/DD），直接回车则表示放弃设置
+date    # 显示或设置当前日期
+    date /t             # 显示当前日期
+    date                # 设置新的当前日期（格式：YYYY/MM/DD），直接回车则表示放弃设置
 ```
 
 ### 注册表
 
-reg 注册表相关操作
+**reg 注册表相关操作**
 
 参数说明：
-```
-KeyName [\Machine]FullKey
-           Machine 为远程机器的机器名 - 忽略默认到当前机器。
-           远程机器上只有 HKLM 和 HKU。
-           FullKey ROOTKEY+SubKey
-           ROOTKEY [ HKLM | HKCU | HKCR | HKU | HKCC ]
-           SubKey 所选ROOTKEY下注册表项的完整名
-/v          所选项之下要添加的值名
-/ve         为注册表项添加空白值名<无名称>
-/t          RegKey 数据类型
-           [ REG_SZ | REG_MULTI_SZ | REG_DWORD_BIG_ENDIAN |
-           REG_DWORD | REG_BINARY | REG_DWORD_LITTLE_ENDIAN |
-           REG_NONE | REG_EXPAND_SZ ]
-           如果忽略，则采用 REG_SZ
-/s          指定一个在 REG_MULTI_SZ 数据字符串中用作分隔符的字符；如果忽略，则将""用作分隔符
-/d          要分配给添加的注册表 ValueName 的数据
-/f          不提示，强行改写现有注册表项
-```
-```cmd
+```bash
+# KeyName [\Machine]FullKey
+    # Machine 为远程机器的机器名 - 忽略默认到当前机器。
+    # 远程机器上只有 HKLM 和 HKU。
+    # FullKey ROOTKEY+SubKey
+    # ROOTKEY [ HKLM | HKCU | HKCR | HKU | HKCC ]
+    # SubKey 所选ROOTKEY下注册表项的完整名
+# /v          所选项之下要添加的值名
+# /ve         为注册表项添加空白值名<无名称>
+# /t          RegKey 数据类型
+    # [ REG_SZ | REG_MULTI_SZ | REG_DWORD_BIG_ENDIAN |
+    # REG_DWORD | REG_BINARY | REG_DWORD_LITTLE_ENDIAN |
+    # REG_NONE | REG_EXPAND_SZ ]
+    # 如果忽略，则采用 REG_SZ
+# /s          指定一个在 REG_MULTI_SZ 数据字符串中用作分隔符的字符；如果忽略，则将""用作分隔符
+# /d          要分配给添加的注册表 ValueName 的数据
+# /f          不提示，强行改写现有注册表项
+
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v MyApp /t REG_SZ /d "c:\tools\myapp.exe" /f
-强制添加一条开机启动 c:\tools\myapp.exe 程序的注册表项
+# 强制添加一条开机启动 c:\tools\myapp.exe 程序的注册表项
 
 reg add "HKLM\SOFTWARE\ScmClient" /v AgreementConfirmed /t REG_SZ /d 1 /f
-解决 32 位 xp 打开 ioa 后，弹出的框关不掉问题
+# 解决 32 位 xp 打开 ioa 后，弹出的框关不掉问题
 
 reg add "HKCU\ControlPanel\Desktop" /v WaitToKIllAppTimeOut /t REG_SZ /d 10000 /f
-强制添加一条加速关闭应用程序的注册表项
+# 强制添加一条加速关闭应用程序的注册表项
 
 reg add "hkcu\software\Unity Technologies\Unity Editor 4.x" /v JdkPath_h4127442381 /t REG_SZ /f
-将 JdkPath_h4127442381 设置为空
+# 将 JdkPath_h4127442381 设置为空
 
 reg add "HKCR\*\shell\WinDbg\command" /t REG_SZ /d "\"D:\Program Files (x86)\windbg\windbg.exe\" -z \"%1\" " /f
-强制添加 windbg 打开 dump 文件到右键菜单的注册表项（不指明 /v，键值将写入默认值名中）
+# 强制添加 windbg 打开 dump 文件到右键菜单的注册表项（不指明 /v，键值将写入默认值名中）
 
 reg add "HKCR\*\shell\WinHex\command" /t REG_SZ /d "\"D:\software-setup\system\winhex\winhex.exe\"  \"%1\" " /f
-强制添加 winhex 到右键菜单的注册表项（不指明 /v，键值将写入默认值名中）
+# 强制添加 winhex 到右键菜单的注册表项（不指明 /v，键值将写入默认值名中）
 
 reg add "hkcu\software\microsoft\windows\currentversion\internet settings" /v AutoConfigURL /t REG_SZ /d "http://txp-01.tencent.com/proxy.pac" /f
-为 IE 设置代理：http://txp-01.tencent.com/proxy.pac
+# 为 IE 设置代理：http://txp-01.tencent.com/proxy.pac
 
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v ProxyEnable /t REG_DWORD /d 0 /f
-关闭 IE 代理服务器选项
+# 关闭 IE 代理服务器选项
 
 reg add "hkcu\software\Sysinternals\Process Monitor" /v EulaAccepted /t REG_DWORD /d 1 /f
-为 Procmon.exe 工具（Process Monitor 为其属性面板上的描述名）添加 License 同意
+# 为 Procmon.exe 工具（Process Monitor 为其属性面板上的描述名）添加 License 同意
 
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v MyApp /f
-强制删除值名的 MyApp 的注册表项
+# 强制删除值名的 MyApp 的注册表项
 
 reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskmgr.exe" /f
-强制删除让任务栏里的任务管理器为灰色的注册表项
+# 强制删除让任务栏里的任务管理器为灰色的注册表项
 
 reg delete HKEY_CURRENT_USER\Environment /v HTTP_proxy /f
-删除 http 代理
+# 删除 http 代理
 
 reg delete HKEY_CURRENT_USER\Environment /v HTTPS_proxy /f
-删除 https 代理
+# 删除 https 代理
 
 reg copy "hkcu\software\microsoft\winmine" "hkcu\software\microsoft\winminebk" /s /f
-强制复制 winmine 下所有的子项与值到 winminebk 中
+# 强制复制 winmine 下所有的子项与值到 winminebk 中
 
 reg export "hkcu\software\microsoft\winmine" c:\regbak\winmine.reg
-导出 winmine 下所有的子项与值到 c:\regbak\winmine.reg 文件中
+# 导出 winmine 下所有的子项与值到 c:\regbak\winmine.reg 文件中
 
 reg import c:\regbak\winmine.reg
-导入 c:\regbak\winmine.reg 文件到注册表中
+# 导入 c:\regbak\winmine.reg 文件到注册表中
 
 reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\IEXPLORE.EXE" /s
-查询 ie 的安装路径
+# 查询 ie 的安装路径
 
 reg query HKCR\.dsw /ve
-查询 .dsw 默认值
+# 查询 .dsw 默认值
 
 reg query HKEY_CURRENT_USER\Software\Tencent\QQGame\SYS /v GameDirectory
-查询 QQGame 安装路径
+# 查询 QQGame 安装路径
 ```
 
 ### 计划任务
 
 **at**
-```cmd
-at id号                           开启已注册的某个计划任务
-at /delete                        停止所有计划任务,用参数 /yes 则不需要确认就直接停止
-at id号 /delete                   停止某个已注册的计划任务
-at                                查看所有的计划任务
-at ip time 程序名(或一个命令) /r    在某时间运行对方某程序并重新启动计算机
+```bash
+at                                  # 查看所有的计划任务
+at [id]                             # 开启已注册的某个计划任务
+at /delete                          # 停止所有计划任务,用参数 /yes 则不需要确认就直接停止
+at [id] /delete                     # 停止某个已注册的计划任务
+at [ip] time [progame/cmd]          # 在某时间运行对方某程序
+    at \\127.0.0.1 time C:\windows\1.bat
+    at [ip] time [progame/cmd] /r       # 在某时间运行对方某程序并重新启动计算机
 ```
 
 **[Schtasks.exe](https://docs.microsoft.com/en-us/windows/win32/taskschd/schtasks)**
+```bash
+# /SC   schedule     指定计划频率.有效计划任务:  MINUTE、 HOURLY、DAILY、WEEKLY、MONTHLY, ONCE, ONSTART, ONLOGON, ONIDLE, ONEVENT.
+# /MO   modifier     改进计划类型以允许更好地控制计划重复周期.有效值列于下面"修改者"部分中.
+# /D    days         指定该周内运行任务的日期.有效值:MON、TUE、WED、THU、FRI、SAT、SUN和对 MONTHLY 计划的 1 - 31(某月中的日期).通配符"*"指定所有日期.
+# /TN   taskname     以路径\名称形式指定对此计划任务进行唯一标识的字符串.
+# /TR   taskrun      指定在这个计划时间运行的程序的路径和文件名.例如: C:\windows\system32\calc.exe
 
-创建计划任务 "gametime",在每月的第一个星期天运行"空当接龙".
-```cmd
+schtasks /query /fo LIST /v             # 以较为详细易于阅读的格式显示本机所有任务计划信息
+schtasks /delete /tn "Soda Build" /f    # 强制删除 Soda Build 名称的任务计划（不进行确认）
+schtasks /run /tn "Soda Build"          # 执行名为 Soda Build 的任务计划
+schtasks /end /tn "Soda Build"          # 终止执行名为 Soda Build 的任务计划
+
 SCHTASKS /Create /SC MONTHLY /MO first /D SUN /TN gametime /TR c:\windows\system32\freecell
-
-- /SC   schedule     指定计划频率.有效计划任务:  MINUTE、 HOURLY、DAILY、WEEKLY、MONTHLY, ONCE, ONSTART, ONLOGON, ONIDLE, ONEVENT.
-- /MO   modifier     改进计划类型以允许更好地控制计划重复周期.有效值列于下面"修改者"部分中.
-- /D    days         指定该周内运行任务的日期.有效值:MON、TUE、WED、THU、FRI、SAT、SUN和对 MONTHLY 计划的 1 - 31(某月中的日期).通配符"*"指定所有日期.
-- /TN   taskname     以路径\名称形式指定对此计划任务进行唯一标识的字符串.
-- /TR   taskrun      指定在这个计划时间运行的程序的路径和文件名.例如: C:\windows\system32\calc.exe
-```
-```
-schtasks /query /fo LIST /v             以较为详细易于阅读的格式显示本机所有任务计划信息
-
-schtasks /delete /tn "Soda Build" /f    强制删除 Soda Build 名称的任务计划（不进行确认）
-schtasks /run /tn "Soda Build"          执行名为 Soda Build 的任务计划
-schtasks /end /tn "Soda Build"          终止执行名为 Soda Build 的任务计划
+# 创建计划任务 "gametime",在每月的第一个星期天运行"空当接龙".
 
 schtasks /create /sc minute /mo 20 /tn "Soda Build" /tr d:\check.vbs
-创建一个名为 Soda Build 的任务计划：该任务计划每 20 分钟执行一下 d:\check.vbs 脚本
+# 创建一个名为 Soda Build 的任务计划：该任务计划每 20 分钟执行一下 d:\check.vbs 脚本
 
 schtasks /create /tn "Soda Build" /tr D:\updateall.bat /sc daily /st 02:06 /f
-强制创建一个名为 Soda Build 的任务计划（不进行确认）：该任务计划每天凌晨 2 点 06 分执行一下 D:\updateall.bat 脚本
+# 强制创建一个名为 Soda Build 的任务计划（不进行确认）：该任务计划每天凌晨 2 点 06 分执行一下 D:\updateall.bat 脚本
 
 schtasks /change /tn "Soda Build" /tr d:\check2.vbs
-将名为 Soda Build 的任务计划的执行脚本修改为 d:\check2.vbs
+# 将名为 Soda Build 的任务计划的执行脚本修改为 d:\check2.vbs
 ```
 
 ### 组策略
 
 **强制更新组策略**
-```
+```bash
 gpupdate /force
 ```
 
@@ -869,11 +905,10 @@ gpupdate /force
 ## 账号管控
 
 **账号**
-```
-net user test 1234abcd /add                 添加用户
-net localgroup administrators test /add     将用户添加到管理组
-
-net user test /del                          删除用户
+```bash
+net user test 1234abcd /add                 # 添加用户
+net localgroup administrators test /add     # 将用户添加到管理组
+net user test /del                          # 删除用户
 ```
 
 ---
@@ -881,38 +916,39 @@ net user test /del                          删除用户
 ## 进程管理
 
 **进程信息**
-```cmd
-wmic process where Caption="buyticket.exe" get commandline,ExecutablePath,ProcessId,ThreadCount /value
-查看名为"buyticket.exe"所有进程命令行，exe 全路径，PID 及线程数
+```bash
+wmic
+    wmic process where Caption="buyticket.exe" get commandline,ExecutablePath,ProcessId,ThreadCount /value
+    # 查看名为"buyticket.exe"所有进程命令行，exe 全路径，PID 及线程数
 
-wmic process where Caption="buyticket.exe" get ExecutablePath,HandleCount /value
-查看名为"buyticket.exe"所有进程的 exe 全路径及当前打开的句柄数
+    wmic process where Caption="buyticket.exe" get ExecutablePath,HandleCount /value
+    # 查看名为"buyticket.exe"所有进程的 exe 全路径及当前打开的句柄数
 
-wmic process where Caption="buyticket.exe" get ExecutablePath,VirtualSize,WorkingSetSize /value
-查看名为"buyticket.exe"所有进程的 exe 全路径、当前虚拟地址空间占用及物理内存工作集
+    wmic process where Caption="buyticket.exe" get ExecutablePath,VirtualSize,WorkingSetSize /value
+    # 查看名为"buyticket.exe"所有进程的 exe 全路径、当前虚拟地址空间占用及物理内存工作集
 
-tasklist    显示所有进程及其服务
+tasklist    # 显示所有进程及其服务
 
     tasklist /svc
 
-    tasklist /fi "pid eq 1234" /svc         显示指定进程信息
+    tasklist /fi "pid eq 1234" /svc         # 显示指定进程信息
     tasklist /fi "status eq running" /svc
     tasklist /fi "status eq running" /fi "username eq nt authority\system" /svc
 
-    tasklist /m xxx.dll     显示使用给定 exe/dll 名称的所有进程
+    tasklist /m xxx.dll     # 显示使用给定 exe/dll 名称的所有进程
 
-    tasklist /s ip /u username /p password /svc     显示远程主机的进程信息
+    tasklist /s ip /u username /p password /svc     # 显示远程主机的进程信息
 ```
 
 **进程处理**
-```cmd
-taskkill    终止指定的进程及其子进程（根据进程名称）
+```bash
+taskkill        # 终止指定的进程及其子进程（根据进程名称）
 
     taskkill /f /im notepad.exe /t
-    taskkill /f /pid 1234 /t        终止指定进程及其子进程（根据进程 ID）
+    taskkill /f /pid 1234 /t        # 终止指定进程及其子进程（根据进程 ID）
     taskkill /f /fi "pid eq 1234" /t
 
-    taskkill /s ip /u username /p password /pid 1234 /t     终止远程主机的指定进程
+    taskkill /s ip /u username /p password /pid 1234 /t     # 终止远程主机的指定进程
     taskkill /s ip /u username /p password /fi "pid eq 1234" /t
 ```
 
@@ -923,31 +959,40 @@ taskkill    终止指定的进程及其子进程（根据进程名称）
 ### 硬盘-数据
 
 **卷标设置**
-```cmd
-vol         显示当前分区的卷标
-label       显示当前分区的卷标，同时提示输入新卷标
-    label c:system      设置 c 盘的卷标为 system
+```bash
+vol             # 显示当前分区的卷标
+label           # 显示当前分区的卷标，同时提示输入新卷标
+    label c:system              # 设置 c 盘的卷标为 system
 ```
 
 **格式化**
-```cmd
-format      格式化磁盘
-    format J: /FS:ntfs      以 ntfs 类型格式化 J 盘 [类型有:FAT、FAT32、exFAT、NTFS 或 UDF]
-    format J: /FS:fat32 /Q  以 fat32 类型快速格式化J盘
+```bash
+format          # 格式化磁盘
+    format J: /FS:ntfs          # 以 ntfs 类型格式化 J 盘 [类型有:FAT、FAT32、exFAT、NTFS 或 UDF]
+    format J: /FS:fat32 /Q      # 以 fat32 类型快速格式化J盘
 ```
 
 **状态检查**
-```cmd
-chkdsk /f D:    检查磁盘 D 并显示状态报告；加参数/f表示同时会修复磁盘上的错误
+```bash
+chkdsk /f D:    # 检查磁盘 D 并显示状态报告；加参数/f表示同时会修复磁盘上的错误
 ```
 
 **磁盘映射**
-```cmd
-subst   磁盘映射  -- 磁盘映射信息都保存在注册表以下键值中：HKEY_CURRENT_USER\Network
-    subst                   显示目前所有的映射
-    subst z: \\com\software 将 \\com\software 共享映射为本地 z 盘
-    subst y: e:\src         将 e:\src 映射为本地 y 盘
-    subst z: /d             删除 z 盘映射
+```bash
+subst           # 磁盘映射  -- 磁盘映射信息都保存在注册表以下键值中：HKEY_CURRENT_USER\Network
+    subst                       # 显示目前所有的映射
+    subst z: \\com\software     # 将 \\com\software 共享映射为本地 z 盘
+    subst y: e:\src             # 将 e:\src 映射为本地 y 盘
+    subst z: /d                 # 删除 z 盘映射
+```
+
+---
+
+## 安全设置
+
+**关闭 Denfnder**
+```bash
+net stop windefend
 ```
 
 ---
@@ -955,14 +1000,14 @@ subst   磁盘映射  -- 磁盘映射信息都保存在注册表以下键值中�
 # 域
 
 **添加域管理员账号**
-```
-net user mstlab mstlab /add /domain             添加用户并设置密码
-net group "Domain Admins" lemon /add /domain    将普通域用户提升为域管理员
-net user guest /active:yes                      激活 guest 用户
-net user guest mstlab                           更改 guest用户的密码
+```bash
+net user mstlab mstlab /add /domain             # 添加用户并设置密码
+net group "Domain Admins" lemon /add /domain    # 将普通域用户提升为域管理员
+net user guest /active:yes                      # 激活 guest 用户
+net user guest mstlab                           # 更改 guest用户的密码
 ```
 
 **修改指定域用户的密码**
-```
+```bash
 dsquery user -samid username | dsmod user -pwd new_password
 ```

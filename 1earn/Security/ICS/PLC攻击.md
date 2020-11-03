@@ -2,6 +2,8 @@
 
 ---
 
+## 免责声明
+
 `本人撰写的手册,仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
 
 ---
@@ -53,6 +55,25 @@ PLC 控制系统(Programmable Logic Controller，可编程逻辑控制器)，专
 
 **实验记录**
 - [siemens仿真搭建实验](./实验/siemens仿真搭建实验.md)
+
+---
+
+## OpenPLC
+
+> OpenPLC是一个基于易于使用软件的开源可编程逻辑控制器。OpenPLC项目是根据IEC 61131-3标准创建的，该标准定义了PLC的基本软件架构和编程语言。
+
+**官网**
+- https://www.openplcproject.com/
+
+**相关文章**
+- [一款可自定义多用途PLC设备的可用性分析](https://www.freebuf.com/articles/ics-articles/213018.html)
+- [OPENPLC ON WINDOWS](https://www.openplcproject.com/runtime/windows/)
+- [CREATING YOUR FIRST PROJECT](https://www.openplcproject.com/reference/basics/first-project.html)
+- [UPLOADING YOUR PROJECT TO OPENPLC](https://www.openplcproject.com/reference/basics/upload)
+- [ㄆㄜ ㄊㄧㄡ ㄙˋ: OpenPLC 初體驗 /00/ - OpenPLC Project 簡介](https://ruten-proteus.blogspot.com/2020/10/openplc-00-introduction.html)
+
+**实验记录**
+- [OpenPLC环境搭建](./实验/OpenPLC环境搭建.md)
 
 ---
 

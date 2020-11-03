@@ -43,8 +43,6 @@
 **教程**
 - [SQL 注入 - CTF Wiki](https://ctf-wiki.github.io/ctf-wiki/web/sqli/)
 - [Beyond SQLi: Obfuscate and Bypass](https://www.exploit-db.com/papers/17934)
-- [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
-- [aleenzz/MYSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MYSQL_SQL_BYPASS_WIKI)
 - [ning1022/SQLInjectionWiki](https://github.com/ning1022/SQLInjectionWiki/)
 
 **payload**
@@ -518,6 +516,9 @@ Select version() Into outfile "c:\\phpnow\\htdocs\\test.php" LINES TERMINATED BY
 
 > PHP应用程序通常具有MySQL数据库。
 
+**资源**
+- [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
+
 **注释**
 ```sql
 --
@@ -576,6 +577,18 @@ select * from users where id=1 and 1=(select 1 from information_schema.tables wh
 ## MSSQL
 
 > 基于ASP / ASPX的应用程序一般都是MSSQL。
+
+**资源**
+- [aleenzz/MYSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MYSQL_SQL_BYPASS_WIKI)
+
+**基本参数**
+```sql
+@@version       // 数据库版本
+user            // 获取当前数据库用户名
+db_name()       // 当前数据库名 其中db_name(N)可以来遍历其他数据库
+;select user    // 查询是否支持多语句
+@@servername    // 服务器名称
+```
 
 **正则表达式攻击**
 

@@ -68,7 +68,9 @@
 	* [账号管控](#账号管控)
 	* [进程管理](#进程管理)
 	* [设备管理](#设备管理)
-		* [硬盘-数据](#硬盘-数据)
+		* [磁盘](#磁盘)
+		* [无线网卡](#无线网卡)
+		* [蓝牙](#蓝牙)
 
 ---
 
@@ -326,6 +328,7 @@ od			# 以字符或者十六进制的形式显示二进制文件
 strings		# 在对象文件或二进制文件中查找可打印的字符串
 	strings start.bin | grep -a "pass"
 	strings .* | grep -a "root"
+	strings -o start.bin 		# 获取所有 ASCII 字符偏移
 
 ldd			# 可以显示程序或者共享库所需的共享库
 nm			# 显示目标文件的符号
@@ -385,6 +388,7 @@ which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
 **搜索文件**
 ```bash
 find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
+	find / -name site-packages -d	# 查找 site-packages 目录
 locate <File>		# 查找文件或目录
 ```
 
@@ -449,7 +453,6 @@ gedit								# 图形化的编辑器
 ```
 
 **Vim**
-
 - **常用操作**
 	```bash
 	Normal 模式下 i 进入 insert 模式
@@ -464,9 +467,20 @@ gedit								# 图形化的编辑器
 	:%s/foo/bar 			# 代表替换 foo 为 bar
 	insert 模式按 ESC 键,返回 Normal 模式
 	```
-
 - **更多操作**
 	- [Vim](./Power-Linux.md#Vim)
+
+**objcopy**
+
+objcopy 用于将 object 的部分或全部内容拷贝到另一个 object，从而可以实现格式的变换。
+
+objcopy 可用用于将文件转换成 S-record 格式或者 raw 二进制格式。
+
+```bash
+objcopy -O srec main main.srec								# 将文件转换成 S-record 格式
+objcopy -O binary main main.bin    							# 将文件转换成 rawbinary 格式
+objcopy -I binary -O binary --reverse-bytes=4 1.out 2.out	# 转换为小端序
+```
 
 ### 比较
 
@@ -608,6 +622,17 @@ apt install -y p7zip
 	# x 代表解压缩文件，并且是按原始目录解压（还有个参数 e 也是解压缩文件，但其会将所有文件都解压到根下，而不是自己原有的文件夹下）manager.7z 是压缩文件，这里大家要换成自己的。如果不在当前目录下要带上完整的目录
 	# -r 表示递归所有的子文件夹
 	# -o 是指定解压到的目录，这里大家要注意-o后是没有空格的直接接目录
+```
+
+**pigz**
+
+pigz 命令可以用来解压缩文件，最重要的是支持多线程并行处理
+```bash
+tar -cvf - dir1 dir2 dir3 | pigz -p 8 > xxx.tgz		# 结合 tar 使用, 压缩命令
+
+pigz -p 8 -d xxx.tgz		# 解压命令
+
+tar -xzvf xxx.tgz			# 如果是 gzip 格式，也支持用 tar 解压
 ```
 
 ---
@@ -760,25 +785,6 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	```bash
 	iface enp7s0 inet dhcp		# dhcp 配置
 	```
-
-**配置无线网卡**
-- WM Ware(开机后)
-
-    虚拟机->可移动设备->Ralink 802.11 n Wlan(显卡型号)->连接(断开与主机的连接)
-
-- VBox
-
-    虚拟机关机状态下->将设备插入主机->设置->USB设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
-
-- 验证是否连接成功
-
-    ```bash
-    lsusb
-    airmon-ng
-    ifconfig
-    iwconfig
-    ```
-    出现无线网卡型号即为成功
 
 **ethtool**
 
@@ -1708,7 +1714,13 @@ disown		# 使作业忽略 HUP 信号
 ---
 
 ## 设备管理
-### 硬盘-数据
+
+**查看usb设备**
+```bash
+lsusb
+```
+
+### 磁盘
 
 **磁盘的文件名**
 
@@ -1795,7 +1807,7 @@ du	# 报告目录的空间使用情况
 
 ```bash
 dd
-	dd if=/dev/zero of=sun.txt bs=1M count=1
+	dd if=/dev/zero of=out.txt bs=1M count=1
 	# if 代表输入文件.如果不指定 if,默认就会从 stdin 中读取输入.
 	# of 代表输出文件.如果不指定 of,默认就会将 stdout 作为默认输出.
 	# ibs=bytes:一次读入 bytes 个字节,即指定一个块大小为 bytes 个字节.
@@ -1804,6 +1816,23 @@ dd
 	# count 代表被复制的块数.
 	# /dev/zero 是一个字符设备,会不断返回 0 值字节(\0).
 ```
+
+- 截取数据
+	```bash
+	# 截取地址 925888（0xe20c0）之后的数据，保存到 out.bin
+	dd if=test.trx bs=1 skip=925888 of=out.bin
+	```
+
+- 文件分块合并
+	```bash
+	# 文件分为 1 2 3 4 5 每个文件 无用头信息 364 字节,去掉头信息合并
+	dd if=1 bs=1 skip=364 of=11
+	dd if=2 bs=1 skip=364 of=22
+	dd if=3 bs=1 skip=364 of=33
+	dd if=4 bs=1 skip=364 of=44
+	dd if=5 bs=1 skip=364 of=55
+	cat 11 22 33 44 55 > fly.rar
+	```
 
 **LVM**
 
@@ -1826,4 +1855,43 @@ blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
 	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 	blkid -po udev /dev/sda1	# 获取更多详细信息
 	blkid -g					# 清理 blkid 的缓存
+```
+
+---
+
+### 无线网卡
+
+**配置无线网卡**
+- WM Ware(开机后)
+
+    虚拟机->可移动设备->Ralink 802.11 n Wlan(显卡型号)->连接(断开与主机的连接)
+
+- VBox
+
+    虚拟机关机状态下->将设备插入主机->设置->USB设备->添加->删除除了供应商标识(VendorID)和产品标识(ProductID)之外的参数->开机->插入设备
+
+- 验证是否连接成功
+
+    ```bash
+    lsusb
+    airmon-ng
+    ifconfig
+    iwconfig
+    ```
+    出现无线网卡型号即为成功
+
+---
+
+### 蓝牙
+
+**启动蓝牙服务**
+```bash
+service bluetooth start
+```
+
+**激活蓝牙设备**
+```bash
+hciconfig hci0 up	# 激活蓝牙设备
+hciconfig hci0		# 查看属性
+	# 第二行中的 “BD Address”，这是蓝牙设备的MAC地址
 ```

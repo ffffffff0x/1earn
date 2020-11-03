@@ -31,28 +31,32 @@
 
 * [接口利用](#接口利用)
     * [BOLA](#bola)
-        * [支付数据篡改](#支付数据篡改)
+    * [数据篡改](#数据篡改)
     * [重放攻击](#重放攻击)
     * [DoS](#dos)
 
 ---
 
 **文章 & Reference**
-- [密码找回逻辑漏洞总结](http://www.anquan.us/static/drops/web-5048.html)
-- [密码找回功能可能存在的问题](http://www.anquan.us/static/drops/papers-287.html)
-- [密码找回功能可能存在的问题(补充)](http://www.anquan.us/static/drops/web-3295.html)
-- [业务安全漏洞挖掘归纳总结](http://www.anquan.us/static/drops/web-6917.html)
-- [应用程序逻辑错误总结](http://www.anquan.us/static/drops/papers-1418.html)
-- [在线支付逻辑漏洞总结](http://www.anquan.us/static/drops/papers-345.html)
+- [密码找回逻辑漏洞总结](http://www.vuln.cn/6851)
+- [密码找回功能可能存在的问题](http://www.vuln.cn/6849)
+- [密码找回功能可能存在的问题(补充)](http://www.vuln.cn/6850)
+- [业务安全漏洞挖掘归纳总结](http://www.vuln.cn/6667)
+- [应用程序逻辑错误总结](http://www.vuln.cn/6874)
+- [在线支付逻辑漏洞总结](http://www.vuln.cn/6807)
 - [web渗透测试之攻破登录页面](https://zhuanlan.zhihu.com/p/35257242)
-- [我的越权之道](http://www.anquan.us/static/drops/tips-727.html)
+- [我的越权之道](http://www.vuln.cn/6893)
 - [谈高效漏洞挖掘之Fuzzing的艺术](https://www.freebuf.com/vuls/221129.html)
 - [密码找回中的套路](https://xz.aliyun.com/t/7977)
+- [登录点测试的那些事](https://xz.aliyun.com/t/8185)
 
 **案例**
 - [挖洞经验 | 连接多个漏洞获取管理员访问权限](https://www.freebuf.com/articles/web/177461.html)
 - [挖洞经验 | 看我如何发现谷歌电子表格、谷歌云盘和谷歌相册的3个漏洞（$4133.7）](https://www.freebuf.com/vuls/192342.html)
 - [挖掘某小型CMS厂商逻辑漏洞的过程](https://bbs.ichunqiu.com/thread-31184-1-20.html)
+
+**相关工具**
+- [ztosec/secscan-authcheck](https://github.com/ztosec/secscan-authcheck) - 越权检测工具
 
 ---
 
@@ -62,12 +66,16 @@
 
 # 认证绕过
 
+**相关资源**
+- [任意用户密码重置的10种常见姿势](https://www.ichunqiu.com/course/59045)
+
 ## 未授权访问
 
 非授权访问是指用户在没有通过认证授权的情况下能够直接访问需要通过认证才能访问到的页面或文本信息.可以尝试在登录某网站前台或后台之后,将相关的页面链接复制于其他浏览器或其他电脑上进行访问,看是否能访问成功.
 
 - 案例:
     - [某发电机云控平台未授权访问](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0226920)
+    - [$10k host header](https://www.ezequiel.tech/p/10k-host-header.html)
 
 ---
 
@@ -265,6 +273,12 @@
 
 越权漏洞的成因主要是因为开发人员在对数据进行增、删、改、查询时对客户端请求的数据过分相信而遗漏了权限的判定.
 
+**Tips**
+- HTTP Header based bypass:
+    - X-Original-URL: /redact
+    - Referer: https://site.com/api/redact
+
+**相关文章**
 - [逻辑让我崩溃之越权姿势分享(续集) ](https://xz.aliyun.com/t/4003)
 
 **垂直越权(垂直越权是指使用权限低的用户可以访问权限较高的用户)**
@@ -323,19 +337,8 @@
 
 ## IP限制绕过
 
-如果登录系统设置了 IP 地址白名单,我们可以通过下面的几个 http 头字段伪造 IP 地址,用 burp 抓包后将下面的某个 http 头字段加入数据包发送到服务器
-```
-Client-Ip: 127.0.0.1
-X-Client-IP: 127.0.0.1
-X-Real-IP: 127.0.0.1
-True-Client-IP: 127.0.0.1
-X-Originating-IP: 127.0.0.1
-X-Forwarded-For: 127.0.0.1
-X-Remote-IP: 127.0.0.1
-X-Remote-Addr: 127.0.0.1
-X-Forwarded-Host: 127.0.0.1
-Referer: http://127.0.0.1
-```
+如果登录系统设置了 IP 地址白名单,我们可以通过修改 http 头字段伪造 IP 地址
+- [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/HTTP/Fuzz_head.txt)
 
 ---
 
@@ -368,6 +371,13 @@ Referer: http://127.0.0.1
 
 # 接口利用
 
+**相关案例**
+- [$36k Google App Engine RCE](https://www.ezequiel.tech/p/36k-google-app-engine-rce.html)
+
+**学习资源**
+- [smodnix/31-days-of-API-Security-Tips](https://github.com/smodnix/31-days-of-API-Security-Tips)
+- [31 Days of API Security](https://docs.google.com/spreadsheets/d/1jn3JnWzQFZW41gKo5Fhxwf2ke2w-pvrpCGhBmKhyIBE/edit#gid=0)
+
 ## BOLA
 
 > Broken Object Level Authorization
@@ -385,9 +395,10 @@ Referer: http://127.0.0.1
 
 **Tips**
 
-部分内容来自 <sup>[[A Deep Dive On The Most Critical API Vulnerability — BOLA (Broken Object Level Authorization](https://medium.com/@inonst/a-deep-dive-on-the-most-critical-api-vulnerability-bola-1342224ec3f2)]</sup>
+部分内容来自 <sup>[[A Deep Dive On The Most Critical API Vulnerability — BOLA (Broken Object Level Authorization](https://medium.com/@inonst/a-deep-dive-on-the-most-critical-api-vulnerability-bola-1342224ec3f2)]、[[31 Days of API Security](https://docs.google.com/spreadsheets/d/1jn3JnWzQFZW41gKo5Fhxwf2ke2w-pvrpCGhBmKhyIBE/edit#gid=0)]</sup>
 
 - FUZZ 接口路径、接口名
+    - https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/api&parm/Fuzz_API1.txt
 - 大小写替换
     - `userinfo/view`
     - `userINFO/VIew`
@@ -399,6 +410,7 @@ Referer: http://127.0.0.1
     - `userinfo/view.action`
 - 内容注入
     - `userinfo/view?id=123`
+    - `userinfo/view?id=ABC`
     - `userinfo/view?id=123ABC`
     - `userinfo/view?id=123ABC!@#`
     - `userinfo/view?id=1+2+3`
@@ -425,11 +437,18 @@ Referer: http://127.0.0.1
     - `userinfo/view?id=xxx&id=yyy`
     - `userinfo/view?id=xxx&id=yyy,zzz`
 - 尝试发送通配符而不是 ID
+    - `{""user_id"":""*""}`
 - 查找未启用授权机制的 API 主机、或 API 节点
 - 测试不同平台的 API 点、如 APP、微信公众号
 - 尝试使用 GET/POST/OPTIONS/PUT/TRACE 等方法
+    ![](../../../../assets/img/Security/RedTeam/Web安全/IDOR/1.jpg)
+- DOS
+    - `limit=999999999`
+- 测试该API是否支持SOAP，将内容类型更改为 `application/xml` ，在请求正文中添加简单的XML，然后查看API如何处理它。
 
-### 支付数据篡改
+---
+
+## 数据篡改
 
 **商品编号更改**
 
@@ -445,6 +464,7 @@ Referer: http://127.0.0.1
     - [UCloud 另一处严重支付逻辑错误 导致可刷余额](http://www.anquan.us/static/bugs/wooyun-2014-048591.html)
     - [destoon无限制增加帐号资金 ](http://www.anquan.us/static/bugs/wooyun-2014-050481.html)
     - [大疆某处支付逻辑漏洞可1元买无人机](http://www.anquan.us/static/bugs/wooyun-2016-0194751.html)
+    - [挖掘网站支付漏洞中突然想到的一个骚思路](https://www.t00ls.net/thread-53256-1-2.html)
 
 **商品数量篡改**
 
@@ -504,7 +524,7 @@ Referer: http://127.0.0.1
 - External Entity
 - Internal Entity
 
-**恶意正则表达式**
+**reDOS**
 
 正则常用的 NFA 引擎支持递归，当恶意输入正则递归过多时，服务器将资源耗尽，导致dos。
 

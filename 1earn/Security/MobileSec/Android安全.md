@@ -98,6 +98,17 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 # APK渗透
 
+**案例**
+- [Attacking the attackers – Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
+- [如何攻击智能汽车远程启动系统（Part 1）](https://www.anquanke.com/post/id/153373)
+- [对恶意Android应用Bangle Android App Packer的分析](http://www.freebuf.com/vuls/178919.html)
+- [怀揣情怀的提醒：及时修复！(某智能门锁二度分析感悟)](https://paper.seebug.org/343/)
+- [[Onls丶辜釉]无码分享渗透某社交APP](https://bbs.ichunqiu.com/thread-27421-1-22.html)
+- [技术讨论 | 看我如何破解一台自动售货机 ](https://www.freebuf.com/articles/terminal/186804.html)
+- [一个色播APP逆向——初窥千万灰色直播产业](https://evilpan.com/2019/01/05/reverse-live-porn-app/)
+- [Telegram App Store Secret-Chat Messages in Text Database](https://blog.zimperium.com/telegram-hack/)
+- [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
+
 **在线检测**
 - [360显危镜](http://appscan.360.cn/)
 - [腾讯金刚](https://service.security.tencent.com/kingkong)
@@ -126,23 +137,18 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 **信息收集**
 - [TheKingOfDuck/ApkAnalyser](https://github.com/TheKingOfDuck/ApkAnalyser) - 一键提取安卓应用中可能存在的敏感信息。
+- [dwisiswant0/apkleaks](https://github.com/dwisiswant0/apkleaks) - Scanning APK file for URIs, endpoints & secrets.
 - 从反编译的 apk 文件中提取相关域名链接/IP
-    ```
+    ```bash
     grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" -r xxx --color=auto
     grep -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*" -r xxx --color=auto
     ```
 
-## 案例
-- [Attacking the attackers – Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
-- [如何攻击智能汽车远程启动系统（Part 1）](https://www.anquanke.com/post/id/153373)
-- [对恶意Android应用Bangle Android App Packer的分析](http://www.freebuf.com/vuls/178919.html)
-- [怀揣情怀的提醒：及时修复！(某智能门锁二度分析感悟)](https://paper.seebug.org/343/)
-- [[Onls丶辜釉]无码分享渗透某社交APP](https://bbs.ichunqiu.com/thread-27421-1-22.html)
-- [技术讨论 | 看我如何破解一台自动售货机 ](https://www.freebuf.com/articles/terminal/186804.html)
-- [一个色播APP逆向——初窥千万灰色直播产业](https://evilpan.com/2019/01/05/reverse-live-porn-app/)
-- [Telegram App Store Secret-Chat Messages in Text Database](https://blog.zimperium.com/telegram-hack/)
+---
 
-**ESFileExplorers CVE-2019-6447 任意文件读取**
+## APK-Exploits
+
+**CVE-2019-6447 ESFileExplorers 任意文件读取**
 - 简介
 
     基于 Android 平台的 ES File Explorer File Manager application 4.1.9.7.4 及之前版本中存在安全漏洞，该漏洞源于 ES 应用程序在运行一次之后，TCP 59777 端口并未关闭依旧可以通过 HTTP 协议接收 JSON 数据。攻击者可通过向 TCP 59777 端口发送请求利用该漏洞读取任意文件或执行应用程序。

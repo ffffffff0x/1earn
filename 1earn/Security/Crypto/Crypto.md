@@ -123,6 +123,13 @@
 - [guyoung/CaptfEncoder](https://github.com/guyoung/CaptfEncoder) - 一款跨平台网络安全工具套件
 - [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom) - 密码学的瑞士军刀
 - [Acmesec/CTFCrackTools](https://github.com/Acmesec/CTFCrackTools) - CTF工具框架
+- [Ciphey/Ciphey](https://github.com/Ciphey/Ciphey) - 使用自然语言处理和人工智能以及一些全自动解密/解码/破解工具
+    ```
+    python3 -m pip install ciphey --upgrade
+    文件输入 ciphey -f encrypted.txt
+    不合格输入 ciphey -- "Encrypted input"
+    正常方式 ciphey -t "Encrypted input"
+    ```
 
 **在线工具**
 - http://tool.bugku.com/
@@ -656,15 +663,13 @@ MD5("")= d41d8cd98f00b204e9800998ecf8427e
 **在线工具**
 - https://md5.navisec.it/
 - https://www.somd5.com/
-- https://www.md5online.org/
 - https://www.somd5.com/batch.html
+- https://www.md5online.org/
 - http://md5.tellyou.top/
 - http://www.cmd5.com/
-- http://hashtoolkit.com/
 - http://hashcrack.com/
 - https://md5.gromweb.com/
 - http://tool.chinaz.com/Tools/MD5.aspx
-- http://www.chamd5.org/
 - https://cmd5.la/
 - http://pmd5.com/
 - http://www.ttmd5.com/
@@ -673,6 +678,14 @@ MD5("")= d41d8cd98f00b204e9800998ecf8427e
 - http://www.md5this.com/index.php
 - https://md5online.org/
 - http://md5.my-addr.com/md5_decrypt-md5_cracker_online/md5_decoder_tool.php
+- https://md5.la/
+- https://md5.cc/
+- https://pmd5.com/
+
+**相关工具**
+```
+md5sum xxx.txt
+```
 
 ---
 

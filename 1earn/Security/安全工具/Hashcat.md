@@ -21,6 +21,7 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 
 **文章 & Reference**
 - [Hashcat的使用手册总结](https://xz.aliyun.com/t/4008)
+- [hashcat rule的使用](https://darkless.cn/2019/12/26/hashcat-rule/)
 
 **工具**
 - [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具
@@ -38,7 +39,58 @@ ln -s /pentest/hashcat-6.1.1/hashcat /usr/sbin/hashcat
 
 ---
 
-# 常见 Hash id 对照表
+# 基本使用
+
+- 在使用 GPU 模式进行破解时，可以使用 -O 参数自动进行优化
+- 所有的 hash 破解结果都在 hashcat.potfile 文件中
+
+**常见参数**
+```
+-a                指定要使用的破解模式，其值参考后面对参数。“-a 0”字典攻击，“-a 1” 组合攻击；“-a 3”掩码攻击。
+-m                指定要破解的hash类型，如果不指定类型，则默认是MD5
+-o                指定破解成功后的hash及所对应的明文密码的存放位置,可以用它把破解成功的hash写到指定的文件中
+--force           忽略破解过程中的警告信息,跑单条hash可能需要加上此选项
+--show            显示已经破解的hash及该hash所对应的明文
+--increment       启用增量破解模式,你可以利用此模式让hashcat在指定的密码长度范围内执行破解过程
+--increment-min   密码最小长度,后面直接等于一个整数即可,配置increment模式一起使用
+--increment-max   密码最大长度,同上
+--outfile-format  指定破解结果的输出格式id,默认是3
+--username        忽略hash文件中的指定的用户名,在破解linux系统用户密码hash可能会用到
+--remove          删除已被破解成功的hash
+-r                使用自定义破解规则
+```
+
+**攻击模式**
+```
+# | Mode
+ ===+======
+  0 | Straight（字段破解）
+  1 | Combination（组合破解）
+  3 | Brute-force（掩码暴力破解）
+  6 | Hybrid Wordlist + Mask（字典+掩码破解）
+  7 | Hybrid Mask + Wordlist（掩码+字典破解）
+```
+
+**输出格式**
+```
+1 = hash[:salt]
+2 = plain
+3 = hash[:salt]:plain
+4 = hex_plain
+5 = hash[:salt]:hex_plain
+6 = plain:hex_plain
+7 = hash[:salt]:plain:hex_plain
+8 = crackpos
+9 = hash[:salt]:crackpos
+10 = plain:crackpos
+11 = hash[:salt]:plain:crackpos
+12 = hex_plain:crackpos
+13 = hash[:salt]:hex_plain:crackpos
+14 = plain:hex_plain:crackpos
+15 = hash[:salt]:plain:hex_plain:crackpos
+```
+
+**常见 Hash id 对照表**
 
 - https://hashcat.net/wiki/doku.php?id=example_hashes
 ```bash
@@ -90,9 +142,53 @@ hashcat --help
 以下略
 ```
 
+# 掩码设置
+
+**常见的掩码字符集**
+```
+l | abcdefghijklmnopqrstuvwxyz          纯小写字母
+u | ABCDEFGHIJKLMNOPQRSTUVWXYZ          纯大写字母
+d | 0123456789                  纯数字
+h | 0123456789abcdef                常见小写子目录和数字
+H | 0123456789ABCDEF                常见大写字母和数字
+s |  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~       特殊字符
+a | ?l?u?d?s                    键盘上所有可见的字符
+b | 0x00 - 0xff                 可能是用来匹配像空格这种密码的
+```
+
+**掩码案例**
+```
+八位数字密码：?d?d?d?d?d?d?d?d
+八位未知密码：?a?a?a?a?a?a?a?a
+前四位为大写字母，后面四位为数字：?u?u?u?u?d?d?d?d
+前四位为数字或者是小写字母，后四位为大写字母或者数字：?h?h?h?h?H?H?H?H
+前三个字符未知，中间为admin，后三位未知：?a?a?aadmin?a?a?a
+6-8位数字密码：--increment --increment-min 6 --increment-max 8 ?l?l?l?l?l?l?l?l
+6-8位数字+小写字母密码：--increment --increment-min 6 --increment-max 8 ?h?h?h?h?h?h?h?h
+```
+
+如果我们想设置字符集为：abcd123456!@-+，就需要用到自定义字符集,hashcat支持用户最多定义4组字符集
+```
+--custom-charset1 [chars]等价于 -1
+--custom-charset2 [chars]等价于 -2
+--custom-charset3 [chars]等价于 -3
+--custom-charset4 [chars]等价于 -4
+在掩码中用?1、?2、?3、?4来表示。
+
+--custom-charset1 abcd123456!@-+。  然后就可以用"?1"去表示这个字符集了
+--custom-charset2 ?l?d              这里和?2就等价于?h
+-1 ?d?l?u                           ?1就表示数字+小写字母+大写字母
+-3 abcdef -4 123456                 那么?3?3?3?3?4?4?4?4就表示为前四位可能是“abcdef”，后四位可能是“123456”
+```
+
 ---
 
 # 例子
+
+## 性能测试
+```bash
+hashcat -b --force
+```
 
 ## 查看爆破案例
 
@@ -236,7 +332,7 @@ perl 7z2hashcat.pl file.7z > hash.txt
 ```
 
 ```bash
-# 7z(住:hashcat 貌似只能跑加密了文件名的 7z 压缩包，未加密文件名的 7z 压缩包需要用 john 跑)
+# 7z(注:hashcat 貌似只能跑加密了文件名的 7z 压缩包，未加密文件名的 7z 压缩包需要用 john 跑)
 hashcat -m 11600 --force hash.txt pass1.txt
 
 MODE: 11600
@@ -327,3 +423,115 @@ MODE: 9600
 TYPE: MS Office 2013
 $office$*2013*100000*256*16*7dd611d7eb4c899f74816d1dec817b3b*948dc0b2c2c6c32f14b5995a543ad037*0b7ee0e48e935f937192a59de48a7d561ef2691d5c8a3ba87ec2d04402a94895
 ```
+
+---
+
+## 爆破md5
+
+```bash
+# MD5规则是7位数字
+hashcat 25c3e88f81b4853f2a8faacad4c871b6 -a 3 -m 0 ?d?d?d?d?d?d?d
+
+# MD5规则是7位小写字母
+hashcat 7a47c6db227df60a6d67245d7d8063f3 -a 3 -m 0 ?l?l?l?l?l?l?l
+
+# MD5规则是1-8位数字
+hashcat 4488cec2aea535179e085367d8a17d75 -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?d?d?d?d?d?d?d?d
+
+# MD5规则是1-8位小写字母+数字
+hashcat ab65d749cba1656ca11dfa1cc2383102 -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?h?h?h?h?h?h?h?h
+
+# MD5规则是 clearlove + 任意2位字符 + 3位纯数字
+hashcat 7276bf625a8c5e65b9e5966bed63bce0 -a 3 -m 0 clearlove?a?a?d?d?d
+
+# MD5规则是特定字符集：123456abcdf!@+-
+hashcat 8b78ba5089b11326290bc15cf0b9a07d -a 3 -m 0 -1 123456abcdf!@+- ?1?1?1?1?1
+> 注意：这里的-1和?1是数字1，不是字母l
+
+# MD5规则是1-8位,符集集:123456abcdf!@+-
+hashcat 9054fa315ce16f7f0955b4af06d1aa1b -a 3 -m 0 -1 123456abcdf!@+- --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
+
+# MD5规则是1-8位数字+大小写字母+可见特殊符号
+hashcat d37fc9ee39dd45a7717e3e3e9415f65d -a 3 -m 0 -1 ?d?u?l?s --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
+或者：
+hashcat d37fc9ee39dd45a7717e3e3e9415f65d -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?a?a?a?a?a?a?a?a
+
+# MD5规则是32位的01组合数字
+hashcat 4c753d89d239bb17b8d754ff981c7772 -a 3 -m 0 -3 01 ?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3
+```
+
+---
+
+## 批量破解
+
+```bash
+hashcat -a 0 hash.txt password.txt -o result.txt
+```
+
+---
+
+# Tips
+
+## 阿里云按量-抢占式实例-NVIDIA T4-跑 Hashcat
+
+**注意点**
+- 抢占式实例一次只能买1小时,切记1小时
+- 实例创建完后需要装对应的 NVIDIA 驱动
+- -f 测试的跑分速度很完美,但实际跑的时候速度是达不到的
+
+**优点**
+- 相对便宜,实际用起来一小时不到2元,感觉像在用 vultr
+- 性能强
+
+**过程**
+
+- 付费模式选择 `抢占式实例`
+- 实例类型选择 `异构计算 GPU/FPGA/NPU`
+- 分类选择 `GPU 计算型`
+
+![](../../../assets/img/Security/安全工具/Hashcat/1.png)
+
+CPU和内存可以不用考虑,主要是选个好的 GPU,这里可以看到有 NVIDIA T4 和  NVIDIA P4 两种选择
+
+这里选择 T4 便宜一点
+
+镜像选择 `Alibaba Cloud Linux` 这个兼容 centos,用起来没啥问题
+
+下一步网络选择
+
+建议使用按固定带宽收费,你跑 hashcat 其实用不了多少流量, `带宽峰值` 直接拉到 100M
+
+创建完实例后,SSH连接,这里略
+
+安装 hashcat,如果嫌速度慢,可以自己通过 lrzsz 的方式传上去
+```bash
+mkdir /pentest && cd $_
+wget https://hashcat.net/files/hashcat-6.1.1.7z
+7z x hashcat-6.1.1.7z && rm -rf hashcat-6.1.1.7z
+cd hashcat-6.1.1 && chmod +x hashcat.bin && cp hashcat.bin hashcat
+ln -s /pentest/hashcat-6.1.1/hashcat /usr/sbin/hashcat
+```
+
+安装显卡驱动
+
+去 NVDIA driver search page 查看支持显卡的驱动最新版本及下载，下载之后是 .run 后缀
+
+![](../../../assets/img/Security/安全工具/Hashcat/2.png)
+
+安装时一路回车即可,装完之后输入 nvidia-smi
+
+```bash
+wget https://cn.download.nvidia.com/tesla/450.80.02/NVIDIA-Linux-x86_64-450.80.02.run
+sudo sh NVIDIA-Linux-x86_64-450.80.02.run  -no-x-check -no-nouveau-check -no-opengl-files
+nvidia-smi
+```
+
+![](../../../assets/img/Security/安全工具/Hashcat/3.png)
+
+然后就可以愉快的跑 hashcat 了
+
+```bash
+hashcat -b --force
+```
+
+![](../../../assets/img/Security/安全工具/Hashcat/4.png)

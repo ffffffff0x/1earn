@@ -1,6 +1,6 @@
 #  Crypto
 
-> 本部分内容最初由 [幻羽灵殇](https://github.com/syl2293686270) 提供,在此只做排版修改,和后续内容维护
+> 文章作者 [幻羽灵殇](https://github.com/syl2293686270) & [r0fus0d](https://github.com/No-Github)
 
 ---
 
@@ -124,7 +124,7 @@
 - [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom) - 密码学的瑞士军刀
 - [Acmesec/CTFCrackTools](https://github.com/Acmesec/CTFCrackTools) - CTF工具框架
 - [Ciphey/Ciphey](https://github.com/Ciphey/Ciphey) - 使用自然语言处理和人工智能以及一些全自动解密/解码/破解工具
-    ```
+    ```bash
     python3 -m pip install ciphey --upgrade
     文件输入 ciphey -f encrypted.txt
     不合格输入 ciphey -- "Encrypted input"

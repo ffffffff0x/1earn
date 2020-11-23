@@ -247,6 +247,17 @@ cat ~/.mysql_history
 cat ~/.php_history
 ```
 
+- Ubuntu 下配置不记录 history 方法
+	```bash
+	vim ~/.bashrc
+
+	# 可选配置如下：
+	HISTCONTROL=ignoredups		# 忽略连续重复的命令。
+	HISTCONTROL=ignorespace		# 忽略以空白字符开头的命令。
+	HISTCONTROL=ignoreboth		# 同时忽略以上两种。
+	HISTCONTROL=erasedups		# 忽略所有历史命令中的重复命令。
+	```
+
 ---
 
 ## 文件和目录
@@ -939,6 +950,11 @@ iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
 iptables -L			# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 恢复规则
+```
+
+**Ubuntu 关闭防火墙**
+```bash
+ufw disable
 ```
 
 ---

@@ -36,3 +36,9 @@
 * [LauCyun](https://laucyun.com/)
     - 工控协议 S7Comm 的内容大部分参考其文章内容
 * 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中
+* [aleenzz](https://github.com/aleenzz)
+    - Cobalt Strike 笔记大部分参考其 Cobalt_Strike_wiki 项目
+    - SQLi 笔记大部分参考其 MYSQL_SQL_BYPASS_WIKI 项目
+    - SQLi 笔记大部分参考其 MSSQL_SQL_BYPASS_WIKI 项目
+* [奇安信 A-TEAM](https://blog.ateam.qianxin.com/)
+    - Cobalt Strike 笔记大部分参考其翻译的 Cobalt Strike 4.0 手册

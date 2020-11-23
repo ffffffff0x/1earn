@@ -1,6 +1,6 @@
 # HID-KeyboardLogger
 
-> 本部分内容最初由 [Sarah-Briggs](https://github.com/Sarah-Briggs) 和 [Atomic-Crash](https://github.com/Atomic-Crash) 提供,在此只做排版修改,和后续内容维护
+> 文章作者 [Sarah-Briggs](https://github.com/Sarah-Briggs) & [Atomic-Crash](https://github.com/Atomic-Crash) & [r0fus0d](https://github.com/No-Github)
 
 
 <p align="center">

@@ -526,9 +526,18 @@
 
 **reDOS**
 
-正则常用的 NFA 引擎支持递归，当恶意输入正则递归过多时，服务器将资源耗尽，导致dos。
+`Regular expression Denial of Service`
 
-常见的点如注册时检查密码是否包含用户名。
+实际上开发人员使用了正则表达式来对用户输入的数据进行有效性校验, 当编写校验的正则表达式存在缺陷或者不严谨时, 攻击者可以构造特殊的字符串来大量消耗服务器的系统资源，造成服务器的服务中断或停止。常见的点如注册时检查密码是否包含用户名。
+
+- 正则知识点
+    - [regex](../../../Develop/正则/regex.md)
+
+- 相关文章
+    - [Regular expression Denial of Service - ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)
+    - [ReDOS初探](http://th1e.com/article/26)
+    - [深度分析PCRE回溯次数限制](http://www.lmxspace.com/2019/02/16/ReDOS%E5%88%9D%E6%8E%A2/)
+    - [ReDoS-Attacks](https://www.checkmarx.com/wp-content/uploads/2015/03/ReDoS-Attacks.pdf)
 
 **API参数可控**
 

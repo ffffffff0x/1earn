@@ -28,6 +28,7 @@
 
 **报告模板**
 - [honze-net/nmap-bootstrap-xsl](https://github.com/honze-net/nmap-bootstrap-xsl)
+- [netsecli/asset](https://github.com/netsecli/asset) - NMAP 扫描网络资产自动导入到 Elasticstack 进行展示
 
 **导图**
 - Nmap 渗透测试思维导图 [png](../../../assets/img/Security/安全工具/nmap/Nmap渗透测试思维导图.png)

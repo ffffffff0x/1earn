@@ -10,12 +10,13 @@
 
 # 抓包方法
 
-**单纯模拟手机端流量不抓其他应用**
-- [JZ-Darkal/AndroidHttpCapture](https://github.com/JZ-Darkal/AndroidHttpCapture)
+**抓取流量**
+- 相关工具
+    - [JZ-Darkal/AndroidHttpCapture](https://github.com/JZ-Darkal/AndroidHttpCapture)
 
 ---
 
-**安卓手机/安卓模拟器<--`设置代理`-->Brup**
+**手机设置网络代理**
 
 模拟器打开 wifi 设置选项,长按点击 `修改网络`
 
@@ -53,9 +54,12 @@
 
 ![](../../../assets/img/Security/MobileSec/Android安全/15.png)
 
+- 相关文章
+    - [使用burpsuit捕获手机流量](https://blog.csdn.net/qq_29277155/article/details/52548630)
+
 ---
 
-**安卓模拟器<--->Proxifier 代理<--->Burp**
+**模拟器设置全局代理**
 
 代理服务器设置为 burp 监听端口
 
@@ -75,8 +79,9 @@
 
 ---
 
-**通过获取手机 Root 权限，将 BurpSuite 的证书导入系统域中**
-- [移动端安全修炼（三）](https://moyu.life/post/yi-dong-duan-an-quan-xiu-lian-san/)
+**Root 后导证书到系统域中**
+- 相关文章
+    - [移动端安全修炼（三）](https://moyu.life/post/yi-dong-duan-an-quan-xiu-lian-san/)
 
 ---
 
@@ -108,6 +113,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 - [一个色播APP逆向——初窥千万灰色直播产业](https://evilpan.com/2019/01/05/reverse-live-porn-app/)
 - [Telegram App Store Secret-Chat Messages in Text Database](https://blog.zimperium.com/telegram-hack/)
 - [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
+- [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
 
 **在线检测**
 - [360显危镜](http://appscan.360.cn/)

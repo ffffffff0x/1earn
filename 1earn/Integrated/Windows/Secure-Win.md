@@ -57,9 +57,11 @@ findstr /s /m /I “UploadFiles” *.log
 
 开启组策略编辑器 `gpedit.msc`
 
+控制面板: <kbd>win</kbd> 输入 `control`
+
 **信息**
 
-开始-运行，输入 `systeminfo`
+系统信息: cmd 输入 `systeminfo`
 
 ## 开机启动
 

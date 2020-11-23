@@ -21,8 +21,10 @@
 		* [链接](#链接)
 
 * **[网络管理](#网络管理)**
+    * [IPC$](#ipc$)
     * [查看网络信息](#查看网络信息)
     * [网络排错工具](#网络排错工具)
+    * [RDP](#rdp)
     * [防火墙](#防火墙)
 
 * **[系统管理](#系统管理)**
@@ -37,6 +39,7 @@
 	* [进程管理](#进程管理)
 	* [设备管理](#设备管理)
 		* [硬盘-数据](#硬盘-数据)
+    * [安全设置](#安全设置)
 
 * **[域](#域)**
 
@@ -500,7 +503,8 @@ mklink          创建符号链接（win7 引入）；创建的符号链接文�
 
 # 网络管理
 
-**net**
+## IPC$
+
 ```bash
 net use                                         # 查看建立的连接
 net use \\IP\ipc$ " " /user:" "                 # 建立 IPC 空链接
@@ -512,15 +516,17 @@ net use z: \\ip\ipc$ "pass" /user:"user"        # 直接登陆后映射对方 C:
 net use h: ipc$                                 # 登陆后映射对方 C: 到本地为 H:
 net use \\IP\ipc$ /del                          # 删除 IPC 链接
 net use h: /del                                 # 删除映射对方到本地的为 H: 的映射
+
 net user [username] [pass] /add                 # 建立用户
 net user guest /active:yes                      # 激活 guest 用户
 net user                                        # 查看有哪些用户
 net user [username]                             # 查看帐户的属性
+net localgroup administrators                   # 列出本地管理员组成员
 net localgroup administrators [username] /add   # 把"用户"添加到管理员中使其具有管理员权限
 net start                                       # 查看开启了哪些服务
 
 net start [servername]                          # 开启服务
-    net start telnet
+    net start telnet                            # 开启 telnet 服务
     net start schedule
 
 net stop [servername]       # 停止某服务
@@ -533,11 +539,14 @@ net logoff                  # 断开连接的共享
 net pause [servername]      # 暂停某服务
 net send ip "xxx"           # 向对方发信息
 net ver                     # 局域网内正在使用的网络连接类型和信息
+
 net share                   # 查看本地开启的共享
-net share ipc$              # 开启 ipc$ 共享
-net share db$=d:\config     # 开启一个共享名为 db$，在 d:\config
-net share ipc$ /del         # 删除 ipc$ 共享
-net share c$ /del           # 删除 C: 共享
+    net share ipc$              # 开启 ipc$ 共享
+    net share db$=d:\config     # 开启一个共享名为 db$，在 d:\config
+    net share ipc$ /del         # 删除 ipc$ 共享
+    net share c$=c:             # 恢复默认共享
+    net share c$ /del           # 删除 C: 共享
+
 net user guest 12345        # 用 guest 用户登陆后用将密码改为 12345
 net password [pass]         # 更改系统登陆密码
 ```
@@ -632,7 +641,7 @@ tracert -6                 # 强制使用 IPv6.
 
 ## RDP
 
-**开启rdp**
+**开启 rdp**
 ```
 REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f
 REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f

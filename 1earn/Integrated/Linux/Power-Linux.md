@@ -105,7 +105,7 @@
   * [Webmin](#webmin)
   * [Zabbix](#zabbix)
 
-* **[🌭 虚拟化](#虚拟化)**
+* **[🌭 容器 & 虚拟化](#容器&虚拟化)**
   * [Docker](#docker)
     * [Docker-Compose](#docker-compose)
   * [QEMU](#qemu)
@@ -173,9 +173,12 @@ lvdisplay
 mkfs.xfs /dev/datastore/database
 mkdir /mnt/database
 ```
-```vim
+
+添加挂载的配置
+```diff
 vim /etc/fstab
-/dev/datastore/database /mnt/database/ xfs defaults 0 0
+
++ /dev/datastore/database /mnt/database/ xfs defaults 0 0
 ```
 
 重启验证
@@ -213,17 +216,19 @@ DNS1=223.5.5.5
 ```
 
 **修改主机名**
-```vim
+```diff
 vim /etc/hosts
 
-127.0.0.1  test localhost # 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
++ 127.0.0.1  test localhost
+# 修改 localhost.localdomain 为 test,shutdown -r now 重启使修改生效
 ```
 
 **修改 DNS**
-```vim
+```diff
 vim /etc/resolv.conf
 
-nameserver 8.8.8.8
+- search localdomain
++ nameserver 8.8.8.8
 ```
 ```bash
 service network restart
@@ -285,9 +290,10 @@ mkfs.xfs /dev/md0
 mkdir /data/ftp_data
 blkid	/dev/md0    # 查 UUID 值
 ```
-```vim
+```diff
 vim /etc/fstab
-UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
+
++ UUID=XXXXXXXXXXXXXXXXXXXXXXXXXX    /data/ftp_data  xfs defaults 0 0
 ```
 ```bash
 shutdown -r now   # 重启验证
@@ -452,14 +458,14 @@ systemctl enable mysqld && systemctl enable httpd
 /usr/bin/mysqld –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
 # 或
 /usr/bin/mysql –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
-```
-```bash
-systemctl start mysqld
 
+systemctl start mysqld
+```
+```diff
 vim /etc/my.cnf
 
 # 在末尾添加一行规则
-skip-grant-tables
++ skip-grant-tables
 ```
 ```bash
 systemctl restart mysqld
@@ -473,10 +479,10 @@ exit
 > 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
 
 修改 php.ini 配置文件
-```
+```diff
 vim /etc/php.ini
 
-date.timezone = "Asia/Shanghai"
++ date.timezone = "Asia/Shanghai"
 ```
 ```bash
 systemctl start httpd
@@ -489,12 +495,12 @@ service firewalld stop
 **安装配置 cacti**
 
 编辑 `my.cnf` 配置文件
-```bash
+```diff
 vim /etc/my.cn
 
-[mysqld]
-character-set-server=utf8mb4
-collation-server=utf8mb4_unicode_ci
++ [mysqld]
++ character-set-server=utf8mb4
++ collation-server=utf8mb4_unicode_ci
 ```
 ```bash
 systemctl restart mysqld
@@ -505,13 +511,13 @@ create database cacti character set utf8 ;
 ALTER DATABASE cacti CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 exit
 ```
-```bash
+```diff
 vim /etc/my.cnf
 
 # 删除末尾规则
-skip-grant-tables
-
-
+- skip-grant-tables
+```
+```bash
 systemctl restart mysqld
 mysql -uroot -p123456
 
@@ -533,7 +539,6 @@ cd /usr/local/src/
 wget https://www.cacti.net/downloads/cacti-1.2.8.zip
 unzip cacti-1.2.8.zip
 
-
 mysql -uroot -p123456
 use cacti ;
 source /usr/local/src/cacti-1.2.8/cacti.sql ;
@@ -545,17 +550,24 @@ cd /var/www/html
 mkdir cacti
 cp -r /usr/local/src/cacti-1.2.8/* /var/www/html/cacti
 ```
-```bash
+```diff
 vim /var/www/html/cacti/include/config.php
 
+- $database_type     = 'mysql';
+- $database_default  = 'cacti';
+- $database_hostname = 'localhost';
+- $database_username = 'cactiuser';
+- $database_password = 'cactiuser';
+- $database_port     = '3306';
+- $database_ssl      = false;
 # 把原来的配置信息修改成以下信息：
-$database_type = 'mysql';
-$database_default = 'cacti';
-$database_hostname = 'localhost';
-$database_username = 'cacti';
-$database_password = '1qaz@WSX';
-$database_port = '3306';
-$database_ssl = false;
++ $database_type = 'mysql';
++ $database_default = 'cacti';
++ $database_hostname = 'localhost';
++ $database_username = 'cacti';
++ $database_password = '1qaz@WSX';
++ $database_port = '3306';
++ $database_ssl = false;
 ```
 
 ```bash
@@ -565,11 +577,13 @@ chown -R cacti /var/www/html/cacti/rra/log/
 ```
 
 配置定时任务
-```bash
+```diff
 crontab -e
 
-*/5 * * * * /usr/bin/php /var/www/html/cacti/poller.php > /dev/null 2>&1
++ */5 * * * * /usr/bin/php /var/www/html/cacti/poller.php > /dev/null 2>&1
+```
 
+```
 crontab -l # 查看是否写正确
 systemctl enable crond
 systemctl start crond
@@ -602,14 +616,14 @@ cd cacti-spine-1.2.1
 make
 make install
 ```
-```bash
+```diff
 vim /usr/local/spine/etc/spine.conf
 
-DB_Host localhost
-DB_Database cacti
-DB_User cacti
-DB_Pass 1qaz@WSX
-DB_Port 3306
++ DB_Host localhost
++ DB_Database cacti
++ DB_User cacti
++ DB_Pass 1qaz@WSX
++ DB_Port 3306
 ```
 
 ```bash
@@ -633,12 +647,13 @@ chmod 777 /var/www/html/cacti/cache/spikekill/
 ```
 
 **如果出现 csrf-secret.php not writable**
-```bash
+```diff
 systemctl edit php-fpm.service
 
-[Service]
-ReadWritePaths = /usr/share/webapps/cacti/include/vendor/csrf
-
++ [Service]
++ ReadWritePaths = /usr/share/webapps/cacti/include/vendor/csrf
+```
+```bash
 chmod 777 /var/www/html/cacti/include/vendor/csrf
 systemctl restart php-fpm.service
 ```
@@ -668,21 +683,21 @@ yum install chrony
 ```
 
 **配置文件**
-```vim
+```diff
 vim /etc/chrony.conf
 
-server time1.aliyun.com iburst
-server time2.aliyun.com iburst
-server time3.aliyun.com iburst
-server time4.aliyun.com iburst
-server time5.aliyun.com iburst
-server time6.aliyun.com iburst
-server time7.aliyun.com iburst
++ server time1.aliyun.com iburst
++ server time2.aliyun.com iburst
++ server time3.aliyun.com iburst
++ server time4.aliyun.com iburst
++ server time5.aliyun.com iburst
++ server time6.aliyun.com iburst
++ server time7.aliyun.com iburst
 # 或
-server time1.google.com iburst
-server time2.google.com iburst
-server time3.google.com iburst
-server time4.google.com iburst
++ server time1.google.com iburst
++ server time2.google.com iburst
++ server time3.google.com iburst
++ server time4.google.com iburst
 ```
 
 **启服务**
@@ -3182,7 +3197,6 @@ Mariadb 数据库授权 root 用户能够远程访问
 systemctl start mariadb
 mysql -u root -p
 
-
 select User, host from mysql.user;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY 'toor' WITH GRANT OPTION;
 # 这句话的意思 ，允许任何 IP 地址（上面的 % 就是这个意思）的电脑 用 root 帐户 和密码 toor 来访问这个数据库
@@ -4114,22 +4128,26 @@ yum localinstall jdk-****.rpm
 rpm -ivh jdk-****.rpm
 ```
 
-**使用 ppa/源方式安装**
-1. 添加 ppa
+**Openjdk**
+```bash
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+java -version
+```
 
-    `sudo add-apt-repository ppa:webupd8team/java`
+**使用 ppa/源方式安装 oracle 官方版本 jdk**
+```bash
+# 添加 ppa
+sudo apt-get install python-software-properties
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
 
-    `sudo apt-get update`
+# 安装 jdk7
+sudo apt-get install oracle-java7-installer
 
-2. 安装 oracle-java-installer
-
-	jdk7
-
-	`sudo apt-get install oracle-java7-installer`
-
-	jdk8
-
-	`sudo apt-get install oracle-java8-installer`
+# 安装 jdk8
+sudo apt-get install oracle-java8-installer
+```
 
 **直接使用编译完成的**
 
@@ -4765,7 +4783,7 @@ setenforce 0    # 关闭 selinux
 
 ---
 
-# 虚拟化
+# 容器&虚拟化
 ## Docker
 
 <p align="center">
@@ -5368,14 +5386,14 @@ slappasswd -s 123456
 ```
 
 新增修改密码文件,ldif 为后缀，文件名随意，不要在 /etc/openldap/slapd.d/ 目录下创建类似文件,生成的文件为需要通过命令去动态修改 ldap 现有配置，如下
-```bash
+```diff
 cd ~
 vim changepwd.ldif
 
-dn: olcDatabase={0}config,cn=config
-changetype: modify
-add: olcRootPW
-olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
++ dn: olcDatabase={0}config,cn=config
++ changetype: modify
++ add: olcRootPW
++ olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
 ```
 
 - 第一行执行配置文件，这里就表示指定为 cn=config/olcDatabase={0}config 文件。你到 `/etc/openldap/slapd.d/` 目录下就能找到此文件
@@ -5426,35 +5444,35 @@ ldapadd -Y EXTERNAL -H ldapi:/// -f /etc/openldap/schema/ppolicy.ldif
 修改域名，新增 changedomain.ldif, 这里我自定义的域名为 fox.com，管理员用户账号为 admin。
 
 如果要修改，则修改文件中相应的 dc=fox,dc=com 为自己的域名
-```bash
+```diff
 vim changedomain.ldif
 
-dn: olcDatabase={1}monitor,cn=config
-changetype: modify
-replace: olcAccess
-olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc=fox,dc=com" read by * none
++ dn: olcDatabase={1}monitor,cn=config
++ changetype: modify
++ replace: olcAccess
++ olcAccess: {0}to * by dn.base="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read by dn.base="cn=admin,dc=fox,dc=com" read by * none
 
-dn: olcDatabase={2}hdb,cn=config
-changetype: modify
-replace: olcSuffix
-olcSuffix: dc=fox,dc=com
++ dn: olcDatabase={2}hdb,cn=config
++ changetype: modify
++ replace: olcSuffix
++ olcSuffix: dc=fox,dc=com
 
-dn: olcDatabase={2}hdb,cn=config
-changetype: modify
-replace: olcRootDN
-olcRootDN: cn=admin,dc=fox,dc=com
++ dn: olcDatabase={2}hdb,cn=config
++ changetype: modify
++ replace: olcRootDN
++ olcRootDN: cn=admin,dc=fox,dc=com
 
-dn: olcDatabase={2}hdb,cn=config
-changetype: modify
-replace: olcRootPW
-olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
++ dn: olcDatabase={2}hdb,cn=config
++ changetype: modify
++ replace: olcRootPW
++ olcRootPW: {SSHA}qG8fxSKCrgt0KiN8cwQMzvymgQLJeh/k
 
-dn: olcDatabase={2}hdb,cn=config
-changetype: modify
-add: olcAccess
-olcAccess: {0}to attrs=userPassword,shadowLastChange by dn="cn=admin,dc=fox,dc=com" write by anonymous auth by self write by * none
-olcAccess: {1}to dn.base="" by * read
-olcAccess: {2}to * by dn="cn=admin,dc=fox,dc=com" write by * read
++ dn: olcDatabase={2}hdb,cn=config
++ changetype: modify
++ add: olcAccess
++ olcAccess: {0}to attrs=userPassword,shadowLastChange by dn="cn=admin,dc=fox,dc=com" write by anonymous auth by self write by * none
++ olcAccess: {1}to dn.base="" by * read
++ olcAccess: {2}to * by dn="cn=admin,dc=fox,dc=com" write by * read
 ```
 
 执行命令，修改配置
@@ -5463,49 +5481,49 @@ ldapmodify -Y EXTERNAL -H ldapi:/// -f changedomain.ldif
 ```
 
 然后，启用 memberof 功能,新增 add-memberof.ldif, 开启 memberof 支持并新增用户支持 memberof 配置
-```bash
+```diff
 vim add-memberof.ldif
 
-dn: cn=module{0},cn=config
-cn: modulle{0}
-objectClass: olcModuleList
-objectclass: top
-olcModuleload: memberof.la
-olcModulePath: /usr/lib64/openldap
++ dn: cn=module{0},cn=config
++ cn: modulle{0}
++ objectClass: olcModuleList
++ objectclass: top
++ olcModuleload: memberof.la
++ olcModulePath: /usr/lib64/openldap
 
-dn: olcOverlay={0}memberof,olcDatabase={2}hdb,cn=config
-objectClass: olcConfig
-objectClass: olcMemberOf
-objectClass: olcOverlayConfig
-objectClass: top
-olcOverlay: memberof
-olcMemberOfDangling: ignore
-olcMemberOfRefInt: TRUE
-olcMemberOfGroupOC: groupOfUniqueNames
-olcMemberOfMemberAD: uniqueMember
-olcMemberOfMemberOfAD: memberOf
++ dn: olcOverlay={0}memberof,olcDatabase={2}hdb,cn=config
++ objectClass: olcConfig
++ objectClass: olcMemberOf
++ objectClass: olcOverlayConfig
++ objectClass: top
++ olcOverlay: memberof
++ olcMemberOfDangling: ignore
++ olcMemberOfRefInt: TRUE
++ olcMemberOfGroupOC: groupOfUniqueNames
++ olcMemberOfMemberAD: uniqueMember
++ olcMemberOfMemberOfAD: memberOf
 ```
 
 新增 refint1.ldif 文件
-```bash
+```diff
 vim refint1.ldif
 
-dn: cn=module{0},cn=config
-add: olcmoduleload
-olcmoduleload: refint
++ dn: cn=module{0},cn=config
++ add: olcmoduleload
++ olcmoduleload: refint
 ```
 
-新增refint2.ldif文件
-```bash
+新增 refint2.ldif 文件
+```diff
 vim refint2.ldif
 
-dn: olcOverlay=refint,olcDatabase={2}hdb,cn=config
-objectClass: olcConfig
-objectClass: olcOverlayConfig
-objectClass: olcRefintConfig
-objectClass: top
-olcOverlay: refint
-olcRefintAttribute: memberof uniqueMember  manager owner
++ dn: olcOverlay=refint,olcDatabase={2}hdb,cn=config
++ objectClass: olcConfig
++ objectClass: olcOverlayConfig
++ objectClass: olcRefintConfig
++ objectClass: top
++ olcOverlay: refint
++ olcRefintAttribute: memberof uniqueMember  manager owner
 ```
 
 依次执行下面命令，加载配置，顺序不能错
@@ -5516,27 +5534,27 @@ ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint2.ldif
 ```
 
 到此，配置修改完了，在上述基础上，我们来创建一个叫做 fox company 的组织，并在其下创建一个 admin 的组织角色（该组织角色内的用户具有管理整个 LDAP 的权限）和 People 和 Group 两个组织单元,新增配置文件
-```bash
+```diff
 vim base.ldif
 
-dn: dc=fox,dc=com
-objectClass: top
-objectClass: dcObject
-objectClass: organization
-o: Fox Company
-dc: fox
++ dn: dc=fox,dc=com
++ objectClass: top
++ objectClass: dcObject
++ objectClass: organization
++ o: Fox Company
++ dc: fox
 
-dn: cn=admin,dc=fox,dc=com
-objectClass: organizationalRole
-cn: admin
++ dn: cn=admin,dc=fox,dc=com
++ objectClass: organizationalRole
++ cn: admin
 
-dn: ou=People,dc=fox,dc=com
-objectClass: organizationalUnit
-ou: People
++ dn: ou=People,dc=fox,dc=com
++ objectClass: organizationalUnit
++ ou: People
 
-dn: ou=Group,dc=fox,dc=com
-objectClass: organizationalRole
-cn: Group
++ dn: ou=Group,dc=fox,dc=com
++ objectClass: organizationalRole
++ cn: Group
 ```
 
 执行命令，添加配置, 这里要注意修改域名为自己配置的域名，然后需要输入上面我们生成的密码
@@ -5572,30 +5590,30 @@ yum -y install epel-release
 yum -y install httpd
 yum -y install phpldapadmin
 ```
-```vim
+```diff
 vim /etc/httpd/conf.d/phpldapadmin.conf
 
-Alias /phpldapadmin /usr/share/phpldapadmin/htdocs
-Alias /ldapadmin /usr/share/phpldapadmin/htdocs
++ Alias /phpldapadmin /usr/share/phpldapadmin/htdocs
++ Alias /ldapadmin /usr/share/phpldapadmin/htdocs
 
-<Directory /usr/share/phpldapadmin/htdocs>
-  <IfModule mod_authz_core.c>
-    # Apache 2.4
-    Require all granted
-    Allow from all
-  </IfModule>
-  <IfModule !mod_authz_core.c>
-    # Apache 2.2
-    Order Deny,Allow
-    Allow from all
-  </IfModule>
-</Directory>
++ <Directory /usr/share/phpldapadmin/htdocs>
++   <IfModule mod_authz_core.c>
++     # Apache 2.4
++     Require all granted
++     Allow from all
++   </IfModule>
++   <IfModule !mod_authz_core.c>
++     # Apache 2.2
++     Order Deny,Allow
++     Allow from all
++   </IfModule>
++ </Directory>
 ```
-```vim
+```diff
 vim /etc/phpldapadmin/config.php
-# 去掉注释 并注释原来的配置
-$servers->setValue('login','attr','dn');
-//$servers->setValue('login','attr','uid');
+# 去掉注释 并删除原来的配置
++ $servers->setValue('login','attr','dn');
+- $servers->setValue('login','attr','uid');
 ```
 ```bash
 #重启服务

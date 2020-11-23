@@ -391,6 +391,18 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关工具**
 - [m4ll0k/SecretFinder](https://github.com/m4ll0k/SecretFinder) - 通过正则在 JS 中发现敏感数据，如 apikeys、accesstoken、authorizations、jwt，..等等
+    ```bash
+    python3 SecretFinder.py -i https://example.com/ -e
+    ```
+
+    建议自行添加如下规则
+    ```re
+    'access_key': r'[Aa](ccess|CCESS)_?[Kk](ey|EY)|[Aa](ccess|CCESS)_?[sS](ecret|ECRET)|[Aa](ccess|CCESS)_?(id|ID|Id)',
+    'secret_key': r'[Ss](ecret|ECRET)_?[Kk](ey|EY)',
+    'JWT': r'[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*',
+    'ALL_JWT': r'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
+    ```
+
 - [Threezh1/JSFinder](https://github.com/Threezh1/JSFinder) - 通过在 js 文件中提取 URL,子域名
     ```bash
     python JSFinder.py -u http://www.xxx.com -d -ou url.txt -os subdomain.txt
@@ -412,42 +424,43 @@ WEB-INF 主要包含一下文件或目录:
 
 以下正则来自 <sup>[[一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)]</sup>
 ```re
-"aliyun_oss_url": "[\\w-.]\\.oss.aliyuncs.com"
-"azure_storage": "https?://[\\w-\.]\\.file.core.windows.net"
-"access_key": "[Aa](ccess|CCESS)_?[Kk](ey|EY)|[Aa](ccess|CCESS)_?[sS](ecret|ECRET)|[Aa](ccess|CCESS)_?(id|ID|Id)"
-"secret_key": "[Ss](ecret|ECRET)_?[Kk](ey|EY)"
-"slack_token": "(xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[0-9]{12}-[a-z0-9]{32})"
-<!-- more -->
-
-"slack_webhook": "https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}"
-"facebook_oauth": "[f|F][a|A][c|C][e|E][b|B][o|O][o|O][k|K].{0,30}['\"\\s][0-9a-f]{32}['\"\\s]",
-"twitter_oauth": "[t|T][w|W][i|I][t|T][t|T][e|E][r|R].{0,30}['\"\\s][0-9a-zA-Z]{35,44}['\"\\s]"
-"heroku_api": "[h|H][e|E][r|R][o|O][k|K][u|U].{0,30}[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}"
-"mailgun_api": "key-[0-9a-zA-Z]{32}"
-"mailchamp_api": "[0-9a-f]{32}-us[0-9]{1,2}"
-"picatic_api": "sk_live_[0-9a-z]{32}"
-"google_oauth_id": "[0-9(+-[0-9A-Za-z_]{32}.apps.qooqleusercontent.com"
-"google_api": "AIza[0-9A-Za-z-_]{35}"
-"google_captcha": "6L[0-9A-Za-z-_]{38}"
-"google_oauth": "ya29\\.[0-9A-Za-z\\-_]+"
-"amazon_aws_access_key_id": "AKIA[0-9A-Z]{16}"
-"amazon_mws_auth_token": "amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
-"amazonaws_url": "s3\\.amazonaws.com[/]+|[a-zA-Z0-9_-]*\\.s3\\.amazonaws.com"
-"facebook_access_token": "EAACEdEose0cBA[0-9A-Za-z]+"
-"mailgun_api_key": "key-[0-9a-zA-Z]{32}"
-"twilio_api_key": "SK[0-9a-fA-F]{32}"
-"twilio_account_sid": "AC[a-zA-Z0-9_\\-]{32}"
-"twilio_app_sid": "AP[a-zA-Z0-9_\\-]{32}"
-"paypal_braintree_access_token": "access_token\\$production\\$[0-9a-z]{16}\\$[0-9a-f]{32}"
-"square_oauth_secret": "sq0csp-[ 0-9A-Za-z\\-_]{43}"
-"square_access_token": "sqOatp-[0-9A-Za-z\\-_]{22}"
-"stripe_standard_api": "sk_live_[0-9a-zA-Z]{24}"
-"stripe_restricted_api": "rk_live_[0-9a-zA-Z]{24}"
-"github_access_token": "[a-zA-Z0-9_-]*:[a-zA-Z0-9_\\-]+@github\\.com*"
-"private_ssh_key": "-----BEGIN PRIVATE KEY-----[a-zA-Z0-9\\S]{100,}-----END PRIVATE KEY——"
-"private_rsa_key": "-----BEGIN RSA PRIVATE KEY-----[a-zA-Z0-9\\S]{100,}-----END RSA PRIVATE KEY-----"
-"稳定的 JWT 版本":"[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*"
-"所有 JWT 版本（可能误报）":"[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*"
+'aliyun_oss_url': '[\\w-.]\\.oss.aliyuncs.com',
+'azure_storage': 'https?://[\\w-\.]\\.file.core.windows.net',
+'access_key': '[Aa](ccess|CCESS)_?[Kk](ey|EY)|[Aa](ccess|CCESS)_?[sS](ecret|ECRET)|[Aa](ccess|CCESS)_?(id|ID|Id)',
+'secret_key': '[Ss](ecret|ECRET)_?[Kk](ey|EY)',
+'slack_token': '(xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[0-9]{12}-[a-z0-9]{32})',
+'slack_webhook': 'https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}',
+'facebook_oauth': '[f|F][a|A][c|C][e|E][b|B][o|O][o|O][k|K].{0,30}['\'\\s][0-9a-f]{32}['\'\\s]',
+'twitter_oauth': '[t|T][w|W][i|I][t|T][t|T][e|E][r|R].{0,30}['\'\\s][0-9a-zA-Z]{35,44}['\'\\s]',
+'heroku_api': '[h|H][e|E][r|R][o|O][k|K][u|U].{0,30}[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}',
+'mailgun_api': 'key-[0-9a-zA-Z]{32}',
+'mailchamp_api': '[0-9a-f]{32}-us[0-9]{1,2}',
+'picatic_api': 'sk_live_[0-9a-z]{32}',
+'google_oauth_id': '[0-9(+-[0-9A-Za-z_]{32}.apps.qooqleusercontent.com',
+'google_api': 'AIza[0-9A-Za-z-_]{35}',
+'google_captcha': '6L[0-9A-Za-z-_]{38}',
+'google_oauth': 'ya29\\.[0-9A-Za-z\\-_]+',
+'amazon_aws_access_key_id': 'AKIA[0-9A-Z]{16}',
+'amazon_mws_auth_token': 'amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+'amazonaws_url': 's3\\.amazonaws.com[/]+|[a-zA-Z0-9_-]*\\.s3\\.amazonaws.com',
+'facebook_access_token': 'EAACEdEose0cBA[0-9A-Za-z]+',
+'mailgun_api_key': 'key-[0-9a-zA-Z]{32}',
+'twilio_api_key': 'SK[0-9a-fA-F]{32}',
+'twilio_account_sid': 'AC[a-zA-Z0-9_\\-]{32}',
+'twilio_app_sid': 'AP[a-zA-Z0-9_\\-]{32}',
+'paypal_braintree_access_token': 'access_token\\$production\\$[0-9a-z]{16}\\$[0-9a-f]{32}',
+'square_oauth_secret': 'sq0csp-[ 0-9A-Za-z\\-_]{43}',
+'square_access_token': 'sqOatp-[0-9A-Za-z\\-_]{22}',
+'stripe_standard_api': 'sk_live_[0-9a-zA-Z]{24}',
+'stripe_restricted_api': 'rk_live_[0-9a-zA-Z]{24}',
+'github_access_token': '[a-zA-Z0-9_-]*:[a-zA-Z0-9_\\-]+@github\\.com*',
+'rsa_private_key' : '-----BEGIN RSA PRIVATE KEY-----',
+'ssh_dsa_private_key' : '-----BEGIN DSA PRIVATE KEY-----',
+'ssh_dc_private_key' : '-----BEGIN EC PRIVATE KEY-----',
+'pgp_private_block' : '-----BEGIN PGP PRIVATE KEY BLOCK-----',
+'json_web_token' : 'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$',
+'JWT':'[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*',
+'ALL_JWT':'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
 ```
 
 ---
@@ -563,6 +576,8 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
 - [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
+
+---
 
 ## 代理配置不当
 

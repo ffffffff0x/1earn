@@ -1,6 +1,6 @@
 # Kioptrix4-WalkThrough
 
-> 笔记内容由 [xidaner](https://github.com/xidaner) 提供,仅做部分内容排版修改
+> 文章作者 [xidaner](https://github.com/xidaner) & [r0fus0d](https://github.com/No-Github)
 
 ---
 

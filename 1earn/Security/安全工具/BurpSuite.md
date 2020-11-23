@@ -29,6 +29,7 @@
 - [【奇技淫巧】关于Burp Intruder模块的小技巧](https://mp.weixin.qq.com/s/E-Dlhbduf5TSjKeZWL25xw)
 - [Burp Suite使用的几个小技巧【更新】](https://www.t00ls.net/thread-49051-1-1.html)
 - [基于BurpSuit插件打造渗透测试自动化之路](https://www.freebuf.com/sectool/243617.html)
+- [某次burp抓包出错的解决办法](https://www.cnblogs.com/cwkiller/p/13846754.html)
 
 ---
 
@@ -80,113 +81,61 @@ User options –Display – Character Sets,选择 UTF-8 编码
 
 Proxy – Options – Match and Replace – Add
 
+**不断提示连接超时**
+
+删除 Connection: close 头部 , Proxy – Options – Set response header "Connection: close"
+
 ---
 
 ## 插件
 
-> 使用堆栈跟踪进行 Java 指纹识别
-- [x41sec/BeanStack](https://github.com/x41sec/beanstack)
+**信息收集**
+- [x41sec/BeanStack](https://github.com/x41sec/beanstack) - 使用堆栈跟踪进行 Java 指纹识别
+- [bit4woo/domain_hunter](https://github.com/bit4woo/domain_hunter) - 利用 burp 收集整个企业、组织的域名 (不仅仅是单个主域名) 的插件
+- [Lopseg/Jsdir](https://github.com/Lopseg/Jsdir) - 从 js 文件中提取隐藏的路径并对其进行美化以便进一步阅读
+- [gh0stkey/BurpSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuite-Extender-MarkInfo) - 高亮标记敏感信息并展示相关匹配的信息,然后针对高亮的请求进行深度挖掘
+- [gh0stkey/HaE](https://github.com/gh0stkey/HaE) - 高亮和提取敏感信息
+- [TEag1e/BurpCollector](https://github.com/TEag1e/BurpCollector) - 通过 BurpSuite 来构建自己的爆破字典,可以通过字典爆破来发现隐藏资产.
+    - [orleven/BurpCollect](https://github.com/orleven/BurpCollect) - 基于 BurpCollector 的二次开发， 记录 Burp Map 记录的里的数据包中的目录路径参数名信息，并存入 Sqlite，并可导出 txt 文件。
+- [redhuntlabs/BurpSuite-Asset_Discover](https://github.com/redhuntlabs/BurpSuite-Asset_Discover) - 从 HTTP 响应中发现资产的 Burp 扩展
+- [m4ll0k/BurpSuite-Secret_Finder](https://github.com/m4ll0k/BurpSuite-Secret_Finder) - 从 HTTP 响应中发现密钥/访问令牌和敏感数据的扩展
 
-> 分块传输辅助插件,用于分块传输绕 WAF
-- [c0ny1/chunked-coding-converter](https://github.com/c0ny1/chunked-coding-converter)
-
-> 顾名思义,这是 burp 中的 hackbar
-- [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar)
-
-> 添加一些右键菜单让 burp 用起来更顺畅
-- [bit4woo/knife](https://github.com/bit4woo/knife)
-
-> 利用 burp 收集整个企业、组织的域名 (不仅仅是单个主域名) 的插件
-- [bit4woo/domain_hunter](https://github.com/bit4woo/domain_hunter)
-
-> DNS_log
-- [hackvertor/taborator](https://github.com/hackvertor/taborator)
-- [NetSPI/BurpSuiteCollaboratorDNSTunnel](https://github.com/NetSPI/BurpSuiteCollaboratorDNSTunnel)
-- [nccgroup/CollaboratorPlusPlus](https://github.com/nccgroup/CollaboratorPlusPlus)
-- [PortSwigger/collaborator-everywhere](https://github.com/PortSwigger/collaborator-everywhere)
-
-> burpsuite 的日志插件,不过是增强版本
-- [nccgroup/BurpSuiteSuiteLoggerPlusPlus](https://github.com/nccgroup/BurpSuiteSuiteLoggerPlusPlus)
-
-> Hackvertor 构造绕过 waf 的 payload 并破解 XOR 加密
-- 商店有
-    - [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
-
-> 使用 phantomjs 调用前端加密函数对数据进行加密,方便对加密数据输入点进行 fuzz.
-- [c0ny1/jsEncrypter](https://github.com/c0ny1/jsEncrypter)
+**功能增强**
+- [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar) - 顾名思义,这是 burp 中的 hackbar
+- [bit4woo/knife](https://github.com/bit4woo/knife) - 添加一些右键菜单让 burp 用起来更顺畅
+- [nccgroup/LoggerPlusPlus](https://github.com/nccgroup/LoggerPlusPlus) - burpsuite 的日志插件,不过是增强版本
+- Collaborator
+    - [hackvertor/taborator](https://github.com/hackvertor/taborator) - DNS_log
+    - [NetSPI/BurpCollaboratorDNSTunnel](https://github.com/NetSPI/BurpCollaboratorDNSTunnel) - DNS_log
+    - [nccgroup/CollaboratorPlusPlus](https://github.com/nccgroup/CollaboratorPlusPlus) - DNS_log
+    - [PortSwigger/collaborator-everywhere](https://github.com/PortSwigger/collaborator-everywhere) - DNS_log
+- [c0ny1/jsEncrypter](https://github.com/c0ny1/jsEncrypter) - 使用 phantomjs 调用前端加密函数对数据进行加密,方便对加密数据输入点进行 fuzz.
     - [编写加密传输爆破插件jsEncrypter](http://gv7.me/articles/2017/jsEncrypter/)
-
-> Authz 快速探测越权
-- 商店有
-- [wuntee/BurpSuiteAuthzPlugin](https://github.com/wuntee/BurpSuiteAuthzPlugin)
-    - [基于BurpSuite快速探测越权-Authz插件](https://gh0st.cn/archives/2019-06-27/1)
-
-> burp官方开发的爆破模块增强版
-- 商店有
-- [PortSwigger/turbo-intruder](https://github.com/portswigger/turbo-intruder)
+- [PortSwigger/turbo-intruder](https://github.com/portswigger/turbo-intruder) - burp官方开发的爆破模块增强版
     - [Turbo Intruder:BurpSuite高速 Intruder 插件介绍](https://www.freebuf.com/sectool/195912.html)
-
-> 从 js 文件中提取隐藏的路径并对其进行美化以便进一步阅读
-- [Lopseg/Jsdir](https://github.com/Lopseg/Jsdir)
-
-> 一个 Burp 插件,实现用 AES 算法透明加密原版菜刀 Caidao.exe 与服务器端交互的 http 数据流
-- [ekgg/Caidao-AES-Version](https://github.com/ekgg/Caidao-AES-Version)
-
-> HTTP_request_smuggling 辅助工具
-- [PortSwigger/http-request-smuggler](https://github.com/PortSwigger/http-request-smuggler)
-
-> 一款兼容 Windows,mac,linux 多个系统平台的 Burp 与 sqlmap 联动插件
-- [c0ny1/sqlmap4burp-plus-plus](https://github.com/c0ny1/sqlmap4burp-plus-plus)
+- [c0ny1/chunked-coding-converter](https://github.com/c0ny1/chunked-coding-converter) - 分块传输辅助插件,用于分块传输绕 WAF
+- Hackvertor - 构造绕过 waf 的 payload 并破解 XOR 加密
+    - [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
+- [ekgg/Caidao-AES-Version](https://github.com/ekgg/Caidao-AES-Version) - 一个 Burp 插件,实现用 AES 算法透明加密原版菜刀 Caidao.exe 与服务器端交互的 http 数据流
+- [c0ny1/sqlmap4burp-plus-plus](https://github.com/c0ny1/sqlmap4burp-plus-plus) - 一款兼容 Windows,mac,linux 多个系统平台的 Burp 与 sqlmap 联动插件
     - [重构 sqlmap4burp 插件](http://gv7.me/articles/2019/refactoring-sqlmap4burp/)
+- [bit4woo/reCAPTCHA](https://github.com/bit4woo/reCAPTCHA) - 一个 burp 插件, 自动识别图形验证码, 并用于 Intruder 中的 Payload.
+- [c0ny1/passive-scan-client](https://github.com/c0ny1/passive-scan-client) - Burp 被动扫描流量转发插件
+- [nccgroup/blackboxprotobuf](https://github.com/nccgroup/blackboxprotobuf) - 用于解码和修改任意的 protobuf 消息,而不需要定义 protobuf 类型.
+- [c0ny1/captcha-killer](https://github.com/c0ny1/captcha-killer) - 验证码识别接口调用插件
+- [TheKingOfDuck/burpFakeIP](https://github.com/TheKingOfDuck/burpFakeIP) - 通过修改 HTTP 请求头伪造 ip 的插件
+- [Ebryx/AES-Killer](https://github.com/Ebryx/AES-Killer) - 可即时解密移动应用程序的 AES 加密流量的 Burp 插件
+- [c0ny1/HTTPHeadModifer](https://github.com/c0ny1/HTTPHeadModifer) - 一款快速修改 HTTP 数据包头的 Burp Suite 插件
 
-> 一个 burp 插件,自动识别图形验证码,并用于Intruder中的Payload.
-- [bit4woo/reCAPTCHA](https://github.com/bit4woo/reCAPTCHA)
-
-> Burp 被动扫描流量转发插件
-- [c0ny1/passive-scan-client](https://github.com/c0ny1/passive-scan-client)
-
-> 高亮标记敏感信息并展示相关匹配的信息,然后针对高亮的请求进行深度挖掘
-- [gh0stkey/BurpSuite-Extender-MarkInfo](https://github.com/gh0stkey/BurpSuite-Extender-MarkInfo)
-
-> 通过 BurpSuite 来构建自己的爆破字典,可以通过字典爆破来发现隐藏资产.
-- [TEag1e/BurpSuiteCollector](https://github.com/TEag1e/BurpSuiteCollector)
-    - [orleven/BurpSuiteCollect](https://github.com/orleven/BurpSuiteCollect) - 基于 BurpCollector 的二次开发， 记录 Burp Map 记录的里的数据包中的目录路径参数名信息，并存入 Sqlite，并可导出 txt 文件。
-
-> 用于解码和修改任意的 protobuf 消息,而不需要定义 protobuf 类型.
-- [nccgroup/blackboxprotobuf](https://github.com/nccgroup/blackboxprotobuf)
-
-> 即时操作 JWT，自动执行针对 JWT 的常见攻击
-- [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B)
-
-> 验证码识别接口调用插件
-- [c0ny1/captcha-killer](https://github.com/c0ny1/captcha-killer)
-
-> 通过修改 HTTP 请求头伪造 ip 的插件
-- [TheKingOfDuck/BurpSuiteFakeIP](https://github.com/TheKingOfDuck/BurpSuiteFakeIP)
-
-> 从 HTTP 响应中发现资产的 Burp 扩展
-- [redhuntlabs/BurpSuiteSuite-Asset_Discover](https://github.com/redhuntlabs/BurpSuiteSuite-Asset_Discover)
-
-> 从 HTTP 响应中发现密钥/访问令牌和敏感数据的扩展
-- [m4ll0k/BurpSuiteSuite-Secret_Finder](https://github.com/m4ll0k/BurpSuiteSuite-Secret_Finder)
-
-> 用于 GraphQL 安全测试的扩展
-- [doyensec/inql](https://github.com/doyensec/inql)
-
-> Shiro 反序列化检查 Burp 插件
-- [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check)
-
-> a burp extension to find where use fastjson
-- [p1g3/Fastjson-Scanner](https://github.com/p1g3/Fastjson-Scanner)
-
-> 一款基于 BurpSuite 的被动式 shiro 检测插件
-- [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan)
-
-> 可即时解密移动应用程序的 AES 加密流量的 Burp 插件
-- [Ebryx/AES-Killer](https://github.com/Ebryx/AES-Killer)
-
-> 一款快速修改HTTP数据包头的Burp Suite插件
-- [c0ny1/HTTPHeadModifer](https://github.com/c0ny1/HTTPHeadModifer)
+**漏洞检测**
+- Authz - 快速探测越权
+- [wuntee/BurpAuthzPlugin](https://github.com/wuntee/BurpAuthzPlugin) - 探测越权漏洞的插件
+- [PortSwigger/http-request-smuggler](https://github.com/PortSwigger/http-request-smuggler) - HTTP_request_smuggling 辅助工具
+- [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT，自动执行针对 JWT 的常见攻击
+- [doyensec/inql](https://github.com/doyensec/inql) - 用于 GraphQL 安全测试的扩展
+- [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check) - Shiro 反序列化检查 Burp 插件
+- [p1g3/Fastjson-Scanner](https://github.com/p1g3/Fastjson-Scanner) - a burp extension to find where use fastjson
+- [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件
 
 ### 插件开发
 

@@ -39,28 +39,28 @@ PLC 控制系统(Programmable Logic Controller，可编程逻辑控制器)，专
 
 # 仿真搭建
 
-## siemens
+## Siemens
 
 **相关文章**
 - [西门子PLC的网络仿真搭建方法探讨](https://www.freebuf.com/articles/ics-articles/236250.html)
 
-**模拟器工具**
+**仿真工具**
+
+目前西门子 PLC 主要使用的软件包括 STEP7-Micro/WIN SMART、SIMATIC STEP7 以及 TIA Portal。TIA Portal 已经完全兼容 STEP 7，因此以后应该是 STEP 7-MicroWIN SMART 作为小型 PLC 的编程软件。
+
 - [Snap7 Homepage](http://snap7.sourceforge.net/) - 一款开源的 32/64 位多平台以太网通信套件，用于与西门子 S7 PLC 进行本地连接。
-- STEP7
-    - http://www.laozhoucontrol.com/S7-PLCSIM-V5_4-SP5-UPD1.html
-    - http://www.laozhoucontrol.com/STEP7-V5_5-CN-SP2-install.html
-- plcsim
-    - http://www.laozhoucontrol.com/S7-PLCSIM-V5_4-SP5-UPD1.html
-- [NetToPLCSim](https://sourceforge.net/projects/nettoplcsim/)
 
 **实验记录**
 - [siemens仿真搭建实验](./实验/siemens仿真搭建实验.md)
+- [S7-300启停实验](./实验/S7-300启停实验.md)
 
 ---
 
 ## OpenPLC
 
-> OpenPLC是一个基于易于使用软件的开源可编程逻辑控制器。OpenPLC项目是根据IEC 61131-3标准创建的，该标准定义了PLC的基本软件架构和编程语言。
+**介绍**
+
+OpenPLC 是一个基于易于使用软件的开源可编程逻辑控制器。OpenPLC 项目是根据 IEC 61131-3 标准创建的，该标准定义了 PLC 的基本软件架构和编程语言。
 
 **官网**
 - https://www.openplcproject.com/
@@ -74,6 +74,31 @@ PLC 控制系统(Programmable Logic Controller，可编程逻辑控制器)，专
 
 **实验记录**
 - [OpenPLC环境搭建](./实验/OpenPLC环境搭建.md)
+
+---
+
+## Modbus
+
+**相关文章**
+- [Modbus PLC攻击分析：从Modbus PollSlave到M340](https://www.freebuf.com/ics-articles/234845.html)
+- [Modbus测试工具ModbusPoll与Modbus Slave使用方法](https://www.cnblogs.com/xiaosong0206/p/11088726.html)
+
+**仿真工具**
+- [modbustools](https://www.modbustools.com/download.html)
+
+**实验记录**
+- [Modbus仿真环境搭建](./实验/Modbus仿真环境搭建.md)
+
+---
+
+## Schneider
+
+**Schneider Modicon Remote START/STOP Command**
+```bash
+use auxiliary/admin/scada/modicon_command
+set MODE STOP
+run
+```
 
 ---
 
@@ -93,6 +118,3 @@ PLC inject 可以通过公网 PLC 访问到深层次的工业网络。可以实�
 
 **相关工具**
 - [SCADACS/PLCinject](https://github.com/SCADACS/PLCinject)
-
-**实验记录**
-- [S7-300启停实验](./实验/S7-300启停实验.md)

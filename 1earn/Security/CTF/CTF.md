@@ -65,6 +65,24 @@
 
 ---
 
+# 赛事运营
+
+## AWD
+
+**平台搭建**
+- [mo-xiaoxi/AWD_CTF_Platform](https://github.com/mo-xiaoxi/AWD_CTF_Platform) - 一个简单的 AWD 训练平台
+    - https://www.cnblogs.com/p201821440039/p/12290724.html
+- [D0g3-Lab/H1ve](https://github.com/D0g3-Lab/H1ve) - An Easy / Quick / Cheap Integrated Platform
+    - https://www.freebuf.com/sectool/221739.html
+- [zhl2008/awd-platform](https://github.com/zhl2008/awd-platform) - platform for awd
+    - https://mp.weixin.qq.com/s/ffh-Jkt9UUKHErxeUMw4aw
+    - https://www.cnblogs.com/Triangle-security/p/11332223.html
+
+**相关文章**
+- [聊聊AWD攻防赛流程及准备经验](https://www.freebuf.com/articles/network/201222.html)
+
+---
+
 # 大型赛事Writeup
 
 **赛事安排**

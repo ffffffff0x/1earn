@@ -68,6 +68,8 @@
 
 - [坚果云](https://www.jianguoyun.com) - `强烈推荐`
     - 好用,速度可以跑满带宽,免费不够用,团队版价格适中
+- Teambition - `强烈推荐`
+    - 容量大,速度快,没啥好说的
 - [微云](https://www.weiyun.com/)
     - 体验一般,速度一般,免费不够用
 - [百度网盘](https://pan.baidu.com/disk/home) - `不推荐`

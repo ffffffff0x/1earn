@@ -27,6 +27,11 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 - [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具
 - [brannondorsey/naive-hashcat](https://github.com/brannondorsey/naive-hashcat) - 包括各种字典，组合，基于规则的攻击和掩码（暴力）攻击。hashcat 傻瓜版?
 - [wavestone-cdt/wavecrack](https://github.com/wavestone-cdt/wavecrack) - web 版的 hashcat
+- [s3inlc/hashtopolis](https://github.com/s3inlc/hashtopolis) - 分布式 Hashcat 服务
+
+---
+
+# 基本使用
 
 **安装**
 ```bash
@@ -36,10 +41,6 @@ wget https://hashcat.net/files/hashcat-6.1.1.7z
 cd hashcat-6.1.1 && chmod +x hashcat.bin && cp hashcat.bin hashcat
 ln -s /pentest/hashcat-6.1.1/hashcat /usr/sbin/hashcat
 ```
-
----
-
-# 基本使用
 
 - 在使用 GPU 模式进行破解时，可以使用 -O 参数自动进行优化
 - 所有的 hash 破解结果都在 hashcat.potfile 文件中
@@ -321,6 +322,8 @@ $6$52450745$k5ka2p8bFuSmoVT1tzOyyuaREkkKBcCNqoDKzYiJL9RaE8yMnPgh2XzzF0NDrUhgrcLw
 
 ## 爆破压缩包
 
+> 注意: AMD 显卡不支持该项爆破
+
 用 zip2john 获取文件的 hash 值
 ```bash
 zip2john.exe 1.zip > hash.txt
@@ -404,6 +407,8 @@ $zip3$*0*1*256*0*39bff47df6152a0214d7a967*65ff418ffb3b1198cccdef0327c03750f328d6
 
 ## 爆破office
 
+> 注意: AMD 显卡不支持该项爆破
+
 ```bash
 python /usr/share/john/office2john.py xxx.docx
 ```
@@ -422,6 +427,29 @@ $office$*2010*100000*128*16*77233201017277788267221014757262*b2d0ca4854ba19cf95a
 MODE: 9600
 TYPE: MS Office 2013
 $office$*2013*100000*256*16*7dd611d7eb4c899f74816d1dec817b3b*948dc0b2c2c6c32f14b5995a543ad037*0b7ee0e48e935f937192a59de48a7d561ef2691d5c8a3ba87ec2d04402a94895
+
+MODE: 9700
+TYPE: MS Office ⇐ 2003 MD5 + RC4, oldoffice$0, oldoffice$1
+$oldoffice$1*04477077758555626246182730342136*b1b72ff351e41a7c68f6b45c4e938bd6*0d95331895e99f73ef8b6fbc4a78ac1a
+
+MODE: 9710
+TYPE: MS Office ⇐ 2003 $0/$1, MD5 + RC4, collider #1
+$oldoffice$0*55045061647456688860411218030058*e7e24d163fbd743992d4b8892bf3f2f7*493410dbc832557d3fe1870ace8397e2
+
+MODE: 9720
+TYPE: MS Office ⇐ 2003 $0/$1, MD5 + RC4, collider #2
+
+MODE: 9800
+TYPE: MS Office ⇐ 2003 SHA1 + RC4, oldoffice$3, oldoffice$4
+$oldoffice$3*83328705222323020515404251156288*2855956a165ff6511bc7f4cd77b9e101*941861655e73a09c40f7b1e9dfd0c256ed285acd
+
+MODE: 9810
+TYPE: MS Office ⇐ 2003 $3, SHA1 + RC4, collider #1
+$oldoffice$3*83328705222323020515404251156288*2855956a165ff6511bc7f4cd77b9e101*941861655e73a09c40f7b1e9dfd0c256ed285acd
+
+MODE: 9820
+TYPE: MS Office ⇐ 2003 $3, SHA1 + RC4, collider #2
+$oldoffice$3*83328705222323020515404251156288*2855956a165ff6511bc7f4cd77b9e101*941861655e73a09c40f7b1e9dfd0c256ed285acd:b8f63619ca
 ```
 
 ---
@@ -429,35 +457,38 @@ $office$*2013*100000*256*16*7dd611d7eb4c899f74816d1dec817b3b*948dc0b2c2c6c32f14b
 ## 爆破md5
 
 ```bash
+# 16位的MD5
+hashcat -m 5100 AC59075B964B0715 -a 3 ?d?d?d?d?d?d
+
 # MD5规则是7位数字
-hashcat 25c3e88f81b4853f2a8faacad4c871b6 -a 3 -m 0 ?d?d?d?d?d?d?d
+hashcat -m 0 25c3e88f81b4853f2a8faacad4c871b6 -a 3 ?d?d?d?d?d?d?d
 
 # MD5规则是7位小写字母
-hashcat 7a47c6db227df60a6d67245d7d8063f3 -a 3 -m 0 ?l?l?l?l?l?l?l
+hashcat -m 0 7a47c6db227df60a6d67245d7d8063f3 -a 3 ?l?l?l?l?l?l?l
 
 # MD5规则是1-8位数字
-hashcat 4488cec2aea535179e085367d8a17d75 -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?d?d?d?d?d?d?d?d
+hashcat -m 0 4488cec2aea535179e085367d8a17d75 -a 3 --increment --increment-min 1 --increment-max 8 ?d?d?d?d?d?d?d?d
 
 # MD5规则是1-8位小写字母+数字
-hashcat ab65d749cba1656ca11dfa1cc2383102 -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?h?h?h?h?h?h?h?h
+hashcat -m 0 ab65d749cba1656ca11dfa1cc2383102 -a 3 --increment --increment-min 1 --increment-max 8 ?h?h?h?h?h?h?h?h
 
 # MD5规则是 clearlove + 任意2位字符 + 3位纯数字
-hashcat 7276bf625a8c5e65b9e5966bed63bce0 -a 3 -m 0 clearlove?a?a?d?d?d
+hashcat -m 0 7276bf625a8c5e65b9e5966bed63bce0 -a 3 clearlove?a?a?d?d?d
 
 # MD5规则是特定字符集：123456abcdf!@+-
-hashcat 8b78ba5089b11326290bc15cf0b9a07d -a 3 -m 0 -1 123456abcdf!@+- ?1?1?1?1?1
+hashcat -m 0 8b78ba5089b11326290bc15cf0b9a07d -a 3 -1 123456abcdf!@+- ?1?1?1?1?1
 > 注意：这里的-1和?1是数字1，不是字母l
 
 # MD5规则是1-8位,符集集:123456abcdf!@+-
-hashcat 9054fa315ce16f7f0955b4af06d1aa1b -a 3 -m 0 -1 123456abcdf!@+- --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
+hashcat -m 0 9054fa315ce16f7f0955b4af06d1aa1b -a 3 -1 123456abcdf!@+- --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
 
 # MD5规则是1-8位数字+大小写字母+可见特殊符号
-hashcat d37fc9ee39dd45a7717e3e3e9415f65d -a 3 -m 0 -1 ?d?u?l?s --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
+hashcat -m 0 d37fc9ee39dd45a7717e3e3e9415f65d -a 3 -1 ?d?u?l?s --increment --increment-min 1 --increment-max 8 ?1?1?1?1?1?1?1?1
 或者：
-hashcat d37fc9ee39dd45a7717e3e3e9415f65d -a 3 -m 0 --increment --increment-min 1 --increment-max 8 ?a?a?a?a?a?a?a?a
+hashcat -m 0 d37fc9ee39dd45a7717e3e3e9415f65d -a 3 --increment --increment-min 1 --increment-max 8 ?a?a?a?a?a?a?a?a
 
 # MD5规则是32位的01组合数字
-hashcat 4c753d89d239bb17b8d754ff981c7772 -a 3 -m 0 -3 01 ?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3
+hashcat -m 0 4c753d89d239bb17b8d754ff981c7772 -a 3 -3 01 ?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3?3
 ```
 
 ---
@@ -470,7 +501,7 @@ hashcat -a 0 hash.txt password.txt -o result.txt
 
 ---
 
-# Tips
+# 更多实验
 
 ## 阿里云按量-抢占式实例-NVIDIA T4-跑 Hashcat
 
@@ -535,3 +566,105 @@ hashcat -b --force
 ```
 
 ![](../../../assets/img/Security/安全工具/Hashcat/4.png)
+
+---
+
+## hashtopolis分布式服务
+
+项目地址 : https://github.com/s3inlc/hashtopolis
+
+### Server
+
+> Ubuntu18.04
+
+```bash
+sudo apt update
+sudo apt install -y mysql-server
+sudo apt install -y apache2
+sudo apt install -y libapache2-mod-php php-mysql php php-gd php-pear php-curl
+sudo apt install -y git unzip lrzsz
+
+mysql_secure_installation
+
+mysql -u root
+CREATE DATABASE hashtopolis;
+CREATE USER 'hashtopolis'@'localhost' IDENTIFIED BY 'hashtopolis';
+GRANT ALL PRIVILEGES ON hashtopolis.* TO 'hashtopolis'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+cd /var/www
+git clone https://github.com/s3inlc/hashtopolis
+cd hashtopolis
+```
+
+```bash
+nano /etc/apache2/sites-available/000-default.conf
+
+<VirtualHost *:80>
+DocumentRoot /var/www/hashtopolis/src
+</VirtualHost>
+
+<Directory /var/www/hashtopolis/src>
+    AllowOverride ALL
+</Directory>
+```
+
+```bash
+nano /etc/php/7.2/apache2/php.ini
+
+memory_limit = 512M
+upload_max_filesize = 500M
+post_max_size = 500M
+```
+
+```bash
+chown -R www-data:www-data /var/www/hashtopolis
+service apache2 restart
+```
+
+访问 127.0.0.1
+
+输入数据库配置
+```
+地址 localhost
+账号 hashtopolis
+密码 hashtopolis
+库   hashtopolis
+```
+
+创建账号
+```
+test
+test@1.com
+test
+test
+```
+
+### Agent
+
+> Debian
+
+下载服务器端的 hashtopolis.zip
+
+![](../../../assets/img/Security/安全工具/Hashcat/5.png)
+
+服务的添加一个新的 voucher
+
+![](../../../assets/img/Security/安全工具/Hashcat/6.png)
+
+客户端运行 hashtopolis
+```
+sudo apt update
+sudo apt install -y python3-pip
+python3 -m pip install psutil requests
+python3 hashtopolis.zip
+```
+
+![](../../../assets/img/Security/安全工具/Hashcat/8.png)
+
+![](../../../assets/img/Security/安全工具/Hashcat/7.png)
+
+### 使用
+
+- https://www.youtube.com/watch?v=A1QrUVy7UZ0

@@ -85,7 +85,7 @@ rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # 安装 PHP7.0
-yum install php70w php70w-fpm php70w-mysql php70w-mysqlnd
+yum install -y php70w php70w-fpm php70w-mysql php70w-mysqlnd
 
 systemctl start php-fpm.service
 netstat -tnlp   # 检查 php-fpm 默认监听端口:9000
@@ -120,7 +120,7 @@ vim /usr/share/nginx/test.com/info.php
 apt-get update                  # 更新安装包
 apt-get install -y language-pack-en-base
 locale-gen en_US.UTF-8          # 设定语言编码为 UTF-8
-apt-get install software-properties-common
+apt-get install -y software-properties-common
 LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php    # 添加 php7 的 ppa
 apt-get update                  # 更新安装包
 apt-get install -y php7.1	    # 安装 php
@@ -155,9 +155,9 @@ service firewalld stop
 
 **Debian**
 ```bash
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://packages.sury.org/php/apt.gpg | sudo apt-key add -
-sudo add-apt-repository "deb https://packages.sury.org/php/ $(lsb_release -cs) main"
+apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://packages.sury.org/php/apt.gpg | apt-key add -
+add-apt-repository "deb https://packages.sury.org/php/ $(lsb_release -cs) main"
 apt update
 apt install -y php7.2
 apt install -y php7.2-common php7.2-cli

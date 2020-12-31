@@ -40,7 +40,7 @@
 如果没有装,一定要装.如果装不了,可以尝试这个方案 [open-vm-tools](https://github.com/vmware/open-vm-tools)
 ```bash
 apt update
-apt install open-vm-tools-desktop fuse
+apt install -y open-vm-tools-desktop fuse
 reboot  # 重启一下
 ```
 
@@ -50,7 +50,7 @@ reboot  # 重启一下
 2. 不能用 mount 工具挂载,而是得用 vmhgfs-fuse,需要安装工具包
 
 ```bash
-yum install open-vm-tools-devel -y
+yum install -y open-vm-tools-devel -y
 有的源的名字并不一定为 open-vm-tools-devel(centos) ,而是 open-vm-dkms(unbuntu)
 执行:vmhgfs-fuse .host:/ /mnt/hgfs
 ```

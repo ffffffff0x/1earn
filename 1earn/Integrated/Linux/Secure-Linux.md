@@ -19,7 +19,7 @@
 </p>
 
 - `Linux 加固+维护+应急响应参考`
-- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固](../../Security/笔记/BlueTeam/加固.md)
+- `文档内容仅限 Linux ,web 服务和中间件的加固内容请看` [加固](../../Security/BlueTeam/加固.md)
 
 ---
 
@@ -73,7 +73,7 @@ strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析 sshd 文件�
 
 **[foremost](http://foremost.sourceforge.net/)**
 ```bash
-apt-get install foremost
+apt-get install -y foremost
 rm -f /dev/sdb1/photo1.png
 
 foremost -t png -i /dev/sdb1
@@ -83,8 +83,8 @@ foremost -t png -i /dev/sdb1
 
 **[extundelete](http://extundelete.sourceforge.net/)**
 ```bash
-apt-get install extundelete
-mkdir –p /backupdate/deldate
+apt-get install -y extundelete
+mkdir -p /backupdate/deldate
 mkfs.ext4 /dev/sdd1
 mount /dev/sdd1 /backupdate
 cd /backupdate/deldate
@@ -587,7 +587,7 @@ nmap -sV -p 22 localhost
     git clone https://github.com/EtherDream/anti-portscan
     cd anti-portscan
     vim install.sh # 修改需要打开的端口
-    sudo sh install.sh
+    sh install.sh
     ```
 
 ---
@@ -672,19 +672,19 @@ net.ipv4.icmp_echo_ignore_all=1
 - **查看尝试暴力破解机器密码的人**
     ```bash
     # Debian 系的发行版
-    sudo grep "Failed password for root" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | more
+    grep "Failed password for root" /var/log/auth.log | awk '{print $11}' | sort | uniq -c | sort -nr | more
 
     # Red Hat 系的发行版
-    sudo grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr | more
+    grep "Failed password for root" /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr | more
     ```
 
 - **查看暴力猜用户名的人**
     ```bash
     # Debian 系的发行版
-    sudo grep "Failed password for invalid user" /var/log/auth.log | awk '{print $13}' | sort | uniq -c | sort -nr | more
+    grep "Failed password for invalid user" /var/log/auth.log | awk '{print $13}' | sort | uniq -c | sort -nr | more
 
     # Red Hat 系的发行版
-    sudo grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more
+    grep "Failed password for invalid user" /var/log/secure | awk '{print $13}' | sort | uniq -c | sort -nr | more
     grep "Failed password" /var/log/secure | awk {'print $9'} | sort | uniq -c | sort -nr
     grep -o "Failed password" /var/log/secure|uniq -c
     ```
@@ -775,7 +775,7 @@ net.ipv4.icmp_echo_ignore_all=1
         PasswordAuthentication no                       # 禁止密码登录
         ```
 
-        `sudo service sshd restart` 重启 sshd 服务
+        `service sshd restart` 重启 sshd 服务
 
     5. 测试使用私钥登陆
         ```bash

@@ -394,7 +394,7 @@ firewall-cmd --zone=public --add-service=dns --permanent
 firewall-cmd --reload
 ```
 
-如果没有 dig 命令就用 `yum install bind-utils` 装一下
+如果没有 dig 命令就用 `yum install -y bind-utils` 装一下
 使用 dig www.abc.com 命令解析 A 记录
 使用 dig -x 公网 IP 命令解析 PTR 记录
 
@@ -410,7 +410,7 @@ firewall-cmd --reload
 
 **安装**
 ```bash
-yum -y install bind-*
+yum install -y bind-*
 ```
 
 **修改主配置文件**

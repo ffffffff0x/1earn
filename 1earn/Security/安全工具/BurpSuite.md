@@ -65,25 +65,25 @@ burp Intruder 组件 Payloads 选项 Payload Processing 部分,add -- Hash -- MD
 
 **中文显示乱码问题**
 
-User options –Display – HTTP Message Display – Change font… 选择一个中文的字体格式，调整显示字体大小
+User options -Display - HTTP Message Display - Change font… 选择一个中文的字体格式，调整显示字体大小
 
-User options –Display – Character Sets,选择 UTF-8 编码
+User options -Display - Character Sets,选择 UTF-8 编码
 
 **拦截指定 url 的请求响应包**
 
 - 请求包设置
-    - Proxy – Options – Intercept Client Requests – Add
+    - Proxy - Options - Intercept Client Requests - Add
 
 - 响应包设置
-    - Proxy – Options – Intercept Server Responses – Add
+    - Proxy - Options - Intercept Server Responses - Add
 
 **自动替换 cookie**
 
-Proxy – Options – Match and Replace – Add
+Proxy - Options - Match and Replace - Add
 
 **不断提示连接超时**
 
-删除 Connection: close 头部 , Proxy – Options – Set response header "Connection: close"
+删除 Connection: close 头部 , Proxy - Options - Set response header "Connection: close"
 
 ---
 
@@ -113,6 +113,7 @@ Proxy – Options – Match and Replace – Add
     - [编写加密传输爆破插件jsEncrypter](http://gv7.me/articles/2017/jsEncrypter/)
 - [PortSwigger/turbo-intruder](https://github.com/portswigger/turbo-intruder) - burp官方开发的爆破模块增强版
     - [Turbo Intruder:BurpSuite高速 Intruder 插件介绍](https://www.freebuf.com/sectool/195912.html)
+    - [Burp - Turbo Intruder](https://www.cnblogs.com/muxueblog/p/14035477.html)
 - [c0ny1/chunked-coding-converter](https://github.com/c0ny1/chunked-coding-converter) - 分块传输辅助插件,用于分块传输绕 WAF
 - Hackvertor - 构造绕过 waf 的 payload 并破解 XOR 加密
     - [利用burp插件Hackvertor绕过waf并破解XOR加密](https://www.4hou.com/tools/14353.html)
@@ -126,6 +127,7 @@ Proxy – Options – Match and Replace – Add
 - [TheKingOfDuck/burpFakeIP](https://github.com/TheKingOfDuck/burpFakeIP) - 通过修改 HTTP 请求头伪造 ip 的插件
 - [Ebryx/AES-Killer](https://github.com/Ebryx/AES-Killer) - 可即时解密移动应用程序的 AES 加密流量的 Burp 插件
 - [c0ny1/HTTPHeadModifer](https://github.com/c0ny1/HTTPHeadModifer) - 一款快速修改 HTTP 数据包头的 Burp Suite 插件
+- JSON Beautifier - 格式化查看 json 数据
 
 **漏洞检测**
 - Authz - 快速探测越权
@@ -136,6 +138,7 @@ Proxy – Options – Match and Replace – Add
 - [bigsizeme/shiro-check](https://github.com/bigsizeme/shiro-check) - Shiro 反序列化检查 Burp 插件
 - [p1g3/Fastjson-Scanner](https://github.com/p1g3/Fastjson-Scanner) - a burp extension to find where use fastjson
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件
+- Wsdler - 解析 WSDL 请求，以便使用 repeater 和 scanner 对 WSDL 请求进行测试。
 
 ### 插件开发
 
@@ -144,10 +147,6 @@ Proxy – Options – Match and Replace – Add
 ---
 
 # 安装及维护
-
-**windows**
-
-略
 
 **linux**
 

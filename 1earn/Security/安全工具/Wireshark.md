@@ -30,7 +30,7 @@
 - [SampleCaptures - The Wireshark Wiki](https://wiki.wireshark.org/SampleCaptures)
 - [CaptureSetup/USB - The Wireshark Wiki](https://wiki.wireshark.org/CaptureSetup/USB)
 - [图解Wireshark协议分析实例](https://blog.csdn.net/bcbobo21cn/article/details/51454170)
-- [Wireshark Cheat Sheet – Commands, Captures, Filters & Shortcuts](https://www.comparitech.com/net-admin/wireshark-cheat-sheet/)
+- [Wireshark Cheat Sheet - Commands, Captures, Filters & Shortcuts](https://www.comparitech.com/net-admin/wireshark-cheat-sheet/)
 
 **插件/增强工具**
 - [pentesteracademy/patoolkit](https://github.com/pentesteracademy/patoolkit) - Wireshark 插件，增强分析能力
@@ -38,18 +38,30 @@
 
 ---
 
+# 简介
+
+**什么是流量包**
+
+流量包指利用 tcpdump 等工具，对计算机上的某个网络设备进行流量抓取所所获得的 PCAP 格式的流量文件。
+
+**什么是 wireshark**
+
+Wireshark 是非常流行的网络流量分析软件，可以截取各种网络数据包，并显示数据包详细信息。常用于开发测试过程各种问题定位。Wireshark 使用 WinPCAP 作为接口，直接与网卡进行数据报文交换。
+
+**什么是 Tshark**
+
+网络分析工具下的一个分支，主要用于命令行环境进行抓包、分析，尤其对协议深层解析时，难以胜任的场景中。简单来说就是命令行下的 wireshark
+
+---
+
 # 安装
 
 **Ubuntu**
 ```bash
-sudo add-apt-repository ppa:wireshark-dev/stable
-sudo apt update
-sudo apt install wireshark
+add-apt-repository ppa:wireshark-dev/stable
+apt update
+apt install -y wireshark
 ```
-
-**Windows**
-
-略
 
 ---
 

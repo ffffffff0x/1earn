@@ -218,7 +218,7 @@ searchsploit -w ubuntu 16.04 4.4.x
 
 找个 EXP 用用
 ```bash
-apt install libfuse-dev
+apt install -y libfuse-dev
 wget https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/39772.zip
 ```
 

@@ -438,7 +438,17 @@ firewall-cmd --reload
 
 访问 `机器相应ip/1.php`
 
+# 泛解析
+
+```bash
+<VirtualHost 192.168.1.1>
+    ServerName "www.ffffffff0x.com"       # 默认域名
+    ServerAlias *.ffffffff0x.com          # 用*表示泛域名
+</VirtualHost>
+```
+
 ---
 
 **Source & Reference**
 - [Linux下Apache与httpd的区别与关系](https://blog.csdn.net/yxfabcdefg/article/details/32324035)
+- [Apache对域名的泛解析方法集锦](https://blog.csdn.net/beyondhjjyt/article/details/8939682)

@@ -223,6 +223,21 @@
 - [羊城杯-Reverse-WP](https://www.zrzz.site/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AF-Reverse-WP/)
 - [羊城杯Easy Java题解](https://zhzhdoai.github.io/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AFEasy-Java%E9%A2%98%E8%A7%A3/)
 
+### 美亚杯
+
+**2020**
+- [20年美亚杯个人赛-Alice LG Phone部分WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14008424.html)
+- [20年美亚杯个人赛-ALICE_USB部分WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14011629.html)
+- [20年美亚杯个人赛-Alice_Laptop部分WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14006353.html)
+- [20年美亚杯WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14006162.html)
+
+**2018**
+- [18年美亚杯团体赛-C部分 WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14002475.html)
+- [18年美亚杯团体赛-B部分 WRITE UP](https://www.cnblogs.com/zhwyyswdg/p/14001433.html)
+
+**2017**
+- [电子取证 | 第三届美亚杯（2017）个人赛题解](https://www.cnblogs.com/zhwer/p/12230189.html)
+
 ---
 
 ### 2020
@@ -431,6 +446,10 @@
 - [天翼杯-Re-Wp](https://www.zrzz.site/2020/08/01/%E5%A4%A9%E7%BF%BC%E6%9D%AF-Re-Wp/)
 - [天翼杯2020_wp_by_LQers](https://www.freebuf.com/articles/network/245664.html)
 - [天翼杯Crypto Write Up](https://www.anquanke.com/post/id/212635)
+
+**2020 中国I²S峰会暨工业互联网安全大赛**
+- [2020-11-I²S峰会暨工业互联网安全大赛writeup](https://www.t00ls.net/thread-58518-1-1.html)
+- [WriteUp-首届中国I²S峰会暨工业互联网安全大赛](https://mp.weixin.qq.com/s/21pOfgGCmt5ijr66xpV1MA)
 
 ---
 

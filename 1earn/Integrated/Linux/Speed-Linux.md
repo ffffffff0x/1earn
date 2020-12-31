@@ -28,11 +28,12 @@
 	* [环境变量](#环境变量)
 	* [符号](#符号)
 	* [会话](#会话)
+		* [历史记录](#历史记录)
 	* [文件和目录](#文件和目录)
 		* [查看](#查看)
 		* [创建](#创建)
 		* [删除](#删除)
-		* [查询](#查询)
+		* [搜索](#搜索)
 		* [修改](#修改)
 		* [比较](#比较)
 		* [链接](#链接)
@@ -44,6 +45,7 @@
 	* [抓包](#抓包)
 	* [传输-下载](#传输-下载)
 		* [bt](#bt)
+		* [远程访问](#远程访问)
 	* [Firewall](#Firewall)
 		* [Firewalld](#Firewalld)
 		* [Iptables](#Iptables)
@@ -71,6 +73,7 @@
 		* [磁盘](#磁盘)
 		* [无线网卡](#无线网卡)
 		* [蓝牙](#蓝牙)
+		* [外接硬盘](#外接硬盘)
 
 ---
 
@@ -130,26 +133,58 @@ bash xxx.sh								# 运行 xxx.sh 脚本
 - 图形模式登录后,打开终端时,顺序读取 : `/etc/bash.bashrc` 和 `~/.bashrc`
 - 文本模式登录时,顺序读取 : `/etc/bash.bashrc` , `/etc/profile` 和 `~/.bash_profile`
 
-**bash**
+**登录交互式 shell .bash_* files 的执行顺序**
+```bash
+execute /etc/profile
+IF ~/.bash_profile exists THEN
+    execute ~/.bash_profile
+ELSE
+    IF ~/.bash_login exist THEN
+        execute ~/.bash_login
+    ELSE
+        IF ~/.profile exist THEN
+            execute ~/.profile
+        END IF
+    END IF
+END IF
+```
+
+**注销交互式 shell .bash_* files 的执行顺序**
+```bash
+IF ~/.bash_logout exists THEN
+    execute ~/.bash_logout
+END IF
+```
+
+**bash 设置环境变量**
 ```bash
 echo $PATH  						# 查看环境变量
-
-PATH=$PATH:/usr/local/python3/bin/	# 新添加的路径(关闭终端失效)
 ```
-```vim
-vim ~/.bash_profile # 永久修改变量
 
-PATH=$PATH:/usr/local/bin/
-```
-`source ~/.bash_profile` 立即生效
+- 一次性添加(关闭终端失效)
+	```bash
+	PATH=$PATH:/usr/local/python3/bin/
+	```
 
-**fish**
+- 永久修改变量(重启后生效)
+	```diff
+	vim ~/.bash_profile		在 Ubuntu 没有此文件，与之对应的是 /etc/bash.bashrc
+
+	++ PATH=$PATH:/usr/local/bin/
+	```
+	```bash
+	source ~/.bash_profile # 立即生效
+	```
+
+**fish 设置环境变量**
 ```vim
 vim ~/.config/fish/config.fish
 
 set PATH (你想要加入的路径) $PATH
 ```
-`souce ~/.config/fish/config.fish`
+```bash
+souce ~/.config/fish/config.fish
+```
 
 ---
 
@@ -182,46 +217,114 @@ set PATH (你想要加入的路径) $PATH
 # 反斜杠(\)或引号(', ")都会使通配符失效。
 ```
 
-**grep**
-```bash
-grep		# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
-# 参数解释
-# -a ： 将 binary 文件以 text 文件的方式进行搜寻
-# -c ： 计算找到个数
-# -i ： 忽略大小写
-# -n ： 输出行号
-# -v ： 反向选择，亦即显示出没有 搜寻字符串 内容的那一行
-# --color=auto ：找到的关键字加颜色显示
-```
+- grep
+	```bash
+	# 文本搜索工具,它能使用正则表达式搜索文本,并把匹配的行打印出来.
 
-**awk**
-```bash
-awk			# 可以根据字段的某些条件进行匹配，例如匹配字段小于某个值的那一行数据。
-awk '条件类型 1 {动作 1} 条件类型 2 {动作 2} ...' filename
-# awk 每次处理一行，处理的最小单位是字段，每个字段的命名方式为：\$n，n 为字段号，从 1 开始，\$0 表示一整行。
-```
+	# 选项释义
+		# -a ： 将 binary 文件以 text 文件的方式进行搜寻
+		# -c ： 计算找到个数
+		# -i ： 忽略大小写
+		# -n ： 输出行号
+		# -v ： 反向选择，亦即显示出没有 搜寻字符串 内容的那一行
+		# --color=auto ：找到的关键字加颜色显示
+
+	# e.g.
+	grep John /etc/passwd		# 在 /etc/passwd 文件中查找文本 John 并显示所有匹配的行
+	grep -i john /etc/passwd	# 忽略大小写
+	grep -ri john /home/users 	# 递归搜索目录中的匹配文本
+	```
+
+- awk
+	```bash
+	# 可以根据字段的某些条件进行匹配，例如匹配字段小于某个值的那一行数据。
+	awk '条件类型 1 {动作 1} 条件类型 2 {动作 2} ...' filename
+	# awk 每次处理一行，处理的最小单位是字段，每个字段的命名方式为：\$n，n 为字段号，从 1 开始，\$0 表示一整行。
+
+	# e.g.
+	cat /proc/cpuinfo | grep name | awk '{print $3}'		# 查询 cpuinfo 信息合并输入第 3 列
+	```
+
+- cut
+	```bash
+	# 剪切命令可用于仅显示文本文件或其他命令输出中的特定列
+
+	# e.g.
+	cut -d: -f 1,3 names.txt	# 显示冒号分隔文件中的第一和第三字段
+	cut -c 1-8 names.txt		# 仅显示文件中每行的前 8 个字符
+	cut -d: -f1 /etc/passwd		# 显示系统中所有用户的 UNIX 登录名
+	```
+
+- uniq
+	```bash
+	# 用于报告或忽略文件中的重复行
+
+	# e.g.
+	sort namesd.txt | uniq		# 使用 uniq 命令从文件中删除重复项
+	sort namesd.txt | uniq –c	# 使用 Uniq 显示重复的行数
+	sort namesd.txt | uniq –cd	# 使用 Uniq 仅显示重复的行
+	grep name /proc/cpuinfo | uniq	# 查询 cpuinfo 信息合并成一条
+	cat /proc/cpuinfo | grep name |cut -f2 -d ":" | uniq		# 查询 cpuinfo 信息合并成一条并只输出: 后的内容
+	```
+
+- sort
+	```bash
+	# 将文件进行排序,并将排序结果标准输出.
+
+	# e.g.
+	sort names.txt		# 以升序对文本文件进行排序
+	sort -r names.txt	# 以降序对文本文件进行排序
+	sort -t: -k 3n /etc/passwd | more	# 按第 3 个字段（数字用户 ID）对 passwd 文件进行排序
+	sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n /etc/hosts	# 按 IP 地址对 / etc / hosts 文件进行排序
+	```
+
+- xargs
+	```bash
+	# 接收命令的输出并将其作为另一个命令的参数传递
+
+	# e.g.
+	find ~ -name '*.tmp' -print0 | xargs -0 rm -f	# 尝试使用 rm 删除所有 tmp 文件
+	find /etc -name "*.conf" | xargs ls –l			# 获取 /etc/ 下所有 *.conf 文件的列表
+	cat url-list.txt | xargs wget –c				# 如果需要从文件读取要下载的 URL 列表
+	find / -name *.jpg -type f -print | xargs tar -cvzf images.tar.gz	# 找出所有 jpg 图像并将其存档
+	ls *.jpg | xargs -n1 -i cp {} /external-hard-drive/directory 		# 将所有图像复制到外部硬盘驱动器
+	```
+
+- tee
+	```bash
+	# tee 命令用于存储和查看（同时）任何其他命令的输出,默认下输出将覆盖原文件
+
+	# e.g.
+	ls | tee file 				# 将输出既写入屏幕（stdout），又写入文件
+	ls | tee file1 file2 file3	# 输出写入多个文件
+	ls | tee –a file			# 追加而不是覆盖
+	crontab -l | tee crontab-backup.txt | sed 's/old/new/' | crontab –	# 对 crontab 条目进行备份，并将 crontab 条目作为 sed 命令的输入，由 sed 命令进行替换。替换后，它将被添加为一个新的cron作业。
+	```
 
 **其他符号工具**
 ```bash
 head		# 显示文件的开头的内容.默认下,显示文件的头 10 行内容.
 tail		# 显示文件中的尾部内容.默认下,显示文件的末尾 10 行内容.
-sort		# 将文件进行排序,并将排序结果标准输出.
-uniq		# 用于报告或忽略文件中的重复行
 ```
 
 ---
 
 ## 会话
 
+**查看用户信息**
 ```bash
 id
 who			# 显示目前登录系统的用户信息.
 w			# 显示已经登陆系统的用户列表,并显示用户正在执行的指令.
 last		# 显示用户最近登录信息
 ```
+
+**快捷键**
 ```bash
 Ctrl+S		# 终止显示的信号/指令
 Ctrl+Q		# 恢复显示的信号/指令
+Ctrl+R		# 搜索历史命令
+Ctrl+P		# 切换上一个命令
 alt+F1-F6	# 切换虚拟控制台
 Alt+F7		# 图形界面
 ```
@@ -230,15 +333,21 @@ Alt+F7		# 图形界面
 
 screen 是一个会话管理软件，用户可以通过该软件同时连接多个本地或远程的命令行会话，并在其间自由切换。
 ```bash
-yum -y install screen
-apt-get -y install screen
+# RedHat 系安装
+	yum -y install screen
+
+# Debian 系安装
+	apt-get -y install screen
+
 screen -S <name>
 screen -ls
 screen -r <name>	# 重新连接
 ctrl+d				# 终止会话
 ```
 
-**历史记录**
+### 历史记录
+
+**查看历史记录**
 ```bash
 cat ~/.bash_history
 cat ~/.nano_history
@@ -247,16 +356,28 @@ cat ~/.mysql_history
 cat ~/.php_history
 ```
 
-- Ubuntu 下配置不记录 history 方法
-	```bash
-	vim ~/.bashrc
+**清楚历史记录**
+```bash
+history -c
+```
 
-	# 可选配置如下：
-	HISTCONTROL=ignoredups		# 忽略连续重复的命令。
-	HISTCONTROL=ignorespace		# 忽略以空白字符开头的命令。
-	HISTCONTROL=ignoreboth		# 同时忽略以上两种。
-	HISTCONTROL=erasedups		# 忽略所有历史命令中的重复命令。
-	```
+**centos 下更改历史记录文件名**
+```bash
+vim ~/.bash_profile
+
+HISTFILE=/root/.his
+```
+
+**Ubuntu 下配置不记录 history 方法**
+```bash
+vim ~/.bashrc
+
+# 可选配置如下：
+HISTCONTROL=ignoredups		# 忽略连续重复的命令。
+HISTCONTROL=ignorespace		# 忽略以空白字符开头的命令。
+HISTCONTROL=ignoreboth		# 同时忽略以上两种。
+HISTCONTROL=erasedups		# 忽略所有历史命令中的重复命令。
+```
 
 ---
 
@@ -285,7 +406,7 @@ cd	# 切换工作目录
 	lib		# (library)存放跟文件系统中的程序运行所需要的共享库及内核模块
 	tmp		# (temporary)用于存放各种临时文件
 ```
-更多内容参考笔记 [文件](./笔记/文件.md#/)
+更多内容参考笔记 [文件](./笔记/文件.md#目录结构)
 
 ### 查看
 
@@ -335,6 +456,8 @@ objdump		# 显示目标文件的信息,可以通过参数控制要显示的内�
 	objdump -T					# 查看动态符号表的内容
 
 od			# 以字符或者十六进制的形式显示二进制文件
+	od -c test.txt
+	od -b test.txt
 
 strings		# 在对象文件或二进制文件中查找可打印的字符串
 	strings start.bin | grep -a "pass"
@@ -342,41 +465,58 @@ strings		# 在对象文件或二进制文件中查找可打印的字符串
 	strings -o start.bin 		# 获取所有 ASCII 字符偏移
 
 ldd			# 可以显示程序或者共享库所需的共享库
+	ldd /bin/cat
+
 nm			# 显示目标文件的符号
 ```
 
 ### 创建
 
-```bash
-touch								# 创建文件
+- touch
+	```bash
+	# 创建文件
 	touch -r test1.txt test2.txt 		# 更新 test2.txt 时间戳与 test1.txt 时间戳相同
 	touch -c -t 202510191820 a.txt 		# 更改时间
+	```
 
-truncate -s 100k aaa.txt			# 创建指定大小文件
+- truncate
+	```bash
+	# 创建指定大小文件
+	truncate -s 100k aaa.txt
 
-mkdir								# 创建文件夹
+- mkdir
+	```bash
+	# 创建文件夹
 	mkdir -p /mnt/aaa/aaa/aaa 			# 创建指定路径一系列文件夹
 	mkdir -m 777 /test					# 创建时指定权限
-```
+	```
 
 ### 删除
 
-```bash
-rm			# 删除
-	rm -r		# 递归，对目录及其下的内容进行递归操作
-	rm -f		# 强制删除,无需确认操作
-	rm -i		# 确认
-```
-rm 命令有一对专门针对根目录的选项 `--preserve-root` 和 `--no-preserve-root`
-- `--preserve-root`：保护根目录，这是默认行为。
-- `--no-preserve-root`：不保护根目录。
-这对选项是后来添加到 rm 命令的。可能几乎每个系统管理员都犯过操作错误，而这其中删除过根目录的比比皆是
+- rm
+	```bash
+	# 删除文件和目录的命令
+	rm [options] <filename>
 
-那为什么还会专门出现 --no-preserve-root 选项呢？这可能主要是出于 UNIX 哲学的考虑，给予你想要的一切权力，犯傻是你的事情，而不是操作系统的事情。万一，你真的想删除根目录下的所有文件呢？
+	# 选项释义
+	-r		# 递归，对目录及其下的内容进行递归操作
+	-f		# 强制删除,无需确认操作
+	-i		# 确认
+	-v		# 详细显示进行的步骤
+	```
 
-```bash
-rmdir		# 删除空目录
-```
+	rm 命令有一对专门针对根目录的选项 `--preserve-root` 和 `--no-preserve-root`
+	- `--preserve-root`：保护根目录，这是默认行为。
+	- `--no-preserve-root`：不保护根目录。
+	这对选项是后来添加到 rm 命令的。可能几乎每个系统管理员都犯过操作错误，而这其中删除过根目录的比比皆是
+
+	那为什么还会专门出现 --no-preserve-root 选项呢？这可能主要是出于 UNIX 哲学的考虑，给予你想要的一切权力，犯傻是你的事情，而不是操作系统的事情。万一，你真的想删除根目录下的所有文件呢？
+
+- rmdir
+	```bash
+	# 删除空目录
+	rmdir
+	```
 
 **删除巨大文件的技巧**
 ```bash
@@ -389,7 +529,7 @@ true > access.log
 cat /dev/null > access.log
 ```
 
-### 查询
+### 搜索
 
 **搜索命令**
 ```bash
@@ -397,18 +537,31 @@ which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
 ```
 
 **搜索文件**
-```bash
-find / -name conf*	# 快速查找根目录及子目录下所有 conf 文件
-	find / -name site-packages -d	# 查找 site-packages 目录
-locate <File>		# 查找文件或目录
-```
 
-```bash
-fd					# 文件查找工具
+- find
+	```bash
+	# 用于基于多种条件在UNIX文件系统中查找文件的常用命令
+
+	# e.g.
+	find / -name conf*	# 查找根目录及子目录下所有 conf 文件
+	find / -name site-packages -d	# 查找 site-packages 目录
+	find . –mtime -2				# 查找最近两天在当前目录下修改过的所有文件
+	find / -type f -size + 100M		# 列出系统中大于100MB的所有文件
+	```
+
+- locate
+	```bash
+	# 查找文件或目录
+	locate <File>
+	```
+
+- fd
+	```bash
+	# 文件查找工具
 	wget https://github.com/sharkdp/fd/releases/download/v7.3.0/fd-musl_7.3.0_amd64.deb
 	dpkg -i fd-musl_7.3.0_amd64.deb
 	fd <File>
-```
+	```
 
 **找出重复文件**
 
@@ -424,9 +577,9 @@ fd					# 文件查找工具
 
 - rdfind
 	```bash
-	yum install epel-release && yum install rdfind
+	yum install -y epel-release && yum install -y rdfind
 	# 或
-	apt-get install rdfind
+	apt-get install -y rdfind
 
 	rdfind -dryrun true /home			# 结果会保存在 results.txt 文件中
 	rdfind -deleteduplicates true /home	# 删除
@@ -434,9 +587,9 @@ fd					# 文件查找工具
 
 - fdupes
 	```bash
-	yum install epel-release && yum install fdupes
+	yum install -y epel-release && yum install -y fdupes
 	# 或
-	apt install fdupes
+	apt install -y fdupes
 
 	fdupes /home
 	fdupes -r /			# 递归扫描目录,包括子目录
@@ -493,14 +646,47 @@ objcopy -O binary main main.bin    							# 将文件转换成 rawbinary 格式
 objcopy -I binary -O binary --reverse-bytes=4 1.out 2.out	# 转换为小端序
 ```
 
+**tr**
+
+tr 命令将文件转换为全大写
+```bash
+cat employee.txt
+
+100 Jason Smith
+200 John Doe
+300 Sanjay Gupta
+400 Ashok Sharma
+
+tr a-z A-Z < employee.txt
+
+100 JASON SMITH
+200 JOHN DOE
+300 SANJAY GUPTA
+400 ASHOK SHARMA
+```
+
 ### 比较
 
-```bash
-diff <变动前的文件> <变动后的文件>
-```
-```bash
-vimdiff <变动前的文件> <变动后的文件>
-```
+- diff
+	```bash
+	diff [options] <file1> <file2>
+		e.g. : diff -w name_list.txt name_list_new.txt
+	```
+
+- vimdiff
+	```bash
+	vimdiff <变动前的文件> <变动后的文件>
+	```
+
+- comm
+	```bash
+	comm [options] ... FILE1 FILE2
+
+	# e.g.
+	comm -12 1.txt 2.txt	# 查看两个文件共有的部分
+	comm -23 1.txt 2.txt	# 仅查看 file1 中有,file2 中没有的行
+	comm -13 1.txt 2.txt	# 仅查看 file2 中有,file1 中没有的行
+	```
 
 ### 链接
 
@@ -560,66 +746,91 @@ ln file1 file2
 
 ### 压缩备份
 
-```bash
-.tar	# 注:tar 是打包,不是压缩!
-tar -xvf FileName.tar						# 解包
-tar -cvf FileName.tar DirName				# 打包
-tar -tvf FileName.tar.gz					# 不解压查看内容
-tar -xvf FileName.tar.gz a.txt  			# 解压指定内容
-tar -uvf test.tar.bz2 test					# 更新一个内容
-tar -rvf test.tar.bz2 test2 				# 追加一个内容
+- .tar
+	```bash
+	# 注:tar 是打包,不是压缩!
+	tar -xvf FileName.tar						# 解包
+	tar -cvf FileName.tar DirName				# 打包
+	tar -tvf FileName.tar.gz					# 不解压查看内容
+	tar -xvf FileName.tar.gz a.txt  			# 解压指定内容
+	tar -uvf test.tar.bz2 test					# 更新一个内容
+	tar -rvf test.tar.bz2 test2 				# 追加一个内容
+	```
 
-.tar.gz 和 .tgz
-tar -zxvf FileName.tar.gz					# 解压
-tar -zcvf FileName.tar.gz DirName			# 压缩
+- .tar.gz 和 .tgz
+	```bash
+	tar -zxvf FileName.tar.gz					# 解压
+	tar -zcvf FileName.tar.gz DirName			# 压缩
+	```
 
-.tar.xz
-tar -xvJf FileName.tar.xz					# 解压
+- .tar.xz
+	```bash
+	tar -xvJf FileName.tar.xz					# 解压
+	```
 
-.tar.Z
-tar -Zxvf FileName.tar.Z					# 解压
-tar -Zcvf FileName.tar.Z DirName			# 压缩
+- .tar.Z
+	```bash
+	tar -Zxvf FileName.tar.Z					# 解压
+	tar -Zcvf FileName.tar.Z DirName			# 压缩
+	```
 
-.tar.bz
-tar -jxvf FileName.tar.bz					# 解压
-tar -jcvf FileName.tar.bz DirName			# 压缩
+- .tar.bz
+	```bash
+	tar -jxvf FileName.tar.bz					# 解压
+	tar -jcvf FileName.tar.bz DirName			# 压缩
+	```
 
-.gz
-gunzip FileName.gz							# 解压1
-gzip -dv FileName.gz						# 解压2
-gzip FileName								# 压缩
-gzip -l FileName.gz 						# 不解压查看内容
-zcat FileName.gz 							# 不解压查看内容
+- .gz
+	```bash
+	gunzip FileName.gz							# 解压1
+	gzip -dv FileName.gz						# 解压2
+	gzip FileName								# 压缩
+	gzip -l FileName.gz 						# 不解压查看内容
+	zcat FileName.gz 							# 不解压查看内容
+	```
 
-.bz2
-bzip2 -dv FileName.bz2						# 解压1
-bunzip2 FileName.bz2						# 解压2
-bzip2 -zv FileName							# 压缩
-bzcat FileName.bz2							# 不解压查看内容
+- .bz2
+	```bash
+	bzip2 -dv FileName.bz2						# 解压1
+	bunzip2 FileName.bz2						# 解压2
+	bzip2 -zv FileName							# 压缩
+	bzcat FileName.bz2							# 不解压查看内容
+	```
 
-.Z
-uncompress FileName.Z						# 解压
-compress FileName							# 压缩
-compress -rvf /home/abc/					# 强制压缩文件夹
+- .Z
+	```bash
+	uncompress FileName.Z						# 解压
+	compress FileName							# 压缩
+	compress -rvf /home/abc/					# 强制压缩文件夹
+	```
 
-.zip
-unzip FileName.zip							# 解压
-zip FileName.zip DirName					# 压缩
+- .zip
+	```bash
+	unzip FileName.zip							# 解压
+	zip FileName.zip DirName					# 压缩
+	```
 
-.rar
-rar x FileName.rar							# 解压
-rar a FileName.rar DirName					# 压缩
+- .rar
+	```bash
+	rar x FileName.rar							# 解压
+	rar a FileName.rar DirName					# 压缩
+	```
 
-.lha
-lha -e FileName.lha							# 解压
-lha -a FileName.lha FileName				# 压缩
+- .lha
+	```bash
+	lha -e FileName.lha							# 解压
+	lha -a FileName.lha FileName				# 压缩
+	```
 
-.rpm
-rpm2cpio FileName.rpm | cpio -div			# 解包
+- .rpm
+	```bash
+	rpm2cpio FileName.rpm | cpio -div			# 解包
+	```
 
-.deb
-ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
-```
+- .deb
+	```bash
+	ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
+	```
 
 **7z**
 ```bash
@@ -640,9 +851,7 @@ apt install -y p7zip
 pigz 命令可以用来解压缩文件，最重要的是支持多线程并行处理
 ```bash
 tar -cvf - dir1 dir2 dir3 | pigz -p 8 > xxx.tgz		# 结合 tar 使用, 压缩命令
-
 pigz -p 8 -d xxx.tgz		# 解压命令
-
 tar -xzvf xxx.tgz			# 如果是 gzip 格式，也支持用 tar 解压
 ```
 
@@ -666,6 +875,51 @@ cat /proc/net/fib_trie
 cat /etc/sysconfig/network
 sudo -v
 ```
+
+**测试连通性**
+
+- ping
+	```bash
+	ping [options] <target>
+		e.g. : ping 127.0.0.1
+
+	# -d 使用 Socket 的 SO_DEBUG 功能。
+	# -f 极限检测。大量且快速地送网络封包给一台机器，看它的回应。
+	# -n 只输出数值。
+	# -q 不显示任何传送封包的信息，只显示最后的结果。
+	# -r 忽略普通的 Routing Table，直接将数据包送到远端主机上。通常是查看本机的网络接口是否有问题。
+	# -R 记录路由过程。
+	# -v 详细显示指令的执行过程。
+	# -c 数目：在发送指定数目的包后停止。
+	# -i 秒数：设定间隔几秒送一个网络封包给一台机器，预设值是一秒送一次。
+	# -I 网络界面：使用指定的网络界面送出数据包。
+	# -l 前置载入：设置在送出要求信息之前，先行发出的数据包。
+	# -p 范本样式：设置填满数据包的范本样式。
+	# -s 字节数：指定发送的数据字节数，预设值是 56，加上 8 字节的 ICMP 头，一共是 64ICMP 数据字节。
+	# -t 存活数值：设置存活数值 TTL 的大小。
+	```
+
+- traceroute
+	```bash
+	traceroute [options] <target>
+		e.g. : traceroute www.baidu.com
+
+	# -d 使用 Socket 层级的排错功能
+	# -f 设置第一个检测数据包的存活数值 TTL 的大小。
+	# -F 设置勿离断位。
+	# -g 设置来源路由网关，最多可设置 8 个。
+	# -i 使用指定的网络界面送出数据包。
+	# -I 使用 ICMP 回应取代 UDP 资料信息。
+	# -m 设置检测数据包的最大存活数值 TTL 的大小。
+	# -n 直接使用 IP 地址而非主机名称。
+	# -p 设置 UDP 传输协议的通信端口。
+	# -r 忽略普通的 Routing Table，直接将数据包送到远端主机上。
+	# -s 设置本地主机送出数据包的 IP 地址。
+	# -t 设置检测数据包的 TOS 数值。
+	# -v 详细显示指令的执行过程。
+	# -w 设置等待远端主机回报的时间。
+	# -x 开启或关闭数据包的正确性检验。
+	```
 
 **端口**
 ```bash
@@ -720,7 +974,7 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 
 - 通用(长期)
 	```vim
-	apt install resolvconf
+	apt install -y resolvconf
 
 	vim /etc/resolvconf/resolv.conf.d/head
 
@@ -730,7 +984,7 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	resolvconf -u
 	```
 
-**修改IP**
+**修改 IP**
  - Ubuntu
 	```bash
 	vim /etc/network/interfaces
@@ -791,7 +1045,7 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	/etc/rc.d/network restart
 	```
 
-**配置DHCP**
+**配置 DHCP**
 - Ubuntu
 	```bash
 	iface enp7s0 inet dhcp		# dhcp 配置
@@ -812,6 +1066,43 @@ ifup eth0
 # 通过以上命令修改网卡配置，在机器重启后配置将不再生效
 ```
 
+**设置包转发**
+
+在 CentOS 中默认的内核配置已经包含了路由功能，但默认并没有在系统启动时启用此功能。开启 Linux 的路由功能可以通过调整内核的网络参数来实现。要配置和调整内核参数可以使用 sysctl 命令
+```bash
+sysctl -w net.ipv4.ip_forward=1
+```
+
+这样设置之后，当前系统就能实现包转发，但下次启动计算机时将失效。为了使在下次启动计算机时仍然有效，需要将下面的行写入配置文件 /etc/sysctl.conf
+```diff
+vim /etc/sysctl.conf
+
+++ net.ipv4.ip_forward = 1
+```
+
+**修改路由**
+```bash
+route	# 查看路由表
+
+# 添加到主机的路由
+route add -host 192.168.1.2 dev eth0
+route add -host 10.20.30.148 gw 10.20.30.40
+
+# 添加到网络的路由
+route add -net 10.20.30.40 netmask 255.255.255.248 eth0
+route add -net 10.20.30.48 netmask 255.255.255.248 gw 10.20.30.41
+route add -net 192.168.1.0/24 eth1
+
+# 添加默认路由
+route add default gw 192.168.1.1
+
+# 删除路由
+route del -host 192.168.1.2 dev eth0:0
+route del -host 10.20.30.148 gw 10.20.30.40
+route del -net 192.168.1.0/24 eth1
+route del default gw 192.168.1.1
+```
+
 ---
 
 ## 抓包
@@ -819,10 +1110,10 @@ ifup eth0
 **tcpdump**
 ```bash
 # Debian安装
-apt install tcpdump -y
+apt install -y tcpdump
 
 # Redhat安装
-yum install tcpdump -y
+yum install -y tcpdump
 
 # 当我们在没用任何选项的情况下运行 tcpdump 命令时,它将捕获所有接口上的数据包
 tcpdump -i {接口名}	# 指定接口
@@ -887,13 +1178,17 @@ scp -r 		# 文件夹传输
 
 **lrzsz**
 ```bash
-yum install lrzsz
+yum install -y lrzsz
 sz xxx		# 将选定的文件发送(send)到本地机器
 rz 			# 运行该命令会弹出一个文件选择窗口,从本地选择文件上传到服务器(receive),需要远程软件支持
 ```
 
 **wget**
 ```bash
+# 用于下载文件的工具
+wget [options] [target]
+
+# e.g.
 wget example.com/big.file.iso						# 下载目标文件
 wget --output-document=filename.html example.com	# 另行命名
 wget -c example.com/big.file.iso					# 恢复之前的下载
@@ -916,6 +1211,19 @@ wget --no-check-certificate							# 不检查 https 证书
 	npm install -g t-get
 	tget 'magnet:?xt=urn:btih:0403fb4728bd788fbcb67e87d6feb241ef38c75a'
 	```
+
+---
+
+### 远程访问
+
+**ssh**
+```bash
+ssh [options] <target>
+	e.g. : ssh 127.0.0.1
+
+	ssh -V	# 识别 SSH 客户端版本
+	ssh-v	# 调试 ssh 会话
+```
 
 ---
 
@@ -1001,7 +1309,7 @@ ls -alh /var/cache/yum/
 
 alien 是一个用于在各种不同的 Linux 包格式相互转换的工具，其最常见的用法是将 .rpm 转换成 .deb（或者反过来）。
 ```bash
-apt install alien			# 安装 alien
+apt install -y alien			# 安装 alien
 alien --to-deb oracle-instantclient19.6-basic-19.6.0.0.0-1.x86_64.rpm	# 将 oracle Basic Package 从 rpm 转为 deb 格式
 ```
 
@@ -1050,7 +1358,7 @@ nano /etc/apt/apt.conf.d/20auto-upgrades
 
 **Ubuntu apt 换源**
 ```bash
-sudo tee /etc/apt/sources.list <<-'EOF'
+tee /etc/apt/sources.list <<-'EOF'
 
 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
 deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
@@ -1068,7 +1376,7 @@ apt update
 
 **Debain apt 换源**
 ```bash
-sudo tee /etc/apt/sources.list <<-'EOF'
+tee /etc/apt/sources.list <<-'EOF'
 
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
@@ -1085,7 +1393,7 @@ apt update
 
 **Kali apt 换源**
 ```bash
-sudo tee /etc/apt/sources.list <<-'EOF'
+tee /etc/apt/sources.list <<-'EOF'
 
 # 清华源
 deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
@@ -1099,9 +1407,6 @@ deb-src http://http.kali.org/kali kali-rolling main non-free contrib
 deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
 deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
 
-# 浙大
-deb http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
-deb-src http://mirrors.zju.edu.cn/kali kali-rolling main contrib non-free
 EOF
 apt update
 ```
@@ -1118,15 +1423,15 @@ apt-get update
 
 ```bash
 apt update
-apt install gdebi
+apt install -y gdebi
 ```
 
 ### Binary
 
 ```bash
-yum install make
-yum install gcc
-yum install gcc-c++
+yum install -y make
+yum install -y gcc
+yum install -y gcc-c++
 ./configure --prefix=/opt	# 配置,表示安装到 /opt 目录
 make						# 编译
 make install				# 安装
@@ -1138,8 +1443,8 @@ make install				# 安装
 
 **安装 dnf**
 ```bash
-yum install epel-release
-yum install dnf
+yum install -y epel-release
+yum install -y dnf
 ```
 
 ### dpkg
@@ -1178,7 +1483,7 @@ pacman -S archlinux-keyring
 ```bash
 rpm -qa 					# 搜索 rpm 包
 rpm -qf /etc/my.conf		# 查询文件来自哪个包
-rpm –ivh xxxx.rpm			# 安装本地包
+rpm -ivh xxxx.rpm			# 安装本地包
 rpm -e xxx					# 卸载
 rpm -U						# 升级
 rpm -V						# 验证
@@ -1188,26 +1493,26 @@ rpm -V						# 验证
 
 > Snappy 是一个软件部署和软件包管理系统，最早由 Canonical 公司为了 Ubuntu 移动电话操作系统而设计和构建。其包称为“snap”，工具名为“snapd”，可在多种 Linux 发行版上运行，完成发行上游主导的软件部署。该系统的设计面向手机、云、物联网和台式机。
 
-**Centos下安装snap**
+**Centos 下安装 snap**
 ```bash
-sudo yum install epel-release
-sudo yum install snapd
-sudo systemctl enable --now snapd.socket
-sudo ln -s /var/lib/snapd/snap /snap
+yum install -y epel-release
+yum install -y snapd
+systemctl enable --now snapd.socket
+ln -s /var/lib/snapd/snap /snap
 ```
 
-**kali下安装snap**
+**kali 下安装 snap**
 ```bash
-sudo apt-get update
-sudo apt install snapd
+apt-get update
+apt install -y snapd
 systemctl start snapd
 export PATH=$PATH:/snap/bin
 ```
 
-**Ubuntu下安装snap**
+**Ubuntu 下安装 snap**
 ```bash
-sudo apt-get update
-sudo apt install snapd
+apt-get update
+apt install -y snapd
 ```
 
 ### yum
@@ -1266,23 +1571,31 @@ yum makecache
 
 **配置 EPEL 源**
 
-这里使用 tuna 的 epel 镜像。
-```bash
-yum install epel-release
-```
+- tuna
 
-当前 tuna 已经在 epel 的官方镜像列表里，所以不需要其他配置，mirrorlist 机制就能让你的服务器就近使用 tuna 的镜像。如果你想强制 你的服务器使用 tuna 的镜像，可以修改 `/etc/yum.repos.d/epel.repo`，将 mirrorlist 和 metalink 开头的行注释掉。
+	这里使用 tuna 的 epel 镜像。
+	```bash
+	yum install -y epel-release
+	```
 
-接下来，取消注释这个文件里 baseurl 开头的行，并将其中的 http://download.fedoraproject.org/pub 替换成 https://mirrors.tuna.tsinghua.edu.cn
-```bash
-sed -e 's!^metalink=!#metalink=!g' \
-    -e 's!^#baseurl=!baseurl=!g' \
-    -e 's!//download\.fedoraproject\.org/pub!//mirrors.tuna.tsinghua.edu.cn!g' \
-    -e 's!http://mirrors\.tuna!https://mirrors.tuna!g' \
-    -i /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo
-```
+	当前 tuna 已经在 epel 的官方镜像列表里，所以不需要其他配置，mirrorlist 机制就能让你的服务器就近使用 tuna 的镜像。如果你想强制 你的服务器使用 tuna 的镜像，可以修改 `/etc/yum.repos.d/epel.repo`，将 mirrorlist 和 metalink 开头的行注释掉。
 
-运行 `yum update` 测试一下
+	接下来，取消注释这个文件里 baseurl 开头的行，并将其中的 http://download.fedoraproject.org/pub 替换成 https://mirrors.tuna.tsinghua.edu.cn
+	```bash
+	sed -e 's!^metalink=!#metalink=!g' \
+		-e 's!^#baseurl=!baseurl=!g' \
+		-e 's!//download\.fedoraproject\.org/pub!//mirrors.tuna.tsinghua.edu.cn!g' \
+		-e 's!http://mirrors\.tuna!https://mirrors.tuna!g' \
+		-i /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo
+	```
+
+	运行 `yum update & yum makecache` 测试一下
+
+- aliyun
+	```
+	curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+	yum clean all && yum makecache
+	```
 
 ### 常用软件
 
@@ -1324,7 +1637,7 @@ usermod -s /usr/bin/fish <USERNAME>
 > 一个挺好用的 shell 环境
 
 ```bash
-apt install zsh		# 安装 zsh
+apt install -y zsh		# 安装 zsh
 chsh -s /bin/zsh	# 切换默认的 shell 为 zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"	# 安装 oh-my-zsh
 git clone git://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions	# 下载命令补全插件
@@ -1373,27 +1686,71 @@ end
 ## 系统设置
 ### 时间
 
-```bash
-date							# 查看当前时间
+- date
+	```bash
+	# date 命令用于查看当前时间
+	date							# 不带任何参数的 date 仅用于查看时间
 	date -R							# 查看当前时区
 	data -s "2019-03-31 13:12:29"	# 修改系统时间
-	date +%s						# 获取现在的Unix时间戳
+	date +%s						# 获取现在的 Unix 时间戳
 
-ntpdate		# 设置本地日期和时间
+	# e.g. : 例如，将系统日期设置为2009年1月31日，晚上10：19，53秒
+	date 013122192009.53
+	date +%Y%m%d -s "20090131"
+
+	# e.g. : 各种格式显示当前日期和时间的方法
+	date '+Current Date: %m/%d/%y%nCurrent Time:%H:%M:%S'
+	date +"%d-%m-%Y"
+	date +"%A,%B %d %Y"
+	date --date="1 year ago"
+	date --date="yesterday"
+	date --date="10 months 2 day ago"
+	date -d "last friday"
+	date --date='3 seconds'
+	date --date='4 hours'
+	```
+
+- ntpdate
+	```bash
+	# ntpdate 命令可以用于设置本地日期和时间
 	ntpdate 0.rhel.pool.ntp.org	# 网络同步时间
+	```
 
-hwclock	   	# 硬件时钟访问工具
-	hwclock –w 					# 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
-	hwclock -s 					# 将硬件时钟同步到系统时钟
+- hwclock
+	```bash
+	# hwclock 设置硬件日期和时间
+	hwclock			# 使用不带任何参数的 hwclock 查看当前硬件日期和时间
+	hwclock -w 		# 将系统时钟同步到硬件时钟,将当前时间和日期写入 BIOS,避免重启后失效
+	hwclock -s 		# 将硬件时钟同步到系统时钟
+	```
 
-cal			# 查看日历
-```
+- cal
+	```bash
+	# cal 用于查看日历
+	cal
+	```
 
 **Tips**
 - ntpd 与 ntpdate 的区别
 	- ntpd 在实际同步时间时是一点点的校准过来时间的,最终把时间慢慢的校正对.而 ntpdate 不会考虑其他程序是否会阵痛,直接调整时间.
 	- 一个是校准时间,一个是调整时间.
 	- https://blog.csdn.net/tuolaji8/article/details/79971591
+
+### 时区
+
+**查看时区**
+```bash
+timedatectl
+```
+
+**修改时区**
+```bash
+timedatectl set-timezone Asia/Shanghai
+
+或
+
+cp  /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
+```
 
 ### 语言
 
@@ -1422,8 +1779,8 @@ dpkg-reconfigure locales
 
 **如果界面出现乱码,安装中文字体**
 ```bash
-apt install xfonts-intl-chinese
-apt install ttf-wqy-microhei
+apt install -y xfonts-intl-chinese
+apt install -y ttf-wqy-microhei
 reboot
 ```
 
@@ -1521,21 +1878,21 @@ getenforce			# 查看 selinux 状态
 
 ## 账号管控
 
-**账号**
+**用户**
 ```bash
 id									# 显示真实有效的用户 ID(UID)和组 ID(GID)
+	id -un
+
 whoami								# 当前用户
-groups								# 当前组
 cut -d: -f1 /etc/passwd				# 查看系统所有用户
 
 useradd <username>					# 创建用户
 useradd -d /home/<username> -s /sbin/nologin <username>		# 创建用户并指定家目录和 shell
 passwd <username>					# 设置用户密码
 
-groupadd <groupname>				# 创建组
-groupadd <username> <groupname>		# 移动用户到组
-
-newgrp <groupname>					# 创建组
+userdel <username>					# 只删除用户不删除家目录
+userdel -r <username>				# 同时删除家目录
+userdel -f <username>				# 强制删除,即使用户还在登陆中
 
 usermod -g <groupname> <username>	# 修改用户的主组
 usermod -G <supplementary> <username>	# 修改用户的附加组
@@ -1543,20 +1900,26 @@ usermod -s /bin/bash <username>		# 修改用户登录的 Shell
 usermod -L <username>  				# 锁定用户
 usermod -U <username> 				# 解锁用户
 
-userdel <username>					# 只删除用户不删除家目录
-userdel -r <username>				# 同时删除家目录
-userdel -f <username>				# 强制删除,即使用户还在登陆中
-sudo passwd							# 配置 su 密码
-
-chage		# 修改帐号和密码的有效期限
+chage								# 修改帐号和密码的有效期限
 	chage -l <username>				# 查看一下用户密码状态
 	chage -d <username>				# 把密码修改曰期归零了,这样用户一登录就要修改密码
 
-passwd -l <username>  				# 锁定用户
-passwd -u <username>  				# 解锁用户
+passwd								# 配置 su 密码
+	passwd -l <username>  			# 锁定用户
+	passwd -u <username>  			# 解锁用户
 
 su <username>						# 切换账号
 su - <username>                     # 切换账号并改变工作目录至使用者的家目录
+```
+
+**组**
+```bash
+groups								# 当前组
+
+groupadd <groupname>				# 创建组
+groupadd <username> <groupname>		# 移动用户到组
+
+newgrp <groupname>					# 创建组
 ```
 
 **权限**
@@ -1618,9 +1981,16 @@ setfacl -b <File/Folder>				# 删除 ACL
 ## 进程管理
 
 **服务管理**
-```bash
-service <程序> status/start/restart/stop	# 控制系统服务的实用工具
-systemctl	# 系统服务管理器指令
+
+- service
+	```bash
+	# 控制系统服务的实用工具
+	service <程序> status/start/restart/stop
+	```
+
+- systemctl
+	```bash
+	# 系统服务管理器指令
 	systemctl enable crond.service	# 让某个服务开机自启(.service 可以省略)
 	systemctl disable crond			# 不让开机自启
 	systemctl status crond			# 查看服务状态
@@ -1629,23 +1999,40 @@ systemctl	# 系统服务管理器指令
 	systemctl restart crond			# 重启某个服务
 	systemctl reload *				# 重新加载服务配置文件
 	systemctl is-enabled crond		# 查询服务是否开机启动
+	```
 
-chkconfig	# 检查、设置系统的各种服务
+- chkconfig
+
+	从 CentOS7 开始,CentOS 的服务管理工具由 SysV 改为了 systemd,但即使是在 CentOS7 里,也依然可以使用 chkconfig 这个原本出现在 SysV 里的命令.
+	```bash
+	# 检查、设置系统的各种服务
 	chkconfig --list		# 列出所有的系统服务
 	chkconfig --add httpd	# 增加 httpd 服务
 	chkconfig --del httpd	# 删除 httpd 服务
 	chkconfig --level httpd 2345 on	# 设置 httpd 在运行级别为 2、3、4、5 的情况下都是 on(开启)的状态,另外如果不传入参数 --level,则默认针对级别 2/3/4/5 操作.
-
-# 从 CentOS7 开始,CentOS 的服务管理工具由 SysV 改为了 systemd,但即使是在 CentOS7 里,也依然可以使用 chkconfig 这个原本出现在 SysV 里的命令.
-```
+	```
 
 **监视进程**
 
-```bash
-ps -aux	    # 查看进程
-ps aux | grep root	# 查看 root 运行的程序
-ps -ef | grep root	# 查看 root 运行的程序
+- ps
+	```bash
+	# 查看进程
+	ps -l 			# 长格式显示详细的信息
+	ps -a 			# 显示一个终端的所有进程，除会话引线外
+	ps -A 			# 显示所有进程信息
+	ps –u root 		# 指定用户的所有进程信息
+	ps -e 			# 显示所有进程信息
+	ps aux 			# 查看系统中所有的进程显示所有包含其他使用者的行程
+	ps -axjf 		# 以程序树的方式显示
+	ps -eLf 		# 显示线程信息
+	ps -ef | grep queue | grep -v grep | wc -l # 查找含有 queue 关键词的进程（-v 去掉 grep 本身），输出找到的进程数量。
+	ps -aux | awk '$2~/S/ {print $0}' #统计 sleep 状态的进程
 
+	ps aux | grep root	# 查看 root 运行的程序
+	ps -ef | grep root	# 查看 root 运行的程序
+	```
+
+```bash
 jobs	    # 显示 Linux 中的任务列表及任务状态
 	jobs -l		    # 显示进程号
 
@@ -1655,7 +2042,7 @@ pidof -x script     # 找出 shell 脚本 script 的进程 PID
 top					# 实时动态地查看系统的整体运行情况
 
 free
-free -h			# 显示当前系统未使用的和已使用的内存数目
+free -h				# 显示当前系统未使用的和已使用的内存数目
 
 vmstat 1			# 显示虚拟内存状态
 
@@ -1672,15 +2059,17 @@ watch <Command>		# 以周期性的方式执行给定的指令,指令输出以全
 
 **进程处理**
 
-```bash
-# 杀进程
-kill
-kill -s STOP <PID>						# 删除执行中的程序或工作
-	kill -l								# 显示信号
-	kill -HUP <pid>						# 更改配置而不需停止并重新启动服务
-	kill -9 <PID> && kill -KILL <pid> 	# 信号(SIGKILL)无条件终止进程
-killall <PID>							# 使用进程的名称来杀死进程
+- kill
+	```bash
+	# 杀死进程
+	kill -s <PID>							# 删除执行中的程序或工作
+		kill -l								# 显示信号
+		kill -HUP <pid>						# 更改配置而不需停止并重新启动服务
+		kill -9 <PID> && kill -KILL <pid>	# 信号(SIGKILL)无条件终止进程
+	killall <PID>							# 使用进程的名称来杀死进程
+	```
 
+```bash
 ctrl+z	# 将前台运行的任务暂停,仅仅是暂停,而不是将任务终止.
 bg		# 转后台运行
 fg		# 转前台运行
@@ -1699,41 +2088,84 @@ cmdline
 ```
 
 **不挂断地运行命令**
-```bash
-nohup	# nohup 命令运行由 Command参数和任何相关的 Arg参数指定的命令,忽略所有挂断(SIGHUP)信号.在注销后使用 nohup 命令运行后台中的程序.要运行后台中的 nohup 命令,添加 & ( 表示"and"的符号)到命令的尾部.
-	nohup COMMAND &			# 使命令永久的在后台执行
-	sh test.sh &			# 将 sh test.sh 任务放到后台 ,关闭xshell,对应的任务也跟着停止.
-	nohup sh test.sh		# 将 sh test.sh 任务放到后台,关闭标准输入,终端不再能够接收任何输入(标准输入),重定向标准输出和标准错误到当前目录下的 nohup.out 文件,即使关闭 xshell 退出当前 session 依然继续运行.
-	nohup sh test.sh  & 	# 将 sh test.sh 任务放到后台,但是依然可以使用标准输入,终端能够接收任何输入,重定向标准输出和标准错误到当前目录下的 nohup.out 文件,即使关闭 xshell 退出当前 session 依然继续运行.
+- nohup
+	```bash
+	# nohup 命令运行由 Command 参数和任何相关的 Arg 参数指定的命令, 忽略所有挂断 (SIGHUP) 信号. 在注销后使用 nohup 命令运行后台中的程序. 要运行后台中的 nohup 命令, 添加 & ( 表示 "and" 的符号)到命令的尾部.
+	nohup [COMMAND] &			# 使命令永久的在后台执行
 
-setsid		# setsid 主要是重新创建一个 session,子进程从父进程继承了 SessionID、进程组 ID 和打开的终端,子进程如果要脱离父进程,不受父进程控制,我们可以用这个 setsid 命令
-	setsid ping baidu.com	# setsid 后子进程不受终端影响,终端退出,不影响子进程
-	# 别急,  ps -ef | grep ping ,找到 PID kill 相应的 PID 就可以关掉了😂
+	# e.g.
+		sh test.sh &		# 将 sh test.sh 任务放到后台 , 关闭 xshell, 对应的任务也跟着停止.
+		nohup sh test.sh	# 将 sh test.sh 任务放到后台, 关闭标准输入, 终端不再能够接收任何输入(标准输入), 重定向标准输出和标准错误到当前目录下的 nohup.out 文件, 即使关闭 xshell 退出当前 session 依然继续运行.
+		nohup sh test.sh  &	# 将 sh test.sh 任务放到后台, 但是依然可以使用标准输入, 终端能够接收任何输入, 重定向标准输出和标准错误到当前目录下的 nohup.out 文件, 即使关闭 xshell 退出当前 session 依然继续运行.
+	```
 
-disown		# 使作业忽略 HUP 信号
-	# 示例1,如果提交命令时已经用"&"将命令放入后台运行,则可以直接使用"disown"
-	ping www.baidu.com &
-	jobs
-	disown -h %1
-	ps -ef |grep ping
+- setsid
+	```bash
+	# setsid 主要是重新创建一个 session,子进程从父进程继承了 SessionID、进程组 ID 和打开的终端,子进程如果要脱离父进程,不受父进程控制,我们可以用这个 setsid 命令
+		setsid [options] <program> [arguments ...]
+			e.g. : setsid ping baidu.com	# setsid 后子进程不受终端影响,终端退出,不影响子进程
+			# 别急,  ps -ef | grep ping ,找到 PID kill 相应的 PID 就可以关掉了😂
+	```
 
-	# 示例2,如果提交命令时未使用"&"将命令放入后台运行,可使用 CTRL-z 和"bg"将其放入后台,再使用"disown"
-	ping www.baidu.com
-	bg %1
-	jobs
-	disown -h %1
-	ps -ef |grep ping
-```
+- disown
+	```bash
+	# 使作业忽略 HUP 信号
+	disown [-h] [-ar] [jobspec ... | pid ...]
+		# 示例1,如果提交命令时已经用"&"将命令放入后台运行,则可以直接使用"disown"
+		ping www.baidu.com &
+		jobs
+		disown -h %1
+		ps -ef |grep ping
+
+		# 示例2,如果提交命令时未使用"&"将命令放入后台运行,可使用 CTRL-z 和"bg"将其放入后台,再使用"disown"
+		ping www.baidu.com
+		bg %1
+		jobs
+		disown -h %1
+		ps -ef |grep ping
+	```
 
 更多进程管理内容参考笔记 [进程](./笔记/进程.md)
 
 ---
 
+## 内核管理
+
+**rmmod**
+
+用于从当前运行的内核中移除指定的内核模块。执行 rmmod 指令，可删除不需要的模块。
+```bash
+rmmod [options] [arguments ...]
+
+# 选项释义
+	# -v：显示指令执行的详细信息；
+	# -f：强制移除模块，使用此选项比较危险；
+	# -w：等待着，直到模块能够被除时在移除模块；
+	# -s：向系统日志（syslog）发送错误信息。
+
+# e.g.
+	lsmod | grep raid1
+	rmmod raid1			# 卸载正在使用的Linux内核模块
+	# 警告 : 在你不确定这个内核模块是干什么的之前,不要卸载
+```
+
+**dmesg**
+
+dmesg 可用于找出内核最新消息中的错误和警告
+```bash
+dmesg | less
+```
+
+---
+
 ## 设备管理
 
-**查看usb设备**
+**查看硬件信息**
 ```bash
-lsusb
+lspci	# 打印有关系统中所有 PCI 总线和设备的详细信息
+lsmod	# 显示可加载内核模块
+lsusb	# 查看 usb 设备
+lsblk	# 列出所有可用块设备的信息
 ```
 
 ### 磁盘
@@ -1805,25 +2237,34 @@ shred -zvu -n  5 <File>	# 主要用于文件覆盖内容,也可以删除
 - [数据恢复](./Secure-Linux.md#文件恢复)
 
 **占用**
-```bash
-df	# 报告驱动器的空间使用情况
-	df -H	# 以人类可读的格式进行显示
-	df -ah	# 查看磁盘占用大的文件夹
+- df
+	```bash
+	# 报告驱动器的空间使用情况
+	df [options] [arguments ...]
 
-du	# 报告目录的空间使用情况
-	du -h . | sort			# 以人类可读的格式进行显示,排序显示
-	du -hd 1 / | sort -hr
-	du -sh /etc/yum			# 特定目录的总使用量
-	du --max-depth=1 -h		# 查看文件夹下各个文件夹的磁盘占用
-```
+	# e.g.
+		df -H	# 以人类可读的格式进行显示
+		df -ah	# 查看磁盘占用大的文件夹
+	```
+
+- du
+	```bash
+	# 报告目录的空间使用情况
+	du [options] [arguments ...]
+
+	# e.g.
+		du -h . | sort			# 以人类可读的格式进行显示,排序显示
+		du -hd 1 / | sort -hr
+		du -sh /etc/yum			# 特定目录的总使用量
+		du --max-depth=1 -h		# 查看文件夹下各个文件夹的磁盘占用
+	```
 
 **dd**
 
-> dd 主要功能为转换和复制文件。
-
 ```bash
-dd
-	dd if=/dev/zero of=out.txt bs=1M count=1
+# 主要功能为转换和复制文件。
+dd [options]
+	e.g. : dd if=/dev/zero of=out.txt bs=1M count=1
 	# if 代表输入文件.如果不指定 if,默认就会从 stdin 中读取输入.
 	# of 代表输出文件.如果不指定 of,默认就会将 stdout 作为默认输出.
 	# ibs=bytes:一次读入 bytes 个字节,即指定一个块大小为 bytes 个字节.
@@ -1831,47 +2272,150 @@ dd
 	# bs 代表字节为单位的块大小.
 	# count 代表被复制的块数.
 	# /dev/zero 是一个字符设备,会不断返回 0 值字节(\0).
-```
 
-- 截取数据
-	```bash
-	# 截取地址 925888（0xe20c0）之后的数据，保存到 out.bin
+	# e.g. 截取地址 925888（0xe20c0）之后的数据，保存到 out.bin
 	dd if=test.trx bs=1 skip=925888 of=out.bin
-	```
 
-- 文件分块合并
-	```bash
-	# 文件分为 1 2 3 4 5 每个文件 无用头信息 364 字节,去掉头信息合并
+	# e.g. 文件分块合并,文件分为 1 2 3 4 5 每个文件 无用头信息 364 字节,去掉头信息合并
 	dd if=1 bs=1 skip=364 of=11
 	dd if=2 bs=1 skip=364 of=22
 	dd if=3 bs=1 skip=364 of=33
 	dd if=4 bs=1 skip=364 of=44
 	dd if=5 bs=1 skip=364 of=55
 	cat 11 22 33 44 55 > fly.rar
-	```
+```
 
 **LVM**
 
 > LVM 是 Logical Volume Manager 的缩写，中文一般翻译为 "逻辑卷管理"，它是 Linux 下对磁盘分区进行管理的一种机制。LVM 是建立在磁盘分区和文件系统之间的一个逻辑层，系统管理员可以利用 LVM 在不重新对磁盘分区的情况下动态的调整分区的大小。如果系统新增了一块硬盘，通过 LVM 就可以将新增的硬盘空间直接扩展到原来的磁盘分区上。
 
-```bash
-pvcreate /dev/sdb1						# 初始化物理卷
-vgcreate -s 16M datastore /dev/sdb1		# 创建物理卷
-lvcreate -L 8G -n database datastore	# 创建逻辑卷
-lvdisplay 								# 查看逻辑卷的属性
-```
+- **物理卷**
+
+	创建物理卷
+	```bash
+	pvcreate /dev/sda5
+	```
+
+	查看物理卷
+	```bash
+	pvdisplay
+	```
+
+	物理卷数据转移
+	```bash
+	pvmove /dev/sda4 /dev/sda5  # 把/dev/sda4物理卷数据转移到/dev/sda5物理卷上，注意转移的时候查看物理卷大小
+	```
+
+	删除物理卷
+	```bash
+	pvremove /dev/sda4
+	```
+
+- **卷组**
+
+	卷组可以由一个或多个物理卷组成,当卷组空间不够时可以再新增物理卷扩容.
+
+	创建卷组
+	```bash
+	vgcreate vg1 /dev/sda5
+	```
+
+	新增卷组
+	```bash
+	vgextend vg1 /dev/sda6
+	```
+
+	删除卷组
+	```bash
+	vgremove vg1
+	```
+
+	查看卷组
+	```bash
+	vgdisplay
+	vgs
+	```
+
+	移除某块物理卷
+	```bash
+	vgremove vg1 /dev/sda6
+	```
+
+- **逻辑卷**
+
+	逻辑卷建立在卷组基础之上的,所以在创建逻辑卷的时候一定要指定卷组名称.
+
+	创建逻辑卷
+	```bash
+	lvcreate -L 3G -n lvdisk1 vg1
+	```
+
+	显示逻辑卷
+	```bash
+	lvdisplay
+	lvs
+	```
+
+	挂载逻辑卷
+	```bash
+	# 这里需要注意的是格式化的格式与挂载要进行匹配，否则会出现问题；挂载之后重启会失效，请查看下面让重启自动挂载的做法。
+
+	mkfs.ext4 -t /dev/vg1/lvdisk1
+	mount -t ext4 /dev/vg1/lvdisk1 /hehe
+	mkfs.xfs -f /dev/vg1/lvdisk1
+	mount -t xfs /dev/vg1/lvdisk1 /hehe
+	```
+
+	删除逻辑卷
+	```bash
+	lvremove /dev/vg1/lvdisk1
+	```
+
+	扩容逻辑卷(卷组的可用范围内的容量值)
+	```bash
+	lvextend -L +1G /dev/vg1/lvdisk1
+	lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+	```
+
+	收缩逻辑卷容量
+	```bash
+	# 提示：使用以下命令时注意数据可能会丢失，请注意备份数据之后进行操作。
+
+	lvreduce -L -20G /dev/vg1/lvdisk1
+	```
+
+	扩容生效
+	```bash
+	resize2fs /dev/vg1/lvdisk1
+	xfs_growfs /dev/vg1/lvdisk1
+	# 注意：resize2fs主要针对ext4目录格式进行处理，而xfs_growfs主要针对xfs目录格式。
+	```
+
+	挂载重启失效问题
+	```bash
+	# 利用root权限编辑/etc/fstab文件加入挂载点，这样开机会自动挂载。
+
+	/dev/vg1/lvdisk1 /hehe ext4    defaults    0  0
+	```
 
 **块设备信息**
-```bash
-lsblk	# 显示所有可用块设备的信息
-	lsblk -m	# 显示设备所有者相关的信息,包括文件的所属用户、所属组以及文件系统挂载的模式
 
-blkid   # 输出所有可用的设备、UUID、文件系统类型以及卷标
+- lsblk
+	```bash
+	# 显示所有可用块设备的信息
+	lsblk -m	# 显示设备所有者相关的信息,包括文件的所属用户、所属组以及文件系统挂载的模式
+	```
+
+- blkid
+	```bash
+   	# 输出所有可用的设备、UUID、文件系统类型以及卷标
+
+	# e.g.
 	blkid /dev/sda1
 	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 	blkid -po udev /dev/sda1	# 获取更多详细信息
 	blkid -g					# 清理 blkid 的缓存
-```
+	```
 
 ---
 
@@ -1910,4 +2454,50 @@ service bluetooth start
 hciconfig hci0 up	# 激活蓝牙设备
 hciconfig hci0		# 查看属性
 	# 第二行中的 “BD Address”，这是蓝牙设备的MAC地址
+```
+
+---
+
+### 外接硬盘
+
+```bash
+fdisk -l			# 查看磁盘情况
+
+mkdir -p /mnt/usb1
+mount /dev/sdb1 /mnt/usb1
+cd /mnt/usb1
+
+umount /mnt/usb1	# 取消挂在
+```
+
+**[NTFS-3G](https://jp-andre.pagesperso-orange.fr/advanced-ntfs-3g.html)**
+```bash
+yum install -y fuse-devel
+
+cd /tmp
+wget https://jp-andre.pagesperso-orange.fr/ntfs-3g-2017.3.23AR.5-1.el7.x86_64.rpm
+rpm -ivh ntfs-3g-2017.3.23AR.5-1.el7.x86_64.rpm
+
+fdisk -l
+mkdir -p /mnt/ntfsusb
+mount -t ntfs-3g /dev/sda1 /mnt/ntfsusb
+```
+
+### CD & DVD
+
+**刻录 CD**
+```bash
+cdrecord -V -eject dev=/dev/cdrom data-backup.iso
+```
+
+**刻录 DVD**
+```bash
+growisofs -dvd-compat -Z /dev/dvdrw=data.iso
+```
+
+**从 CD 或 DVD 创建 ISO 文件**
+```bash
+isoinfo -d -i /dev/cdrom
+
+dd if=/dev/cdrom bs=2048 count=1825 of=mydata.iso
 ```

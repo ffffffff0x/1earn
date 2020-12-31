@@ -755,6 +755,7 @@ if( isset( $_GET[ 'Change' ] ) ) {
 
 <h2>file not found.<h2>
 ```
+
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa13.png)
 
 ### Medium
@@ -908,7 +909,9 @@ generateSessionToken();
 **另类通关**
 
 通过 XSS 获得 token 之后修改密码
+
 同等级的 XSS-Stored $name 可被我们利用做 XSS,这样就可以配合 CSRF 来重置用户密码了.
+
 需要先说明一下 DVWA 的数据库设计,guestbook 表的 name 字段类型为 varchar(100),也就是说最多 name 只能写入 100 个字符,超过的字符会被数据库抛弃不存储.
 
 由于100个字符的限制,将payload分成多份提交

@@ -43,8 +43,8 @@ CSCRIPT OSPP.VBS /DSTATUS
 - centos环境
 
     ```bash
-    yum install epel-release
-    yum install nodejs npm
+    yum install -y epel-release
+    yum install -y nodejs npm
     git clone https://github.com/nondanee/UnblockNeteaseMusic.git
     cd UnblockNeteaseMusic
     npm install forever -g
@@ -61,6 +61,8 @@ CSCRIPT OSPP.VBS /DSTATUS
 - 客户端
 
     配置 http 代理 IP:18080
+
+---
 
 # DNS
 
@@ -86,6 +88,9 @@ ipconfig /flushdns
     - [CNMan/dnscrypt-proxy-config](https://github.com/CNMan/dnscrypt-proxy-config)
 - [bitbeans/SimpleDnsCrypt](https://github.com/bitbeans/SimpleDnsCrypt) (图形化的 DNS 代理,感觉没上面两个好用)
 
+**自建DNS服务**
+- [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)
+
 **DNS 服务器推荐**
 - 国内:223.5.5.5、114.114.114.114
 - 全球:208.67.222.222、208.67.220.220、1.1.1.1
@@ -93,7 +98,7 @@ ipconfig /flushdns
 ---
 
 # 各种代理/源
-## git
+## Git
 
 <p align="center">
     <img src="../../assets/img/logo/git.svg" width="15%">
@@ -142,14 +147,14 @@ brew update
 
 **linux**
 ```bash
-sudo mkdir -p /etc/docker
-sudo tee /etc/docker/daemon.json <<-'EOF'
+mkdir -p /etc/docker
+tee /etc/docker/daemon.json <<-'EOF'
 {
   "registry-mirrors": ["https://<你的>.mirror.aliyuncs.com"]
 }
 EOF
-sudo systemctl daemon-reload
-sudo systemctl restart docker
+systemctl daemon-reload
+systemctl restart docker
 ```
 
 `docker info` 检查加速器是否生效
@@ -202,7 +207,7 @@ npm config delete proxy  # 取消代理
         mkdir -p ~/.pip/
         ```
         ```bash
-        sudo tee ~/.pip/pip.conf <<-'EOF'
+        tee ~/.pip/pip.conf <<-'EOF'
         [global]
         index-url = https://pypi.tuna.tsinghua.edu.cn/simple
         [install]
@@ -224,16 +229,30 @@ npm config delete proxy  # 取消代理
     <img src="../../assets/img/logo/terminal.svg" width="15%">
 </p>
 
-**proxychains**
+- windows
 
-详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../Integrated/Linux/Power-Linux.md##proxychains)
-- 使用方法:
+    - cmd
+        ```bash
+        set http_proxy=http://127.0.0.1:1080 & set https_proxy=http://127.0.0.1:1080
+        ```
 
-    在需要代理的命令前加上 proxychains4,如 : `proxychains4 wget http://xxx.com/xxx.zip`
+    - powershell
+        ```powershell
+        $Env:http_proxy="http://127.0.0.1:1080";$Env:https_proxy="http://127.0.0.1:1080"
+        ```
 
-- Tips:
+- linux
 
-    如果嫌每次命令前加上 proxychain4 麻烦,可以 `proxychains4 bash` 这样 DLL 注入的 bash 里的命令都会走代理.
+    - proxychains
+
+        详细安装步骤请移步运维-->Linux-->[Power-Linux.md](../Integrated/Linux/Power-Linux.md##proxychains-ng)
+        - 使用方法:
+
+            在需要代理的命令前加上 proxychains4,如 : `proxychains4 wget http://xxx.com/xxx.zip`
+
+        - Tips:
+
+            如果嫌每次命令前加上 proxychain4 麻烦,可以 `proxychains4 bash` 这样 DLL 注入的 bash 里的命令都会走代理.
 
 ## GO
 
@@ -357,3 +376,13 @@ out.mp4: 输出文件名.
 -ar 48000 声音的采样频率
 -ab 128 音频数据流量,一般选择32、64、96、128 # -vol 200 200%的音量,可更改 (如果源文件声音很小,可以提升10到20倍(1000%~2000%),我试过,效果还行!但不能太大,200000%我也试验过,但嘈杂声太大了)
 ```
+
+---
+
+# Jetbrains
+
+**datagrip 离线安装驱动 jar**
+
+提取已经安装的 jar，拷贝数据库驱动文件到另一台电脑的当前用户 .DataGrip2019.2\config\jdbc-drivers 路径地址
+
+重启 DataGrip，左侧的 Database 标签页 -> + 按钮 -> Driver and Data Source ，选中指定数据库类型，点击 Switch to ver. xxx 即可

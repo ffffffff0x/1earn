@@ -8,7 +8,7 @@ LAMP 指的 Linux(操作系统)、ApacheHTTP 服务器，MySQL(有时也指 Mari
 
 **安装**
 ```
-yum install mariadb mariadb-server
+yum install -y mariadb mariadb-server
 systemctl start mariadb
 mysql_secure_installation
 ```
@@ -35,8 +35,8 @@ firewall-cmd --reload
 
 **安装**
 ```bash
-yum install httpd
-yum install php-* --skip-broken
+yum install -y httpd
+yum install -y php-* --skip-broken
 ```
 
 **配置**
@@ -55,3 +55,49 @@ service httpd start
 firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
+
+---
+
+# phpmyadmin
+
+**配置数据库**
+```bash
+
+mysql -u root -p
+
+# 创建一个专给 WordPress 存数据的数据库
+create database f8x_info;    # 最后的"f8x_info"为数据库名
+
+# 创建用于 WordPress 对应用户
+create user f8x@localhost identified by 'password';  # "f8x"对应创建的用户,"password"内填写用户的密码
+
+# 分别配置本地登录和远程登录权限
+grant all privileges on f8x_info.* to f8x@'localhost' identified by 'password';
+grant all privileges on f8x_info.* to f8x@'%' identified by 'password';
+flush privileges;   # 刷新权限
+exit;
+```
+
+**安装 phpmyadmin**
+
+```bash
+yum install phpmyadmin
+```
+```diff
+vim /etc/httpd/conf.d/phpMyAdmin.conf
+
+-- Require ip 127.0.0.1
+-- Require ip ::1
+++ Require all granted
+
+
+-- Require ip 127.0.0.1
+-- Require ip ::1
+++ Require all granted
+
+
+```bash
+systemctl restart httpd
+```
+
+访问 IP/phpmyadmin

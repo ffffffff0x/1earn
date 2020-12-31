@@ -15,7 +15,7 @@
     * [标签管理](#标签管理)
     * [忽略文件](#忽略文件)
     * [别名](#别名)
-    * [撤销Git操作](#撤销Git操作)
+    * [撤销Git操作](#撤销git操作)
     * [跳转](#跳转)
     * [子模块](#子模块)
 
@@ -26,6 +26,7 @@
     * [pull](#pull)
     * [push](#push)
     * [github](#github)
+    * [Git_LFS](#git_lfs)
 
 ---
 
@@ -108,7 +109,7 @@ Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或
 ```bash
 git config --global user.name "username"
 git config --global user.email user@aaa.com
-# 如果使用了 –global 选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git 都会使用那些信息.当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有 –global 选项的命令来配置.
+# 如果使用了 -global 选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git 都会使用那些信息.当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有 -global 选项的命令来配置.
 
 git config --global http.proxy                              # 查看当前代理设置
 git config --global http.proxy 'socks5://127.0.0.1:1080'    # 设置当前代理
@@ -559,6 +560,50 @@ git push --force origin
 
 ---
 
+## Git_LFS
+
+> Git Large File Storage (Git LFS) 是 Git 的开源扩展，使你能够像处理其他文本文件一样处理大文件。
+
+**安装**
+- Windows: 访问 https://git-lfs.github.com/ 下载 exe 安装包
+
+验证安装成功
+```bash
+$ git lfs install
+> Git LFS initialized.
+```
+
+**配置**
+
+安装 [Git LFS] 后 (/articles/installing-git-large-file-storage/)，需要将其与仓库中的大文件相关联。
+
+如果仓库中存在要用于 GitHub 的现有文件，则需要先从仓库中删除它们，然后在本地将其添加到 Git LFS。
+```bash
+# 将当前工作目录更改为要用于 Git LFS 的现有仓库。
+cd 1earn
+
+# 要将仓库中的文件类型与 Git LFS 相关联，请输入 git lfs track，后跟要自动上传到 Git LFS 的文件扩展名。
+git lfs track "*.zip"
+# 要与 Git LFS 关联的每个文件类型都需要添加 git lfs track。 此命令将修改仓库的 .gitattributes 文件，并将大文件与 Git LFS 相关联。
+
+git commit -m "add file.zip"
+git push
+
+# 或推送所有引用的 Git LFS 文件
+git lfs push --all origin
+```
+
+**常见报错**
+
+- **Error with socks5 proxy**
+
+    Git LFS 目前不支持 socks5 代理,换 http 代理
+    ```bash
+    git config --global http.proxy 'http://127.0.0.1:1080'
+    ```
+
+---
+
 **Source & Reference**
 - [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
 - [git配置代理命令](https://www.cnblogs.com/gx1069/p/6840413.html)
@@ -579,3 +624,4 @@ git push --force origin
 - [git 修改刚刚的commit](https://blog.csdn.net/qiulinsama/article/details/90703160)
 - [Github进行fork后如何与原仓库同步：重新fork很省事，但不如反复练习版本合并 #67](https://github.com/selfteaching/the-craft-of-selfteaching/issues/67)
 - [7.11 Git 工具 - 子模块](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97)
+- [Error with socks5 proxy #1424](https://github.com/git-lfs/git-lfs/issues/1424)

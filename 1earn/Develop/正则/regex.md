@@ -8,11 +8,15 @@
     - https://tool.oschina.net/regex
 
 - **正则分析**
+    - https://regexper.com/
     - https://ihateregex.io/
     - https://www.sojson.com/regex/generate
     - https://regex101.com/
     - https://regexr.com/
     - https://jex.im/regulex/#!flags=
+
+**表达式资源**
+- [cdoco/common-regex](https://github.com/cdoco/common-regex)
 
 ---
 
@@ -52,7 +56,7 @@ email
 
 首先是 DFA 引擎的情况下，它是以文本为导向，针对正则从左开始进行扫描，当扫描到 `/p/` 的时候，发现匹配的上了，然后继续往下匹配，当将第一个子正则 `/perl/` 全部匹配上之后，这时候就会把这个正则甩开，去吃第二个子正则式的 `/p/` 。这一吃好了，因为又匹配上了，于是接着往下吃。直到把正则式吃完，心满意足往上报告说成功匹配了 *‘perlman’ *。
 
-若是 NFA，它是以正则为导向，怎么说呢，这时候我们手上第一个子正则表达式为 `/perl/` ，而该引擎针对 perlmanbook 字符串进行扫描，从左开始，当进度进行到 perl manbook 的时候，最开始部分的 perl 已经和第一个子正则表达式匹配而上，而当引擎进度扫描到 m 字符的时候，发现与第一个子正则表达式不匹配，于是把 m 吐出来，向上汇报说成功匹配 perl ，不再关心其他，也不尝试第二个子正则式 `/perlman/` 。
+若是 NFA，它是以正则为导向，比如第一个子正则表达式为 `/perl/` ，而该引擎针对 perlmanbook 字符串进行扫描，从左开始，当进度进行到 perl manbook 的时候，最开始部分的 perl 已经和第一个子正则表达式匹配而上，而当引擎进度扫描到 m 字符的时候，发现与第一个子正则表达式不匹配，于是把 m 吐出来，向上汇报说成功匹配 perl ，不再关心其他，也不尝试第二个子正则式 `/perlman/` 。
 
 也就是说我们可以总结一下，NFA 引擎要翻来覆去吃字符、吐字符，速度慢，且可能会陷入递归险境导致性能极差。因此使用 NFA 引擎的正则表达式就可能出现 ReDOS 的问题。
 

@@ -16,7 +16,3 @@ information_schema.tables
 information_schema.columns
     -- 表名 : table_name
 ```
-
-
-
-

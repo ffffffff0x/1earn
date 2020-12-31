@@ -29,12 +29,6 @@
 # 以 root 身份运行最后一个命令
 sudo !!
 
-# 切换到上一个目录
-cd -
-
-# 创建并进入文件夹
-mkdir /tmp/test && cd $_
-
 # 一个命令创建项目的目录结构
 mkdir -vp scf/{lib/,bin/,doc/{info,product},logs/{info,product},service/deploy/{info,product}}
 
@@ -65,6 +59,103 @@ aaa
 bbb
 test
 EOF
+```
+
+## cd
+
+**切换到上一个目录**
+```
+cd -
+```
+
+**创建时进入文件夹**
+```
+mkdir /tmp/test && cd $_
+```
+
+**使用 CDPATH 定义 cd 命令的基本目录**
+```bash
+cd mail
+-bash: cd: mail: No such file or directory
+
+export CDPATH=/etc
+cd mail
+/etc/mail
+```
+
+**有效率的向上移动**
+```bash
+# cd ../../../../
+
+alias ..4="cd ../../../.."
+alias .....="cd ../../../.."
+alias cd.....="cd ../../../.."
+alias cd4="cd ../../../.."
+
+..4
+.....
+cd.....
+cd4
+```
+
+**使用 dirs, pushd 和 popd 操作目录堆栈**
+```bash
+# 如何使用 pushd 和 popd? 让我们首先创建一些临时目录，并将它们推入目录堆栈，如下所示。
+mkdir /tmp/dir1
+mkdir /tmp/dir2
+mkdir /tmp/dir3
+mkdir /tmp/dir4
+
+cd /tmp/dir1
+pushd .
+
+cd /tmp/dir2
+pushd .
+
+cd /tmp/dir3
+pushd .
+
+cd /tmp/dir4
+pushd .
+
+dirs
+# 在这个阶段，目录堆栈包含以下目录
+# /tmp/dir4
+# /tmp/dir3
+# /tmp/dir2
+# /tmp/dir1
+
+# 最后一个被推送到堆栈中的目录将在顶部。当执行 popd 时，它会 cd 到堆栈中最上面的目录项，并将其从堆栈中删除。最后推送到栈中的目录是 /tmp/dir4，所以，当我们执行 popd 时，会 cd 到 /tmp/dir4，并从目录栈中删除，如下所示。
+
+popd
+pwd
+# 在这个阶段，目录堆栈包含以下目录
+# /tmp/dir3
+# /tmp/dir2
+# /tmp/dir1
+
+popd
+pwd
+# 在这个阶段，目录堆栈包含以下目录
+# /tmp/dir2
+# /tmp/dir1
+
+popd
+pwd
+# 在这个阶段，目录堆栈包含以下目录
+# /tmp/dir1
+
+popd
+pwd
+# 在 popd 后，目录 Stack 为空!
+
+popd
+-bash: popd: directory stack empty
+```
+
+**使 cd 不区分大小写**
+```bash
+bind "set completion-ignore-case on"
 ```
 
 ---

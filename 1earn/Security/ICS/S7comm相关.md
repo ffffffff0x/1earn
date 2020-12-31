@@ -60,10 +60,10 @@ S7Comm 的头，定义了该包的类型、参数长度、数据长度等，其�
 所以，S7Comm Header 的格式为：
 - 0 (unsigned integer, 1 byte): Protocol Id，协议 ID，通常为 0×32；
 - 1 (unsigned integer, 1 byte): ROSCTR，PDU type，PDU 的类型，一般有以下值：
-    - 0×01 – JOB(Request： job with acknowledgement)：作业请求。由主设备发送的请求(例如，读/写存储器，读/写块，启动/停止设备，设置通信)；
-    - 0×02 – ACK(acknowledgement without additional field)：确认响应，没有数据的简单确认(未遇到过由 S7 300/400 设备发送得)；
-    - 0×03 – ACK_DATA(Response： acknowledgement with additional field)：确认数据响应，这个一般都是响应JOB的请求；
-    - 0×07 – USERDATA：原始协议的扩展，参数字段包含请求/响应 ID(用于编程/调试，读取 SZL，安全功能，时间设置，循环读取…)。
+    - 0×01 - JOB(Request： job with acknowledgement)：作业请求。由主设备发送的请求(例如，读/写存储器，读/写块，启动/停止设备，设置通信)；
+    - 0×02 - ACK(acknowledgement without additional field)：确认响应，没有数据的简单确认(未遇到过由 S7 300/400 设备发送得)；
+    - 0×03 - ACK_DATA(Response： acknowledgement with additional field)：确认数据响应，这个一般都是响应JOB的请求；
+    - 0×07 - USERDATA：原始协议的扩展，参数字段包含请求/响应 ID(用于编程/调试，读取 SZL，安全功能，时间设置，循环读取…)。
 - 2~3 (unsigned integer, 2 bytes): Redundancy Identification (Reserved)，冗余数据，通常为 0×0000；
 - 4~5 (unsigned integer, 2 bytes): Protocol Data Unit Reference，it’s increased by request event。协议数据单元参考，通过请求事件增加；
 - 6~7 (unsigned integer, 2 bytes): Parameter length，the total length (bytes) of parameter part。参数的总长度；

@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `test_tbl`(
 ```
 - 如果你不想字段为 NULL 可以设置字段的属性为 NOT NULL， 在操作数据库时如果输入该字段的数据为 NULL ，就会报错。
 - AUTO_INCREMENT 定义列为自增的属性，一般用于主键，数值会自动加1。
-- PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。
+- PRIMARY KEY关键字用于定义列为主键。 你可以使用多列来定义主键，列间以逗号分隔。
 - ENGINE 设置存储引擎，CHARSET 设置编码。
 
 由于任何表都归属于某个数据库，因此在创建表的时候，都必须先指定具体的数据库。在这里，指定数据库的方式有两种，分别为：
@@ -500,12 +500,12 @@ MySQL 索引的建立对于 MySQL 的高效运行是很重要的，索引可以�
 CREATE INDEX PersonIndex
 ON Person (LastName)
 ```
-如果您希望以降序索引某个列中的值，您可以在列名称之后添加保留字 DESC：
+如果你希望以降序索引某个列中的值，你可以在列名称之后添加保留字 DESC：
 ```sql
 CREATE INDEX PersonIndex
 ON Person (LastName DESC)
 ```
-假如您希望索引不止一个列，您可以在括号中列出这些列的名称，用逗号隔开：
+假如你希望索引不止一个列，你可以在括号中列出这些列的名称，用逗号隔开：
 ```sql
 CREATE INDEX PersonIndex
 ON Person (LastName, FirstName)

@@ -41,12 +41,12 @@ cd e:
 
 在文件里递回地搜索某个字符串
 ```powershell
-dir –r | select string "searchforthis"
+dir -r | select string "searchforthis"
 ```
 　　
 使用内存找到X个进程
 ```powershell
-ps | sort –p ws | select –last x
+ps | sort -p ws | select -last x
 ```
 
 循环(停止,然后重启)一个服务,如 DHCP
@@ -56,17 +56,17 @@ Restart-Service DHCP
 
 在文件夹里列出所有条目
 ```powershell
-Get-ChildItem – Force
+Get-ChildItem - Force
 ```
 
 递归一系列的目录或文件夹
 ```powershell
-Get-ChildItem –Force c:\directory –Recurse
+Get-ChildItem -Force c:\directory -Recurse
 ```
 
 在目录里移除所有文件而不需要单个移除
 ```powershell
-Remove-Item C:\tobedeleted –Recurse
+Remove-Item C:\tobedeleted -Recurse
 ```
 
 重启当前计算机
@@ -153,7 +153,7 @@ Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter IPEnabled=true -C
 
 一分钟后远程关闭另一台机器
 ```powershell
-Start-Sleep 60; Restart-Computer –Force –ComputerName TARGETMACHINE
+Start-Sleep 60; Restart-Computer -Force -ComputerName TARGETMACHINE
 ```
 
 添加打印机

@@ -158,6 +158,9 @@ misc::memssp
 - [Win10及2012系统以后的明文抓取方式](https://www.anquanke.com/post/id/175364)
 - [Mimikatz明文密码抓取](https://uknowsec.cn/posts/notes/Mimikatz%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96.html)
 - [mimikatz-抓取windows明文密码](http://rtshield.top/2019/09/02/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-%E6%8A%93%E5%8F%96windows%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81/)
+- [利用Mimikatz提取虚拟机内存中的密码](https://www.freebuf.com/articles/system/44620.html)
+
+**直接转储**
 
 在任务管理器找到 lsass.exe，右键创建转储文件
 
@@ -199,6 +202,34 @@ reg save HKLM\SECURITY security.hiv
 ```bash
 lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 ```
+
+**windbg 中载入 mimilib 模块**
+
+在 windbg 中载入 dmp 文件
+
+![](../../../assets/img/Security/安全工具/mimikatz/5.png)
+
+![](../../../assets/img/Security/安全工具/mimikatz/6.png)
+
+运行. symfix，然后执行. reload
+
+![](../../../assets/img/Security/安全工具/mimikatz/7.png)
+
+windbg 中载入 mimilib 模块
+
+![](../../../assets/img/Security/安全工具/mimikatz/8.png)
+
+查找 lsass 进程
+
+![](../../../assets/img/Security/安全工具/mimikatz/9.png)
+
+将镜像 lsass 环境转换到本机中
+
+![](../../../assets/img/Security/安全工具/mimikatz/10.png)
+
+载入 mimikatz
+
+![](../../../assets/img/Security/安全工具/mimikatz/11.png)
 
 ---
 

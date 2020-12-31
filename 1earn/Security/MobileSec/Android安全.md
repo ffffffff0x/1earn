@@ -104,7 +104,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 # APK渗透
 
 **案例**
-- [Attacking the attackers – Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
+- [Attacking the attackers  Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
 - [如何攻击智能汽车远程启动系统（Part 1）](https://www.anquanke.com/post/id/153373)
 - [对恶意Android应用Bangle Android App Packer的分析](http://www.freebuf.com/vuls/178919.html)
 - [怀揣情怀的提醒：及时修复！(某智能门锁二度分析感悟)](https://paper.seebug.org/343/)

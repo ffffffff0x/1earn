@@ -1,7 +1,7 @@
 # Kali
 
 <p align="center">
-    <img src="../../../assets/img/logo/kali.png" width="40%">
+    <img src="../../../assets/img/logo/kali.png" width="30%">
 </p>
 
 ---
@@ -19,6 +19,7 @@
 - [Kali-learning-notes Wiki](https://github.com/Keybird0/Kali-learning-notes/wiki)
 - [Kali Linux 渗透测试的艺术（中文版）](https://jobrest.gitbooks.io/kali-linux-cn/content/table_of_contents.html)
 - [大学霸 Kali Linux 安全渗透教程](https://wizardforcel.gitbooks.io/daxueba-kali-linux-tutorial/content/)
+- [KaliLinux常见问题与解决方案](https://mp.weixin.qq.com/s/Nd-GiDnzk5lDg6g7MvRJhg)
 
 ---
 
@@ -35,7 +36,7 @@
 **换源**
 ```bash
 # apt 换源
-sudo tee /etc/apt/sources.list <<-'EOF'
+tee /etc/apt/sources.list <<-'EOF'
 
 # 清华源
 deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
@@ -66,8 +67,8 @@ apt update && apt -y full-upgrade
 
 ```bash
 apt-get update && apt-get upgrade
-apt-get install fcitx
-apt-get install fcitx-googlepinyin
+apt-get install -y fcitx
+apt-get install -y fcitx-googlepinyin
 reboot
 
 # 所有应用程序中选中 fcitx 输入法配置即可
@@ -76,7 +77,7 @@ reboot
 ## ncat
 
 ```bash
-apt install ncat
+apt install -y ncat
 update-alternatives --config nc
 1
 ```
@@ -144,8 +145,8 @@ dpkg-reconfigure locales
 
 **如果界面出现乱码,安装中文字体**
 ```bash
-apt install xfonts-intl-chinese
-apt install ttf-wqy-microhei ttf-wqy-zenhei xfonts-wqy
+apt install -y xfonts-intl-chinese
+apt install -y ttf-wqy-microhei ttf-wqy-zenhei xfonts-wqy
 reboot
 ```
 
@@ -229,7 +230,7 @@ direct rendering: Yes   # 出现 yes 成功
 apt-get update
 apt-get dist-upgrade
 apt-get install -y linux-headers-$(uname -r)
-apt-get install nvidia-kernel-dkms
+apt-get install -y nvidia-kernel-dkms
 sed 's/quiet/quiet nouveau.modeset=0/g' -i /etc/default/grub
 update-grub
 reboot
@@ -298,3 +299,22 @@ hciconfig hci0		# 查看属性
 ```
 sudo passwd root
 ```
+
+---
+
+# 常见报错处理
+
+- **W: 校验数字签名时出错。此仓库未被更新，所以仍然使用此前的索引文件。GPG 错误**
+    ```
+    wget -q -O - https://archive.kali.org/archive-key.asc | apt-key add
+    apt-get update
+    ```
+
+- **无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)**
+    ```bash
+    rm -rf /var/cache/apt/archives/lock
+    rm -rf /var/lib/dpkg/lock-frontend
+    rm -rf /var/lib/dpkg/lock		# 强制解锁占用
+    rm /var/lib/dpkg/lock
+    rm /var/lib/apt/lists/lock
+    ```

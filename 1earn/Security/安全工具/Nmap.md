@@ -19,6 +19,7 @@
 - [[渗透神器系列]nmap](https://thief.one/2017/05/02/1/)
 - [Nmap扫描原理与用法](https://blog.csdn.net/aspirationflow/article/details/7694274)
 - [Nmap 进阶使用 [ 脚本篇 ]](https://www.freebuf.com/column/149716.html)
+- [Nmap在VMware NAT网络下探测主机存活误报的分析](https://www.freebuf.com/articles/terminal/199711.html)
 
 **zenmap**
 - [Zenmap - 跨平台的 GUI 版 nmap bug 较多,不宜使用](https://nmap.org/zenmap/)
@@ -88,20 +89,20 @@ nmap -sC -sV -p$ports -sT --min-rate=1000 <target ip>
 
 **Nmap 脚本参数的规则**
 ```
--sC: 等价于 –script=default，使用默认类别的脚本进行扫描。
-–script=: 使用某个或某类脚本进行扫描，支持通配符描述
-–script-args=: 为脚本提供默认参数
-–script-args-file=filename: 使用文件来为脚本提供参数
-–script-trace: 显示脚本执行过程中发送与接收的数据
-–script-updatedb: 更新脚本数据库
-–script-help=: 显示脚本的帮助信息，其中部分可以逗号分隔的文件或脚本类别。
+-sC: 等价于 -script=default，使用默认类别的脚本进行扫描。
+-script=: 使用某个或某类脚本进行扫描，支持通配符描述
+-script-args=: 为脚本提供默认参数
+-script-args-file=filename: 使用文件来为脚本提供参数
+-script-trace: 显示脚本执行过程中发送与接收的数据
+-script-updatedb: 更新脚本数据库
+-script-help=: 显示脚本的帮助信息，其中部分可以逗号分隔的文件或脚本类别。
 ```
 
 **Nmap 脚本执行格式**
 ```
-执行单个脚本：nmap –script /path/to/script.nse
-执行多个脚本：nmap –script /path/to/script.nse,/another/path/script2.nse
-执行文件夹包含的所有脚本：nmap –script/path/to/folder/
+执行单个脚本：nmap -script /path/to/script.nse
+执行多个脚本：nmap -script /path/to/script.nse,/another/path/script2.nse
+执行文件夹包含的所有脚本：nmap -script/path/to/folder/
 ```
 
 ---
@@ -130,7 +131,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 **路由跟踪**
 
-`nmap –traceroute <target IP>`
+`nmap -traceroute <target IP>`
 
 **扫描一个段**
 
@@ -170,7 +171,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 ---
 
-## 脚本
+# 脚本
 
 **脚本类型**
 - auth : 与用户认证相关的 NSE 脚本
@@ -188,7 +189,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 - vuln : 与检测和利用安全漏洞相关的脚本
 - version : 高级系统脚本
 
-### 规避
+## 规避
 
 参考 : https://nmap.org/book/man-bypass-firewalls-ids.html
 
@@ -231,7 +232,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 ---
 
-### 常见
+## 常见
 
 - smb
     - 枚举 SMB 用户 : `nmap --script smb-enum-users.nse -p 445 <target ip>`
@@ -263,9 +264,9 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
     - 爆破 : `nmap -p21 <target ip> --script ftp-brute --script-args userdb=/root/user.txt,passdb=/root/pass.txt`
 
 - SNMP
-    - 查找 snmp 弱口令 : `nmap –sU –p161 –script=snmp-brute <target ip>`
+    - 查找 snmp 弱口令 : `nmap -sU -p161 -script=snmp-brute <target ip>`
     - 获取网络端口状态 : `nmap -sU -p161 --script=snmp-netstat <target ip>`
-    - 获取系统信息 : `nmap –sU –p161 –script=snmp-sysdescr <target ip>`
+    - 获取系统信息 : `nmap -sU -p161 -script=snmp-sysdescr <target ip>`
     - 获取用户信息 : `nmap -sU -p161 --script=snmp-win32-user <target ip>`
 
 - SMTP
@@ -279,7 +280,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 ---
 
-### 数据库
+## 数据库
 
 - MySQL
     - 信息收集 : `nmap -p3306 --script mysql-enum <target ip>`
@@ -308,7 +309,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 
 ---
 
-### 工控探测
+## 工控探测
 
 - S7
     - 探测 : `nmap -p 102 --script s7-info.nse <target ip>`

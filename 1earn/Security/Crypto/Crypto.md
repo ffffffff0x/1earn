@@ -1,6 +1,8 @@
 #  Crypto
 
-> 文章作者 [幻羽灵殇](https://github.com/syl2293686270) & [r0fus0d](https://github.com/No-Github)
+> 文章作者 [RyuZU](https://github.com/RyuZUSUNC) & [r0fus0d](https://github.com/No-Github)
+
+> 注 : 笔记中拓扑图 drawio 源文件在其图片目录下
 
 ---
 
@@ -39,12 +41,14 @@
             * [PDF147](#pdf147)
             * [汉信码](#汉信码)
 
-* **现代密码**
-    * [线性散列算法](#线性散列算法)
-        * [MD5](#md5)
-        * [RIPEMD](#ripemd)
-            * [RIPEMD-160](#ripemd-160)
-        * [SHA](#sha)
+* **哈希 & 摘要 & 散列**
+    * [BCrypt](#bcrypt)
+    * [MD5](#md5)
+    * [RIPEMD](#ripemd)
+        * [RIPEMD-160](#ripemd-160)
+    * [SHA](#sha)
+
+* **现代加密**
     * [对称性加密算法](#对称性加密算法)
         * [AES](#aes)
         * [DES](#des)
@@ -59,7 +63,7 @@
         * [SM4](#sm4)
         * [SM9](#sm9)
 
-* **古典密码**
+* **古典加密**
     * [换位加密](#换位加密)
         * [栅栏密码](#栅栏密码)
         * [曲路密码](#曲路密码)
@@ -101,7 +105,6 @@
 * **其他编码**
     * [Brainfuck](#brainfuck)
     * [JSfuck](#jsfuck)
-    * [JS加密/解密](#js加密解密)
     * [颜文字加密](#颜文字加密)
     * [与佛论禅](#与佛论禅)
     * [文本加密为汉字](#文本加密为汉字)
@@ -130,6 +133,7 @@
     不合格输入 ciphey -- "Encrypted input"
     正常方式 ciphey -t "Encrypted input"
     ```
+- hash-identifier - kali 自带的 hash 失败工具
 
 **在线工具**
 - http://tool.bugku.com/
@@ -292,7 +296,7 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 ## Escape/Unescape
 
-Escape/Unescape 加密解码/编码解码,又叫 %u 编码,采用 UTF-16BE 模式, Escape 编码/加密,就是字符对应 UTF-16 16 进制表示方式前面加 %u.Unescape 解码/解密,就是去掉"%u"后,将 16 进制字符还原后,由 utf-16 转码到自己目标字符.如:字符"中",UTF-16BE是:"6d93",因此 Escape 是"%u6d93".
+Escape/Unescape 加密解码 / 编码解码, 又叫 %u 编码, 采用 UTF-16BE 模式, Escape 编码 / 加密, 就是字符对应 UTF-16 16 进制表示方式前面加 %u.Unescape 解码 / 解密, 就是去掉 "%u" 后, 将 16 进制字符还原后, 由 utf-16 转码到自己目标字符. 如: 字符 "中",UTF-16BE 是:"6d93", 因此 Escape 是 "%u6d93".
 
 > 源文本: The
 >
@@ -353,17 +357,17 @@ Quoted-printable 可译为"可打印字符引用编码"、"使用可打印字符
 
 `Content-Transfer-Encoding:quoted-printable`
 
-它是多用途互联网邮件扩展 (MIME) 一种实现方式.其中MIME是一个互联网标准,它扩展了电子邮件标准,致力于使其能够支持非ASCII字符、二进制格式附件等多种格式的邮件消息.目前http协议中,很多采用MIME框架!quoted-printable 就是说用一些可打印常用字符,表示一个字节(8位)中所有非打印字符方法
+它是多用途互联网邮件扩展 (MIME) 一种实现方式. 其中 MIME 是一个互联网标准, 它扩展了电子邮件标准, 致力于使其能够支持非 ASCII 字符、二进制格式附件等多种格式的邮件消息.
 
 **编码方法**
 
-任何一个8位的字节值可编码为3个字符:一个等号"="后跟随两个十六进制数字(0–9或A–F)表示该字节的数值.例如,ASCII 码换页符(十进制值为12)可以表示为"=0C", 等号"="(十进制值为61)必须表示为"=3D". 除了可打印ASCII字符与换行符以外,所有字符必须表示为这种格式.
+任何一个 8 位的字节值可编码为 3 个字符: 一个等号 "=" 后跟随两个十六进制数字 (0-9 或 A-F) 表示该字节的数值. 例如, ASCII 码换页符 (十进制值为 12) 可以表示为 "=0C", 等号 "="(十进制值为 61)必须表示为 "=3D". 除了可打印 ASCII 字符与换行符以外, 所有字符必须表示为这种格式.
 
-所有可打印ASCII字符(十进制值的范围为33到126)可用ASCII字符编码来直接表示, 但是等号"="(十进制值为61)不可以这样直接表示.ASCII的水平制表符(tab)与空格符, 十进制为9和32, 如果不出现在行尾则可以用其ASCII字符编码直接表示.如果这两个字符出现在行尾,必须QP编码表示为"=09″ (tab)或"=20″ (space).
+所有可打印 ASCII 字符 (十进制值的范围为 33 到 126) 可用 ASCII 字符编码来直接表示, 但是等号 "="(十进制值为 61)不可以这样直接表示. ASCII 的水平制表符 (tab) 与空格符, 十进制为 9 和 32, 如果不出现在行尾则可以用其 ASCII 字符编码直接表示. 如果这两个字符出现在行尾, 必须 QP 编码表示为 "=09″ (tab)或"=20″ (space).
 
-如果数据中包含有意义的行结束标志,必须转换为 ASCII 回车(CR)换行(LF)序列,既不能用原来的 ASCII 字符也不能用 QP 编码的"="转义字符序列. 相反,如果字节值13与10有其它的不是行结束的含义,它们必须 QP 编码为 =0D 与 =0A.
+如果数据中包含有意义的行结束标志, 必须转换为 ASCII 回车 (CR) 换行 (LF) 序列, 既不能用原来的 ASCII 字符也不能用 QP 编码的 "=" 转义字符序列. 相反, 如果字节值 13 与 10 有其它的不是行结束的含义, 它们必须 QP 编码为 =0D 与 =0A.
 
-quoted-printable 编码的数据的每行长度不能超过76个字符. 为满足此要求又不改变被编码文本,在QP编码结果的每行末尾加上软换行(soft line break). 即在每行末尾加上一个"=", 但并不会出现在解码得到的文本中.
+quoted-printable 编码的数据的每行长度不能超过 76 个字符. 为满足此要求又不改变被编码文本, 在 QP 编码结果的每行末尾加上软换行(soft line break). 即在每行末尾加上一个 "=", 但并不会出现在解码得到的文本中.
 
 > 例如:If you believe that truth=beauty, then surely mathematics is the most beautiful branch of philosophy. 编码后结果是
 >
@@ -371,13 +375,15 @@ quoted-printable 编码的数据的每行长度不能超过76个字符. 为满�
 mathematics is the most beautiful branch of philosophy.
 
 编码里面,有几个特定限定,一些可打印字符不用编码,当然如果你按照规范编码后,也一样可以显示的!因此自己简单自己实现该编码:
+
 ```php
 function quoted_printable_encode($string) {
     return preg_replace('/[^\r\n]{73}[^=\r\n]{2}/', "$0=\r\n", str_replace("%","=",
 rawurlencode($string)));
 }
 ```
-一个函数就可以,将所有字符串urlencode转换后,%号替换为"="号,然后对非\r\n超过73连续字符,后面加一个=\r\n.这个是简单实现方法.按照该编码详细说明里面,有些空格、换行,还有一些特殊字符可以不用转换.不过一起转换了,也不会有影响
+
+一个函数就可以, 将所有字符串 urlencode 转换后,% 号替换为 "=" 号, 然后对非 \ r\n 超过 73 连续字符, 后面加一个 =\r\n. 这个是简单实现方法. 按照该编码详细说明里面, 有些空格、换行, 还有一些特殊字符可以不用转换. 不过一起转换了, 也不会有影响
 
 **在线工具**
 - http://web.chacuo.net/charsetquotedprintable
@@ -421,7 +427,7 @@ Unicode 编码有以下四种编码方式:
 
 ## URL
 
-url 编码又叫百分号编码,是统一资源定位(URL)编码方式.URL地址(常说网址)规定了常用地数字,字母可以直接使用,另外一批作为特殊用户字符也可以直接用(/,:@等),剩下的其它所有字符必须通过%xx编码处理. 现在已经成为一种规范了,基本所有程序语言都有这种编码,如js:有encodeURI、encodeURIComponent,PHP有 urlencode、urldecode等.编码方法很简单,在该字节ascii码的的16进制字符前面加%. 如 空格字符,ascii码是32,对应16进制是'20',那么urlencode编码结果是:%20.
+url 编码又叫百分号编码, 是统一资源定位 (URL) 编码方式. URL 地址 (常说网址) 规定了常用地数字, 字母可以直接使用, 另外一批作为特殊用户字符也可以直接用(/,:@等), 剩下的其它所有字符必须通过 %xx 编码处理. 现在已经成为一种规范了, 基本所有程序语言都有这种编码, 如 js: 有 encodeURI、encodeURIComponent,PHP 有 urlencode、urldecode 等. 编码方法很简单, 在该字节 ascii 码的的 16 进制字符前面加 %. 如 空格字符, ascii 码是 32, 对应 16 进制是'20', 那么 urlencode 编码结果是:%20.
 
 > 源文本:
 
@@ -449,7 +455,7 @@ url 编码又叫百分号编码,是统一资源定位(URL)编码方式.URL地址
 
 ## UUencode
 
-UUencode 是一种二进制到文字的编码,最早在 unix 邮件系统中使用,全称:Unix-to-Unix encoding,UUencode 将输入文本以每三个字节为单位进行编码,如果最后剩下的资料少于三个字节,不够的部份用零补齐.三个字节共有24个Bit,以6-bit为单位分为4个组,每个组以十进制来表示所出现的字节的数值.这个数值只会落在0到63之间.然后将每个数加上32,所产生的结果刚好落在ASCII字符集中可打印字符(32-空白…95-底线)的范围之中.
+UUencode 是一种二进制到文字的编码, 最早在 unix 邮件系统中使用, 全称: Unix-to-Unix encoding,UUencode 将输入文本以每三个字节为单位进行编码, 如果最后剩下的资料少于三个字节, 不够的部份用零补齐. 三个字节共有 24 个 Bit, 以 6-bit 为单位分为 4 个组, 每个组以十进制来表示所出现的字节的数值. 这个数值只会落在 0 到 63 之间. 然后将每个数加上 32, 所产生的结果刚好落在 ASCII 字符集中可打印字符 (32 - 空白… 95 - 底线) 的范围之中.
 
 > 源文本: The quick brown fox jumps over the lazy dog
 
@@ -463,7 +469,7 @@ UUencode 是一种二进制到文字的编码,最早在 unix 邮件系统中使�
 
 ## XXencode
 
-XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩下的资料少于三个字节,不够的部份用零补齐.这三个字节共有24个Bit,以6bit为单位分为4个组,每个组以十进制来表示所出现的数值只会落在0到63之间.以所对应值的位置字符代替.它所选择的可打印字符是`+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`,一共64个字符.跟 base64 打印字符相比,就是 UUencode 多一个"-" 字符,少一个"/" 字符.
+XXencode 将输入文本以每三个字节为单位进行编码. 如果最后剩下的资料少于三个字节, 不够的部份用零补齐. 这三个字节共有 24 个 Bit, 以 6bit 为单位分为 4 个组, 每个组以十进制来表示所出现的数值只会落在 0 到 63 之间. 以所对应值的位置字符代替. 它所选择的可打印字符是`+-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`, 一共 64 个字符. 跟 base64 打印字符相比, 就是 UUencode 多一个 "-" 字符, 少一个 "/" 字符.
 
 ![](../../../assets/img/Security/Crypto/Crypto/m6VjIb3.png)
 
@@ -479,13 +485,55 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ## 进制
 
-十六进制 -在数字前使用“0x”或在数字后使用“，h”，“，x”或“h”。例如，'0x100'或'3f，h'，'d2，x'或'FFh'表示十六进制数。
+进制是一种逢几进一的运算。
 
-八进制 -在数字后面输入'，o'。例如，'377，o'是八进制数。
+N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 
-二进制 -在数字后面输入'，b'。例如，'0101，b'是二进制数。
+例如，十六进制和二进制和十进制的关系
 
-十进制 -在数字后面输入'，d'。例如，'123，d'是十进制数。
+| 十六进制 | 二进制 | 十进制 | 八进制
+| -------- | ------ | ----- | ----- |
+| 0        | 0000   | 0     | 0
+| 1        | 0001   | 1     | 1
+| 2        | 0010   | 2     | 2
+| 3        | 0011   | 3     | 3
+| 4        | 0100   | 4     | 4
+| 5        | 0101   | 5     | 5
+| 6        | 0110   | 6     | 6
+| 7        | 0111   | 7     | 7
+| 8        | 1000   | 8     | 10
+| 9        | 1001   | 9     | 11
+| A        | 1010   | 10    | 12
+| B        | 1011   | 11    | 13
+| C        | 1100   | 12    | 14
+| D        | 1101   | 13    | 15
+| E        | 1110   | 14    | 16
+| F        | 1111   | 15    | 17
+
+**缩写**
+- 二进制 - B、BIN
+- 八进制 - O、OCT
+- 十进制 - D、DEC
+- 十六进制 - H、HEX、0x
+
+**转换**
+- 十进制转二进制
+
+    十进制数除 2 取余法，即十进制数除 2，余数为权位上的数，得到的商值继续除。
+
+    ![](../../../assets/img/Security/Crypto/Crypto/1.png)
+
+- 二进制转十进制
+
+    把二进制数按权展开、相加即得十进制数，其实就是讲每位的二进制数 1 或者 0 乘以 2 的 n 次方
+
+    ![](../../../assets/img/Security/Crypto/Crypto/2.png)
+
+- 二进制转十六进制
+
+    4 位二进制数按权展开相加得到 1 位十六进制数。(4 位二进制数转成十六进制是从右到左开始转化，不足时补 0)
+
+    ![](../../../assets/img/Security/Crypto/Crypto/3.png)
 
 **在线工具**
 - https://js.tuisec.win/convert/ox2str/
@@ -499,7 +547,7 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ## 敲击码
 
-敲击码(Tap code)是一种以非常简单的方式对文本信息进行编码的方法.因该编码对信息通过使用一系列的点击声音来编码而命名,敲击码是基于5×5方格波利比奥斯方阵来实现的,不同点是是用K字母被整合到C中.
+敲击码 (Tap code) 是一种以非常简单的方式对文本信息进行编码的方法. 因该编码对信息通过使用一系列的点击声音来编码而命名, 敲击码是基于 5×5 方格波利比奥斯方阵来实现的, 不同点是是用 K 字母被整合到 C 中.
 
 敲击码表:
 
@@ -511,17 +559,17 @@ XXencode 将输入文本以每三个字节为单位进行编码.如果最后剩�
 
 ## 曼彻斯特编码
 
-在电信与数据存储中, 曼彻斯特编码(Manchester coding),又称自同步码、相位编码(phase encoding,PE),能够用信号的变化来保持发送设备和接收设备之间的同步.
+在电信与数据存储中, 曼彻斯特编码 (Manchester coding), 又称自同步码、相位编码 (phase encoding,PE), 能够用信号的变化来保持发送设备和接收设备之间的同步.
 
-它用电压的变化来分辨0和1,从高电平到低电平的跳变代表1,而从低电平到高电平的跳变代表0(as per G.E.Tomas编码方式).从高电平到低电平的跳变代表0,而从低电平到高电平的跳变代表1(as per IEEE 802.3编码方式)
+它用电压的变化来分辨 0 和 1, 从高电平到低电平的跳变代表 1, 而从低电平到高电平的跳变代表 0(as per G.E.Tomas 编码方式). 从高电平到低电平的跳变代表 0, 而从低电平到高电平的跳变代表 1(as per IEEE 802.3 编码方式)
 
-信号的保持不会超过一个比特位的时间间隔.即使是0或1的序列,信号也将在每个时间间隔的中间发生跳变.这种跳变将允许接收设备的时钟与发送设备的时钟保持一致.
+信号的保持不会超过一个比特位的时间间隔. 即使是 0 或 1 的序列, 信号也将在每个时间间隔的中间发生跳变. 这种跳变将允许接收设备的时钟与发送设备的时钟保持一致.
 
-曼彻斯特编码被物理层用来编码一个同步位流的时钟和数据.因此,曼彻斯特编码被用在以太网媒介系统中.
+曼彻斯特编码被物理层用来编码一个同步位流的时钟和数据. 因此, 曼彻斯特编码被用在以太网媒介系统中.
 
-曼彻斯特编码提供一个简单的方式给编码简单的二进制序列而没有长的周期及转换级别,因而防止时钟同步的丢失,或来自低频率位移在贫乏补偿的模拟链接位错误.
+曼彻斯特编码提供一个简单的方式给编码简单的二进制序列而没有长的周期及转换级别, 因而防止时钟同步的丢失, 或来自低频率位移在贫乏补偿的模拟链接位错误.
 
-在这个技术下,实际上的二进制数据被传输通过这个电缆,不是作为一个序列的逻辑1或0来发送的(NRZ).与 NRZ 相反,这些位被转换为一个稍微不同的格式,它通过使用直接的二进制编码.
+在这个技术下, 实际上的二进制数据被传输通过这个电缆, 不是作为一个序列的逻辑 1 或 0 来发送的 (NRZ). 与 NRZ 相反, 这些位被转换为一个稍微不同的格式, 它通过使用直接的二进制编码.
 
 曼彻斯特编码还被用于局域网传输.
 
@@ -612,29 +660,37 @@ PDF417编码 由3到90行组成，每一行都类似于小的线性编码，并�
 
 ---
 
-# 现代密码
-
-**文章**
-- [安全体系(一)—— DES算法详解](https://www.cnblogs.com/songwenlong/p/5944139.html)
-- [安全体系(零)—— 加解密算法、消息摘要、消息认证技术、数字签名与公钥证书](http://www.cnblogs.com/songwenlong/p/6517165.html)
-- [Blowfish (密码学) - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Blowfish_(%E5%AF%86%E7%A0%81%E5%AD%A6))
-- [朝鲜红星操作系统加密算法解析](http://www.4hou.com/technology/12487.html)
-- [这些hash你了解吗？](http://www.myh0st.cn/index.php/archives/304/)
-
-**在线工具**
-- http://www.mxcz.net/tools/MD5.aspx
-- http://tool.oschina.net/encrypt/
-- http://encode.chahuo.com/
-- http://tool.chacuo.net/cryptdes
-- https://hashtoolkit.com/
-
----
-
-## 线性散列算法
+# 哈希&摘要&散列
 
 Hash，一般翻译做散列、杂凑，或音译为哈希，是把任意长度的输入（又叫做预映射pre-image）通过散列算法变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是一种将任意长度的消息压缩到某一固定长度的消息摘要的函数。
 
 将数据（如一段文字）运算变为另一固定长度值，是散列算法的基础原理。
+
+### BCrypt
+
+Bcrypt 是一种跨平台的文件加密工具。Bcrypt 使用的是布鲁斯 · 施内尔在 1993 年发布的 Blowfish 加密算法。由它加密的文件可在所有支持的操作系统和处理器上进行转移。它的口令必须是 8 至 56 个字符，并将在内部被转化为 448 位的密钥。
+
+Bcrypt 就是一款加密工具，可以比较方便地实现数据的加密工作。你也可以简单理解为它内部自己实现了随机加盐处理。使用 Bcrypt，每次加密后的密文是不一样的。
+
+对一个密码，Bcrypt 每次生成的 hash 都不一样，那么它是如何进行校验的？
+
+虽然对同一个密码，每次生成的 hash 不一样，但是 hash 中包含了 salt（hash 产生过程：先随机生成 salt，salt 跟 password 进行 hash）；
+
+在下次校验时，从 hash 中取出 salt，salt 跟 password 进行 hash；得到的结果跟保存在 DB 中的 hash 进行比对。
+
+BCrypt 算法将 salt 随机并混入最终加密后的密码，验证时也无需单独提供之前的 salt，从而无需单独处理 salt 问题。
+
+加密后的格式一般为：
+```
+$2a$10$/bTVvqqlH9UiE0ZJZ7N2Me3RIgUCdgMheyTgV0B4cMCSokPa.6oCa
+其中：$ 是分割符，无意义；2a 是 bcrypt 加密版本号；10 是 cost 的值；而后的前 22 位是 salt 值；再然后的字符串就是密码的密文了。
+```
+
+**相关文章**
+- [算法高级（22）-BCrypt加密算法，号称目前最安全的算法之一](https://blog.csdn.net/m0_37609579/article/details/100785947)
+
+**在线工具**
+- https://bcrypt-generator.com/
 
 ### MD5
 
@@ -740,6 +796,24 @@ RIPEMD-160("") = 9c1185a5c5e9fc54612808977ee8f548b2258d31
 
 ---
 
+# 现代密码
+
+**文章**
+- [安全体系(一)—— DES算法详解](https://www.cnblogs.com/songwenlong/p/5944139.html)
+- [安全体系(零)—— 加解密算法、消息摘要、消息认证技术、数字签名与公钥证书](http://www.cnblogs.com/songwenlong/p/6517165.html)
+- [Blowfish (密码学) - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Blowfish_(%E5%AF%86%E7%A0%81%E5%AD%A6))
+- [朝鲜红星操作系统加密算法解析](http://www.4hou.com/technology/12487.html)
+- [这些hash你了解吗？](http://www.myh0st.cn/index.php/archives/304/)
+
+**在线工具**
+- http://www.mxcz.net/tools/MD5.aspx
+- http://tool.oschina.net/encrypt/
+- http://encode.chahuo.com/
+- http://tool.chacuo.net/cryptdes
+- https://hashtoolkit.com/
+
+---
+
 ## 对称性加密算法
 
 对称密钥算法（英语：Symmetric-key algorithm）又称为对称加密、私钥加密、共享密钥加密，是密码学中的一类加密算法。这类算法在加密和解密时使用相同的密钥，或是使用两个可以简单地相互推算的密钥。事实上，这组密钥成为在两个或多个成员间的共同秘密，以便维持专属的通信联系。与公开密钥加密相比，要求双方获取相同的密钥是对称密钥加密的主要缺点之一。
@@ -771,7 +845,7 @@ AES 加密的模式主要有五种：ECB (电子密码本模式)、CBC（密码�
 - 缺点：无法并行计算，性能相对 ECB 低，会出现错误传播(errorpropagation)。
 
 **在线工具**
-- [AES Encryption – Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
+- [AES Encryption  Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
 - [在线AES加密解密、AES在线加密解密、AES encryption and decryption--查错网](http://tool.chacuo.net/cryptaes)
 
 ---
@@ -1747,11 +1821,6 @@ I have deposited in the county of Bedford...
 - http://discogscounter.getfreehosting.co.uk/js-noalnum.php
 - http://www.jsfuck.com/
 
-#### JS加密/解密
-
-**在线工具**
-- http://tool.chinaz.com/tools/scriptencode.aspx
-
 #### 颜文字加密
 
 **在线工具**
@@ -1777,3 +1846,8 @@ I have deposited in the county of Bedford...
 
 **在线工具**
 - https://sym233.github.io/core-values-encoder/
+
+#### 蝌蚪文
+
+**在线工具**
+- http://www.megaemoji.com/cn/generators/tadpole/

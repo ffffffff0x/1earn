@@ -41,10 +41,9 @@
     * [XSS](#xss)
     * [XXE](#xxe)
     * [SSRF](#ssrf)
-    * [php反序列化](#php反序列化)
+    * [SSTI](#ssti)
 
 * **[配置不当](#配置不当)**
-    * [jwt攻击](#jwt攻击)
     * [代理配置不当](#代理配置不当)
     * [CORS](#cors)
     * [CSRF](#csrf)
@@ -84,7 +83,7 @@
 - [文件包含漏洞总结 | 瓦都剋](http://byd.dropsec.xyz/2016/07/19/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/)
 - [本地文件包含漏洞利用技巧](https://www.secpulse.com/archives/55769.html)
 - [Directory Traversal, File Inclusion, and The Proc File System](https://blog.netspi.com/directory-traversal-file-inclusion-proc-file-system/)
-- [Exploiting PHP File Inclusion – Overview | Reiners' Weblog](https://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/)
+- [Exploiting PHP File Inclusion - Overview | Reiners' Weblog](https://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/)
 - [Local File Inclusion with Magic_quotes_gpc enabled - NotSoSecure](https://www.notsosecure.com/local-file-inclusion-with-magic_quotes_gpc-enabled/)
 - [Positive Technologies - learn and secure : Another alternative for NULL byte](https://blog.ptsecurity.com/2010/08/another-alternative-for-null-byte.html)
 - [远程包含和本地包含漏洞的原理 - Kevins 的天空](https://blog.csdn.net/iiprogram/article/details/2349322)
@@ -139,7 +138,7 @@
 # 文件解析
 
 **相关文章**
-- [解析漏洞总结 – erevus](http://www.vuln.cn/7070)
+- [解析漏洞总结 - erevus](http://www.vuln.cn/7070)
 
 ## IIS
 
@@ -504,6 +503,19 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
+## SSI
+
+`Server Side Includes 服务器端包含`
+
+**简介**
+
+SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，即允许通过在 HTML 页面注入脚本或远程执行任意代码。
+
+**相关文章**
+- [服务器端包含注入SSI分析总结](https://www.secpulse.com/archives/66934.html)
+
+---
+
 ## SSRF
 
 **简介**
@@ -532,52 +544,19 @@ WEB-INF 主要包含一下文件或目录:
 - [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
 
 **Bypass IP 限制**
-- [IP限制绕过](./IDOR.md#ip限制绕过)
+- [IP限制绕过](../IDOR.md#ip限制绕过)
 
 ---
 
-## php反序列化
+## SSTI
 
-**相关工具**
-- [php 在线反序列化工具](https://www.w3cschool.cn/tools/index?name=unserialize)
+`服务器端模板注入`
+
+- [SSTI 笔记](./SSTI.md)
 
 ---
 
 # 配置不当
-
-## jwt攻击
-
-**相关文章**
-- [全程带阻:记一次授权网络攻防演练 (上) ](https://www.freebuf.com/vuls/211842.html)
-- [对jwt的安全测试方式总结](https://saucer-man.com/information_security/377.html)
-- [攻击JWT的一些方法 ](https://xz.aliyun.com/t/6776)
-- [JWT攻击手册：如何入侵你的Token](https://mp.weixin.qq.com/s/x43D718Tw3LZ4QGFxjLjuw)
-- [JSON Web Token Validation Bypass in Auth0 Authentication API](https://insomniasec.com/blog/auth0-jwt-validation-bypass)
-
-**Tips**
-
-搜索 JWT 的正则,来自 以下正则来自 以下内容来自 <sup>[[ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool#tips)]</sup>
-```re
-[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*         -稳定的 JWT 版本
-[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*   -所有 JWT 版本（可能误报）
-```
-
-```python
-import jwt
-jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
-```
-
-**相关工具**
-- [JSON Web Tokens - jwt.io](https://jwt.io/) - 在线的 jwt 生成
-- [ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool) - 一个用于验证，伪造和破解JWT（JSON Web令牌）的工具包。
-- [Ch1ngg/JWTPyCrack](https://github.com/Ch1ngg/JWTPyCrack)
-- [crack JWT](https://pastebin.com/tv99bTNg)
-- [brendan-rius/c-jwt-cracker](https://github.com/brendan-rius/c-jwt-cracker)
-- [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
-- [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
-- [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
-
----
 
 ## 代理配置不当
 
@@ -643,6 +622,7 @@ JSON 实际应用的时候会有两种传输数据的方式：
 
 **相关文章**
 - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
+- [JSONP 安全攻防技术](https://blog.knownsec.com/2015/03/jsonp_security_technic/)
 
 **相关案例**
 - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)

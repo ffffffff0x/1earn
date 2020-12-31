@@ -27,6 +27,7 @@ Cobalt Strike 是一款常用于后渗透的神器，这个工具以团队作为
 - [cobalt strike 快速上手 [ 一 ] - FreeBuf专栏·攻防之路](https://www.freebuf.com/column/149236.html)
 - [教你修改cobalt strike的50050端口 - 3HACK](https://www.3hack.com/note/96.html)
 - [ryanohoro/csbruter: Cobalt Strike team server password brute force tool](https://github.com/ryanohoro/csbruter)
+- [踩坑记录-DNS Beacon](https://xz.aliyun.com/t/7938)
 
 **工具/插件**
 
@@ -850,7 +851,7 @@ rportfwd stop 8888
 
 **socks4**
 
-通过这些 SOCKS 服务器的所有连接都将变为连接，读取，写入和关闭任务状态，以便执行相关的 Beacon。您可以通过 SOCKS 的任何类型的 Beacon 进行隧道传输。 Beacon 的 HTTP 数据通道对数据转发的响应最快，如果您想通过 DNS 转发流量，请使用 DNS TXT 记录通信模式。 CS 本身支持的是 socks4 代理，貌似有脚本支持 socks5，他有 2 种用法，一种是配合 proxychains 带入目标内网 ，一种是直接把 msf 带入目标内网
+通过这些 SOCKS 服务器的所有连接都将变为连接，读取，写入和关闭任务状态，以便执行相关的 Beacon。你可以通过 SOCKS 的任何类型的 Beacon 进行隧道传输。 Beacon 的 HTTP 数据通道对数据转发的响应最快，如果你想通过 DNS 转发流量，请使用 DNS TXT 记录通信模式。 CS 本身支持的是 socks4 代理，貌似有脚本支持 socks5，他有 2 种用法，一种是配合 proxychains 带入目标内网 ，一种是直接把 msf 带入目标内网
 
 在 192.168.141.142 的 8888 端口开启 sock4 代理
 ```bash
@@ -876,7 +877,7 @@ socks4 192.168.141.142 8888
 
 VPN pivoting 是一种灵活的隧道传输方式，这种方式不受代理 pivot 的那些限制。Cobalt Strike 通过其隐蔽 VPN 功能提供 VPN pivoting 服务。隐蔽 VPN 创建一个在 Cobalt Strike 系统上的网络接口并将此接口桥接进目标的网络中。
 
-要激活 Covert VPN，右键单击受控的主机， Pivoting - > Deploy VPN。选择您希望 Covert VPN 绑定到的远程接口。
+要激活 Covert VPN，右键单击受控的主机， Pivoting - > Deploy VPN。选择你希望 Covert VPN 绑定到的远程接口。
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/44.png)
 
@@ -884,7 +885,7 @@ VPN pivoting 是一种灵活的隧道传输方式，这种方式不受代理 piv
 
 激活隐蔽 VPN 接口后，你可以像使用你的系统上的任何物理接口一样使用它。使用 ifconfig 来配置其 IP 地址。如果目标网络具有 DHCP 服务器，则你可以使用你的操作系统内置工具向其请求IP地址
 
-要管理您的 Covert VPN 接口，请进入到 Cobalt Strike - > VPN Interfaces。在这里，Cobalt Strike 将显示 Covert VPN 接口，它们的配置方式以及通过每个接口传输和接收的字节数。
+要管理你的 Covert VPN 接口，请进入到 Cobalt Strike - > VPN Interfaces。在这里，Cobalt Strike 将显示 Covert VPN 接口，它们的配置方式以及通过每个接口传输和接收的字节数。
 
 选中一个接口，然后选择 “Remove” 清除该接口并关闭远程 Covert VPN 客户端。Covert VPN 将在重新启动时删除其临时文件，并立即自动撤消任何系统更改。选择 Add 以配置新的 Covert VPN 接口。
 
@@ -894,7 +895,7 @@ VPN pivoting 是一种灵活的隧道传输方式，这种方式不受代理 piv
 
 隐蔽 VPN 接口由一个网络分接头和一个用于通信 63 个以太网帧通过的通道组成。要配置接口，请填入接口名称（这是你稍后要通过 ifconfig 操作的名称）和一个 MAC 地址。
 
-您还必须为您的接口配置 Covert VPN 通信通道。
+你还必须为你的接口配置 Covert VPN 通信通道。
 
 隐蔽 VPN 可以通过 UDP 连接，TCP 连接，ICMP 或使用 HTTP 协议来通信以太网帧。 TCP(Reverse) 通道会让目标连接到你的 Cobalt Strike 实例。 TCP(Bind) 通道会让 Cobalt Strike 通过 Beacon 与 VPN 建立隧道通信。
 

@@ -6,7 +6,7 @@
 * [Survivor_ms](https://github.com/136510385)
     - 提供网络部分 IPV6 内容
 * [hhkk2334](https://www.thesteel.live/)
-* [幻羽灵殇](https://github.com/syl2293686270)
+* [RyuZU](https://github.com/RyuZUSUNC)
     - 提供 Crypto 笔记的内容
 * [xidaner](https://github.com/xidaner)
     - 提供 Kioptrix4 靶机的 WalkThrough

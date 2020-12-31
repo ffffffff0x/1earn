@@ -23,7 +23,7 @@
         * [日志工具](#日志工具)
         * [第三方程序日志](#第三方程序日志)
 
-* **[Net](#Net)**
+* **[网络](#网络)**
     * [端口](#端口)
     * [RDP](#rdp)
     * [DNS](#dns)
@@ -213,22 +213,22 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 
     登录成功的所有事件
     ```
-    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4624"
+    LogParser.exe -i:EVT -o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4624"
     ```
 
     指定登录时间范围的事件
     ```
-    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where TimeGenerated>'2018-06-19 23:32:11' and TimeGenerated<'2018-06-20 23:34:00' and EventID=4624"
+    LogParser.exe -i:EVT -o:DATAGRID "SELECT * FROM c:\Security.evtx where TimeGenerated>'2018-06-19 23:32:11' and TimeGenerated<'2018-06-20 23:34:00' and EventID=4624"
     ```
 
     提取登录成功的用户名和IP
     ```
-    LogParser.exe -i:EVT –o:DATAGRID "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,'|') as Username,EXTRACT_TOKEN(Message,38,' ') as Loginip FROM c:\Security.evtx where EventID=4624"
+    LogParser.exe -i:EVT -o:DATAGRID "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,'|') as Username,EXTRACT_TOKEN(Message,38,' ') as Loginip FROM c:\Security.evtx where EventID=4624"
     ```
 
     登录失败的所有事件
     ```
-    LogParser.exe -i:EVT –o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4625"
+    LogParser.exe -i:EVT -o:DATAGRID "SELECT * FROM c:\Security.evtx where EventID=4625"
     ```
 
     提取登录失败用户名进行聚合统计
@@ -238,7 +238,7 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 
     系统历史开关机记录
     ```
-    LogParser.exe -i:EVT –o:DATAGRID "SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006"
+    LogParser.exe -i:EVT -o:DATAGRID "SELECT TimeGenerated,EventID,Message FROM c:\System.evtx where EventID=6005 or EventID=6006"
     ```
 
 **LogParser Lizard**
@@ -278,9 +278,21 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 
 开始-运行，输入 `secpol.msc`
 
+## 设备
+
+### 磁盘管理
+
+- win7
+
+    右键“计算机”，选中“管理”，选择磁盘管理
+
+- win10
+
+    <kbd>win</kbd>+<kbd>x</kbd>,选择 <kbd>磁盘管理</kbd>
+
 ---
 
-# Net
+# 网络
 ## 端口
 
 查看目前的网络连接，定位可疑的 ESTABLISHED

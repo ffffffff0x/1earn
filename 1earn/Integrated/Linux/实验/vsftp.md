@@ -5,11 +5,11 @@
 **安装**
 - **服务端**
 
-	`yum install vsftpd`
+	`yum install -y vsftpd`
 
 - **客户端**
 
-	`yum install ftp`
+	`yum install -y ftp`
 
 ---
 
@@ -237,7 +237,7 @@ systemctl enable vsftpd
 
 **安装服务,配置虚拟用户认证**
 ```bash
-yum install vsftpd
+yum install -y vsftpd
 ```
 ```vim
 cd /etc/vsftp
@@ -373,7 +373,7 @@ systemctl enable vsftpd
 
 **安装服务,配置虚拟用户认证**
 ```bash
-yum install vsftpd
+yum install -y vsftpd
 cd /etc/vsftp
 ```
 ```vim

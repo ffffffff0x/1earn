@@ -71,77 +71,6 @@ HTTP1.1 新增了六种请求方法：OPTIONS、PUT、PATCH、DELETE、TRACE 和
 
 ---
 
-## POST 请求数据提交格式
-
-服务端通常是根据请求头（headers）中的 Content-Type 字段来获知请求中的消息主体是用何种方式编码，再对主体进行解析。所以说到 POST 提交数据方案，包含了 Content-Type 和消息主体编码方式两部分。
-
-```
-快到中午了，张三丰不想去食堂吃饭，于是打电话叫外卖：老板，我要一份[鱼香肉丝]，要 12：30 之前给我送过来哦，我在江湖湖公司研发部，叫张三丰。
-```
-
-这里，你要[鱼香肉丝]相当于 HTTP 报文体，而“12：30之前送过来”，你叫“张三丰”等信息就相当于 HTTP 的请求头。它们是一些附属信息，帮忙你和饭店老板顺利完成这次交易。
-
-**application/x-www-form-urlencoded**
-
-最基本的 form 表单结构,用于传递字符参数的键值对,请求结构如下
-```
-POST  HTTP/1.1
-Host: www.demo.com
-Cache-Control: no-cache
-Postman-Token: 81d7b315-d4be-8ee8-1237-04f3976de032
-Content-Type: application/x-www-form-urlencoded
-
-key=value&testKey=testValue
-```
-
-请求头中的 Content-Type 设置为 application/x-www-form-urlencoded; 提交的的数据,请求 body 中按照 key1=value1&key2=value2 进行编码,key 和 value 都要进行 urlEncode;
-
-**multipart/form-data**
-
-这是上传文件时,最常见的数据提交方式,看一下请求结构
-```
-POST  HTTP/1.1
-Host: www.demo.com
-Cache-Control: no-cache
-Postman-Token: 679d816d-8757-14fd-57f2-fbc2518dddd9
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="key"
-
-value
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="testKey"
-
-testValue
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="imgFile"; filename="no-file"
-Content-Type: application/octet-stream
-
-
-<data in here>
-------WebKitFormBoundary7MA4YWxkTrZu0gW--
-```
-
-首先请求头中的 Content-Type 是 multipart/form-data; 并且会随机生成 一个 boundary, 用于区分请求 body 中的各个数据; 每个数据以 --boundary 开始, 紧接着换行,下面是内容描述信息, 接着换2行, 接着是数据; 然后以 --boundary-- 结尾, 最后换行;
-
-文本数据和文件,图片的内容描述是不相同的
-文本参数:
-```
-Content-Disposition: form-data; name="key"
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-```
-
-文件参数:
-```
-Content-Disposition: form-data; name="imgFile"; filename="no-file"
-Content-Type: application/octet-stream
-Content-Transfer-Encoding: binary
-```
-
----
-
 # HTTP headers
 
 **Reference**
@@ -329,14 +258,14 @@ Accept-Encoding：gzip,deflate
 Accept-Charset：gb2312,utf-8;q=0、7,*;q=0、7
 Keep-Alive：300
 Connection：keep-alive
-Cookie：userId=C5bYpXrimdmsiQmsBPnE1Vn8ZQmdWSm3WRlEB3vRwTnRtW           <– Cookie
+Cookie：userId=C5bYpXrimdmsiQmsBPnE1Vn8ZQmdWSm3WRlEB3vRwTnRtW           <- Cookie
 If-Modified-Since：Sun, 01 Jun 2008 12:05:30 GMT
 Cache-Control：max-age=0
 ```
 
 **HTTP 响应消息头部实例**
 ```
-Status：OK - 200                                        <– 响应状态码，表示 web 服务器处理的结果。
+Status：OK - 200                                        <- 响应状态码，表示 web 服务器处理的结果。
 Date：Sun, 01 Jun 2008 12:35:47 GMT
 Server：Apache/2、0、61 (Unix)
 Last-Modified：Sun, 01 Jun 2008 12:35:30 GMT
@@ -346,7 +275,7 @@ Cache-Control：max-age=120
 Expires：Sun, 01 Jun 2008 12:37:47 GMT
 Content-Type：application/xml
 Age：2
-X-Cache：HIT from 236-41、D07071951、sina、com、cn      <– 反向代理服务器使用的 HTTP 头部
+X-Cache：HIT from 236-41、D07071951、sina、com、cn      <- 反向代理服务器使用的 HTTP 头部
 Via：1.0 236-41.D07071951.sina.com.cn:80 (squid/2.6.STABLE13)
 Connection：close
 ```
@@ -355,82 +284,270 @@ Connection：close
 
 ## 头部详解
 
-- Accept ：告诉 WEB 服务器自己接受什么介质类型，`*/*` 表示任何类型，`type/*` 表示该类型下的所有子类型，`type/sub-type`。
+**Accept**
 
-- Accept-Charset ： 浏览器申明自己接收的字符集
+告诉 WEB 服务器自己接受什么介质类型，`*/*` 表示任何类型，`type/*` 表示该类型下的所有子类型，`type/sub-type`。
 
-- Accept-Encoding ： 浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩，支持什么压缩方法（gzip，deflate）
+**Accept-Charset**
 
-- Accept-Language ：浏览器申明自己接收的语言,语言跟字符集的区别：中文是语言，中文有多种字符集，比如 big5，gb2312，gbk 等等。
+浏览器申明自己接收的字符集
 
-- Age ：当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现在经过多长时间了。
+**Accept-Encoding**
 
-- Authorization ：当客户端接收到来自 WEB 服务器的 WWW-Authenticate 响应时，用该头部来回应自己的身份验证信息给 WEB 服务器。
+浏览器申明自己接收的编码方法，通常指定压缩方法，是否支持压缩，支持什么压缩方法（gzip，deflate）
 
-- Cache-Control ：请求：no-cache（不要缓存的实体，要求现在从WEB服务器去取） max-age：（只接受 Age 值小于 max-age 值，并且没有过期的对象） max-stale：（可以接受过去的对象，但是过期时间必须小于 max-stale 值）
+**Accept-Language**
 
-- min-fresh ：（接受其新鲜生命期大于其当前 Age 跟 min-fresh 值之和的缓存对象） 响应：public(可以用 Cached 内容回应任何用户) private（只能用缓存内容回应先前请求该内容的那个用户） no-cache（可以缓存，但是只有在跟 WEB 服务器验证了其有效后，才能返回给客户端） max-age：（本响应包含的对象的过期时间）
+浏览器申明自己接收的语言,语言跟字符集的区别：中文是语言，中文有多种字符集，比如 big5，gb2312，gbk 等等。
+
+**Age**
+
+当代理服务器用自己缓存的实体去响应请求时，用该头部表明该实体从产生到现在经过多长时间了。
+
+**Authorization**
+
+当客户端接收到来自 WEB 服务器的 WWW-Authenticate 响应时，用该头部来回应自己的身份验证信息给 WEB 服务器。
+
+**Cache-Control**
+
+请求：no-cache（不要缓存的实体，要求现在从WEB服务器去取） max-age：（只接受 Age 值小于 max-age 值，并且没有过期的对象） max-stale：（可以接受过去的对象，但是过期时间必须小于 max-stale 值）
+
+**min-fresh**
+
+（接受其新鲜生命期大于其当前 Age 跟 min-fresh 值之和的缓存对象）响应：public(可以用 Cached 内容回应任何用户) private（只能用缓存内容回应先前请求该内容的那个用户） no-cache（可以缓存，但是只有在跟 WEB 服务器验证了其有效后，才能返回给客户端） max-age：（本响应包含的对象的过期时间）
 ALL: no-store（不允许缓存）
 
-- Connection ：请求：close（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不要等待本次连接的后续请求了）。keepalive（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求）。
+**Connection**
 
-- Content-Encoding ：WEB 服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应中的对象。例如：`Content-Encoding：gzip`
+请求：close（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，断开连接，不要等待本次连接的后续请求了）。keepalive（告诉 WEB 服务器或者代理服务器，在完成本次请求的响应后，保持连接，等待本次连接的后续请求）。
 
-- Content-Language ：WEB 服务器告诉浏览器自己响应的对象的语言。
+**Content-Disposition**
 
-- Content-Length ： WEB 服务器告诉浏览器自己响应的对象的长度。例如：`Content-Length: 26012`
+在常规的 HTTP 应答中，Content-Disposition 响应头指示回复的内容该以何种形式展示，是以内联的形式（即网页或者页面的一部分），还是以附件的形式下载并保存到本地。在 multipart/form-data 类型的应答消息体中，Content-Disposition 消息头可以被用在 multipart 消息体的子部分中，用来给出其对应字段的相关信息。各个子部分由在 Content-Type 中定义的分隔符分隔。用在消息体自身则无实际意义。
 
-- Content-Range ： WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如：`Content-Range: bytes 21010-47021/47022`
+Content-Disposition 消息头最初是在 MIME 标准中定义的，HTTP 表单及 POST 请求只用到了其所有参数的一个子集。只有 form-data 以及可选的 name 和 filename 三个参数可以应用在 HTTP 场景中。
 
-- Content-Type ： WEB 服务器告诉浏览器自己响应的对象的类型。例如：`Content-Type：application/xml`
+- 指令
 
-- ETag ：就是一个对象（比如 URL）的标志值，就一个对象而言，比如一个 html 文件，如果被修改了，其 Etag 也会别修改，所以 ETag 的作用跟 Last-Modified 的作用差不多，主要供 WEB 服务器判断一个对象是否改变了。比如前一次请求某个 html 文件时，获得了其 ETag，当这次又请求这个文件时，浏览器就会把先前获得的 ETag 值发送给WEB 服务器，然后 WEB 服务器会把这个 ETag 跟该文件的当前 ETag 进行对比，然后就知道这个文件有没有改变了。
+    - name
 
-- Expired ：WEB 服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟 WEB 服务器验证了其有效性后，才能用来响应客户请求。是 HTTP/1.0 的头部。例如：`Expires：Sat, 23 May 2009 10:02:12 GMT`
+        后面是一个表单字段名的字符串，每一个字段名会对应一个子部分。在同一个字段名对应多个文件的情况下（例如，带有 multiple 属性的 `<input type=file>` 元素），则多个子部分共用同一个字段名。如果 name 参数的值为 `_charset_` ，意味着这个子部分表示的不是一个 HTML 字段，而是在未明确指定字符集信息的情况下各部分使用的默认字符集。
 
-- Host ：客户端指定自己想访问的WEB服务器的域名/IP 地址和端口号。例如：`Host：rss.sina.com.cn`
+    - filename
 
-- If-Match ：如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的动作。
+        后面是要传送的文件的初始名称的字符串。这个参数总是可选的，而且不能盲目使用：路径信息必须舍掉，同时要进行一定的转换以符合服务器文件系统规则。这个参数主要用来提供展示性信息。当与 `Content-Disposition: attachment` 一同使用的时候，它被用作"保存为"对话框中呈现给用户的默认文件名。
 
-- If-None-Match ：如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求的动作。
+    - filename*
 
-- If-Modified-Since ：如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（比如返回对象），否则返回代码304，告诉浏览器该对象没有修改。例如：`If-Modified-Since：Thu,10 Apr 2008 09:14:42 GMT`
+        `filename` 和 `filename*` 两个参数的唯一区别在于，`filename*` 采用了  RFC 5987 中规定的编码方式。当 `filename` 和 `filename*` 同时出现的时候，应该优先采用 `filename*`，假如二者都支持的话。
 
-- If-Unmodified-Since ：如果请求的对象在该头部指定的时间之后没修改过，才执行请求的动作（比如返回对象）
+- 作为消息主体中的消息头
 
-- If-Range ：浏览器告诉 WEB服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者自己所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一起使用。
+    在 HTTP 场景中，第一个参数或者是 inline（默认值，表示回复中的消息体会以页面的一部分或者整个页面的形式展示），或者是 attachment（意味着消息体应该被下载到本地；大多数浏览器会呈现一个“保存为”的对话框，将 filename 的值预填为下载后的文件名，假如它存在的话）。
+    ```
+    Content-Disposition: inline
+    Content-Disposition: attachment
+    Content-Disposition: attachment; filename="filename.jpg"
+    ```
 
-- Last-Modified ：WEB服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：`Last-Modified：Tue, 06 May 2008 02:42:43 GMT`
+- 作为 multipart body 中的消息头
 
-- Location ：WEB服务器告诉浏览器，试图访问的对象已经被移到别的位置了，到该头部指定的位置去取。例如：`Location http://i0.sinaimg.cn/dy/deco/2008/0528/sina0.gif` Location 通常不是直接设置的，而是通过 HttpServletResponse 的 sendRedirect 方法，该方法同时设置状态代码为 302。
+    在 HTTP 场景中。第一个参数总是固定不变的 form-data；附加的参数不区分大小写，并且拥有参数值，参数名与参数值用等号 `=` 连接，参数值用双引号括起来。参数之间用分号 `;` 分隔。
+    ```
+    Content-Disposition: form-data
+    Content-Disposition: form-data; name="fieldName"
+    Content-Disposition: form-data; name="fieldName"; filename="filename.jpg"
+    ```
 
-- Pramga ：主要使用 Pramga: no-cache，相当于 Cache-Control： no-cache。例如：`Pragma：no-cache`
+**Content-Encoding**
 
-- Proxy-Authenticate ：代理服务器响应浏览器，要求其提供代理身份验证信息。Proxy-Authorization：浏览器响应代理服务器的身份验证请求，提供自己的身份信息。
+WEB 服务器表明自己使用了什么压缩方法（gzip，deflate）压缩响应中的对象。例如：`Content-Encoding：gzip`
 
-- Range ：浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪部分。例如：`Range:bytes=1173546-`
+**Content-Language**
 
-- Referer ：浏览器向 WEB 服务器表明自己是从哪个网页/URL 获得/点击当前请求中的网址/URL。例如：`Referer：http://www.sina.com/`
+WEB 服务器告诉浏览器自己响应的对象的语言。
 
-- Server : WEB 服务器表明自己是什么软件及版本等信息。例如：`Server：Apache/2.0.61 (Unix)`
+**Content-Length**
 
-- User-Agent : 浏览器表明自己的身份（是哪种浏览器）。 例如：`User-Agent：Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 Firefox/2、0、0、14`
+WEB 服务器告诉浏览器自己响应的对象的长度。例如：`Content-Length: 26012`
 
-- Transfer-Encoding : WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作了怎样的编码，比如是否分块（chunked）。例如：`Transfer-Encoding:chunked`
+**Content-Range**
 
-- Vary : WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源WEB服务器在接到第一个请求消息时，其响应消息的头部为： `Content-Encoding: gzip; Vary: Content-Encoding` 那么 Cache 服务器会分析后续请求消息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应给不具备解压能力的浏览器。例如：`Vary：Accept-Encoding`
+WEB 服务器表明该响应包含的部分对象为整个对象的哪个部分。例如：`Content-Range: bytes 21010-47021/47022`
 
-- Via ：列出从客户端到 OCS 或者相反方向的响应经过了哪些代理服务器，他们用什么协议（和版本）发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添加 Via 头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的 Via 头部，并把自己的相关信息加到后面，以此类推，当 OCS 收到最后一个代理服务器的请求时，检查 Via 头部，就知道该请求所经过的路由。例如：`Via：1.0 236.D0707195.sina.com.cn:80 (squid/2.6.STABLE13)`
+**Content-Type**
 
-- Refresh : 表示浏览器应该在多少时间之后刷新文档，以秒计。除了刷新当前文档之外，你还可以通过 `setHeader("Refresh", "5; URL=http://host/path")` 让浏览器读取指定的页面。注意这种功能通常是通过设置 HTML 页面 HEAD 区的 `＜META HTTP-EQUIV="Refresh" CONTENT="5;URL=http://host/path"＞` 实现，这是因为，自动刷新或重定向对于那些不能使用 CGI或  Servlet 的 HTML 编写者十分重要。但是，对于 Servlet 来说，直接设置 Refresh 头更加方便。注意 Refresh 的意义是"N 秒之后刷新本页面或访问指定页面"，而不是"每隔N秒刷新本页面或访问指定页面"。因此，连续刷新要求每次都发送一个 Refresh 头，而发送 204 状态代码则可以阻止浏览器继续刷新，不管是使用 Refresh 头还是 `＜META HTTP-EQUIV="Refresh" ...＞`。注意 Refresh 头不属于 HTTP 1.1 正式规范的一部分，而是一个扩展，但 Netscape 和 IE 都支持它。
+WEB 服务器告诉浏览器自己响应的对象的类型。例如：`Content-Type：application/xml`
 
-- Set-Cookie : 设置和页面关联的 Cookie。Servlet 不应使用 `response.setHeader("Set-Cookie", ...)` ，而是应使用 HttpServletResponse 提供的专用方法 addCookie。
+**ETag**
 
-- Server : 服务器名字。Servlet 一般不设置这个值，而是由 Web 服务器自己设置。
+就是一个对象（比如 URL）的标志值，就一个对象而言，比如一个 html 文件，如果被修改了，其 Etag 也会别修改，所以 ETag 的作用跟 Last-Modified 的作用差不多，主要供 WEB 服务器判断一个对象是否改变了。比如前一次请求某个 html 文件时，获得了其 ETag，当这次又请求这个文件时，浏览器就会把先前获得的 ETag 值发送给WEB 服务器，然后 WEB 服务器会把这个 ETag 跟该文件的当前 ETag 进行对比，然后就知道这个文件有没有改变了。
 
-- WWW-Authenticate : 客户应该在 Authorization 头中提供什么类型的授权信息？在包含 401（Unauthorized）状态行的应答中这个头是必需的。例如，`response.setHeader("WWW-Authenticate", "BASIC realm=＼"executives＼"")` 。注意 Servlet 一般不进行这方面的处理，而是让 Web 服务器的专门机制来控制受密码保护页面的访问（例如 `.htaccess`）。
+**Expired**
+
+WEB 服务器表明该实体将在什么时候过期，对于过期了的对象，只有在跟 WEB 服务器验证了其有效性后，才能用来响应客户请求。是 HTTP/1.0 的头部。例如：`Expires：Sat, 23 May 2009 10:02:12 GMT`
+
+**Host**
+
+客户端指定自己想访问的WEB服务器的域名/IP 地址和端口号。例如：`Host：rss.sina.com.cn`
+
+**If-Match**
+
+如果对象的 ETag 没有改变，其实也就意味著对象没有改变，才执行请求的动作。
+
+**If-None-Match**
+
+如果对象的 ETag 改变了，其实也就意味著对象也改变了，才执行请求的动作。
+
+**If-Modified-Since**
+
+如果请求的对象在该头部指定的时间之后修改了，才执行请求的动作（比如返回对象），否则返回代码304，告诉浏览器该对象没有修改。例如：`If-Modified-Since：Thu,10 Apr 2008 09:14:42 GMT`
+
+**If-Unmodified-Since**
+
+如果请求的对象在该头部指定的时间之后没修改过，才执行请求的动作（比如返回对象）
+
+**If-Range**
+
+浏览器告诉 WEB 服务器，如果我请求的对象没有改变，就把我缺少的部分给我，如果对象改变了，就把整个对象给我。浏览器通过发送请求对象的 ETag 或者自己所知道的最后修改时间给 WEB 服务器，让其判断对象是否改变了。总是跟 Range 头部一起使用。
+
+**Last-Modified**
+
+WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：`Last-Modified：Tue, 06 May 2008 02:42:43 GMT`
+
+**Location**
+
+WEB 服务器告诉浏览器，试图访问的对象已经被移到别的位置了，到该头部指定的位置去取。例如：`Location http://i0.sinaimg.cn/dy/deco/2008/0528/sina0.gif` Location 通常不是直接设置的，而是通过 HttpServletResponse 的 sendRedirect 方法，该方法同时设置状态代码为 302。
+
+**Pramga**
+
+主要使用 Pramga: no-cache，相当于 Cache-Control： no-cache。例如：`Pragma：no-cache`
+
+**Proxy-Authenticate**
+
+代理服务器响应浏览器，要求其提供代理身份验证信息。
+
+**Proxy-Authorization**
+
+浏览器响应代理服务器的身份验证请求，提供自己的身份信息。
+
+**Range**
+
+浏览器（比如 Flashget 多线程下载时）告诉 WEB 服务器自己想取对象的哪部分。例如：`Range:bytes=1173546-`
+
+**Referer**
+
+浏览器向 WEB 服务器表明自己是从哪个网页/URL 获得/点击当前请求中的网址/URL。例如：`Referer：http://www.sina.com/`
+
+**Server**
+
+WEB 服务器表明自己是什么软件及版本等信息。例如：`Server：Apache/2.0.61 (Unix)`
+
+**User-Agent**
+
+浏览器表明自己的身份（是哪种浏览器）。 例如：`User-Agent：Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.8.1.14) Gecko/20080404 Firefox/2、0、0、14`
+
+**Transfer-Encoding**
+
+WEB 服务器表明自己对本响应消息体（不是消息体里面的对象）作了怎样的编码，比如是否分块（chunked）。例如：`Transfer-Encoding:chunked`
+
+**Vary**
+
+WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才能用本响应所返回的对象响应后续的请求。假如源WEB服务器在接到第一个请求消息时，其响应消息的头部为： `Content-Encoding: gzip; Vary: Content-Encoding` 那么 Cache 服务器会分析后续请求消息的头部，检查其 Accept-Encoding，是否跟先前响应的 Vary 头部值一致，即是否使用相同的内容编码方法，这样就可以防止 Cache 服务器用自己 Cache 里面压缩后的实体响应给不具备解压能力的浏览器。例如：`Vary：Accept-Encoding`
+
+**Via**
+
+列出从客户端到 OCS 或者相反方向的响应经过了哪些代理服务器，他们用什么协议（和版本）发送的请求。当客户端请求到达第一个代理服务器时，该服务器会在自己发出的请求里面添加 Via 头部，并填上自己的相关信息，当下一个代理服务器收到第一个代理服务器的请求时，会在自己发出的请求里面复制前一个代理服务器的请求的 Via 头部，并把自己的相关信息加到后面，以此类推，当 OCS 收到最后一个代理服务器的请求时，检查 Via 头部，就知道该请求所经过的路由。例如：`Via：1.0 236.D0707195.sina.com.cn:80 (squid/2.6.STABLE13)`
+
+**Refresh**
+
+表示浏览器应该在多少时间之后刷新文档，以秒计。除了刷新当前文档之外，你还可以通过 `setHeader("Refresh", "5; URL=http://host/path")` 让浏览器读取指定的页面。注意这种功能通常是通过设置 HTML 页面 HEAD 区的 `＜META HTTP-EQUIV="Refresh" CONTENT="5;URL=http://host/path"＞` 实现，这是因为，自动刷新或重定向对于那些不能使用 CGI或  Servlet 的 HTML 编写者十分重要。但是，对于 Servlet 来说，直接设置 Refresh 头更加方便。注意 Refresh 的意义是"N 秒之后刷新本页面或访问指定页面"，而不是"每隔N秒刷新本页面或访问指定页面"。因此，连续刷新要求每次都发送一个 Refresh 头，而发送 204 状态代码则可以阻止浏览器继续刷新，不管是使用 Refresh 头还是 `＜META HTTP-EQUIV="Refresh" ...＞`。注意 Refresh 头不属于 HTTP 1.1 正式规范的一部分，而是一个扩展，但 Netscape 和 IE 都支持它。
+
+**Set-Cookie**
+
+设置和页面关联的 Cookie。Servlet 不应使用 `response.setHeader("Set-Cookie", ...)` ，而是应使用 HttpServletResponse 提供的专用方法 addCookie。
+
+**Server**
+
+服务器名字。Servlet 一般不设置这个值，而是由 Web 服务器自己设置。
+
+**WWW-Authenticate**
+
+客户应该在 Authorization 头中提供什么类型的授权信息？在包含 401（Unauthorized）状态行的应答中这个头是必需的。例如，`response.setHeader("WWW-Authenticate", "BASIC realm=＼"executives＼"")` 。注意 Servlet 一般不进行这方面的处理，而是让 Web 服务器的专门机制来控制受密码保护页面的访问（例如 `.htaccess`）。
+
+---
+
+# POST 请求数据提交格式
+
+服务端通常是根据请求头（headers）中的 Content-Type 字段来获知请求中的消息主体是用何种方式编码，再对主体进行解析。所以说到 POST 提交数据方案，包含了 Content-Type 和消息主体编码方式两部分。
+
+```
+快到中午了，张三丰不想去食堂吃饭，于是打电话叫外卖：老板，我要一份[鱼香肉丝]，要 12：30 之前给我送过来哦，我在江湖湖公司研发部，叫张三丰。
+```
+
+这里，你要[鱼香肉丝]相当于 HTTP 报文体，而“12：30之前送过来”，你叫“张三丰”等信息就相当于 HTTP 的请求头。它们是一些附属信息，帮忙你和饭店老板顺利完成这次交易。
+
+**application/x-www-form-urlencoded**
+
+最基本的 form 表单结构,用于传递字符参数的键值对,请求结构如下
+```
+POST  HTTP/1.1
+Host: www.demo.com
+Cache-Control: no-cache
+Postman-Token: 81d7b315-d4be-8ee8-1237-04f3976de032
+Content-Type: application/x-www-form-urlencoded
+
+key=value&testKey=testValue
+```
+
+请求头中的 Content-Type 设置为 application/x-www-form-urlencoded; 提交的的数据,请求 body 中按照 key1=value1&key2=value2 进行编码,key 和 value 都要进行 urlEncode;
+
+**multipart/form-data**
+
+这是上传文件时,最常见的数据提交方式,看一下请求结构
+```
+POST  HTTP/1.1
+Host: www.demo.com
+Cache-Control: no-cache
+Postman-Token: 679d816d-8757-14fd-57f2-fbc2518dddd9
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="key"
+
+value
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="testKey"
+
+testValue
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="imgFile"; filename="no-file"
+Content-Type: application/octet-stream
+
+
+<data in here>
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+```
+
+首先请求头中的 Content-Type 是 multipart/form-data; 并且会随机生成 一个 boundary, 用于区分请求 body 中的各个数据; 每个数据以 --boundary 开始, 紧接着换行,下面是内容描述信息, 接着换2行, 接着是数据; 然后以 --boundary-- 结尾, 最后换行;
+
+文本数据和文件,图片的内容描述是不相同的
+文本参数:
+```
+Content-Disposition: form-data; name="key"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+```
+
+文件参数:
+```
+Content-Disposition: form-data; name="imgFile"; filename="no-file"
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: binary
+```
 
 ---
 
 **Reference**
 - [HTTP请求行、请求头、请求体详解](https://blog.csdn.net/u010256388/article/details/68491509)
+- [Content-Disposition](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Disposition)

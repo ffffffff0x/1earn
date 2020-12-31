@@ -19,7 +19,7 @@
 
 ---
 
-# 任务分配
+# 任务分配 & 项目管理
 
 **看板**
 - [Trello](https://trello.com/) - `强烈推荐`
@@ -35,15 +35,12 @@
 - [领歌](https://www.leangoo.com/)
     - 上个世纪的设计
 
-**团队分析**
-- [x-developer](https://x-developer.cn/)
-
----
-
-# 项目管理
-
+**管理工具**
 - [Jira](https://www.atlassian.com/zh/software/jira)
     - 好用,但免费版只能参与10人
+
+**团队分析**
+- [x-developer](https://x-developer.cn/)
 
 ---
 
@@ -68,7 +65,7 @@
 
 - [坚果云](https://www.jianguoyun.com) - `强烈推荐`
     - 好用,速度可以跑满带宽,免费不够用,团队版价格适中
-- Teambition - `强烈推荐`
+- Teambition - `一般`
     - 容量大,速度快,没啥好说的
 - [微云](https://www.weiyun.com/)
     - 体验一般,速度一般,免费不够用
@@ -81,8 +78,7 @@
 - [Synology](https://www.synology.com/zh-cn) - `推荐`
     - 个人认为不太好用,据同事反映效果不错,速度可以跑满带宽,无免费版,价格适中
 
-## 临时文件分享
-
+**临时文件分享**
 - https://bitsend.jp/
 - https://file.pizza/
 - https://www.4shared.com/
@@ -120,3 +116,9 @@
     - 可以 web 访问的远程控制平台
 - [TeamViewer](https://www.teamviewer.com/en-us/)
 - [AnyDesk](https://anydesk.com/en)
+
+---
+
+# DNS
+
+- [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)

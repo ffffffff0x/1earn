@@ -300,6 +300,9 @@ $pdf$5*6*256*-1028*1*16*21240790753544575679622633641532*127*2d1ecff66ea354d3d34
 ## 爆破shadow文件
 
 hash.txt 只保留加密的密码字段 : `$id$salt$encrypted`
+
+> 注: 实际测试时无需删减,直接复制 shadow 内容即可
+
 ```bash
 hashcat -m 500 hash.txt pass1.txt
 hashcat -m 1500 hash.txt pass1.txt
@@ -329,7 +332,7 @@ $6$52450745$k5ka2p8bFuSmoVT1tzOyyuaREkkKBcCNqoDKzYiJL9RaE8yMnPgh2XzzF0NDrUhgrcLw
 zip2john.exe 1.zip > hash.txt
 rar2john.exe 1.rar > hash.txt
 
-sudo apt install libcompress-raw-lzma-perl -y
+apt install -y libcompress-raw-lzma-perl -y
 wget https://raw.githubusercontent.com/philsmd/7z2hashcat/master/7z2hashcat.pl
 perl 7z2hashcat.pl file.7z > hash.txt
 ```
@@ -553,7 +556,7 @@ ln -s /pentest/hashcat-6.1.1/hashcat /usr/sbin/hashcat
 
 ```bash
 wget https://cn.download.nvidia.com/tesla/450.80.02/NVIDIA-Linux-x86_64-450.80.02.run
-sudo sh NVIDIA-Linux-x86_64-450.80.02.run  -no-x-check -no-nouveau-check -no-opengl-files
+sh NVIDIA-Linux-x86_64-450.80.02.run  -no-x-check -no-nouveau-check -no-opengl-files
 nvidia-smi
 ```
 
@@ -578,11 +581,11 @@ hashcat -b --force
 > Ubuntu18.04
 
 ```bash
-sudo apt update
-sudo apt install -y mysql-server
-sudo apt install -y apache2
-sudo apt install -y libapache2-mod-php php-mysql php php-gd php-pear php-curl
-sudo apt install -y git unzip lrzsz
+apt update
+apt install -y mysql-server
+apt install -y apache2
+apt install -y libapache2-mod-php php-mysql php php-gd php-pear php-curl
+apt install -y git unzip lrzsz
 
 mysql_secure_installation
 
@@ -655,8 +658,8 @@ test
 
 客户端运行 hashtopolis
 ```
-sudo apt update
-sudo apt install -y python3-pip
+apt update
+apt install -y python3-pip
 python3 -m pip install psutil requests
 python3 hashtopolis.zip
 ```

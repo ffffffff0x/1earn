@@ -121,7 +121,7 @@
   * [Snort](#snort)
   * [Suricata](#suricata)
 
-* **[🍥 各种依赖](#各种依赖)**
+* **[🍥 各种依赖和报错](#各种依赖和报错)**
   * [LuaJIT](#luajit)
 
 ---
@@ -241,7 +241,7 @@ service network restart
 **安装**
 ```bash
 yum remove mdadm # 建议先把原本的卸掉重装
-yum install mdadm
+yum install -y mdadm
 ```
 
 **分区**
@@ -328,7 +328,7 @@ insert 模式按 ESC 键,返回 Normal 模式
 
 **常用配置**
 
-`sudo vim /etc/vim/vimrc` 或 `sudo vim /etc/vimrc` 最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个货网上的,要理解每个的含义及有什么用,根据自己需要来调整)
+`vim /etc/vim/vimrc` 或 `vim /etc/vimrc` 最后面直接添加你想添加的配置,下面是一些常用的 (不建议直接复制这个或者网上的,要理解每个的含义及有什么用,根据自己需要来调整)
 ```bash
 set number                # 显示行号
 set nobackup              # 覆盖文件时不备份
@@ -358,8 +358,8 @@ vimdiff  FILE_LEFT  FILE_RIGHT
 
 - ubuntu
   ```bash
-  sudo apt-get remove vim-common
-  sudo apt-get install vim
+  apt-get remove vim-common
+  apt-get install -y vim
   ```
 
 **[SpaceVim](https://spacevim.org/cn/)** - 模块化的 Vim IDE
@@ -383,8 +383,8 @@ vimdiff  FILE_LEFT  FILE_RIGHT
 **安装**
 ```bash
 mkdir -p /opt/adguard && cd /opt/adguard
-wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.95-hotfix/AdGuardHome_v0.95-hotfix_linux_amd64.tar.gz
-tar -xzvf AdGuardHome_v0.95-hotfix_linux_amd64.tar.gz
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.105.0-beta.1/AdGuardHome_linux_amd64.tar.gz
+tar -xzvf AdGuardHome_linux_amd64.tar.gz
 cd AdGuardHome
 ./AdGuardHome -s install
 
@@ -400,6 +400,21 @@ systemctl stop firewalld
 ./AdGuardHome -s status
 ```
 无误的话访问服务器 IP:3000 就可以看到管理页面了
+
+**修改密码**
+
+编辑 AdGuardHome.yaml 文件,修改 password 字段,修改的密码需要是 BCrypt 生成的,可以用在线网站实现 https://bcrypt-generator.com/
+```diff
+vim AdGuardHome.yaml
+
+-- password xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+++ password xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+重启服务
+```bash
+./AdGuardHome -s restart
+```
 
 ---
 
@@ -443,21 +458,21 @@ RRDtool 是指 Round Robin Database 工具（环状数据库）。Round robin �
 **搭建 lamp**
 
 ```bash
-yum install yum-utils
+yum install -y yum-utils
 wget https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
 rpm -ivh mysql80-community-release-el7-1.noarch.rpm
 yum-config-manager --disable mysql80-community
 yum-config-manager --enable mysql57-community
-yum install mysql-community-server mysql-community-devel httpd php php-mysql php-gd libjpeg* php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash libxml2-devel libevent-devel curl-devel net-snmp* php-snmp php-fpm
+yum install -y mysql-community-server mysql-community-devel httpd php php-mysql php-gd libjpeg* php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash libxml2-devel libevent-devel curl-devel net-snmp* php-snmp php-fpm
 
 systemctl enable mysqld && systemctl enable httpd
 ```
 
 初始化 mysql
 ```bash
-/usr/bin/mysqld –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+/usr/bin/mysqld -initialize -basedir=/usr/share/mysql -datadir=/var/lib/mysql/data/
 # 或
-/usr/bin/mysql –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+/usr/bin/mysql -initialize -basedir=/usr/share/mysql -datadir=/var/lib/mysql/data/
 
 systemctl start mysqld
 ```
@@ -595,7 +610,7 @@ cd /tmp
 wget https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.7.0.tar.gz
 wget https://www.cacti.net/downloads/spine/cacti-spine-1.2.1.tar.gz
 
-yum install glib2-devel cairo-devel libxml2-devel pango pango-devel help2man
+yum install -y glib2-devel cairo-devel libxml2-devel pango pango-devel help2man
 ```
 
 **安装 rrdtool 工具**
@@ -679,7 +694,7 @@ chronyc 是用来监控 chronyd 性能和配置其参数程序
 
 **安装**
 ```bash
-yum install chrony
+yum install -y chrony
 ```
 
 **配置文件**
@@ -745,7 +760,7 @@ cloud-torrent -o
 
 **安装**
 ```
-yum install dhcp
+yum install -y dhcp
 ```
 
 **复制一份示例**
@@ -786,7 +801,7 @@ cat /var/lib/dhcpd/dhcpd.leases   # 查看租约文件,了解租用情况
 
 **安装**
 ```
-yum install bind-*
+yum install -y bind-*
 ```
 
 **主配置文件**
@@ -1169,60 +1184,256 @@ systemctl stop firewalld
 **官网**
 - https://openvpn.net/
 
-**docker 安装**
-```bash
-systemctl start docker
-docker pull kylemanna/openvpn:2.4
-mkdir -p /data/openvpn
-docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_genconfig -u udp://<你的IP>
-```
+**centos 下安装 OpenVPN**
 
-**生成密钥文件**
-```bash
-docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_initpki
-输入私钥密码 (输入时是看不见的) :
-Enter PEM pass phrase:12345678
-再输入一遍
-Verifying - Enter PEM pass phrase:12345678
-输入一个 CA 名称 (我这里直接回车)
-Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
-输入刚才设置的私钥密码 (输入完成后会再让输入一次)
-Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
-```
+- **前期准备**
 
-> 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 12345678 这类弱口令
+  ```bash
+  echo "net.ipv4.ip_forward = 1" >>/etc/sysctl.conf
+  sysctl -p
 
-**生成客户端证书 (这里的 user 改成你想要的名字)**
-```bash
-docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
+  service firewalld stop
+  setenforce 0
 
-输入刚才设置的密码
-Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
-```
+  cp  /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+  date
+  ```
 
-**导出客户端配置**
-```bash
-mkdir -p /data/openvpn/conf
-docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_getclient user > /data/openvpn/conf/user.ovpn
-```
+  **安装 OpenVPN**
 
-**启动 OpenVPN 服务**
-```bash
-docker run --name openvpn -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn:2.4
+  ```bash
+  curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+  yum clean all && yum makecache
+  yum install -y openvpn
+  ```
 
-service firewalld stop
-```
+  **安装 easyrsa**
 
-**将登录的证书下载到本地**
-```bash
-yum install lrzsz -y
-sz /data/openvpn/conf/whsir.ovpn
-```
+  ```bash
+  cd /root
+  wget https://github.com/OpenVPN/easy-rsa/archive/v3.0.7.tar.gz
+  mv v3.0.7.tar.gz easy-rsa-3.0.7.tar
+  tar xf easy-rsa-3.0.7.tar
+  cd easy-rsa-3.0.7/easyrsa3
+  cp -a vars.example vars
+  ```
+  ```diff
+  vim vars
 
-在 openvpn 的安装目录下,有个 config 目录,将服务器上的 user.ovpn,放在该目录下,运行 OpenVPN GUI,右键 whsir 连接 connect
+  # 国家
+  ++ set_var EASYRSA_REQ_COUNTRY     "CN"
+  # 省
+  ++ set_var EASYRSA_REQ_PROVINCE    "BJ"
+  # 城市
+  ++ set_var EASYRSA_REQ_CITY        "BeiJing"
+  # 组织
+  ++ set_var EASYRSA_REQ_ORG         "zhang"
+  # 邮箱
+  ++ set_var EASYRSA_REQ_EMAIL       "zhang@test.com"
+  # 拥有者
+  ++ set_var EASYRSA_REQ_OU          "ZJ"
 
-**Source & Reference**
-- [通过 docker 搭建 openvpn](https://blog.whsir.com/post-2809.html)
+  # 长度
+  ++ set_var EASYRSA_KEY_SIZE        2048
+  # 算法
+  ++ set_var EASYRSA_ALGO            rsa
+
+  # CA证书过期时间，单位天
+  ++ set_var EASYRSA_CA_EXPIRE      36500
+  # 签发证书的有效期是多少天，单位天
+  ++ set_var EASYRSA_CERT_EXPIRE    36500
+  ```
+
+  **初始化与创建CA根证书**
+
+  ```bash
+  ./easyrsa init-pki
+  ./easyrsa build-ca
+
+  # 在这部分需要输入PEM密码 PEM pass phrase，输入两次，此密码必须记住，不然以后不能为证书签名。
+  # 还需要输入common name 通用名，如：openvpen，这个你自己随便设置个独一无二的。
+  ```
+
+  **生成服务端证书**
+
+  ```bash
+  ./easyrsa build-server-full server nopass
+  # 为服务端生成证书对并在本地签名。nopass参数生成一个无密码的证书；在此过程中会让你确认ca密码
+
+  ./easyrsa gen-dh
+  # 创建Diffie-Hellman
+  ```
+
+  **生成ta.key**
+
+  ```bash
+  openvpn --genkey --secret ta.key
+
+  cp -a pki/ca.crt /etc/openvpn/
+  cp -a pki/private/server.key /etc/openvpn/
+  cp -a pki/issued/server.crt /etc/openvpn/
+  cp -a pki/dh.pem /etc/openvpn/
+  cp -a ta.key /etc/openvpn/
+  ```
+
+  **制作 Client 端证书**
+
+  每一个登陆的VPN客户端需要有一个证书，每个证书在同一时刻只能供一个客户端连接
+  ```bash
+  ./easyrsa gen-req zhangsan nopass
+  ./easyrsa sign-req client zhangsan
+  ```
+
+  **配置 OpenVPN 服务端**
+
+  拷贝 OpenVPN 配置文件
+  ```bash
+  cp /usr/share/doc/openvpn-*/sample/sample-config-files/server.conf /etc/openvpn/
+  ```
+
+  配置服务端的配置文件
+  ```diff
+  vim /etc/openvpn/server.conf
+
+  ++ local 0.0.0.0
+  # 表示openvpn服务端的监听地址
+
+  -- proto udp
+  ++ proto tcp
+
+  -- ca ca.crt
+  -- cert server.crt
+  -- key server.key
+  -- dh dh2048.pem
+  ++ ca /etc/openvpn/ca.crt
+  ++ cert /etc/openvpn/server.crt
+  ++ key /etc/openvpn/server.key
+  ++ dh /etc/openvpn/dh.pem
+
+  -- tls-auth ta.key 0
+  ++ tls-auth /etc/openvpn/ta.key 0
+  # 服务端第二个参数为0；同时客户端也要有此文件，且client.conf中此指令的第二个参数需要为1。
+
+  ++ compress lz4-v2
+  ++ push "compress lz4-v2"
+  # openvpn 2.4版本的vpn才能设置此选项。表示服务端启用lz4的压缩功能，传输数据给客户端时会压缩数据包。
+  # Push后在客户端也配置启用lz4的压缩功能，向服务端发数据时也会压缩。如果是2.4版本以下的老版本，则使用用comp-lzo指令
+
+  ++ status openvpn-status.log
+  # 在文件中输出当前的连接信息，每分钟截断并重写一次该文件
+
+  -- explicit-exit-notify 1
+  # 当服务器重新启动时，通知客户端，以便它可以自动重新连接。仅在UDP协议是可用
+  ```
+
+  **开启 openvpn 服务**
+
+  ```bash
+  systemctl start openvpn@server
+  ss -tnlp
+  ```
+
+  **测试连接**
+
+  ```bash
+  sz /root/easy-rsa-3.0.7/easyrsa3/pki/private/zhangsan.key
+  sz /root/easy-rsa-3.0.7/easyrsa3/pki/issued/zhangsan.crt
+  sz /etc/openvpn/ca.crt
+  sz /etc/openvpn/ta.key
+  ```
+
+  ```bash
+  vim zhangsan.ovpn
+
+  client
+  dev tun
+  proto tcp
+  remote x.x.x.x 1194
+  resolv-retry infinite
+  nobind
+  ;user nobody
+  ;group nobody
+  persist-key
+  persist-tun
+  ca ca.crt
+  cert zhangsan.crt
+  key zhangsan.key
+  remote-cert-tls server
+  tls-auth ta.key 1
+  cipher AES-256-CBC
+  compress lz4-v2
+  verb 3
+  ;mute 20
+  ```
+
+  ```
+  sz zhangsan.ovpn
+  ```
+
+  管理员身份运行 openvpn.exe
+
+  将指定配置文件放入文件夹，连接
+
+  ![](../../../assets/img/Integrated/Linux/Power/3.png)
+
+  ![](../../../assets/img/Integrated/Linux/Power/4.png)
+
+- **docker 搭建 OpenVPN**
+
+  **docker 安装**
+  ```bash
+  systemctl start docker
+  docker pull kylemanna/openvpn:2.4
+  mkdir -p /data/openvpn
+  docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_genconfig -u udp://<你的IP>
+  ```
+
+  **生成密钥文件**
+  ```bash
+  docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 ovpn_initpki
+  输入私钥密码 (输入时是看不见的) :
+  Enter PEM pass phrase:12345678
+  再输入一遍
+  Verifying - Enter PEM pass phrase:12345678
+  输入一个 CA 名称 (我这里直接回车)
+  Common Name (eg: your user, host, or server name) [Easy-RSA CA]:
+  输入刚才设置的私钥密码 (输入完成后会再让输入一次)
+  Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
+  ```
+
+  > 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 12345678 这类弱口令
+
+  **生成客户端证书 (这里的 user 改成你想要的名字)**
+  ```bash
+  docker run -v /data/openvpn:/etc/openvpn --rm -it kylemanna/openvpn:2.4 easyrsa build-client-full user nopass
+
+  输入刚才设置的密码
+  Enter pass phrase for /etc/openvpn/pki/private/ca.key:12345678
+  ```
+
+  **导出客户端配置**
+  ```bash
+  mkdir -p /data/openvpn/conf
+  docker run -v /data/openvpn:/etc/openvpn --rm kylemanna/openvpn:2.4 ovpn_getclient user > /data/openvpn/conf/user.ovpn
+  ```
+
+  **启动 OpenVPN 服务**
+  ```bash
+  docker run --name openvpn -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn:2.4
+
+  service firewalld stop
+  ```
+
+  **将登录的证书下载到本地**
+  ```bash
+  yum install -y lrzsz
+  sz /data/openvpn/conf/whsir.ovpn
+  ```
+
+  在 openvpn 的安装目录下,有个 config 目录,将服务器上的 user.ovpn,放在该目录下,运行 OpenVPN GUI,右键 whsir 连接 connect
+
+  **Source & Reference**
+  - [通过 docker 搭建 openvpn](https://blog.whsir.com/post-2809.html)
 
 ---
 
@@ -1549,11 +1760,11 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 
 **Ubuntu**
 
-如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `sudo apt install openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
+如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `apt install -y openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
-apt install openssh-client=1:7.2p2-4ubuntu2.8
-apt install openssh-server=1:7.2p2-4ubuntu2.8
-apt install ssh
+apt install -y openssh-client=1:7.2p2-4ubuntu2.8
+apt install -y openssh-server=1:7.2p2-4ubuntu2.8
+apt install -y ssh
 ```
 ```bash
 service ssh restart     # 启动ssh
@@ -1568,9 +1779,9 @@ echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 **Debian**
 ```
-apt install openssh-client=1:7.9p1-10+deb10u1
-apt install openssh-server=1:7.9p1-10+deb10u1
-apt install ssh
+apt install -y openssh-client=1:7.9p1-10+deb10u1
+apt install -y openssh-server=1:7.9p1-10+deb10u1
+apt install -y ssh
 ```
 ```bash
 service ssh restart
@@ -1671,7 +1882,7 @@ echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 **安装**
 ```bash
-sudo apt-get install cmake g++ pkg-config git vim-common libwebsockets-dev libjson-c-dev libssl-dev
+apt-get install -y cmake g++ pkg-config git vim-common libwebsockets-dev libjson-c-dev libssl-dev
 git clone https://github.com/tsl0922/ttyd.git
 cd ttyd && mkdir build && cd build
 cmake ..
@@ -1693,7 +1904,7 @@ ttyd -p 8080 bash -x
 
 **安装**
 ```bash
-apt-get install vnc4server
+apt-get install -y vnc4server
 
 vncpasswd                                 # 设置vncserver密码
 vncserver :1 -geometry 1024x768 -depth 24 # 设置vnc连接时窗口的大小
@@ -1767,8 +1978,8 @@ firewall-cmd --reload
 
 **安装**
 ```bash
-yum install httpd
-yum install mod_ssl openssl
+yum install -y httpd
+yum install -y mod_ssl openssl
 ```
 
 **简单配置**
@@ -1782,7 +1993,7 @@ ServerName  xx.xx.xx.xx:80
 
 启服务
 ```vim
-vim var/www/html/index.html
+vim /var/www/html/index.html
 
 Hello World!
 ```
@@ -1840,8 +2051,9 @@ firewall-cmd --reload
 
 安装
 ```bash
-sudo apt install apache2-utils
-yum install httpd-tools
+apt install -y apache2-utils
+
+yum install -y httpd-tools
 ```
 
 **更多配置案例**
@@ -1927,14 +2139,14 @@ echo -e "xxx.com {
 **包管理器方式**
 - apt
   ```bash
-  curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -  # 添加 Node.js PPA
-  apt-get install nodejs npm
+  curl -sL https://deb.nodesource.com/setup_10.x | bash -  # 添加 Node.js PPA
+  apt-get install -y nodejs npm
   ```
 
 - yum
   ```bash
-  yum install epel-release
-  yum install nodejs npm
+  yum install -y epel-release
+  yum install -y nodejs npm
   ```
 
 **源文件方式安装**
@@ -2056,7 +2268,7 @@ forever -h                # 查看帮助
 **安装**
 - **yum 安装**
   ```bash
-  yum install nginx
+  yum install -y nginx
   systemctl start nginx.service
   ```
 
@@ -2136,7 +2348,7 @@ less /var/log/nginx/error.log
 
 **创建数据库和一个用户**
 ```bash
-yum install mariadb mariadb-server
+yum install -y mariadb mariadb-server
 systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation
@@ -2144,17 +2356,18 @@ mysql_secure_installation
 mysql -u root -p
 
 # 创建一个专给 WordPress 存数据的数据库
-MariaDB [(none)]> create database idiota_info;  # 最后的"idiota_info"为数据库名
+MariaDB [(none)]> create database f8x_info;  # 最后的"f8x_info"为数据库名
 
 # 创建用于 WordPress 对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';  # "idiota"对应创建的用户,"password"内填写用户的密码
+MariaDB [(none)]> create user f8x@localhost identified by 'password';  # "f8x"对应创建的用户,"password"内填写用户的密码
 
 # 分别配置本地登录和远程登录权限
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
+MariaDB [(none)]> grant all privileges on f8x_info.* to f8x@'localhost' identified by 'password';
+MariaDB [(none)]> grant all privileges on f8x_info.* to f8x@'%' identified by 'password';
 
 # 刷新权限
 MariaDB [(none)]> flush privileges;
+exit;
 ```
 
 **下载**
@@ -2270,18 +2483,18 @@ rabbitmqctl set_user_tags [账号] administrator          # 修改用户角色
 
 加源,安装依赖
 ```
-sudo add-apt-repository universe
-sudo apt-get update
+add-apt-repository universe
+apt-get update
 
-sudo apt-get install git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev vim lrzsz unzip
+apt-get install -y git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev vim lrzsz unzip
 ```
 
 安装 searx
 ```bash
 cd /usr/local
-sudo git clone https://github.com/asciimoo/searx.git
-sudo useradd searx -d /usr/local/searx
-sudo chown searx:searx -R /usr/local/searx
+git clone https://github.com/asciimoo/searx.git
+useradd searx -d /usr/local/searx
+chown searx:searx -R /usr/local/searx
 ```
 
 测试 python 虚拟环境
@@ -2300,7 +2513,7 @@ sed -i -e "s/debug : True/debug : False/g" searx/settings.yml
 ```
 
 ```bash
-sudo apt-get install -y uwsgi uwsgi-plugin-python
+apt-get install -y uwsgi uwsgi-plugin-python
 ```
 ```vim
 vim /etc/uwsgi/apps-available/searx.ini
@@ -2342,7 +2555,7 @@ ln -s ../apps-available/searx.ini
 
 配置 nginx 代理
 ```bash
-sudo apt-get install -y nginx
+apt-get install -y nginx
 ```
 ```vim
 vim /etc/nginx/sites-available/searx
@@ -2359,9 +2572,9 @@ server {
 }
 ```
 ```bash
-sudo ln -s /etc/nginx/sites-available/searx /etc/nginx/sites-enabled/searx
-sudo service nginx restart
-sudo service uwsgi restart
+ln -s /etc/nginx/sites-available/searx /etc/nginx/sites-enabled/searx
+service nginx restart
+service uwsgi restart
 ```
 
 现在访问 www.你的域名.com 查看你的搜索引擎服务把~
@@ -2551,7 +2764,7 @@ tar -xzvf latest.tar.gz
 
 创建 WordPress 数据库和一个用户
 ```bash
-yum install mariadb mariadb-server
+yum install -y mariadb mariadb-server
 systemctl start mariadb
 systemctl enable mariadb
 mysql_secure_installation
@@ -2559,14 +2772,14 @@ mysql_secure_installation
 mysql -u root -p
 
 # 创建一个专给 WordPress 存数据的数据库
-MariaDB [(none)]> create database idiota_info; # 最后的"idiota_info"为数据库名
+MariaDB [(none)]> create database f8x_info; # 最后的"f8x_info"为数据库名
 
 # 创建用于 WordPress 对应用户
-MariaDB [(none)]> create user idiota@localhost identified by 'password';   # "idiota"对应创建的用户,"password"内填写用户的密码
+MariaDB [(none)]> create user f8x@localhost identified by 'password';   # "f8x"对应创建的用户,"password"内填写用户的密码
 
 # 分别配置本地登录和远程登录权限
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'localhost' identified by 'password';
-MariaDB [(none)]> grant all privileges on idiota_info.* to idiota@'%' identified by 'password';
+MariaDB [(none)]> grant all privileges on f8x_info.* to f8x@'localhost' identified by 'password';
+MariaDB [(none)]> grant all privileges on f8x_info.* to f8x@'%' identified by 'password';
 
 # 刷新权限
 MariaDB [(none)]> flush privileges;
@@ -2579,9 +2792,9 @@ rpm -ivh https://mirror.webtatic.com/yum/el7/epel-release.rpm
 rpm -ivh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 
 # 安装 PHP7.0
-yum install php70w
-yum install php70w-mysql
-yum install httpd
+yum install -y php70w
+yum install -y php70w-mysql
+yum install -y httpd
 
 # 重启 Apache
 systemctl restart httpd
@@ -3265,6 +3478,13 @@ mysql -u root -p  # 本地连接
 
 例如 : `mysql -u root -p123456 -h 192.168.1.1 -P 3306 -D test`
 
+**导入 .sql 文件**
+```sql
+mysql -u root -p
+use [数据库]
+source /tmp/dbname.sql
+```
+
 ---
 
 ### MySQL
@@ -3282,17 +3502,17 @@ mysql -u root -p  # 本地连接
 
 - Ubuntu
   ```
-  apt install mysql-server mysql-client
+  apt install -y mysql-server mysql-client
   ```
 
 - Centos
   ```bash
-  yum install yum-utils
+  yum install -y yum-utils
   wget https://repo.mysql.com//mysql80-community-release-el7-1.noarch.rpm
   rpm -ivh mysql80-community-release-el7-1.noarch.rpm
   yum-config-manager --disable mysql80-community
   yum-config-manager --enable mysql57-community
-  yum install mysql-community-server mysql-community-devel
+  yum install -y mysql-community-server mysql-community-devel
   ```
 
 **配置**
@@ -3300,9 +3520,9 @@ mysql -u root -p  # 本地连接
 systemctl enable mysqld
 
 # 初始化 mysql
-/usr/bin/mysqld –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+/usr/bin/mysqld -initialize -basedir=/usr/share/mysql -datadir=/var/lib/mysql/data/
 # 或
-/usr/bin/mysql –initialize –basedir=/usr/share/mysql –datadir=/var/lib/mysql/data/
+/usr/bin/mysql -initialize -basedir=/usr/share/mysql -datadir=/var/lib/mysql/data/
 ```
 ```bash
 systemctl start mysqld
@@ -3352,7 +3572,7 @@ systemctl restart mysqld
 
 **安装**
 ```bash
-yum install postgresql-server
+yum install -y postgresql-server
 postgresql-setup initdb   # 初始化数据库
 service postgresql start  # 启动服务
 ```
@@ -3475,12 +3695,12 @@ service mongod restart
   wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
   yum clean all
   yum makecache
-  yum install redis
+  yum install -y redis
   ```
 
   在 debian 中
   ```bash
-  apt install redis-server
+  apt install -y redis-server
   systemctl start redis # 安装好后启动 Redis 服务即可
   ```
 
@@ -3492,7 +3712,7 @@ service mongod restart
   tar -zxvf redis-5.0.5.tar.gz
   cd redis-5.0.5
   make
-  yum install tcl tcl-devel -y
+  yum install -y tcl tcl-devel
   make test
   make MALLOC=libc
   make install
@@ -3737,7 +3957,7 @@ cat hello.txt
 
 安装
 ```
-yum install samba
+yum install -y samba
 ```
 
 修改配置文件
@@ -3789,7 +4009,7 @@ systemctl restart smb
 
 **客户端**
 ```bash
-yum install samba
+yum install -y samba
 
 mkdir /data/web_data
 mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata /data/web_data
@@ -3917,7 +4137,7 @@ ftp>
 
 安装
 ```bash
-yum install vsftpd
+yum install -y vsftpd
 ```
 
 认证
@@ -4130,23 +4350,23 @@ rpm -ivh jdk-****.rpm
 
 **Openjdk**
 ```bash
-sudo apt-get update
-sudo apt-get install openjdk-8-jdk
+apt-get update
+apt-get install -y openjdk-8-jdk
 java -version
 ```
 
 **使用 ppa/源方式安装 oracle 官方版本 jdk**
 ```bash
 # 添加 ppa
-sudo apt-get install python-software-properties
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
+apt-get install -y python-software-properties
+add-apt-repository ppa:webupd8team/java
+apt-get update
 
 # 安装 jdk7
-sudo apt-get install oracle-java7-installer
+apt-get install -y oracle-java7-installer
 
 # 安装 jdk8
-sudo apt-get install oracle-java8-installer
+apt-get install -y oracle-java8-installer
 ```
 
 **直接使用编译完成的**
@@ -4208,10 +4428,12 @@ cpan -T [module]  # 忽略测试项安装
 
 **yum 安装**
 ```bash
-yum install epel-release
+yum install -y epel-release
 或
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 yum install -y python36 python36-devel
+yum install -y python-devel
+yum install -y python3-devel
 ```
 
 **源代码编译方式安装**
@@ -4264,7 +4486,7 @@ python3 get-pip.py
 debian 系可以直接用 apt 装
 
 ```bash
-apt-get install python-pip
+apt-get install -y python-pip
 ```
 
 **加速**
@@ -4400,7 +4622,7 @@ cargo clean               # 清理目录
 - **Ubuntu/Debian**
 
   ```bash
-  wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh
+  wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && bash install.sh
   ```
 
 **使用**
@@ -4425,23 +4647,23 @@ cargo clean               # 清理目录
 
 添加 Jenkins 源:
 ```bash
-sudo wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
-sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
+rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
 ```
 
 使用 yum 命令安装 Jenkins:
 ```bash
-yum install jenkins
+yum install -y jenkins
 ```
 
 **使用 ppa/源方式安装**
 ```bash
-wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | apt-key add -
 
 sed -i "1ideb https://pkg.jenkins.io/debian binary/" /etc/apt/sources.list
 
-sudo apt-get update
-sudo apt-get install jenkins
+apt-get update
+apt-get install -y jenkins
 ```
 
 安装后默认服务是启动的,默认是 8080 端口,在浏览器输入 : http://127.0.0.1:8080/即可打开主页
@@ -4666,11 +4888,11 @@ firewall-cmd --reload
 
 **安装依赖**
 ```bash
-yum install mysql
-yum install httpd
-yum install php
-yum install php-mysqlnd php-gd libjpeg* php-snmp php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash php-common php-ctype php-xml php-xmlreader php-xmlwriter php-session php-mbstring php-gettext php-ldap php-mysqli --skip-broken
-yum install wget telnet net-tools python-paramiko gcc gcc-c++ dejavu-sans-fonts python-setuptools python-devel sendmail mailx net-snmp net-snmp-devel net-snmp-utils freetype-devel libpng-devel perl unbound libtasn1-devel p11-kit-devel OpenIPMI unixODBC
+yum install -y mysql
+yum install -y httpd
+yum install -y php
+yum install -y php-mysqlnd php-gd libjpeg* php-snmp php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-bcmath php-mhash php-common php-ctype php-xml php-xmlreader php-xmlwriter php-session php-mbstring php-gettext php-ldap php-mysqli --skip-broken
+yum install -y wget telnet net-tools python-paramiko gcc gcc-c++ dejavu-sans-fonts python-setuptools python-devel sendmail mailx net-snmp net-snmp-devel net-snmp-utils freetype-devel libpng-devel perl unbound libtasn1-devel p11-kit-devel OpenIPMI unixODBC
 ```
 
 **设置 mysql**
@@ -4804,7 +5026,7 @@ setenforce 0    # 关闭 selinux
   sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
   yum makecache fast
   yum install -y docker
-  sudo systemctl start docker
+  systemctl start docker
   ```
 
 - **CentOS8 下安装**
@@ -4820,18 +5042,18 @@ setenforce 0    # 关闭 selinux
 - **debian 下安装**
   ```bash
   apt remove docker docker-engine docker.io
-  sudo apt-get install -y \
+  apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
     software-properties-common \
     gnupg
-  curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+  curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | apt-key add -
   echo 'deb https://download.docker.com/linux/debian stretch stable'> /etc/apt/sources.list.d/
   apt update
-  apt install docker-ce
+  apt install -y docker-ce
   docker version
-  sudo systemctl start docker
+  systemctl start docker
   docker login  # 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
   ```
 
@@ -4839,10 +5061,10 @@ setenforce 0    # 关闭 selinux
 
 - 启动,暂停以及启用 Docker
   ```
-  sudo systemctl start docker
-  sudo systemctl enable docker
-  sudo systemctl stop docker
-  sudo systemctl restart docker
+  systemctl start docker
+  systemctl enable docker
+  systemctl stop docker
+  systemctl restart docker
   ```
 
 - 拉取镜像
@@ -4868,6 +5090,12 @@ setenforce 0    # 关闭 selinux
   docker exec -it [docker_id] bash                  # 获取容器的 shell
   docker kill                                       # 杀死容器
   docker commit [docker_id] [docker_image_id]       # 提交并保存容器状态
+
+  docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]  # 标记本地镜像，将其归入某一仓库。
+    docker tag centos centos:v1                     # 给 centos 镜像打标签
+    docker tag ubuntu:15.10 test/ubuntu:v3          # 将镜像 ubuntu:15.10 标记为 test/ubuntu:v3 镜像。
+    docker run -itd centos:v1                       # 运行 centos:v1 镜像
+
   docker rm [docker_name/docker_id]                 # 删除容器
   docker ps                                         # 查看当前运行的 docker 容器的进程信息
     docker ps -a                                    # 查看当前容器
@@ -4883,12 +5111,12 @@ setenforce 0    # 关闭 selinux
 
 - 默认情况下,只有管理员权限能够运行 docker 命令.考虑到安全问题,你不会想用 root 用户或使用 sudo 来运行 Docker 的.要解决这个问题,你需要将自己的用户加入到 docker 组中.
   ```bash
-  sudo usermod -a -G docker $USER
+  usermod -a -G docker $USER
   ```
 
 - 完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下:
   ```bash
-  sudo groupadd docker && sudo gpasswd -a ${USER} docker && sudo systemctl restart docker
+  groupadd docker && gpasswd -a ${USER} docker && systemctl restart docker
   newgrp docker
   ```
 
@@ -4906,6 +5134,10 @@ setenforce 0    # 关闭 selinux
   ```bash
   echo "nameserver 114.114.114.114" > /etc/resolv.conf
   ```
+
+- 容器 "Exited (0)" 自动退出
+  - 有时镜像内置的执行命令无法正确执行，于是容器就 Exited 了
+  - 尝试在 docker run 命令最后加上或删除 /bin/bash 选项
 
 ### Docker-Compose
 
@@ -4927,7 +5159,7 @@ setenforce 0    # 关闭 selinux
 ```bash
 wget https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64
 mv docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
 ```
 
 ```bash
@@ -5140,7 +5372,7 @@ chown clamav:clamav /opt/clamav/share/clamav
 
 **yum 安装**
 
-以下部分内容来自 <sup>[[Centos7安装和使用ClamAV杀毒软件](https://blog.51cto.com/11199460/2083697)]</sup> 在此仅作排版调整
+以下部分内容来自 <sup>[[Centos7安装和使用ClamAV杀毒软件](https://blog.51cto.com/11199460/2083697)]</sup>
 
 ```bash
 yum install -y epel-release
@@ -5250,13 +5482,19 @@ clamscan -r --remove    # 查杀当前目录并删除感染的文件
 **项目地址**
 - https://github.com/fail2ban/fail2ban
 
-以下部分内容来自 <sup>[[如何使用 fail2ban 防御 SSH 服务器的暴力破解攻击](https://linux.cn/article-5067-1.html)]</sup> 在此仅作排版调整
+以下部分内容来自 <sup>[[如何使用 fail2ban 防御 SSH 服务器的暴力破解攻击](https://linux.cn/article-5067-1.html)]</sup>
 
 **安装**
 
-RHEL: `yum install fail2ban`
+- RHEL
+  ```bash
+  yum install -y fail2ban
+  ```
 
-Debian: `apt install fail2ban`
+- Debian
+  ```bash
+  apt install -y fail2ban
+  ```
 
 **编辑配置文件**
 ```vim
@@ -5626,17 +5864,17 @@ systemctl restart httpd
 
 ## Snort
 
-Snort 搭建与使用内容访问 [安防设施搭建使用](../../Security/实验/BlueTeam/安防设施搭建使用.md#snort) Snort 部分
+Snort 搭建与使用内容访问 [安防设施搭建使用](../../Security/BlueTeam/实验/安防设施搭建使用.md#snort) Snort 部分
 
 ---
 
 ## Suricata
 
-Suricata 搭建与使用内容访问 [安防设施搭建使用](../../Security/实验/BlueTeam/安防设施搭建使用.md#suricata) Suricata 部分
+Suricata 搭建与使用内容访问 [安防设施搭建使用](../../Security/BlueTeam/实验/安防设施搭建使用.md#suricata) Suricata 部分
 
 ---
 
-# 各种依赖
+# 各种依赖和报错
 
 **libboost-program-options1.58.0**
 ```bash
@@ -5652,7 +5890,29 @@ dpkg -i libsodium18_1.0.11-1_amd64.deb
 
 **ERROR: pkg-config binary 'pkg-config' not found**
 ```bash
-apt-get install pkg-config
+apt-get install -y pkg-config
+```
+
+**make: *** /lib/modules/3.10.0-1062.18.1.el7.x86_64/build: No such file or directory.  Stop.**
+
+没安装内核安装包
+```bash
+# Ubuntu
+apt install -y kernel-devel
+
+# Centos
+yum install -y kernel-devel
+
+# 找到对应内核开发文件
+ls -l /usr/src/kernels/
+
+cd /lib/modules/3.10.0-1062.18.1.el7.x86_64/
+
+# 删除链接
+rm -r build
+
+# 重新链接
+ln -s /usr/src/kernels/3.10.0-1160.6.1.el7.x86_64/ build
 ```
 
 ---
@@ -5669,5 +5929,5 @@ apt-get install pkg-config
 wget https://luajit.org/download/LuaJIT-2.0.5.tar.gz
 tar -zxf LuaJIT-2.0.5.tar.gz
 cd LuaJIT-2.0.5/
-sudo make && make install
+make && make install
 ```

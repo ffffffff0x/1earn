@@ -8,10 +8,6 @@
 
 ---
 
-**前言**
-
-优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
-
 **靶场项目地址**
 - https://github.com/zhuifengshaonianhanlu/pikachu
 
@@ -79,6 +75,12 @@
 - VMware® Workstation 15 Pro - 15.0.0 build-10134415
 - kali 4.19.0-kali3-amd64
 - pikachu - Commits on Feb 9, 2019
+
+---
+
+## 前言
+
+优秀的 web 基础靶场,与 dvwa 相比 dvwa 更适合教学,pikachu 漏洞种类更多,建议通关顺序 dvwa --> pikachu
 
 ---
 

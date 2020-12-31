@@ -142,7 +142,7 @@ JSON 可以设置 null 值：
 
 因为 JSON 使用 JavaScript 语法，所以无需额外的软件就能处理 JavaScript 中的 JSON。
 
-通过 JavaScript，您可以创建一个对象数组，并像这样进行赋值：
+通过 JavaScript，你可以创建一个对象数组，并像这样进行赋值：
 ```js
 var sites = [
     { "name":"test" , "url":"www.test.com" },

@@ -27,7 +27,7 @@
 - [利用分块传输吊打所有 WAF](https://www.anquanke.com/post/id/169738)
 - [编写 Burp 分块传输插件绕 WAF](http://gv7.me/articles/2019/chunked-coding-converter/)
 - [输入内容存在危险字符,安全起见,已被本站拦截](https://bbs.ichunqiu.com/thread-44577-1-1.html)
-- [Web Application Firewall (WAF) Evasion Techniques – secjuice™ – Medium](https://medium.com/secjuice/waf-evasion-techniques-718026d693d8)
+- [Web Application Firewall (WAF) Evasion Techniques - secjuice™ - Medium](https://medium.com/secjuice/waf-evasion-techniques-718026d693d8)
 - [浅谈绕过 waf 的数种方法](https://www.waitalone.cn/waf-bypass.html)
 - [绕过云锁文件读取防护](https://drivertom.blogspot.com/2019/06/lfi.html)
 - [TSRC挑战赛：WAF之SQL注入绕过挑战实录](https://security.tencent.com/index.php/blog/msg/66)
@@ -146,7 +146,7 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
     ```
 
 **多重编码**
-- [How to hack a company by circumventing its WAF for fun and profit – part 2](https://www.redtimmy.com/web-application-hacking/how-to-hack-a-company-by-circumventing-its-waf-for-fun-and-profit-part-2/) - 通过多重编码绕过 iRules 规则
+- [How to hack a company by circumventing its WAF for fun and profit - part 2](https://www.redtimmy.com/web-application-hacking/how-to-hack-a-company-by-circumventing-its-waf-for-fun-and-profit-part-2/) - 通过多重编码绕过 iRules 规则
 
 ---
 

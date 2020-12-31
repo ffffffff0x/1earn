@@ -24,13 +24,13 @@
 - tshark
     ```bash
     tshark -r tmp.pcap -T fields -e usb.capdata > usbdata.txt
-    # -r:设置tshark分析的输入文件
-    # -T:设置解码结果输出的格式，包括fileds,text,ps,psml和pdml，默认为text
+    # -r: 设置 tshark 分析的输入文件
+    # -T: 设置解码结果输出的格式，包括 fileds,text,ps,psml 和 pdml，默认为 text
 
     # 如果提取出来的数据有空行，可以将命令改为如下形式：
     tshark -r tmp.pcap -T fields -e usb.capdata | sed '/^\s*$/d' > usbdata.txt
     ```
-    > 提取出来的数据可能会带冒号，也可能不带，但是一般键盘映射的脚本都会按照有冒号的数据来识别，有冒号时提取数据的[6:8]，无冒号时数据在[4:6]，可以用如下脚本来加上冒号
+    > 提取出来的数据可能会带冒号，也可能不带，但是一般键盘映射的脚本都会按照有冒号的数据来识别，有冒号时提取数据的 [6:8]，无冒号时数据在 [4:6]，可以用如下脚本来加上冒号
     ```py
     # -*- coding: UTF-8 -*-
     f=open('usbdata.txt','r')
@@ -38,7 +38,7 @@
     while 1:
         a=f.readline().strip()
         if a:
-            if len(a)==16: # 键盘流量的话len改为16,鼠标流量改为8
+            if len(a)==16:      # 键盘流量的话 len 改为 16, 鼠标流量改为 8
                 out=''
                 for i in range(0,len(a),2):
                     if i+2 != len(a):
@@ -65,48 +65,53 @@
 # USB流量
 
 USB 使用的三种方式
-- USB UART : 这种方式下，设备只是简单的将 USB 用于接受和发射数据，除此之外就再没有,其他通讯功能了。
+- USB UART : 这种方式下，设备只是简单的将 USB 用于接受和发射数据，除此之外就再没有, 其他通讯功能了。
 - USB HID : 这一类通讯适用于交互式，有这种功能的设备有：键盘，鼠标，游戏手柄和数字显示设备。
 - USB Memory : 数据存储
 
-USB 协议版本有 USB1.0, USB1.1, USB2.0, USB3.1 等,目前 USB2.0 比较常用。
+USB 协议版本有 USB1.0, USB1.1, USB2.0, USB3.1 等, 目前 USB2.0 比较常用。
 
 每一个 USB 设备（尤其是 HID 或者 Memory ）都有一个供应商 ID（Vendor ID） 和产品识别码（Product Id） 。 Vendor ID 是用来标记哪个厂商生产了这个 USB 设备。 Product ID 则用来标记不同的产品.
 
 > lsusb 命令用于显示本机的USB设备列表，以及USB设备的详细信息。
 
-![](../../../../assets/img/Security/BlueTeam/实验/USB取证/2.png)
+![](../../../../assets/img/Security/BlueTeam/笔记/USB取证/2.png)
 
-- Bus 002:指明设备连接到哪条总线
-- Device 002:表明这是连接到总线上的第二台设备
-- ID : 设备的ID
-- VMware, Inc. Virtual Mouse:生产商名字和设备名
+- Bus 002: 指明设备连接到哪条总线
+- Device 002: 表明这是连接到总线上的第二台设备
+- ID : 设备的 ID
+- VMware, Inc. Virtual Mouse: 生产商名字和设备名
 
 USB 流量的捕获可以使用 wireshark 或 usbpcap 来进行，在 ctf 中通常会给出已经捕获好的流量包，而我们需要做的便是从流量包中还原捕获的数据。
 
-用 wireshark 打开流量包,USB 协议的数据部分在 Leftover Capture Data 块中
+用 wireshark 打开流量包, USB 协议的数据部分在 Leftover Capture Data 块中
 
-![](../../../../assets/img/Security/BlueTeam/实验/USB取证/1.png)
+![](../../../../assets/img/Security/BlueTeam/笔记/USB取证/1.png)
 
 在蓝色部分可以看到这个区域，右键→应用为列，即可在上面显示出来这一列
 
-键盘流量的数据长度为8个字节,鼠标流量的数据长度为4个字节
+键盘流量的数据长度为 8 个字节, 鼠标流量的数据长度为 4 个字节
 
 ---
 
 ## 键盘流量
 
-键盘数据包的数据长度为8个字节，击键信息集中在第3个字节，每次击键都会产生一个数据包。所以如果看到给出的数据包中的信息都是8个字节，并且只有第3个字节不为0000，那么几乎可以肯定是一个键盘流量了。
+键盘数据包的数据长度为 8 个字节，击键信息集中在第 3 个字节，每次击键都会产生一个数据包。所以如果看到给出的数据包中的信息都是 8 个字节，并且只有第 3 个字节不为 0000，那么几乎可以肯定是一个键盘流量了。
+
+- 字节下标
+    - 0 : 修改键(组合键)
+    - 1 : OEM 保留
+    - 2~7 : 按键码
 
 - BYTE1
-    - bit0:   Left Control  是否按下，按下为1
-    - bit1:   Left Shift    是否按下，按下为1
-    - bit2:   Left Alt      是否按下，按下为1
-    - bit3:   Left GUI      是否按下，按下为1
-    - bit4:   Right Control 是否按下，按下为1
-    - bit5:   Right Shift   是否按下，按下为1
-    - bit6:   Right Alt     是否按下，按下为1
-    - bit7:   Right GUI     是否按下，按下为1
+    - bit0:   Left Control      是否按下，按下为 1
+    - bit1:   Left Shift        是否按下，按下为 1
+    - bit2:   Left Alt          是否按下，按下为 1
+    - bit3:   Left WIN/GUI      是否按下，按下为 1
+    - bit4:   Right Control     是否按下，按下为 1
+    - bit5:   Right Shift       是否按下，按下为 1
+    - bit6:   Right Alt         是否按下，按下为 1
+    - bit7:   Right WIN/GUI     是否按下，按下为 1
 - BYTE2 - 暂不清楚，有的地方说是保留位
 - BYTE3-BYTE8 - 这六个为普通按键
 

@@ -1,4 +1,4 @@
-# shell 编程
+ # shell 编程
 
 ---
 
@@ -1237,7 +1237,9 @@ done
 
 ## case
 
-Shell case 语句为多选择语句。可以用 case 语句匹配一个值与一个模式，如果匹配成功，执行相匹配的命令。case 语句格式如下：
+case 的语法需要一个 esac（就是 case 反过来）作为结束标记，每个 case 分支用右圆括号，用两个分号表示 break
+
+可以用 case 语句匹配一个值与一个模式，如果匹配成功，执行相匹配的命令。case 语句格式如下：
 ```sh
 case 值 in
 模式1)
@@ -1256,6 +1258,8 @@ esac
 ```
 
 case 工作方式如上所示。取值后面必须为单词 in，每一模式必须以右括号结束。取值可以为变量或常数。匹配发现取值符合某一模式后，其间所有命令开始执行直至 `;;`。
+
+case支持合并匹配模式，即在每一个模式中，可以使用通配符或逻辑符号。
 
 取值将检测匹配的每一个模式。一旦模式匹配，则执行完匹配模式相应命令后不再继续其他模式。如果无一匹配模式，使用星号 * 捕获该值，再执行后面的命令。
 
@@ -1584,6 +1588,18 @@ command < file1 >file2
 ```
 command 命令将 stdin 重定向到 file1，将 stdout 重定向到 file2。
 
+**使用  > /dev/null 抑制标准输出**
+```bash
+cat file.txt > /dev/null
+./shell-script.sh > /dev/null
+```
+
+**使用 2> /dev/null 抑制标准错误**
+```bash
+cat invalid-file-name.txt 2> /dev/null
+./shell-script.sh 2> /dev/null
+```
+
 **Here Document**
 
 Here Document 是 Shell 中的一种特殊的重定向方式，用来将输入重定向到一个交互式 Shell 脚本或程序。
@@ -1671,6 +1687,22 @@ echo "地址：$url"
 ```
 
 > 注：被包含的文件 test1.sh 不需要可执行权限。
+
+---
+
+# 调式脚本
+
+在 shell 脚本中添加 set –xv 来调试输出
+```diff
+vim test.sh
+
+++ set –xv
+```
+
+或者在执行 shell 脚本时提供该设置
+```bash
+bash -xv test.sh
+```
 
 ---
 

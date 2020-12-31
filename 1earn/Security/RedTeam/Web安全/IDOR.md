@@ -288,6 +288,9 @@
     - [看我如何通过帮助服务台轻松黑掉数百家公司](https://www.4hou.com/system/18770.html)
 
 **水平越权(水平越权是指相同权限的不同用户可以互相访问)**
+- 案例:
+    - [Vulnerability in Youtube allowed moving comments from any video to another](https://secgeek.net/youtube-vulnerability/) - 越权复制评论
+
 - 手机号篡改
 
     抓包修改手机号码参数为其他号码尝试,例如在办理查询页面,输入自己的号码然后抓包,修改手机号码参数为其他人号码,查看是否能查询其他人的业务.
@@ -416,19 +419,27 @@
     - `userinfo/view?id=1+2+3`
     - `userinfo/view?id=1%203`
 - 添加参数
-    - 发送 `userinfo/view?id=xxx` 代替 `userinfo/view`
-- 用数组包装 ID
-    - 发送 `{"id":[xxx]}` 代替 `{"id":xxx}`
-- 用 JSON 对象包装 ID
-    - 发送 `{"id":{"id":xxx}}` 而不是 `{"id":xxx}`
+    - `userinfo/view`
+    - `userinfo/view?id=xxx`
+- 数组
+    - `{"id":xxx}`
+    - `{"id":[xxx]}`
+- JSON 对象
+    - `{"id":xxx}`
+    - `{"id":{"id":xxx}}`
+- 去 JSON
+    - `{"id":xxx}`
+    - `id=xxx`
+- 通配符
+    - `{""id"":""*""}`
 - 尝试执行 JSON 参数污染
-    ```
+    ```bash
     POST api / get_profile
     {"user_id":<legit_id>，"user_id":<victim's_id>}
     {"id":2,"id":1}
     ```
     或
-    ```
+    ```bash
     POST api / get_profile
     {"user_id":<victim's_id>，"user_id":<legit_id>}
     ```
@@ -436,15 +447,13 @@
     - `userinfo/view?id=xxx`
     - `userinfo/view?id=xxx&id=yyy`
     - `userinfo/view?id=xxx&id=yyy,zzz`
-- 尝试发送通配符而不是 ID
-    - `{""user_id"":""*""}`
 - 查找未启用授权机制的 API 主机、或 API 节点
 - 测试不同平台的 API 点、如 APP、微信公众号
 - 尝试使用 GET/POST/OPTIONS/PUT/TRACE 等方法
     ![](../../../../assets/img/Security/RedTeam/Web安全/IDOR/1.jpg)
 - DOS
     - `limit=999999999`
-- 测试该API是否支持SOAP，将内容类型更改为 `application/xml` ，在请求正文中添加简单的XML，然后查看API如何处理它。
+- 测试该 API 是否支持 SOAP，将内容类型更改为 `application/xml` ，在请求正文中添加简单的 XML，然后查看 API 如何处理它。
 
 ---
 

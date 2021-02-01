@@ -1,4 +1,4 @@
- # shell 编程
+# shell 编程
 
 ---
 
@@ -161,6 +161,8 @@ done                        # 第7行：循环体结束
 - 中间不能有空格，可以使用下划线（_）。
 - 不能使用标点符号。
 - 不能使用 bash 里的关键字（可用 help 命令查看保留关键字）。
+
+> 注意，赋值号 = 的周围不能有空格!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 定义变量时，变量名不加美元符号（$），如：
 ```sh
@@ -1393,7 +1395,7 @@ github
 
 # 函数
 
-linux shell 可以用户定义函数，然后在shell脚本中可以随便调用。
+linux shell 可以用户定义函数，然后在 shell 脚本中可以随便调用。
 
 shell 中函数的定义格式如下
 ```sh
@@ -1565,12 +1567,12 @@ command1 < infile > outfile
 
 如果希望 stderr 重定向到 file，可以这样写：
 ```bash
-command 2 > file
+command 2> file
 ```
 
 如果希望 stderr 追加到 file 文件末尾，可以这样写：
 ```sh
-command 2 >> file
+command 2>> file
 ```
 
 如果希望将 stdout 和 stderr 合并后重定向到 file，可以这样写：

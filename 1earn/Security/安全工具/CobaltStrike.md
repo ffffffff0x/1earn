@@ -363,6 +363,8 @@ spawn 的功能就是可以派生出更多的 Beacon 让一个团队分布式渗
 
 
 
+
+
 ---
 
 ### DNS Beacon
@@ -1025,3 +1027,13 @@ Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 C
 **修改通讯特征**
 
 Cobalt Strike 通信配置文件是 Malleable C2 你可以修改 CS 的通讯特征，Beacon payload 的一些行为
+
+---
+
+# CS样本
+
+目录中会一个CobaltStrike.jar文件，直接解压，这里面有一个名为resources的文件夹，就是CobaltStrike的配置信息，我们在CobaltStrike控制台生成的木马都来源于这个文件夹。
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/53.png)
+
+可以直接分析这里面的样本，提取规则进行查杀。

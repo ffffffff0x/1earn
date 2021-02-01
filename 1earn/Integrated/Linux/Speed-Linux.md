@@ -156,6 +156,12 @@ IF ~/.bash_logout exists THEN
 END IF
 ```
 
+**各变量文件区别**
+- /etc/profile: 此文件为系统的每个用户设置环境信息。当用户登录时，该文件被执行一次，并从 /etc/profile.d 目录的配置文件中搜集shell 的设置。一般用于设置所有用户使用的全局变量。
+- /etc/bashrc: 当 bash shell 被打开时，该文件被读取。也就是说，每次新打开一个终端 shell，该文件就会被读取。
+- ~/.bash_profile 或 ~/.profile: 只对单个用户生效，当用户登录时该文件仅执行一次。用户可使用该文件添加自己使用的 shell 变量信息。另外在不同的LINUX操作系统下，这个文件可能是不同的，可能是 ~/.bash_profile， ~/.bash_login 或 ~/.profile 其中的一种或几种，如果存在几种的话，那么执行的顺序便是：~/.bash_profile、 ~/.bash_login、 ~/.profile。比如 Ubuntu 系统一般是 ~/.profile 文件。
+- ~/.bashrc: 只对单个用户生效，当登录以及每次打开新的 shell 时，该文件被读取。
+
 **bash 设置环境变量**
 ```bash
 echo $PATH  						# 查看环境变量
@@ -487,6 +493,7 @@ nm			# 显示目标文件的符号
 - mkdir
 	```bash
 	# 创建文件夹
+	mkdir -p /test						# 若 test 目录原本不存在，则建立一个
 	mkdir -p /mnt/aaa/aaa/aaa 			# 创建指定路径一系列文件夹
 	mkdir -m 777 /test					# 创建时指定权限
 	```
@@ -808,6 +815,8 @@ ln file1 file2
 	```bash
 	unzip FileName.zip							# 解压
 	zip FileName.zip DirName					# 压缩
+	zip -s 4m myzip.zip --out zip				# 分卷压缩
+	cat zip.z* > myzip.zip && unzip myzip.zip	# zip 分卷解压缩
 	```
 
 - .rar
@@ -929,6 +938,7 @@ lsof -i					# 列出当前系统打开文件
 netstat -antup
 netstat -antpx
 netstat -tulpn
+fuser -v 22/tcp			# 查询进程使用的文件和网络套接字
 ```
 
 **路由表**
@@ -1258,6 +1268,7 @@ iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
 iptables -L			# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 恢复规则
+iptables -F  		# 清除防火墙配置
 ```
 
 **Ubuntu 关闭防火墙**
@@ -1343,6 +1354,11 @@ rm /var/lib/dpkg/lock
 rm /var/lib/apt/lists/lock
 ```
 
+**E: Unable to correct problems, you have held broken packages.**
+```bash
+aptitude install <packagename>	# 该工具会想方设法的帮助你安装(提示依赖、其他安装包等等)
+```
+
 **禁用 Ubuntu 自动更新**
 ```bash
 nano /etc/apt/apt.conf.d/20auto-upgrades
@@ -1354,61 +1370,6 @@ nano /etc/apt/apt.conf.d/20auto-upgrades
 # 果你希望它检查更新但不自动安装无人值守的升级
     APT::Periodic::Update-Package-Lists "1";
     APT::Periodic::Unattended-Upgrade "0";
-```
-
-**Ubuntu apt 换源**
-```bash
-tee /etc/apt/sources.list <<-'EOF'
-
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-EOF
-apt update
-```
-
-**Debain apt 换源**
-```bash
-tee /etc/apt/sources.list <<-'EOF'
-
-# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-updates main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ buster-backports main contrib non-free
-deb https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security buster/updates main contrib non-free
-EOF
-apt update
-```
-
-**Kali apt 换源**
-```bash
-tee /etc/apt/sources.list <<-'EOF'
-
-# 清华源
-deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
-
-# 官方源
-deb http://http.kali.org/kali kali-rolling main non-free contrib
-deb-src http://http.kali.org/kali kali-rolling main non-free contrib
-
-# 中科大
-deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
-deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib
-
-EOF
-apt update
 ```
 
 **enable the "Universe" repository**
@@ -1424,6 +1385,135 @@ apt-get update
 ```bash
 apt update
 apt install -y gdebi
+```
+
+#### Ubuntu apt 换源
+
+**20.04**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+EOF
+apt update
+```
+
+**18.04**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+EOF
+apt update
+```
+
+**16.04**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/ubuntu/ xenial main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial main
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates main
+deb http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-updates universe
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security main
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security main
+deb http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+deb-src http://mirrors.aliyun.com/ubuntu/ xenial-security universe
+EOF
+apt update
+```
+
+#### Debain apt 换源
+
+**10**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/debian/ buster main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ buster main non-free contrib
+deb http://mirrors.aliyun.com/debian-security buster/updates main
+deb-src http://mirrors.aliyun.com/debian-security buster/updates main
+deb http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ buster-updates main non-free contrib
+deb http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ buster-backports main non-free contrib
+EOF
+apt update
+```
+
+**9**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch main non-free contrib
+deb http://mirrors.aliyun.com/debian-security stretch/updates main
+deb-src http://mirrors.aliyun.com/debian-security stretch/updates main
+deb http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib
+deb http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib
+EOF
+apt update
+```
+
+**8**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/debian/ jessie main non-free contrib
+deb http://mirrors.aliyun.com/debian/ jessie-proposed-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ jessie main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ jessie-proposed-updates main non-free contrib
+EOF
+apt update
+```
+
+**7**
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+deb http://mirrors.aliyun.com/debian/ wheezy main non-free contrib
+deb http://mirrors.aliyun.com/debian/ wheezy-proposed-updates main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ wheezy main non-free contrib
+deb-src http://mirrors.aliyun.com/debian/ wheezy-proposed-updates main non-free contrib
+EOF
+apt update
+```
+
+#### Kali apt 换源
+```bash
+tee /etc/apt/sources.list <<-'EOF'
+
+# 阿里源
+deb https://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+deb-src https://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+
+# 清华源
+deb http://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+deb-src https://mirrors.tuna.tsinghua.edu.cn/kali kali-rolling main contrib non-free
+
+# 官方源
+deb http://http.kali.org/kali kali-rolling main non-free contrib
+deb-src http://http.kali.org/kali kali-rolling main non-free contrib
+
+EOF
+apt update
 ```
 
 ### Binary
@@ -1556,46 +1646,47 @@ enabled=1					# 开启本地源
 yum list    #  看一下包
 ```
 
-**配置 Alibaba yum 源**
+#### 配置 yum 源
 
-直接下载源
+**8**
+```bash
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo
+```
+
+**7**
 ```bash
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 ```
 
-刷新 YUM 的缓存状态:
+**6**
+```bash
+wget -O /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-6.repo
+```
+
+**刷新 YUM 的缓存状态**
 ```bash
 yum clean all
 yum makecache
 ```
 
-**配置 EPEL 源**
+#### 配置 EPEL 源
 
-- tuna
+**RHEL 8**
+```bash
+yum install -y https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+sed -i 's|^#baseurl=https://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
+```
 
-	这里使用 tuna 的 epel 镜像。
-	```bash
-	yum install -y epel-release
-	```
+**RHEL 7**
+```bash
+curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+```
 
-	当前 tuna 已经在 epel 的官方镜像列表里，所以不需要其他配置，mirrorlist 机制就能让你的服务器就近使用 tuna 的镜像。如果你想强制 你的服务器使用 tuna 的镜像，可以修改 `/etc/yum.repos.d/epel.repo`，将 mirrorlist 和 metalink 开头的行注释掉。
-
-	接下来，取消注释这个文件里 baseurl 开头的行，并将其中的 http://download.fedoraproject.org/pub 替换成 https://mirrors.tuna.tsinghua.edu.cn
-	```bash
-	sed -e 's!^metalink=!#metalink=!g' \
-		-e 's!^#baseurl=!baseurl=!g' \
-		-e 's!//download\.fedoraproject\.org/pub!//mirrors.tuna.tsinghua.edu.cn!g' \
-		-e 's!http://mirrors\.tuna!https://mirrors.tuna!g' \
-		-i /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel-testing.repo
-	```
-
-	运行 `yum update & yum makecache` 测试一下
-
-- aliyun
-	```
-	curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
-	yum clean all && yum makecache
-	```
+**RHEL 6**
+```bash
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
+```
 
 ### 常用软件
 
@@ -1745,7 +1836,7 @@ timedatectl
 
 **修改时区**
 ```bash
-timedatectl set-timezone Asia/Shanghai
+timedatectl set-timezone Asia/Shanghai		# 将时区设置为 Asia/Shanghai
 
 或
 
@@ -1910,6 +2001,8 @@ passwd								# 配置 su 密码
 
 su <username>						# 切换账号
 su - <username>                     # 切换账号并改变工作目录至使用者的家目录
+
+compgen -c                  		# 列出所有可用的命令
 ```
 
 **组**
@@ -2154,6 +2247,14 @@ rmmod [options] [arguments ...]
 dmesg 可用于找出内核最新消息中的错误和警告
 ```bash
 dmesg | less
+```
+
+**nmi_watchdog**
+
+“看门狗NMI中断”的机制。（NMI：Non Maskable Interrupt. 这种中断即使在系统被锁住时，也能被响应）。这种机制可以被用来调试内核锁住现象。通过周期性地执行NMI中断，内核能够监测到是否有CPU被锁住。当有处理器被锁住时，打印调试信息。
+```bash
+echo '0' >/proc/sys/kernel/nmi_watchdog 			# 关闭linux 看门狗
+echo 'kernel.nmi_watchdog=0' >>/etc/sysctl.conf   	# 重启自动关闭
 ```
 
 ---

@@ -85,7 +85,7 @@ if (mysql_num_rows($data) == 1) {
     exit;
 }
 
-$query = "UPDATE users SET user_name = '$clean_username' WHERE user_id = '$clean_user_id'";  //更新用户名信息，更具用户id判断。
+$query = "UPDATE users SET user_name = '$clean_username' WHERE user_id = '$clean_user_id'";  //更新用户名信息，根据用户id判断。
 ```
 可见当前修改用户名之判断 ID，只需要更改 ID 为其他用户的 ID 即可越权。如果轮询出管理员的 ID 还可以进一步的进行垂直越权。
 

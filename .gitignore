@@ -1,15 +1,5 @@
 /assets/Temp
-/1earn/Develop/Web/AJAX
-/1earn/Develop/Web/Web-Services
-/1earn/Develop/Web/JavaScript
-/1earn/Develop/Python
-/1earn/Develop/PHP
-/1earn/Develop/Java
-/1earn/Develop/Golang
-/1earn/Develop/汇编
-/1earn/Develop/C#
-/1earn/Develop/.net
+/1earn/Develop/*
 /1earn/Security/RedTeam/Web安全/靶场/sqli-labs-WalkThrough.md
 /1earn/Security/安全资源/靶机/VulnHub/symfonos/symfonos6-WalkThrough.md
-/assets/img/Develop/Java
-/assets/img/Develop/golang
+/assets/img/Develop/*

@@ -435,7 +435,6 @@ WEB-INF 主要包含一下文件或目录:
 'mailgun_api': 'key-[0-9a-zA-Z]{32}',
 'mailchamp_api': '[0-9a-f]{32}-us[0-9]{1,2}',
 'picatic_api': 'sk_live_[0-9a-z]{32}',
-'google_oauth_id': '[0-9(+-[0-9A-Za-z_]{32}.apps.qooqleusercontent.com',
 'google_api': 'AIza[0-9A-Za-z-_]{35}',
 'google_captcha': '6L[0-9A-Za-z-_]{38}',
 'google_oauth': 'ya29\\.[0-9A-Za-z\\-_]+',
@@ -692,3 +691,4 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 
 **相关案例**
 - [Uber XSS + clickjacking](https://www.youtube.com/watch?v=5Gg4t3clwys)
+- [Stealing your private documents through a bug in Google Docs](https://savebreach.com/stealing-private-documents-through-a-google-docs-bug/)

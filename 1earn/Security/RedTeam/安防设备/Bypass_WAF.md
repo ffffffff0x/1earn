@@ -32,9 +32,6 @@
 - [绕过云锁文件读取防护](https://drivertom.blogspot.com/2019/06/lfi.html)
 - [TSRC挑战赛：WAF之SQL注入绕过挑战实录](https://security.tencent.com/index.php/blog/msg/66)
 
-**工具**
-- [EnableSecurity/wafw00f: WAFW00F allows one to identify and fingerprint Web Application Firewall (WAF) products protecting a website.](https://github.com/EnableSecurity/wafw00f) - 识别waf指纹的工具
-
 **导图**
 - WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/WAF绕过思路.png)
 

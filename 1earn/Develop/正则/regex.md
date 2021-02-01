@@ -1,5 +1,9 @@
 # regex
 
+<p align="center">
+    <img src="../../../assets/img/banner/regex.jpg" width="58%">
+</p>
+
 ---
 
 **在线工具**

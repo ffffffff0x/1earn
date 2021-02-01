@@ -24,7 +24,7 @@
 
 ## 项目文件一览
 
-* [Security](./1earn/Security/Power-PenTest.md)
+* **[Security](./1earn/Security/Power-PenTest.md)**
 
     * **[安全工具](https://github.com/No-Github/1earn/tree/master/1earn/Security/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7)** - 各类安全工具的使用介绍
 
@@ -37,7 +37,7 @@
                 * [Kioptrix Serial](./1earn/Security/安全资源/靶机/VulnHub/Kioptrix) - Kioptrix 系列靶场,难度简单至中等,推荐初学者挑战
                 * [Mission-Pumpkin](./1earn/Security/安全资源/靶机/VulnHub/Mission-Pumpkin) - 难度适中,偏向于加解密比较多,漏洞利用内容较少
                 * [symfonos Serial](./1earn/Security/安全资源/靶机/VulnHub/symfonos) - 挺有难度的靶场,内容丰富,难度中等,漏洞利用内容很多,推荐有一定经验者挑战
-            * [漏洞复现](https://github.com/No-Github/1earn/tree/master/1earn/Security/%E5%AE%89%E5%85%A8%E8%B5%84%E6%BA%90/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0) - 搭建环境,记录漏洞复现的过程
+        * [漏洞复现](https://github.com/No-Github/1earn/tree/master/1earn/Security/%E5%AE%89%E5%85%A8%E8%B5%84%E6%BA%90/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0) - 搭建环境,记录漏洞复现的过程
 
     * **BlueTeam**
         * [加固](./1earn/Security/BlueTeam/加固.md) - 系统、应用加固的方法和工具资源
@@ -74,7 +74,7 @@
 
     * **Pwn**
         * 实验
-            * [SLMail溢出案例](./1earn/Security/Pwn/实验/SLMail溢出案例.md) - SLMail 5.5.0 的缓冲区溢出利用实验
+            * [SLMail溢出案例](./1earn/Security/PWN/实验/SLMail溢出案例.md) - SLMail 5.5.0 的缓冲区溢出利用实验
 
     * **RedTeam**
         * 安防设备
@@ -107,6 +107,10 @@
             * [Web_Generic](https://github.com/No-Github/1earn/tree/master/1earn/Security/RedTeam/Web%E5%AE%89%E5%85%A8/Web_Generic)
             * [Web_Tricks](https://github.com/No-Github/1earn/tree/master/1earn/Security/RedTeam/Web%E5%AE%89%E5%85%A8/Web_Tricks)
 
+    * **Reverse**
+        * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/Reverse/%E5%AE%9E%E9%AA%8C)
+        * [FILE](https://github.com/No-Github/1earn/tree/master/1earn/Security/Reverse/FILE)
+
 * **Develop**
 
     * **版本控制**
@@ -118,19 +122,11 @@
         * [Markdown](https://github.com/No-Github/1earn/tree/master/1earn/Develop/%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80/Markdown)
         * [XML](https://github.com/No-Github/1earn/tree/master/1earn/Develop/%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80/XML)
 
-    * **[操作系统](https://github.com/No-Github/1earn/blob/master/1earn/Develop/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/)**
-
     * **可视化**
         * [gnuplot](https://github.com/No-Github/1earn/tree/master/1earn/Develop/%E5%8F%AF%E8%A7%86%E5%8C%96/gnuplot)
 
-    * **硬件**
-        * [硬件知识](./1earn/Develop/硬件/硬件知识.md) - 硬件相关的小知识
-
     * **正则**
         * [regex](./1earn/Develop/正则/regex.md) - 常用正则表达式和相关资源
-
-    * **字符编码**
-        * [字符编码](./1earn/Develop/字符编码/字符编码.md) - 字符编码相关的内容总结
 
     * **Web**
         * [Speed-Web](./1earn/Develop/Web/Speed-Web.md)
@@ -169,8 +165,7 @@
         * [Speed-Win](./1earn/Integrated/Windows/Speed-Win.md) - 记录 windows 下 CMD 常用命令
         * [笔记](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/%E7%AC%94%E8%AE%B0)
         * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/%E5%AE%9E%E9%AA%8C) -涉及域环境搭建、基础服务搭建
-        * Powershell
-            * [PowerShell笔记](./1earn/Integrated/Windows/PowerShell/PowerShell笔记.md) - 记录 powershell 常用命令
+        * [Powershell](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/PowerShell)
 
 * **Plan**
 

@@ -40,7 +40,7 @@ CSCRIPT OSPP.VBS /DSTATUS
 
 **愉快使用网易云音乐**
 
-- centos环境
+- centos 环境
 
     ```bash
     yum install -y epel-release
@@ -189,6 +189,7 @@ npm config delete proxy  # 取消代理
 ## pip
 
 常用的国内镜像包括:
+
 1. 阿里云 http://mirrors.aliyun.com/pypi/simple/
 2. 豆瓣 http://pypi.douban.com/simple/
 3. 清华大学 https://pypi.tuna.tsinghua.edu.cn/simple/
@@ -205,13 +206,12 @@ npm config delete proxy  # 取消代理
     1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
         ```bash
         mkdir -p ~/.pip/
-        ```
-        ```bash
         tee ~/.pip/pip.conf <<-'EOF'
         [global]
-        index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+        index-url = https://mirrors.aliyun.com/pypi/simple/
+
         [install]
-        trusted-host = https://pypi.tuna.tsinghua.edu.cn
+        trusted-host=mirrors.aliyun.com
         EOF
         ```
 
@@ -350,31 +350,31 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 
 常规用法 : `ffmpeg.exe -i "E:\Temp\002.mp4" -r 10 -b:a 32k "E:\Temp\002_mod.mp4"`
 
-优秀用法 : `ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4`
+推荐用法 : `ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4`
 
 `ffmpeg -y -i in.mp4 -s 176x144 -vcodec libx264 -vpre fast -b 800000 out.mp4`
 ```
-in.mp4 是 960 x 540,H.264 / AVC,30fps,大小为 149.3 MB.
-转出来的 out.mp4 是176 x 144,H.264 / AVC,30fps,大小为 21.0 MB.
+in.mp4 是 960 x 540,H.264 / AVC,30fps, 大小为 149.3 MB.
+转出来的 out.mp4 是 176 x 144,H.264 / AVC,30fps, 大小为 21.0 MB.
 
-y: 当已存在 out.mp4 是,不提示是否覆盖.
+y: 当已存在 out.mp4 是, 不提示是否覆盖.
 -i in.mp4: 输入文件名.
 -s 176x144: 输出分辨率.
 -vcodec -libx264: 输出文件使用的编解码器.
--vpre fast: 使用 libx264 做为编解码器时,需要带上这个参数.
--b 800000: 码率,单位是字节,不是k字节.
+-vpre fast: 使用 libx264 做为编解码器时, 需要带上这个参数.
+-b 800000: 码率, 单位是字节, 不是 k 字节.
 out.mp4: 输出文件名.
-以上参数的使用细节,ffmpeg 的 help 里有更详细的描述.
+以上参数的使用细节, ffmpeg 的 help 里有更详细的描述.
 ```
 
 `ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -ar 48000 -ab 128 -vol 100 -f mp4 out.mp4`
 ```bash
--r 29.97 帧数 (一般用25就可以了)
--b 1500 视频数据流量,用-b xxx表示使用固定码率,数字可更改;还可以用动态码率如:-qscale 4和-qscale 6,4的质量比6高 (一般用800就可以了,否则文件会很大)
--acodec aac 音频编码用AAC
--ac 2 声道数1或2
+-r 29.97 帧数 (一般用 25 就可以了)
+-b 1500 视频数据流量, 用 - b xxx 表示使用固定码率, 数字可更改; 还可以用动态码率如:-qscale 4 和 - qscale 6,4 的质量比 6 高 (一般用 800 就可以了, 否则文件会很大)
+-acodec aac 音频编码用 AAC
+-ac 2 声道数 1 或 2
 -ar 48000 声音的采样频率
--ab 128 音频数据流量,一般选择32、64、96、128 # -vol 200 200%的音量,可更改 (如果源文件声音很小,可以提升10到20倍(1000%~2000%),我试过,效果还行!但不能太大,200000%我也试验过,但嘈杂声太大了)
+-ab 128 音频数据流量, 一般选择 32、64、96、128 # -vol 200 200% 的音量, 可更改 (如果源文件声音很小, 可以提升 10 到 20 倍 (1000%~2000%), 我试过, 效果还行! 但不能太大, 200000% 我也试验过, 但嘈杂声太大了)
 ```
 
 ---

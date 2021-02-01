@@ -214,7 +214,7 @@ source.txt 你要爆破的 hash 列表
 pass01.txt 你的密码表
 ```
 
-![](../../../assets/img/Security/实验/靶机/VulnHub/DC/DC1/9.png)
+![](../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/9.png)
 
 ---
 
@@ -652,7 +652,7 @@ test
 
 ![](../../../assets/img/Security/安全工具/Hashcat/5.png)
 
-服务的添加一个新的 voucher
+服务端添加一个新的 voucher
 
 ![](../../../assets/img/Security/安全工具/Hashcat/6.png)
 

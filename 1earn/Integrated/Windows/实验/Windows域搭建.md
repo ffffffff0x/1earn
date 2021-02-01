@@ -32,7 +32,7 @@ WIN+R ，打开运行框，输入：dcpromo
 
 ![](../../../../assets/img/Integrated/Windows/实验/域/4.png)
 
-设置林功能级别位 2008 R2
+设置林功能级别为 2008 R2
 
 ![](../../../../assets/img/Integrated/Windows/实验/域/5.png)
 

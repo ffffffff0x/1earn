@@ -83,6 +83,7 @@
   * [filebrowser](#filebrowser)
   * [NFS](#nfs)
   * [Samba](#samba)
+  * [sharry](#sharry)
   * [Vsftp](#vsftp)
 
 * **[🍗 编程语言](#编程语言)**
@@ -383,7 +384,7 @@ vimdiff  FILE_LEFT  FILE_RIGHT
 **安装**
 ```bash
 mkdir -p /opt/adguard && cd /opt/adguard
-wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.105.0-beta.1/AdGuardHome_linux_amd64.tar.gz
+wget https://github.com/AdguardTeam/AdGuardHome/releases/download/v0.105.0-beta.2/AdGuardHome_linux_amd64.tar.gz
 tar -xzvf AdGuardHome_linux_amd64.tar.gz
 cd AdGuardHome
 ./AdGuardHome -s install
@@ -925,10 +926,9 @@ firewall-cmd --reload
 
 **服务端安装**
 ```bash
-wget https://github.com/fatedier/frp/releases/download/v0.32.0/frp_0.32.0_linux_amd64.tar.gz
-tar -zxvf frp_0.32.0_linux_amd64.tar.gz
-cd frp_0.32.0_linux_amd64
-rm -rf frpc*
+wget https://github.com/fatedier/frp/releases/download/v0.34.3/frp_0.34.3_linux_amd64.tar.gz
+tar -zxvf frp_0.34.3_linux_amd64.tar.gz
+cd frp_0.34.3_linux_amd64
 ```
 
 编辑 frps 配置文件
@@ -4021,6 +4021,24 @@ mount -t cifs -o username=smb1,password='smb123456' //192.168.xx+1.xx/webdata /d
 
 ---
 
+## sharry
+
+**官网**
+- https://github.com/eikek/sharry
+
+**安装**
+```bash
+cd /tmp
+wget https://github.com/eikek/sharry/releases/download/release%2F1.6.0/sharry-restserver-1.6.0.zip
+unzip sharry-restserver-1.6.0.zip
+mv sharry-restserver-1.6.0 sharry
+/tmp/sharry/bin/sharry-restserver
+```
+
+访问 http://localhost:9090/
+
+---
+
 ## Vsftp
 
 **官网**
@@ -4337,60 +4355,71 @@ go build
     <img src="../../../assets/img/logo/java.svg" width="10%">
 </p>
 
-**rpm 包方式安装**
+**oracle jdk**
 
-下载
-https://www.oracle.com/technetwork/java/javase/downloads/
-```bash
-chmod +x jdk-****.rpm
-yum localinstall jdk-****.rpm
-# 也可以
-rpm -ivh jdk-****.rpm
-```
+- **rpm 包方式安装**
+
+  下载
+  https://www.oracle.com/technetwork/java/javase/downloads/
+  ```bash
+  chmod +x jdk-****.rpm
+  yum localinstall jdk-****.rpm
+  # 也可以
+  rpm -ivh jdk-****.rpm
+  ```
+
+- **使用 ppa/源方式安装 oracle 官方版本 jdk**
+  ```bash
+  # 添加 ppa
+  apt-get install -y python-software-properties
+  add-apt-repository ppa:webupd8team/java
+  apt-get update
+
+  # 安装 jdk7
+  apt-get install -y oracle-java7-installer
+
+  # 安装 jdk8
+  apt-get install -y oracle-java8-installer
+  ```
+
+- **直接使用编译完成的**
+
+  自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+  这里以 `jdk-8u212-linux-x64.tar.gz` 举例
+
+  ```bash
+  tar -xzvf jdk-8u212-linux-x64.tar.gz
+
+  mkdir /usr/local/java/
+
+  mv jdk1.8.0_212/ /usr/local/java
+
+  export JAVA_HOME=/usr/local/java/jdk1.8.0_212
+  export JRE_HOME=${JAVA_HOME}/jre
+  export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+  export PATH=${JAVA_HOME}/bin:$PATH
+
+  source /etc/profile
+
+  ln -s /usr/local/java/jdk1.8.0_212/bin/java /usr/bin/java
+  ```
 
 **Openjdk**
-```bash
-apt-get update
-apt-get install -y openjdk-8-jdk
-java -version
-```
 
-**使用 ppa/源方式安装 oracle 官方版本 jdk**
-```bash
-# 添加 ppa
-apt-get install -y python-software-properties
-add-apt-repository ppa:webupd8team/java
-apt-get update
+- Red Hat系
+  ```bash
+  yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel
+  java -version
+  ```
 
-# 安装 jdk7
-apt-get install -y oracle-java7-installer
-
-# 安装 jdk8
-apt-get install -y oracle-java8-installer
-```
-
-**直接使用编译完成的**
-
-自行下载 [oracle jdk](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-
-这里以 `jdk-8u212-linux-x64.tar.gz` 举例
-
-```bash
-tar -xzvf jdk-8u212-linux-x64.tar.gz
-
-mkdir /usr/local/java/
-
-mv jdk1.8.0_212/ /usr/local/java
-
-export JAVA_HOME=/usr/local/java/jdk1.8.0_212
-export JRE_HOME=${JAVA_HOME}/jre
-export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
-export PATH=${JAVA_HOME}/bin:$PATH
-
-source /etc/profile
-
-ln -s /usr/local/java/jdk1.8.0_212/bin/java /usr/bin/java
-```
+- Debian 系
+  ```bash
+  apt-get update
+  apt-get install -y openjdk-8-jdk
+  # 或 apt-get install openjdk-11-jdk
+  java -version
+  ```
 
 **测试**
 ```bash
@@ -4408,6 +4437,11 @@ javac
 
 **官网**
 - https://www.perl.org/
+
+**安装**
+```bash
+sh <(curl -q https://platform.activestate.com/dl/cli/install.sh) --activate-default ActiveState/ActivePerl-5.28
+```
 
 **安装模块**
 ```bash
@@ -4538,9 +4572,9 @@ jupyter-labextension uninstall my-extension   # 卸载已安装扩展
 
 下载 ruby 安装包,并进行编译安装
 ```bash
-wget https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.2.tar.gz
-tar xvfvz ruby-2.6.2.tar.gz
-cd ruby-2.6.2
+wget https://cache.ruby-lang.org/pub/ruby/3.0/ruby-3.0.0.tar.gz
+tar xvfvz ruby-3.0.0.tar.gz
+cd ruby-3.0.0
 ./configure
 make
 make install
@@ -4613,16 +4647,14 @@ cargo clean               # 清理目录
 - https://github.com/aaPanel/BaoTa
 
 **安装**
-- **Centos**
-
+- Centos/Fedora
   ```bash
-  yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh
+  wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh
   ```
 
-- **Ubuntu/Debian**
-
+- Ubuntu/Debian/Deepin
   ```bash
-  wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && bash install.sh
+  wget -O install.sh http://download.bt.cn/install/install-ubuntu_6.0.sh && sudo bash install.sh
   ```
 
 **使用**
@@ -5018,6 +5050,10 @@ setenforce 0    # 关闭 selinux
 - https://www.docker.com
 
 **安装**
+- **官方一条命令版(不兼容 kali)**
+  ```bash
+  curl -sSL https://get.docker.com/ | sh
+  ```
 
 - **CentOS7 下安装**
   ```bash
@@ -5162,6 +5198,11 @@ mv docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 ```
 
+或直接采用 pip 安装
+```bash
+pip3 install docker-compose
+```
+
 ```bash
 docker-compose build
 docker-compose up -d
@@ -5191,6 +5232,10 @@ docker-compose exec [service] sh  # 进入容器内
   vim /etc/resolv.conf
   nameserver 1.1.1.1
   ```
+
+- [3927] Error loading Python lib '/tmp/_MEIuQps8Y/libpython3.9.so.1.0': dlopen: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.28' not found (required by /tmp/_MEIuQps8Y/libpython3.9.so.1.0)
+
+  python 版本的问题, 换 python3.7 以上或用 pip 安装即可
 
 ### Docker-Portainer
 

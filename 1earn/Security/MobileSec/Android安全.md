@@ -116,14 +116,12 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 - [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
 
 **在线检测**
-- [360显危镜](http://appscan.360.cn/)
 - [腾讯金刚](https://service.security.tencent.com/kingkong)
 - [梆梆安全](https://dev.bangcle.com/)
 - [爱加密](https://www.ijiami.cn/index)
 - [娜迦信息](http://www.nagain.com/appscan/)
 - [海云安](https://www.secidea.com/hyx/index.php/user/login.html)
 - [APP审计系统](http://01hackcode.com/)
-- [SandDroid](http://sanddroid.xjtu.edu.cn/)
 - [360移动开放平台-APP漏洞扫描](http://dev.360.cn/html/vulscan/scanning.html)
 - [360加固保](https://jiagu.360.cn/#/global/index)
 - [百度AI安全加固平台](https://apkprotect.baidu.com/)

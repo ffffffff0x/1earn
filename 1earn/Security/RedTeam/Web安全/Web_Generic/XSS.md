@@ -76,7 +76,6 @@
     - http://xssye.com/index.php
 
 - **beef**
-
     - 文章
         - [浏览器攻击框架 BeEF Part 1](https://www.freebuf.com/articles/web/175755.html)
         - [浏览器攻击框架 BeEF Part 2:初始化控制](https://www.freebuf.com/articles/web/176139.html)

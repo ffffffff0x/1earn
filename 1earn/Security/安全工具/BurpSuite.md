@@ -801,16 +801,24 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 
 # User options
 
+**Plaform Authentication**
+
+通过这些设置，可以配置 Burp 自动对目标 Web 服务器平台进行认证。可以为各个主机配置不同的身份验证类型和凭证。
+
+支持的认证类型有：basic 基本认证、NTLMv1、NTLMv2 和摘要认证。域名和主机名字段仅用于 NTLM 身份验证。
+
+"Prompt for credentials on platform authentication failure" 选项会使 Burp 在遇到身份验证失败时显示一个交互式弹出窗口。
+
+例如遇到需要 NTLM 认证后，才能访问系统的目标
+
+![](../../../assets/img/Security/安全工具/BurpSuite/39.png)
+
+添加新的配置，认证方式选择 NTLMv2，然后重新发送请求就 ok 了
+
+![](../../../assets/img/Security/安全工具/BurpSuite/40.png)
+
 **Upstream Proxy Servers**
 
 ![](../../../assets/img/Security/安全工具/BurpSuite/15.png)
 
 上面描述了需要 burp 走代理的使用情况，同样，在使用一些被动漏扫工具时也可以使用该功能将 burp 的流量转发至被动漏扫工具。
-
----
-
-**Source & Reference**
-- [关于Burp Suite不能抓包的解决方法](https://blog.csdn.net/u011781521/article/details/54971084)
-- [使用 Burp suite 爆破 HTTP Basic 认证](https://xiaix.me/shi-yong-burp-suite-bao-po-http-basic-ren-zheng/)
-- [kali 安装新版本burp 以及不能使用重新安装jdk的解决方法](https://blog.csdn.net/nzjdsds/article/details/81205184)
-- [Intercepting HSTS protected traffic using Burp suite and Firefox](https://abhijith.live/intercepting-hsts-protected-traffic-using-burp-suite-and-firefox/)

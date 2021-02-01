@@ -26,7 +26,9 @@
 - [探寻Metasploit Payload模式背后的秘密](https://www.freebuf.com/articles/system/187312.html)
 
 **图形化 UI**
+- [FunnyWolf/Viper](https://github.com/FunnyWolf/Viper) - 非常牛逼,推荐
 - [WayzDev/Kage](https://github.com/WayzDev/Kage)
+- [rsmudge/armitage](https://github.com/rsmudge/armitage)
 
 ---
 

@@ -21,6 +21,8 @@
     - 提供信息收集笔记的部分内容
 * [cililianjie](https://github.com/cililianjie)
 * [mfslog](https://github.com/mfslog)
+* [Lorna Dane](https://github.com/tonyscy)
+    - 提供 Volatility3 部分内容
 
 ---
 
@@ -35,10 +37,10 @@
     - windows 认证渗透内容大部分参考其文章内容
 * [LauCyun](https://laucyun.com/)
     - 工控协议 S7Comm 的内容大部分参考其文章内容
-* 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中
 * [aleenzz](https://github.com/aleenzz)
-    - Cobalt Strike 笔记大部分参考其 Cobalt_Strike_wiki 项目
-    - SQLi 笔记大部分参考其 MYSQL_SQL_BYPASS_WIKI 项目
-    - SQLi 笔记大部分参考其 MSSQL_SQL_BYPASS_WIKI 项目
+    - Cobalt Strike 笔记大部分参考其 [Cobalt_Strike_wiki](https://github.com/aleenzz/Cobalt_Strike_wiki) 项目
+    - SQLi 笔记大部分参考其 [MYSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MYSQL_SQL_BYPASS_WIKI) 项目
+    - SQLi 笔记大部分参考其 [MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI) 项目
 * [奇安信 A-TEAM](https://blog.ateam.qianxin.com/)
-    - Cobalt Strike 笔记大部分参考其翻译的 Cobalt Strike 4.0 手册
+    - Cobalt Strike 笔记大部分参考其翻译的 [Cobalt Strike 4.0 手册](https://blog.ateam.qianxin.com/post/cobalt-strike-40-shou-ce-fan-yi-2019-nian-12-yue-2-ri-geng-xin-ban-ben/)
+* 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中

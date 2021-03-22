@@ -267,8 +267,8 @@ souce ~/.config/fish/config.fish
 
 	# e.g.
 	sort namesd.txt | uniq		# 使用 uniq 命令从文件中删除重复项
-	sort namesd.txt | uniq –c	# 使用 Uniq 显示重复的行数
-	sort namesd.txt | uniq –cd	# 使用 Uniq 仅显示重复的行
+	sort namesd.txt | uniq -c	# 使用 Uniq 显示重复的行数
+	sort namesd.txt | uniq -cd	# 使用 Uniq 仅显示重复的行
 	grep name /proc/cpuinfo | uniq	# 查询 cpuinfo 信息合并成一条
 	cat /proc/cpuinfo | grep name |cut -f2 -d ":" | uniq		# 查询 cpuinfo 信息合并成一条并只输出: 后的内容
 	```
@@ -290,8 +290,8 @@ souce ~/.config/fish/config.fish
 
 	# e.g.
 	find ~ -name '*.tmp' -print0 | xargs -0 rm -f	# 尝试使用 rm 删除所有 tmp 文件
-	find /etc -name "*.conf" | xargs ls –l			# 获取 /etc/ 下所有 *.conf 文件的列表
-	cat url-list.txt | xargs wget –c				# 如果需要从文件读取要下载的 URL 列表
+	find /etc -name "*.conf" | xargs ls -l			# 获取 /etc/ 下所有 *.conf 文件的列表
+	cat url-list.txt | xargs wget -c				# 如果需要从文件读取要下载的 URL 列表
 	find / -name *.jpg -type f -print | xargs tar -cvzf images.tar.gz	# 找出所有 jpg 图像并将其存档
 	ls *.jpg | xargs -n1 -i cp {} /external-hard-drive/directory 		# 将所有图像复制到外部硬盘驱动器
 	```
@@ -303,8 +303,8 @@ souce ~/.config/fish/config.fish
 	# e.g.
 	ls | tee file 				# 将输出既写入屏幕（stdout），又写入文件
 	ls | tee file1 file2 file3	# 输出写入多个文件
-	ls | tee –a file			# 追加而不是覆盖
-	crontab -l | tee crontab-backup.txt | sed 's/old/new/' | crontab –	# 对 crontab 条目进行备份，并将 crontab 条目作为 sed 命令的输入，由 sed 命令进行替换。替换后，它将被添加为一个新的cron作业。
+	ls | tee -a file			# 追加而不是覆盖
+	crontab -l | tee crontab-backup.txt | sed 's/old/new/' | crontab -	# 对 crontab 条目进行备份，并将 crontab 条目作为 sed 命令的输入，由 sed 命令进行替换。替换后，它将被添加为一个新的cron作业。
 	```
 
 **其他符号工具**
@@ -316,6 +316,13 @@ tail		# 显示文件中的尾部内容.默认下,显示文件的末尾 10 行内
 ---
 
 ## 会话
+
+**清屏**
+```bash
+clear		# 刷新屏幕，本质上只是让终端显示页向后翻了一页，如果向上滚动屏幕还可以看到之前的操作信息
+reset		# 完全刷新终端屏幕
+printf "\033c"
+```
 
 **查看用户信息**
 ```bash
@@ -333,6 +340,7 @@ Ctrl+R		# 搜索历史命令
 Ctrl+P		# 切换上一个命令
 alt+F1-F6	# 切换虚拟控制台
 Alt+F7		# 图形界面
+Ctrl+L		# 清除命令
 ```
 
 **screen**
@@ -552,7 +560,7 @@ which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
 	# e.g.
 	find / -name conf*	# 查找根目录及子目录下所有 conf 文件
 	find / -name site-packages -d	# 查找 site-packages 目录
-	find . –mtime -2				# 查找最近两天在当前目录下修改过的所有文件
+	find . -mtime -2				# 查找最近两天在当前目录下修改过的所有文件
 	find / -type f -size + 100M		# 列出系统中大于100MB的所有文件
 	```
 
@@ -1925,6 +1933,8 @@ vim /etc/crontab		# 编辑系统任务调度的配置文件
 30 6 */10 * * ls						# 意思是每月 1、11、21、31 日的 6:30 执行一次 ls 命令
 ```
 
+可以使用在线的 CRON 表达式工具辅助 : https://tool.lu/crontab/
+
 **at**
 
 > 在特定的时间执行一次性的任务
@@ -2113,7 +2123,7 @@ setfacl -b <File/Folder>				# 删除 ACL
 	ps -l 			# 长格式显示详细的信息
 	ps -a 			# 显示一个终端的所有进程，除会话引线外
 	ps -A 			# 显示所有进程信息
-	ps –u root 		# 指定用户的所有进程信息
+	ps -u root 		# 指定用户的所有进程信息
 	ps -e 			# 显示所有进程信息
 	ps aux 			# 查看系统中所有的进程显示所有包含其他使用者的行程
 	ps -axjf 		# 以程序树的方式显示
@@ -2160,6 +2170,12 @@ watch <Command>		# 以周期性的方式执行给定的指令,指令输出以全
 		kill -HUP <pid>						# 更改配置而不需停止并重新启动服务
 		kill -9 <PID> && kill -KILL <pid>	# 信号(SIGKILL)无条件终止进程
 	killall <PID>							# 使用进程的名称来杀死进程
+	```
+
+- pkill
+	```bash
+	# pkill 用于杀死一个进程，与 kill 不同的是它会杀死指定名字的所有进程
+	pkill -9 php-fpm	# 结束所有的 php-fpm 进程
 	```
 
 ```bash
@@ -2261,12 +2277,34 @@ echo 'kernel.nmi_watchdog=0' >>/etc/sysctl.conf   	# 重启自动关闭
 
 ## 设备管理
 
-**查看硬件信息**
+更多内容见笔记 [信息](./笔记/信息.md)
+
+### 内存
+
+**虚拟内存**
+
 ```bash
-lspci	# 打印有关系统中所有 PCI 总线和设备的详细信息
-lsmod	# 显示可加载内核模块
-lsusb	# 查看 usb 设备
-lsblk	# 列出所有可用块设备的信息
+free -h	# 查看 swap 分区
+vmstat
+swapon -s
+```
+
+如果机器没有安装 swap 分区可以自己分配一个
+```bash
+# 创建一个swap文件,大小为1G
+dd if=/dev/zero of=/home/f8xswap bs=1M count=1024
+
+# 将文件格式转换为swap格式的
+mkswap /home/f8xswap
+
+# 把这个文件分区挂载swap分区
+swapon /home/f8xswap
+
+```
+
+长期挂载
+```
+echo "/home/f8xswap swap swap default 0 0" >> /etc/fstab
 ```
 
 ### 磁盘
@@ -2294,16 +2332,6 @@ fdisk /dev/sdb		# 创建系统分区
 	8e	# LVM 格式
 
 	w	# 写入分区表
-```
-
-如果机器没有安装 swap 分区可以自己分配一个
-```bash
-dd if=/dev/zero of=/home/swap bs=1024 count=512000
-/sbin/mkswap /home/swap
-/sbin/swapon /home/swap
-```
-```bash
-free -h	# 查看 swap 分区
 ```
 
 **挂载**

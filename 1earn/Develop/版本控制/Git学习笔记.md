@@ -18,6 +18,7 @@
     * [撤销Git操作](#撤销git操作)
     * [跳转](#跳转)
     * [子模块](#子模块)
+    * [大小写](#大小写)
 
 * **[远程操作](#远程操作)**
     * [clone](#clone)
@@ -386,6 +387,17 @@ $ git push origin master
 
 ---
 
+## 大小写
+
+git 默认对于文件名大小写是不敏感的,所以你修改了首字母大写,但是 git 并没有发现代码任何改动.
+
+可以配置 git 使其对文件名大小写敏感
+```bash
+git config core.ignorecase false
+```
+
+---
+
 # 远程操作
 
 ![](../../../assets/img/Develop/版本控制/git/3.png)
@@ -543,6 +555,17 @@ git push --force origin
     ```bash
     git push
     git push --force origin     # 如果报错可以强行推送
+    ```
+
+- **重建版本库**
+
+    ```bash
+    rm -rf .git
+    git init
+    git add .
+    git cm "first commit"
+    git remote add origin <your_github_repo_url>
+    git push -f -u origin master
     ```
 
 - **Github 进行 fork 后如何与原仓库同步**

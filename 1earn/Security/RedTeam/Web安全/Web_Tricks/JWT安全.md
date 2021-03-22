@@ -33,3 +33,25 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
 - [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
+
+---
+
+# 绕过思路
+
+**加密算法置空**
+1. 捕获 JWT.
+2. 修改 algorithm 为 None.
+3. 在正⽂中⽤任何你想要的内容改变原本的内容，如: email: attacker@gmail.com
+4. 使⽤修改后的令牌发送请求并检查结果。
+
+**篡改加密算法**
+1. 捕获 JWT token.
+2. 如果算法是 RS256，就改成 HS256，然后⽤公钥签名（你可以通过访问 jwks Uri (https://YOUR_DOMAIN/.well-known/jwks.json) 来获得，⼤多数情况下是该网站 https 证书的公钥）。
+3. 使⽤修改后的令牌发送请求并检查响应。
+
+**检查服务器端会话终⽌是否正确 (OTG-SESS-006)**
+1. 检查应用程序是否使用 JWT 令牌进行认证。
+2. 如果是，登录到应用程序并捕获令牌。(⼤多数网络应⽤都会将令牌存储在浏览器的本地存储中)
+3. 现在注销应用程序。
+4. 用之前捕获的令牌向权限接口发出请求。
+5. 有时，请求会成功，因为 Web 应用程序只是从浏览器中删除令牌，而不会在后端将令牌列⼊黑名单。

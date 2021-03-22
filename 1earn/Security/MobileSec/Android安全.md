@@ -147,6 +147,11 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
     grep -E "([0-9]{1,3}[\.]){3}[0-9]{1,3}" -r xxx --color=auto
     grep -E "https?://[a-zA-Z0-9\.\/_&=@$%?~#-]*" -r xxx --color=auto
     ```
+- 通过正则提取一些敏感信息
+    ```bash
+    apktool d app_name.apk
+    grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
+    ```
 
 ---
 

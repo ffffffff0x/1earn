@@ -177,15 +177,17 @@ use auxiliary/scanner/http/tomcat_mgr_login     # 爆破 tomcat
 
 # meterpreter
 
-meterpreter 除了持久化控制,其他的操作都在内存里面，不会写进物理磁盘。重启下各种痕迹就消失了。
+Meterpreter 属于 stage payload，在 Metasploit Framework 中，Meterpreter 是一种后渗透工具，它属于一种在运行过程中可通过网络进行功能扩展的动态可扩展型 Payload。这种工具是基于 “内存 DLL 注入” 理念实现的，它能够通过创建一个新进程并调用注入的 DLL 来让目标系统运行注入的 DLL 文件。
 
-## 快速上手
+首先目标先要执行初始的溢出漏洞会话连接，可能是 bind 正向连接，或者反弹 reverse 连接。反射连接的时候加载 dll 链接文件，同时后台悄悄处理 dll 文件。其次 Meterpreter 核心代码初始化, 通过 socket 套接字建立一个 TLS 加密隧道并发送 GET 请求给 Metasploit 服务端。Metasploit 服务端收到这个 GET 请求后就配置相应客户端。最后，Meterpreter 加载扩展，所有的扩展被加载都通过 TLS 进行数据传输。
 
+## Tips
+
+可以将攻击代码写入 configure.rc（只要是以 .rc 结尾的文件）配置文件中，然后使用命令
 ```bash
-shell       # 获取目标主机的 cmd shell
-getsystem   # 命令可以提权到本地系统权限
-sysinfo     # 显示系统名,操作系统,架构和语言等.
+msfconsole -r configure.rc
 ```
+进行自动攻击
 
 ---
 

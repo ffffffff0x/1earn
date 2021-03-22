@@ -4,6 +4,8 @@
     <img src="../../../assets/img/logo/volatility.png" width="20%">
 </p>
 
+> 文章作者 [r0fus0d](https://github.com/No-Github) & [Lorna Dane](https://github.com/tonyscy)
+
 ---
 
 ## 免责声明
@@ -23,6 +25,7 @@ Volatility 是一个用于事件响应和恶意软件分析的开源内存取证
 
 **项目地址**
 - [Volatility](https://github.com/volatilityfoundation/volatility)
+- [volatilityfoundation/volatility3](https://github.com/volatilityfoundation/volatility3) - Volatility 3.0 development
 
 **相关文章**
 - [CTF| 攻击取证之内存分析](https://cloud.tencent.com/developer/article/1419462)
@@ -33,6 +36,7 @@ Volatility 是一个用于事件响应和恶意软件分析的开源内存取证
 - [LinuxMemoryForensics.wiki](https://code.google.com/archive/p/volatility/wikis/LinuxMemoryForensics.wiki)
 - [利用Volatility进行Windows内存取证分析(一)：初体验](https://www.freebuf.com/sectool/124690.html)
 - [利用Volatility进行Windows内存取证分析(二)：内核对象、内核池学习小记](https://www.freebuf.com/sectool/124800.html)
+- [内存取证原理学习及Volatility - 篇一](https://lzwgiter.github.io/%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81%E5%8E%9F%E7%90%86%E5%AD%A6%E4%B9%A0%E5%8F%8AVolatility-%E7%AF%87%E4%B8%80/)
 
 **视频教程**
 - [Investigating Malware Using Memory Forensics - A Practical Approach](https://www.youtube.com/watch?v=BMFCdAGxVN4)
@@ -547,7 +551,7 @@ volatility -f [image] --profile=[profile] hivedump -o 0xfffff8a000bff010
 
 ---
 
-# Linux Profile
+## Linux Profile
 
 **使用第三方 Profile**
 
@@ -625,3 +629,392 @@ python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_pstree
 ```bash
 python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_proc_maps
 ```
+
+---
+
+# volatility3
+
+Volatility3 是对 Volatility2 的重写，它基于 Python3 编写，对 Windows 10 的内存取证很友好，且速度比 Volatility2 快很多。对于用户而言，新功能的重点包括：大幅提升性能，消除了对 --profile 的依赖，以便框架确定需要哪个符号表（配置文件）来匹配内存示例中的操作系统版本，在 64 位系统（例如 Window 的 wow64）上正确评估 32 位代码，自动评估内存中的代码，以避免对分析人员进行尽可能多的手动逆向工程。对于开发人员：更加轻松地集成到用户的第三方接口和库中，广泛的 API 文档，插件可以直接调用其他插件的能力，插件版本控，直接集成自定义符号表和数据结构。
+
+**安装**
+```bash
+git clone https://github.com/volatilityfoundation/volatility3.git
+cd volatility3
+python3 setup.py build
+python3 setup.py install
+python3 vol.py -h
+```
+
+**符号表集**
+```
+cd /tmp
+wget downloads.volatilityfoundation.org/volatility3/symbols/windows.zip
+wget downloads.volatilityfoundation.org/volatility3/symbols/mac.zip
+wget downloads.volatilityfoundation.org/volatility3/symbols/linux.zip
+mkdir -p /pentest/volatility3/symbols
+mv /tmp/windows.zip /pentest/volatility3/symbols
+mv /tmp/mac.zip /pentest/volatility3/symbols
+mv /tmp/linux.zip /pentest/volatility3/symbols
+```
+
+**常用插件**
+```
+banners.Banners                                 Attempts to identify potential linux banners in an image
+configwriter.ConfigWriter                       Runs the automagics and both prints and outputs configuration in the output directory.
+frameworkinfo.FrameworkInfo                     Plugin to list the various modular components of Volatility
+isfinfo.IsfInfo                                 Determines information about the currently available ISF files, or a specific one
+layerwriter.LayerWriter                         Runs the automagics and writes out the primary layer produced by the stacker.
+linux.bash.Bash                                 Recovers bash command history from memory.
+linux.check_afinfo.Check_afinfo                 Verifies the operation function pointers of network protocols.
+linux.check_creds.Check_creds                   Checks if any processes are sharing credential structures
+linux.check_idt.Check_idt                       Checks if the IDT has been altered
+linux.check_modules.Check_modules               Compares module list to sysfs info, if available
+linux.check_syscall.Check_syscall               Check system call table for hooks.
+linux.elfs.Elfs                                 Lists all memory mapped ELF files for all processes.
+linux.keyboard_notifiers.Keyboard_notifiers     Parses the keyboard notifier call chain
+linux.lsmod.Lsmod                               Lists loaded kernel modules.
+linux.lsof.Lsof                                 Lists all memory maps for all processes.
+linux.malfind.Malfind                           Lists process memory ranges that potentially contain injected code.
+linux.proc.Maps                                 Lists all memory maps for all processes.
+linux.pslist.PsList                             Lists the processes present in a particular linux memory image.
+linux.pstree.PsTree                             Plugin for listing processes in a tree based on their parent process ID.
+linux.tty_check.tty_check                       Checks tty devices for hooks
+mac.bash.Bash                                   Recovers bash command history from memory.
+mac.check_syscall.Check_syscall                 Check system call table for hooks.
+mac.check_sysctl.Check_sysctl                   Check sysctl handlers for hooks.
+mac.check_trap_table.Check_trap_table           Check mach trap table for hooks.
+mac.ifconfig.Ifconfig                           Lists loaded kernel modules
+mac.kauth_listeners.Kauth_listeners             Lists kauth listeners and their status
+mac.kauth_scopes.Kauth_scopes                   Lists kauth scopes and their status
+mac.kevents.Kevents                             Lists event handlers registered by processes
+mac.list_files.List_Files                       Lists all open file descriptors for all processes.
+mac.lsmod.Lsmod                                 Lists loaded kernel modules.
+mac.lsof.Lsof                                   Lists all open file descriptors for all processes.
+mac.malfind.Malfind                             Lists process memory ranges that potentially contain injected code.
+mac.mount.Mount                                 A module containing a collection of plugins that produce data typically foundin Mac's mount command
+mac.netstat.Netstat                             Lists all network connections for all processes.
+mac.proc_maps.Maps                              Lists process memory ranges that potentially contain injected code.
+mac.psaux.Psaux                                 Recovers program command line arguments.
+mac.pslist.PsList                               Lists the processes present in a particular mac memory image.
+mac.pstree.PsTree                               Plugin for listing processes in a tree based on their parent process ID.
+mac.socket_filters.Socket_filters               Enumerates kernel socket filters.
+mac.timers.Timers                               Check for malicious kernel timers.
+mac.trustedbsd.Trustedbsd                       Checks for malicious trustedbsd modules
+mac.vfsevents.VFSevents                         Lists processes that are filtering file system events
+timeliner.Timeliner                             Runs all relevant plugins that provide time related information and orders the results by time.
+windows.bigpools.BigPools                       List big page pools.
+windows.cachedump.Cachedump                     Dumps lsa secrets from memory
+windows.callbacks.Callbacks                     Lists kernel callbacks and notification routines.
+windows.cmdline.CmdLine                         Lists process command line arguments.
+windows.dlllist.DllList                         Lists the loaded modules in a particular windows memory image.
+windows.driverirp.DriverIrp                     List IRPs for drivers in a particular windows memory image.
+windows.driverscan.DriverScan                   Scans for drivers present in a particular windows memory image.
+windows.dumpfiles.DumpFiles                     Dumps cached file contents from Windows memory samples.
+windows.envars.Envars                           Display process environment variables
+windows.filescan.FileScan                       Scans for file objects present in a particular windows memory image.
+windows.getservicesids.GetServiceSIDs           Lists process token sids.
+windows.getsids.GetSIDs                         Print the SIDs owning each process
+windows.handles.Handles                         Lists process open handles.
+windows.hashdump.Hashdump                       Dumps user hashes from memory
+windows.info.Info                               Show OS & kernel details of the memory sample being analyzed.
+windows.lsadump.Lsadump                         Dumps lsa secrets from memory
+windows.malfind.Malfind                         Lists process memory ranges that potentially contain injected code.
+windows.memmap.Memmap                           Prints the memory map
+windows.modscan.ModScan                         Scans for modules present in a particular windows memory image.
+windows.modules.Modules                         Lists the loaded kernel modules.
+windows.mutantscan.MutantScan                   Scans for mutexes present in a particular windows memory image.
+windows.netscan.NetScan                         Scans for network objects present in a particular windows memory image.
+windows.netstat.NetStat                         Traverses network tracking structures present in a particular windows memory image.
+windows.poolscanner.PoolScanner                 A generic pool scanner plugin.
+windows.privileges.Privs                        Lists process token privileges
+windows.pslist.PsList                           Lists the processes present in a particular windows memory image.
+windows.psscan.PsScan                           Scans for processes present in a particular windows memory image.
+windows.pstree.PsTree                           Plugin for listing processes in a tree based on their parent process ID.
+windows.registry.certificates.Certificates      Lists the certificates in the registry's Certificate Store.
+windows.registry.hivelist.HiveList              Lists the registry hives present in a particular memory image.
+windows.registry.hivescan.HiveScan              Scans for registry hives present in a particular windows memory image.
+windows.registry.printkey.PrintKey              Lists the registry keys under a hive or specific key value.
+windows.registry.userassist.UserAssist          Print userassist registry keys and information.
+windows.ssdt.SSDT                               Lists the system call table.
+windows.statistics.Statistics
+windows.strings.Strings                         Reads output from the strings command and indicates which process(es) each string belongs to.
+windows.svcscan.SvcScan                         Scans for windows services.
+windows.symlinkscan.SymlinkScan                 Scans for links present in a particular windows memory image.
+windows.vadinfo.VadInfo                         Lists process memory ranges.
+windows.vadyarascan.VadYaraScan                 Scans all the Virtual Address Descriptor memory maps using yara.
+windows.verinfo.VerInfo                         Lists version information from PE files.
+windows.virtmap.VirtMap                         Lists virtual mapped sections.
+yarascan.YaraScan                               Scans kernel memory using yara rules (string or file).
+```
+
+## 使用
+
+> volatility3 运行时需要下载 PDB 符号表，国内机器需要挂代理
+
+### 信息
+
+**layerwriter**
+```
+python3 vol.py -f [image] layerwriter
+```
+
+**windows.info**
+```
+python3 vol.py -f [image] windows.info
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/31.png)
+
+**windows.pslist**
+```
+python3 vol.py -f [image] windows.pslist
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/32.png)
+
+**windows.hashdump**
+```
+python3 vol.py -f [image] windows.hashdump
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/33.png)
+
+**windows.filescan**
+```
+python3 vol.py -f [image] windows.filescan
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/34.png)
+
+## Symbol Tables
+
+所有文件都以 JSON 数据的形式存储，它们可以是. json 的纯 JSON 文件，也可以是. json.gz 或. json.xz 的压缩文件。Volatility 会在使用时自动解压它们。使用时也会将它们的内容（压缩后）缓存起来，位于用户主目录下的. cache/volatility3 中，以及其他有用的数据。缓存目录目前无法更改。
+
+符号表 JSON 文件默认位于 volatility/symbols 下，在操作系统目录下（目前是 windows、mac 或 linux 中的一种）。符号目录是可以在框架内配置的，通常可以在用户界面上设置。
+
+这些文件也可以被压缩成 ZIP 文件，Volatility 将处理 ZIP 文件以定位符号文件。ZIP 文件必须以相应的操作系统命名（如 linux.zip、mac.zip 或 windows.zip）。在 ZIP 文件中，目录结构应与未压缩的操作系统目录一致。
+
+- Windows 符号表
+
+    对于 Windows 系统，Volatility 接受由 GUID 和所需 PDB 文件的 Age 组成的字符串。然后，它在 Windows 子目录下的已配置符号目录下搜索所有文件。与文件名模式 <pdb-name>/<GUID>-<AGE>.json（或任何压缩变体）匹配的任何文件都会被使用。如果找不到这样的符号表，则将从 Microsoft 的 Symbol Server 下载关联的 PDB 文件，并将其转换为适当的 JSON 格式，并将其保存在正确的位置。
+
+    Windows 符号表可以从适当的 PDB 文件手动构建。用于执行此操作的主要工具内置于 Volatility 3 中，称为 pdbconv.py。
+
+- Mac / Linux 符号表
+
+    对于 Mac / Linux 系统，两者都使用相同的识别机制。JSON 文件位于符号目录下的 linux 或 mac 目录下。生成的文件包含一个标识字符串（操作系统横幅），Volatility 的 automagic 可以检测到该字符串。易失性会缓存字符串和它们来自的符号表之间的映射，这意味着精确的文件名无关紧要，并且可以在操作系统目录下的任何必要层次结构下进行组织。
+
+    可以使用称为 dwarf2json 的工具从 DWARF 文件生成 Linux 和 Mac 符号表。当前，带有调试符号的内核是恢复大多数 Volatility 插件所需的所有信息的唯一合适方法。找到具有调试符号 / 适当的 DWARF 文件的内核之后，dwarf2json 会将其转换为适当的 JSON 文件。
+
+**相关工具**
+- [volatilityfoundation/dwarf2json](https://github.com/volatilityfoundation/dwarf2json)
+
+**MacOS Processing**
+```
+./dwarf2json mac --macho /path/kernel.dSYM/Contents/Resources/DWARF/kernel \
+    --macho-symbols /path/kernel > output.json
+```
+
+**Linux Processing**
+```
+./dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-137-generic > output.json
+```
+
+- **安装 vmlinux**
+
+    这里我以 ubuntu18.04 为例,系统默认有 vmlinuz,但 vmlinux 与 vmlinuz 不同,需要手动安装 vmlinux
+    ```bash
+    # 添加ddebs存储库
+    echo "deb http://ddebs.ubuntu.com $(lsb_release -cs)-updates main restricted universe multiverse
+    deb http://ddebs.ubuntu.com $(lsb_release -cs)-security main restricted universe multiverse
+    deb http://ddebs.ubuntu.com $(lsb_release -cs)-proposed main restricted universe multiverse" | \
+    sudo tee -a /etc/apt/sources.list.d/ddebs.list
+
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 428D7C01
+    ```
+    ```bash
+    # 安装 kernel debug symbols
+    sudo apt-get update
+    sudo apt-get install linux-image-$(uname -r)-dbgsym
+    ```
+
+    在 centos 中是
+    ```bash
+    sudo debuginfo-install kernel
+    ```
+
+### 以 ubuntu18.04 为例
+
+```bash
+chmod +x dwarf2json
+./dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-5.0.0-23-generic > Ubuntu1804.json
+
+# 这里有个小坑,内存尽量大于8G,不然会报错
+```
+```
+mv Ubuntu1804.json /pentest/volatility3/volatility3/framework/symbols/linux
+cd /pentest/volatility3
+python3 vol.py -vvvv isfinfo
+python3 vol.py -vvvv -s volatility3/framework/symbols/linux/ isfinfo
+python3 vol.py isfinfo --isf /pentest/volatility3/volatility3/framework/symbols/linux/Ubuntu1804.json
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/35.png)
+
+```
+python3 vol.py -vvvv -f cyq.vmem banners
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/36.png)
+
+即使输出与 banner 匹配, 实际运行依旧失败, 此 issues https://github.com/volatilityfoundation/volatility3/issues/413 具有同样问题, 等待软件后续更新解决把
+
+```
+python3 vol.py -vvvv -f cyq.vmem linux.bash.Bash
+python3 vol.py -vvvv -c /pentest/volatility3/volatility3/framework/symbols/linux/Ubuntu1804.json -f cyq.vmem linux.bash.Bash
+python3 vol.py -vvvv -s volatility3/framework/symbols/linux/ -f cyq.vmem linux.bash.Bash
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/37.png)
+
+![](../../../assets/img/Security/安全工具/Volatility/38.png)
+
+![](../../../assets/img/Security/安全工具/Volatility/39.png)
+
+### 以 CentOS7 为例
+
+- 所使用的工具：
+    - f8x
+    - Lime
+    - Vmware Workstation
+    - volatility3
+
+**配置 centos7 系统并导出内存文件**
+
+```
+内存：8G
+CPU：2核
+硬盘：40G
+```
+
+**在 centos 虚机中安装 lime 工具**
+
+- https://github.com/504ensicsLabs/LiME
+
+安装步骤比较简单，但是有几个坑点。
+
+```bash
+git clone https://github.com/504ensicsLabs/LiME.git
+cd Lime/src
+make
+```
+
+make 的时候可能会出现出现一点问题。
+
+![](../../../assets/img/Security/安全工具/Volatility/40.png)
+
+这个原因就是系统自身的内核版本和 kernel-devel 安装的内核不匹配，我这台安装的内核为 `3.10.0-1160.15.2.el7.x86_64`，但是使用 `uname -r` 查到的内核版本为 `3.10.0-957.el7.x86_64`，所以使用 `yum upgrade` 升级内核并重启即可解决。
+
+重新编译会生成一个名字和内核版本相同的. ko 文件。
+
+![](../../../assets/img/Security/安全工具/Volatility/41.png)
+
+接下来使用 lime 工具导出内存文件.
+
+```bash
+insmod ./lime-3.10.0-1160.15.2.el7.x86_64.ko "path=/root/centos.lime format=lime"
+```
+
+“./” 后面输入刚刚生成的 `.ko` 文件
+
+![](../../../assets/img/Security/安全工具/Volatility/42.png)
+
+可以看到文件大小非常接近于8G。
+
+**制作 centos 符号表文件**
+
+制作 centos 的符号表文件需要用到一个使用 GO 语言编写的程序
+
+- https://github.com/volatilityfoundation/dwarf2json
+
+根据项目说明，可以采用四种方式来生成符号表(json文件)。
+
+![](../../../assets/img/Security/安全工具/Volatility/43.png)
+
+这里我们就选用第一种。然而，使用第一种的话需要 vmlinux 文件，而这 centos 中原本是没有的，所以需要安装。
+
+```bash
+sudo debuginfo-install kernel
+```
+
+在安装完成之后可以查找 vmlinux 文件
+
+![](../../../assets/img/Security/安全工具/Volatility/44.png)
+
+然后使用 dwarf2json 工具即可导出符号表文件。
+
+![](../../../assets/img/Security/安全工具/Volatility/45.png)
+
+**kali 分析机 vol3 安装以及使用**
+
+打开 kail，使用 f8x 一键安装 volatility3。
+
+![](../../../assets/img/Security/安全工具/Volatility/46.png)
+
+- https://github.com/ffffffff0x/f8x
+
+安装完毕后，在 `/pentest/volatility3` 可以找到它。
+
+在 `/pentest/volatility3/volatility3/symbols` 中创建名为 “linux” 的文件夹，并把符号表放在里面。
+
+把之前导出的 centos.lime 的内存文件也放入 kali 中。
+
+**使用 volatility 分析**
+
+```bash
+python3 vol.py -f centos.lime linux.bash
+```
+
+可以看到我在 centos 中所输入的历史命令
+
+![](../../../assets/img/Security/安全工具/Volatility/47.png)
+
+linux.check_idt.Check_idt
+
+![](../../../assets/img/Security/安全工具/Volatility/48.png)
+
+linux.check_syscall.Check_syscall
+
+![](../../../assets/img/Security/安全工具/Volatility/49.png)
+
+linux.elfs.Elfs
+
+![](../../../assets/img/Security/安全工具/Volatility/50.png)
+
+linux.lsmod.Lsmod
+
+![](../../../assets/img/Security/安全工具/Volatility/51.png)
+
+linux.lsof.Lsof
+
+![](../../../assets/img/Security/安全工具/Volatility/52.png)
+
+linux.malfind.Malfind
+
+![](../../../assets/img/Security/安全工具/Volatility/53.png)
+
+linux.proc.Maps
+
+![](../../../assets/img/Security/安全工具/Volatility/54.png)
+
+linux.pslist.PsList
+
+![](../../../assets/img/Security/安全工具/Volatility/55.png)
+
+linux.pstree.PsTree
+
+![](../../../assets/img/Security/安全工具/Volatility/56.png)
+
+linux.tty_check.tty_check
+
+![](../../../assets/img/Security/安全工具/Volatility/57.png)

@@ -20,7 +20,7 @@ DC 域控制器是由工作组计算机升级而成，通过 dcpromo 命令就�
 
 ![](../../../../assets/img/Integrated/Windows/实验/域/1.png)
 
-WIN+R ，打开运行框，输入：dcpromo
+WIN+R ，打开运行框，输入 : dcpromo
 
 ![](../../../../assets/img/Integrated/Windows/实验/域/2.png)
 

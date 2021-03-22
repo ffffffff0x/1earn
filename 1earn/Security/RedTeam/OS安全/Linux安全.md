@@ -29,6 +29,9 @@
 **相关工具**
 - [sameera-madushan/Print-My-Shell](https://github.com/sameera-madushan/Print-My-Shell) - 自动化生成各种类型的反向 Shell
 - [lukechilds/reverse-shell](https://github.com/lukechilds/reverse-shell) - Reverse Shell as a Service
+- [nodauf/Girsh](https://github.com/nodauf/Girsh) - nc 的替代品
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/3.png)
 
 **bash**
 - tcp

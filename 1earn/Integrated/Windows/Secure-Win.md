@@ -28,6 +28,10 @@
     * [RDP](#rdp)
     * [DNS](#dns)
 
+* **[防御密码抓取](#防御密码抓取)**
+
+* **[防御Responder欺骗](#防御responder欺骗)**
+
 ---
 
 # 文件
@@ -221,7 +225,7 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
     LogParser.exe -i:EVT -o:DATAGRID "SELECT * FROM c:\Security.evtx where TimeGenerated>'2018-06-19 23:32:11' and TimeGenerated<'2018-06-20 23:34:00' and EventID=4624"
     ```
 
-    提取登录成功的用户名和IP
+    提取登录成功的用户名和 IP
     ```
     LogParser.exe -i:EVT -o:DATAGRID "SELECT EXTRACT_TOKEN(Message,13,' ') as EventType,TimeGenerated as LoginTime,EXTRACT_TOKEN(Strings,5,'|') as Username,EXTRACT_TOKEN(Message,38,' ') as Loginip FROM c:\Security.evtx where EventID=4624"
     ```
@@ -260,6 +264,12 @@ Event Log Explorer 是一款非常好用的 Windows 日志分析工具。可用�
 Python 开发的解析 windows 日志文件的工具，可采用手动添加文件的方式进行解析，解析后的文件为 XML，HTML 两种格式，HTML 已采用Bootstrap 架进行界面可视化优化，可直接查看重点日志数据，解析后的 HTML 数据文件保存在执行文件下的 logs/ 文件夹下 ( 自动创建 )，XML 数据文件保存在执行文件下的 logs/xml/ 文件夹下，
 
 项目地址 : https://github.com/Clayeee/Win-Logs-Parse-tool
+
+**LogonTracer**
+
+通过可视化和分析 Windows 事件日志来调查恶意 Windows 登录的工具
+
+项目地址 : https://github.com/JPCERTCC/LogonTracer
 
 ### 第三方程序日志
 
@@ -326,7 +336,7 @@ tasklist  | findstr “PID”
 - [y11en/BlockRDPBrute](https://github.com/y11en/BlockRDPBrute) - [HIPS]RDP(3389)爆破防护
 
 **连接记录**
-- [Windows RDP 连接记录](../../Security/笔记/RedTeam/Windows安全.md#连接记录)
+- [Windows RDP 连接记录](../../Security/RedTeam/OS安全/Windows安全.md#连接记录)
 
 ---
 
@@ -387,3 +397,130 @@ windows 8.1 和 windows server 2012 R2 及以上版本的操作系统，可以�
         .\Get-CimDNSCache.ps1 # include file
         Get-CimDNSCache -Name *microsoft* -Type A
         ```
+
+---
+
+# 防御密码抓取
+
+**WDigest 禁用缓存**
+
+WDigest.dll 是在 Windows XP 操作系统中引入的，当时这个协议设计出来是把明文密码存在 lsass 里为了 http 认证的。WDigest 的问题是它将密码存储在内存中，并且无论是否使用它，都会将其存储在内存中。
+
+默认在 win2008 之前是默认启用的。但是在 win2008 之后的系统上，默认是关闭的。如果在 win2008 之前的系统上打了 KB2871997 补丁，那么就可以去启用或者禁用 WDigest。
+
+补丁下载地址
+- Windows 7 x86 : https://download.microsoft.com/download/9/8/7/9870AA0C-BA2F-4FD0-8F1C-F469CCA2C3FD/Windows6.1-KB2871997-v2-x86.msu
+- Windows 7 x64 : https://download.microsoft.com/download/C/7/7/C77BDB45-54E4-485E-82EB-2F424113AA12/Windows6.1-KB2871997-v2-x64.msu
+- Windows Server 2008 R2 x64 Edition : https://download.microsoft.com/download/E/E/6/EE61BDFF-E2EA-41A9-AC03-CEBC88972337/Windows6.1-KB2871997-v2-x64.msu
+
+启用或者禁用WDigest修改注册表位置:
+```
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurityProviders\WDigest
+```
+UseLogonCredential 值设置为 0, WDigest不把凭证缓存在内存，mimiktaz抓不到明文；UseLogonCredential 值设置为 1, WDigest把凭证缓存在内存，mimiktaz可以获取到明文。
+
+在注册表中将UseLogonCredential 值设置为 0，或者使用命令
+```
+reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 0 /f
+reg query HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential
+```
+
+**Debug 权限**
+
+Mimikatz 在获取密码时需要有本地管理员权限，因为它需要与 lsass 进程所交互，需要有调试权限来调试进程，默认情况下本地管理员拥有调试权限，但是这个权限一般情况是很少用得到的，所以可以通过关闭 debug 权限的方法来防范 Mimikatz。
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/3.png)
+
+删除上图的 administrators 组，这样管理员也没了 debug 权限。
+
+**LSA Protection**
+
+自 Windows 8.1 开始为 LSA 提供了额外的保护（LSA Protection），以防止读取内存和不受保护的进程注入代码。保护模式要求所有加载到 LSA 的插件都必须使用 Microsoft 签名进行数字签名。 在 LSA Protection 保护模式下，mimikatz 运行 sekurlsa::logonpasswords 抓取密码会报错。
+
+可以通过注册表开启 LSA Protection，注册表位置：HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa 新建 - DWORD（32）值，名称为 RunAsPPL, 数值为 00000001，然后重启系统生效。
+
+或者使用命令来完成
+```
+REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v "RunAsPPL" /t REG_DWORD /d "00000001" /f
+```
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/6.png)
+
+此操作无法防御直接从 SAM 读取的方法
+
+**受限制的管理模式**
+
+对于 Windows 2012 R2 和 Windows 8.1 之前的旧操作系统，需要先安装补丁 KB2871997。
+
+先在 `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa` 设置 `RunAsPPL` 为 `1` 然后在 `HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa` 设置 `DisableRestrictedAdmin` 为 `0` , `DisableRestrictedAdminOutboundCreds` 为 `1` 。
+
+然后需要在域中强制执行 “对远程服务器的凭据限制委派” 策略, 以确保所有出站 RDP 会话都使用 “RestrictedAdmin” 模式, 因此才不会泄露凭据。
+
+具体位置是组策略：计算机配置 -- 管理模板 -- 系统 -- 凭据分配 -- 限制向远程服务器分配凭据，选择已启用.
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/4.png)
+
+**禁用凭证缓存**
+
+Domain Cached Credentials 简称 DDC，也叫 mscache。有两个版本，XP/2003 年代的叫第一代，Vasta/2008 之后的是第二代。如果域控制器不可用，那么windows将检查缓存的最后一个密码hash值，这样为以后系统对用户进行身份验证。缓存位置如下：
+```
+HKEY_LOCAL_MACHINE\SECURITY\Cache
+```
+在组策略中设置禁用缓存
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/5.png)
+
+计算机配置--windows设置--安全设置--本地策略--安全选项 交互式登录：之前登录到缓存的次数（域控制器不可用时） 默认是10，设置为0
+
+**受保护的用户组**
+
+WindowsServer 2012及更高版本使用了引入了一个名为“Protected Users”的新安全组，其他系统需要安装 KB2871997 补丁才会有。
+
+此组使域管理员能够保护本地管理员等有权限的用户,因为属于该组的任何帐户只能通过Kerberos对域进行身份验证。
+
+这将有助于防止NTLS密码哈希值或LSAS中的纯文本凭据泄露给敏感帐户,这些帐户通常是攻击者的目标。
+
+可以在“Active Directory用户和计算机”中找到“Protected Users”安全组。
+
+可以通过执行以下PowerShell命令将帐户添加到“受保护的用户”组中:
+```
+Add-ADGroupMember –Identity 'Protected Users' –Members administrator
+```
+
+**Credential Guard**
+
+在 Windows 10 和 Windows Server 2016 中，Microsoft 启用 Credential Guard（凭据防护），使用基于虚拟化技术来保护和隔离 lsass 进程，以保护凭证。启用 Credential Guard 后，lsass 包含 2 个进程：正常 LSA 进程和隔离 LSA 进程（在 VSM 中运行）。
+
+可以使用组策略启用 Windows Defender 凭据保护：在组策略管理控制台中，在” 计算机配置” -> “管理模板” -> “系统” -> “Device Guard”，打开” 打开基于虚拟化的安全”，选择” 已启用”；
+
+在” 选择平台安全级别” 框中，选择” 安全启动” 或” 安全启动和 DMA 保护”；
+
+在” 凭据保护配置” 框中，选择” 使用 UEFI 锁启用”。如果希望能够远程关闭 Windows Defender Credential Guard，选择” 无锁启用”。
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/7.png)
+
+运行 gpupdate /force 强制执行组策略
+
+验证Windows Defender Credential Guard是否运行：
+
+输入 msinfo32.exe，在 ”系统摘要”-> ”已配置基于虚拟化的安全服务”处，可看到显示”Credential Guard”
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/8.png)
+
+# 防御Responder欺骗
+
+**禁用NetBIOS服务**
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/1.png)
+
+**禁用LLMNR**
+
+![](../../../assets/img/Integrated/Windows/Secure-Win/2.png)
+
+**Conveigh**
+
+- https://github.com/Kevin-Robertson/Conveigh
+
+**VindicateTool**
+
+- https://github.com/Rushyo/VindicateTool

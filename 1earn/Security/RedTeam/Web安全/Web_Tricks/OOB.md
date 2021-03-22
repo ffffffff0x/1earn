@@ -25,6 +25,7 @@
 **工具**
 - [uknowsec/SharpNetCheck](https://github.com/uknowsec/SharpNetCheck) - 该工具可以在 dnslog 中回显内网 ip 地址和计算机名，可实现内网中的快速定位可出网机器。
 - [Buzz2d0/Hyuga](https://github.com/Buzz2d0/Hyuga) - 一个用来检测带外(Out-of-Band)流量(DNS查询和HTTP请求)的监控工具。
+- [ztgrace/mole](https://github.com/ztgrace/mole) - 识别和利用out-of-band (OOB)漏洞的burp扩展
 
 **平台搭建**
 - [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具。

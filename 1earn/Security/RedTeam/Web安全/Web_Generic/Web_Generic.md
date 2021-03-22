@@ -24,9 +24,12 @@
 * **[信息泄露](#信息泄露)**
     * [目录遍历](#目录遍历)
     * [任意文件读取](#任意文件读取)
-    * [GIT源码泄露](#git源码泄露)
-    * [SVN源码泄露](#snv源码泄露)
+    * [源码泄露](#源码泄露)
+        * [GIT](#git)
+        * [SVN](#svn)
+        * [bzr](#bzr)
     * [DS_Store文件泄漏](#ds_store文件泄漏)
+    * [SWP文件泄露](#swp文件泄露)
     * [网站备份压缩文件](#网站备份压缩文件)
     * [WEB-INF/web.xml信息泄露](#web-infwebxml信息泄露)
     * [idea文件夹泄露](#idea文件夹泄露)
@@ -239,7 +242,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 # 文件上传
 
-- [文件上传漏洞](./文件上传漏洞.md)
+- [Upload](./Upload.md)
 
 ---
 
@@ -258,6 +261,15 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
+## 目录浏览
+
+**Tips**
+
+使用 wget 遍历下载所有文件
+```
+wget -r --no-pare target.com/dir
+```
+
 ## 目录遍历
 
 **相关案例**
@@ -273,7 +285,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-## GIT源码泄露
+## 源码泄露
+
+### GIT
 
 **简介**
 
@@ -290,7 +304,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-## SVN源码泄露
+### SVN
 
 - `/.svn/entries`
 
@@ -300,6 +314,16 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 **相关工具**
 - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
 - [admintony/svnExploit](https://github.com/admintony/svnExploit) - 一款 SVN 源代码利用工具，其完美支持 SVN<1.7 版本和 SVN>1.7 版本的 SVN 源代码泄露
+
+---
+
+### bzr
+
+**相关工具**
+- [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
+    ```
+    rip-bzr.pl -v -u http://www.example.com/.bzr/
+    ```
 
 ---
 
@@ -322,6 +346,16 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
+## SWP文件泄露
+
+**简介**
+
+swp 即 swap 文件，在编辑文件时产生的临时文件，它是隐藏文件，如果程序正常退出，临时文件自动删除，如果意外退出就会保留，文件名为 .filename.swp。
+
+直接访问 .swp 文件，下载回来后删掉末尾的 .swp，获得源码文件
+
+---
+
 ## 网站备份压缩文件
 
 **简介**
@@ -336,6 +370,14 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **相关工具**
 - [oscommonjs/scan-backup-langzi-](https://github.com/oscommonjs/scan-backup-langzi-) - 扫描备份文件和敏感信息泄漏的扫描器，速度快，器大活好
+
+**Tips**
+- 有时候文件太大,想先确认一下文件结构和部分内容,这时可以使用 remotezip,直接列出远程 zip 文件的内容，而无需完全下载,甚至可以远程解压,仅下载部分内容
+    ```BASH
+    pip3 install remotezip
+    remotezip -l "http://site/bigfile.zip"          # 列出远程zip文件的内容
+    remotezip "http://site/bigfile.zip" "file.txt"  # 从远程zip⽂件解压出file.txt
+    ```
 
 ---
 
@@ -415,6 +457,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关文章**
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
 - [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
+- [企业微信Secret Token利用思路](https://mp.weixin.qq.com/s/LMZVcZk7_1r_kOKRau5tAg)
 
 **相关案例**
 - [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)
@@ -595,6 +638,9 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 **相关工具**
 - [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的 CORS 错误配置漏洞的 python 工具
 
+**相关靶场**
+- [incredibleindishell/CORS_vulnerable_Lab-Without_Database](https://github.com/incredibleindishell/CORS_vulnerable_Lab-Without_Database)
+
 ---
 
 ## jsonp劫持
@@ -671,10 +717,15 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 
 ## URL跳转漏洞
 
+`Open Redirect`
+
 **相关文章**
 - [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
 - [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
+
+**字典**
+- https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/Redirect/Fuzz_Redirect.txt
 
 ---
 

@@ -30,6 +30,7 @@
 - [Burp Suite使用的几个小技巧【更新】](https://www.t00ls.net/thread-49051-1-1.html)
 - [基于BurpSuit插件打造渗透测试自动化之路](https://www.freebuf.com/sectool/243617.html)
 - [某次burp抓包出错的解决办法](https://www.cnblogs.com/cwkiller/p/13846754.html)
+- [每天一个BP小技巧](https://mp.weixin.qq.com/s/j6x28xHln3guULkPLdat5w)
 
 ---
 
@@ -276,6 +277,10 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 **右键--Do intercept**
 
 拦截回包
+
+**快捷键**
+
+解码：ctrl+shift+u
 
 ## Options
 
@@ -822,3 +827,58 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 ![](../../../assets/img/Security/安全工具/BurpSuite/15.png)
 
 上面描述了需要 burp 走代理的使用情况，同样，在使用一些被动漏扫工具时也可以使用该功能将 burp 的流量转发至被动漏扫工具。
+
+---
+
+# 通过 proxifier 分流 burp
+
+在渗透测试时，我们常遇到出现浏览器自己本身的包，以及一些不相干的网站流量的情况，如何避免，或者一劳永逸的解决呢？
+
+在 Intercept Client Requests 配置忽略是一个方法,但是这个选项不支持批量导入
+
+![](../../../assets/img/Security/安全工具/BurpSuite/41.png)
+
+TLS Pass Through 支持批量导入,但又不是我需要的功能
+
+![](../../../assets/img/Security/安全工具/BurpSuite/42.png)
+
+不如换一种思路,如果burp不能做到这种操作，我在流量到达burp前做个分流不就可以了嘛。
+
+proxifier 是我们平时常用的 windows 端全局代理工具，通过配置 rule 可以轻松获得干净的 burp 流量
+
+要求做到
+- 命中规则的走 1080，就是在 burp 中看不到这个流量
+- 未名字规则的 走 8080,burp 上可以看到
+
+先创建代理服务器
+
+![](../../../assets/img/Security/安全工具/BurpSuite/43.png)
+
+然后创建规则
+
+![](../../../assets/img/Security/安全工具/BurpSuite/44.png)
+
+再创建一个默认的发给 burp
+
+![](../../../assets/img/Security/安全工具/BurpSuite/45.png)
+
+顺序如下,注意,顺序从上至下执行，非常重要，不能乱!!!!
+
+![](../../../assets/img/Security/安全工具/BurpSuite/46.png)
+
+如果这里面 rule burp 在上面那么,any 优先匹配, rule 1080就永远不会执行了
+
+同样,Defalut 规则也尽量不要做修改。
+
+这时候,chrome浏览器中默认所有流量全部发向 8080 口,而命中规则的流量发给 1080 ，再规则里配置你不想看到的域名即可，我个人的规则如下
+- https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/Burp/Proxifier_filter.txt
+
+效果
+
+![](../../../assets/img/Security/安全工具/BurpSuite/47.png)
+
+google 命中规则，发向 1080
+
+freebug 未命中规则，发向 8080
+
+完美, 一劳永逸的解决了所有问题, 更换 burp 版本也不受影响

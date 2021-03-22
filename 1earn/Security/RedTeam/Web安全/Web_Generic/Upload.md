@@ -1,4 +1,4 @@
-# 文件上传漏洞
+# Upload
 
 ---
 
@@ -15,6 +15,7 @@
 - [关于File Upload的一些思考](https://www.freebuf.com/articles/web/223679.html)
 - [Upload与WAF的那些事](https://xz.aliyun.com/t/8084)
 - [web安全-文件上传利用](https://mp.weixin.qq.com/s/Q4wN01H4fh_ATUnPwng3Ag)
+- [Web 安全漏洞之文件上传](https://cnodejs.org/topic/5d196c02cdb1f967c1577295)
 
 **相关案例**
 - [实战渗透-看我如何拿下自己学校的大屏幕(Bypass) ](https://xz.aliyun.com/t/7786) - 大量字符 bypass waf 文件上传
@@ -104,15 +105,22 @@ waf、rasp 对上传文件的检测方法有这几种
         - html
         - shtml
     - .net
-        - asp
-        - aspx
         - asa
-        - cer
-        - cdx
+        - asp
         - ashx
         - asmx
-        - svc
+        - aspx
+        - axd
+        - cdx
+        - cer
+        - config
+        - cshtm
         - cshtml
+        - rem
+        - soap
+        - svc
+        - shtml
+        - vbhtm
         - vbhtml
     - java
         - jsp
@@ -174,6 +182,9 @@ waf、rasp 对上传文件的检测方法有这几种
     - `xxx.pphphp`
     - `xxx.asaspxpx`
 - 00 截断
+    - `file.jpg%00shell.php`
+    - `shell.php%00file.jpg`
+    - `shell.php%00.jpg`
 - .htaccess
 - 中间件解析漏洞
 - 参数
@@ -219,3 +230,9 @@ waf、rasp 对上传文件的检测方法有这几种
     - `xxx.com/test/img/1.png/../../shell.php`
 - 解析
     - `xxx.com/shell.php;/.png`
+
+---
+
+## 软链接
+
+如果攻击者上传了一个软链文件，软链描述对应的是 /etc/passwd 的话，攻击者利用程序可以直接读取到服务器的关键文件内容

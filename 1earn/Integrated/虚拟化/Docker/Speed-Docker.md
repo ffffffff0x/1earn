@@ -33,6 +33,7 @@ Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级�
     - [Docker-Portainer安装使用](../../Linux/Power-Linux.md#docker-portainer)
 - [instantbox](https://github.com/instantbox/instantbox) - 脚本实现的一个 docker 虚拟化平台,快速获得开箱即用的热乎乎的虚拟机😁
 - [silenceshell/docker_mirror](https://github.com/silenceshell/docker_mirror) - 查找最快的 docker 镜像
+- [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) - 快速管理 docker
 
 ---
 

@@ -37,6 +37,12 @@
 - source 命令可以影响执行脚本的父 shell 的环境,而 export 则只能影响其子 shell 的环境.
 - source a.sh 同直接执行 ./a.sh 有什么不同呢,比如你在一个脚本里 `export $KKK=111` ,如果你用 ./a.sh 执行该脚本,执行完毕后,你运行 `echo $KKK` ,发现没有值,如果你用 `source` 来执行 ,然后再 `echo` ,就会发现 KKK=111.因为调用 ./a.sh 来执行 shell 是在一个子 shell 里运行的,所以执行后,结果并没有反应到父 shell 里,不过 source 不同,他就是在本 shell 中执行的,所以能看到结果.
 
+**sast 工具**
+- https://github.com/koalaman/shellcheck
+
+**资源教程**
+- [dylanaraps/pure-bash-bible](https://github.com/dylanaraps/pure-bash-bible#get-the-username-of-the-current-user)
+
 ---
 
 # 大纲
@@ -1694,11 +1700,11 @@ echo "地址：$url"
 
 # 调式脚本
 
-在 shell 脚本中添加 set –xv 来调试输出
+在 shell 脚本中添加 set -xv 来调试输出
 ```diff
 vim test.sh
 
-++ set –xv
+++ set -xv
 ```
 
 或者在执行 shell 脚本时提供该设置

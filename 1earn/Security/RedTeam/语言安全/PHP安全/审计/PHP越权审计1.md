@@ -58,7 +58,7 @@ Web 身份认证通常使用 Cookie、Session、Openid、OAuth、SSO、REST 等�
 
 从上述代码中可见，页面直接获取 `Cookie` 中的 `username` 字段进行身份判断，这种方式非常的不安全。可以通过修改 Cookie 中的值进行越权。[举例参考](https://blog.csdn.net/God_XiangYu/article/details/97989390)
 
-![](../../../../../assets/img/Security/RedTeam/Web安全/PHP代码审计/PHP越权审计1/1.png)
+![](../../../../../../assets/img/Security/RedTeam/语言安全/PHP安全/审计/PHP越权审计1/1.png)
 
 **进阶**
 
@@ -91,7 +91,7 @@ $query = "UPDATE users SET user_name = '$clean_username' WHERE user_id = '$clean
 
 [乌云案例举例](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0212974)
 
-![](../../../../../assets/img/Security/RedTeam/Web安全/PHP代码审计/PHP越权审计1/2.png)
+![](../../../../../../assets/img/Security/RedTeam/语言安全/PHP安全/审计/PHP越权审计1/2.png)
 
 ---
 

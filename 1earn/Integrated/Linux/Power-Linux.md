@@ -417,6 +417,11 @@ vim AdGuardHome.yaml
 ./AdGuardHome -s restart
 ```
 
+**Tips**
+
+配合下列项目获得更好的体验
+- https://github.com/privacy-protection-tools/anti-AD
+
 ---
 
 ## butterfly
@@ -2280,11 +2285,12 @@ forever -h                # 查看帮助
 
 - **源代码编译安装**
 
-  自己下载好包 https://nginx.org/en/download.html,传到服务器上,这里以1.14.2 举例
+  自己下载好包 https://nginx.org/en/download.html ,传到服务器上,这里以 1.16.1 举例
 
   ```bash
-  tar -zxvf nginx-1.14.2.tar.gz
-  cd nginx-1.14.2/
+  wget https://nginx.org/download/nginx-1.16.1.tar.gz
+  tar -zxvf nginx-1.16.1.tar.gz
+  cd nginx-1.16.1/
   ./configure
   make
   make install
@@ -2486,7 +2492,11 @@ rabbitmqctl set_user_tags [账号] administrator          # 修改用户角色
 add-apt-repository universe
 apt-get update
 
-apt-get install -y git build-essential libxslt-dev python-dev python-virtualenv python-babel zlib1g-dev libffi-dev libssl-dev vim lrzsz unzip
+sudo -H apt-get install -y \
+    python3-dev python3-babel python3-venv \
+    uwsgi uwsgi-plugin-python3 \
+    git build-essential libxslt-dev zlib1g-dev libffi-dev libssl-dev \
+    shellcheck
 ```
 
 安装 searx
@@ -5115,12 +5125,14 @@ setenforce 0    # 关闭 selinux
   ```bash
   docker version                              # 查看 docker 版本
   docker run -it [docker_id] bash             # 运行一个容器实例
+  docker run -d -p 物理端口1:容器端口1 -p 物理端口2:物理端口2 --name 容器名 <image-name>:<tag>
     docker run --name=test -p 1234:1234 -itd ubuntu /bin/bash
     # 使用本地 1234 端口连接 docker 的 1234 端口运行 ubuntu 镜像，并将其临时命名为 test
     # test：为临时名称，可以自定义填写。
     # -p： 第一个端口为本机的端口，第二个端口为 Docker 的端口。
     # -itd：意思是在后台运行，交互式运行，并且输出当前的信息
     # /bin/bash：调用 Shell
+    docker run -d -p 8080:80 -v 本机路径:容器路径 --name 容器名  <image-name>:<tag> # 磁盘挂载
   docker stop [docker_name/docker_id]               # 停止容器
   docker start [options] container [container...]   # 启动一个或多个已停止的容器
   docker exec -it [docker_id] bash                  # 获取容器的 shell
@@ -5145,6 +5157,33 @@ setenforce 0    # 关闭 selinux
   docker rmi -f [docker_image_id]                   # 删除本地的 docker 镜像
   ```
 
+- 打包上传
+  ```bash
+  # 容器打包镜像
+  docker commit -a "作者" -m "备注" 容器ID <image-name>:<tag>
+
+  # 将容器打包成规范的镜像
+  docker commit -m <exiting-Container> <hub-user>/<repo-name>[:<tag>]
+
+  # 登录 Docker Hub
+  docker login
+
+  # 上传推送镜像到公共仓库
+  docker push <hub-user>/<repo-name>:<tag>
+
+  # 当前目录的 Dockerfile 创建镜像
+  docker build -t <image-name>:<tag> .
+
+  # 指定文件构建镜像
+  docker build -f /path/to/a/Dockerfile -t <image-name>:<tag> .
+
+  # 将镜像保存 tar 包
+  docker save -o image-name.tar <image-name>:<tag>
+
+  # 导入 tar 镜像
+  docker load --input image-name.tar
+  ```
+
 - 默认情况下,只有管理员权限能够运行 docker 命令.考虑到安全问题,你不会想用 root 用户或使用 sudo 来运行 Docker 的.要解决这个问题,你需要将自己的用户加入到 docker 组中.
   ```bash
   usermod -a -G docker $USER
@@ -5158,6 +5197,9 @@ setenforce 0    # 关闭 selinux
 
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
+
+**实验**
+- [Docker](./实验/Docker.md)
 
 **常见报错**
 - Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
@@ -5252,7 +5294,7 @@ docker-compose exec [service] sh  # 进入容器内
 ```bash
 docker pull portainer/portainer         # 拉取镜像
 docker volume create portainer_data
-docker run -d -p 9000:9000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer   # 部署
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce   # 部署
 ```
 访问 ip:9000 进入到设置密码界面.
 

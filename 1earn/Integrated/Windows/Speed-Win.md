@@ -375,6 +375,9 @@ findstr     文件中搜索字符串
     findstr /c:"hello world" 1.txt nul  在 1.txt 文件中搜索 hello world，并在每行结果前打印出1.txt:   注：findstr 只有在2个及以上文件中搜索字符串时才会打印出每个文件的文件名，nul 表示一个空文件
     findstr /s /i "Hello" *.*           不区分大小写，在当前目录和所有子目录中的所有文件中的 hello
     findstr  "^[0-9][a-z]" 1.txt        在 1.txt 中搜索以1个数字+1个小写字母开头子串的行
+    findstr /si /n encry_pwd= c:\config.ini         查询向日葵的验证码
+    findstr /si /n fastcode= c:\config.ini          查询向日葵的识别码
+    findstr /si /n fastcodehistroy= c:\config.ini   查询向日葵的连接历史
 ```
 
 ---
@@ -872,6 +875,11 @@ reg query HKCR\.dsw /ve
 
 reg query HKEY_CURRENT_USER\Software\Tencent\QQGame\SYS /v GameDirectory
 # 查询 QQGame 安装路径
+```
+
+**regedit**
+```bash
+regedit -s xxxx.reg     # 导入注册表项
 ```
 
 ### 计划任务

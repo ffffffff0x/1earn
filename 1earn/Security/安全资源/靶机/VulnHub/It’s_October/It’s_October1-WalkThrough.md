@@ -71,11 +71,11 @@ nmap -T5 -A -v -p- --min-rate=5000 192.168.1.249
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/It’s_October/It’s_October1/4.png)
 
-用这个登陆 ssh 和 mysql 试试
+用这个登录 ssh 和 mysql 试试
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/It’s_October/It’s_October1/5.png)
 
-只允许密钥登陆
+只允许密钥登录
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/It’s_October/It’s_October1/6.png)
 
@@ -95,7 +95,7 @@ mysql 无法连接,估计是其他的凭证,接下来对这 2 个端口目录爆
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/It’s_October/It’s_October1/9.png)
 
-尝试用之前的账号密码登陆,进入后台
+尝试用之前的账号密码登录,进入后台
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/It’s_October/It’s_October1/10.png)
 
@@ -224,7 +224,7 @@ cat proof.txt
 
 **ssh**
 
-这里可以通过写公钥到 .ssh 目录下来进行 ssh 登陆
+这里可以通过写公钥到 .ssh 目录下来进行 ssh 登录
 
 攻击机
 ```bash

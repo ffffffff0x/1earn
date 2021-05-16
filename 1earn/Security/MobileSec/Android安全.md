@@ -138,6 +138,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
     ```
     apktool d xxx.apk -o xxx
     ```
+- [skylot/jadx](https://github.com/skylot/jadx)
 
 **信息收集**
 - [TheKingOfDuck/ApkAnalyser](https://github.com/TheKingOfDuck/ApkAnalyser) - 一键提取安卓应用中可能存在的敏感信息。
@@ -152,6 +153,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
     apktool d app_name.apk
     grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
     ```
+- [s0md3v/Diggy](https://github.com/s0md3v/Diggy)
 
 ---
 

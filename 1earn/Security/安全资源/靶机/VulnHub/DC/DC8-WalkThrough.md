@@ -113,9 +113,9 @@ hashcat -m 7900 -a 0 pass.txt /usr/share/john/password.lst
 
 回过头去测 CVE-2018-7602 也是一个方法,不过公开的 poc 利用于 Drupal 8,7当然也是受影响的,你可以尝试修改 poc
 
-在爆破的时候顺带扫一下目录,发现有个登陆点 `http://192.168.141.141/user`
+在爆破的时候顺带扫一下目录,发现有个登录点 `http://192.168.141.141/user`
 
-登陆后发现有一处直接执行 php 代码的地方
+登录后发现有一处直接执行 php 代码的地方
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC8/8.png)
 

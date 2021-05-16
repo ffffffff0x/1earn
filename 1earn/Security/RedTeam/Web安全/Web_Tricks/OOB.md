@@ -30,6 +30,7 @@
 **平台搭建**
 - [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具。
 - [lanyi1998/DNSlog-GO](https://github.com/lanyi1998/DNSlog-GO) - DNSLog-GO 是一款 golang 编写的监控 DNS 解析记录的工具，自带 WEB 界面
+- [chennqqi/godnslog](https://github.com/chennqqi/godnslog)
 
 ---
 

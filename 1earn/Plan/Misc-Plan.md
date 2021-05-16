@@ -393,3 +393,11 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 提取已经安装的 jar，拷贝数据库驱动文件到另一台电脑的当前用户 .DataGrip2019.2\config\jdbc-drivers 路径地址
 
 重启 DataGrip，左侧的 Database 标签页 -> + 按钮 -> Driver and Data Source ，选中指定数据库类型，点击 Switch to ver. xxx 即可
+
+---
+
+# win10
+
+**关闭晃动窗口最小化**
+
+运行 gpedit.msc 打开组策略编辑器，展开 用户配置 -> 管理模版 -> 桌面，可以在右边区域找到 “关闭 Aero Shake 窗口最小化鼠标手势” 的项目，它的默认状态为 “未配置”，在未配置的情况下，Aero Shake 的功能是默认开启的, 设置为“已启用” 即可

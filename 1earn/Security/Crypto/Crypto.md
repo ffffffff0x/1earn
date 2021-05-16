@@ -896,6 +896,10 @@ AES 加密的模式主要有五种：ECB (电子密码本模式)、CBC（密码�
 
 在某些文献中，作为算法的DES被称为DEA（Data Encryption Algorithm，数据加密算法），以与作为标准的DES区分开来。
 
+**在线工具**
+- [DES加密、DES解密 - 在线工具](https://oktools.net/des)
+- [CTF在线工具-DES在线加解密|DES在线加密|DES在线解密|DES encryption|DES decryption](http://ctf.ssleye.com/cdes.html)
+
 ---
 
 #### 3DES
@@ -1816,6 +1820,7 @@ I have deposited in the county of Bedford...
 
 **在线工具**
 - https://planetcalc.com/2468/
+- [Vigenere Solver](https://guballa.de/vigenere-solver)
 
 ---
 

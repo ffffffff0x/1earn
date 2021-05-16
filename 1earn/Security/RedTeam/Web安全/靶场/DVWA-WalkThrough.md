@@ -123,7 +123,7 @@ if( isset( $_GET[ 'Login' ] ) ) {
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa6.png)
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa7.png)
 
-4. 最后,尝试在爆破结果中找到正确的密码,可以看到 password 的响应包长度(length)"与众不同",可推测 password 为正确密码,手工验证登陆成功.
+4. 最后,尝试在爆破结果中找到正确的密码,可以看到 password 的响应包长度(length)"与众不同",可推测 password 为正确密码,手工验证登录成功.
 
 **手工 sql 注入**
 
@@ -232,7 +232,7 @@ generateSessionToken();
 ```
 High级别的代码加入了 Token,可以抵御 CSRF 攻击,同时也增加了爆破的难度,通过抓包,可以看到,登录验证时提交了四个参数:username、password、Login 以及 user_token.
 
-每次服务器返回的登陆页面中都会包含一个随机的 user_token 的值,用户每次登录时都要将 user_token 一起提交.服务器收到请求后,会优先做 token 的检查,再进行 sql 查询.
+每次服务器返回的登录页面中都会包含一个随机的 user_token 的值,用户每次登录时都要将 user_token 一起提交.服务器收到请求后,会优先做 token 的检查,再进行 sql 查询.
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa10.png)
 
 同时,High 级别的代码中,使用了 stripslashes(去除字符串中的反斜线字符,如果有两个连续的反斜线,则只去掉一个)、 mysql_real_escape_string 对参数 username、password 进行过滤、转义,进一步抵御 sql 注入.
@@ -2797,11 +2797,11 @@ generateSessionToken();
 
 ## Weak_Session_IDs
 
-密码与证书等认证手段,一般仅仅用于登录(Login)的过程.当登陆完成后,用户访问网站的页面,不可能每次浏览器请求页面时,都再使用密码认证一次.因此,当认证完成后,就需要替换一个对用户透明的凭证.这个凭证就是 SessionID.
+密码与证书等认证手段,一般仅仅用于登录(Login)的过程.当登录完成后,用户访问网站的页面,不可能每次浏览器请求页面时,都再使用密码认证一次.因此,当认证完成后,就需要替换一个对用户透明的凭证.这个凭证就是 SessionID.
 
-当用户登陆完成后,在服务器端就会创建一个新的会话(Session),会话中会保存用户的状态和相关信息.服务器端维护所有在线用户的 Session,此时的认证,只需要知道是哪个用户在浏览当前的页面即可.为了告诉服务器应该使用哪一个 Session,浏览器需要把当前用户持有的 SessionID 告知服务器.最常见的做法就是把 SessionID 加密后保存在 Cookie 中,因为 Cookie 会随着 HTTP 请求头发送,且受到浏览器同源策略的保护.
+当用户登录完成后,在服务器端就会创建一个新的会话(Session),会话中会保存用户的状态和相关信息.服务器端维护所有在线用户的 Session,此时的认证,只需要知道是哪个用户在浏览当前的页面即可.为了告诉服务器应该使用哪一个 Session,浏览器需要把当前用户持有的 SessionID 告知服务器.最常见的做法就是把 SessionID 加密后保存在 Cookie 中,因为 Cookie 会随着 HTTP 请求头发送,且受到浏览器同源策略的保护.
 
-SessionID 一旦在生命周期内被窃取,就等同于账户失窃.同时由于 SessionID 是用户登录之后才持有的认证凭证,因此黑客不需要再攻击登陆过程(比如密码).Session 劫持就是一种通过窃取用户 SessionID 后,使用该 SessionID 登录进目标账户的攻击方法,此时攻击者实际上是使用了目标账户的有效 Session.如果 SessionID 是保存在 Cookie 中的,则这种攻击可以称为 Cookie 劫持.SessionID 还可以保存在 URL 中,作为一个请求的一个参数,但是这种方式的安全性难以经受考验.
+SessionID 一旦在生命周期内被窃取,就等同于账户失窃.同时由于 SessionID 是用户登录之后才持有的认证凭证,因此黑客不需要再攻击登录过程(比如密码).Session 劫持就是一种通过窃取用户 SessionID 后,使用该 SessionID 登录进目标账户的攻击方法,此时攻击者实际上是使用了目标账户的有效 Session.如果 SessionID 是保存在 Cookie 中的,则这种攻击可以称为 Cookie 劫持.SessionID 还可以保存在 URL 中,作为一个请求的一个参数,但是这种方式的安全性难以经受考验.
 
 因此,在生成 SessionID 时,需要保证足够的随机性,比如采用足够强的伪随机数生成算法.
 
@@ -2849,7 +2849,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 `注:这里的 cookie 值要根据你自己的 dvwaSession 去计算`
 
-在无密码认证的情况下,成功登陆到界面:
+在无密码认证的情况下,成功登录到界面:
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa59.png)
@@ -2889,7 +2889,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 `注:这里的 cookie 值要根据你自己的当前时间去算出来`
 
-在无密码认证的情况下,成功登陆到界面:
+在无密码认证的情况下,成功登录到界面:
 `http://<IP地址!!!>/vulnerabilities/weak_id/`
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/dvwa/dvwa61.png)

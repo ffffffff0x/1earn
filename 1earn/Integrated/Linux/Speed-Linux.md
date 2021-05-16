@@ -46,17 +46,21 @@
 	* [传输-下载](#传输-下载)
 		* [bt](#bt)
 		* [远程访问](#远程访问)
-	* [Firewall](#Firewall)
-		* [Firewalld](#Firewalld)
-		* [Iptables](#Iptables)
+	* [Firewall](#firewall)
+		* [Firewalld](#firewalld)
+		* [Iptables](#iptables)
+		* [ufw](#ufw)
 	* [软件包管理](#软件包管理)
 		* [apt](#apt)
-		* [Binary](#Binary)
+		* [Binary](#binary)
+		* [dnf](#dnf)
 		* [dpkg](#dpkg)
-		* [Pacman](#Pacman)
+		* [Pacman](#pacman)
 		* [rpm](#rpm)
 		* [snap](#snap)
 		* [yum](#yum)
+			* 配置 yum 源
+			* 配置 EPEL 源
 		* [常用软件](#常用软件)
 
 * **[🦋 系统管理](#系统管理)**
@@ -64,16 +68,20 @@
 		* [日志](#日志)
 	* [系统设置](#系统设置)
 		* [时间](#时间)
+		* [时区](#时区)
 		* [语言](#语言)
 		* [启动项-计划任务](#启动项-计划任务)
-		* [SELinux](#SELinux)
+		* [SELinux](#selinux)
 	* [账号管控](#账号管控)
 	* [进程管理](#进程管理)
+	* [内核管理](#内核管理)
 	* [设备管理](#设备管理)
+		* [内存](#内存)
 		* [磁盘](#磁盘)
 		* [无线网卡](#无线网卡)
 		* [蓝牙](#蓝牙)
 		* [外接硬盘](#外接硬盘)
+		* CD & DVD
 
 ---
 
@@ -281,7 +289,7 @@ souce ~/.config/fish/config.fish
 	sort names.txt		# 以升序对文本文件进行排序
 	sort -r names.txt	# 以降序对文本文件进行排序
 	sort -t: -k 3n /etc/passwd | more	# 按第 3 个字段（数字用户 ID）对 passwd 文件进行排序
-	sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n /etc/hosts	# 按 IP 地址对 / etc / hosts 文件进行排序
+	sort -t . -k 1,1n -k 2,2n -k 3,3n -k 4,4n /etc/hosts	# 按 IP 地址对 /etc/hosts 文件进行排序
 	```
 
 - xargs
@@ -307,11 +315,17 @@ souce ~/.config/fish/config.fish
 	crontab -l | tee crontab-backup.txt | sed 's/old/new/' | crontab -	# 对 crontab 条目进行备份，并将 crontab 条目作为 sed 命令的输入，由 sed 命令进行替换。替换后，它将被添加为一个新的cron作业。
 	```
 
-**其他符号工具**
-```bash
-head		# 显示文件的开头的内容.默认下,显示文件的头 10 行内容.
-tail		# 显示文件中的尾部内容.默认下,显示文件的末尾 10 行内容.
-```
+- paste
+	```bash
+	# paste 可以将两个不同的文件合并到一个多列文件中。
+	paste aaa.txt bbb.txt
+	```
+
+- fold
+	```bash
+	# 限制输出的长度
+	cat /etc/passwd | fold -w 16
+	```
 
 ---
 
@@ -328,7 +342,7 @@ printf "\033c"
 ```bash
 id
 who			# 显示目前登录系统的用户信息.
-w			# 显示已经登陆系统的用户列表,并显示用户正在执行的指令.
+w			# 显示已经登录系统的用户列表,并显示用户正在执行的指令.
 last		# 显示用户最近登录信息
 ```
 
@@ -458,9 +472,14 @@ tail		# 用于显示文件的尾部的内容,默认情况下显示文件的尾�
 
 sed			# 一种流编辑器，它是文本处理中非常中的工具，能够完美的配合正则表达式使用
 	sed -n '5,10p' /etc/passwd	# 读取文件第5-10行
+	sed '/^$/d' test.txt		# 删除文件空行
 
 tac			# 是 cat 的反向操作，从最后一行开始打印
 less		# 允许用户向前或向后浏览文件
+
+nl			# 用来在 linux 系统中打印文件中行号
+	nl /etc/passwd
+	nl -b a /etc/passwd		# 空行也加上行号
 ```
 
 **二进制相关**
@@ -482,6 +501,10 @@ ldd			# 可以显示程序或者共享库所需的共享库
 	ldd /bin/cat
 
 nm			# 显示目标文件的符号
+	# -A：每个符号前显示文件名；
+	# -D：显示动态符号；
+	# -g：仅显示外部符号；
+	# -r：反序显示符号表。
 ```
 
 ### 创建
@@ -578,6 +601,13 @@ which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
 	fd <File>
 	```
 
+- fzf
+	```bash
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
+	fzf
+	```
+
 **找出重复文件**
 
 - jdupes
@@ -610,6 +640,22 @@ which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
 	fdupes -r /			# 递归扫描目录,包括子目录
 	fdupes -rd /		# 删除重复内容
 	```
+
+- fslint
+	```bash
+	# fslint 命令可以被特地用来寻找重复文件
+	fslint .
+	```
+
+**lsof**
+
+> 可以使用 lsof 命令来了解某人是否正在使用文件
+
+```bash
+lsof /dev/null			# Linux 中所有已打开文件的列表
+lsof -u root			# root 打开的文件列表
+lsof -i TCP:22			# 找出进程监听端口
+```
 
 ### 修改
 
@@ -1207,12 +1253,28 @@ rz 			# 运行该命令会弹出一个文件选择窗口,从本地选择文件�
 wget [options] [target]
 
 # e.g.
-wget example.com/big.file.iso						# 下载目标文件
-wget --output-document=filename.html example.com	# 另行命名
-wget -c example.com/big.file.iso					# 恢复之前的下载
-wget --i list.txt									# 下载文件中的 url
-wget -r example.com									# 递归下载
-wget --no-check-certificate							# 不检查 https 证书
+wget example.com/big.file.iso								# 下载目标文件
+wget -O filename.html example.com							# 另行命名
+wget -c example.com/big.file.iso							# 恢复之前的下载
+wget -i list.txt											# 下载文件中的 url
+wget -r example.com											# 递归下载
+wget --no-check-certificate									# 不检查 https 证书
+wget ftp://user:password@host:/path-to-file/file.txt		# ftp 下载
+wget -br ftp://user:password@ftp-host:/path-for-download/	# 递归下载 ftp 目录下文件
+```
+
+**curl**
+```bash
+curl -o wordpress.zip https://wordpress.org/latest.zip		# 另行命名
+curl -C - O https://wordpress.org/latest.zip				# 恢复之前的下载
+```
+
+**Aria2**
+```bash
+aria2c http://releases.ubuntu.com/18.10/ubuntu-18.10-desktop-amd64.iso.torrent		# 下载磁力链接
+aria2c -i downloadurls.txt									# 下载文件中的 url
+aria2c -c http://releases.ubuntu.com/18.10/ubuntu-18.10-desktop-amd64.iso.torrent	# 恢复之前的下载
+aria2c –max-download-limit=100K http://releases.ubuntu.com/disco/ubuntu-19.04-desktop-amd64.iso.torrent		# 设置最大速度限制
 ```
 
 ### bt
@@ -1284,6 +1346,10 @@ iptables -F  		# 清除防火墙配置
 ufw disable
 ```
 
+### ufw
+
+见 [ufw.md](./实验/ufw.md)
+
 ---
 
 ## 软件包管理
@@ -1351,6 +1417,8 @@ apt-get update
 apt-get update & apt-get upgrade
 apt-get dist-upgrade
 apt-get clean
+
+apt-key list		# 查看仓库密钥
 ```
 
 **无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)**
@@ -1993,7 +2061,7 @@ passwd <username>					# 设置用户密码
 
 userdel <username>					# 只删除用户不删除家目录
 userdel -r <username>				# 同时删除家目录
-userdel -f <username>				# 强制删除,即使用户还在登陆中
+userdel -f <username>				# 强制删除,即使用户还在登录中
 
 usermod -g <groupname> <username>	# 修改用户的主组
 usermod -G <supplementary> <username>	# 修改用户的附加组
@@ -2013,6 +2081,15 @@ su <username>						# 切换账号
 su - <username>                     # 切换账号并改变工作目录至使用者的家目录
 
 compgen -c                  		# 列出所有可用的命令
+
+ulimit								# 查看、设置、获取文件打开的状态和配置详情
+	ulimit -a                   	# 显示登录用户的资源限制
+	ulimit -n 						# 显示打开文件数限制
+	ulimit -c 						# 显示核心转储文件大小
+	ulimit -u 						# 显示登录用户的最大用户进程数限制
+	ulimit -f 						# 显示用户可以拥有的最大文件大小
+	ulimit -m 						# 显示登录用户的最大内存大小
+	ulimit -v 						# 显示最大内存大小限制
 ```
 
 **组**
@@ -2277,7 +2354,7 @@ echo 'kernel.nmi_watchdog=0' >>/etc/sysctl.conf   	# 重启自动关闭
 
 ## 设备管理
 
-更多内容见笔记 [信息](./笔记/信息.md)
+更多内容见笔记 [信息](./笔记/信息.md#硬件)
 
 ### 内存
 
@@ -2345,6 +2422,8 @@ mount -t vfstype				# 指定文件系统的类型,通常不必指定.mount 会�
 
 vi /etc/fstab					# 自动挂载
 /dev/cdrom /mnt/cdrom iso9660 defaults 0 0
+
+findmnt							# 显示Linux中当前挂载的文件系统
 ```
 
 **删除**
@@ -2544,6 +2623,13 @@ dd [options]
 	blkid -U d3b1dcc2-e3b0-45b0-b703-d6d0d360e524
 	blkid -po udev /dev/sda1	# 获取更多详细信息
 	blkid -g					# 清理 blkid 的缓存
+	```
+
+- partx
+	```bash
+	# 显示磁盘上分区的存在和编号
+	partx --show /dev/sda
+	partx --show /dev/sda1
 	```
 
 ---

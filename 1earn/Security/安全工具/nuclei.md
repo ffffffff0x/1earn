@@ -49,39 +49,39 @@ nuclei -update-templates
 
 **命令参数**
 
-|命令|描述|例子|
-|-----|-----|-----|
-|bulk-size|每个模板最大并行的主机数(默认25)|nuclei -bulk-size 25|
-|burp-collaborator-biid|使用burp-collaborator插件|nuclei -burp-collaborator-biid XXXX|
-|c|并行的最大模板数量(默认10)|nuclei -c 10|
-|l|对URL列表进行测试|nuclei -l urls.txt|
-|target|对目标进行测试|nuclei -target hxxps://example.com|
-|t|要检测的模板种类|nuclei -t git-core.yaml -t cves/|
-|no-color|输出不显示颜色|nuclei -no-color|
-|no-meta|不显示匹配的元数据|nuclei -no-meta|
-|json|输出为json格式|nuclei -json|
-|include-rr|json输出格式中包含请求和响应数据|nuclei -json -include-rr|
-|o|输出为文件|nuclei -o output.txt|
-|project|避免发送相同的请求|nuclei -project|
-|stats|使用进度条|nuclei -stats|
-|silent|只输出测试成功的结果|nuclei -silent|
-|retries|失败后的重试次数|nuclei -retries 1|
-|timeout|超时时间(默认为5秒)|nuclei -timeout 5|
-|trace-log|输出日志到log文件|nuclei -trace-log logs|
-|rate-limit|每秒最大请求数(默认150)|nuclei -rate-limit 150|
-|severity|根据严重性选择模板|nuclei  -severity critical,high|
-|stop-at-first-match|第一次匹配不要处理HTTP请求|nuclei -stop-at-frst-match|
-|exclude|排除的模板或文件夹|nuclei -exclude panels -exclude tokens|
-|debug|调试请求或者响应|nuclei -debug|
-|update-templates|下载或者升级模板|nuclei -update-templates|
-|update-directory|选择储存模板的目录(可选)|nuclei -update-directory templates|
-|tl|列出可用的模板|nuclei -tl|
-|templates-version|显示已安装的模板版本|nuclei -templates-version|
-|v|显示发送请求的详细信息|nuclei -v|
-|version|显示nuclei的版本号|nuclei -version|
-|proxy-url|输入代理地址|nuclei -proxy-url hxxp://127.0.0.1:8080|
-|proxy-socks-url|输入socks代理地址|nuclei -proxy-socks-url socks5://127.0.0.1:8080|
-|H|自定义请求头|nuclei -H “x-bug-bounty:hacker”|
+| 命令                   | 描述                             | 例子                                            |
+| ---------------------- | -------------------------------- | ----------------------------------------------- |
+| bulk-size              | 每个模板最大并行的主机数(默认25) | nuclei -bulk-size 25                            |
+| burp-collaborator-biid | 使用burp-collaborator插件        | nuclei -burp-collaborator-biid XXXX             |
+| c                      | 并行的最大模板数量(默认10)       | nuclei -c 10                                    |
+| l                      | 对URL列表进行测试                | nuclei -l urls.txt                              |
+| target                 | 对目标进行测试                   | nuclei -target hxxps://example.com              |
+| t                      | 要检测的模板种类                 | nuclei -t git-core.yaml -t cves/                |
+| no-color               | 输出不显示颜色                   | nuclei -no-color                                |
+| no-meta                | 不显示匹配的元数据               | nuclei -no-meta                                 |
+| json                   | 输出为json格式                   | nuclei -json                                    |
+| include-rr             | json输出格式中包含请求和响应数据 | nuclei -json -include-rr                        |
+| o                      | 输出为文件                       | nuclei -o output.txt                            |
+| project                | 避免发送相同的请求               | nuclei -project                                 |
+| stats                  | 使用进度条                       | nuclei -stats                                   |
+| silent                 | 只输出测试成功的结果             | nuclei -silent                                  |
+| retries                | 失败后的重试次数                 | nuclei -retries 1                               |
+| timeout                | 超时时间(默认为5秒)              | nuclei -timeout 5                               |
+| trace-log              | 输出日志到log文件                | nuclei -trace-log logs                          |
+| rate-limit             | 每秒最大请求数(默认150)          | nuclei -rate-limit 150                          |
+| severity               | 根据严重性选择模板               | nuclei  -severity critical,high                 |
+| stop-at-first-match    | 第一次匹配不要处理HTTP请求       | nuclei -stop-at-frst-match                      |
+| exclude                | 排除的模板或文件夹               | nuclei -exclude panels -exclude tokens          |
+| debug                  | 调试请求或者响应                 | nuclei -debug                                   |
+| update-templates       | 下载或者升级模板                 | nuclei -update-templates                        |
+| update-directory       | 选择储存模板的目录(可选)         | nuclei -update-directory templates              |
+| tl                     | 列出可用的模板                   | nuclei -tl                                      |
+| templates-version      | 显示已安装的模板版本             | nuclei -templates-version                       |
+| v                      | 显示发送请求的详细信息           | nuclei -v                                       |
+| version                | 显示nuclei的版本号               | nuclei -version                                 |
+| proxy-url              | 输入代理地址                     | nuclei -proxy-url hxxp://127.0.0.1:8080         |
+| proxy-socks-url        | 输入socks代理地址                | nuclei -proxy-socks-url socks5://127.0.0.1:8080 |
+| H                      | 自定义请求头                     | nuclei -H "x-bug-bounty:hacker"                 |
 
 ---
 

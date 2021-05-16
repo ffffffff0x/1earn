@@ -33,14 +33,15 @@
     * [会话](#会话)
     * [开机启动](#开机启动)
     * [账号](#账号)
-    * [SELinux](#SELinux)
+    * [SELinux](#selinux)
     * [进程](#进程)
+    * [系统完整性](#系统完整性)
     * [日志](#日志)
 * [Net](#Net)
     * [端口](#端口)
-    * [Firewall](#Firewall)
+    * [Firewall](#firewall)
     * [禁ping](#禁ping)
-    * [SSH](#SSH)
+    * [SSH](#ssh)
 * [加固](#加固)
 
 ---
@@ -345,7 +346,7 @@ ext3grep /dev/sda3 --restore-all
 ```bash
 who     # 查看当前登录用户
 w       # 查看登录用户行为
-last    # 查看登陆用户历史
+last    # 查看登录用户历史
 ```
 
 **防**
@@ -546,7 +547,7 @@ cp /root/bin/ls  /bin/ # 把 ls 命令复制到 /bin/ 目录,修复文件丢失
 
 ---
 
-# 日志
+## 日志
 
 **系统日志**
 - 内容见 [日志](./笔记/日志.md)
@@ -739,7 +740,7 @@ net.ipv4.icmp_echo_ignore_all=1
     service ssh restart
     ```
 
-- **配置使用 RSA 私钥登陆**
+- **配置使用 RSA 私钥登录**
 
     1. 先生成你的客户端的密钥,包括一个私钥和公钥
         ```bash
@@ -777,7 +778,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
         `service sshd restart` 重启 sshd 服务
 
-    5. 测试使用私钥登陆
+    5. 测试使用私钥登录
         ```bash
         ssh root@x.x.x.x -i id_rsa
         ```

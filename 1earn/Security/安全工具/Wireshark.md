@@ -15,8 +15,7 @@
 **官网**
 - https://www.wireshark.org/
 
-**样本**
-- [SpiderLabs/IOCs-IDPS](https://github.com/SpiderLabs/IOCs-IDPS) - 该存储库将保存与已知恶意软件样本相关的 PCAP IOC 数据
+**流量包资源**
 - [Web 2.0 for packets | pcapr](https://www.pcapr.net/home) - 提供大量样本的社区
 - [automayt/ICS-pcap](https://github.com/automayt/ICS-pcap) - 各类工控的 pcap 包
 - [ICS-Security-Tools/pcaps](https://github.com/ITI/ICS-Security-Tools/tree/master/pcaps) - 各类工控的 pcap 包

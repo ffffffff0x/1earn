@@ -526,8 +526,8 @@ net use \\IP\ipc$ " " /user:" "                 # 建立 IPC 空链接
 net use \\IP\ipc$ "[pass]" /user:"[username]"   # 建立 IPC 非空链接
     net use \\192.168.1.1\ipc$ "123456" /user:"administrator"
 
-net use z: \\ip\ipc$ "pass" /user:"user"        # 直接登陆后映射对方 C: 到本地为 H:
-net use h: ipc$                                 # 登陆后映射对方 C: 到本地为 H:
+net use z: \\ip\ipc$ "pass" /user:"user"        # 直接登录后映射对方 C: 到本地为 H:
+net use h: ipc$                                 # 登录后映射对方 C: 到本地为 H:
 net use \\IP\ipc$ /del                          # 删除 IPC 链接
 net use h: /del                                 # 删除映射对方到本地的为 H: 的映射
 
@@ -561,8 +561,8 @@ net share                   # 查看本地开启的共享
     net share c$=c:             # 恢复默认共享
     net share c$ /del           # 删除 C: 共享
 
-net user guest 12345        # 用 guest 用户登陆后用将密码改为 12345
-net password [pass]         # 更改系统登陆密码
+net user guest 12345        # 用 guest 用户登录后用将密码改为 12345
+net password [pass]         # 更改系统登录密码
 ```
 
 ## 查看网络信息
@@ -584,7 +584,7 @@ netstat -n                  # 查看端口的网络连接情况,常用 netstat -
 netstat -v                  # 查看正在进行的工作
 netstat -p [protocol]       # 例:netstat -p tcq/ip 查看某协议使用情况
 netstat -s                  # 查看正在使用的所有协议使用情况
-netstat -A ip               # 对方136到139其中一个端口开了的话,就可查看对方最近登陆的用户名
+netstat -A ip               # 对方136到139其中一个端口开了的话,就可查看对方最近登录的用户名
 netstat -bn                 # 查看每个程序的连接
 ```
 
@@ -940,9 +940,23 @@ ctrl+shift+f
 
 **账号**
 ```bash
+net user                                    # 查看系统账户
+net user test                               # 查看账户 test 的属性
 net user test 1234abcd /add                 # 添加用户
 net localgroup administrators test /add     # 将用户添加到管理组
 net user test /del                          # 删除用户
+```
+
+**组**
+```bash
+net localgroup                          # 查看系统的组
+net localgroup marketGroup /add         # 新建一个 marketGroup 的组
+net localgroup marketGroup test /add    # 将用户 test 加入 marketGroup 组中
+net localgroup markGroup                # 查看 markGroup 组内的成员
+net localgroup marketGroup test /del    # 将用户 test 从 marketGroup 组中移除
+net localgroup marketGroup /del         # 删除 marketGroup 组
+net localgroup "remote desktop users" test /add     # 将用户 test 加入远程桌面组
+net localgroup "remote desktop users" test /del     # 将用户 test 从远程桌面组删除
 ```
 
 ---

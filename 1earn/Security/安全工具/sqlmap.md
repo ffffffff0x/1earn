@@ -113,3 +113,11 @@ sqlmap -u URL --reg-add --reg-key="HKEY_LOCAL_MACHINE\SOFTWARE\sqlmap" --reg-val
 ```bash
 sqlmap -d "mysql://root:root@192.168.1.1:3306/mysql" --os-shell
 ```
+
+---
+
+# ACCESS
+
+**相关文章**
+- [sqlmap注入access数据库](https://www.jianshu.com/p/258d7014f84c)
+- [使用SQLMap进行Access注入](https://4hou.win/wordpress/?p=17495)

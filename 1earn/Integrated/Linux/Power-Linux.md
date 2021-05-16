@@ -35,6 +35,7 @@
 
 * **[🍜 网络服务](#网络服务)**
   * [AdguardTeam](#adguardteam)
+  * [butterfly](#butterfly)
   * [Cacti](#cacti)
   * [Chrony](#chrony)
   * [cloud-torrent](#cloud-torrent)
@@ -109,6 +110,7 @@
 * **[🌭 容器 & 虚拟化](#容器&虚拟化)**
   * [Docker](#docker)
     * [Docker-Compose](#docker-compose)
+    * [Docker-Portainer](#docker-portainer)
   * [QEMU](#qemu)
 
 * **[🥕 分布式](#分布式)**
@@ -1189,6 +1191,12 @@ systemctl stop firewalld
 **官网**
 - https://openvpn.net/
 
+**快速安装脚本**
+- [Nyr/openvpn-install](https://github.com/Nyr/openvpn-install)
+  ```bash
+  wget https://git.io/vpn -O openvpn-install.sh && bash openvpn-install.sh
+  ```
+
 **centos 下安装 OpenVPN**
 
 - **前期准备**
@@ -1283,7 +1291,7 @@ systemctl stop firewalld
 
   **制作 Client 端证书**
 
-  每一个登陆的VPN客户端需要有一个证书，每个证书在同一时刻只能供一个客户端连接
+  每一个登录的VPN客户端需要有一个证书，每个证书在同一时刻只能供一个客户端连接
   ```bash
   ./easyrsa gen-req zhangsan nopass
   ./easyrsa sign-req client zhangsan
@@ -1741,7 +1749,7 @@ socks5 127.0.0.1 1080   # 改成你懂的
 
 **Kali/Manjaro**
 
-安装完毕后会自动启动,但是没有配置配置文件会无法登陆,修改下配置文件
+安装完毕后会自动启动,但是没有配置配置文件会无法登录,修改下配置文件
 ```vim
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
@@ -1765,7 +1773,7 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_rsa_key
 
 **Ubuntu**
 
-如果没有就装一下,如果你只是想登陆别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `apt install -y openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
+如果没有就装一下,如果你只是想登录别的机器的 SSH 只需要安装 openssh-client (ubuntu 有默认安装,如果没有则 `apt install -y openssh-client`) ,如果要使本机开放 SSH 服务就需要安装 openssh-server
 ```bash
 apt install -y openssh-client=1:7.2p2-4ubuntu2.8
 apt install -y openssh-server=1:7.2p2-4ubuntu2.8
@@ -1808,7 +1816,7 @@ echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 0. 先排查是不是客户端(自己)的问题,再排查是不是服务端(对面)的问题,最后在排查是不是传输中(中间)的问题.
 1. ping 试试,如果网络层可通,那么大概率是应用层的问题,检查 SSH 配置,是否有白名单限制,或者你他娘的意大利防火墙或 selinux 就没放行
 2. 假设这么一种情况,应用层配置正常,主机一切正常,但路由器/交换机在 ACL 上禁用了 SSH 的流量,这样就是传输层的问题了.内网 IPS/IDS 阻断同理.
-4. 麻烦你看下账号密码是不是写错了谢谢.或者是不是限制只使用密钥登陆的.
+4. 麻烦你看下账号密码是不是写错了谢谢.或者是不是限制只使用密钥登录的.
 5. 注意下是不是配置文件或服务看错了是 sshd 不是 ssh
 
 **motd**
@@ -2470,7 +2478,6 @@ rabbitmqctl set_user_tags [账号] administrator          # 修改用户角色
 ```
 
 ---
-
 
 ## searx
 
@@ -3867,7 +3874,8 @@ firewall-cmd --reload
 **安装**
 
 ```bash
-curl -fsSL https://filebrowser.xyz/get.sh | bash
+curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
+filebrowser -r /path/to/your/files
 ```
 
 **使用**
@@ -5100,7 +5108,7 @@ setenforce 0    # 关闭 selinux
   apt install -y docker-ce
   docker version
   systemctl start docker
-  docker login  # 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登陆
+  docker login  # 讲道理,按官方文档说法并不需要账户并且登录,但有时候还是需要你登录
   ```
 
 **使用**
@@ -5945,7 +5953,7 @@ vim /etc/phpldapadmin/config.php
 systemctl restart httpd
 ```
 
-访问 `http://ip/ldapadmin`，点击登陆。CN 填写域信息`cn=admin,dc=fox,dc=com`，密码填写自己设置的密码。
+访问 `http://ip/ldapadmin`，点击登录。CN 填写域信息`cn=admin,dc=fox,dc=com`，密码填写自己设置的密码。
 
 ---
 

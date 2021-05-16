@@ -452,6 +452,14 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
+## Swagger REST API 信息泄露
+
+**相关工具**
+- [lijiejie/swagger-exp](https://github.com/lijiejie/swagger-exp)
+- [jayus0821/swagger-hack](https://github.com/jayus0821/swagger-hack) - 自动化爬取并自动测试所有swagger接口
+
+---
+
 ## 各类APIkey泄露
 
 **相关文章**
@@ -508,6 +516,9 @@ WEB-INF 主要包含一下文件或目录:
 
 # 不安全的输入
 
+**相关工具**
+- [commixproject/commix](https://github.com/commixproject/commix)
+
 ## http参数污染
 
 **相关文章**
@@ -560,33 +571,7 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 ## SSRF
 
-**简介**
-
-很多 web 应用都提供了从其他的服务器上获取数据的功能.使用用户指定的 URL,web 应用可以获取图片,下载文件,读取文件内容等.这个功能如果被恶意使用,可以利用存在缺陷的 web 应用作为代理攻击远程和本地的服务器.这种形式的攻击称为服务端请求伪造攻击(Server-side Request Forgery).
-
-一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
-
-**相关文章**
-- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
-- [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
-- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
-- [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
-- [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
-
-**相关案例**
-- [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
-- [SSRF in Exchange leads to ROOT access in all instances](https://hackerone.com/reports/341876) - 通过对 ssrf 访问 Google Cloud Metadata,直至 RCE
-
-**payload**
-- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
-- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
-
-**相关工具**
-- [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
-- [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
-
-**Bypass IP 限制**
-- [IP限制绕过](../IDOR.md#ip限制绕过)
+- [SSRF 笔记](./SSRF.md)
 
 ---
 
@@ -594,7 +579,7 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 `服务器端模板注入`
 
-- [SSTI 笔记](./SSTI.md)
+- [SSTI 笔记](./ssti.md)
 
 ---
 
@@ -630,6 +615,8 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 **相关文章**
 - [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
 - [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
+- [浅析CORS攻击及其挖洞思路](https://xz.aliyun.com/t/7242)
+- [CORS跨域漏洞学习](https://www.cnblogs.com/Xy--1/p/13069099.html)
 
 **相关案例**
 - [CORS Misconfiguration, could lead to disclosure of sensitive information](https://hackerone.com/reports/426165)
@@ -724,8 +711,11 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
 - [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
 
+**相关工具**
+- [devanshbatham/OpenRedireX](https://github.com/devanshbatham/OpenRedireX)
+
 **字典**
-- https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/Redirect/Fuzz_Redirect.txt
+- https://github.com/No-Github/AboutSecurity/blob/master/Dic/Web/api_param/Fuzz_param_Register.txt
 
 ---
 

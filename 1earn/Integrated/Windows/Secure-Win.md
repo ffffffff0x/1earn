@@ -507,6 +507,8 @@ Add-ADGroupMember –Identity 'Protected Users' –Members administrator
 
 ![](../../../assets/img/Integrated/Windows/Secure-Win/8.png)
 
+---
+
 # 防御Responder欺骗
 
 **禁用NetBIOS服务**

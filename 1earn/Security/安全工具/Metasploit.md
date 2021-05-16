@@ -116,6 +116,20 @@ db_rebuild_cache
 
 # 基本使用
 
+**启动**
+```bash
+msfconsole -a 		# 退出Metasploit前询问或接受“exit-y”
+msfconsole -H 		# 历史文件文件将命令历史记录保存到指定文件
+msfconsole -o 		# 将文件输出到指定文件
+msfconsole -p 		# 插件插件在启动时加载插件
+msfconsole -q 		# 安静不要在启动时打印横幅	（静默启动）
+msfconsole -r 		# 资源文件执行指定的资源文件（-对于stdin）
+msfconsole -x 		# execute command命令执行指定的控制台命令（用于多个）
+msfconsole -h 		# 帮助显示此消息
+msfconsole -v 		# 显示版本信息
+```
+
+**启动后**
 ```bash
 banner                          # 打印 banner
 color ['true'|'false'|'auto']   # 切换颜色显示
@@ -238,8 +252,8 @@ getuid                                                  # 查看当前用户
 run post/windows/gather/enum_applications               # 获取目标主机安装软件信息;
 run post/windows/gather/enum_patches                    # 查看目标主机的补丁信息;
 run post/windows/gather/enum_domain                     # 查找目标主机域控.
-run post/windows/gather/enum_logged_on_users            # 列举当前登陆过主机的用户;
-run post/windows/gather/credentials/windows_autologin   # 抓取自动登陆的用户名和密码;
+run post/windows/gather/enum_logged_on_users            # 列举当前登录过主机的用户;
+run post/windows/gather/credentials/windows_autologin   # 抓取自动登录的用户名和密码;
 
 run post/windows/gather/forensics/enum_drives           # 查看分区
 run post/windows/gather/enum_applications               # 获取安装软件信息
@@ -579,7 +593,7 @@ Meterpreter 的 shell 运行在内存中,目标重启就会失效,如果管理�
     -P : 需要使用的 payload,默认为 windows/meterpreter/reverse_tcp
     -S : 作为一个服务在系统启动时运行(需要 SYSTEM 权限)
     -T : 要使用的备用可执行模板
-    -U : 用户登陆时运行
+    -U : 用户登录时运行
     -X : 系统启动时运行
     -i : 后门每隔多少秒尝试连接服务端
     -p : 服务端监听的端口

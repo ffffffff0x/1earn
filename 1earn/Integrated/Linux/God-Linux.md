@@ -23,6 +23,9 @@
 # bash
 
 ``` bash
+# 判断当前是否是登陆式或非登陆式 shell
+echo $0
+
 # 上一个命令的最后一个参数.例如:上一条命令(vim test.txt),cat !$ = cat test.txt
 !$
 
@@ -59,6 +62,9 @@ aaa
 bbb
 test
 EOF
+
+# hex 转 ASCII
+echo -e "\x68\x65\x6c\x6c\x6f"
 ```
 
 ## cd
@@ -222,4 +228,13 @@ ulimit -n 65535
 # 优化内存
 echo 128 > /proc/sys/vm/nr_hugepages        # 默认为0
 sysctl -w vm.nr_hugepages=128
+```
+
+---
+
+# 文本
+
+**计算文本文件中的单词出现次数**
+```bash
+grep -o -i test example.txt | wc -l         # 计算"test"出现在文件中的次数
 ```

@@ -223,6 +223,7 @@
 **文章**
 - [挖洞技巧:绕过短信&邮箱轰炸限制以及后续](https://www.secpulse.com/archives/67077.html)
 - [验证码安全那些事](https://www.freebuf.com/news/131542.html)
+- [实战笔记：滑动验证码攻防对抗](https://www.freebuf.com/articles/web/238038.html)
 
 **验证码暴力破解**
 - 使用 burp 对特定的验证码进行暴力破解
@@ -384,7 +385,7 @@ wget -d --header="Host: localhost" https://target/
 - [$36k Google App Engine RCE](https://www.ezequiel.tech/p/36k-google-app-engine-rce.html)
 
 **学习资源**
-- [smodnix/31-days-of-API-Security-Tips](https://github.com/smodnix/31-days-of-API-Security-Tips)
+- [inonshk/31-days-of-API-Security-Tips](https://github.com/inonshk/31-days-of-API-Security-Tips)
 - [31 Days of API Security](https://docs.google.com/spreadsheets/d/1jn3JnWzQFZW41gKo5Fhxwf2ke2w-pvrpCGhBmKhyIBE/edit#gid=0)
 
 ## BOLA

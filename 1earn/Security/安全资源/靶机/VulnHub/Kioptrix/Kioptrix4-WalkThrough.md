@@ -118,9 +118,9 @@ sqlmap -u http://192.168.17.130/checklogin.php
 ---
 
 # 后期-拿shell-提权
-## 尝试 SSH 登陆
+## 尝试 SSH 登录
 
-输入用户名和密码登陆进去
+输入用户名和密码登录进去
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/Kioptrix/Kioptrix4/10.png)
 
@@ -142,7 +142,7 @@ cat checklogin.php
 
 ---
 
-## 登陆 MYSQL
+## 登录 MYSQL
 
 ```
 mysql -u root -p
@@ -161,7 +161,7 @@ select sys_exec('usermod -a -G admin john');
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/Kioptrix/Kioptrix4/18.png)
 
-在我们退出去后,尝试登陆到 root
+在我们退出去后,尝试登录到 root
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/Kioptrix/Kioptrix4/19.png)
 

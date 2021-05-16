@@ -397,7 +397,7 @@ F12 修改前端数量限制,输入 payload `<script>alert('沵咑礷赇潒礤�
 
 ### 反射性xss(post)
 
-POST 请求区别与 GET 请求,POST 请求不能从 URL 让用户向服务器提交数据.所以为了进行注入,需要让用户代替攻击者提交 POST 请求,这就需要攻击者自己搭建站点,然后再站点内写一个 POST 表单,将我们搭建出的连接发给用户,这样就能让用户帮攻击者提交 POST 请求发给存在 XSS 漏洞的中.这样就能窃取到用户的 cookie,就能伪造用户登陆达到破坏的目的.
+POST 请求区别与 GET 请求,POST 请求不能从 URL 让用户向服务器提交数据.所以为了进行注入,需要让用户代替攻击者提交 POST 请求,这就需要攻击者自己搭建站点,然后再站点内写一个 POST 表单,将我们搭建出的连接发给用户,这样就能让用户帮攻击者提交 POST 请求发给存在 XSS 漏洞的中.这样就能窃取到用户的 cookie,就能伪造用户登录达到破坏的目的.
 
 **服务器端核心代码**
 ```php
@@ -550,7 +550,7 @@ XSS盲打就是攻击者在不知道后台是否存在 xss 漏洞的情况下,�
 
 **漏洞利用**
 
-输入 payload `<script>alert('老铁,欧里给!')</script>` ,观察到可注入点,以管理员的身份登入后台,就会出现弹窗,这就是一个简单的盲打.通过 xss 钓鱼的方法就能获取到 cookie,就能伪造管理员身份进行登陆了.
+输入 payload `<script>alert('老铁,欧里给!')</script>` ,观察到可注入点,以管理员的身份登入后台,就会出现弹窗,这就是一个简单的盲打.通过 xss 钓鱼的方法就能获取到 cookie,就能伪造管理员身份进行登录了.
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/pikachu/11.png)
 
@@ -708,7 +708,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 ### CSRF(get)
 
-首先进行登陆,修改一下个人信息,并到 Brup Suite 上进行抓包,将抓到的 URL 进行修改(由自己作为攻击者),再发送给攻击目标(由自己作为被攻击者)
+首先进行登录,修改一下个人信息,并到 Brup Suite 上进行抓包,将抓到的 URL 进行修改(由自己作为攻击者),再发送给攻击目标(由自己作为被攻击者)
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/pikachu/19.png)
 
@@ -722,7 +722,7 @@ if(isset($_GET['submit']) && $_GET['message'] !=null){
 
 ### CSRF(POST)
 
-同样,登陆,修改一下个人信息,并到 Brup Suite 上进行抓包,对于 POST型,请求已经不能通过修改 URL 来借用用户权限,那么需要自己做一个表单,再返回到提交页面来完成修改.
+同样,登录,修改一下个人信息,并到 Brup Suite 上进行抓包,对于 POST型,请求已经不能通过修改 URL 来借用用户权限,那么需要自己做一个表单,再返回到提交页面来完成修改.
 
 **漏洞利用**
 
@@ -1129,7 +1129,7 @@ if(isset($_GET['logout']) && $_GET['logout'] == 1){
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/pikachu/54.png)
 
-登陆后去 Burp 中找到登陆的 GET 请求,把请求发送到 Repeater 模块中,去除 User-Agent:,然后输入 `'`s 然后运行后观察 MYSQL 语法报错然后发现存在 SQL 注入漏洞.
+登录后去 Burp 中找到登录的 GET 请求,把请求发送到 Repeater 模块中,去除 User-Agent:,然后输入 `'`s 然后运行后观察 MYSQL 语法报错然后发现存在 SQL 注入漏洞.
 
 ![](../../../../../assets/img/Security/RedTeam/Web安全/靶场/pikachu/55.png)
 

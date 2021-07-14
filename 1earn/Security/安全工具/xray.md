@@ -41,7 +41,7 @@ xray ws -u http://testphp.vulnweb.com --html-output report.html
 
 **批量poc**
 ```bash
-xray ws -p /pentest/xray/pocs/\* -u http://testphp.vulnweb.com --html-output report.html
+xray ws -p /pentest/xray/pocs/\* --url-file target.txt --html-output report.html
 ```
 
 **指定poc**

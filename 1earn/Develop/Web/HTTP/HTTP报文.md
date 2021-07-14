@@ -2,7 +2,7 @@
 
 ---
 
-# 基础
+## 基础
 
 HTTP 请求报文由3部分组成（请求行+请求头+请求体）：
 
@@ -45,11 +45,11 @@ HTTP 的响应报文也由三部分组成（响应行+响应头+响应体）：
 - **404 Not Found**  你最不希望看到的，即找不到页面。如你在 google 上找到一个页面，点击这个链接返回 404，表示这个页面已经被网站删除了，google 那边的记录只是美好的回忆。
 - **500 Internal Server Error**  看到这个错误，你就应该查查服务端的日志了，肯定抛出了一堆异常，别睡了，起来改 BUG 去吧！
 
-更多关于状态码参考 [Speed-Web](../Speed-Web.md#响应状态码) 响应状态码部分
+更多关于状态码参考 [HTTP状态码](./HTTP状态码.md)
 
 ---
 
-# 请求方法
+## 请求方法
 
 ---
 
@@ -71,9 +71,9 @@ HTTP1.1 新增了六种请求方法：OPTIONS、PUT、PATCH、DELETE、TRACE 和
 
 ---
 
-# HTTP headers
+## HTTP headers
 
-**Reference**
+**Source & Reference**
 - [HTTP头部详解](https://blog.csdn.net/YLBF_DEV/article/details/50266447)
 - [HTTP 响应头信息](https://www.runoob.com/http/http-header-fields.html)
 - [HTTP 请求头中的 X-Forwarded-For](https://imququ.com/post/x-forwarded-for-header-in-http.html)
@@ -83,7 +83,7 @@ HTTP1.1 新增了六种请求方法：OPTIONS、PUT、PATCH、DELETE、TRACE 和
 
 通常 HTTP 消息包括客户机向服务器的请求消息和服务器向客户机的响应消息。这两种类型的消息由一个起始行，一个或者多个头域，一个只是头域结束的空行和可选的消息体组成。HTTP 的头域包括通用头，请求头，响应头和实体头四个部分。每个头域由一个域名，冒号（:）和域值三部分组成。域名是大小写无关的，域值前可以添加任何数量的空格符，头域可以被扩展为多行，在每行开始处，使用至少一个空格或制表符。
 
-## 通用头域
+### 通用头域
 
 通用头域包含请求和响应消息都支持的头域，通用头域包含 `Cache-Control`、 `Connection`、`Date`、`Pragma`、`Transfer-Encoding`、`Upgrade`、`Via`。对通用头域的扩展要求通讯双方都支持此扩展，如果存在不支持的通用头域，一般将会作为实体头域处理。下面简单介绍几个在 UPnP 消息中使用的通用头域。
 
@@ -127,7 +127,7 @@ Connection 表示连接状态
 
 ---
 
-## 请求消息(请求头)
+### 请求消息(请求头)
 
 请求消息的第一行为下面的格式：Method Request-URI HTTP-Version
 
@@ -169,7 +169,7 @@ Range:bytes=554554-
 
 ---
 
-## 响应消息(响应头)
+### 响应消息(响应头)
 
 响应信息如内容类型，类型的长度，服务器信息，设置 Cookie
 
@@ -205,7 +205,7 @@ Location 响应头用于重定向接收者到一个新 URI 地址。Server 响�
 
 ---
 
-## 实体消息(实体头和实体)
+### 实体消息(实体头和实体)
 
 请求消息和响应消息都可以包含实体信息，实体信息一般由实体头域和实体组成。
 
@@ -246,7 +246,7 @@ Remote Address 无法伪造，因为建立 TCP 连接需要三次握手，如果
 
 ---
 
-## 实例
+### 实例
 
 **HTTP 请求消息头部实例**
 ```
@@ -282,7 +282,7 @@ Connection：close
 
 ---
 
-## 头部详解
+### 头部详解
 
 **Accept**
 
@@ -477,7 +477,7 @@ WEB 服务器用该头部的内容告诉 Cache 服务器，在什么条件下才
 
 ---
 
-# POST 请求数据提交格式
+## POST 请求数据提交格式
 
 服务端通常是根据请求头（headers）中的 Content-Type 字段来获知请求中的消息主体是用何种方式编码，再对主体进行解析。所以说到 POST 提交数据方案，包含了 Content-Type 和消息主体编码方式两部分。
 
@@ -548,6 +548,7 @@ Content-Transfer-Encoding: binary
 
 ---
 
-**Reference**
+## Source & Reference
+
 - [HTTP请求行、请求头、请求体详解](https://blog.csdn.net/u010256388/article/details/68491509)
 - [Content-Disposition](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Disposition)

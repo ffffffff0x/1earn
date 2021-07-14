@@ -4469,6 +4469,45 @@ cpan -T [module]  # 忽略测试项安装
 
 ---
 
+## PHP
+
+<p align="center">
+    <img src="../../../assets/img/logo/php.svg" width="15%">
+</p>
+
+
+**安装**
+```bash
+# 安装必要的软件包
+apt-get install -y php php-cli php-zip
+```
+
+## composer
+
+Composer 是 PHP 的一个依赖管理工具。我们可以在项目中声明所依赖的外部工具库，Composer 会帮你安装这些依赖的库文件，有了它，我们就可以很轻松的使用一个命令将其他人的优秀代码引用到我们的项目中来。
+
+**安装**
+```bash
+# 使用php cli toll下载Composer安装脚本
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+
+# 在/usr/local/bin目录中安装Composer
+apt-get composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# 验证安装
+composer
+```
+
+**使用**
+```bash
+# 以下为 CVE-2017-9841 测试
+apt-get install -y php-xml php-mbstring
+composer require --dev phpunit/phpunit:5.6.2
+php -S localhost:8080 -t .
+```
+
+---
+
 ## Python3
 
 <p align="center">

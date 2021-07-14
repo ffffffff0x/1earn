@@ -48,6 +48,7 @@ find / -name scp
 - [nodauf/Girsh](https://github.com/nodauf/Girsh) - nc 的替代品
 
     ![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/3.png)
+- [WangYihang/Platypus](https://github.com/WangYihang/Platypus)
 
 **bash**
 - tcp

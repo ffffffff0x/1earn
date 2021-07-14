@@ -2,7 +2,7 @@
 
 ---
 
-# 概述
+## 概述
 
 XML 用于标记电子文件使其具有结构性的标记语言，可以用来标记数据、定义数据类型，是一种允许用户对自己的标记语言进行定义的源语言。XML 文档结构包括 XML 声明、DTD 文档类型定义（可选）、文档元素。
 
@@ -32,7 +32,7 @@ XML 无所不在.
 
 ---
 
-## 用途
+### 用途
 
 XML 应用于 Web 开发的许多方面，常用于简化数据的存储和共享。
 
@@ -84,7 +84,7 @@ XML 数据以文本格式存储。这使得 XML 在不损失数据的情况下�
 
 ---
 
-## XML 和 HTML 之间的差异
+### XML 和 HTML 之间的差异
 
 XML 和 HTML 为不同的目的而设计：
 - XML 被设计用来传输和存储数据，其焦点是数据的内容。
@@ -104,7 +104,7 @@ XML 不是对 HTML 的替代
 
 ---
 
-# 语法
+## 语法
 
 XML 的语法规则很简单，且很有逻辑。这些规则很容易学习，也很容易使用。
 
@@ -139,6 +139,8 @@ XML 声明文件的可选部分，如果存在需要放在文档的第一行，�
 以上实例包含 XML 版本（
 
 UTF-8 也是 HTML5, CSS, JavaScript, PHP, 和 SQL 的默认编码。
+
+如果以类似 `<!DOCTYPE note SYSTEM "book.dtd">` 声明的是文档定义类型（DTD：Document Type Definition），DTD 是可选的。
 
 **所有的 XML 元素都必须有一个关闭标签**
 
@@ -261,7 +263,7 @@ XML 以 LF 存储换行。
 
 ---
 
-# 树结构
+## 树结构
 
 XML 文档形成了一种树结构，它从"根部"开始，然后扩展到"枝叶"。
 
@@ -341,7 +343,7 @@ XML 文档中的元素形成了一棵文档树。这棵树从根部开始，并�
 
 ---
 
-## XML 文档的构建模块
+### XML 文档的构建模块
 
 所有的 XML 文档（以及 HTML 文档）均由以下简单的构建模块构成：
 - 元素
@@ -378,7 +380,7 @@ XML 文档中的元素形成了一棵文档树。这棵树从根部开始，并�
 
 ---
 
-## 元素
+### 元素
 
 **什么是 XML 元素？**
 
@@ -469,7 +471,7 @@ Don't forget me this weekend!
 
 XML 的优势之一，就是可以在不中断应用程序的情况下进行扩展。
 
-## 属性
+### 属性
 
 XML 元素具有属性，类似 HTML。
 
@@ -612,7 +614,7 @@ body="Don't forget me this weekend!">
 
 ---
 
-# 格式验证
+## 格式验证
 
 拥有正确语法的 XML 被称为"形式良好"的 XML。
 
@@ -667,7 +669,7 @@ W3C 支持一种基于 XML 的 DTD 代替者，它名为 XML Schema：
 
 ---
 
-## 查看 XML 文件
+### 查看 XML 文件
 
 在所有主流的浏览器中，均能够查看原始的 XML 文件。
 
@@ -761,9 +763,9 @@ XSLT 文件
 
 ---
 
-# XML JavaScript
+## XML JavaScript
 
-## XML HTTP Request
+### XML HTTP Request
 
 **XMLHttpRequest 对象**
 
@@ -783,7 +785,7 @@ xmlhttp=new XMLHttpRequest();
 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 ```
 
-## XML Parser
+### XML Parser
 
 所有现代浏览器都有内建的 XML 解析器。
 
@@ -837,7 +839,7 @@ xmlDoc.loadXML(txt);
 
 ---
 
-## XML DOM
+### XML DOM
 
 XML DOM（XML Document Object Model）定义了访问和操作 XML 文档的标准方法。
 
@@ -931,5 +933,6 @@ document.getElementById("message").innerHTML=xmlDoc.getElementsByTagName("body")
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [XML 教程](https://www.runoob.com/xml/xml-tutorial.html)

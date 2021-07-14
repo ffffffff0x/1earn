@@ -755,7 +755,7 @@ net.ipv4.icmp_echo_ignore_all=1
 
     3. 然后在服务器上,你的用户目录下,新建 `.ssh` 文件夹,并将该文件夹的权限设为 700
         ```bash
-        cd /
+        cd
         mkdir .ssh
         chmod 700 .ssh
         ```

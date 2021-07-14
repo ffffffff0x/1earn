@@ -98,6 +98,7 @@
 - [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
 - [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
+- [aurebesh.js – Translate JavaScript to Other Writing Systems](https://aem1k.com/aurebesh.js/)
 
 **Tips**
 - **Firefox 关闭 xss 过滤器**

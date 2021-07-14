@@ -10,6 +10,7 @@
 
 **文章**
 - [安利一款还不错的开源工具—Nuclei](https://mp.weixin.qq.com/s/C_-FRZMqF4ifzlx-ij4iIQ)
+- [projectdiscovery之nuclei源码阅读](https://mp.weixin.qq.com/s/zedeOp8ywOohqogCOWTpbA)
 
 ---
 

@@ -19,6 +19,12 @@ Cobalt Strike 是一款常用于后渗透的神器，这个工具以团队作为
 **官网**
 - https://www.cobaltstrike.com/
 
+**Fofa**
+
+```
+cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
+```
+
 **教程**
 - [aleenzz/Cobalt_Strike_wiki](https://github.com/aleenzz/Cobalt_Strike_wiki)
 - [Cobalt Strike 4.0 手册翻译](https://blog.ateam.qianxin.com/post/cobalt-strike-40-shou-ce-fan-yi-2019-nian-12-yue-2-ri-geng-xin-ban-ben/)

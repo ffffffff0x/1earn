@@ -348,6 +348,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 **POC | Payload | exp**
 - [Ridter/cve-2020-0688](https://github.com/Ridter/cve-2020-0688)
 - [random-robbie/cve-2020-0688](https://github.com/random-robbie/cve-2020-0688)
+- [zcgonvh/CVE-2020-0688](https://github.com/zcgonvh/CVE-2020-0688)
 
 ---
 
@@ -371,6 +372,13 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 **POC | Payload | exp**
 - https://srcincite.io/pocs/cve-2020-16875.py.txt
+
+---
+
+## CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞
+
+**文章**
+- [CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞 POC](https://mp.weixin.qq.com/s/LMUMmuGfT3nmKN88O5hBAA)
 
 ---
 
@@ -404,7 +412,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 - [hausec/ProxyLogon](https://github.com/hausec/ProxyLogon)
 - [dwisiswant0/proxylogscan](https://github.com/dwisiswant0/proxylogscan)
 - [sirpedrotavares/Proxylogon-exploit](https://github.com/sirpedrotavares/Proxylogon-exploit)
-- [charlottelatest/CVE-2021-26855](https://github.com/charlottelatest/CVE-2021-26855)
+- [charlottelatest/CVE-2021-26855](https://github.com/charlottelatest/CVE-2021-26855) - 用户枚举
 - [exp.py](https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/blob/master/Exchange/CVE-2021-26855%20Exchange%20RCE/exp.py)
     ```
     POST /owa/auth/test11.aspx HTTP/1.1
@@ -423,3 +431,5 @@ use exploit/windows/http/exchange_ecp_dlp_policy
     ```
     nmap -p <port> --script http-vuln-cve2021-26855 <target>
     ```
+- [CVE-2021-26855 Exchange RCE](https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/tree/master/Exchange/CVE-2021-26855%20Exchange%20RCE)
+- [p0wershe11/ProxyLogon](https://github.com/p0wershe11/ProxyLogon) - ProxyLogon(CVE-2021-26855+CVE-2021-27065) Exchange Server RCE(SSRF->GetWebShell)

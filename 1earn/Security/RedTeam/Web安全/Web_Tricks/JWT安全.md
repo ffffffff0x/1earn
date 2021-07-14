@@ -13,7 +13,7 @@
 
 **Tips**
 
-搜索 JWT 的正则,来自 以下正则来自 以下内容来自 <sup>[[ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool#tips)]</sup>
+搜索 JWT 的正则,来自 以下正则来自 以下内容来自 <sup>[ [ticarpi/jwt_tool](https://github.com/ticarpi/jwt_tool#tips) ]</sup>
 ```re
 [= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*           稳定的 JWT 版本
 [= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*     所有 JWT 版本（可能误报）

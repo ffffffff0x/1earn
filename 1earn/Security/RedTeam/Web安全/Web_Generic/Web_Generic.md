@@ -35,11 +35,14 @@
     * [idea文件夹泄露](#idea文件夹泄露)
     * [phpinfo信息泄露](#phpinfo信息泄露)
     * [JS敏感信息泄露](#js敏感信息泄露)
+    * [Swagger_REST_API信息泄露](#Swagger_REST_API信息泄露)
     * [各类APIkey泄露](#各类apikey泄露)
+    * [SOAP泄露](#SOAP泄露)
 
 * **[不安全的输入](#不安全的输入)**
     * [http参数污染](#http参数污染)
     * [CRLF_Injection](#crlf_injection)
+    * [host_Injection](#host_Injection)
     * [SQL_inje](#sql_inje)
     * [XSS](#xss)
     * [XXE](#xxe)
@@ -452,11 +455,14 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## Swagger REST API 信息泄露
+## Swagger_REST_API信息泄露
+
+**相关文章**
+- [关于Swagger-UI下的渗透实战](https://blog.m1kh.com/index.php/archives/403/)
 
 **相关工具**
 - [lijiejie/swagger-exp](https://github.com/lijiejie/swagger-exp)
-- [jayus0821/swagger-hack](https://github.com/jayus0821/swagger-hack) - 自动化爬取并自动测试所有swagger接口
+- [jayus0821/swagger-hack](https://github.com/jayus0821/swagger-hack) - 自动化爬取并自动测试所有 swagger 接口
 
 ---
 
@@ -512,6 +518,15 @@ WEB-INF 主要包含一下文件或目录:
 'ALL_JWT':'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
 ```
 
+## SOAP泄露
+
+**相关文章**
+- [【技术分享】针对SOAP的渗透测试与防护](https://www.anquanke.com/post/id/85410)
+
+**相关工具**
+- [SmartBear/soapui](https://github.com/SmartBear/soapui#build-and-run)
+- [NetSPI/Wsdler](https://github.com/NetSPI/Wsdler) - 用于帮助测试 wsdl 接口的 burp 插件
+
 ---
 
 # 不安全的输入
@@ -535,6 +550,13 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
+
+## host_Injection
+
+**相关文章**
+- [检测到目标url存在框架注入漏洞_HOST注入攻击剖析](https://blog.csdn.net/weixin_39609500/article/details/111349436)
+- [超详细http host注入攻击原理详解及漏洞利用](https://blog.csdn.net/madao1o_o/article/details/107507344)
+- [安服仔小工具-Host注入](https://mp.weixin.qq.com/s/l8deOajHO2-yoSMcAScktA)
 
 ---
 
@@ -583,6 +605,13 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 ---
 
+## 表达式注入
+
+**相关文章**
+- [表达式注入](https://misakikata.github.io/2018/09/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/)
+
+---
+
 # 配置不当
 
 ## 代理配置不当
@@ -624,6 +653,7 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 **相关工具**
 - [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的 CORS 错误配置漏洞的 python 工具
+- [Santandersecurityresearch/corsair_scan](https://github.com/Santandersecurityresearch/corsair_scan)
 
 **相关靶场**
 - [incredibleindishell/CORS_vulnerable_Lab-Without_Database](https://github.com/incredibleindishell/CORS_vulnerable_Lab-Without_Database)

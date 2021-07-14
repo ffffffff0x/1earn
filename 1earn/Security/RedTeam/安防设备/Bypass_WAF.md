@@ -32,6 +32,8 @@
 - [绕过云锁文件读取防护](https://drivertom.blogspot.com/2019/06/lfi.html)
 - [TSRC挑战赛：WAF之SQL注入绕过挑战实录](https://security.tencent.com/index.php/blog/msg/66)
 - [简单绕过waf拿下赌博网站](https://xz.aliyun.com/t/9181) - 利用 JavaScript 转写 php
+- [从shiro-550漏洞品阿里云waf规则引擎](https://mp.weixin.qq.com/s/qF7Jgiev5B7zLEHwGXry3A)
+- [你的扫描器可以绕过防火墙么？（一）](https://paper.seebug.org/1600/)
 
 **导图**
 - WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/WAF绕过思路.png)

@@ -86,6 +86,10 @@ Proxy - Options - Match and Replace - Add
 
 删除 Connection: close 头部 , Proxy - Options - Set response header "Connection: close"
 
+**关闭 http://burp**
+
+Proxy - Options - Miscellaneous - Disable web interface at http://burp
+
 ---
 
 ## 插件

@@ -154,6 +154,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
     grep -EHirn "accesskey|admin|aes|api_key|apikey|checkClientTrusted|crypt|http:|https:|password|pinning|secret|SHA256|SharedPreferences|superuser|token|X509TrustManager|insert into" APKfolder/
     ```
 - [s0md3v/Diggy](https://github.com/s0md3v/Diggy)
+- [kelvinBen/AppInfoScanner](https://github.com/kelvinBen/AppInfoScanner)
 
 ---
 

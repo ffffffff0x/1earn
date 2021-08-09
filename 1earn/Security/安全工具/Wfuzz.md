@@ -24,6 +24,7 @@
 ---
 
 # 选项
+
 ```
 -h/--help : 帮助文档
 --help : 高级帮助文档
@@ -90,6 +91,7 @@ wfuzz -w /usr/share/wfuzz/wordlist/general/common.txt http://testphp.vulnweb.com
 ```
 
 **爆破 URL 中参数**
+
 ```
 wfuzz -z range,0-10 --hl 97 http://testphp.vulnweb.com/listproducts.php?cat=FUZZ
 
@@ -100,6 +102,7 @@ wfuzz -w GET_params_Top99.txt -w LFI_Linux.txt --hh 851 -u http://192.168.141.13
 ```
 
 **爆破指定账号密码**
+
 ```
 wfuzz -v -w test.txt -d "username=admin&password=FUZZ" --hh 206 -u http://192.168.141.137/login.php
 ```

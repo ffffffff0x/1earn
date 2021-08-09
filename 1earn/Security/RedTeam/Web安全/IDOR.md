@@ -381,6 +381,9 @@ wget -d --header="Host: localhost" https://target/
 
 # 接口利用
 
+**相关文章**
+- [安全建设-攻防思路与实践（一）](https://mp.weixin.qq.com/s/mnHGLZ_e3tWkxCL-DPAAvQ)
+
 **相关案例**
 - [$36k Google App Engine RCE](https://www.ezequiel.tech/p/36k-google-app-engine-rce.html)
 

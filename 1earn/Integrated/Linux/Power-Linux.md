@@ -3784,6 +3784,10 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')"
 # 只测试某些数值存取的性能
 ```
 
+**使用教程**
+
+- [reids](../数据库/redis/redis.md)
+
 ---
 
 ### Memcached

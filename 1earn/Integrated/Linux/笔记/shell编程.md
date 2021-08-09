@@ -43,6 +43,10 @@
 **资源教程**
 - [dylanaraps/pure-bash-bible](https://github.com/dylanaraps/pure-bash-bible#get-the-username-of-the-current-user)
 
+**相关文章**
+- [10分钟学会Bash调试](https://mp.weixin.qq.com/s/MQjqu55BN6LqSsIAvevRQA)
+- [如何并发执行Linux命令](https://mp.weixin.qq.com/s/L3u2e-GKl_yL3saJMMFazA)
+
 ---
 
 # 大纲

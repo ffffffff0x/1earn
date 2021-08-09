@@ -698,6 +698,11 @@ mimikatz # !-
 
 # DPAPI
 
+查看目标Windows凭据管理器中是否保存有各种系统连接账密
+```
+cmdkey /l
+```
+
 通过读取 Lsass 进程信息，获取当前系统中的 MasterKey，能获得多个 Master Key file 对应的 MasterKey
 ```
 privilege::debug

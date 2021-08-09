@@ -62,7 +62,6 @@ Ghidra 在加载完成后，会显示该文件的基础信息，如架构、大�
 
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/7.png)
 
-
 ## Listing
 
 也就是中间那块最大的窗口，我们一般把这样的窗口叫做反汇编窗口，主要用来展示地址、opcode、汇编语句等。通过鼠标滚轮或者右边的滑动条来控制上下移动。

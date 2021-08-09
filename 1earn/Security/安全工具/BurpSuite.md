@@ -401,6 +401,7 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 ## Payloads
 
 **Payload Sets 配置 payload 规则**
+
 - Simple list : 这是最简单的 Payload 类型，可以让你配置一个简单的字符串列表作为 Payload。你可以使用文本框和 "添加 "按钮手动添加项目到列表中，也可以从剪贴板中粘贴列表，或者从文件中加载。
 
 - Runtime file : 这个有 Payload 类型可以让你配置一个文件，在运行时从该文件中读取 Payload 字符串。这在需要一个非常大的 Payload 列表时非常有用，可以避免在内存中保留整个列表。每行文件只读一个 Payload，因此 Payload 可能不包含换行字符。

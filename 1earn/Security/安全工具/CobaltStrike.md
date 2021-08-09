@@ -36,6 +36,7 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 - [踩坑记录-DNS Beacon](https://xz.aliyun.com/t/7938)
 - [CS通过CDN上线](https://0x20h.com/p/8dee.html)
 - [渗透利器 Cobalt Strike 在野利用情况专题分析](https://paper.seebug.org/1190/)
+- [为 CobaltStrike TeamServer 加上谷歌二次验证](https://mp.weixin.qq.com/s/AePKPUDnBUr4WbJqvPCleg)
 
 **工具/插件**
 

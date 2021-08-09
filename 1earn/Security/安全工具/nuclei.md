@@ -11,6 +11,9 @@
 **文章**
 - [安利一款还不错的开源工具—Nuclei](https://mp.weixin.qq.com/s/C_-FRZMqF4ifzlx-ij4iIQ)
 - [projectdiscovery之nuclei源码阅读](https://mp.weixin.qq.com/s/zedeOp8ywOohqogCOWTpbA)
+- [Automate Cache Poisoning Vulnerability - Nuclei](https://blog.melbadry9.xyz/fuzzing/nuclei-cache-poisoning)
+- [Exploiting Race conditions with Nuclei](https://blog.projectdiscovery.io/exploiting-race-conditons/)
+- [Writing Network Templates with Nuclei](https://blog.projectdiscovery.io/writing-network-templates-with-nuclei/)
 
 ---
 

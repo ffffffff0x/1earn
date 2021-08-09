@@ -246,7 +246,7 @@ netstat -ano | findstr "xxx"
 **相关工具**
 - [hmoytx/RdpThief_tools](https://github.com/hmoytx/RdpThief_tools) - 窃取 mstsc 中的用户明文凭据
 - [0x09AL/RdpThief](https://github.com/0x09AL/RdpThief)
-- [mimikatz](../../安全工具/Mimikatz.md#dpapi)
+- [mimikatz](../../安全工具/mimikatz.md#dpapi)
 
 ---
 
@@ -354,7 +354,7 @@ gpupdate /force                                             //更新组策略
 
 ### mimikatz
 
-- [mimikatz](../../安全工具/Mimikatz.md)
+- [mimikatz](../../安全工具/mimikatz.md)
 
 ---
 
@@ -462,7 +462,7 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 - [渗透技巧——获取Windows系统下DPAPI中的MasterKey](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%8F%96Windows%E7%B3%BB%E7%BB%9F%E4%B8%8BDPAPI%E4%B8%AD%E7%9A%84MasterKey/)
 
 **相关工具**
-- [mimikatz](../../安全工具/Mimikatz.md#dpapi)
+- [mimikatz](../../安全工具/mimikatz.md#dpapi)
 
 **延长 MasterKey 的有效期**
 ```c
@@ -589,7 +589,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - mimikatz
 
-    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#pth)
+    mimikatz 的 PTH 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#pth)
 
 - wmiexec
     - [Invoke-WMIExec](https://github.com/Kevin-Robertson/Invoke-TheHash)
@@ -735,7 +735,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 **攻击方式**
 - **mimikatz**
 
-    mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#ptk)
+    mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#ptk)
 
 ### NTLM中继
 
@@ -874,7 +874,7 @@ DCSync 的利用条件：获得以下任一用户的权限：
 **利用方法**
 - mimikatz
 
-    - [mimikatz 笔记](../../安全工具/Mimikatz.md#DCSync)
+    - [mimikatz 笔记](../../安全工具/mimikatz.md#DCSync)
 
 - powershell
     - https://gist.github.com/monoxgas/9d238accd969550136db
@@ -1129,7 +1129,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 - **mimikatz**
 
-    mimikatz 的 Silver_Tickets 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#Silver_Tickets)
+    mimikatz 的 Silver_Tickets 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#Silver_Tickets)
 
 - **ktutil**
     ```bash
@@ -1216,7 +1216,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 可以通过使用 mimikatz 的 DCSync 获取伪造黄金票据需要的 krbtgt 账号的 hash。该方法中，mimikatz 会模拟域控，向目标域控请求密码账号，不用登录域控，也不用提取 NTDS.DIT 文件。但是该操作需要域管在或者其他高权限账户下进行。
 
-mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具/Mimikatz.md#Golden_Tickets)
+mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#Golden_Tickets)
 
 **其他途径**
 - https://pentestlab.blog/tag/dcsync/

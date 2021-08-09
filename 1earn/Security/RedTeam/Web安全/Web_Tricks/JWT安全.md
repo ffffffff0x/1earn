@@ -33,6 +33,11 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
 - [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
+- [x1sec/gojwtcrack](https://github.com/x1sec/gojwtcrack)
+    ```
+    gojwtcrack -t token.txt -d ~/SecLists/Passwords/xato-net-10-million-passwords-1000000.txt
+    ```
+- [aress31/jwtcat](https://github.com/aress31/jwtcat)
 
 ---
 

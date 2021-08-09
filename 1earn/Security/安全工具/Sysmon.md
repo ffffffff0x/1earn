@@ -36,6 +36,7 @@ sysmon 特点是用完整的命令行记录下子进程和父进程的创建行�
 ---
 
 # 安装
+
 ```
 Sysmon.exe -i
 ```
@@ -62,23 +63,33 @@ sysmon.exe -u
 -u 卸载服务和驱动
 ```
 
+---
+
 # 查看日志记录
 
 <kbd>Win</kbd>+<kbd>R</kbd> , `eventvwr.msc` , 应用程序和服务日志/Microsof/Windows/Sysmon/Operational
 
 Sysmon 日志默认保存在 `%SystemRoot%\System32\Winevt\Logs\Microsoft-Windows-Sysmon%4Operational.evtx` ，可在事件查看器的日志属性设置保存在远程服务器，或通过其他工具或脚本保存。
 
+---
+
 # DNS记录
 
 DNS 访问记录需要查看事件日志，筛选日志，DNS 查询事件号为 22。利用筛选功能进行过滤。
 
+---
+
 # dump hash
 
-查找日志，GrantedAccess 的值为 0x143A ,是进行了 dump hash 操作.
+查找日志，`GrantedAccess` 的值为 `0x143A` ,是进行了 dump hash 操作.
+
+---
 
 # 后门 Shell
 
 查找 CreateRemoteThread
+
+---
 
 # 案例
 

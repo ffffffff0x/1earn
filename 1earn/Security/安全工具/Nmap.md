@@ -76,6 +76,7 @@ nmap -sC -sV -p$ports -sT --min-rate=1000 <target ip>
 ```
 
 **返回值**
+
 ```
 | 返回状态            | 说明
 | ----------------- | -----
@@ -88,6 +89,7 @@ nmap -sC -sV -p$ports -sT --min-rate=1000 <target ip>
 ```
 
 **Nmap 脚本参数的规则**
+
 ```
 -sC: 等价于 -script=default，使用默认类别的脚本进行扫描。
 -script=: 使用某个或某类脚本进行扫描，支持通配符描述
@@ -99,6 +101,7 @@ nmap -sC -sV -p$ports -sT --min-rate=1000 <target ip>
 ```
 
 **Nmap 脚本执行格式**
+
 ```
 执行单个脚本：nmap -script /path/to/script.nse
 执行多个脚本：nmap -script /path/to/script.nse,/another/path/script2.nse
@@ -174,6 +177,7 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 # 脚本
 
 **脚本类型**
+
 - auth : 与用户认证相关的 NSE 脚本
 - broadcast : 使用广播收集网络信息
 - brute : 暴力破解
@@ -188,6 +192,8 @@ nmap 默认发送一个 ARP 的 PING 数据包,来探测目标主机 1-10000 范
 - safe : 在所有情况下默认为是安全的脚本
 - vuln : 与检测和利用安全漏洞相关的脚本
 - version : 高级系统脚本
+
+---
 
 ## 规避
 

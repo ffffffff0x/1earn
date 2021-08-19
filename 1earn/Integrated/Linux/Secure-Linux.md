@@ -49,19 +49,22 @@
 # 文件
 ## 可疑文件
 
-**最近文件**
+### 最近文件
+
 ```bash
 find / -ctime -2                # 查找72小时内新增的文件
 find ./ -mtime 0 -name "*.jsp"  # 查找24小时内被修改的 JSP 文件
 find / *.jsp -perm 4777         # 查找777的权限的文件
 ```
 
-**临时文件**
+### 临时文件
+
 ```bash
 ls -a /tmp                      # 查看临时目录
 ```
 
-**配置文件**
+### 配置文件
+
 ```bash
 strings /usr/sbin/sshd | egrep '[1-9]{1,3}.[1-9]{1,3}.'    # 分析 sshd 文件，是否包括IP信息
 ```
@@ -314,7 +317,7 @@ ext3grep /dev/sda3 --restore-all
 # 系统
 ## 密码重置
 
-**centos7**
+### centos7
 
 1. 在启动菜单选择启动内核,按 e 编辑,找到 rhgb quiet 一行,把 `rhgb quiet` 替换为 `init=/bin/bash` (临时生效)
 2. 按 `CTRL+X` 进入单用户模式
@@ -323,7 +326,7 @@ ext3grep /dev/sda3 --restore-all
 5. 最后,执行如下命令更新 SELinux: `touch /.autorelabel`
 6. 进入正常模式: `exec /sbin/init`  现在可以使用新设置的 root 密码登录了.
 
-**Ubuntu14**
+### Ubuntu14
 
 - 方案一
     1. 重启电脑长按 shift 键直到进入进入 GRUB 引导模式，选择第二行 Ubuntu 高级选项, 选中直接回车
@@ -342,39 +345,62 @@ ext3grep /dev/sda3 --restore-all
 
 ## 会话
 
-**查**
+### 查
+
 ```bash
 who     # 查看当前登录用户
 w       # 查看登录用户行为
 last    # 查看登录用户历史
 ```
 
-**防**
+### 防
+
 ```bash
 pkill -u linfengfeiye   # 直接剔除用户
 ps -ef| grep pts/0      # 得到用户登录相应的进程号 pid 后执行
 kill -9 pid             # 安全剔除用户
 ```
 
-**修改账户超时值,设置自动注销时间**
+### 修改账户超时值,设置自动注销时间
+
 ```
 vim /etc/profile
 
 TMOUT=600
 ```
 
-**命令记录**
+### 命令记录
 
 ```bash
 histroy                 # 查看 root 的历史命令
 ```
 进入 `/home` 各帐号目录下的 `.bash_history` 查看普通帐号的历史命令
 
+**history优化**
+```bash
+# 保存1万条命令
+sed -i 's/^HISTSIZE=1000/HISTSIZE=10000/g' /etc/profile
+
+# 记录IP，在 /etc/profile 的文件尾部添加如下行数配置信息
+USER_IP=`who -u am i 2>/dev/null | awk '{print $NF}' | sed -e 's/[()]//g'`
+if [ "$USER_IP" = "" ]
+then
+USER_IP=`hostname`
+fi
+export HISTTIMEFORMAT="%F %T $USER_IP `whoami` "
+shopt -s histappend
+export PROMPT_COMMAND="history -a"
+
+# 让配置生效
+source /etc/profile
+```
+
 ---
 
 ## 开机启动
 
-**查看开机启动服务**
+### 查看开机启动服务
+
 ```bash
 chkconfig                   # 查看开机启动服务命令
 chkconfig --list | grep "3:启用\|3:开\|3:on\|5:启用\|5:开\|5:on"
@@ -386,7 +412,8 @@ ls /etc/rc.d/rc[0~6].d
 runlevel                    # 查看运行级别命令
 ```
 
-**查看计划任务**
+### 查看计划任务
+
 ```bash
 crontab -l                  # 计划任务列表
 ls -alh /var/spool/cron     # 默认编写的 crontab 文件会保存在 /var/spool/cron/用户名 下
@@ -406,7 +433,7 @@ cat /var/spool/cron/crontabs/root
 
 ## 账号
 
-**简单查找**
+### 异常查找
 ```bash
 awk -F: '{if($3==0||$4==0)print $1}' /etc/passwd            # 查看 UID\GID 为0的帐号
 awk -F: '{if($7!="/usr/sbin/nologin"&&$7!="/sbin/nologin")print $1}' /etc/passwd # 查看能够登录的帐号
@@ -416,18 +443,12 @@ lastb                                                       # 显示用户错误
 users                                                       # 打印当前登录的用户，每个用户名对应一个登录会话。如果一个用户不止一个登录会话，其用户名显示相同次数
 ```
 
+### 异常设置
+
 **/etc/passwd**
 - 若用户 ID=0,则表示该用户拥有超级用户的权限
 - 检查是否有多个 ID=0
 - 禁用或删除多余的账号
-
-**设置账户锁定登录失败锁定次数、锁定时间**
-```bash
-vim /etc/pam.d/system-auth
-
-auth required pam_tally.so onerr=fail deny=6 unlock_time=300  # 设置为密码连续输错6次,锁定时间300秒
-auth required pam_tally.so deny=2 unlock_time=60 even_day_root root_unlock_time=60
-```
 
 **/etc/login.defs**
 ```bash
@@ -437,7 +458,25 @@ PASS_MIN_LEN    7               # 密码的最小长度
 PASS_WARN_AGE   9               # 密码过期前多少天开始提示
 ```
 
-**安全审计功能**
+### 当查到异常用户时,需要立即禁用
+```bash
+usermod -L user     # 禁用帐号，帐号无法登录，/etc/shadow第二栏为!开头
+userdel user        # 删除user用户
+userdel -r admin    # 将删除user用户，并且将/home目录下的admin目录一并删除
+```
+
+### 安全配置
+
+**设置账户锁定登录失败锁定次数、锁定时间**
+```bash
+vim /etc/pam.d/system-auth
+
+auth required pam_tally.so onerr=fail deny=6 unlock_time=300  # 设置为密码连续输错6次,锁定时间300秒
+auth required pam_tally.so deny=2 unlock_time=60 even_day_root root_unlock_time=60
+```
+
+### 安全审计
+
 ```bash
 ps -ef | grep auditd            # 查看是否开启系统安全审计功能
 more /etc/audit/audit.rules     # 查看审计的规则文件
@@ -471,17 +510,20 @@ more /var/log/audit/audit.log   # 查看审计日志
 
 ## 进程
 
-**进程定位**
+### 进程定位
+
 ```bash
 ps -aux         # 列出所有进程以及相关信息命令
 ps -ef
+service --status-all | grep running
 top             # 总览系统全面信息命令
 pidof name      # 定位程序的 pid
 pidof -x name   # 定位脚本的 pid
 lsof -g gid     # 寻找恶意文件关联的 lib 文件
 ```
 
-**进程限制**
+### 进程限制
+
 ```bash
 ulimit -u 20    # 临时性允许用户最多创建 20 个进程,预防类似 fork 炸弹
 ```
@@ -491,30 +533,27 @@ vim /etc/security/limits.conf
     user1 - nproc 20  # 退出后重新登录,就会发现最大进程数已经更改为 20 了
 ```
 
-**负载**
-- **文章**
-    - [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
+### 负载
 
-- **查询负载、进程监控**
-    ```bash
-    ps aux | grep Z                                         # 列出进程表中所有僵尸进程
-    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head   # 获取占用CPU资源最多的10个进程
-    ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
-    ```
+**文章**
+- [Linux系统清除缓存](https://www.cnblogs.com/jiu0821/p/9854704.html)
 
-- **清理缓存**
-    ```bash
-    sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延迟的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
-    echo 1 > /proc/sys/vm/drop_caches   # 清理 pagecache(页面缓存)
-    echo 2 > /proc/sys/vm/drop_caches   # 清理 dentries(目录缓存)和inodes
-    echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
-    sync
-    ```
+**查询负载、进程监控**
 
-**启动项**
+```bash
+ps aux | grep Z                                         # 列出进程表中所有僵尸进程
+ps aux|head -1;ps aux|grep -v PID|sort -rn -k +3|head   # 获取占用CPU资源最多的10个进程
+ps aux|head -1;ps aux|grep -v PID|sort -rn -k +4|head   # 获取占用内存资源最多的10个进程
 ```
-service --status-all | grep running
-chkconfig --list
+
+**清理缓存**
+
+```bash
+sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延迟的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
+echo 1 > /proc/sys/vm/drop_caches   # 清理 pagecache(页面缓存)
+echo 2 > /proc/sys/vm/drop_caches   # 清理 dentries(目录缓存)和inodes
+echo 3 > /proc/sys/vm/drop_caches   # 清理 pagecache、dentries 和 inodes
+sync
 ```
 
 ---
@@ -553,10 +592,10 @@ cp /root/bin/ls  /bin/ # 把 ls 命令复制到 /bin/ 目录,修复文件丢失
 - 内容见 [日志](./笔记/日志.md)
 
 **web日志**
-- 内容见 [取证](../../Security/笔记/BlueTeam/取证.md#中间件服务器程序日志) 中间件服务器程序日志部分
+- 内容见 [取证](../../Security/BlueTeam/取证.md#中间件服务器程序日志) 中间件服务器程序日志部分
 
 **数据库日志**
-- 内容见 [取证](../../Security/笔记/BlueTeam/取证.md#数据库取证) 数据库取证部分
+- 内容见 [取证](../../Security/BlueTeam/取证.md#数据库取证) 数据库取证部分
 
 ---
 
@@ -708,6 +747,12 @@ net.ipv4.icmp_echo_ignore_all=1
     grep 'Accepted' /var/log/secure | awk '{print $11}' | sort | uniq -c | sort -nr
     grep "Accepted " /var/log/secure | awk '{print $1,$2,$3,$9,$11}'
     grep "Accepted " /var/log/secure* | awk '{print $1,$2,$3,$9,$11}'
+    ```
+
+- **私钥**
+    ```bash
+    ll -al /etc/ssh/
+    ll -al /root/.ssh/
     ```
 
 **防**

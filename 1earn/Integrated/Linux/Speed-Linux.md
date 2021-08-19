@@ -384,7 +384,7 @@ cat ~/.mysql_history
 cat ~/.php_history
 ```
 
-**清楚历史记录**
+**清除历史记录**
 ```bash
 history -c
 ```

@@ -1904,7 +1904,7 @@ make && make install
 
 **运行**
 ```bash
-ttyd -p 8080 bash -x
+ttyd -p 8080 bash
 ```
 
 现在访问 http://localhost:8080 即可

@@ -383,6 +383,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 ---
 
 ## CVE-2020-17144 登录后反序列化漏洞
+
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-17144
 
 **影响版本**
@@ -398,6 +399,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 ---
 
 ## Proxylogon && CVE-2021-26855 && 27065
+
 - https://proxylogon.com/
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-26855
 
@@ -433,3 +435,18 @@ use exploit/windows/http/exchange_ecp_dlp_policy
     ```
 - [CVE-2021-26855 Exchange RCE](https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/tree/master/Exchange/CVE-2021-26855%20Exchange%20RCE)
 - [p0wershe11/ProxyLogon](https://github.com/p0wershe11/ProxyLogon) - ProxyLogon(CVE-2021-26855+CVE-2021-27065) Exchange Server RCE(SSRF->GetWebShell)
+- [Flangvik/SharpProxyLogon](https://github.com/Flangvik/SharpProxyLogon)
+
+---
+
+## Proxyshell
+
+**文章**
+- [Exchange SSRF漏洞从proxylogon到proxyshell(一)](https://mp.weixin.qq.com/s/B_5WWNjG110PCS_gHcpR-A)
+- [Exchange proxyshell exp编写(二）](https://mp.weixin.qq.com/s/aEnoBvibp-gkt3qtcOXqAw)
+
+**POC | Payload | exp**
+- [GossiTheDog/scanning](https://github.com/GossiTheDog/scanning)
+- [dmaasland/proxyshell-poc](https://github.com/dmaasland/proxyshell-poc)
+- [Ridter/proxyshell_payload](https://github.com/Ridter/proxyshell_payload)
+- [ktecv2000/ProxyShell](https://github.com/ktecv2000/ProxyShell)

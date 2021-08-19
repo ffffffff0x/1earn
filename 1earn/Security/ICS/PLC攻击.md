@@ -28,7 +28,6 @@ PLC 的关键技术在于其内部固化了一个能解释梯形图语言的程�
 - [西门子S7通信过程及重放攻击分析](https://www.freebuf.com/articles/ics-articles/212283.html)
 - [【工控安全】大工PLC-远程启停攻击实验](https://mp.weixin.qq.com/s/k9tSpQaaeJ7QKSa9cb_bWg)
 - [当PLC偶遇老旧但不乏经典的高级组包工具Hping3](https://www.freebuf.com/vuls/230453.html)
-- [施耐德PLC漏洞历险记](https://www.freebuf.com/articles/ics-articles/234714.html)
 - [PLC攻击类型研究分析](https://www.freebuf.com/articles/ics-articles/238351.html)
 
 **漏洞利用框架**
@@ -94,6 +93,10 @@ OpenPLC 是一个基于易于使用软件的开源可编程逻辑控制器。Ope
 ---
 
 ## Schneider
+
+**相关文章**
+- [施耐德PLC漏洞历险记](https://www.freebuf.com/articles/ics-articles/234714.html)
+- [施耐德PLC认证绕过漏洞分析](https://mp.weixin.qq.com/s/ksK05gpXO57QMRPfztQ4_A)
 
 **Schneider Modicon Remote START/STOP Command**
 ```bash

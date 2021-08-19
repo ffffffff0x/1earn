@@ -49,6 +49,7 @@
 - [谈高效漏洞挖掘之Fuzzing的艺术](https://www.freebuf.com/vuls/221129.html)
 - [密码找回中的套路](https://xz.aliyun.com/t/7977)
 - [登录点测试的那些事](https://xz.aliyun.com/t/8185)
+- [基于业务场景的漏洞挖掘](https://mp.weixin.qq.com/s/a6QvgLFCO4rCS3FRYZ3lug)
 
 **案例**
 - [挖洞经验 | 连接多个漏洞获取管理员访问权限](https://www.freebuf.com/articles/web/177461.html)
@@ -81,6 +82,10 @@
 
 ## 身份认证绕过
 
+**文章**
+- [一个FW-TOKEN鉴权绕过漏洞](https://blog.m1kh.com/index.php/archives/730/)
+- [渗透测试之一波三折](https://blog.m1kh.com/index.php/archives/673/)
+
 **Cookie & Session**
 - 会话固定攻击
 
@@ -101,6 +106,37 @@
     1. 可以使用 burpsuite 的 payload processing 功能,把字典按照加密方式先加密再发包
     2. 用字典生成工具生成加密好的字典,pydictor 内置 encode 功能可以支持
 
+**调式代码**
+    ```
+    00000
+    null
+    %00
+    ```
+
+**修改返回值**
+- 思路
+    ```
+    HTTP/1.1 404 Not Found
+    ...
+    {"code": false}
+
+    HTTP/1.1 404 Not Found
+    ...
+    {"code": true}
+    ```
+
+**修改状态码**
+- 思路
+    ```
+    HTTP/1.1 404 Not Found
+    ...
+    {"code": false}
+
+    HTTP/1.1 200 OK
+    ...
+    {"code": false}
+    ```
+
 ---
 
 ## 密码重置
@@ -109,9 +145,45 @@
 - [换一种姿势挖掘任意用户密码重置漏洞](https://mp.weixin.qq.com/s/asnyHi_CfkRVBtB1Cd1i7Q)
 - [密码重置的那些事](https://xz.aliyun.com/t/8136)
 
+**参数污染**
+- 思路
+    ```
+    POST /reset
+    email=test@mail.com
+
+    # 参数污染
+    email=test@mail.com&email=f8x@mail.com
+    email=test@mail.com,email=f8x@mail.com
+    email=test@mail.com%20email=f8x@mail.com
+    email=test@mail.com|email=f8x@mail.com
+    email=test@mail.com%00email=f8x@mail.com
+
+    # 参数值中没有域
+    email=test
+
+    # 参数值中没有 TLD
+    email=test@mail
+
+    # 使用抄送
+    email=test@mail.com%0a%0dcc:f8x@mail.com
+
+    # json 污染
+    {"email":test@mail.com","f8x@mail.com",“token":"xxxxxxxxxx"}
+    ```
+
 **用户凭证暴力破解**
 
 像是四位或者六位纯数字的验证码,对验证码进行暴破,未作限制的情况下,很快就会得到结果了
+
+- 思路
+    ```
+    POST /reset
+    email=test@mail.com&code=123456
+
+    POST /reset
+    email=test@mail.com&code=$123456$
+    ```
+
 - 案例:
     - [当当网任意用户密码修改漏洞](http://www.anquan.us/static/bugs/wooyun-2012-011833.html)
     - [当当网任意用户密码修改漏洞2](http://www.anquan.us/static/bugs/wooyun-2013-046062.html)
@@ -342,7 +414,7 @@
 ## IP限制绕过
 
 如果登录系统设置了 IP 地址白名单,我们可以通过修改 http 头字段伪造 IP 地址
-- [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/HTTP/Fuzz_head.txt)
+- [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/http/Fuzz_head.txt)
 
 或者直接修改 host 头
 ```
@@ -423,6 +495,7 @@ wget -d --header="Host: localhost" https://target/
     - `userinfo/view.action`
 - 内容注入
     - `userinfo/view?id=123`
+    - `userinfo/view?id=*`
     - `userinfo/view?id=ABC`
     - `userinfo/view?id=123ABC`
     - `userinfo/view?id=123ABC!@#`
@@ -441,6 +514,9 @@ wget -d --header="Host: localhost" https://target/
 - 去 JSON
     - `{"id":xxx}`
     - `id=xxx`
+- 更改请求内容类型
+    - `Content-type: application/xml`
+    - `Content-type: application/json`
 - 通配符
     - `{""id"":""*""}`
 - 尝试执行 JSON 参数污染
@@ -506,6 +582,7 @@ wget -d --header="Host: localhost" https://target/
 
 **相关文章**
 - [刷点赞、刷关注、刷收藏漏洞](https://blog.m1kh.com/index.php/archives/539/)
+- [邮箱炸弹及绕过](https://blog.m1kh.com/index.php/archives/324/)
 
 **恶意注册**
 
@@ -518,6 +595,7 @@ wget -d --header="Host: localhost" https://target/
 - 案例:
     - [一亩田交易网逻辑漏洞(木桶原理)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-094545)
     - [短信轰炸之空格或 \n 绕过](https://laucyun.com/4677c709d3aa2126dec5a91be191a112.html)
+    - [一次有趣的短信轰炸限制绕过](https://blog.m1kh.com/index.php/archives/229/)
 
 **内容编辑**
 

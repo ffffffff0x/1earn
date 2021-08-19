@@ -19,6 +19,7 @@
 * **定位** : 个人维护的安全知识框架
 * **更新时间** : 不定期
 * **项目地址** : https://github.com/No-Github/1earn
+* **学习线路图** : 初学者或想快速构建知识结构请访问 [roadmap](roadmap.md)
 
 ---
 
@@ -37,7 +38,8 @@
                 * [Kioptrix Serial](./1earn/Security/安全资源/靶机/VulnHub/Kioptrix) - Kioptrix 系列靶场,难度简单至中等,推荐初学者挑战
                 * [Mission-Pumpkin](./1earn/Security/安全资源/靶机/VulnHub/Mission-Pumpkin) - 难度适中,偏向于加解密比较多,漏洞利用内容较少
                 * [symfonos Serial](./1earn/Security/安全资源/靶机/VulnHub/symfonos) - 挺有难度的靶场,内容丰富,难度中等,漏洞利用内容很多,推荐有一定经验者挑战
-        * [漏洞复现](https://github.com/No-Github/1earn/tree/master/1earn/Security/%E5%AE%89%E5%85%A8%E8%B5%84%E6%BA%90/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0) - 搭建环境,记录漏洞复现的过程
+            * Wargames
+                * [Bandit](./1earn/Security/安全资源/靶机/Wargames/Bandit/Bandit-WalkThrough.md)
 
     * **BlueTeam**
         * [分析](./1earn/Security/BlueTeam/分析.md) - 分析工具与分析案例
@@ -68,6 +70,7 @@
             * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C) - 分析固件实验
         * 无线电安全
             * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E6%97%A0%E7%BA%BF%E7%94%B5%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C)
+            * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E6%97%A0%E7%BA%BF%E7%94%B5%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C) - 无线电安全实验
         * 硬件安全
             * [Device-Exploits](./1earn/Security/IOT/硬件安全/Device-Exploits.md) - 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
             * [HID](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8/HID) - 和组员制作的 HID 实物记录
@@ -215,6 +218,8 @@
 > 如果 clone 速度太慢,可以先导入码云中(选择从 URL 中导入),再进行 clone ： https://blog.gitee.com/2018/06/05/github_to_gitee/?from=homepage
 
 > 提高 release 速度,可以参考这几篇文章 https://jinfeijie.cn/post-805.html 、https://blog.csdn.net/weixin_44821644/article/details/107574297?utm_source=app
+
+> 现在只需按下句号(.)键，即可启用 web 版 vscode 浏览本项目
 
 ---
 

@@ -109,6 +109,10 @@ netstat -ano | findstr "xxx"
 
     2. 方法二 : `REG add HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /d 0 /t REG_DWORD /f`
 
+- REG 关闭
+
+    - `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal" "Server /v fDenyTSConnections /t REG_DWORD /d 00000001 /f`
+
 - WMIC 开启 3389
     ```
     wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TerminalServiceSetting WHERE (__CLASS !="") CALL SetAllowTSConnections 1
@@ -234,6 +238,12 @@ netstat -ano | findstr "xxx"
 **相关工具**
 - [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History) - 使用 powershell 列出已登录用户或所有用户的 RDP 连接历史记录
 - [Heart-Sky/ListRDPConnections](https://github.com/Heart-Sky/ListRDPConnections) - C# 读取本机对外 RDP 连接记录和其他主机对该主机的连接记录
+
+**登录成功的日志**
+- 事件ID 4624
+
+**登录失败的日志**
+- 事件ID 4625
 
 ---
 

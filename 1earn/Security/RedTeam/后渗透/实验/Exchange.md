@@ -380,6 +380,16 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 **文章**
 - [CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞 POC](https://mp.weixin.qq.com/s/LMUMmuGfT3nmKN88O5hBAA)
 
+**POC | Payload | exp**
+- https://srcincite.io/pocs/cve-2020-17083.ps1.txt
+
+---
+
+## CVE-2020-17143 Microsoft Exchange 信息泄露漏洞
+
+**POC | Payload | exp**
+- https://srcincite.io/pocs/cve-2020-17143.py.txt
+
 ---
 
 ## CVE-2020-17144 登录后反序列化漏洞
@@ -444,6 +454,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 **文章**
 - [Exchange SSRF漏洞从proxylogon到proxyshell(一)](https://mp.weixin.qq.com/s/B_5WWNjG110PCS_gHcpR-A)
 - [Exchange proxyshell exp编写(二）](https://mp.weixin.qq.com/s/aEnoBvibp-gkt3qtcOXqAw)
+- [Exchange-Proxyshell](https://mp.weixin.qq.com/s/GWFsIRlyR7i8nbg6b7kDnA)
 
 **POC | Payload | exp**
 - [GossiTheDog/scanning](https://github.com/GossiTheDog/scanning)

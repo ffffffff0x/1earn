@@ -497,7 +497,7 @@ volatility -f [image] --profile=[profile] filescan | grep -E "zip|txt|doc|pdf"
 
 查看桌面的文件
 ```bash
-volatility -f [image] --profile=[profile] filescan | grep  "Desktop"
+volatility -f [image] --profile=[profile] filescan | grep "Desktop"
 ```
 
 ![](../../../assets/img/Security/安全工具/Volatility/15.png)

@@ -55,6 +55,8 @@
 
 **CTF writup**
 - [USB流量知识点小结](http://www.ga1axy.top/index.php/archives/22/)
+- [记一道鼠标流量分析题](http://www.ga1axy.top/index.php/archives/23/)
+- [记一道比较复杂的USB流量分析题](http://www.ga1axy.top/index.php/archives/10/)
 - [【技术分享】从CTF中学USB流量捕获与解析](https://www.anquanke.com/post/id/85218)
 - [USB流量分析](https://ares-x.com/2017/11/20/USB%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/)
 - [CTF流量分析常见题型(二)-USB流量](https://blog.csdn.net/qq_43625917/article/details/107723635)

@@ -20,7 +20,7 @@
 
 ---
 
-# bash
+## bash
 
 ``` bash
 # 判断当前是否是登陆式或非登陆式 shell
@@ -67,7 +67,7 @@ EOF
 echo -e "\x68\x65\x6c\x6c\x6f"
 ```
 
-## cd
+### cd
 
 **切换到上一个目录**
 ```
@@ -166,7 +166,7 @@ bind "set completion-ignore-case on"
 
 ---
 
-# net
+## net
 
 ```bash
 # 在当前目录起个 8000 端口的 HTTP 服务
@@ -178,7 +178,7 @@ curl ifconfig.me
 
 ---
 
-# shell
+## shell
 
 **fork 炸弹**
 ```bash
@@ -204,7 +204,7 @@ let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xarg
 
 ---
 
-# VIM
+## VIM
 
 ``` bash
 无 root 权限,保存编辑的文件
@@ -213,7 +213,7 @@ let i=`find . -type f | wc -l`/2 ; find . -type f -print0 | shuf -z -n $i | xarg
 
 ---
 
-# 性能
+## 性能
 
 ```bash
 sync    # sync 命令做同步,以确保文件系统的完整性,将所有未写的系统缓冲区写到磁盘中,包含已修改的 i-node、已延的块 I/O 和读写映射文件.否则在释放缓存的过程中,可能会丢失未保存的文件.
@@ -232,7 +232,7 @@ sysctl -w vm.nr_hugepages=128
 
 ---
 
-# 文本
+## 文本
 
 **计算文本文件中的单词出现次数**
 ```bash

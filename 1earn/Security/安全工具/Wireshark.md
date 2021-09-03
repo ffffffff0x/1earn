@@ -92,6 +92,7 @@ not  !      # 没有条件被满足
 ```bash
 http.request.method == "POST"       # POST 请求
 tcp contains "http"                 # 显示 payload 中包括"http"字符串的 tcp 封包.
+http contains "flag"
 http.request.uri contains "online"  # 显示请求的 uri 包括"online"的 http 封包.
 ip.addr == 1.1.1.1                  # IP 为 1.1.1.1 的流量
 
@@ -118,7 +119,7 @@ tcp.port eq 2722
 tcp.port eq 80 or udp.port eq 80
 tcp.dstport == 80                   # 只显 tcp 协议的目标端口 80
 tcp.srcport == 80                   # 只显 tcp 协议的来源端口 80
-
+udp.srcport == 80                   # 筛选udp协议的源端口为80的流量包
 udp.port eq 15000
 ```
 

@@ -16,7 +16,7 @@ httpd 是 apache 开源项目的一部分，如果只需要 web 服务器，现�
 
 ---
 
-# 案例1
+## 案例1
 
 - 配置 http 服务，以虚拟主机的方式建立一个 web 站点;
 - 配置文件名为 virthost.conf，放置在 `/etc/httpd/conf.d` 目录下;
@@ -65,8 +65,8 @@ service httpd start
 
 ---
 
-# 案例2
-## A
+## 案例2
+### A
 
 - 配置 http 服务，以虚拟主机的方式创建 web 站点
 - 将 `/etc/httpd/conf.d/ssl.conf` 重命名为 ssl.conf.bak
@@ -157,7 +157,7 @@ curl http://www.abc.com
 curl https://www.abc.com
 ```
 
-## B
+### B
 
 - 配置 http 服务，以虚拟主机的方式创建 web 站点
 - 将 `/etc/httpd/conf.d/ssl.conf` 重命名为 ssl.conf.bak
@@ -230,7 +230,7 @@ service httpd start
 
 ---
 
-# 目录结构
+## 目录结构
 
 **apache2**
 
@@ -250,7 +250,7 @@ service httpd start
 
 ---
 
-# apache+mod_ssl
+## apache+mod_ssl
 
 - 配置 http+https 服务，建立一个 web 站点;
 
@@ -319,7 +319,7 @@ SELINUX=disabled
 
 ---
 
-# 配置https
+## 配置https
 
 **使用 Let’s Encrypt 直接上 https**
 ```bash
@@ -385,7 +385,7 @@ openssl req -new -key httpd.key -out httpd.csr
 
 ---
 
-# 配置php
+## 配置php
 
 <p align="center">
     <img src="../../../../assets/img/logo/php.svg" width="20%">
@@ -438,7 +438,7 @@ firewall-cmd --reload
 
 访问 `机器相应ip/1.php`
 
-# 泛解析
+## 泛解析
 
 ```bash
 <VirtualHost 192.168.1.1>
@@ -449,6 +449,7 @@ firewall-cmd --reload
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [Linux下Apache与httpd的区别与关系](https://blog.csdn.net/yxfabcdefg/article/details/32324035)
 - [Apache对域名的泛解析方法集锦](https://blog.csdn.net/beyondhjjyt/article/details/8939682)

@@ -67,7 +67,7 @@ typedef struct _IMAGE_SECTION_HEADER {
 
 ---
 
-# DOS 头
+## DOS 头
 
 在我们分析 PE 的之前，还有另外一个头要了解一下，DOS 头，不得不说，微软事儿还是挺多的。
 
@@ -114,7 +114,7 @@ DOS 头结构体的大小是 40 字节，这里边有两个重要的成员，需
 
 ---
 
-# NT头
+## NT头
 
 下面进入正题，在二进制编辑软件上也看到了 PE，这一块就是正式的步入 PE 的范畴。
 
@@ -186,7 +186,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER {
 
 ---
 
-# 段头
+## 段头
 
 PE 的段头直接沿用的 COFF 的段头结构，上边也说过了，我们查看 notepad++ 的段头，可以获得各个段名，以及其信息，这里，我们可以使用一些软件查看，更加方便,这里使用 010 Editor：
 
@@ -194,7 +194,7 @@ PE 的段头直接沿用的 COFF 的段头结构，上边也说过了，我们�
 
 ---
 
-# RVA to RAW
+## RVA to RAW
 
 理解 PE 最重要的一个部分就是理解文件从磁盘到内存地址的映射过程，做逆向的人员，只有熟练地掌握才能跟踪到程序的调用过程和位置，才能分析和寻找漏洞。
 
@@ -218,7 +218,7 @@ RAW -PointToRawData = RVA - VirtualAddress
 
 ---
 
-# IAT
+## IAT
 
 导入地址表的内容与 Windows 操作系统的核心进程，内存，DLL 结构有关。他是一种表格，记录了程序使用哪些库中的哪些函数。
 
@@ -346,7 +346,7 @@ PE 装载器首先搜索 OriginalFirstThunk ，找到之后加载程序迭代搜
 
 ---
 
-# EAT
+## EAT
 
 搞清楚了 IAT 的原理，EAT 就好理解了，长话短说。IAT 是导入的库和函数的表，那么 EAT 就对应于导出，它使不同的应用程序可以调用库文件中提供的函数，为了方便导出函数，就需要保存这些导出信息。
 
@@ -413,5 +413,5 @@ typedef struct _IMAGE_EXPORT_DIRECTORY {
 
 ---
 
-**Source & Reference**
+## Source & Reference
 - [ELF&PE 文件结构分析](https://www.jianshu.com/p/af9766222816)

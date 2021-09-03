@@ -42,6 +42,7 @@
     * [Firewall](#firewall)
     * [禁ping](#禁ping)
     * [SSH](#ssh)
+    * [文件共享](文件共享)
 * [加固](#加固)
 
 ---
@@ -676,6 +677,104 @@ firewall-cmd --reload
 
 ---
 
+## iptable
+
+**查询表中的规则**
+
+```bash
+iptables -t raw -L      # 列出所有 raw 表中的所有规则
+iptables -t mangle -L   # 列出 mangle 表中所有规则
+iptables -t nat -L      # 列出 nat 表中所有规则
+iptables -t filter -L   # 列出 filter 表中所有规则
+```
+
+**查看不同的链中的规则**
+
+```bash
+iptables -L INPUT       # 只看 filter 表中（默认 - t 是 filter 表）input 链的规则
+iptables -vL INPUT      # 只看 filter 表中（默认 - t 是 filter 表）input 链的规则详情
+iptables -nvL INPUT     # 只看 filter 表中（默认 - t 是 filter 表）input 链的规则详情，同时不对 IP 地址进行名称反解析，直接显示 IP
+iptables --line-number -nvL INPUT  # 只看 filter 表中（默认 - t 是 filter 表）input 链的规则详情，同时不对 IP 地址进行名称反解析，直接显示 IP，每行加行标
+```
+
+---
+
+## nftables
+
+**查看规则汇总**
+
+```bash
+nft list tables [<family>]
+nft list table [<family>] <name> [-n] [-a]
+nft list tables  # 列出所有表
+nft list table family table # 列出指定表中的所有链和规则
+nft list table inet filter # 要列出inet簇中f
+nft list chain family table chain  # 列出一个链中的所有规则
+nft list chain inet filter output  # 要列出inet中filter表的output链中的所有规则
+```
+
+**nft表管理**
+
+```bash
+nft add table family table  # 创建一个新的表
+nft list tables  # 列出所有表
+nft list table family table # 列出指定表中的所有链和规则
+nft list table inet filter # 要列出inet簇中filter表中的所有规则
+nft delete table family table  # 删除一个表
+nft flush table family table # 要清空一个表中的所有规则
+```
+
+**nft链管理**
+
+```bash
+nft add chain family table chain   # 将名为chain的常规链添加到名为table的表中
+nft add chain inet filter tcpchain   # 例如，将名为tcpchain的常规链添加到inet簇中名为filter的表中
+nft add chain family table chain { type type hook hook priority priority \; }   # 添加基本链，需要指定钩子和优先级值
+nft list chain family table chain  # 列出一个链中的所有规则
+nft list chain inet filter output  # 要列出inet中filter表的output链中的所有规则
+nft chain family table chain { [ type type hook hook device device priority priority \; policy <policy> \; ] }  # 要编辑一个链，只需按名称调用并定义要更改的规则
+nft chain inet filter input { policy drop \; }   # 将默认表中的input链策略从accept更改为drop
+nft delete chain family table chain # 删除一个链,要删除的链不能包含任何规则或者跳转目标。
+nft flush chain family table chain # 清空一个链的规则
+```
+
+**添加规则**
+
+```bash
+nft add rule family table chain handle handle statement  # 将一条规则添加到链中
+nft insert rule family table chain handle handle statement # 将规则插入到指定位置,如果未指定handle，则规则插入到链的开头。
+```
+
+**删除规则**
+
+```bash
+# 下面命令确定一个规则的句柄，然后删除。--number参数用于查看数字输出，如未解析的IP地址。
+nft --handle --numeric list chain inet filter input
+nft delete rule inet fltrTable input handle 10
+
+# 可以用nft flush table命令清空表中的所有的链。可以用nft flush chain或者nft delete rule命令清空单个链。
+# 第一个命令清空foo表中的所有链。第二个命令清空ip foo表中的bar链。第三个命令删除ip6 foo表bar两种的所有规则。
+nft flush table foo
+nft flush chain foo bar
+nft delete rule ip6 foo bar
+```
+
+**自动重载**
+
+```bash
+清空当前规则集：
+
+# echo "flush ruleset" > /tmp/nftables
+导出当前规则集：
+
+# nft list ruleset >> /tmp/nftables
+可以直接修改/tmp/nftables文件，使更改生效则运行：
+
+# nft -f /tmp/nftables
+```
+
+---
+
 ## 禁ping
 
 **临时性,重启后失效**
@@ -842,6 +941,33 @@ net.ipv4.icmp_echo_ignore_all=1
 
 - **SSH 陷阱**
     - [skeeto/endlessh](https://github.com/skeeto/endlessh) - 蓝队 SSH 陷阱
+
+---
+
+## 文件共享
+
+**NFS服务**
+
+配置文件
+```
+/etc/exports
+```
+
+**TFTP服务**
+
+配置文件
+```
+/etc/default/tftpd-hpa
+
+/etc/xinetd.d/tftp
+```
+
+**samba服务**
+
+配置文件
+```
+/etc/samba/smb.conf
+```
 
 ---
 

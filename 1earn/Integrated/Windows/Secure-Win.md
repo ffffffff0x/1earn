@@ -27,6 +27,7 @@
     * [端口](#端口)
     * [RDP](#rdp)
     * [DNS](#dns)
+    * [windows系统共享](#windows系统共享)
 
 * **[防御密码抓取](#防御密码抓取)**
 
@@ -303,6 +304,7 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 ---
 
 # 网络
+
 ## 端口
 
 查看目前的网络连接，定位可疑的 ESTABLISHED
@@ -397,6 +399,99 @@ windows 8.1 和 windows server 2012 R2 及以上版本的操作系统，可以�
         .\Get-CimDNSCache.ps1 # include file
         Get-CimDNSCache -Name *microsoft* -Type A
         ```
+
+---
+
+## windows系统共享
+
+参考文章: [关键证据检索提取-系统共享检查](https://mp.weixin.qq.com/s/5nVnXMTPIpAu59bycwu5Iw)
+
+**net share 查询**
+
+查看系统中所有共享
+```
+net share
+```
+
+关闭默认共享
+```
+net share IPC$ /del
+```
+
+**wmic share查询**
+
+```
+wmic share get name,path,status
+```
+
+**powershell get-wmiobject查询**
+
+```
+get-wmiobject -class Win32_share
+```
+
+**开启系统默认共享**
+
+```
+# 默认共享开启自动开启，在系统重启的时候自动打开
+reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters" /v AutoShareServer /t REG_DWORD /d 0x01
+reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters" /v AutoShareWks /t REG_DWORD /d 0x01
+
+# IPC$共享开启，设置命名管道设置为0，不限制
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x00
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x00
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x00
+```
+
+**关闭系统共享**
+
+```
+# 默认共享（c$、admin$）关闭（2003取消ipc$方式也是这个）
+reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters" /v AutoShareServer /t REG_DWORD /d 0x00
+reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters" /v AutoShareWks /t REG_DWORD /d 0x00
+```
+
+**限制 ipc$ 共享**
+
+- 通过限制命名空间限制 ipc$ 共享
+
+    IPC$ 限制使用关闭有些服务，必须要求启动 IPC$ 共享命名管道，特别是一些微软出品的应用软件。如微软的 SQL Server 数据库，必须要启用 IPC$ 共享命名管道。否则的话，数据库就无法正常运行。IPC$ 共享命名管道，也是 SQL Server 数据库与微软服务器操作系统无缝集成的一个通道。“HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa”。在这一项内容中，有一个叫做 restrictanonymous 的键值。如果设置为 "1"，一个匿名用户仍然可以连接到 IPC$ 共享，但无法通过这种连接得到列举 SAM 帐号和共享信息的权限；在 Windows 2000 中增加了 "2"，未取得匿名权的用户将不能进行 ipc$ 空连接。建议设置为 1。如果上面所说的主键不存在，就新建一个再改键值。
+    ```
+    reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x01
+    reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x01
+    reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 0x01
+    以上注册表关闭IPC$的方式并不能清除共享，只能限制匿名用户枚举sam用户
+    ```
+
+- 通过临时关闭服务或删除服务对本次启动的服务进行限制
+
+    限制 ipc$ 共享 / 停止 ipc$ 共享基于的服务 server，但是重启仍然会自动开启，根据资料将 HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Services/LanmanServer/Parameters 其中的 AutoShareWks 和 AutoShareServer 的值都改成 0，只能在重启后禁止自动打开默认共享，对于 IPC$ 共享并不会起作用。
+    ```
+    net share ipc$  /delete
+    net stop server
+    ```
+
+---
+
+## 防火墙
+
+**查询所有防火墙配置**
+
+```
+netsh advfirewall show allprofiles  # 查询所有防火墙配置
+```
+
+**查询所有连接安全规则**
+
+```
+netsh> advfirewall consec show rule name=all
+```
+
+**查询所有出入站规则**
+
+```
+netsh advfirewall firewall show rule name=all
+```
 
 ---
 

@@ -2,13 +2,13 @@
 
 ---
 
-# 安装
+## 安装
 
 ```bash
 sudo apt update && sudo apt install ufw
 ```
 
-# 配置及使用
+## 配置及使用
 
 默认情况下，ufw 的配置文件在 `/etc/default/ufw` ，然后用户定义的防火墙规则文件会存在 `/etc/ufw/*.rules` 和 `/lib/ufw/*.rules`
 
@@ -129,5 +129,6 @@ sudo ufw reset
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [Linux 下的防火墙 ufw](http://einverne.github.io/post/2018/04/ufw.html)

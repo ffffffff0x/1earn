@@ -103,7 +103,7 @@
         * [猪圈密码](#猪圈密码)
 
 * **其他编码**
-    * [Brainfuck](#brainfuck)
+    * [Brainfuck/Ook](#brainfuck/ook)
     * [JSfuck](#jsfuck)
     * [颜文字加密](#颜文字加密)
     * [与佛论禅](#与佛论禅)
@@ -257,6 +257,9 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 - http://web.chacuo.net/charsetbase64
 - https://www.base64decode.org/
 
+**图片 base64**
+- [在线图片转Base64编码](https://www.bejson.com/ui/image2base64/)
+
 **base64 隐写**
 - 相关文章
     - [base64隐写](https://www.jianshu.com/p/48fe4dd3e5ce)
@@ -268,13 +271,6 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 ---
 
-### base32
-
-**在线工具**
-- http://tomeko.net/online_tools/base32.php
-
----
-
 ### base16
 
 **在线工具**
@@ -282,10 +278,43 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 ---
 
+### base32
+
+**在线工具**
+- http://tomeko.net/online_tools/base32.php
+- https://gchq.github.io/CyberChef/
+
+---
+
 ### base58
 
 **相关项目**
 - https://github.com/keis/base58
+- https://gchq.github.io/CyberChef/
+
+---
+
+### Base62
+
+**在线工具**
+- https://www.better-converter.com/Encoders-Decoders/Base62-Encode
+- https://gchq.github.io/CyberChef/
+
+---
+
+### Base85
+
+**在线工具**
+- https://www.dcode.fr/ascii-85-encoding
+- https://gchq.github.io/CyberChef/
+
+---
+
+### base91
+
+**在线工具**
+- https://www.better-converter.com/Encoders-Decoders/Base91-Decode
+- https://www.better-converter.com/Encoders-Decoders/Base91-Encode
 
 ---
 
@@ -888,6 +917,10 @@ AES 加密的模式主要有五种：ECB (电子密码本模式)、CBC（密码�
 **在线工具**
 - [AES Encryption  Easily encrypt or decrypt strings or files](http://aes.online-domain-tools.com/)
 - [在线AES加密解密、AES在线加密解密、AES encryption and decryption--查错网](http://tool.chacuo.net/cryptaes)
+- http://tool.chinaz.com/Tools/textencrypt.aspx
+
+**tips**
+- 加密数据存在 `U2Fsd` 头，可能是 aes 加盐
 
 ---
 
@@ -928,6 +961,13 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 ---
 
+### Xtea
+
+**在线工具**
+- http://tool.chacuo.net/cryptxtea
+
+---
+
 ## 非对称性加密算法
 
 公开密钥密码学（英语：Public-key cryptography）也称非对称式密码学（英语：Asymmetric cryptography）是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；公钥用作加密，私钥则用作解密。使用公钥把明文加密后所得的密文，只能用相对应的私钥才能解密并得到原本的明文，最初用来加密的公钥不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。公钥可以公开，可任意向外发布；私钥不可以公开，必须由用户自行严格秘密保管，绝不透过任何途径向任何人提供，也不会透露给被信任的要通信的另一方。
@@ -947,6 +987,7 @@ RSA加密算法是一种非对称加密算法，在公开密钥加密和电子�
 - [RSA算法原理(二)](http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html)
 - [RSA史上最强剖析,从小白变大神,附常用工具使用方法及CTF中RSA典型例题](http://www.freebuf.com/sectool/163781.html)
 - [扩展欧几里得算法](https://zh.wikipedia.org/wiki/%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95)
+- [CTF-RSA总结](https://forum.butian.net/share/478)
 
 ---
 
@@ -1436,6 +1477,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 **爆破密匙**
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-autokey-cipher/
+    ```bash
+    pip install pycipher
+    ```
 
 ---
 
@@ -1853,12 +1897,13 @@ I have deposited in the county of Bedford...
 ---
 
 # 其他编码
-#### Brainfuck
+#### Brainfuck/Ook
 
 **在线工具**
 - http://esoteric.sange.fi/brainfuck/impl/interp/i.html
 - https://www.nayuki.io/page/brainfuck-interpreter-javascript
 - https://www.splitbrain.org/services/ook
+- http://bf.doleczek.pl/
 
 #### JSfuck
 
@@ -1896,3 +1941,8 @@ I have deposited in the county of Bedford...
 
 **在线工具**
 - http://www.megaemoji.com/cn/generators/tadpole/
+
+#### whitespace
+
+**在线工具**
+- http://vii5ard.github.io/whitespace/

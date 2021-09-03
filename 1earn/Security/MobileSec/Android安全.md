@@ -10,9 +10,8 @@
 
 # 抓包方法
 
-**抓取流量**
-- 相关工具
-    - [JZ-Darkal/AndroidHttpCapture](https://github.com/JZ-Darkal/AndroidHttpCapture)
+**相关文章**
+- [太干了，Android 抓包姿势总结！](ProxyToken)
 
 ---
 

@@ -20,6 +20,7 @@
 - [细数微软Exchange的那些高危漏洞](https://mp.weixin.qq.com/s/O9SFufxz0rtAJtcP32giog)
 - [深入Exchange Server在网络渗透下的利用方法](https://www.freebuf.com/articles/web/193132.html)
 - [Exchange在渗透测试中的利用](https://evi1cg.me/archives/Exchange_Hack.html)
+- [Exchange EWS接口的利用](https://www.t00ls.net/thread-62442-1-3.html)
 
 **状况检查**
 - [dpaulson45/HealthChecker](https://github.com/dpaulson45/HealthChecker) - Exchange Server 运行状况检查脚本
@@ -446,6 +447,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 - [CVE-2021-26855 Exchange RCE](https://github.com/mai-lang-chai/Middleware-Vulnerability-detection/tree/master/Exchange/CVE-2021-26855%20Exchange%20RCE)
 - [p0wershe11/ProxyLogon](https://github.com/p0wershe11/ProxyLogon) - ProxyLogon(CVE-2021-26855+CVE-2021-27065) Exchange Server RCE(SSRF->GetWebShell)
 - [Flangvik/SharpProxyLogon](https://github.com/Flangvik/SharpProxyLogon)
+- [Jumbo-WJB/Exchange_SSRF](https://github.com/Jumbo-WJB/Exchange_SSRF)
 
 ---
 
@@ -461,3 +463,10 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 - [dmaasland/proxyshell-poc](https://github.com/dmaasland/proxyshell-poc)
 - [Ridter/proxyshell_payload](https://github.com/Ridter/proxyshell_payload)
 - [ktecv2000/ProxyShell](https://github.com/ktecv2000/ProxyShell)
+
+---
+
+## ProxyToken
+
+**文章**
+- [PROXYTOKEN: AN AUTHENTICATION BYPASS IN MICROSOFT EXCHANGE SERVER](https://www.zerodayinitiative.com/blog/2021/8/30/proxytoken-an-authentication-bypass-in-microsoft-exchange-server)

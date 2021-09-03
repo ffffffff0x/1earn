@@ -109,6 +109,16 @@ AWD
 
 ---
 
+# 知识点学习
+
+## Misc
+
+- [ctf001 | Glun](http://www.glun.top/2020/05/23/ctf01/)
+- [ctf03 | Glun](http://www.glun.top/2020/10/13/ctf03/)
+- [CTF-MISC总结](https://ares-x.com/2017/11/07/CTF-Misc%E6%80%BB%E7%BB%93/)
+
+---
+
 # 赛事运营
 
 ## AWD
@@ -168,10 +178,12 @@ AWD
 **2019**
 - [2019 第三届强网杯 Web 部分 WriteUp + 复现环境](https://www.zhaoj.in/read-5873.html)
 - [强网杯Web部分writeup](https://www.freebuf.com/articles/network/205789.html)
+- [2019强网杯部分题目记录](https://www.kkzevip.com/?post=47)
 
 **2019 广东强网杯**
 - [2019广东强网杯Writeup(MISC)](https://sec.thief.one/article_content?a_id=bd1f559d1f0ddfe66b69d767a0b6cb5a)
 - [广东省第三届强网杯Writeup](https://www.hotbak.net/key/2019%E5%B9%BF%E4%B8%9C%E5%BC%BA%E7%BD%91%E6%9D%AFWriteupMISC.html)
+- [广东省强网杯部分题目Writeup](https://www.t00ls.net/viewthread.php?tid=52782&highlight=writeup)
 
 **2019 强网杯拟态挑战赛**
 - [MIMIC Defense CTF 2019 final writeup](https://paper.seebug.org/932/)
@@ -227,6 +239,7 @@ AWD
     - [2020网鼎杯玄武组部分题writeup（签到/vulcrack/java/js_on）](https://blog.csdn.net/w1590191166/article/details/106314499/)
     - [2020网鼎杯-玄武组-部分WriteUp](https://mp.weixin.qq.com/s/xNDUYkxCIEJuvHJWQwtflw)
     - [【CTF】网鼎杯【玄武组】CTF部分题](https://blog.csdn.net/God_XiangYu/article/details/106306773)
+    - [网鼎杯（玄武）web2 WriteUp](https://www.t00ls.net/viewthread.php?tid=56484&highlight=writeup)
 
 **2018**
 - 青龙组

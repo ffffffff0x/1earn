@@ -2,7 +2,7 @@
 
 ---
 
-# 反向代理
+## 反向代理
 
 反向代理(Reverse Proxy)方式是指以代理服务器来接受 internet 上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给 internet 上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器.
 
@@ -40,7 +40,7 @@ server {
 
 ---
 
-# 添加https
+## 添加https
 ```bash
 openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key    # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
 
@@ -70,13 +70,13 @@ server {
         }
     }
 ```
-```
+```bash
 systemctl restart nginx
 ```
 
 ---
 
-# 添加PHP环境支持
+## 添加PHP环境支持
 
 **Centos**
 ```bash
@@ -148,7 +148,7 @@ server {
 }
 ```
 
-```
+```bash
 service nginx restart
 service firewalld stop
 ```
@@ -186,7 +186,7 @@ server {
 }
 ```
 
-```
+```bash
 service nginx restart
 service firewalld stop
 ```

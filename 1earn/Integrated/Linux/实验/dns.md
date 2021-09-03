@@ -2,7 +2,7 @@
 
 ---
 
-# 基本配置
+## 基本配置
 
 - www.abc.com 解析为 192.168.192.1
 - 192.168.192.1 解析为 www.abc.com
@@ -73,7 +73,7 @@ systemctl restart named
 
 ---
 
-## 案例 1
+### 案例 1
 
 配置 DNS 服务，将相关主机名添加 A 记录，分别为 www.abc.com、ftp.abc.com、vpn.abc.com、web.abc.com;
 
@@ -177,7 +177,7 @@ service named start
 
 ---
 
-## 案例 2
+### 案例 2
 
 - 监听所有地址;
 - 允许所有机器查询;
@@ -301,7 +301,7 @@ firewall-cmd --reload
 
 ---
 
-## 案例 3
+### 案例 3
 
 - 监听当前主机的所有地址;
 - 允许所有主机查询和递归查询;
@@ -401,7 +401,7 @@ firewall-cmd --reload
 ---
 
 
-## 案例 4
+### 案例 4
 
 - 配置 abc.com 域的从 DNS 服务，主 DNS 为主机 A;
 - 配置 0.16.172 反向域的从 DNS 服务，主 DNS 为主机 A;

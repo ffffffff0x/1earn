@@ -4,7 +4,7 @@
 
 LAMP 指的 Linux(操作系统)、ApacheHTTP 服务器，MySQL(有时也指 MariaDB，数据库软件) 和 PHP(有时也是指 Perl 或 Python) 的第一个字母，一般用来建立 web 应用平台
 
-# MairaDB
+## MairaDB
 
 **安装**
 ```
@@ -31,7 +31,7 @@ firewall-cmd --reload
 
 ---
 
-# Apache+PHP
+## Apache+PHP
 
 **安装**
 ```bash
@@ -58,7 +58,7 @@ firewall-cmd --reload
 
 ---
 
-# phpmyadmin
+## phpmyadmin
 
 **配置数据库**
 ```bash

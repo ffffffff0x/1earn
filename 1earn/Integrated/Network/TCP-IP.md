@@ -41,9 +41,11 @@
 # 传输层
 ## TCP
 
+TCP 是面向连接的
 
 ## UDP
 
+UDP 是无连接的
 
 ---
 
@@ -132,6 +134,7 @@ ICMP 协议是 Internet 控制报文协议。它属于网络层协议，是 TCP/
 
 ## ARP
 
+![](../../../assets/img/Integrated/Network/速查/7.png)
 
 ## RARP
 

@@ -4,7 +4,7 @@
 
 ---
 
-# ubuntu
+## ubuntu
 
 **安装**
 
@@ -46,7 +46,7 @@ wget http://database.clamav.net/daily.cvd
 
 ---
 
-# centos7
+## centos7
 
 ```bash
 yum -y install epel-release             # 安装epel
@@ -67,7 +67,7 @@ yum install -y clamav clamav-update     # 安装ClamAV
 
 ---
 
-# Fedora
+## Fedora
 
 使用 yum 直接安装
 
@@ -91,7 +91,7 @@ yum install -y clamav clamav-update     # 安装ClamAV
 
 ---
 
-# debian
+## debian
 
 安装
 

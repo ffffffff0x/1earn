@@ -579,7 +579,7 @@ WindowsServer 2012及更高版本使用了引入了一个名为“Protected User
 
 可以通过执行以下PowerShell命令将帐户添加到“受保护的用户”组中:
 ```
-Add-ADGroupMember –Identity 'Protected Users' –Members administrator
+Add-ADGroupMember -Identity 'Protected Users' -Members administrator
 ```
 
 **Credential Guard**

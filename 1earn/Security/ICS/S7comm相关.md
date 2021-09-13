@@ -771,9 +771,9 @@ Parameter 结构如下
 
 ---
 
-# 错误类型
+## 错误类型
 
-## 头结构的错误类型
+### 头结构的错误类型
 
 S7comm 头结构中常见的错误类型，如下表：
 | Hex  | Value                       | 描述           |
@@ -786,7 +786,7 @@ S7comm 头结构中常见的错误类型，如下表：
 | 0x85 | Error on supplies           | 请求错误       |
 | 0x87 | Access error                | 访问错误       |
 
-## 参数中的错误码(Error code in parameter part)
+### 参数中的错误码(Error code in parameter part)
 
 常见的 S7Comm 参数中的错误码，如下表：
 | Hex    | Value                                          | 描述           |
@@ -808,9 +808,9 @@ S7comm 头结构中常见的错误类型，如下表：
 
 ---
 
-# 功能码
+## 功能码
 
-## JOB和ACK_DATA的功能码
+### JOB和ACK_DATA的功能码
 
 当 PDU 类型是 JOB 和 ACK_DATA 时，常见的功能码，如下表：
 | Hex  | Value               | 值           |
@@ -828,7 +828,7 @@ S7comm 头结构中常见的错误类型，如下表：
 | 0x28 | PI-Service          | 程序调用服务 |
 | 0x29 | PLC Stop            | 关闭 PLC      |
 
-## UserData的功能组
+### UserData的功能组
 
 UserData 中常见的功能组，如下表：
 | 值  | 功能组                                |
@@ -845,7 +845,7 @@ UserData 中常见的功能组，如下表：
 
 ---
 
-# 区域(Area names)
+## 区域(Area names)
 
 PLC 中常见的区域类型，如下表：
 | Hex  | Value                        | 值                   |
@@ -869,9 +869,9 @@ PLC 中常见的区域类型，如下表：
 
 ---
 
-# 数据传输大小(Transport Sizes )
+## 数据传输大小(Transport Sizes )
 
-## Item数据的传输大小(Transport sizes in item data)
+### Item数据的传输大小(Transport sizes in item data)
 
 下表是 Item 数据的传输大小：
 | Hex | 值            | 描述                 |
@@ -894,7 +894,7 @@ PLC 中常见的区域类型，如下表：
 | 31  | IEC COUNTER   | IEC 计数器            |
 | 32  | HS COUNTER    | HS 计数器             |
 
-## 数据的传输大小(Transport sizes in data)
+### 数据的传输大小(Transport sizes in data)
 
 下表是数据部分中的值得传输大小：
 | Hex | 值              | 描述                                   |
@@ -909,7 +909,7 @@ PLC 中常见的区域类型，如下表：
 
 ---
 
-# 变量的结构标识(Syntax Ids of variable specification)
+## 变量的结构标识(Syntax Ids of variable specification)
 
 下表是常见的变量的结构标识：
 | Hex  | 值             | 描述                                          |
@@ -928,7 +928,7 @@ PLC 中常见的区域类型，如下表：
 
 ---
 
-# 返回码(Return Code)
+## 返回码(Return Code)
 
 响应报文中 Data 部分的常见返回码，如下表：
 | Hex  | 值                               | 描述                                  |
@@ -944,7 +944,7 @@ PLC 中常见的区域类型，如下表：
 
 ---
 
-# 块(Block)
+## 块(Block)
 
 在西门子设备中有8种不同类型的功能块：
 | Hex    | 类型                                  | 描述                                                                                                   |
@@ -962,7 +962,7 @@ OB、FB、SFB、FC 和 SFC 都包含部分程序，因此也称作逻辑块。�
 
 ---
 
-# 程序调用服务名(PI service names)
+## 程序调用服务名(PI service names)
 
 下表是程序调用服务名称及其相关参数：
 | 服务名    | 描述                                                                 |
@@ -975,7 +975,7 @@ OB、FB、SFB、FC 和 SFC 都包含部分程序，因此也称作逻辑块。�
 
 ---
 
-# 拓展协议的参数类型
+## 拓展协议的参数类型
 
 下表是扩展数据中参数类型：
 | 值  | 类型                  |

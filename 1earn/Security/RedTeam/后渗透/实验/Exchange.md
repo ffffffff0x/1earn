@@ -163,7 +163,7 @@ nslookup.exe -type=srv _autodiscover._tcp
     Windows 系统通过 PowerView 获取所有用户邮件地址
     ```
     $uname=$username
-    $pwd=ConvertTo-SecureString $password -AsPlainText –Force
+    $pwd=ConvertTo-SecureString $password -AsPlainText -Force
     $cred=New-Object System.Management.Automation.PSCredential($uname,$pwd)
     Get-NetUser -Domain f8x.com -DomainController $IP -ADSpath "LDAP://DC=f8x,DC=com" -Credential $cred | fl mail
     ```
@@ -319,7 +319,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 **文章**
 - [微软Exchange爆出0day漏洞，来看POC和技术细节](https://www.freebuf.com/vuls/195162.html)
 - [Microsoft Exchange 任意用户伪造漏洞（CVE-2018-8581）分析](https://paper.seebug.org/804/)
-- [MICROSOFT EXCHANGE漏洞分析 – CVE-2018-8581](https://0kee.360.cn/blog/microsoft-exchange-cve-2018-8581/)
+- [MICROSOFT EXCHANGE漏洞分析 - CVE-2018-8581](https://0kee.360.cn/blog/microsoft-exchange-cve-2018-8581/)
 - [分析CVE-2018-8581：在Microsoft Exchange上冒充用户](https://www.anquanke.com/post/id/168337)
 - [船新版本的Exchange Server提权漏洞分析](https://www.anquanke.com/post/id/170199)
 - [利用 Exchange SSRF 漏洞和 NTLM 中继沦陷域控](https://paper.seebug.org/833/)
@@ -416,7 +416,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 **文章**
 - [Reproducing the Microsoft Exchange Proxylogon Exploit Chain](https://www.praetorian.com/blog/reproducing-proxylogon-exploit/)
-- [Microsoft Exchange Server CVE-2021–26855 漏洞利用](https://www.anquanke.com/post/id/234607)
+- [Microsoft Exchange Server CVE-2021-26855 漏洞利用](https://www.anquanke.com/post/id/234607)
 - [CVE-2021-26855 Exchange Server RCE 复现](https://www.o2oxy.cn/3169.html)
 - [CVE-2021-26855：Exchange SSRF致RCE复现](https://mp.weixin.qq.com/s/PDU5jeBST1IzffaWUQ3TQQ)
 - [Microsoft Exchange 漏洞（CVE-2021-26855）在野扫描分析报告](https://mp.weixin.qq.com/s/C5GPtaCp-zNbSAWXf5gVpw)

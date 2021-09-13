@@ -1465,3 +1465,11 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 **相关工具**
 - [e-ago/bitcracker](https://github.com/e-ago/bitcracker)
     - [BitCracker：BitLocker密码破解工具](https://www.freebuf.com/sectool/185006.html)
+
+**BitLocker 磁盘文件解密**
+- 使用 FTK Imager 挂载目标盘,例如挂载到 E:
+    ```
+    manage-bde -unlock [盘符] -RecoveryPassword [恢复密钥]
+    manage-bde -unlock E: -RecoveryPassword xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx
+    ```
+- diskgenius 也可以解锁

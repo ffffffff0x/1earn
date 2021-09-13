@@ -312,7 +312,7 @@ reset
 
 **空格分隔**
 ```
-Plot 'data.txt'
+plot 'data.txt'
 ```
 
 **逗号分隔**

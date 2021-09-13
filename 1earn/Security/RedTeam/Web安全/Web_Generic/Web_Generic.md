@@ -346,6 +346,7 @@ wget -r --no-pare target.com/dir
 **相关工具**
 - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
 - [anantshri/DS_Store_crawler_parser](https://github.com/anantshri/DS_Store_crawler_parser) - `.DS_Store` 文件解析脚本,递归地获取文件夹内的 `.ds_Store`
+- [gehaxelt/Python-dsstore](https://github.com/gehaxelt/Python-dsstore)
 
 ---
 

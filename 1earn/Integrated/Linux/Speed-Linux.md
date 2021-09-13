@@ -1274,7 +1274,7 @@ curl -C - O https://wordpress.org/latest.zip				# 恢复之前的下载
 aria2c http://releases.ubuntu.com/18.10/ubuntu-18.10-desktop-amd64.iso.torrent		# 下载磁力链接
 aria2c -i downloadurls.txt									# 下载文件中的 url
 aria2c -c http://releases.ubuntu.com/18.10/ubuntu-18.10-desktop-amd64.iso.torrent	# 恢复之前的下载
-aria2c –max-download-limit=100K http://releases.ubuntu.com/disco/ubuntu-19.04-desktop-amd64.iso.torrent		# 设置最大速度限制
+aria2c -max-download-limit=100K http://releases.ubuntu.com/disco/ubuntu-19.04-desktop-amd64.iso.torrent		# 设置最大速度限制
 ```
 
 ### bt

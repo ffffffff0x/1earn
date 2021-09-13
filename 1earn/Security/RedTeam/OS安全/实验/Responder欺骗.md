@@ -381,7 +381,7 @@ win7 执行命令
 
 把 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 0，那么客户端就会选择加密方式 1. 并且 Server Challenge 为 1122334455667788 的情况下。我们用 crack.sh 快速免费有效得破解。获取到用户的 NTLM Hash。
 
-Resonder 加上 `–lm` , 调用的模块就是 SMB1LM, 版本的实现是在 smb 协商版本的时候就将 challenge 返回，并且将 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 置为 0.
+Resonder 加上 `-lm` , 调用的模块就是 SMB1LM, 版本的实现是在 smb 协商版本的时候就将 challenge 返回，并且将 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 置为 0.
 
 在各个协议里面的 NTLM SSP 里面，修改 flag 位，我们找到 Responder 里面 type2 的 NTLM SSP 的 flag 位赋值的地方即可。
 

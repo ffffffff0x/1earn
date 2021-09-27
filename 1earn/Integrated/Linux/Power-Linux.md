@@ -5261,7 +5261,9 @@ setenforce 0    # 关闭 selinux
 
 - docker timeout
   ```bash
-  echo "nameserver 114.114.114.114" > /etc/resolv.conf
+  echo "nameserver 8.8.8.8" > /etc/resolv.conf
+  sudo systemctl daemon-reload
+  sudo systemctl restart docker
   ```
 
 - 容器 "Exited (0)" 自动退出

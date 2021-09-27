@@ -841,6 +841,47 @@ MD5("")= d41d8cd98f00b204e9800998ecf8427e
 md5sum xxx.txt
 ```
 
+**hash 碰撞**
+
+下载地址
+- http://www.win.tue.nl/hashclash/fastcoll_v1.0.0.5.exe.zip
+
+创建一个文本文件，写入任意的文件内容，命名为 test.txt（源文件）
+
+运行 fastcoll 输出以下参数。-p 是源文件，-o 是输出文件
+```
+fastcoll_v1.0.0.5.exe -p test.txt -o 1.txt 2.txt
+```
+
+对生成的 1.txt 和 2.txt 文件进行测试
+```php
+<?php
+function  readmyfile($path){
+    $fh = fopen($path, "rb");
+    $data = fread($fh, filesize($path));
+    fclose($fh);
+    return $data;
+}
+echo '二进制md5加密 '. md5( (readmyfile("1.txt")));
+echo "</br>";
+echo  'url编码 '. urlencode(readmyfile("1.txt"));
+echo "</br>";
+echo '二进制md5加密 '.md5( (readmyfile("2.txt")));
+echo "</br>";
+echo  'url编码 '.  urlencode(readmyfile("2.txt"));
+echo "</br>";
+```
+
+```
+二进制md5加密 b8c21b7bfde6adea3a438f22e6672789
+url编码 test%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00F%D5%E6R%C99%14%F3%95p%D0f%C9%17%90%1D%2C%27%5Bn_%F2%16%DAV%FA9%7Dj%0C%09%E5%BF%C3%C9%E0%DC%E58K%8B%10%EA%A2%EF_%BC%60%27%B2%A1%D9_%FF%E6%B78%8C%9F%5Ck6%EF%89N%D1%013%19%03%BAb%BB%9F.%9B%E7%7CPd%23%A3%C8S8%1C%02%D9%09%B3%107%2B%60%88%D7%D7%F3pD%AFBL%F4y%3CH%9B%94%9C%F6%3E%60u%D2%9Cf%1F%3B%EF%B3M%C6%88%ABS%19%2C
+
+二进制md5加密 b8c21b7bfde6adea3a438f22e6672789
+url编码 test%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00F%D5%E6R%C99%14%F3%95p%D0f%C9%17%90%1D%2C%27%5B%EE_%F2%16%DAV%FA9%7Dj%0C%09%E5%BF%C3%C9%E0%DC%E58K%8B%10%EA%A2%EF%DF%BC%60%27%B2%A1%D9_%FF%E6%B78%8C%9F%DCk6%EF%89N%D1%013%19%03%BAb%BB%9F.%9B%E7%7CPd%23%A3%C8%D38%1C%02%D9%09%B3%107%2B%60%88%D7%D7%F3pD%AFBL%F4y%3CH%9B%94%1C%F6%3E%60u%D2%9Cf%1F%3B%EF%B3M%C6%08%ABS%19%2C
+```
+
+可以看到，1.txt 和 2.txt 文件二进制 md5 加密后的结果完全相同。
+
 ---
 
 ### RIPEMD
@@ -1020,20 +1061,13 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 基于公开密钥加密的特性，它还能提供数字签名的功能，使电子文件可以得到如同在纸本文件上亲笔签署的效果。
 
-公开密钥基础建设透过信任数字证书认证机构的根证书、及其使用公开密钥加密作数字签名核发的公开密钥认证，形成信任链架构，已在TLS实现并在万维网的HTTP以HTTPS、在电子邮件的SMTP以SMTPS或STARTTLS引入。
+公开密钥基础建设透过信任数字证书认证机构的根证书、及其使用公开密钥加密作数字签名核发的公开密钥认证，形成信任链架构，已在 TLS 实现并在万维网的 HTTP 以 HTTPS、在电子邮件的 SMTP 以 SMTPS 或 STARTTLS 引入。
 
-另一方面，信任网络则采用去中心化的概念，取代了依赖数字证书认证机构的公钥基础设施，因为每一张电子证书在信任链中最终只由一个根证书授权信任，信任网络的公钥则可以累积多个用户的信任。PGP就是其中一个例子。
+另一方面，信任网络则采用去中心化的概念，取代了依赖数字证书认证机构的公钥基础设施，因为每一张电子证书在信任链中最终只由一个根证书授权信任，信任网络的公钥则可以累积多个用户的信任。PGP 就是其中一个例子。
 
 ### RSA
 
-RSA加密算法是一种非对称加密算法，在公开密钥加密和电子商业中被广泛使用。RSA是由罗纳德·李维斯特（Ron Rivest）、阿迪·萨莫尔（Adi Shamir）和伦纳德·阿德曼（Leonard Adleman）在1977年一起提出的。
-
-**相关文章**
-- [RSA算法原理(一)](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html)
-- [RSA算法原理(二)](http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html)
-- [RSA史上最强剖析,从小白变大神,附常用工具使用方法及CTF中RSA典型例题](http://www.freebuf.com/sectool/163781.html)
-- [扩展欧几里得算法](https://zh.wikipedia.org/wiki/%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95)
-- [CTF-RSA总结](https://forum.butian.net/share/478)
+- [RSA](RSA.md)
 
 ---
 
@@ -1999,6 +2033,9 @@ I have deposited in the county of Bedford...
 - https://www.nayuki.io/page/brainfuck-interpreter-javascript
 - https://www.splitbrain.org/services/ook
 - http://bf.doleczek.pl/
+
+**相关模块**
+- [pocmo/Python-Brainfuck](https://github.com/pocmo/Python-Brainfuck)
 
 #### JSfuck
 

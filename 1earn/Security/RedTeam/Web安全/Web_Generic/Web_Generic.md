@@ -33,7 +33,6 @@
     * [网站备份压缩文件](#网站备份压缩文件)
     * [WEB-INF/web.xml信息泄露](#web-infwebxml信息泄露)
     * [idea文件夹泄露](#idea文件夹泄露)
-    * [phpinfo信息泄露](#phpinfo信息泄露)
     * [JS敏感信息泄露](#js敏感信息泄露)
     * [Swagger_REST_API信息泄露](#Swagger_REST_API信息泄露)
     * [各类APIkey泄露](#各类apikey泄露)
@@ -410,19 +409,6 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关工具**
 - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit) - 一个 `.idea` 文件泄漏利用脚本
-
----
-
-## phpinfo信息泄露
-
-**相关文章**
-- [phpinfo 可以告诉我们什么](http://zeroyu.xyz/2018/11/13/what-phpinfo-can-tell-we/)
-- [PHPINFO 中的重要信息](https://www.k0rz3n.com/2019/02/12/PHPINFO%20%E4%B8%AD%E7%9A%84%E9%87%8D%E8%A6%81%E4%BF%A1%E6%81%AF/)
-- [amazing phpinfo() ](https://skysec.top/2018/04/04/amazing-phpinfo/)
-- [phpinfo 中值得注意的信息](https://seaii-blog.com/index.php/2017/10/25/73.html)
-
-**相关工具**
-- [proudwind/phpinfo_scanner](https://github.com/proudwind/phpinfo_scanner) - 抓取 phpinfo 重要信息 - 我这里运行报错,解决方法是把15行的3个 nth-child 改为 nth-of-type
 
 ---
 

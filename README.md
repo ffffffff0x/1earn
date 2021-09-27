@@ -84,7 +84,7 @@
 
     * **RedTeam**
         * 安防设备
-            * [Bypass_WAF](./1earn/Security/RedTeam/安防设备/Bypass_WAF.md) - 记录 waf 绕过手段
+            * [Bypass技巧](./1earn/Security/RedTeam/安防设备/Bypass技巧.md) - 记录 waf 绕过手段
             * [SecDevice-Exploits](./1earn/Security/RedTeam/安防设备/SecDevice-Exploits.md) - 常见的安全设备的漏洞利用方法
         * 后渗透
             * [后渗透](./1earn/Security/RedTeam/后渗透/后渗透.md) - 后渗透知识点的大纲

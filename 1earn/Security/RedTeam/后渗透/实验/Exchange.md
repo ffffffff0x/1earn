@@ -463,6 +463,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 - [dmaasland/proxyshell-poc](https://github.com/dmaasland/proxyshell-poc)
 - [Ridter/proxyshell_payload](https://github.com/Ridter/proxyshell_payload)
 - [ktecv2000/ProxyShell](https://github.com/ktecv2000/ProxyShell)
+- [wudicainiao/proxyshell-for-exchange_workload](https://github.com/wudicainiao/proxyshell-for-exchange_workload)
 
 ---
 

@@ -111,6 +111,10 @@ AWD
 
 # 知识点学习
 
+## Web
+
+- [CTF中的命令执行绕过](https://mp.weixin.qq.com/s/fs-IKJuDptJeZMRDCtbdkw)
+
 ## Misc
 
 - [ctf001 | Glun](http://www.glun.top/2020/05/23/ctf01/)
@@ -284,6 +288,9 @@ AWD
 
 ### 羊城杯
 
+**2021**
+- [2021年“羊城杯”网络安全大赛部分Writeup](https://blog.csdn.net/qq_42815161/article/details/120260053)
+
 **2020**
 - [羊城杯-Reverse-WP](https://www.zrzz.site/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AF-Reverse-WP/)
 - [羊城杯Easy Java题解](https://zhzhdoai.github.io/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AFEasy-Java%E9%A2%98%E8%A7%A3/)
@@ -318,6 +325,9 @@ AWD
 
 ### 祥云杯
 
+**2021**
+- [2021第二届“祥云杯”网络安全大赛 部分Writeup](https://blog.csdn.net/qq_42815161/article/details/119867158)
+
 **2020**
 - [祥云杯-Writeup](https://mp.weixin.qq.com/s/D2hdFISbttaezhnqnHFEsQ)
 - [祥云杯2020 部分WriteUp](https://mp.weixin.qq.com/s/CP3-W8VcLokQNYMSbXw9wg)
@@ -328,6 +338,14 @@ AWD
 
 **2020**
 - [纵横杯2020 部分WriteUp](https://mp.weixin.qq.com/s/mdFgQPY8-Zw49huj4F_klQ)
+
+---
+
+### 陇剑杯
+
+**2021**
+- [陇剑杯 个人 ’WriteUp‘](http://www.snowywar.top/?p=2554)
+- [安全-陇剑杯2021（部分）](https://blog.csdn.net/smallfox233/article/details/120291706)
 
 ---
 
@@ -444,6 +462,9 @@ AWD
 
 ### XCTF
 
+**2021 RCTF**
+- [RCTF-2021 部分WriteUp](https://mp.weixin.qq.com/s/EnncNONPhgrZCgeYDE5Q2A)
+
 **2020 wmctf**
 - [Nobody knows BaoTa better than me WriteUp](https://www.zhaoj.in/read-6660.html)
 - [W&MCTF_Dalabengba](http://www.fzwjscj.xyz/index.php/archives/37/)
@@ -490,6 +511,9 @@ AWD
 ---
 
 ### DASCTF
+
+**21.8**
+- [2021DASCTF八月挑战赛Writeup](https://blog.csdn.net/qq_42815161/article/details/120010131)
 
 **20.8**
 - [DASCTF 八月赛 Crypto 部分Writeup](https://www.anquanke.com/post/id/215484)

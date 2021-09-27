@@ -1341,14 +1341,14 @@ iptables-restore </root/firewall_rules.backup	# 恢复规则
 iptables -F  		# 清除防火墙配置
 ```
 
+### ufw
+
 **Ubuntu 关闭防火墙**
 ```bash
 ufw disable
 ```
 
-### ufw
-
-见 [ufw.md](./实验/ufw.md)
+更多内容见 [ufw.md](./实验/ufw.md)
 
 ---
 
@@ -1433,6 +1433,12 @@ rm /var/lib/apt/lists/lock
 **E: Unable to correct problems, you have held broken packages.**
 ```bash
 aptitude install <packagename>	# 该工具会想方设法的帮助你安装(提示依赖、其他安装包等等)
+```
+
+**dpkg: error: parsing file '/var/lib/dpkg/updates/0023' near line 0**
+```bash
+rm /var/lib/dpkg/updates/*
+apt-get update
 ```
 
 **禁用 Ubuntu 自动更新**

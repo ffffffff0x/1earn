@@ -121,3 +121,9 @@ aireplay-ng -0 10 -a <无线路由器的MAC地址> -c <连接上的设备MAC地�
 # -a 无线网 mac 地址
 # -c 连接上的客户端 mac 地址，就是那个 STATION
 ```
+
+**流量解密**
+
+```bash
+airdecap-ng -e [SSID name] -p [Wifi pass] xxx.cap
+```

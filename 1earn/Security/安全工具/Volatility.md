@@ -45,13 +45,6 @@ Volatility 是一个用于事件响应和恶意软件分析的开源内存取证
 - [KDPryor/LinuxVolProfiles](https://github.com/KDPryor/LinuxVolProfiles) - Volatility Linux Profiles
 - [volatilityfoundation/profiles](https://github.com/volatilityfoundation/profiles) - Volatility profiles for Linux and Mac OS X
 
-**扩展插件**
-- [aim4r/VolDiff](https://github.com/aim4r/VolDiff) - 利用 Volatility 框架来识别 Windows 7 内存中恶意软件威胁的 Python 脚本
-- [JamesHabben/evolve](https://github.com/JamesHabben/evolve) - Web 界面版的 Volatility
-- [kevthehermit/VolUtility](https://github.com/kevthehermit/VolUtility) - Web 界面版的 Volatility
-- [andreafortuna/autotimeliner](https://github.com/andreafortuna/autotimeliner) - 自动从 memory dump 中提取取证时间线
-- [superponible/volatility-plugins](https://github.com/superponible/volatility-plugins)
-
 ---
 
 # 安装及维护
@@ -470,6 +463,23 @@ volatility -f [image] --profile=[profile] hashdump
 
 ![](../../../assets/img/Security/安全工具/Volatility/6.png)
 
+**dump 明文**
+
+```hash
+volatility -f [image] --profile=[profile] lsadump
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/58.png)
+
+**注册表 dump 明文**
+
+```bash
+volatility -f [image] --profile=[profile] hivelist
+volatility -f [image] --profile=[profile] hashdump -y [SYSTEM的地址] -s [SAM的地址]
+```
+
+![](../../../assets/img/Security/安全工具/Volatility/59.png)
+
 **查看剪切版中的信息**
 
 ```bash
@@ -649,6 +659,27 @@ python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_pstree
 ```bash
 python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_proc_maps
 ```
+
+---
+
+## 扩展
+
+**扩展插件**
+- [aim4r/VolDiff](https://github.com/aim4r/VolDiff) - 利用 Volatility 框架来识别 Windows 7 内存中恶意软件威胁的 Python 脚本
+- [JamesHabben/evolve](https://github.com/JamesHabben/evolve) - Web 界面版的 Volatility
+- [kevthehermit/VolUtility](https://github.com/kevthehermit/VolUtility) - Web 界面版的 Volatility
+- [andreafortuna/autotimeliner](https://github.com/andreafortuna/autotimeliner) - 自动从 memory dump 中提取取证时间线
+- [superponible/volatility-plugins](https://github.com/superponible/volatility-plugins)
+
+**mimikatz**
+- https://github.com/RealityNet/hotoloti/blob/master/volatility/mimikatz.py
+    ```
+    python2 -m pip install construct
+    cp mimikatz.py /volatility/plugins/
+    python vol.py  -f tmp.vmem --profile=Win7SP1x64 mimikatz
+    ```
+
+![](../../../assets/img/Security/安全工具/Volatility/60.png)
 
 ---
 

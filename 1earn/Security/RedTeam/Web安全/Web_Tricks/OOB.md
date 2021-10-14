@@ -15,6 +15,7 @@
 - [Gaining persistent access to Burp Suite's Collaborator sessions - a step-by-step guide](https://www.onsecurity.co.uk/blog/gaining-persistent-access-to-burps-collaborator-sessions)
 - [Burp Collaborator](https://portswigger.net/burp/documentation/collaborator)
 - [HTTP BLIND](https://echocipher.github.io/2019/07/22/HTTP-BLIND/)
+- [Cracking the lens: targeting HTTP's hidden attack-surface](https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface)
 
 **在线监控平台**
 - http://ceye.io/

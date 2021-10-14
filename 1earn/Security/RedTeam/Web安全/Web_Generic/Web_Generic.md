@@ -298,11 +298,20 @@ wget -r --no-pare target.com/dir
 - `/.git/config`
 
 **相关案例**
+
 - [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
 
 **相关工具**
+
 - [lijiejie/GitHack](https://github.com/lijiejie/GitHack) - 一个 `.git` 泄露利用脚本，通过泄露的.git文件夹下的文件，重建还原工程源代码。
+    ```bash
+    python2 GitHack.py http://www.openssl.org/.git/
+    ```
 - [gakki429/Git_Extract](https://github.com/gakki429/Git_Extract) - 提取远程 git 泄露或本地 git 的工具
+    ```bash
+    python2 git_extract.py http://example.com/.git/  # 一个存在 .git 泄露的网站
+    python2 git_extract.py example/.git/             # 一个本地的 .git 路径
+    ```
 
 ---
 

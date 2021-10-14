@@ -18,7 +18,13 @@
         * [强网杯](#强网杯)
         * [网鼎杯](#网鼎杯)
         * [羊城杯](#羊城杯)
+        * [美亚杯](#美亚杯)
+        * [湖湘杯](#湖湘杯)
+        * [祥云杯](#祥云杯)
+        * [纵横杯](#纵横杯)
+        * [陇剑杯](#陇剑杯)
         * 2020
+        * 2019
     * [高校](#高校)
         * [CISCN](#ciscn)
         * 2020
@@ -28,6 +34,7 @@
     * [公司&行业](#公司&行业)
         * [XCTF](#xctf)
         * [DASCTF](#dasctf)
+        * 2021
         * 2020
         * 2019
         * 2018
@@ -36,21 +43,21 @@
         * 2019
         * 2016
     * [未分类](#未分类)
-        * [GXYCTF](#gxyctf)
 
 ---
 
 **平台**
+- https://buuoj.cn/
+- https://www.ctfhub.com/#/index
+- http://www.hetianlab.com/CTFrace.html
+- https://adworld.xctf.org.cn/
 - https://www.ichunqiu.com/battalion?t=1
 - http://ctf.bugku.com/
-- http://www.hetianlab.com/CTFrace.html
 - https://www.wechall.net/
 - https://ctftime.org/
 - https://pwnhub.cn/index
 - http://hackinglab.cn/
 - https://new.bugku.com/
-- https://buuoj.cn/
-- https://www.ctfhub.com/#/index
 
 **学习资源**
 - https://ctf-wiki.github.io/ctf-wiki/
@@ -63,6 +70,15 @@
 
 **工具合集**
 - [zardus/ctf-tools](https://github.com/zardus/ctf-tools) - 安全研究工具的一些设置脚本。
+
+**Tips**
+- 一些找 flag 姿势
+    ```
+    find / -name flag*
+    find / -name * | grep "flag{"
+    echo $PATH | grep "flag{"
+    env | grep "flag"
+    ```
 
 **比赛经验**
 
@@ -346,6 +362,32 @@ AWD
 **2021**
 - [陇剑杯 个人 ’WriteUp‘](http://www.snowywar.top/?p=2554)
 - [安全-陇剑杯2021（部分）](https://blog.csdn.net/smallfox233/article/details/120291706)
+- [2021【线下】 陇剑杯wp](https://mp.weixin.qq.com/s/9fopUOhL0Met0lZxV-5S1A)
+
+---
+
+### 绿城杯
+
+**2021**
+- [2021 绿城杯 wp](https://mp.weixin.qq.com/s/sdPBAaWXZARMU2VlO7b1dg)
+- [绿城杯-2021 部分WriteUp（晋级）](https://mp.weixin.qq.com/s/wRXs586qjoFdLx37xPNvjQ)
+- [绿城杯-WriteUp](https://mp.weixin.qq.com/s/tulBiwucSYOJUkCa--0Wow)
+- [2021 绿城杯 Crypto 部分wp](https://icode9.com/content-4-1158507.html)
+
+---
+
+### 鹤城杯
+
+**2021**
+- [2021鹤城杯｜WEB部分WP全](https://mp.weixin.qq.com/s/_9acgNlTA_yqMqZK_Std-A)
+- [鹤城杯-WriteUp](https://mp.weixin.qq.com/s/TZt0oUkmgJYe21SbcS5Ybw)
+
+---
+
+### 长城杯
+
+**2021**
+- [长城杯线上赛WP](https://mp.weixin.qq.com/s/LxPQDJ8xvBq4Qc-89td1_A)
 
 ---
 
@@ -500,6 +542,9 @@ AWD
 **2019 De1CTF**
 - [De1CTF2019 官方Writeup(Web/Misc) -- De1ta](https://xz.aliyun.com/t/5945)
 - [De1CTF Web WriteUp](https://www.zhaoj.in/read-6170.html)
+
+**2019 N1CTF**
+- [分析N1CTF 2019中Crypto方向题目](https://www.anquanke.com/post/id/186525)
 
 **2018 赛博地球杯工业互联网安全大赛**
 - [“赛博地球杯”工业互联网安全大赛线上赛Writeup](https://www.xctf.org.cn/library/details/cyberearth-writeup/)

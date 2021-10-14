@@ -119,6 +119,7 @@
 - https://cryptopals.com/
 - https://ctf-wiki.github.io/ctf-wiki/crypto/introduction/
 - https://intensecrypto.org/public/
+- https://cryptohack.org/
 
 **工具**
 - [ffffffff0x/BerylEnigma](https://github.com/ffffffff0x/BerylEnigma) - 一个为渗透测试与CTF而制作的工具集，主要实现一些加解密的功能。
@@ -155,6 +156,8 @@
 - [为什么要在密码里加点"盐" | Libuchao's blog](https://libuchao.com/2013/07/05/password-salt)
 - [CTF中那些脑洞大开的编码和加密 - jack_Meng](https://www.cnblogs.com/mq0036/p/6544055.html)
 - [How we recovered over $300K of Bitcoin](https://reperiendi.wordpress.com/2020/04/03/how-i-recovered-over-300k-of-bitcoin/)
+- [椭圆曲线加密与NSA后门考古](https://mp.weixin.qq.com/s/BMXzOZ3yxhfl2JOe61EnNA)
+- [All About Crypto - CTF竞赛密码学方向指南](https://mp.weixin.qq.com/s/yfsEpgJJNNVgETm2SydsTg)
 
 **CTF writup**
 - [IDF实验室-特殊的日子](https://blog.csdn.net/ab748998806/article/details/46382017) - 知识点 : CRC
@@ -336,6 +339,13 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 
 **在线工具**
 - http://ctf.ssleye.com/base92.html
+
+---
+
+### base100
+
+**在线工具**
+- http://www.atoolbox.net/Tool.php?Id=936
 
 ---
 
@@ -1067,7 +1077,104 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 ### RSA
 
-- [RSA](RSA.md)
+**相关文章**
+- [RSA算法原理(一)](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html)
+- [RSA算法原理(二)](http://www.ruanyifeng.com/blog/2013/07/rsa_algorithm_part_two.html)
+- [RSA史上最强剖析,从小白变大神,附常用工具使用方法及CTF中RSA典型例题](http://www.freebuf.com/sectool/163781.html)
+- [扩展欧几里得算法](https://zh.wikipedia.org/wiki/%E6%89%A9%E5%B1%95%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95)
+- [CTF-RSA总结](https://forum.butian.net/share/478)
+- [CTF中的RSA 算法](https://www.cnblogs.com/NPFS/p/13383625.html)
+- [RSA算法详解与练习](http://www.atkx.top/2020/10/04/RSA%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%E4%B8%8E%E7%BB%83%E4%B9%A0/)
+- [【技术分享】CTF中RSA的常见攻击方法](https://www.anquanke.com/post/id/84632)
+- [RSA 私钥恢复和最优非对称加密填充](https://www.40huo.cn/blog/rsa-private-key-recovery-and-oaep.html)
+- [CTF中常见的RSA相关问题总结[转]](https://willv.cn/2018/07/21/RSA-ATTACK/)
+- [[原创]CTF中RSA的一些攻击思路](https://bbs.pediy.com/thread-254252.htm)
+- [CTF中的RSA及攻击方法笔记](https://www.freebuf.com/articles/web/257835.html)
+- [CTF密码学之RSA攻击算法](https://mp.weixin.qq.com/s/sBeUUx0SNWB5HPfVCpxu5g)
+- [CTF中RSA套路](https://err0rzz.github.io/2017/11/14/CTF%E4%B8%ADRSA%E5%A5%97%E8%B7%AF/)
+- [RSA算法基础详解](https://www.cnblogs.com/hykun/p/RSA.html)
+- [RSA算法原理——（3）RSA加解密过程及公式论证](https://blog.csdn.net/u014044812/article/details/80866759)
+
+**相关工具**
+- [SageMath](https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/index.html)
+- [factordb](http://www.factordb.com/) - 在线分解质因数, 通常用于分解 n 得到 p q
+  - [ryosan-470/factordb-python](https://github.com/ryosan-470/factordb-python) - 命令行分解
+    ```bash
+    pip install factordb-python
+    factordb 16
+    ```
+- [yafu](https://sourceforge.net/projects/yafu/) - 在 p，q 的取值差异过大，或者 p，q 的取值过于相近的时候，Format 方法与 Pollard rho 方法都可以很快将 n 分解成功。yafu 将其自动化实现了
+    ```bash
+    yafu "factor(82748279383502845283943271120712436408030814624973629060064917325126552245423)"
+
+    # 如果数比较大，那就需要将数保存成一个txt，然后使用
+    # 注意：
+    # 1. n 为十进制
+    # 2. txt文件结尾必须有一个换行符
+    # 3. 该命令会删除这个txt，注意保存
+    yafu-x64.exe "factor(@)" -batchfile 1.txt
+    ```
+- [在线Rsa 公私钥分解 Exponent、Modulus，Rsa公私钥指数、系数(模数)分解](http://tool.chacuo.net/cryptrsakeyparse) - 在线解析加密公钥|私钥格式
+- RSAtool 2
+- [Ganapati/RsaCtfTool](https://github.com/Ganapati/RsaCtfTool)
+    ```bash
+    # 提取公钥
+    python3 RsaCtfTool.py --dumpkey --key pubkey.pem
+    ```
+- [ius/rsatool](https://github.com/ius/rsatool)
+    ```bash
+    git clone https://github.com/ius/rsatool.git
+    cd rsatool
+    python rsatool.py -f PEM -o private.pem -p 1234567 -q 7654321 # 生成私钥
+    ```
+- openssl
+    ```bash
+    openssl rsa -pubin -in pubkey.pem -text -modulus  # 查看公钥文件
+
+    openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag # 解密
+
+    # 给出了私钥文件private.pem和flag.en,解密密文
+    opensslrsautl -decrypt -in flag.enc(密文名称) -inkey private.pem
+    ```
+- [ablocelayes/rsa-wiener-attack](https://github.com/pablocelayes/rsa-wiener-attack)
+- [Sage Cell Server](https://sagecell.sagemath.org/) - 在线 Sagemath
+- [3summer/CTF-RSA-tool](https://github.com/3summer/CTF-RSA-tool)
+- [Integer factorization calculator](https://www.alpertron.com.ar/ECM.HTM)
+
+**相关资源**
+- [kur0mi/CTF-RSA](https://github.com/kur0mi/CTF-RSA)
+- [Zui-Qing-Feng/RSA](https://github.com/Zui-Qing-Feng/RSA)
+
+**Writeup**
+- [RSA的dp泄露 —— 【WUST-CTF2020】leak](https://blog.csdn.net/qq_42939527/article/details/105202716)
+- [CTF-RSA1（已知p、q、dp、dq、c）](https://blog.csdn.net/qq_32350719/article/details/102719279)
+- [[BJDCTF2020]RSA ==＞低加密指数攻击](https://blog.csdn.net/LYJ20010728/article/details/110453049)
+- [BUUCTF Crypto [BJDCTF2020]RSA wp](https://blog.csdn.net/weixin_44017838/article/details/104990164)
+- [[BJDCTF2020]RSA](https://www.codeleading.com/article/68565028999/)
+- [[BUUCTF]Dangerous RSA -＞低加密指数攻击](https://blog.csdn.net/weixin_45859850/article/details/109785669)
+- [[BUUCTF]rsa2 低解密指数攻击](https://blog.csdn.net/weixin_45859850/article/details/109865307)
+- [buu [BJDCTF 2nd]rsa0](https://blog.csdn.net/ao52426055/article/details/110366309)
+- [CTF-BUUCTF-CRPTO-[BJDCTF 2nd]rsa1 1](https://blog.csdn.net/weixin_43880435/article/details/106386942)
+- [buu [HDCTF2019]bbbbbbrsa](https://blog.csdn.net/ao52426055/article/details/110424785)
+- [Buuctf RSA 题目总结](https://blog.csdn.net/Ahuuua/article/details/109190848)
+- [BUUCTF RSA题目全解](https://www.codenong.com/cs105967809/)
+- [[BJDCTF2020]easyrsa](https://blog.csdn.net/weixin_44110537/article/details/107214569)
+- [BUUCTF RSA题目全解2](https://blog.csdn.net/MikeCoke/article/details/107206707)
+- [RoarCTF2019 babyRSA](https://www.cnblogs.com/vict0r/p/13563073.html)
+- [BUUCTF RSA题目全解3](https://blog.csdn.net/MikeCoke/article/details/107973068)
+- [NPUCTF2020 EzRSA](https://www.cnblogs.com/vict0r/p/13723450.html)
+- [BUUCTF RSA题目全解4](https://blog.csdn.net/MikeCoke/article/details/108540699)
+- [RSA 中根据 (N, e, d) 求 (p, q)](https://blog.csdn.net/ayang1986/article/details/112714749)
+- [掘安杯-Crypto:RSA脚本一把梭 (模不互素)](https://shawroot.hatenablog.com/entry/2019/12/03/%E6%8E%98%E5%AE%89%E6%9D%AF-Crypto%3ARSA%E8%84%9A%E6%9C%AC%E4%B8%80%E6%8A%8A%E6%A2%AD_%28%E6%A8%A1%E4%B8%8D%E4%BA%92%E7%B4%A0%29)
+- [CTF RSA题解集](https://www.ruanx.net/rsa-solutions/)
+- [CTFtime.org / picoCTF 2018 / Super Safe RSA 3 / Writeup](https://ctftime.org/writeup/11608)
+- [BUUCTF-CRYPTO-强网杯2019 Copperstudy](https://www.codenong.com/cs109409929/)
+- [2019强网杯 - 密码学-RSA-Coppersmith](https://blog.csdn.net/q851579181q/article/details/90645041)
+- [N1CTF 2019 - Part3-BabyRSA](http://duksctf.github.io/2019/09/08/N1CTF2019-Part3-BabyRSA.html)
+- [N1CTF 2019: BabyRSA](https://garygurlaskie.com/ctf/2019/09/07/n1ctf-babyrsa.html)
+
+**Tips**
+- e 的一般值 65537(0x10001)
 
 ---
 
@@ -1148,6 +1255,10 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 **文章**
 - [Practical Cryptography](http://www.practicalcryptography.com/ciphers/classical-era/rail-fence/)
+
+**在线工具**
+- http://www.hiencode.com/railfence.html - W型
+- https://www.qqxiuzi.cn/bianma/zhalanmima.php
 
 ---
 
@@ -1463,8 +1574,13 @@ M  --    |Z  --..  |=  -...-
 ### 希尔密码
 
 希尔密码(`Hill Cipher`)是基于线性代数多重代换密码,由Lester S. Hill在1929年发明.每个字母转换成26进制数字:A=0, B=1, C=2...Z=25一串字母当成n维向量,跟一个n×n的矩阵相乘,再将得出的结果MOD26
+
 ![](../../../assets/img/Security/Crypto/Crypto/希儿密码加密.png)
+
 ![](../../../assets/img/Security/Crypto/Crypto/希儿密码解密.png)
+
+**在线工具**
+- http://www.atoolbox.net/Tool.php?Id=914
 
 ---
 
@@ -1554,6 +1670,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 **相关文章**
 - [Autokey Cipher](http://www.practicalcryptography.com/ciphers/autokey-cipher/)
 - https://zh.wikipedia.org/wiki/%E8%87%AA%E5%8A%A8%E5%AF%86%E9%92%A5%E5%AF%86%E7%A0%81
+
+**在线工具**
+- http://www.atoolbox.net/Tool.php?Id=920
 
 **爆破密匙**
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-autokey-cipher/
@@ -1956,6 +2075,9 @@ I have deposited in the county of Bedford...
 
 恩尼格玛密码机(德语:Enigma,又译哑谜机,或"谜"式密码机)是一种用于加密与解密文件的密码机.确切地说,恩尼格玛是对二战时期纳粹德国使用的一系列相似的转子机械加解密机器的统称,它包括了许多不同的型号,为密码学对称加密算法的流加密.详细工作原理参考 [维基百科](https://zh.wikipedia.org/wiki/%E6%81%A9%E5%B0%BC%E6%A0%BC%E7%8E%9B%E5%AF%86%E7%A0%81%E6%9C%BA) .
 
+**模拟软件**
+- https://enigmamuseum.com/
+
 ---
 
 ### 维吉尼亚密码
@@ -2042,6 +2164,20 @@ I have deposited in the county of Bedford...
 **在线工具**
 - http://discogscounter.getfreehosting.co.uk/js-noalnum.php
 - http://www.jsfuck.com/
+
+#### JJEncode
+
+将JavaScript代码转换成只有符号的字符串编码。
+
+**在线工具**
+- http://www.atoolbox.net/Tool.php?Id=704
+
+#### PPEncode
+
+PPEncode可以把Perl代码转换成只有英文字母的字符串。
+
+**在线工具**
+- http://www.atoolbox.net/Tool.php?Id=719
 
 #### 颜文字加密
 

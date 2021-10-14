@@ -137,6 +137,14 @@ bash xxx.sh								# 运行 xxx.sh 脚本
 
 ## 环境变量
 
+```bash
+set
+env
+
+cat /proc/1/environ
+cat /proc/$PID/environ
+```
+
 - 图形模式登录时,顺序读取 : `/etc/profile` 和 `~/.profile`
 - 图形模式登录后,打开终端时,顺序读取 : `/etc/bash.bashrc` 和 `~/.bashrc`
 - 文本模式登录时,顺序读取 : `/etc/bash.bashrc` , `/etc/profile` 和 `~/.bash_profile`

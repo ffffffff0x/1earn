@@ -12,5 +12,8 @@
 - [IDA](../安全工具/IDA.md)
 - [Ghidra](../安全工具/Ghidra.md)
 
+**查壳**
+- ExeinfoPe
+
 **资源**
 - [mentebinaria/retoolkit](https://github.com/mentebinaria/retoolkit) - 离线逆向工具安装包合集

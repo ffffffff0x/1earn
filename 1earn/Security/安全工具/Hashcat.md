@@ -524,6 +524,15 @@ hashcat -a 0 hash.txt password.txt -o result.txt
 
 ---
 
+## 爆破 sha256
+
+破解一个原文8个字符的sha256，已知前5个字符。
+```
+hashcat64 -a 3 --hex-salt -m 1420 b9f5a36134ba3b3b9a41c3ee519899f39fd85f231d9cb2d6c34415fcebe0aa8c:13a03f1f32 --potfile-disable ?b?b?b  -o res3.txt --outfile-format=2 --force
+```
+
+---
+
 # 更多实验
 
 ## 阿里云按量-抢占式实例-NVIDIA T4-跑 Hashcat

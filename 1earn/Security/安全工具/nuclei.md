@@ -190,4 +190,4 @@ Nuclei 有多种控制速率的方法，包括并行执行多个模板、并行�
     nano ~/nuclei-templates/.nuclei-ignore
     ```
 
-    默认的 nuclei 忽略列表可以访问 [这里]((https://github.com/projectdiscovery/nuclei-templates/blob/master/.nuclei-ignore)，如果不想排除任何内容，只需要删除 `.nuclei-ignore` 文件。
+    默认的 nuclei 忽略列表可以访问 [这里](https://github.com/projectdiscovery/nuclei-templates/blob/master/.nuclei-ignore) ，如果不想排除任何内容，只需要删除 `.nuclei-ignore` 文件。

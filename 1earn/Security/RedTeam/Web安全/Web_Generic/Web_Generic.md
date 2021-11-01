@@ -259,6 +259,17 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 - [jerrychan807/WSPIH](https://github.com/jerrychan807/WSPIH) - 网站个人敏感信息文件扫描器
 - [ring04h/weakfilescan](https://github.com/ring04h/weakfilescan) - 动态多线程敏感信息泄露检测工具
 - [0xHJK/dumpall](https://github.com/0xHJK/dumpall) - 一款信息泄漏利用工具，适用于 .git/.svn 源代码泄漏和 .DS_Store 泄漏
+    ```bash
+    # pip安装
+    pip install dumpall
+    # 查看版本
+    dumpall --version
+    # 示例
+    dumpall -u http://example.com/.git/
+    dumpall -u http://example.com/.svn/
+    dumpall -u http://example.com/.DS_Store
+    dumpall -u http://example.com/
+    ```
 - [donot-wong/sensinfor](https://github.com/donot-wong/sensinfor) - 一个自动扫描敏感文件的chrome扩展.
 
 ---
@@ -528,8 +539,9 @@ WEB-INF 主要包含一下文件或目录:
 
 # 不安全的输入
 
-**相关工具**
-- [commixproject/commix](https://github.com/commixproject/commix)
+## RCE
+
+- [RCE 笔记](./RCE.md)
 
 ## HTTP参数污染
 

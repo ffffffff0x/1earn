@@ -8,7 +8,7 @@
 
 ---
 
-# 抓包方法
+## 抓包方法
 
 **相关文章**
 - [太干了，Android 抓包姿势总结！](ProxyToken)
@@ -98,9 +98,26 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 证书锁定旨在解决移动端 APP 与服务端通信的唯一性，实际通信过程中，如果锁定过程失败，那么客户端 APP 将拒绝针对服务器的所有 SSL/TLS 请求，FaceBook/Twitter 则通过证书锁定以防止 Charles/Fiddler 等抓包工具中间人攻击
 
+--
+
+## 反编译
+
+**在线反编译器**
+- [APK decompiler - decompile Android .apk ✓ ONLINE ✓](http://www.javadecompilers.com/apk)
+
+**反编译工具**
+- [Apktool](https://ibotpeaches.github.io/Apktool/)
+    - 参考文章 : [使用apktool反编译apk文件](https://blog.csdn.net/ruancoder/article/details/51924179)
+    ```
+    apktool d xxx.apk -o xxx
+    ```
+- [skylot/jadx](https://github.com/skylot/jadx)
+- ApkIDE
+- AndroidKiller
+
 ---
 
-# APK渗透
+## APK渗透
 
 **案例**
 - [Attacking the attackers  Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
@@ -114,7 +131,13 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 - [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
 - [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
 
+**CTF writeup**
+- [BUUCTF Reverse helloword、findit](https://blog.csdn.net/qq_42967398/article/details/96877555)
+
+### 信息收集
+
 **在线检测**
+
 - [腾讯金刚](https://service.security.tencent.com/kingkong)
 - [梆梆安全](https://dev.bangcle.com/)
 - [爱加密](https://www.ijiami.cn/index)
@@ -128,18 +151,8 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 - [360手机应用检测](http://scan.shouji.360.cn/index.html)
 - [腾讯手机管家官方网站](https://m.qq.com/security_lab/scans_online.jsp)
 
-**在线反编译器**
-- [APK decompiler - decompile Android .apk ✓ ONLINE ✓](http://www.javadecompilers.com/apk)
+**相关工具**
 
-**反编译工具**
-- [Apktool](https://ibotpeaches.github.io/Apktool/)
-    - 参考文章 : [使用apktool反编译apk文件](https://blog.csdn.net/ruancoder/article/details/51924179)
-    ```
-    apktool d xxx.apk -o xxx
-    ```
-- [skylot/jadx](https://github.com/skylot/jadx)
-
-**信息收集**
 - [TheKingOfDuck/ApkAnalyser](https://github.com/TheKingOfDuck/ApkAnalyser) - 一键提取安卓应用中可能存在的敏感信息。
 - [dwisiswant0/apkleaks](https://github.com/dwisiswant0/apkleaks) - Scanning APK file for URIs, endpoints & secrets.
 - 从反编译的 apk 文件中提取相关域名链接/IP
@@ -157,7 +170,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 ---
 
-## APK-Exploits
+### APK-Exploits
 
 **CVE-2019-6447 ESFileExplorers 任意文件读取**
 - 简介
@@ -169,7 +182,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 ---
 
-# 系统漏洞
+## 系统漏洞
 
 **Android's overlay attacks**
 - 文章

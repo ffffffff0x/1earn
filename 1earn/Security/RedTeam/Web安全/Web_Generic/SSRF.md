@@ -43,6 +43,9 @@
 **相关资源**
 - [cujanovic/SSRF-Testing](https://github.com/cujanovic/SSRF-Testing)
 
+**writeup**
+- [buuctf 刷题记录 [第二章 web进阶]SSRF Training](https://www.cnblogs.com/murkuo/p/14905886.html)
+
 ---
 
 ## 利用方式
@@ -57,9 +60,9 @@
 
 ---
 
-## 绕过方法
+## 绕过技巧
 
-**相关资源**
+**Fuzz字典**
 - [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/http/Fuzz_head.txt)
 
 **特殊 IP**

@@ -17,12 +17,19 @@
 - [简单java代码审计？](https://mp.weixin.qq.com/s/88Tsr8NBX03sFlG1Vfz-aw)
 - [代码审计_Sylon的博客-CSDN博客_代码审计](https://blog.csdn.net/qq_41770175/article/details/93486383)
 
+**CTF writup**
+- [BUU-Java逆向解密](https://blog.csdn.net/qq_42602454/article/details/108825608)
+
 ---
 
 ## 反编译
 
 **在线反编译工具**
 - [Java decompiler online](http://www.javadecompilers.com/)
+
+**反编译工具**
+- [skylot/jadx](https://github.com/skylot/jadx)
+- [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui)
 
 ---
 
@@ -61,7 +68,9 @@
 
 ---
 
-## XXE
+## JAVA代码审计
+
+### XXE
 
 **漏洞示例**
 
@@ -119,7 +128,7 @@ sax.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
 
 ---
 
-## 反序列化
+### 反序列化
 
 **简介**
 
@@ -198,6 +207,7 @@ public class AntObjectInputStream extends ObjectInputStream{
 
 **相关工具**
 - [welk1n/JNDI-Injection-Exploit](https://github.com/welk1n/JNDI-Injection-Exploit)
+- [mbechler/marshalsec](https://github.com/mbechler/marshalsec)
 
 ### rmi反序列化
 
@@ -217,7 +227,7 @@ java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 127.0.0.1 8999 Commo
 
 ---
 
-## SSRF
+### SSRF
 
 **简介**
 
@@ -265,7 +275,7 @@ URL.openStream
 
 ---
 
-## SQLi
+### SQLi
 
 **简介**
 
@@ -287,7 +297,7 @@ select * from books where id= #{id}
 
 ---
 
-## 文件上传漏洞
+### 文件上传漏洞
 
 **简介**
 
@@ -331,7 +341,7 @@ MultipartFile
 
 ---
 
-## URL重定向
+### URL重定向
 
 **简介**
 
@@ -366,7 +376,7 @@ forward
 
 ---
 
-## CSRF
+### CSRF
 
 **简介**
 
@@ -396,7 +406,7 @@ GET http://blog.com/article/delete.jsp?id=102
 
 ---
 
-## 命令执行
+### 命令执行
 
 **简介**
 
@@ -431,7 +441,7 @@ GroovyShell.evaluate
 
 ---
 
-## 权限控制
+### 权限控制
 
 **简介**
 
@@ -461,7 +471,7 @@ public String getUserInfo(Model model, HttpServletRequest request) throws IOExce
 
 ---
 
-## 批量请求
+### 批量请求
 
 **简介**
 
@@ -490,7 +500,7 @@ public String ifUserExit(Model model, HttpServletRequest request) throws IOExcep
 
 ---
 
-## 第三方组件安全
+### 第三方组件安全
 
 **简介**
 
@@ -502,7 +512,7 @@ public String ifUserExit(Model model, HttpServletRequest request) throws IOExcep
 
 ---
 
-## SPel注入
+### SPel注入
 
 **简介**
 
@@ -530,7 +540,7 @@ public class SPelInjectionController {
 
 ---
 
-## Autobinding
+### Autobinding
 
 **简介**
 

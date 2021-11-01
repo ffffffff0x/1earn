@@ -46,6 +46,7 @@
 **相关文章**
 - [10分钟学会Bash调试](https://mp.weixin.qq.com/s/MQjqu55BN6LqSsIAvevRQA)
 - [如何并发执行Linux命令](https://mp.weixin.qq.com/s/L3u2e-GKl_yL3saJMMFazA)
+- [终于知道 Shell 中单引号双引号的区别了](https://mp.weixin.qq.com/s/tyHIlRsg1rYjw-E_h-C2rA)
 
 ---
 

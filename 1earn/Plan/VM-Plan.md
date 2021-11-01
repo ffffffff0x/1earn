@@ -17,6 +17,10 @@
   修改特定虚拟机目录下的 vmx 文件,在其中加上一行:
   `mainMem.useNamedFile = "FALSE"`
 
+**无法安装 VMTools**
+
+看下虚拟机是否有 CD/DVD 设备
+
 **VMTools**
 
 如果没有装,一定要装.如果装不了,可以尝试这个方案 [open-vm-tools](https://github.com/vmware/open-vm-tools)

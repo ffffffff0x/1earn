@@ -67,6 +67,7 @@
 - https://www.peerlyst.com/posts/ctf-write-ups-wiki-peerlyst
 - https://github.com/L1nwatch/CTF
 - https://ctf-wiki.github.io/ctf-wiki/misc/introduction-zh/
+- https://github.com/M0cK1nG-b1Rd/CTF-Mind-maps
 
 **工具合集**
 - [zardus/ctf-tools](https://github.com/zardus/ctf-tools) - 安全研究工具的一些设置脚本。
@@ -130,6 +131,7 @@ AWD
 ## Web
 
 - [CTF中的命令执行绕过](https://mp.weixin.qq.com/s/fs-IKJuDptJeZMRDCtbdkw)
+- [wonderkun/CTF_web](https://github.com/wonderkun/CTF_web)
 
 ## Misc
 
@@ -192,6 +194,7 @@ AWD
 - [数字中国创新大赛-虎符网络安全赛道Write up](https://mp.weixin.qq.com/s/ih2X8IXVFmrMVwJYuf5gng)
 - [虎符 CTF Web 部分 Writeup](https://www.zhaoj.in/read-6512.html)
 - [2020 虎符网络安全竞赛 web Writeup](https://www.anquanke.com/post/id/203417)
+- [虎符ctf2020 crypto GM](http://39.106.50.81/index.php/archives/9/)
 
 ---
 
@@ -363,6 +366,8 @@ AWD
 - [陇剑杯 个人 ’WriteUp‘](http://www.snowywar.top/?p=2554)
 - [安全-陇剑杯2021（部分）](https://blog.csdn.net/smallfox233/article/details/120291706)
 - [2021【线下】 陇剑杯wp](https://mp.weixin.qq.com/s/9fopUOhL0Met0lZxV-5S1A)
+- [2021年陇剑杯线上赛](https://secgxx.com/ctf/competition/2021longjiancup/)
+- [2021陇剑杯部分WP](https://blog.csdn.net/qq_40568770/article/details/120311122)
 
 ---
 
@@ -432,6 +437,13 @@ AWD
 - [CISCN 华北赛区 Day1 Web2 WriteUp](https://www.zhaoj.in/read-5946.html)
 
 ---
+
+### 2021
+
+**2021网络安全领军人才攻防大赛**
+- [2021网络安全领军人才攻防大赛 ｜ Pwn方向WP](https://mp.weixin.qq.com/s/ZyzjHDUhA-u781F2IfcVUg)
+- [2021网络安全领军人才攻防大赛 ｜ Crypto及Reverse方向WP合集](https://mp.weixin.qq.com/s/mhRWKQqnesVVDoJQktYIzA)
+- [2021网络安全领军人才攻防大赛 ｜ Web方向WP](https://mp.weixin.qq.com/s/keTllFjA3kK9sMz_wPRvpg)
 
 ### 2020
 
@@ -504,6 +516,10 @@ AWD
 
 ### XCTF
 
+**2021 第四届“强网”拟态防御国际精英挑战赛**
+- [第四届“强网”拟态防御国际精英挑战赛_wp（上）](https://mp.weixin.qq.com/s/xWgZKtQdsQ562EXLGiNDlg)
+- [第四届强网拟态防御国际精英挑战赛线上预选赛MISC WRITEUP](https://mp.weixin.qq.com/s/qzxMiQaIWc1GNJqg6adzyQ)
+
 **2021 RCTF**
 - [RCTF-2021 部分WriteUp](https://mp.weixin.qq.com/s/EnncNONPhgrZCgeYDE5Q2A)
 
@@ -559,6 +575,7 @@ AWD
 
 **21.8**
 - [2021DASCTF八月挑战赛Writeup](https://blog.csdn.net/qq_42815161/article/details/120010131)
+- [DASCTF八月挑战赛 re](https://mp.weixin.qq.com/s/IMhP4UGrY2pwKI1tmf1vjA)
 
 **20.8**
 - [DASCTF 八月赛 Crypto 部分Writeup](https://www.anquanke.com/post/id/215484)
@@ -623,8 +640,18 @@ AWD
 
 ### 2021
 
+**2021 中科实数杯**
+- [2021年中科实数杯团队赛手机部分考题write up](https://mp.weixin.qq.com/s/gx9s49dMxhKAHDZgYi-YOg)
+
+**2021 Bytectf**
+- [ByteCTF-WriteUp](https://mp.weixin.qq.com/s/k8wrSSra_NO165RLM_CrUw)
+- [2021ByteCTF 北极星-writeup](https://mp.weixin.qq.com/s/OPWOKA9a9Ji_8vufV6QFYA)
+
 **2021年工业信息安全技能大赛**
 - [2021年工业信息安全技能大赛线上赛](https://secgxx.com/ctf/competition/2021icsc/)
+
+**2021中国能源网络安全大赛**
+- [CTF-2021中国能源网络WEB题目全解](https://mp.weixin.qq.com/s/aq1ZUKspmXIG8GKVV2xPuw)
 
 ---
 
@@ -715,6 +742,11 @@ AWD
 ---
 
 ## 国外
+
+### 2021
+
+**2021 ractf**
+- [Ractf 2021 解题思路分享](https://mp.weixin.qq.com/s/5qWO6Sw2uEjeqfcz-ydDkQ)
 
 ### 2020
 

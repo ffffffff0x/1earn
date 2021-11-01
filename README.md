@@ -78,10 +78,6 @@
     * **MobileSec**
         * [Android安全](./1earn/Security/MobileSec/Android安全.md) - 记录一些安卓安全相关的内容,这块掌握较少
 
-    * **Pwn**
-        * 实验
-            * [SLMail溢出案例](./1earn/Security/PWN/实验/SLMail溢出案例.md) - SLMail 5.5.0 的缓冲区溢出利用实验
-
     * **RedTeam**
         * 安防设备
             * [Bypass技巧](./1earn/Security/RedTeam/安防设备/Bypass技巧.md) - 记录 waf 绕过手段

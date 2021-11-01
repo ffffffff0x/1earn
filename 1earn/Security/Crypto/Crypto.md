@@ -443,6 +443,7 @@ rawurlencode($string)));
 **在线工具**
 - http://web.chacuo.net/charsetquotedprintable
 - http://www.mxcz.net/tools/QuotedPrintable.aspx
+- https://www.wishingstarmoye.com/ctf/quoted-printable
 
 ---
 
@@ -646,6 +647,9 @@ N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 
 ![](../../../assets/img/Security/Crypto/Crypto/TIM截图20190814151904.png)
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/tapcode
+
 ---
 
 ## 曼彻斯特编码
@@ -721,6 +725,7 @@ N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 
 **相关工具**
 - [免费在线条码生成器](https://barcode.tec-it.com/zh)
+- http://tiaoxingma.wiicha.com/
 
 ---
 
@@ -1097,6 +1102,7 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 **相关工具**
 - [SageMath](https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/index.html)
+    - [Sage Cell Server](https://sagecell.sagemath.org/) - 在线 Sagemath
 - [factordb](http://www.factordb.com/) - 在线分解质因数, 通常用于分解 n 得到 p q
   - [ryosan-470/factordb-python](https://github.com/ryosan-470/factordb-python) - 命令行分解
     ```bash
@@ -1129,15 +1135,22 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
     ```
 - openssl
     ```bash
-    openssl rsa -pubin -in pubkey.pem -text -modulus  # 查看公钥文件
+    # 使用openssl解析公钥
+    openssl rsa -text -modulus -pubin -in public.pem
 
-    openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag # 解密
+    # 使用openssl解析私钥
+    openssl rsa -text -modulus -in private.pem
+
+    # 解密
+    openssl rsautl -decrypt -inkey private.pem -in flag.enc -out flag
 
     # 给出了私钥文件private.pem和flag.en,解密密文
     opensslrsautl -decrypt -in flag.enc(密文名称) -inkey private.pem
+
+    # 使用openssl加密
+    openssl rsautl -encrypt -in flag.txt -inkey public.pem -pubin -out cipher.txt
     ```
 - [ablocelayes/rsa-wiener-attack](https://github.com/pablocelayes/rsa-wiener-attack)
-- [Sage Cell Server](https://sagecell.sagemath.org/) - 在线 Sagemath
 - [3summer/CTF-RSA-tool](https://github.com/3summer/CTF-RSA-tool)
 - [Integer factorization calculator](https://www.alpertron.com.ar/ECM.HTM)
 
@@ -1172,6 +1185,8 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [2019强网杯 - 密码学-RSA-Coppersmith](https://blog.csdn.net/q851579181q/article/details/90645041)
 - [N1CTF 2019 - Part3-BabyRSA](http://duksctf.github.io/2019/09/08/N1CTF2019-Part3-BabyRSA.html)
 - [N1CTF 2019: BabyRSA](https://garygurlaskie.com/ctf/2019/09/07/n1ctf-babyrsa.html)
+- [BUUCTF--[INSHack2017]rsa16m](https://www.cnblogs.com/Sentry-InkCity/p/15332492.html)
+- [虎符ctf2020 crypto GM](http://39.106.50.81/index.php/archives/9/)
 
 **Tips**
 - e 的一般值 65537(0x10001)
@@ -1280,6 +1295,8 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 ### 列移位密码
 
+`Columnar Transposition Cipher`
+
 列移位密码(Columnar Transposition Cipher)是一种比较简单,易于实现的换位密码,通过一个简单的规则将明文打乱混合成密文.
 
 > 以明文 The quick brown fox jumps over the lazy dog,密钥 how are u为例:
@@ -1295,6 +1312,11 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 > 密文: qoury inpho Tkool hbxva uwmtd cfseg erjez
 
 另外由列移位密码变化来的密码也有其他的,比如 Amsco密码 (Amsco Cipher)和 Cadenus密码 (Cadenus Cipher).
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/columnar-transposition-cipher
+
+---
 
 ## 替换加密
 ### ADFGX
@@ -1439,6 +1461,9 @@ Porta 密码(`Porta Cipher`)是一个由意大利那不勒斯的医生Giovanni B
 
 Porta 密码可以被以 维吉尼亚密码 破解相类似方式进行自动攻破,破解Porta密码第一步同样是先确定密钥长度
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/porta
+
 ---
 
 ### ROT
@@ -1475,9 +1500,13 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ZYXWVUTSRQPONMLKJIHGFEDCBA
 
 差不多就是把A换成Z,Z换成A
+
 > 明文: the quick brown fox jumps over the lazy dog
 
 > 密文: gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/atbashcipher
 
 ---
 
@@ -1487,6 +1516,7 @@ ZYXWVUTSRQPONMLKJIHGFEDCBA
 
 **在线工具**
 - http://rumkin.com/tools/cipher/playfair.php
+- https://www.wishingstarmoye.com/ctf/playfair
 
 ---
 
@@ -1554,6 +1584,8 @@ M  --    |Z  --..  |=  -...-
 
 ### 简单替换密码
 
+`Simple Substitution`
+
 简单换位密码(Simple Substitution Cipher)加密方式是以每个明文字母被与之唯一对应且不同的字母替换的方式实现的,它不同于恺撒密码,因为密码字母表的字母不是简单的移位,而是完全是混乱的.
 
 例子:
@@ -1568,6 +1600,9 @@ M  --    |Z  --..  |=  -...-
 当密文数据足够多时这种密码我们可以通过字频分析方法破解或其他方法破解
 
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-simple-substitution-cipher/
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/simple-substitution
 
 ---
 
@@ -1586,6 +1621,8 @@ M  --    |Z  --..  |=  -...-
 
 ### 波利比奥斯方阵密码
 
+`Polybius Square`
+
 波利比奥斯方阵密码(`Polybius Square Cipher`或称`波利比奥斯棋盘`)是棋盘密码的一种,是利用波利比奥斯方阵进行加密的密码方式,简单的来说就是把字母排列好,用坐标(行列)的形式表现出来.字母是密文,明文便是字母的坐标.
 
 常见的排布方式:
@@ -1597,6 +1634,9 @@ M  --    |Z  --..  |=  -...-
 > 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
 >
 > 密文: 442315 4145241325 1242345233 213453 2445323543 442315 31115554 143422
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/polybius-square
 
 ---
 
@@ -1673,6 +1713,7 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=920
+- https://www.wishingstarmoye.com/ctf/autokey
 
 **爆破密匙**
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-autokey-cipher/
@@ -1684,6 +1725,8 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 ### 博福特密码
 
+`Beaufort Cipher`
+
 博福特密码(`Beaufort Cipher`),是一种类似于维吉尼亚密码的代换密码,由弗朗西斯·蒲福(Francis Beaufort)发明.它最知名的应用是Hagelin M-209密码机.博福特密码属于对等加密,即加密演算法与解密演算法相同.
 
 > 明文: THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
@@ -1693,6 +1736,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 >> 加密过程:如果第一行为明文字母,第一列为密文字母,那么沿明文字母'T'列出现密钥字母'C'的行号就是密文字母'J',以此类推.
 >
 > 密文: JNH DAJCS TUFYE ZOX CZICM OZHC BKA RUMV RDY
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/beaufortcipher
 
 ---
 
@@ -1743,6 +1789,9 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 以E(x) = (5x + 8) mod 26加密,通过计算可得D(x)=21(x - 8) mod 26,这样便可以得到明文.
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/affinecipher
+
 ---
 
 ### 培根密码
@@ -1768,6 +1817,8 @@ H = aabbb | Q = abbbb   | Z = babbb
 ---
 
 ### 双密码
+
+`Bifid Cipher`
 
 双密码(`Bifid Cipher`)结合了波利比奥斯方阵换位密码,并采用分级实现扩散,这里的"双"是指用 2 个密钥进行加密.双密码是由法国 Felix Delastelle 发明,除此之外 Felix Delastelle 还发明了三分密码(Trifid Cipher),四方密码(Four-Square Cipher).还有一个 两方密码 (Two-Square)与四方密码类似, 共轭矩阵双密码 (Conjugated Matrix Bifid Cipher)也是双密码的变种.
 ```
@@ -1802,6 +1853,9 @@ H = aabbb | Q = abbbb   | Z = babbb
 **未知密阵破解**
 
 手工分析破解双密码是有一定难度的,每个字母都是同过 3 个数字进行非线性代替转换,而且之后还会对字母顺序进行打乱,这样使双密码比一些替换密码和换位密码更难破解.然而,现在是计算机时代,这张加密方式没有安全性可言,通过 模拟退火 算法就能快速找到双密码的密阵.
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/bifidcipher
 
 ---
 
@@ -1850,6 +1904,8 @@ H = aabbb | Q = abbbb   | Z = babbb
 ---
 
 ### 四方密码
+
+`Four Square Cipher`
 
 四方密码(Four-Square Cipher)是类似普莱菲尔密码双字母加密密码,这样使加密效果强于其他替换密码,因为频率分析变得更加困难了.
 
@@ -1901,6 +1957,9 @@ H = aabbb | Q = abbbb   | Z = babbb
                 LPHABETINORDERALTERNATIVELYTHECIPHERTEXTSQUARESCANBGENERATEDCO
                 MPLETELYRANDOMLYTHEFOURSQUAREALGORITHMALLOWSFORTWOSPARATEKEYSO
                 NEFOREACHOFTHETWOCIPHERTEXTMATRICESX'
+
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/four-square
 
 ---
 
@@ -2078,9 +2137,14 @@ I have deposited in the county of Bedford...
 **模拟软件**
 - https://enigmamuseum.com/
 
+**在线工具**
+- https://www.wishingstarmoye.com/ctf/enigma
+
 ---
 
 ### 维吉尼亚密码
+
+`Vigenere`
 
 维吉尼亚密码(`Vigenère Cipher`)是在单一恺撒密码的基础上扩展出多表代换密码,根据密钥(当密钥长度小于明文长度时可以循环使用)来决定用哪一行的密表来进行替换,以此来对抗字频统计
 
@@ -2103,6 +2167,8 @@ I have deposited in the county of Bedford...
 /////[URL](http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher/)/////
 
 **变种**
+
+`Gronsfeld`
 
 有几种密码和维吉尼亚密码相似,格罗斯费尔德密码(`Gronsfeld cipher`)实际上和维吉尼亚密码相同,除了使用了数字来代替字母以外没有什么区别.数字可以选择一种数列,如斐波那契数列,或者一些其他的伪随机序列.格罗斯费尔德密码密码分析过程和维吉尼亚密码大同小异,不过,自动密钥密码不能使用 卡西斯基算法 (kasiski)来破译,因为自动密钥密码的密钥不重复循环使用,破译自动密钥密码最好的方法的就是从密文不断尝试和猜测其中明文或密钥的一部分.
 
@@ -2179,7 +2245,7 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=719
 
-#### 颜文字加密
+#### AAEncode/颜文字加密
 
 **在线工具**
 - https://cat-in-136.github.io/2010/12/aadecode-decode-encoded-as-aaencode.html
@@ -2241,3 +2307,8 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 
 **在线工具**
 - https://f1aa.com/logo/jslogo/index.html?lang=cn
+
+#### Dissection Font
+
+**在线工具**
+- [Dissection Font](http://erikdemaine.org/fonts/dissect/)

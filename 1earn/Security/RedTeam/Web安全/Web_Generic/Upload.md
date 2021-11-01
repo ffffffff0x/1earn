@@ -28,6 +28,8 @@
 **相关工具**
 - [almandin/fuxploider](https://github.com/almandin/fuxploider) - File upload vulnerability scanner and exploitation tool.
 - [PortSwigger/upload-scanner](https://github.com/PortSwigger/upload-scanner) - HTTP file upload scanner for Burp Proxy
+- [ptoomey3/evilarc](https://github.com/ptoomey3/evilarc)
+- [Rvn0xsy/zipcreater](https://github.com/Rvn0xsy/zipcreater) - 应用于跨目录的文件上传漏洞的利用，它能够快速进行压缩包生成。
 
 **靶场**
 - [upload-labs](https://github.com/c0ny1/upload-labs)

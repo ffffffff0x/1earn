@@ -1,5 +1,9 @@
 # PHP安全
 
+**writeup**
+- [BUUCTF WEB [RoarCTF 2019]Easy Calc](https://blog.csdn.net/qq_42967398/article/details/103512717)
+- [安洵杯 2019 easy_web](https://www.btis.site/2020/08/01/%E5%AE%89%E6%B4%B5%E6%9D%AF-2019-easy-web/)
+
 ---
 
 ## PHP代码审计

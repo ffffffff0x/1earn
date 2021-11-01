@@ -5,9 +5,11 @@
 **相关文章**
 - [萌新学逆向——T1 IDA的正确开启姿势](https://mp.weixin.qq.com/s/I9vJp8fp7RcCls0tz8Dvlg)
 - [分析实战读书笔记3_IDA小知识](https://mp.weixin.qq.com/s/Cktu1sK0PILbO0-QJb9Y6A)
+- [ida字符串存储的小端序陷阱](https://blog.csdn.net/amber_o0k/article/details/120659054)
 
 **相关扩展**
 - [lcq2/riscv-ida](https://github.com/lcq2/riscv-ida) - risc-v 插件
+- [hackflame/ida_python_extractCode](https://github.com/hackflame/ida_python_extractCode) - ida提取特征码脚本
 
 ---
 
@@ -19,7 +21,7 @@ IDA 主程序有2个: ida.exe 和 ida64.exe
 
 如果无法判断目标程序是 32 位还是 64 位的，可以直接打开, 会有相应提示。
 
-ida64可以反汇编32位应用程序，但是无法生成32位应用程序的伪代码。
+ida64 可以反汇编 32 位应用程序，但是无法生成 32 位应用程序的伪代码。
 
 # 界面组成
 

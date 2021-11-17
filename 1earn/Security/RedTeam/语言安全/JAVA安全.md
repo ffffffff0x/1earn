@@ -8,15 +8,6 @@
 
 ---
 
-**相关资源**
-- [Cryin/JavaID](https://github.com/Cryin/JavaID)
-
-**相关文章**
-- [一次从内网到外网，黑盒到白盒的批量挖洞经历](http://www.0dayhack.net/index.php/1957/)
-- [java审计基础](https://mp.weixin.qq.com/s/cHMNjKDSjK5aSoMHjRWUcg)
-- [简单java代码审计？](https://mp.weixin.qq.com/s/88Tsr8NBX03sFlG1Vfz-aw)
-- [代码审计_Sylon的博客-CSDN博客_代码审计](https://blog.csdn.net/qq_41770175/article/details/93486383)
-
 **CTF writup**
 - [BUU-Java逆向解密](https://blog.csdn.net/qq_42602454/article/details/108825608)
 
@@ -70,6 +61,15 @@
 
 ## JAVA代码审计
 
+**相关文章**
+- [一次从内网到外网，黑盒到白盒的批量挖洞经历](http://www.0dayhack.net/index.php/1957/)
+- [java审计基础](https://mp.weixin.qq.com/s/cHMNjKDSjK5aSoMHjRWUcg)
+- [简单java代码审计？](https://mp.weixin.qq.com/s/88Tsr8NBX03sFlG1Vfz-aw)
+- [代码审计_Sylon的博客-CSDN博客_代码审计](https://blog.csdn.net/qq_41770175/article/details/93486383)
+
+**相关资源**
+- [Cryin/JavaID](https://github.com/Cryin/JavaID)
+
 ### XXE
 
 **漏洞示例**
@@ -114,7 +114,7 @@ javax.xml.xpath.XPathExpression
 ...
 ```
 
-### 修复方案
+**修复方案**
 
 使用 XML 解析器时需要设置其属性，禁止使用外部实体，以 SAXReader 为例，安全的使用方式如下:
 
@@ -134,10 +134,11 @@ sax.setFeature("http://xml.org/sax/features/external-parameter-entities", false)
 
 序列化是让 Java 对象脱离 Java 运行环境的一种手段，可以有效的实现多平台之间的通信、对象持久化存储。
 
-Java 程序使用 ObjectInputStream 对象的 readObject 方法将反序列化数据转换为 java 对象。但当输入的反序列化的数据可被用户控制，那么攻击者即可通过构造恶意输入，让反序列化产生非预期的对象，在此过程中执行构造的任意代码。
+Java 程序使用 ObjectOutputStream 类的 writeObject() 方法可以实现序列化, 相应的，ObjectInputStream 对象的 readObject() 方法将反序列化数据转换为 java 对象。但当输入的反序列化的数据可被用户控制，那么攻击者即可通过构造恶意输入，让反序列化产生非预期的对象，在此过程中执行构造的任意代码。
 
 **相关文章**
 - [某java客服系统后续代码审计](https://mp.weixin.qq.com/s/Alj6MQmJv9ekGzcUNiIdeg)
+- [基础知识｜反序列化命令执行漏洞](https://mp.weixin.qq.com/s/Q75rw573ME73enFsVY4ilA)
 
 **相关工具**
 - [java.lang.Runtime.exec() Payload Workarounds](http://www.jackson-t.ca/runtime-exec-payloads.html)
@@ -157,7 +158,21 @@ ois.readObject();
 ois.close();
 ```
 
-上述代码中，程序读取输入流并将其反序列化为对象。此时可查看项目工程中是否引入可利用的 commons-collections 3.1、commons-fileupload 1.3.1 等第三方库，即可构造特定反序列化对象实现任意代码执行。相关三方库及利用工具可参考 ysoserial、marshalsec。
+上述代码中，程序读取输入流并将其反序列化为对象。此时可查看项目工程中是否引入不安全的基础库
+```
+commons-fileupload 1.3.1
+commons-io 2.4
+commons-collections 3.1
+commons-logging 1.2
+commons-beanutils 1.9.2
+org.slf4j:slf4j-api 1.7.21
+com.mchange:mchange-commons-java 0.2.11
+org.apache.commons:commons-collections 4.0
+com.mchange:c3p0 0.9.5.2
+org.beanshell:bsh 2.0b5
+org.codehaus.groovy:groovy 2.3.9
+org.springframework:spring-aop 4.1.4.RELEASE
+```
 
 **审计函数**
 
@@ -203,13 +218,13 @@ public class AntObjectInputStream extends ObjectInputStream{
 
 也可以使用 Apache Commons IO Serialization 包中的 ValidatingObjectInputStream 类的 accept 方法来实现反序列化类白/黑名单控制，如果使用的是第三方库则升级到最新版本。更多修复方案可参考 [浅谈 Java 反序列化漏洞修复方案](https://xianzhi.aliyun.com/forum/topic/41/)。
 
-### JNDI注入
+#### JNDI注入
 
 **相关工具**
 - [welk1n/JNDI-Injection-Exploit](https://github.com/welk1n/JNDI-Injection-Exploit)
 - [mbechler/marshalsec](https://github.com/mbechler/marshalsec)
 
-### rmi反序列化
+#### RMI反序列化
 
 RMI(Remote Method Invocation) 远程方法调用是一种计算机之间利用远程对象互相调用实现双方通讯的一种通讯机制。使用这种机制，某一台计算机上的对象可以调用另外 一台计算机上的对象来获取远程数据，能让某个 Java 虚拟机上的对象调用另一个 java 虚拟机对象上的方法。RMI 能够让程序员开发出基于 java 的分布式应用。一个 rmi 对象是一个远程 java 对象，可以从另一个 java 虚拟机上调用他的方法，可以像调用本地 java 对象的方法一样调用远程对象的方法。使分布在不同的 JVM 中的对象外表和行为都像本地对象一样。默认端口 1099
 

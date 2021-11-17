@@ -34,6 +34,7 @@
 **插件/增强工具**
 - [pentesteracademy/patoolkit](https://github.com/pentesteracademy/patoolkit) - Wireshark 插件，增强分析能力
 - [leolovenet/qqwry2mmdb](https://github.com/leolovenet/qqwry2mmdb) - 为 Wireshark 能使用纯真网络 IP 数据库(QQwry)而提供的格式转换工具,不支持 windows
+- https://docs.google.com/file/d/0B3tHnfnS08GyWjJUOXE3UGFJRnc/edit - TeamViewer 检测插件
 
 ---
 

@@ -37,8 +37,10 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 - [CS通过CDN上线](https://0x20h.com/p/8dee.html)
 - [渗透利器 Cobalt Strike 在野利用情况专题分析](https://paper.seebug.org/1190/)
 - [为 CobaltStrike TeamServer 加上谷歌二次验证](https://mp.weixin.qq.com/s/AePKPUDnBUr4WbJqvPCleg)
+- [Cobalt Strike: Using Known Private Keys To Decrypt Traffic – Part 2](https://blog.nviso.eu/2021/10/27/cobalt-strike-using-known-private-keys-to-decrypt-traffic-part-2/)
+    - [破解版密钥相同，部分CobaltStrike加密流量可解](https://mp.weixin.qq.com/s/AcIFSjyqn9gzyRkyx3sRIQ)
 
-**工具/插件**
+**插件**
 
 Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展菜单栏，Beacon 命令行，提权脚本等
 
@@ -47,9 +49,28 @@ Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展
 - [DeEpinGh0st/Erebus](https://github.com/DeEpinGh0st/Erebus) CobaltStrike 后渗透测试插件
 - [QAX-A-Team/EventLogMaster](https://github.com/QAX-A-Team/EventLogMaster) - RDP 日志取证 & 清除插件
 - [outflanknl/Spray-AD](https://github.com/outflanknl/Spray-AD) - Cobalt Strike工具，用于审核 AD 用户帐户中的弱密码
-- [gloxec/CrossC2](https://github.com/gloxec/CrossC2)
+- [gloxec/CrossC2](https://github.com/gloxec/CrossC2) - generate CobaltStrike's cross-platform payload
+- [lintstar/LSTAR](https://github.com/lintstar/LSTAR) - LSTAR - CobaltStrike 综合后渗透插件
+- [AttackTeamFamily/cobaltstrike-bof-toolset](https://github.com/AttackTeamFamily/cobaltstrike-bof-toolset) - 在cobaltstrike中使用的bof工具集，收集整理验证好用的bof。
+- [outflanknl/PrintNightmare](https://github.com/outflanknl/PrintNightmare)
+- [helpsystems/nanodump](https://github.com/helpsystems/nanodump) - Dumping LSASS has never been so stealthy
+- [optiv/Registry-Recon](https://github.com/optiv/Registry-Recon) - Cobalt Strike Aggressor Script that Performs System/AV/EDR Recon
+
+**beacon 解析**
+
+由于 beacon 中存在 C2 的信息,部分工具可以直接解析 beacon 中的 C2 信息,甚至模拟上线干扰服务器
+
+- [Sentinel-One/CobaltStrikeParser](https://github.com/Sentinel-One/CobaltStrikeParser) - Python parser for CobaltStrike Beacon's configuration
+    ```
+    python parse_beacon_config.py beacon.exe
+    ```
+- [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
+- [jas502n/CS_mock](https://github.com/jas502n/CS_mock)
 
 **C2 Profile**
+
+C2 Profile 可以调整传输过程中的流量, 一定程度上可以隐蔽 C2 服务器
+
 - [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
 - [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
 
@@ -59,9 +80,6 @@ git clone https://github.com/ryanohoro/csbruter
 cd csbruter
 cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
 ```
-
-**发送假上线信息**
-- [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam)
 
 ---
 

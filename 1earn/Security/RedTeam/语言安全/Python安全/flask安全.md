@@ -4,6 +4,8 @@
 
 ## session伪造
 
+flask-session 的三部分为 json->zlib->base64后的源字符串.时间戳.hmac签名信息
+
 **相关文章**
 
 - [flask session伪造admin身份](https://blog.csdn.net/since_2020/article/details/119543172)

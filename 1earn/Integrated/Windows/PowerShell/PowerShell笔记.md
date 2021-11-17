@@ -28,6 +28,62 @@ Windows PowerShell 需要用于管理 .NET 对象的语言.该语言需要为使
 
 ---
 
+# 安装Powershell
+
+https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows
+
+## 支持的 Windows 版本
+
+* ✅ 指示仍支持 OS 或 PowerShell 版本
+* ❌ 指示不支持 OS 或 PowerShell 版本
+* 💢 指示该 OS 版本不再支持 PowerShell 版本
+
+| Windows版本	                         | 7.0 (LTS)  | 7.1（最新版）	| 7.2 (LTS-preview) |
+| - | - | - | - |
+| Windows Server 2016,2019,2022         | ✅         | ✅            | ✅ |
+| Windows Server 2012 R2                | ✅         | ✅            | ✅ |
+| Windows Server Core(2012 R2)          | ✅         | ✅            | ✅ |
+| Windows Server Nano(1809)             | ✅         | ✅            | ✅ |
+| Windows Server 2012                   | 💢         | ❌            | ❌ |
+| Windows Server 2008 R2                | 💢         | ❌            | ❌ |
+| Windows 11                            | ✅         | ✅            | ✅ |
+| Windows 10 1607                       | ✅         | ✅            | ✅ |
+| Windows 8.1	                        | ✅         | ✅            | ❌ |
+
+以下处理器体系结构在 Windows 上支持 PowerShell。
+
+| Windows版本	    | 7.0 (LTS)	    | 7.1（最新版）	    | 7.2 (LTS-preview) |
+| - | - | - | - |
+| Nano Server 1803	            | x64、Arm32	| X64	            | X64 |
+| Windows Server 2012 R2        | x64、x86	    | x64、x86	        | x64、x86 |
+| Windows Server Core 2012 R2	| x64、x86	    | x64、x86	        | x64、x86 |
+| Windows 10 or 11              | x64、x86	    | x64、x86、Arm64	| x64、x86、Arm64 |
+| Windows 8.1                   | x64、x86	    | x64、x86	        | x64、x86 |
+
+---
+
+# 使用
+
+**PS1文件**
+
+一个 PowerShell 脚本其实就是一个简单的文本文件， 这个文件包含了一系列 PowerShell 命令，每个命令显示为独立的一行，对于被视为 PowerShell 脚本的文本文件，它的文件名需要加上 .PS1 的扩展名。
+
+**PowerShell的执行策略**
+
+为防止恶意脚本的执行，PowerShell有一个执行策略，默认情况下，这个执行策略被设置为受限。
+
+我们可以使用：Get-ExecutionPolicy 命令查看PowerShell当前的执行策略。它有4个策略。
+* Restricted：脚本不能运行(默认设置)
+* RemoteSigned：本地创建的脚本可以运行，但是从网上下载的脚本不能运行(拥有数字证书签名的除外)
+* AllSigned：仅当脚本由受信任的发布者签名时才能运行；
+* Unrestricted：允许所有的脚本执行
+
+```
+Set-ExecutionPolicy 策略名(如：Unrestricted)
+```
+
+---
+
 # 常用命令
 
 > 本部分内容由 [xidaner](https://github.com/xidaner) 提供,在此只做排版修改
@@ -77,6 +133,11 @@ Remove-Item C:\tobedeleted -Recurse
 ---
 
 ## 收集信息
+
+查看当前Powershell版本
+```powershell
+$PSVersionTable
+```
 
 获取计算机组成或模型信息
 ```powershell

@@ -18,10 +18,14 @@
     * [ASCII](#ascii)
     * [Base](#base)
         * [Base64](#base64)
-        * [Base32](#base32)
         * [Base16](#base16)
+        * [Base32](#base32)
         * [Base58](#base58)
+        * [Base62](#base62)
+        * [Base85](#base85)
+        * [Base91](#base91)
         * [base92](#base92)
+        * [Base100](#base100)
     * [Escape/Unescape](#escapeunescape)
     * [HtmlEncode](#htmlencode)
     * [Punycode](#punycode)
@@ -30,6 +34,9 @@
     * [Unicode](#unicode)
     * [URL](#url)
     * [UTF](#utf)
+        * [UTF-8](#utf-8)
+        * [UTF-7](#utf-7)
+        * [UTF-16](#utf-16)
     * [UUencode](#uuencode)
     * [XXencode](#xxencode)
     * [进制](#进制)
@@ -54,6 +61,10 @@
         * [DES](#des)
             * [3DES](#3des)
         * [RC4](#rc4)
+        * [TEA](#tem)
+        * [Xtea](#xtea)
+        * [Serpent](#serpent)
+        * [BlowFish](#blowfish)
     * [非对称性加密算法](#非对称性加密算法)
         * [RSA](#rsa)
     * [国密](#国密)
@@ -98,6 +109,11 @@
         * [格朗普雷密码](#格朗普雷密码)
         * [比尔密码](#比尔密码)
         * [键盘密码](#键盘密码)
+            * [手机键盘密码](#手机键盘密码)
+            * [电脑键盘棋盘](#电脑键盘棋盘)
+            * [电脑键盘坐标](#电脑键盘坐标)
+            * [电脑键盘QWE](#电脑键盘qwe)
+        * [01248密码](#01248密码)
         * [恩尼格玛密码](#恩尼格玛密码)
         * [维吉尼亚密码](#维吉尼亚密码)
         * [猪圈密码](#猪圈密码)
@@ -106,11 +122,21 @@
 * **其他编码**
     * [Brainfuck/Ook](#brainfuck/ook)
     * [JSfuck](#jsfuck)
-    * [颜文字加密](#颜文字加密)
+    * [JJEncode](#JJEncode)
+    * [PPEncode](#PPEncode)
+    * [AAEncode/颜文字加密](#AAEncode/颜文字加密)
     * [与佛论禅](#与佛论禅)
     * [文本加密为汉字](#文本加密为汉字)
     * [随机密码生成](#随机密码生成)
     * [核心价值观加密](#核心价值观加密)
+    * [蝌蚪文](#蝌蚪文)
+    * [whitespace](#whitespace)
+    * [音符加密](#音符加密)
+    * [盲文对照](#盲文对照)
+    * [五笔编码](#五笔编码)
+    * [中文电码](#中文电码)
+    * [LOGO语言](#LOGO语言)
+    * [Dissection Font](#Dissection-Font)
 
 ---
 
@@ -141,6 +167,17 @@
     ```bash
     pip3 install xortool
     xortool -c 20 file
+    ```
+- [mufeedvh/basecrack](https://github.com/mufeedvh/basecrack) - Decode All Bases - Base Scheme Decoder
+    ```bash
+    apt-get install tesseract-ocr libtesseract-dev
+
+    git clone https://github.com/mufeedvh/basecrack.git
+    cd basecrack
+    pip3 install -r requirements.txt
+    python3 basecrack.py -h
+
+    echo "IX(Fp@nNG6ef<,*TFE]IT^zdINAb9EVbp,e<u=O6nN)/u+MTnU;Fo#VvQ&cK;mLZI#Jbdook<O{W#+gY%ooe#6pTkTa.9YPU8Uc=pl9BhSM9%kISw2k:8..u/6F2BwNndPZ2o#7NHNP3g,HlZu><*[Nv+T8" | python3 basecrack.py --magic
     ```
 
 **在线工具**
@@ -335,7 +372,7 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 ### base92
 
 **相关项目**
-- https://github.com/thenoviceoof/base92
+- [thenoviceoof/base92](https://github.com/thenoviceoof/base92)
 
 **在线工具**
 - http://ctf.ssleye.com/base92.html
@@ -343,6 +380,9 @@ base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位
 ---
 
 ### base100
+
+**相关项目**
+- [AdamNiederer/base100](https://github.com/AdamNiederer/base100)
 
 **在线工具**
 - http://www.atoolbox.net/Tool.php?Id=936
@@ -503,9 +543,21 @@ url 编码又叫百分号编码, 是统一资源定位 (URL) 编码方式. URL �
 
 ## UTF
 
+### UTF-8
+
 **在线工具**
 - http://tool.chinaz.com/Tools/UTF-8.aspx
 - http://tool.oschina.net/encode?type=2
+
+### UTF-7
+
+**在线工具**
+- http://toolswebtop.com/text/process/decode/utf-7
+
+### UTF-16
+
+**在线工具**
+- https://www.qqxiuzi.cn/bianma/utf-16.htm
 
 ---
 
@@ -1070,6 +1122,13 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 
 ---
 
+### BlowFish
+
+**相关文章**
+- [BlowFish加解密原理与代码实现](https://cloud.tencent.com/developer/article/1836650)
+
+---
+
 ## 非对称性加密算法
 
 公开密钥密码学（英语：Public-key cryptography）也称非对称式密码学（英语：Asymmetric cryptography）是密码学的一种算法，它需要两个密钥，一个是公开密钥，另一个是私有密钥；公钥用作加密，私钥则用作解密。使用公钥把明文加密后所得的密文，只能用相对应的私钥才能解密并得到原本的明文，最初用来加密的公钥不能用作解密。由于加密和解密需要两个不同的密钥，故被称为非对称加密；不同于加密和解密都使用同一个密钥的对称加密。公钥可以公开，可任意向外发布；私钥不可以公开，必须由用户自行严格秘密保管，绝不透过任何途径向任何人提供，也不会透露给被信任的要通信的另一方。
@@ -1157,6 +1216,7 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 **相关资源**
 - [kur0mi/CTF-RSA](https://github.com/kur0mi/CTF-RSA)
 - [Zui-Qing-Feng/RSA](https://github.com/Zui-Qing-Feng/RSA)
+- [yifeng-lee/RSA-In-CTF](https://github.com/yifeng-lee/RSA-In-CTF)
 
 **Writeup**
 - [RSA的dp泄露 —— 【WUST-CTF2020】leak](https://blog.csdn.net/qq_42939527/article/details/105202716)
@@ -1187,9 +1247,10 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [N1CTF 2019: BabyRSA](https://garygurlaskie.com/ctf/2019/09/07/n1ctf-babyrsa.html)
 - [BUUCTF--[INSHack2017]rsa16m](https://www.cnblogs.com/Sentry-InkCity/p/15332492.html)
 - [虎符ctf2020 crypto GM](http://39.106.50.81/index.php/archives/9/)
+- [BUUCTF 强网杯2019 Copperstudy](https://blog.csdn.net/walker_feng/article/details/108889696)
 
 **Tips**
-- e 的一般值 65537(0x10001)
+- e 的一般为(如果题目里没给你) 65537(0x10001)
 
 ---
 
@@ -2103,13 +2164,13 @@ I have deposited in the county of Bedford...
 
 ![](../../../assets/img/Security/Crypto/Crypto/14.jpg)
 
-#### 电脑键盘 QWE
+#### 电脑键盘QWE
 
 电脑键盘 QWE 加密法，就是用字母表替换键盘上面的排列顺序。
 
 ![](../../../assets/img/Security/Crypto/Crypto/12.jpg)
 
-### 01248 密码
+### 01248密码
 
 该密码又称为云影密码，使用 0，1，2，4，8 四个数字，其中 0 用来表示间隔，其他数字以加法可以表示出 如：28=10，124=7，18=9，再用 1->26 表示 A->Z。
 
@@ -2308,7 +2369,7 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 **在线工具**
 - https://f1aa.com/logo/jslogo/index.html?lang=cn
 
-#### Dissection Font
+#### Dissection-Font
 
 **在线工具**
 - [Dissection Font](http://erikdemaine.org/fonts/dissect/)

@@ -401,3 +401,11 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 **关闭晃动窗口最小化**
 
 运行 gpedit.msc 打开组策略编辑器，展开 用户配置 -> 管理模版 -> 桌面，可以在右边区域找到 “关闭 Aero Shake 窗口最小化鼠标手势” 的项目，它的默认状态为 “未配置”，在未配置的情况下，Aero Shake 的功能是默认开启的, 设置为“已启用” 即可
+
+**audiodg 无响应**
+
+```
+psexec.exe -accepteula -s -i -d cmd.exe
+net stop audiosrv
+net start audiosrv
+```

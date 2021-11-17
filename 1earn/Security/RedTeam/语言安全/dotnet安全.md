@@ -90,7 +90,9 @@ WEB 应用程序会把我们写的代码编译为 DLL 文件存放在 Bin 文件
 
 ---
 
-## 逻辑漏洞
+## dotnet代码审计
+
+### 逻辑漏洞
 
 **ASP.NET 安全认证**
 
@@ -208,7 +210,7 @@ public static bool IsAdmin
 
 ---
 
-## 注入
+### 注入
 
 **辅助工具**
 
@@ -284,7 +286,7 @@ sid 没有经过任何过滤，同时 ExeDataSet 函数也不存在过滤，即�
 
 ---
 
-## XSS
+### XSS
 
 **相关文章**
 - [Request Validation - Preventing Script Attacks](https://docs.microsoft.com/en-us/aspnet/whitepapers/request-validation)
@@ -311,7 +313,7 @@ sid 没有经过任何过滤，同时 ExeDataSet 函数也不存在过滤，即�
 
 ---
 
-## 文件上传
+### 文件上传
 
 **分析案例**
 
@@ -362,7 +364,7 @@ allow_ext.xml
 
 ---
 
-## 反序列化
+### 反序列化
 
 **工具**
 - [pwntester/ysoserial.net](https://github.com/pwntester/ysoserial.net)

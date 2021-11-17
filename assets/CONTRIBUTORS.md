@@ -23,11 +23,13 @@
 * [mfslog](https://github.com/mfslog)
 * [Lorna Dane](https://github.com/tonyscy)
     - 提供 Volatility3 部分内容
+* [0xC4SE](https://github.com/0xC4SE)
+    - 提供 PWN 部分内容
 
 ---
 
 参考过的部分文章作者(排名不分先后)
-* [Tide安全团队](https://github.com/TideSecTeam?type=source)
+* [Tide安全团队](https://github.com/TideSecTeam)
     - 取证和工控笔记中很大程度参考其公众号和 freebuf 文章内容
 * [theLSA](https://github.com/theLSA)
     - 取证和 Secure-Win 中很大程度参考其项目内容
@@ -43,4 +45,7 @@
     - SQLi 笔记大部分参考其 [MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI) 项目
 * [奇安信 A-TEAM](https://blog.ateam.qianxin.com/)
     - Cobalt Strike 笔记大部分参考其翻译的 [Cobalt Strike 4.0 手册](https://blog.ateam.qianxin.com/post/cobalt-strike-40-shou-ce-fan-yi-2019-nian-12-yue-2-ri-geng-xin-ban-ben/)
+* 雷神众测 公众号
+    * ida 笔记大部分参考其文章内容 https://mp.weixin.qq.com/s/qaHEUW1uybkHhTAdzC96Hw
+    * 取证部分很多也是参考其文章内容
 * 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中

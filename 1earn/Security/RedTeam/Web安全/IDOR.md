@@ -55,6 +55,7 @@
 - [挖洞经验 | 连接多个漏洞获取管理员访问权限](https://www.freebuf.com/articles/web/177461.html)
 - [挖洞经验 | 看我如何发现谷歌电子表格、谷歌云盘和谷歌相册的3个漏洞（$4133.7）](https://www.freebuf.com/vuls/192342.html)
 - [挖掘某小型CMS厂商逻辑漏洞的过程](https://bbs.ichunqiu.com/thread-31184-1-20.html)
+- [对某大学管理信息系统的一次渗透测试](https://xz.aliyun.com/t/7686)
 
 **相关工具**
 - [ztosec/secscan-authcheck](https://github.com/ztosec/secscan-authcheck) - 越权检测工具

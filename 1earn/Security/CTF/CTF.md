@@ -445,6 +445,9 @@ AWD
 - [2021网络安全领军人才攻防大赛 ｜ Crypto及Reverse方向WP合集](https://mp.weixin.qq.com/s/mhRWKQqnesVVDoJQktYIzA)
 - [2021网络安全领军人才攻防大赛 ｜ Web方向WP](https://mp.weixin.qq.com/s/keTllFjA3kK9sMz_wPRvpg)
 
+**“东华杯”2021年大学生网络安全邀请赛 暨第七届上海市大学生网络安全大赛线上赛**
+- [“东华杯”2021年大学生网络安全邀请赛 暨第七届上海市大学生网络安全大赛线上赛MISC-Writeup](https://mp.weixin.qq.com/s/-2CrIBKB8BNJzwDDXe-b_Q)
+
 ### 2020
 
 **2020 NUAACTF**
@@ -640,6 +643,17 @@ AWD
 
 ### 2021
 
+**2021 深育杯**
+- [深育杯-WriteUp](https://mp.weixin.qq.com/s/HvyRjbLVPaMg7DBfdYmdJw)
+
+**陇原战“疫”2021**
+- [陇原战_疫_2021网络安全大赛](https://mp.weixin.qq.com/s/Lcq7h8VpZaHX3oFrr2E_uQ)
+- [陇原战“疫”2021-WriteUp](https://mp.weixin.qq.com/s/O5cyHCvQsu6RNTp4A_Gp4w)
+- [2021陇原战"疫" 部分赛题复现](https://mp.weixin.qq.com/s/KIkE50ELd2PBcbqZ_vUyQg)
+
+**“枢网智盾-2021”智慧城市工控系统应急处置技术挑战赛线**
+- [枢网智盾线上赛Writeup](https://mp.weixin.qq.com/s/Uub24ztAF_jKXz5dEK-dTw)
+
 **2021 中科实数杯**
 - [2021年中科实数杯团队赛手机部分考题write up](https://mp.weixin.qq.com/s/gx9s49dMxhKAHDZgYi-YOg)
 
@@ -649,6 +663,7 @@ AWD
 
 **2021年工业信息安全技能大赛**
 - [2021年工业信息安全技能大赛线上赛](https://secgxx.com/ctf/competition/2021icsc/)
+- [2021年⼯业信息安全技能⼤赛-线上第⼀场WriteUp](https://mp.weixin.qq.com/s/DFJaILmNxTl1EAyksqQZ9w)
 
 **2021中国能源网络安全大赛**
 - [CTF-2021中国能源网络WEB题目全解](https://mp.weixin.qq.com/s/aq1ZUKspmXIG8GKVV2xPuw)

@@ -31,6 +31,7 @@
 - [基于BurpSuit插件打造渗透测试自动化之路](https://www.freebuf.com/sectool/243617.html)
 - [某次burp抓包出错的解决办法](https://www.cnblogs.com/cwkiller/p/13846754.html)
 - [每天一个BP小技巧](https://mp.weixin.qq.com/s/j6x28xHln3guULkPLdat5w)
+- [减少Burpsuite抓包过程中的‘噪音’](https://mp.weixin.qq.com/s/GGpojt445WrBlZw1BzQfCQ_)
 
 ---
 
@@ -105,6 +106,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
     - [orleven/BurpCollect](https://github.com/orleven/BurpCollect) - 基于 BurpCollector 的二次开发， 记录 Burp Map 记录的里的数据包中的目录路径参数名信息，并存入 Sqlite，并可导出 txt 文件。
 - [redhuntlabs/BurpSuite-Asset_Discover](https://github.com/redhuntlabs/BurpSuite-Asset_Discover) - 从 HTTP 响应中发现资产的 Burp 扩展
 - Active Scan++ - 主动扫描器,其实效果不是很理想
+- [gh0stkey/CaA](https://github.com/gh0stkey/CaA) - BurpSuite 流量收集和分析插件
 
 **功能增强**
 - [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar) - 顾名思义,这是 burp 中的 hackbar

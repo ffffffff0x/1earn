@@ -699,6 +699,8 @@ gedit								# 图形化的编辑器
 	按下 / 即可进入查找模式,输入要查找的字符串并按下回车. Vim 会跳转到第一个匹配.按下 n 查找下一个,按下 N 查找上一个.
 	:%s/foo/bar 			# 代表替换 foo 为 bar
 	insert 模式按 ESC 键,返回 Normal 模式
+
+	vim -r xxx.swp			# 恢复上次异常退出的文件
 	```
 - **更多操作**
 	- [Vim](./Power-Linux.md#Vim)
@@ -901,6 +903,12 @@ ln file1 file2
 - .deb
 	```bash
 	ar -p FileName.deb data.tar.gz | tar zxf -	# 解包
+	```
+
+- asar
+	```bash
+	npm install --engine-strict asar
+	asar e xxx.asar xxx							# 解包
 	```
 
 **7z**
@@ -1346,7 +1354,13 @@ iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
 
 iptables -L			# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 恢复规则
+
+# 以下为清除所有策略并允许所有流量通过防火墙。这和你停止防火墙效果一样,生产环境请不要使用
 iptables -F  		# 清除防火墙配置
+iptables -X
+iptables -P INPUT ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -P FORWARD ACCEPT
 ```
 
 ### ufw

@@ -4699,6 +4699,7 @@ PATH=$PATH:/usr/local/python3/bin/
 ```bash
 source ~/.bash_profile
 ```
+
 检查 Python3 及 pip3 是否正常可用
 ```bash
 python3 -V

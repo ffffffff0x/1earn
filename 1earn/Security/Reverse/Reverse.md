@@ -41,9 +41,42 @@
 **相关资源**
 - [mentebinaria/retoolkit](https://github.com/mentebinaria/retoolkit) - 离线逆向工具安装包合集
 
-**反编译工具**
-- [IDA](../安全工具/IDA.md)
-- [Ghidra](../安全工具/Ghidra.md)
+**相关工具**
 
-**查壳**
-- ExeinfoPe
+- 反编译工具
+    - [Hex-Rays IDA pro](../安全工具/IDA.md)
+    - [Ghidra](../安全工具/Ghidra.md)
+
+- 查壳
+    - ExeinfoPe
+
+- 十六进制编辑器
+    - https://hexed.it/ - 在线的 Hex Editor
+    - 010editor
+    - [WerWolv/ImHex](https://github.com/WerWolv/ImHex)
+    - WinHex
+    - HxD
+    - UltraEdit
+
+---
+
+## 各类语言
+
+### python
+- [Python安全](../RedTeam/语言安全/Python安全.md)
+
+### WebAssembly
+
+**相关工具**
+- [WebAssembly/wabt](https://github.com/WebAssembly/wabt) - 将 wasm 文件转换成 c 文件
+    ```
+    wasm2c.exe test.wasm -o test.c
+    ```
+
+**CTF writup**
+- [2021陇原战"疫" 部分赛题复现](https://mp.weixin.qq.com/s/KIkE50ELd2PBcbqZ_vUyQg)
+- [wasm逆向](http://unbelievable.cool/2021/07/15/wasm%E9%80%86%E5%90%91/)
+
+### Go
+
+- [GO安全](../RedTeam/语言安全/GO安全.md)

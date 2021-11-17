@@ -39,11 +39,12 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 - [andresriancho/jwt-fuzzer](https://github.com/andresriancho/jwt-fuzzer)
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT 的 burp 插件
 - [3v4Si0N/RS256-2-HS256](https://github.com/3v4Si0N/RS256-2-HS256) - JWT 攻击，将算法由 RS256 变为 HS256
-- [x1sec/gojwtcrack](https://github.com/x1sec/gojwtcrack)
+- [x1sec/gojwtcrack](https://github.com/x1sec/gojwtcrack) - Fast JSON Web Token (JWT) cracker written in Go
     ```
     gojwtcrack -t token.txt -d ~/SecLists/Passwords/xato-net-10-million-passwords-1000000.txt
     ```
-- [aress31/jwtcat](https://github.com/aress31/jwtcat)
+- [aress31/jwtcat](https://github.com/aress31/jwtcat) - A CPU-based JSON Web Token (JWT) cracker and - to some extent - scanner.
+- [ahwul/jwt-hack](https://github.com/hahwul/jwt-hack) - jwt-hack is tool for hacking / security testing to JWT. Supported for En/decoding JWT, Generate payload for JWT attack and very fast cracking(dict/brutefoce)
 
 ---
 

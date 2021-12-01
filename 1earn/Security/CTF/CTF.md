@@ -72,6 +72,9 @@
 **工具合集**
 - [zardus/ctf-tools](https://github.com/zardus/ctf-tools) - 安全研究工具的一些设置脚本。
 
+**赛题收集**
+- [sajjadium/ctf-archives](https://github.com/sajjadium/ctf-archives)
+
 **Tips**
 - 一些找 flag 姿势
     ```
@@ -396,6 +399,15 @@ AWD
 
 ---
 
+### 2021
+
+**2021 西湖论剑**
+- [西湖论剑-WriteUp](https://mp.weixin.qq.com/s/HSLnu1pmTZ7AYxMM8oNBaw)
+- [西湖论剑 部分wp](https://mp.weixin.qq.com/s/S_t02JOYnSg2ZB71WlhErA)
+- [2021 西湖论剑CTF-wp](https://mp.weixin.qq.com/s/TR8FJ8ObZR3puQlZ9gIZOw)
+
+---
+
 ### 2020
 
 **宁波市第三届网络安全大赛**
@@ -439,6 +451,9 @@ AWD
 ---
 
 ### 2021
+
+**2021 安洵杯**
+- [安洵杯-WriteUp](https://mp.weixin.qq.com/s/vC2bgJlYfA8wzXcmQFynlA)
 
 **2021网络安全领军人才攻防大赛**
 - [2021网络安全领军人才攻防大赛 ｜ Pwn方向WP](https://mp.weixin.qq.com/s/ZyzjHDUhA-u781F2IfcVUg)
@@ -518,6 +533,12 @@ AWD
 ## 公司&行业
 
 ### XCTF
+
+**2021 L3HCTF**
+- [L3HCTF-WriteUp](https://mp.weixin.qq.com/s/UvUNyZuK0kAcfyto06Xx4g)
+- [2021-L3HCTF SpecialRain-Writeup](http://xibai.xyz/2021/11/15/2021-L3HCTF/)
+- [L3HCTF luuuuua](https://0wl.site/2021/11/16/L3HCTF-luuuuua/)
+- [l3hctf_part_wp](https://yimianweishi.github.io/2021/11/17/l3hctf-part-wp/index.html)
 
 **2021 第四届“强网”拟态防御国际精英挑战赛**
 - [第四届“强网”拟态防御国际精英挑战赛_wp（上）](https://mp.weixin.qq.com/s/xWgZKtQdsQ562EXLGiNDlg)
@@ -643,8 +664,12 @@ AWD
 
 ### 2021
 
+**2021 春秋杯秋季赛**
+- [2021春秋杯秋季赛-Writeup](https://mp.weixin.qq.com/s/9fSrQbSdhykkzoiEYGovJQ)
+
 **2021 深育杯**
 - [深育杯-WriteUp](https://mp.weixin.qq.com/s/HvyRjbLVPaMg7DBfdYmdJw)
+- [2021深育杯线上初赛官方WriteUp](https://mp.weixin.qq.com/s/Iwj_zNgYZKZvJOYuhmlz3w)
 
 **陇原战“疫”2021**
 - [陇原战_疫_2021网络安全大赛](https://mp.weixin.qq.com/s/Lcq7h8VpZaHX3oFrr2E_uQ)

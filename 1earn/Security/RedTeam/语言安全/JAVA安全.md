@@ -143,6 +143,7 @@ Java 程序使用 ObjectOutputStream 类的 writeObject() 方法可以实现序�
 **相关工具**
 - [java.lang.Runtime.exec() Payload Workarounds](http://www.jackson-t.ca/runtime-exec-payloads.html)
 - [matthiaskaiser/jmet](https://github.com/matthiaskaiser/jmet)
+- [frohoff/ysoserial](https://github.com/frohoff/ysoserial) - A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.
 
 **漏洞示例**
 
@@ -223,6 +224,8 @@ public class AntObjectInputStream extends ObjectInputStream{
 **相关工具**
 - [welk1n/JNDI-Injection-Exploit](https://github.com/welk1n/JNDI-Injection-Exploit)
 - [mbechler/marshalsec](https://github.com/mbechler/marshalsec)
+- [feihong-cs/JNDIExploit](https://github.com/feihong-cs/JNDIExploit)
+- [wh1t3p1g/ysomap](https://github.com/wh1t3p1g/ysomap)
 
 #### RMI反序列化
 

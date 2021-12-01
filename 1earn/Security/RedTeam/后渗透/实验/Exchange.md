@@ -471,3 +471,26 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 **文章**
 - [PROXYTOKEN: AN AUTHENTICATION BYPASS IN MICROSOFT EXCHANGE SERVER](https://www.zerodayinitiative.com/blog/2021/8/30/proxytoken-an-authentication-bypass-in-microsoft-exchange-server)
+
+---
+
+## CVE-2021-41349 Exchange XSS 漏洞
+
+**相关文章**
+- [微软补丁日Poc｜Exchange XSS 漏洞（CVE-2021-41349）【含Python Poc】](https://mp.weixin.qq.com/s/WX95lcy7_PZvSIG0SALtFA)
+
+**影响版本**
+* <= Exchange 2013 update 23
+* <= Exchange 2016 update 22
+* <= Exchange 2019 update 11
+
+---
+
+## CVE-2021-42321
+
+**相关文章**
+- [CVE-2021-42321-天府杯Exchange 反序列化漏洞分析](https://mp.weixin.qq.com/s/qLOIyMlodeq8uOLEAJIzEA)
+
+**POC | Payload | exp**
+- [testanull/CVE-2021-42321_poc.py](https://gist.github.com/testanull/0188c1ae847f37a70fe536123d14f398)
+- [DarkSprings/CVE-2021-42321](https://github.com/DarkSprings/CVE-2021-42321)

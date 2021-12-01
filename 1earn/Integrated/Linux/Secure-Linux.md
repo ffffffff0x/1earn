@@ -491,6 +491,40 @@ ausearch -i | less              # 查看审计日志
 more /var/log/audit/audit.log   # 查看审计日志
 ```
 
+**audit**
+
+linux audit 子系统是一个用于收集记录系统、内核、用户进程发生的行为事件的一种安全审计系统。该系统可以可靠地收集有关上任何与安全相关（或与安全无关）事件的信息，它可以帮助跟踪在系统上执行过的一些操作。
+
+audit 和 syslog 有本质区别。syslog 记录的信息有限，主要目的是软件调试，对于用户的操作行为（如某用户修改删除了某文件）却无法通过这些日志文件来查看。而 audit 的目的则不同，它是 linux 安全体系的重要组成部分，是一种 “被动” 的防御体系。
+
+```bash
+yum install audit*.* -y         # 安装 audit
+service auditd start            # 启动 audit
+service auditd status           # 查看 audit 状态
+
+# 开启了 autid 服务后，所有的审计日志会记录在 /var/log/audit/audit.log 文件中。
+```
+
+audit 安装后会生成 2 个配置文件:
+* /etc/audit/auditd.conf
+* /etc/audit/audit.rules
+
+具体配置信息请查看 [文件](./笔记/文件.md#etc)
+
+audit 常用命令
+```bash
+ausearch    # 查询 audit log 工具
+aureport    # 输出 audit 系统报告
+
+auditctl -l # 查看 audit 规则
+aureport --user
+aureport --file
+aureport --summary
+
+# 配置记录命令rm命令执行
+auditctl -w /bin/rm -p x -k removefile
+```
+
 ---
 
 ## SELinux
@@ -648,8 +682,8 @@ firewall-cmd --get-service --permanent  # 检查下一次重载后将激活的�
 firewall-cmd --zone=public --list-ports # 列出 zone public 端口
 firewall-cmd --zone=public --list-all   # 列出 zone public 当前设置
 
-cat /etc/hosts.deny                     # tcp_Wrappers 防火墙的配置文件
-cat /etc/hosts.allow                    # tcp_Wrappers 防火墙的配置文件
+cat /etc/hosts.deny                     # tcp_Wrappers 防火墙的配置文件,详情见 文件.md
+cat /etc/hosts.allow                    # tcp_Wrappers 防火墙的配置文件,详情见 文件.md
 ```
 
 **防**
@@ -808,6 +842,11 @@ net.ipv4.icmp_echo_ignore_all=1
 - [Multiple Ways to Secure SSH Port](http://www.hackingarticles.in/multiple-ways-to-secure-ssh-port/)
 
 **查**
+- **查询可以远程登录的帐号信息**
+    ```bash
+    awk '/\$1|\$6/{print $1}' /etc/shadow
+    ```
+
 - **查看尝试暴力破解机器密码的人**
     ```bash
     # Debian 系的发行版
@@ -973,46 +1012,57 @@ net.ipv4.icmp_echo_ignore_all=1
 
 # 加固
 
-**查后门**
-- **添加 root 权限后门用户**
+## 查后门
 
-   检查 `/etc/passwd` 文件是否有异常
-
-- **vim 后门**
-
-   检测对应 vim 进程号虚拟目录的 map 文件是否有 python 字眼.
-
-   查看连接情况 `netstat -antlp`
-
-   例如发现 vim pid 为 12
-   ```
-   file /proc/12/exe
-   more /proc/12/cmdline
-   more /proc/12/maps | grep python
-   ```
-
-- **strace 记录**
-
-    通过排查 shell 的配置文件或者 `alias` 命令即可发现,例如 `~/.bashrc` 和 `~/.bash_profile` 文件查看是否有恶意的 alias 问题.
-
-- **定时任务和开机启动项**
-
-    一般通过 `crontab -l` 命令即可检测到定时任务后门.不同的 linux 发行版可能查看开机启动项的文件不大相同,Debian 系 linux 系统一般是通过查看 `/etc/init.d` 目录有无最近修改和异常的开机启动项.而 Redhat 系的 linux 系统一般是查看 `/etc/rc.d/init.d` 或者 `/etc/systemd/system` 等目录.
-
-- **预加载型动态链接库后门 ld.so.preload**
-
-    通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意:在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
-
-- **内核级 rootkit**
-
-    可以通过 unhide 等工具进行排查,更多内容见 [应急](../../Security/BlueTeam/应急.md#rootkit)
-
-- **深信服 Web 后门扫描**
-
-    http://edr.sangfor.com.cn/backdoor_detection.html
-
-**杀毒**
-- **[ClamavNet](https://www.clamav.net/downloads)**
-
-**Source & Reference**
+**相关文章**
 - [linux常见backdoor及排查技术](https://xz.aliyun.com/t/4090)
+
+**添加 root 权限后门用户**
+
+检查 `/etc/passwd` 文件是否有异常
+
+**vim 后门**
+
+检测对应 vim 进程号虚拟目录的 map 文件是否有 python 字眼.
+
+查看连接情况 `netstat -antlp`
+
+例如发现 vim pid 为 12
+```
+file /proc/12/exe
+more /proc/12/cmdline
+more /proc/12/maps | grep python
+```
+
+**strace 记录**
+
+通过排查 shell 的配置文件或者 `alias` 命令即可发现,例如 `~/.bashrc` 和 `~/.bash_profile` 文件查看是否有恶意的 alias 问题.
+
+**定时任务和开机启动项**
+
+ 一般通过 `crontab -l` 命令即可检测到定时任务后门.不同的 linux 发行版可能查看开机启动项的文件不大相同,Debian 系 linux 系统一般是通过查看 `/etc/init.d` 目录有无最近修改和异常的开机启动项.而 Redhat 系的 linux 系统一般是查看 `/etc/rc.d/init.d` 或者 `/etc/systemd/system` 等目录.
+
+**预加载型动态链接库后门 ld.so.preload**
+
+通过 `strace` 命令去跟踪预加载的文件是否为 `/etc/ld.so.preload` ,以及文件中是否有异常的动态链接库.以及检查是否设置 LD_PRELOAD 环境变量等.注意:在进行应急响应的时候有可能系统命令被替换或者关键系统函数被劫持(例如通过预加载型动态链接库后门),导致系统命令执行不正常,这个时候可以下载 busybox.下载编译好的对应平台版本的 busybox,或者下载源码进行编译通过U盘拷贝到系统上,因为 busybox 是静态编译的,不依赖于系统的动态链接库,busybox 的使用类似如下 busybox ls,busybox ps -a.
+
+**内核级 rootkit**
+
+可以通过 unhide 等工具进行排查,更多内容见 [应急](../../Security/BlueTeam/应急.md#rootkit)
+
+**深信服 Web 后门扫描**
+
+http://edr.sangfor.com.cn/backdoor_detection.html
+
+---
+
+## 杀毒
+
+**[ClamavNet](https://www.clamav.net/downloads)**
+
+---
+
+## 配置 pam.d 策略
+
+- [pam](./实验/pam.md)
+- [认证](./笔记/认证.md#pam)

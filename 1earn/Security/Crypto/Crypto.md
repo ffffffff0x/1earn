@@ -168,17 +168,6 @@
     pip3 install xortool
     xortool -c 20 file
     ```
-- [mufeedvh/basecrack](https://github.com/mufeedvh/basecrack) - Decode All Bases - Base Scheme Decoder
-    ```bash
-    apt-get install tesseract-ocr libtesseract-dev
-
-    git clone https://github.com/mufeedvh/basecrack.git
-    cd basecrack
-    pip3 install -r requirements.txt
-    python3 basecrack.py -h
-
-    echo "IX(Fp@nNG6ef<,*TFE]IT^zdINAb9EVbp,e<u=O6nN)/u+MTnU;Fo#VvQ&cK;mLZI#Jbdook<O{W#+gY%ooe#6pTkTa.9YPU8Uc=pl9BhSM9%kISw2k:8..u/6F2BwNndPZ2o#7NHNP3g,HlZu><*[Nv+T8" | python3 basecrack.py --magic
-    ```
 
 **在线工具**
 - http://tool.bugku.com/
@@ -276,6 +265,23 @@ ASCII编码对应十进制:
 ---
 
 ## Base
+
+**相关文章**
+- [base全家桶的安装使用方法](https://www.cnblogs.com/pcat/p/11625834.html)
+
+**相关工具**
+- [mufeedvh/basecrack](https://github.com/mufeedvh/basecrack) - Decode All Bases - Base Scheme Decoder
+    ```bash
+    apt-get install tesseract-ocr libtesseract-dev
+
+    git clone https://github.com/mufeedvh/basecrack.git
+    cd basecrack
+    pip3 install -r requirements.txt
+    python3 basecrack.py -h
+
+    echo "IX(Fp@nNG6ef<,*TFE]IT^zdINAb9EVbp,e<u=O6nN)/u+MTnU;Fo#VvQ&cK;mLZI#Jbdook<O{W#+gY%ooe#6pTkTa.9YPU8Uc=pl9BhSM9%kISw2k:8..u/6F2BwNndPZ2o#7NHNP3g,HlZu><*[Nv+T8" | python3 basecrack.py --magic
+    ```
+
 ### Base64
 
 base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位.16,32,64 分别表示用多少个字符来编码,这里我注重介绍 base64.Base64 常用于在通常处理文本数据的场合,表示、传输、存储一些二进制数据.包括 MIME 的 email,email via MIME,在 XML 中存储复杂数据.
@@ -1158,6 +1164,7 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [CTF中RSA套路](https://err0rzz.github.io/2017/11/14/CTF%E4%B8%ADRSA%E5%A5%97%E8%B7%AF/)
 - [RSA算法基础详解](https://www.cnblogs.com/hykun/p/RSA.html)
 - [RSA算法原理——（3）RSA加解密过程及公式论证](https://blog.csdn.net/u014044812/article/details/80866759)
+- [深入浅出RSA在CTF中的攻击套路](https://xz.aliyun.com/t/6459)
 
 **相关工具**
 - [SageMath](https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/index.html)
@@ -1217,6 +1224,7 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [kur0mi/CTF-RSA](https://github.com/kur0mi/CTF-RSA)
 - [Zui-Qing-Feng/RSA](https://github.com/Zui-Qing-Feng/RSA)
 - [yifeng-lee/RSA-In-CTF](https://github.com/yifeng-lee/RSA-In-CTF)
+- [findneo/RSA-ATTACK](https://github.com/findneo/RSA-ATTACK)
 
 **Writeup**
 - [RSA的dp泄露 —— 【WUST-CTF2020】leak](https://blog.csdn.net/qq_42939527/article/details/105202716)
@@ -1248,6 +1256,8 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [BUUCTF--[INSHack2017]rsa16m](https://www.cnblogs.com/Sentry-InkCity/p/15332492.html)
 - [虎符ctf2020 crypto GM](http://39.106.50.81/index.php/archives/9/)
 - [BUUCTF 强网杯2019 Copperstudy](https://blog.csdn.net/walker_feng/article/details/108889696)
+- [BUUCTF 每日打卡 2021-8-3](https://blog.csdn.net/weixin_52446095/article/details/119355363)
+- [[RoarCTF2019]babyRSA-阶乘取模（威尔逊定理）](https://blog.csdn.net/weixin_45859850/article/details/111462791)
 
 **Tips**
 - e 的一般为(如果题目里没给你) 65537(0x10001)
@@ -1266,6 +1276,9 @@ RC4由伪随机数生成器和异或运算组成。RC4的密钥长度可变，�
 - [algorithmNation:国密算法 SM2加解密 SM2 SM3 SM4签名验签](https://gitee.com/xshuai/algorithmNation)
 - [ZZMarquis/gmhelper:基于BC库:国密SM2/SM3/SM4算法简单封装;实现SM2 X509v3证书的签发;实现SM2 pfx证书的签发 ](https://github.com/ZZMarquis/gmhelper)
 - [gotoworld/hsd-cipher-sm](https://github.com/gotoworld/hsd-cipher-sm) - JAVA 国产密码算法 SM2，SM3，SM4 实现
+- [guanzhi/GmSSL](https://github.com/guanzhi/GmSSL) - 支持国密 SM2/SM3/SM4/SM9/ZUC/SSL 的 OpenSSL 分支
+- [duanhongyi/gmssl](https://github.com/duanhongyi/gmssl) - a python crypto for sm2/sm3/sm4
+- [snowlandltd/snowland-smx-python](https://gitee.com/snowlandltd/snowland-smx-python) - 国密算法SM2,SM3,SM4,ZUC
 
 ### SM1
 
@@ -1281,9 +1294,10 @@ SM2 为非对称加密,基于 ECC.该算法已公开.由于该算法基于ECC,�
 
 ### SM3
 
-国密即国家密码局认定的国产密码算法.主要有 SM1,SM2,SM3,SM4.密钥长度和分组长度均为 128 位.
+SM3 消息摘要. 可以用 MD5 作为对比理解. 该算法已公开. 校验结果为 256 位.
 
-SM3 消息摘要.可以用 MD5 作为对比理解.该算法已公开.校验结果为256位.
+**相关文章**
+- [python SM3密码杂凑算法](https://blog.csdn.net/qq_37969092/article/details/113525749)
 
 ---
 

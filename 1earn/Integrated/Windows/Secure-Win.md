@@ -334,6 +334,12 @@ tasklist  | findstr “PID”
 
 ## RDP
 
+```
+quser               显示有关客户端服务器上用户远程桌面会话主机的信息
+qwinsta             显示有关服务器中会话远程桌面会话主机的信息
+qprocess            显示有关在远程桌面会话主机服务器上运行的进程的信息
+```
+
 **防爆破**
 - [y11en/BlockRDPBrute](https://github.com/y11en/BlockRDPBrute) - [HIPS]RDP(3389)爆破防护
 

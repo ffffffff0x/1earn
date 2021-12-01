@@ -430,6 +430,8 @@ tmux attach -t test     # 使用会话名称
 
 **列出所有会话**
 ```bash
+tmux ls
+
 Ctrl+b
 s
 ```
@@ -459,7 +461,13 @@ tmux rename-session -t 0 <new-name>
 **历史日志**
 ```bash
 ctl+b
-[
+```
+
+然后按 `[`
+
+**增加回滚缓冲区的大小**
+```bash
+echo "set-option -g history-limit 3000" >> ~/.tmux.conf   # 默认值为2000
 ```
 
 ---
@@ -1103,7 +1111,7 @@ local_port = 5000
 remote_port = 10002
 ```
 
-这样就在本地上新增了“DSM”和“SSH”两个可供公网访问的服务了
+这样就在本地上新增了"DSM"和"SSH"两个可供公网访问的服务了
 
 **客户端运行**
 ```bash
@@ -1916,6 +1924,10 @@ systemctl enable ssh
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 ```
+
+**配置文件**
+
+详细的配置文件内容见 [ssh](./实验/ssh.md)
 
 **加固**
 
@@ -3686,6 +3698,8 @@ exit
 ```
 
 > 注意 : 此处只是为了方便演示,生产环境下请不要使用类似 123456 这类弱口令
+
+my.cnf 配置文件内容见笔记 [mysql](./实验/mysql.md)
 
 **配置远程连接**
 ```bash
@@ -5593,11 +5607,11 @@ yum -y install gcc-c++ pcre-devel zlib-devel openssl-devel llvm-devel libxml2 li
 wget https://www.clamav.net/downloads/production/clamav-0.102.2.tar.gz
 tar -zxvf clamav-0.102.2.tar.gz
 cd clamav-0.102.2
-./configure --prefix=/opt/clamav --disable-clamonacc    # 忽略libcurl库的更新问题
+./configure --prefix=/opt/clamav --disable-clamonacc    # 忽略 libcurl 库的更新问题
 make && make install
 ```
 ```bash
-# 添加用户组clamav和组成员clamav
+# 添加用户组 clamav 和组成员 clamav
 groupadd clamav
 useradd -g clamav -s /bin/false clamav
 
@@ -5661,8 +5675,7 @@ cp /etc/clamd.d/scan.conf /etc/clamd.d/scan.conf.bak
 sed -i -e "s/^Example/#Example/" /etc/clamd.d/scan.conf
 ```
 
-关闭自动更新
-freshclam 命令通过文件 /etc/cron.d/clamav-update 来自动运行
+关闭自动更新,freshclam 命令通过文件 /etc/cron.d/clamav-update 来自动运行
 
 但默认情况下是禁止了自动更新功能,需要移除文件 /etc/sysconfig/freshclam 最后一行的配置才能启用
 ```vim
@@ -5737,11 +5750,30 @@ systemctl start clamd@scan.service
 systemctl status clamd@scan.service
 ```
 
+查看病毒库版本
+```bash
+clamdscan -V
+```
+
+升级病毒库
+```bash
+freshclam --verbose
+```
+
 查杀病毒
 ```bash
 clamscan -r /home       # 扫描所有用户的主目录就使用
 clamscan -r --bell -i / # 扫描所有文件并且显示有问题的文件的扫描结果
 clamscan -r --remove    # 查杀当前目录并删除感染的文件
+
+# 递归扫描 home 目录，并且记录日志
+clamscan -r -i /home  -l  /var/log/clamscan.log
+
+# 递归扫描 home 目录，将病毒文件删除，并且记录日志
+clamscan -r -i /home  --remove  -l /var/log/clamscan.log
+
+# 扫描指定目录，然后将感染文件移动到指定目录，并记录日志
+clamscan -r -i /home  --move=/opt/infected  -l /var/log/clamscan.log
 ```
 
 ---
@@ -6146,6 +6178,173 @@ Snort 搭建与使用内容访问 [安防设施搭建使用](../../Security/Blue
 ### Suricata
 
 Suricata 搭建与使用内容访问 [安防设施搭建使用](../../Security/BlueTeam/实验/安防设施搭建使用.md#suricata) Suricata 部分
+
+---
+
+### tripwire
+
+当服务器遭到黑客攻击时，在多数情况下，黑客可能对系统文件等等一些重要的文件进行修改。对此，我们用 Tripwire 建立数据完整性监测系统。虽然 它不能抵御黑客攻击以及黑客对一些重要文件的修改，但是可以监测文件是否被修改过以及哪些文件被修改过，从而在被攻击后有的放矢的策划出解决办法。
+
+Tripwire 的原理是 Tripwire 被安装、配置后，将当前的系统数据状态建立成数据库，随着文件的添加、删除和修改等等变化，通过系统数据现 状与不断更新的数据库进行比较，来判定哪些文件被添加、删除和修改过。正因为初始的数据库是在 Tripwire 本体被安装、配置后建立的原因，我们务必应 该在服务器开放前，或者说操作系统刚被安装后用 Tripwire 构建数据完整性监测系统。
+
+Tripwire 可以对要求校验的系统文件进行类似 md5 的运行，而生成一个唯一的标识，即 "快照"snapshot。当这些系统文件的大小、inode 号、权限、时间等任意属性被修改后，再次运行 Tripwire，其会进行前后属性的对比，并生成相关的详细报告。
+
+**项目地址**
+- http://sourceforge.net/projects/tripwire/files/
+
+**安装**
+
+```bash
+yum install -y gcc-c++
+yum install -y glibc-headers
+
+# 下载
+wget https://jaist.dl.sourceforge.net/project/tripwire/tripwire-src/tripwire-2.4.2.2/tripwire-2.4.2.2-src.tar.bz2
+
+# 解压
+tar -jxvf tripwire-2.4.2.2-src.tar.bz2
+cd tripwire-2.4.2.2-src
+
+./configure --prefix=/opt/tripwire  # 设置安装目录
+
+# 编译并安装
+make
+make install
+```
+
+```bash
+license agreement. [do not accept] accept # 输入 "accept" 同意协议。
+
+Continue with installation? [y/n] y # 键入 y 继续安装。
+
+Enter the site keyfile passphrase: # 输入 "site keyfile" 口令（输入后不会显示），并且记住这个口令。
+Verify the site keyfile passphrase: # 再次确认 "site keyfile" 口令。
+
+Enter the local keyfile passphrase: # 输入 "local keyfile" 口令（输入后不会显示），并且记住这个口令。
+Verify the local keyfile passphrase: # 再次确认 "local keyfile" 口令。
+
+Please enter your site passphrase: # 输入 "site keyfile" 口令（输入后不会显示）第一次。
+
+Please enter your site passphrase: # 输入 "site keyfile" 口令（输入后不会显示）第二次。
+```
+
+**文件说明**
+
+配置文件：定义数据库、策略文件和 Tripwire 可执行文件的位置：
+```
+/opt/tripwire/etc/twcfg.txt
+```
+
+策略：定义检测的对象及违规时采取的行为：
+```
+/opt/tripwire/etc/twpol.txt
+```
+
+数据库：用于存放生成的快照：
+```
+/opt/tripwire/lib/tripwire/$(HOSTNAME).twd
+```
+
+Tripwire 为了自身的安全，防止自身被篡改，也会对自身进行加密和签名处理。其中，包括两个密钥：
+* site 密钥：用于保护策略文件和配置文件，只要使用相同的策略和配置的机器，都可以使用相同的 site 密钥：
+  ```
+  /usr/local/tripwire/etcsite.key
+  ```
+* local 密钥：用户保护数据库和分析报告，这肯定不会重复的：
+  ```
+  /usr/local/tripwire/etc/$(HOSTNAME)-local.key
+  ```
+
+**设置 tripwire**
+
+编辑 twcfg.txt 文件
+```bash
+vim /opt/tripwire/etc/twcfg.txt
+LOOSEDIRECTORYCHECKING =false　 # 将 false 的值变为 true（不监测所属目录的数据完整性）
+LOOSEDIRECTORYCHECKING =true 　 # 变为此状态
+REPORTLEVEL =3　                # 将3变为4（改变监测结果报告的等级）
+REPORTLEVEL =4　                # 变为此状态
+```
+
+建立加密格式
+```bash
+cd /opt/tripwire/etc
+/opt/tripwire/sbin/twadmin --create-cfgfile -S site.key twcfg.txt # 从文本配置文件建立加密格式配
+Please enter your site passphrase:                                # 输入“site keyfile”口令
+```
+
+**初始化数据库**
+
+```bash
+/opt/tripwire/sbin/tripwire --init    # 初始化数据库
+Please enter your local passphrase:   # 输入“local keyfile”口令
+```
+
+**更新数据库**
+
+当你更新了 twpol.txt 后需用此命令更新数据库
+```bash
+cd /opt/tripwire
+./sbin/tripwire --update-policy --secure-mode low /opt/tripwire/etc/twpol.txt
+
+Please enter your local passphrase: # 输入“local keyfile”口令
+Please enter your site passphrase:  # 输入“site keyfile”口令
+```
+
+**检查文件异动**
+
+安装完 tripwire 后你可以定期检查文件是否存在异动。加上 interactive 在当前显示结果。
+```
+/sbin/tripwire --check --interactive
+```
+
+**查看报告**
+
+所有 tripwire 的报告以 `.twr` 后缀保存在 `lib/tripwire` 目录下，需要使用 twprint 命令来转化成文本格式。
+```
+./sbin/twprint --print-report --twrfile /lib/tripwire/report/localhost.localdomain-20111225-154220.twr>/tmp/tripwire_readable.txt
+```
+
+**软件包方式安装**
+
+还有一种方法是软件包安装
+```bash
+yum -y install tripwire
+```
+
+`注 : 软件包安装的配置文件在 /etc/tripwire`
+
+使用软件包安装需要手动生成密钥文件
+```
+tripwire-setup-keyfiles
+```
+
+该命令将生成两个密钥文件“site-key”和“local-key”，
+
+使用下面的命令从 tripwire 生成日志错误。
+```bash
+sudo sh -c "tripwire --check | grep Filename > no-directory.txt"
+```
+
+所有不存在系统上的目录和文件都列在文件'mo-directory.txt'中
+```bash
+cat no-directory.txt
+```
+
+使用以下 bash 脚本编辑 tripwire 配置'twpol.txt'
+```bash
+for f in $(grep "Filename:" no-directory.txt | cut -f2 -d:); do
+sed -i "s|\($f\) |#\\1|g" /etc/tripwire/twpol.txt
+done
+```
+
+初始化 tripwire 数据库
+```bash
+twadmin -m P /etc/tripwire/twpol.txt    # 使用 twadmin 命令重新生成并重新签署 tripwire配置
+tripwire --init
+```
+
+其余使用和编译安装无异,更多详情请参考 https://www.howtoing.com/monitoring-and-detecting-modified-files-using-tripwire-on-centos-7
 
 ---
 

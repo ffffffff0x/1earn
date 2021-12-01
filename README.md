@@ -201,10 +201,10 @@
 
 `本项目所有文档均在 VScode 编辑器中编写,故只兼容 VScode 侧边预览的 markdown 语法,暂不考虑兼容其他编辑器的 md 语法`
 
-~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是下载/clone到本地阅读,项目整体约 30M,当然,排版也有以下几种解决方案,不过还是感觉很麻烦,就此作罢
-* [mzlogin/vim-markdown-toc](https://github.com/mzlogin/vim-markdown-toc)
-* [ekalinin/github-markdown-toc.go](https://github.com/ekalinin/github-markdown-toc.go)
-* [ekalinin/github-markdown-toc](https://github.com/ekalinin/github-markdown-toc)
+~~由于 github 的 markdown 引擎 kramdown 不支持 [TOC] 链接,以及各种不兼容的排版问题, 导致阅读体验极不友好, 因此~~ 建议还是下载/clone到本地阅读
+```
+git clone --depth 1 https://github.com/ffffffff0x/1earn.git
+```
 
 建议的阅读体验
 * [VScode](https://code.visualstudio.com/) + [FiraCode](https://github.com/tonsky/FiraCode) (推荐,整个项目在vscode环境下编写,基本不会出现排版问题)

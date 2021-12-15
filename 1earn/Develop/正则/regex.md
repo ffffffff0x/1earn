@@ -92,4 +92,4 @@ NFA 是按着正则式去比文本，吃掉一个字符，就把它跟正则式�
 
 **Source & Reference**
 - [正则表达式](https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F)
-- [ReDOS初探](http://th1e.com/article/26)
+- [ReDOS初探](http://www.lmxspace.com/2019/02/16/ReDOS%E5%88%9D%E6%8E%A2/)

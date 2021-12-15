@@ -15,14 +15,12 @@
 一般情况下，SSRF 攻击的目标是从外网无法访问的内部系统。SSRF 形成的原因大都是由于服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤与限制。比如从指定URL地址获取网页文本内容，加载指定地址的图片，下载等等。
 
 **相关文章**
-- [SSRF 漏洞分析及利用](https://www.knowsec.net/archives/85/)
 - [浅析 SSRF 原理及利用方式](https://www.anquanke.com/post/id/145519)
-- [SSRF 利用与防御](https://hellohxk.com/blog/ssrf/)
 - [聊一聊ssrf漏洞的挖掘思路与技巧](https://bbs.ichunqiu.com/thread-49370-1-1.html)
 - [Bypassing SSRF Protection](https://medium.com/@vickieli/bypassing-ssrf-protection-e111ae70727b)
 - [Gopher协议在SSRF漏洞中的深入研究](https://zhuanlan.zhihu.com/p/112055947)
 - [gopher 协议初探](https://www.cnblogs.com/Konmu/p/12984891.html)
-- [How to hack a company by circumventing its WAF through the abuse of a different security appliance and win bug bounties](https://www.redtimmy.com/web-application-hacking/how-to-hack-a-company-by-circumventing-its-waf-through-the-abuse-of-a-different-security-appliance-and-win-bug-bounties/) - 利用 ssrf "借刀杀人"
+- [How to hack a company by circumventing its WAF through the abuse of a different security appliance and win bug bounties](https://www.redtimmy.com/how-to-hack-a-company-by-circumventing-its-waf-through-the-abuse-of-a-different-security-appliance-and-win-bug-bounties/) - 利用 ssrf "借刀杀人"
 
 **相关案例**
 - [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
@@ -33,7 +31,6 @@
 
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
-- [AboutSecurity/Payload/SSRF](https://github.com/ffffffff0x/AboutSecurity/blob/master/Payload/SSRF/)
 
 **相关工具**
 - [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具

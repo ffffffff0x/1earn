@@ -23,7 +23,7 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 - [Hashcat的使用手册总结](https://xz.aliyun.com/t/4008)
 - [hashcat rule的使用](https://darkless.cn/2019/12/26/hashcat-rule/)
 
-**工具**
+**相关工具**
 - [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具
 - [brannondorsey/naive-hashcat](https://github.com/brannondorsey/naive-hashcat) - 包括各种字典，组合，基于规则的攻击和掩码（暴力）攻击。hashcat 傻瓜版?
 - [wavestone-cdt/wavecrack](https://github.com/wavestone-cdt/wavecrack) - web 版的 hashcat

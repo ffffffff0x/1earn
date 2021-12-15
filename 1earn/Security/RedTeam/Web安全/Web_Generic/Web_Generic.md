@@ -83,19 +83,19 @@
 - [LFI、RFI、PHP 封装协议安全问题学习 - 骑着蜗牛逛世界](https://www.cnblogs.com/LittleHann/p/3665062.html#3831621)
 - [php 文件包含漏洞 | Chybeta](https://chybeta.github.io/2017/10/08/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/)
 - [文件包含漏洞](https://blog.csdn.net/le0nis/article/details/52043732)
-- [文件包含漏洞(绕过姿势) ](https://thief.one/2017/04/10/2/)
+- [文件包含漏洞(绕过姿势)](https://xz.aliyun.com/t/1189)
 - [文件包含漏洞原理分析](https://zhuanlan.zhihu.com/p/25069779)
 - [文件包含漏洞总结 | 瓦都剋](http://byd.dropsec.xyz/2016/07/19/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/)
 - [本地文件包含漏洞利用技巧](https://www.secpulse.com/archives/55769.html)
 - [Directory Traversal, File Inclusion, and The Proc File System](https://blog.netspi.com/directory-traversal-file-inclusion-proc-file-system/)
 - [Exploiting PHP File Inclusion - Overview | Reiners' Weblog](https://websec.wordpress.com/2010/02/22/exploiting-php-file-inclusion-overview/)
-- [Local File Inclusion with Magic_quotes_gpc enabled - NotSoSecure](https://www.notsosecure.com/local-file-inclusion-with-magic_quotes_gpc-enabled/)
-- [Positive Technologies - learn and secure : Another alternative for NULL byte](https://blog.ptsecurity.com/2010/08/another-alternative-for-null-byte.html)
+- [Local File Inclusion with Magic_quotes_gpc enabled - NotSoSecure](https://notsosecure.com/local-file-inclusion-magicquotesgpc-enabled)
+- [Positive Technologies - learn and secure : Another alternative for NULL byte](https://web.archive.org/web/20210514190401/https://blog.ptsecurity.com/2010/08/another-alternative-for-null-byte.html)
 - [远程包含和本地包含漏洞的原理 - Kevins 的天空](https://blog.csdn.net/iiprogram/article/details/2349322)
 - [聊聊安全测试中如何快速搞定Webshell](https://www.freebuf.com/articles/web/201421.html)
 
 **相关案例**
-- [IKEA官网本地文件包含(LFI)漏洞分析 - 嘶吼 RoarTalk](http://www.4hou.com/vulnerable/13759.html)
+- [IKEA官网本地文件包含(LFI)漏洞分析](https://blog.51cto.com/u_15127538/2714257)
 
 **几种利用方法**
 - 常规利用
@@ -173,10 +173,10 @@ IIS 6.0 解析利用方法有两种
 ```
 
 - **相关案例**
-    - [网站安全狗IIS6.0解析webshell访问限制bypass](https://shuimugan.com/bug/view?bug_no=71861)
-    - [网站安全狗免杀神技+IIS6.0解析WebShell访问限制Bypass](https://shuimugan.com/bug/view?bug_no=104444)
-    - [网站安全狗IIS6.0解析webshell访问拦截bypass](https://shuimugan.com/bug/view?bug_no=128432)
-    - [桃源网络硬盘&IIS6.0解析漏洞](https://shuimugan.com/bug/view?bug_no=2632)
+    - [网站安全狗IIS6.0解析webshell访问限制bypass](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0128432)
+    - [网站安全狗免杀神技+IIS6.0解析WebShell访问限制Bypass](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0104444)
+    - [网站安全狗IIS6.0解析webshell访问拦截bypass](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-071861)
+    - [桃源网络硬盘&IIS6.0解析漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2011-02632)
 
 ---
 
@@ -191,9 +191,9 @@ IIS 6.0 解析利用方法有两种
 然后访问 wooyun.jpg/.php,在这个目录下就会生成一句话木马 shell.php
 
 - **相关案例**
-    - [用友软件某分站SQL注入漏洞+nginx解析漏洞](http://www.anquan.us/static/bugs/wooyun-2013-032250.html)
-    - [新浪网分站多处安全漏洞(nginx解析+SQL注射等)小礼包 ](http://www.anquan.us/static/bugs/wooyun-2013-021064.html)
-    - [kingsoft.com某x级域名nginx解析漏洞+爆路径 ](http://www.anquan.us/static/bugs/wooyun-2013-019253.html)
+    - [用友软件某分站SQL注入漏洞+nginx解析漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-032250)
+    - [新浪网分站多处安全漏洞(nginx解析+SQL注射等)小礼包 ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-021064)
+    - [kingsoft.com某x级域名nginx解析漏洞+爆路径 ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-019253)
 
 **Nginx <8.03 空字节代码执行漏洞**
 
@@ -212,7 +212,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 如何判断是不是合法的后缀就是这个漏洞的利用关键,测试时可以尝试上传一个 wooyun.php.rar.jpg.png…(把你知道的常见后缀都写上…)去测试是否是合法后缀
 
 - **相关案例**
-    - [安卓开发平台存在上传漏洞和 Apache 解析漏洞,成功获取 webshell](http://www.anquan.us/static/bugs/wooyun-2013-018433.html)
+    - [安卓开发平台存在上传漏洞和 Apache 解析漏洞,成功获取 webshell](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-018433)
 
 **.htaccess**
 
@@ -252,7 +252,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 **相关文章**
 - [谈谈源码泄露](https://blog.csdn.net/GitChat/article/details/79014538)
-- [敏感文件泄露](http://www.myh0st.cn/index.php/archives/62/)
+- [敏感文件泄露](https://www.xazlsec.com/index.php/archives/62/)
 
 **相关工具**
 - [lijiejie/BBScan](https://github.com/lijiejie/BBScan) - 用于渗透测试前期，快速地对大量目标进行扫描，发现信息泄露等常见漏洞，找到可能的突破入口。
@@ -294,7 +294,7 @@ wget -r --no-pare target.com/dir
 
 **相关案例**
 - [一个任意文件读取漏洞记录](https://toutiao.io/posts/423535/app_preview)
-- [南方周末邮件服务器任意文件读取漏洞](http://wooyun.jozxing.cc/static/bugs/wooyun-2013-045426.html)
+- [南方周末邮件服务器任意文件读取漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-045426)
 
 ---
 
@@ -310,7 +310,7 @@ wget -r --no-pare target.com/dir
 
 **相关案例**
 
-- [大众点评某站点 git 泄漏源代码](http://www.anquan.us/static/bugs/wooyun-2015-0117332.html)
+- [大众点评某站点 git 泄漏源代码](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0117332)
 
 **相关工具**
 
@@ -360,7 +360,7 @@ wget -r --no-pare target.com/dir
 因为里面包含了一些目录信息,如果没有删除,攻击者通过 `.DS_Store` 可以知道这个目录里面所有文件名称,从而让攻击者掌握了更多的信息.　
 
 **相关案例**
-- [TCL 某网站 DS_Store 文件泄露敏感信息](http://www.anquan.us/static/bugs/wooyun-2015-091869.html)
+- [TCL 某网站 DS_Store 文件泄露敏感信息](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-091869)
 
 **相关工具**
 - [lijiejie/ds_store_exp](https://github.com/lijiejie/ds_store_exp) - 一个 `.DS_Store` 文件泄漏利用脚本，它解析 `.DS_Store` 文件并递归地下载文件到本地。
@@ -396,7 +396,7 @@ linux 下，gedit 保存后当前目录会生成后缀为 “~” 的文件，�
 该漏洞往往会导致服务器整站源代码或者部分页面的源代码被下载,利用源代码中所包含的各类敏感信息,如服务器数据库连接信息,服务器配置信息等会因此而泄露,造成巨大的损失.
 
 **相关案例**
-- [百度某分站备份文件泄露](http://www.anquan.us/static/bugs/wooyun-2014-050622.html)
+- [百度某分站备份文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-050622)
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
 **相关工具**
@@ -429,7 +429,7 @@ WEB-INF 主要包含一下文件或目录:
 不过在一些特定的场合却会让攻击者能读取到其中的内容,从而造成源码泄露.
 
 **相关案例**
-- [华为官网 WEB-INF 目录配置文件导致信息泄露](http://www.anquan.us/static/bugs/wooyun-2013-022906.html)
+- [华为官网 WEB-INF 目录配置文件导致信息泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-022906)
 
 ---
 
@@ -555,8 +555,8 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关文章**
 - [Web 应用里的 HTTP 参数污染 (HPP) 漏洞](https://blog.csdn.net/eatmilkboy/article/details/6761407)
-- [浅谈绕过 waf 的数种方法](https://www.waitalone.cn/waf-bypass.html)
-- [通过 HTTP 参数污染绕过 WAF 拦截](http://www.freebuf.com/articles/web/5908.html)
+- [浅谈绕过 waf 的数种方法](https://blog.51cto.com/fcinbj/734197)
+- [通过 HTTP 参数污染绕过 WAF 拦截](https://www.cnblogs.com/ssooking/articles/6337366.html)
 
 **相关案例**
 - [通过 HTTP 参数污染绕过 reCAPTCHA 认证](https://www.anquanke.com/post/id/146570)
@@ -632,7 +632,7 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 ## WebSocket安全
 
 **相关文章**
-- [利用WebSocket接口中转注入渗透实战](https://mp.weixin.qq.com/s/d6AhbonbMIaVpoZ3XGL-1g) - 通过脚本中转 websocket 让 sqlmap 可以注入
+- [利用WebSocket接口中转注入渗透实战](https://www.freebuf.com/articles/web/281451.html) - 通过脚本中转 websocket 让 sqlmap 可以注入
 
 ---
 
@@ -667,7 +667,7 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 **相关文章**
 - [JSONP与CORS漏洞挖掘](https://www.anquanke.com/post/id/97671)
-- [认识CORS漏洞](https://mp.weixin.qq.com/s/J11CnjkGTa1ILHdFqMhGDA)
+- [认识CORS漏洞](https://mp.weixin.qq.com/s/GZRsg6pEaUlIq_eyMd3fBA)
 - [浅析CORS攻击及其挖洞思路](https://xz.aliyun.com/t/7242)
 - [CORS跨域漏洞学习](https://www.cnblogs.com/Xy--1/p/13069099.html)
 
@@ -769,16 +769,16 @@ JSON 实际应用的时候会有两种传输数据的方式：
 
 **相关案例**
 - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)
-- [京东商城 JSONP+CSRF 导致某处信息泄露](https://shuimugan.com/bug/view?bug_no=121266)
-- [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](https://shuimugan.com/bug/view?bug_no=121639)
-- [唯品会某处 JSONP+CSRF 泄露重要信息](https://shuimugan.com/bug/view?bug_no=122755)
-- [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](https://shuimugan.com/bug/view?bug_no=204941)
-- [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](https://shuimugan.com/bug/view?bug_no=118712)
-- [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](https://shuimugan.com/bug/view?bug_no=70690)
-- [利用 JSONP 劫持可以泄漏 QQ 号](https://shuimugan.com/bug/view?bug_no=65177)
-- [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](https://shuimugan.com/bug/view?bug_no=44210)
-- [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](https://shuimugan.com/bug/view?bug_no=171499)
-- [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](https://shuimugan.com/bug/view?bug_no=124949)
+- [京东商城 JSONP+CSRF 导致某处信息泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0121266)
+- [迅雷某站 jsonp 劫持漏洞泄漏会话 ID,cookie](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0121639)
+- [唯品会某处 JSONP+CSRF 泄露重要信息](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0122755)
+- [新浪微博之点击我的链接就登录你的微博(JSONP 劫持)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0204941)
+- [苏宁易购多接口问题可泄露用户姓名、地址、订单商品 (jsonp 案例) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0118712)
+- [通过 jsonp 可以获得当前用户的 QQ+crsf 刷收听](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-070690)
+- [利用 JSONP 劫持可以泄漏 QQ 号](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-065177)
+- [京东商城某处 jsonp 接口可泄露任意用户的搜索记录](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-044210)
+- [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0171499)
+- [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124949)
 
 **简单 POC**
 ```html

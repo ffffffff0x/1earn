@@ -316,7 +316,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 1. 通过 HTTP 使用 NTLM 向攻击者进行交换身份验证
 2. 与 NTLM 中继攻击相结合，使得用户可以低权限 (任意拥有邮箱的用户) 提权到域管理员。
 
-**文章**
+**相关文章**
 - [微软Exchange爆出0day漏洞，来看POC和技术细节](https://www.freebuf.com/vuls/195162.html)
 - [Microsoft Exchange 任意用户伪造漏洞（CVE-2018-8581）分析](https://paper.seebug.org/804/)
 - [MICROSOFT EXCHANGE漏洞分析 - CVE-2018-8581](https://0kee.360.cn/blog/microsoft-exchange-cve-2018-8581/)
@@ -343,7 +343,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 - Exchange Server 2016 : cu16/cu17
 - Exchange Server 2019 : cu5/cu6
 
-**文章**
+**相关文章**
 - [微软Exchange服务器远程代码执行漏洞复现分析[CVE-2020-0688]](https://xz.aliyun.com/t/7299)
 
 **POC | Payload | exp**
@@ -368,7 +368,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 use exploit/windows/http/exchange_ecp_dlp_policy
 ```
 
-**文章**
+**相关文章**
 - [CVE-2020-16875：Microsoft Exchange RCE复现](https://cloud.tencent.com/developer/article/1704777)
 
 **POC | Payload | exp**
@@ -378,7 +378,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ## CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞
 
-**文章**
+**相关文章**
 - [CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞 POC](https://mp.weixin.qq.com/s/LMUMmuGfT3nmKN88O5hBAA)
 
 **POC | Payload | exp**
@@ -400,7 +400,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 **影响版本**
 - Exchange2010
 
-**文章**
+**相关文章**
 - [从 CVE-2020-17144 看实战环境的漏洞武器化](https://mp.weixin.qq.com/s/nVtE-OFoO076x6T0147AMw)
 
 **POC | Payload | exp**
@@ -414,7 +414,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 - https://proxylogon.com/
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-26855
 
-**文章**
+**相关文章**
 - [Reproducing the Microsoft Exchange Proxylogon Exploit Chain](https://www.praetorian.com/blog/reproducing-proxylogon-exploit/)
 - [Microsoft Exchange Server CVE-2021-26855 漏洞利用](https://www.anquanke.com/post/id/234607)
 - [CVE-2021-26855 Exchange Server RCE 复现](https://www.o2oxy.cn/3169.html)
@@ -453,7 +453,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ## Proxyshell
 
-**文章**
+**相关文章**
 - [Exchange SSRF漏洞从proxylogon到proxyshell(一)](https://mp.weixin.qq.com/s/B_5WWNjG110PCS_gHcpR-A)
 - [Exchange proxyshell exp编写(二）](https://mp.weixin.qq.com/s/aEnoBvibp-gkt3qtcOXqAw)
 - [Exchange-Proxyshell](https://mp.weixin.qq.com/s/GWFsIRlyR7i8nbg6b7kDnA)
@@ -469,8 +469,31 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ## ProxyToken
 
-**文章**
+**相关文章**
 - [PROXYTOKEN: AN AUTHENTICATION BYPASS IN MICROSOFT EXCHANGE SERVER](https://www.zerodayinitiative.com/blog/2021/8/30/proxytoken-an-authentication-bypass-in-microsoft-exchange-server)
+
+---
+
+## ProxyOracle && CVE-2021-31195 && CVE-2021-31196
+
+**影响版本**
+
+CVE-2021-31195
+* Exchange Server 2013 < May21SU
+* Exchange Server 2016 < May21SU < CU21
+* Exchange Server 2019 < May21SU < CU10
+
+CVE-2021-31196
+* Exchange Server 2013 < Jul21SU
+* Exchange Server 2016 < Jul21SU
+* Exchange Server 2019 < Jul21SU
+
+**相关文章**
+- [ProxyOracle漏洞分析](https://mp.weixin.qq.com/s/wn6qgN6Yb-KslyHzLJ-bjA)
+- [ProxyOracle漏洞分析](https://hosch3n.github.io/2021/08/23/ProxyOracle%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/)
+
+**POC | Payload | exp**
+- [hosch3n/ProxyVulns](https://github.com/hosch3n/ProxyVulns) - [ProxyLogon] CVE-2021-26855 & CVE-2021-27065 Fixed RawIdentity Bug Exploit. [ProxyOracle] CVE-2021-31195 & CVE-2021-31196 Exploit Chains. [ProxyShell] CVE-2021-34473 & CVE-2021-34523 & CVE-2021-31207 Exploit Chains.
 
 ---
 

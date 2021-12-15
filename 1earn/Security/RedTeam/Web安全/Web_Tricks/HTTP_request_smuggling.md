@@ -8,7 +8,7 @@
 
 ---
 
-**文章**
+**相关文章**
 - [HTTP Desync Attacks: Request Smuggling Reborn | Blog - PortSwigger](https://portswigger.net/blog/http-desync-attacks-request-smuggling-reborn)
 - [HTTP Desync Attacks: Smashing into the Cell Next Door ](https://xz.aliyun.com/t/5978) - 上面的翻译版
 - [What is HTTP request smuggling? Tutorial & Examples](https://portswigger.net/web-security/request-smuggling)

@@ -205,6 +205,12 @@ AWD
 
 **2021**
 - [第五届“强网杯”全国网络安全挑战赛-线上赛Writeup](https://mochu.blog.csdn.net/article/details/117847706)
+- [强网杯青少年专项赛选拔赛 wp](https://mp.weixin.qq.com/s/8AAkbk--b8ojA7Ffb8XAQw)
+- [广东省强网杯企业组easy_pgsql writeup](https://mp.weixin.qq.com/s/NPD4cvlm9yJeL77ZvgStxA)
+- [2021广东强网杯｜WEB及Crypto方向WP](https://mp.weixin.qq.com/s/VT2Ub7RmDPg1tzjQ__x23w)
+- [2021广东强网杯｜Reverse及PWN方向WP](https://mp.weixin.qq.com/s/TWKQKMpV_UvJuVjHXywXzA)
+- [2021广东强网杯｜MISC方向WP](https://mp.weixin.qq.com/s/kQtqYLlsuaEvr7-iEv9mBg)
+- [“强网”拟态防御国际精英挑战赛 WP](https://mp.weixin.qq.com/s/2RErninC7_C_SzKEYfuUJw)
 
 **2019**
 - [2019 第三届强网杯 Web 部分 WriteUp + 复现环境](https://www.zhaoj.in/read-5873.html)
@@ -312,6 +318,7 @@ AWD
 
 **2021**
 - [2021年“羊城杯”网络安全大赛部分Writeup](https://blog.csdn.net/qq_42815161/article/details/120260053)
+- [羊城杯wp](https://mp.weixin.qq.com/s/6i5iel2I9rMV2BtwMRZfPQ)
 
 **2020**
 - [羊城杯-Reverse-WP](https://www.zrzz.site/2020/09/11/%E7%BE%8A%E5%9F%8E%E6%9D%AF-Reverse-WP/)
@@ -336,6 +343,10 @@ AWD
 ---
 
 ### 湖湘杯
+
+**2021**
+- [湖湘杯-WriteUp](https://mp.weixin.qq.com/s/qbUbBBTYi_7ODxGmQKhABA)
+- [第七届“湖湘杯”网络安全大赛线下总决赛WP](https://mp.weixin.qq.com/s/NpnqcUzFQqvKe1jDHAkUWQ)
 
 **2020**
 - [湖湘杯-WriteUp](https://mp.weixin.qq.com/s/MEX8eJ6LqO0ubnLMGN3K9w)
@@ -389,6 +400,8 @@ AWD
 **2021**
 - [2021鹤城杯｜WEB部分WP全](https://mp.weixin.qq.com/s/_9acgNlTA_yqMqZK_Std-A)
 - [鹤城杯-WriteUp](https://mp.weixin.qq.com/s/TZt0oUkmgJYe21SbcS5Ybw)
+- [2021鹤城杯｜PWN部分WP全](https://mp.weixin.qq.com/s/WGEjSSNDJuZcnqJJev5zGQ)
+- [2021鹤城杯｜Reverse及MISC部分WP全](https://mp.weixin.qq.com/s/4ZbYy_Kl3A5XTmi1AlpPfQ)
 
 ---
 
@@ -396,6 +409,25 @@ AWD
 
 **2021**
 - [长城杯线上赛WP](https://mp.weixin.qq.com/s/LxPQDJ8xvBq4Qc-89td1_A)
+- [第一届"长城杯"网络安全大赛WP](https://mp.weixin.qq.com/s/CUJDx3x7nXpDYU8UdVOXfQ)
+
+---
+
+### 赣网杯
+
+**2021**
+- [2021赣网杯WEB题目WP](https://mp.weixin.qq.com/s/OU5mnVCeCXwQ-oVnGkwW7Q)
+- [2021年第二届赣网杯网络安全大赛MISC-Writeup](https://mp.weixin.qq.com/s/I_OyYVvlNOzmG2JnAGuYdg)
+- [赣网杯 MISC Writeup](https://mp.weixin.qq.com/s/mbguu98sNMGM8IEjLHNNpg)
+
+---
+
+### 长安杯
+
+**2021**
+- [2021长安杯｜Web & Crypto 部分wp合集](https://mp.weixin.qq.com/s/OWLoMnaxfKcpP4-7QiBktw)
+- [2021 长安杯 wp](https://mp.weixin.qq.com/s/tYcLkQ0Ay9_IYt1XJF9EFA)
+- [长安杯-WriteUp](https://mp.weixin.qq.com/s/gORwuwOIZvwD6mZQePTHYQ)
 
 ---
 
@@ -405,6 +437,11 @@ AWD
 - [西湖论剑-WriteUp](https://mp.weixin.qq.com/s/HSLnu1pmTZ7AYxMM8oNBaw)
 - [西湖论剑 部分wp](https://mp.weixin.qq.com/s/S_t02JOYnSg2ZB71WlhErA)
 - [2021 西湖论剑CTF-wp](https://mp.weixin.qq.com/s/TR8FJ8ObZR3puQlZ9gIZOw)
+- [西湖论剑2021中国杭州网络安全技能大赛writeup](https://mp.weixin.qq.com/s/q1KNC5F8qHDpTTZQcFaWZA)
+
+**2021 第五空间**
+- [第五空间-2021 部分WriteUp](https://mp.weixin.qq.com/s/9QzrQxy_oIqiZpFlld3oyw)
+- [第三届第五空间网络安全大赛WP](https://mp.weixin.qq.com/s/0UwX26Ofi0exLv38kqFt_A)
 
 ---
 
@@ -451,6 +488,16 @@ AWD
 ---
 
 ### 2021
+
+**2021 河南省第三届金盾信安杯**
+- [河南省第三届“金盾信安杯”网络安全大赛Writeup](https://mp.weixin.qq.com/s/B6WWQ8aVe3Fb2D9dLWmMZA)
+
+**2021 追日杯**
+- [首届安徽"追日杯"大学生网络安全挑战赛WRITEUP](https://mp.weixin.qq.com/s/K5O4ADsQWMI0TEX6cnBNXg)
+- [首届安徽"追日杯"大学生网络安全挑战赛wp](https://mp.weixin.qq.com/s/4MiFU0NdGcNchHXojlBsiQ)
+
+**2021 东软杯**
+- [东软杯-WriteUp](https://mp.weixin.qq.com/s/KgxHOFH52EE8z7NnMTSIDA)
 
 **2021 安洵杯**
 - [安洵杯-WriteUp](https://mp.weixin.qq.com/s/vC2bgJlYfA8wzXcmQFynlA)
@@ -539,6 +586,7 @@ AWD
 - [2021-L3HCTF SpecialRain-Writeup](http://xibai.xyz/2021/11/15/2021-L3HCTF/)
 - [L3HCTF luuuuua](https://0wl.site/2021/11/16/L3HCTF-luuuuua/)
 - [l3hctf_part_wp](https://yimianweishi.github.io/2021/11/17/l3hctf-part-wp/index.html)
+- [L3HCTF 2021 星盟ctf战队](https://mp.weixin.qq.com/s/RVGg0zW6mFBImZpvyMDwvw)
 
 **2021 第四届“强网”拟态防御国际精英挑战赛**
 - [第四届“强网”拟态防御国际精英挑战赛_wp（上）](https://mp.weixin.qq.com/s/xWgZKtQdsQ562EXLGiNDlg)
@@ -664,12 +712,25 @@ AWD
 
 ### 2021
 
+**2021 美团CTF**
+- [美团CTF-WriteUp](https://mp.weixin.qq.com/s/UKkneDKoFBmmUIlbC6bwvA)
+
+**江西省2021年工业互联网安全技术技能大赛**
+- [某省工业互联网安全技术技能大赛Writeup](https://mp.weixin.qq.com/s/W7EQQ8e9j3L-W4Wgmtf5gA)
+
+**2021 天翼杯**
+- [2021第二届“天翼杯”网络安全攻防大赛WP](https://mp.weixin.qq.com/s/TE6KokKr9mpjGtQ9mOe2MQ)
+
+**2021 bilibili**
+- [程序员节日挑战赛writeup](https://mp.weixin.qq.com/s/3O-fH6fcwEpSCK63yTb0ww)
+
 **2021 春秋杯秋季赛**
 - [2021春秋杯秋季赛-Writeup](https://mp.weixin.qq.com/s/9fSrQbSdhykkzoiEYGovJQ)
 
 **2021 深育杯**
 - [深育杯-WriteUp](https://mp.weixin.qq.com/s/HvyRjbLVPaMg7DBfdYmdJw)
 - [2021深育杯线上初赛官方WriteUp](https://mp.weixin.qq.com/s/Iwj_zNgYZKZvJOYuhmlz3w)
+- [深育杯-网络安全大赛专业竞赛WriteUp-IDLab](https://mp.weixin.qq.com/s/NvItuko9ZAUNTJaSzBpNKw)
 
 **陇原战“疫”2021**
 - [陇原战_疫_2021网络安全大赛](https://mp.weixin.qq.com/s/Lcq7h8VpZaHX3oFrr2E_uQ)
@@ -685,6 +746,17 @@ AWD
 **2021 Bytectf**
 - [ByteCTF-WriteUp](https://mp.weixin.qq.com/s/k8wrSSra_NO165RLM_CrUw)
 - [2021ByteCTF 北极星-writeup](https://mp.weixin.qq.com/s/OPWOKA9a9Ji_8vufV6QFYA)
+- [ByteCTF 2021 By W&M（WEB）部分](https://mp.weixin.qq.com/s/s59xN-QI9oNPrkjhuXtPyw)
+- [ByteCTF 2021 By W&M（PWN）部分](https://mp.weixin.qq.com/s/fqX-ICojKhe-FBGCLhWB0A)
+- [ByteCTF 2021 By W&M（Crypto）部分](https://mp.weixin.qq.com/s/LpFb9qlrazb7o-zZFuZufw)
+- [ByteCTF 2021 By W&M（MISC）部分](https://mp.weixin.qq.com/s/_A3TjeAZ0yAnpvxyn0wWCA)
+- [ByteCTF 2021 By W&M（REVERSE）部分](https://mp.weixin.qq.com/s/h-wTnquhBTB8EzU5pYmPDg)
+- [2021ByteCTF决赛wp—北极星战队](https://mp.weixin.qq.com/s/y5152EoQg_W6N7YCNtnNUA)
+- [ByteCTF 2021 Final By W&M（WEB）部分](https://mp.weixin.qq.com/s/2lzx7ly6kB7UsulC1cUl-w)
+- [ByteCTF 2021 Final By W&M（​Reverse）部分](https://mp.weixin.qq.com/s/CYiWly4jPYYEBon6xK6WFA)
+- [ByteCTF 2021 Final By W&M（Crypto）部分](https://mp.weixin.qq.com/s/mqEM34zkCPhNBZ9sAS85Lg)
+- [ByteCTF 2021 Final By W&M（MISC）部分](https://mp.weixin.qq.com/s/IXWBU-vXMan9mHerPCPPjQ)
+- [ByteCTF 2021 Final By W&M（Mobile）部分](https://mp.weixin.qq.com/s/7HDLGC4irJZ2M6oKwyXmXg)
 
 **2021年工业信息安全技能大赛**
 - [2021年工业信息安全技能大赛线上赛](https://secgxx.com/ctf/competition/2021icsc/)

@@ -12,7 +12,7 @@
 - [XXE 漏洞的学习与利用总结](https://www.cnblogs.com/r00tuser/p/7255939.html)
 - [XXE 漏洞利用技巧:从 XML 到远程代码执行](https://www.freebuf.com/articles/web/177979.html)
 - [XXE: XML eXternal Entity Injection vulnerabilities](https://www.gracefulsecurity.com/xml-external-entity-injection-xxe-vulnerabilities/)
-- [浅谈 XXE 攻击](https://www.freebuf.com/articles/web/126788.html)
+- [浅谈 XXE 攻击](https://www.freebuf.com/articles/web/280780.html)
 
 **相关案例**
 - [XXE at ecjobs.starbucks.com.cn/retail/hxpublic_v6/hxdynamicpage6.aspx](https://hackerone.com/reports/500515)

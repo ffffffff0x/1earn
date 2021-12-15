@@ -147,7 +147,7 @@
 - https://intensecrypto.org/public/
 - https://cryptohack.org/
 
-**工具**
+**相关工具**
 - [ffffffff0x/BerylEnigma](https://github.com/ffffffff0x/BerylEnigma) - 一个为渗透测试与CTF而制作的工具集，主要实现一些加解密的功能。
 - [gchq/CyberChef](https://github.com/gchq/CyberChef) - 一个用于加密、编码、压缩和数据分析的网络应用
 - [Snowming04/Cipher_Encryption_Type_Identification:.](https://github.com/Snowming04/Cipher_Encryption_Type_Identification) - 对密文的加密类型进行判断的命令行工具
@@ -178,7 +178,7 @@
 - https://cryptii.com/
 - https://www.ssleye.com/
 
-**文章**
+**相关文章**
 - [为什么要在密码里加点"盐" | Libuchao's blog](https://libuchao.com/2013/07/05/password-salt)
 - [CTF中那些脑洞大开的编码和加密 - jack_Meng](https://www.cnblogs.com/mq0036/p/6544055.html)
 - [How we recovered over $300K of Bitcoin](https://reperiendi.wordpress.com/2020/04/03/how-i-recovered-over-300k-of-bitcoin/)
@@ -1010,7 +1010,7 @@ RIPEMD-160("") = 9c1185a5c5e9fc54612808977ee8f548b2258d31
 
 # 现代密码
 
-**文章**
+**相关文章**
 - [安全体系(一)—— DES算法详解](https://www.cnblogs.com/songwenlong/p/5944139.html)
 - [安全体系(零)—— 加解密算法、消息摘要、消息认证技术、数字签名与公钥证书](http://www.cnblogs.com/songwenlong/p/6517165.html)
 - [Blowfish (密码学) - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Blowfish_(%E5%AF%86%E7%A0%81%E5%AD%A6))
@@ -1317,7 +1317,7 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 # 古典密码
 
-**文章**
+**相关文章**
 - [Leet - 维基百科,自由的百科全书](https://zh.wikipedia.org/wiki/Leet)
 - [纳瓦霍密码](https://baike.baidu.com/item/%E7%BA%B3%E7%93%A6%E9%9C%8D%E5%AF%86%E7%A0%81/9482868)
 
@@ -1343,7 +1343,7 @@ SM9主要包括三部分：签名算法、密钥交换算法、加密算法，�
 
 - 密文: Teucbonojmsvrhlzdghqikrwfxupoeteayo
 
-**文章**
+**相关文章**
 - [Practical Cryptography](http://www.practicalcryptography.com/ciphers/classical-era/rail-fence/)
 
 **在线工具**

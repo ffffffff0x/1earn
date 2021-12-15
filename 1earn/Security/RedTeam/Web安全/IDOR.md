@@ -69,7 +69,7 @@
 # 认证绕过
 
 **相关资源**
-- [任意用户密码重置的10种常见姿势](https://www.ichunqiu.com/course/59045)
+- [任意用户密码重置的10种常见姿势](https://www.jianshu.com/p/63c005f9ce83)
 
 ## 未授权访问
 
@@ -83,22 +83,22 @@
 
 ## 身份认证绕过
 
-**文章**
+**相关文章**
 - [一个FW-TOKEN鉴权绕过漏洞](https://blog.m1kh.com/index.php/archives/730/)
-- [渗透测试之一波三折](https://blog.m1kh.com/index.php/archives/673/)
+- [渗透测试之一波三折](https://juejin.cn/post/7018847261807345700)
 
 **Cookie & Session**
 - 会话固定攻击
 
     利用服务器的session不变机制,借他人之手获得认证和授权,冒充他人.
     - 案例:
-        - [新浪广东美食后台验证逻辑漏洞,直接登录后台,566764名用户资料暴露](http://www.anquan.us/static/bugs/wooyun-2013-025427.html)
+        - [新浪广东美食后台验证逻辑漏洞,直接登录后台,566764名用户资料暴露](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-025427)
 
 - Cookie仿冒
 
     修改cookie中的某个参数可以登录或冒充其他用户.
     - 案例:
-        - [益云广告平台任意帐号登录](http://www.anquan.us/static/bugs/wooyun-2014-051424.html)
+        - [益云广告平台任意帐号登录](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-051424)
         - [Hacking the Medium partner program](https://medium.com/bugbountywriteup/hacking-the-medium-partner-program-84c0e9fa340)
 
 **加密测试**
@@ -142,7 +142,7 @@
 
 ## 密码重置
 
-**文章**
+**相关文章**
 - [换一种姿势挖掘任意用户密码重置漏洞](https://mp.weixin.qq.com/s/asnyHi_CfkRVBtB1Cd1i7Q)
 - [密码重置的那些事](https://xz.aliyun.com/t/8136)
 
@@ -186,9 +186,9 @@
     ```
 
 - 案例:
-    - [当当网任意用户密码修改漏洞](http://www.anquan.us/static/bugs/wooyun-2012-011833.html)
-    - [当当网任意用户密码修改漏洞2](http://www.anquan.us/static/bugs/wooyun-2013-046062.html)
-    - [当当网任意用户密码修改漏洞第三次](http://www.anquan.us/static/bugs/wooyun-2013-046999.html)
+    - [当当网任意用户密码修改漏洞](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-011833)
+    - [当当网任意用户密码修改漏洞2](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-046062)
+    - [当当网任意用户密码修改漏洞第三次](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-046999)
     - [微信任意用户密码修改漏洞分析](http://www.91ri.org/3969.html)
 
 **返回凭证**
@@ -196,38 +196,38 @@
 
     不多说,直接输入验证码即可修改密码
     - 案例:
-        - [走秀网秀团任意密码修改缺陷](http://www.anquan.us/static/bugs/wooyun-2012-05630.html)
+        - [走秀网秀团任意密码修改缺陷](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-05630)
 
 - 密码找回凭证
     - 案例:
-        - [sohu邮箱任意用户密码重置](http://www.anquan.us/static/bugs/wooyun-2012-04728.html)
+        - [sohu邮箱任意用户密码重置](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-04728)
 
 - 返回短信验证码
     - 案例:
-        - [新浪某站任意用户密码修改(验证码与取回逻辑设计不当)](http://www.anquan.us/static/bugs/wooyun-2014-085124.html)
+        - [新浪某站任意用户密码修改(验证码与取回逻辑设计不当)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-085124)
 
 **邮箱弱token**
 - 时间戳的 MD5
     - 案例:
-        - [奇虎360任意用户密码修改漏洞](http://www.anquan.us/static/bugs/wooyun-2012-08333.html)
+        - [奇虎360任意用户密码修改漏洞](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-08333)
 
 - 服务器时间
     - 案例:
-        - [中兴某网站任意用户密码重置漏洞(经典设计缺陷案例) ](http://www.anquan.us/static/bugs/wooyun-2015-090226.html)
+        - [中兴某网站任意用户密码重置漏洞(经典设计缺陷案例)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-090226)
 
 **用户凭证有效性**
 - 邮箱 token
     - 案例:
-        - [身份通任意密码修改-泄漏大量公民信息](http://www.anquan.us/static/bugs/wooyun-2012-012572.html)
+        - [身份通任意密码修改-泄漏大量公民信息](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-012572)
 
 - 重置密码 token
     - 案例:
-        - [魅族的账号系统内存在漏洞可导致任意账户的密码重置](http://www.anquan.us/static/bugs/wooyun-2014-078208.html)
+        - [魅族的账号系统内存在漏洞可导致任意账户的密码重置](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-078208)
 
 **重新绑定**
 - 手机绑定
     - 案例:
-        - [网易邮箱可直接修改其他用户密码](http://www.anquan.us/static/bugs/wooyun-2012-08307.html)
+        - [网易邮箱可直接修改其他用户密码](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-08307)
 
 - 邮箱绑定
     - 案例:
@@ -244,26 +244,26 @@
 
 - 服务器验证验证逻辑为空
     - 案例:
-        - [某政企使用邮件系统疑似存在通用设计问题](http://www.anquan.us/static/bugs/wooyun-2014-088927.html)
+        - [某政企使用邮件系统疑似存在通用设计问题](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-088927)
 
 **用户身份验证**
 - 账号与手机号码的绑定
     - 案例:
-        - [上海电信通行证任意密码重置](http://www.anquan.us/static/bugs/wooyun-2014-075941.html)
+        - [上海电信通行证任意密码重置](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-075941)
 
 - 账号与邮箱账号的绑定
     - 案例:
-        - [和讯网修改任意用户密码漏洞](http://www.anquan.us/static/bugs/wooyun-2015-091216.html)
+        - [和讯网修改任意用户密码漏洞](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-091216)
 
 **找回步骤**
 - 跳过验证步骤、找回方式,直接到设置新密码页面
     - 案例:
-        - [中国电信某IDC机房信息安全管理系统设计缺陷致使系统沦陷](http://www.anquan.us/static/bugs/wooyun-2015-098765.html)
+        - [中国电信某IDC机房信息安全管理系统设计缺陷致使系统沦陷](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-098765)
 
 **本地验证**
 - 在本地验证服务器的返回信息,确定是否执行重置密码,但是其返回信息是可控的内容,或者可以得到的内容.
     - 案例:
-        - [oppo重置任意用户密码漏洞(4)](http://www.anquan.us/static/bugs/wooyun-2014-069987.html)
+        - [oppo重置任意用户密码漏洞(4)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-069987)
 
 - 发送短信等验证信息的动作在本地进行,可以通过修改返回包进行控制.
     - 案例:
@@ -272,7 +272,7 @@
 **注入**
 - 在找回密码处存在注入漏洞.
     - 案例:
-        - [用友人力资源管理软件(e-HR)另一处SQL注入漏洞(通杀所有版本)](http://www.anquan.us/static/bugs/wooyun-2014-068060.html)
+        - [用友人力资源管理软件(e-HR)另一处SQL注入漏洞(通杀所有版本)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-068060)
 
 **Token生成**
 - Token 生成可控.
@@ -282,20 +282,20 @@
 **注册覆盖**
 - 注册重复的用户名.
     - 案例:
-        - [中铁快运奇葩方式重置任意用户密码(admin用户演示)](http://www.anquan.us/static/bugs/wooyun-2014-088708.html)
+        - [中铁快运奇葩方式重置任意用户密码(admin用户演示)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-088708)
 
 **Session覆盖**
 - Session 覆盖
     - 案例:
-        - [聚美优品任意修改用户密码(非爆破)](http://www.anquan.us/static/bugs/wooyun-2014-085843.html)
+        - [聚美优品任意修改用户密码(非爆破)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-085843)
 
 ---
 
 ## 验证码突破
 
-**文章**
+**相关文章**
 - [挖洞技巧:绕过短信&邮箱轰炸限制以及后续](https://www.secpulse.com/archives/67077.html)
-- [验证码安全那些事](https://www.freebuf.com/news/131542.html)
+- [验证码安全那些事](https://cloud.tencent.com/developer/article/1043500)
 - [实战笔记：滑动验证码攻防对抗](https://www.freebuf.com/articles/web/238038.html)
 
 **验证码暴力破解**
@@ -318,14 +318,14 @@
 2. 一是直接删除验证码参数,改成 user=admin&pass=1234.
 
 - 案例:
-    - [中国电信某IDC机房信息安全管理系统设计缺陷致使系统沦陷](http://www.anquan.us/static/bugs/wooyun-2015-098765.html)
+    - [中国电信某IDC机房信息安全管理系统设计缺陷致使系统沦陷](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-098765)
 
 **验证码 js 绕过**
 
 短信验证码验证程序逻辑存在缺陷,业务流程的第一步、第二部、第三步都是放在同一个页面里,验证第一步验证码是通过 js 来判断的,可以修改验证码在没有获取验证码的情况下可以填写实名信息,并且提交成功.
 
 - 案例:
-    - [某省公安厅某举报管理系统可JS绕过登陆](http://www.anquan.us/static/bugs/wooyun-2012-07826.html)
+    - [某省公安厅某举报管理系统可JS绕过登陆](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2012-07826)
 
 **万能验证码**
 
@@ -358,8 +358,8 @@
 **垂直越权(垂直越权是指使用权限低的用户可以访问权限较高的用户)**
 - 案例:
     - [中国电信天翼宽带政企网关A8-B垂直越权,可获取最高权限](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0100876)
-    - [如何在Microsoft Translator中越权删除1.3万个项目](https://www.4hou.com/vulnerable/12767.html)
-    - [看我如何通过帮助服务台轻松黑掉数百家公司](https://www.4hou.com/system/18770.html)
+    - [如何在Microsoft Translator中越权删除1.3万个项目](https://www.4hou.com/posts/MJq1)
+    - [看我如何通过帮助服务台轻松黑掉数百家公司](https://www.4hou.com/posts/PMyw)
 
 **水平越权(水平越权是指相同权限的不同用户可以互相访问)**
 - 案例:
@@ -373,20 +373,20 @@
 
     抓包修改用户或者邮箱参数为其他用户或者邮箱
     - 案例:
-        - [绿盟RSAS安全系统全版本通杀权限管理员绕过漏洞,包括最新 RSAS V5.0.13.2](http://www.anquan.us/static/bugs/wooyun-2014-074441.html)
+        - [绿盟RSAS安全系统全版本通杀权限管理员绕过漏洞,包括最新 RSAS V5.0.13.2](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-074441)
 
 - 订单 ID 更改
 
     查看自己的订单 id,然后修改 id(加减一)查看是否能操作其它订单信息.
     - 案例:
-        - [广之旅旅行社任意访问用户订单](http://www.anquan.us/static/bugs/wooyun-2013-044137.html)
+        - [广之旅旅行社任意访问用户订单](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0156200)
         - [麦乐购可大批量删除他人购物订单(水平越权一)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0108008)
 
 - 用户 ID 篡改
 
     抓包查看自己的用户 id,然后修改 id(加减 1)查看是否能查看其它用户 id 信息.
     - 案例:
-        - [拉勾网百万简历泄漏风险(包括手机、邮件、应聘职位等信息、还可冒充企业身份筛选简历、发面试通知等)](http://www.anquan.us/static/bugs/wooyun-2015-0111617.html)
+        - [拉勾网百万简历泄漏风险(包括手机、邮件、应聘职位等信息、还可冒充企业身份筛选简历、发面试通知等)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0111617)
 
 ---
 
@@ -397,8 +397,8 @@
 2. 用户控制着他们给应用程序发送的每一个请求,因此能够按照任何顺序进行访问.于是,用户就从 B 直接进入了 D 过程,就绕过了 C.如果 C 是支付过程,那么用户就绕过了支付过程而买到了一件商品.如果C是验证过程,就会绕过验证直接进入网站程序了.
 
     - 案例:
-        - [中国教师资格网绕过验证(可遍历全国教师身份信息) ](http://www.anquan.us/static/bugs/wooyun-2014-050488.html)
-        - [万达某分站逻辑错误可绕过支付直接获得取票密码](http://www.anquan.us/static/bugs/wooyun-2014-047677.html)
+        - [中国教师资格网绕过验证(可遍历全国教师身份信息) ](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-050488)
+        - [万达某分站逻辑错误可绕过支付直接获得取票密码](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-047677)
 
 ---
 
@@ -429,7 +429,7 @@ wget -d --header="Host: localhost" https://target/
 
 **时间刷新缺陷**
 - 案例:
-    - [12306自动刷票时间可更改漏洞](http://www.anquan.us/static/bugs/wooyun-2014-048391.html)
+    - [12306自动刷票时间可更改漏洞](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-048391)
 
 **时间范围测试**
 
@@ -484,7 +484,7 @@ wget -d --header="Host: localhost" https://target/
 部分内容来自 <sup>[[A Deep Dive On The Most Critical API Vulnerability — BOLA (Broken Object Level Authorization](https://medium.com/@inonst/a-deep-dive-on-the-most-critical-api-vulnerability-bola-1342224ec3f2)]、[[31 Days of API Security](https://docs.google.com/spreadsheets/d/1jn3JnWzQFZW41gKo5Fhxwf2ke2w-pvrpCGhBmKhyIBE/edit#gid=0)]</sup>
 
 - FUZZ 接口路径、接口名
-    - https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/api&parm/Fuzz_API1.txt
+    - https://github.com/ffffffff0x/AboutSecurity/tree/master/Dic/Web/api_param
 - 大小写替换
     - `userinfo/view`
     - `userINFO/VIew`
@@ -551,16 +551,16 @@ wget -d --header="Host: localhost" https://target/
 
 例如积分兑换处,100 个积分只能换商品编号为 001,1000 个积分只能换商品编号 005,在 100 积分换商品的时候抓包把换商品的编号修改为 005,用低积分换区高积分商品.
 - 案例:
-    - [联想某积分商城支付漏洞再绕过](http://www.anquan.us/static/bugs/wooyun-2013-041617.html)
+    - [联想某积分商城支付漏洞再绕过](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-041617)
 
 **金额数据篡改**
 
 抓包修改金额等字段,例如在支付页面抓取请求中商品的金额字段,修改成任意数额的金额并提交,查看能否以修改后的金额数据完成业务流程.
 - 案例:
-    - [12308订单支付时的总价未验证漏洞(支付逻辑漏洞)](http://www.anquan.us/static/bugs/wooyun-2015-0117083.html)
-    - [UCloud 另一处严重支付逻辑错误 导致可刷余额](http://www.anquan.us/static/bugs/wooyun-2014-048591.html)
-    - [destoon无限制增加帐号资金 ](http://www.anquan.us/static/bugs/wooyun-2014-050481.html)
-    - [大疆某处支付逻辑漏洞可1元买无人机](http://www.anquan.us/static/bugs/wooyun-2016-0194751.html)
+    - [12308订单支付时的总价未验证漏洞(支付逻辑漏洞)](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0117083)
+    - [UCloud 另一处严重支付逻辑错误 导致可刷余额](https://wy.2k8.org/bug_detail.php?wybug_id=wooyun-2014-048591l)
+    - [destoon无限制增加帐号资金](https://woo.zone.ci/bug_detail.php?wybug_id=wooyun-2014-050481)
+    - [大疆某处支付逻辑漏洞可1元买无人机](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0194751)
     - [挖掘网站支付漏洞中突然想到的一个骚思路](https://www.t00ls.net/thread-53256-1-2.html)
     - http://www.0dayhack.net/index.php/634/
 
@@ -573,7 +573,7 @@ wget -d --header="Host: localhost" https://target/
 抓包修改商品数量等字段,将请求中的商品数量修改成任意数额,如负数并提交,查看能否以修改后的数量完成业务流程.
 
 - 案例:
-    - [百脑汇商城支付漏洞](http://www.anquan.us/static/bugs/wooyun-2012-07997.html)
+    - [百脑汇商城支付漏洞](http://woo.zone.ci/bug_detail.php?wybug_id=wooyun-2012-07997)
 
 ---
 
@@ -595,8 +595,8 @@ wget -d --header="Host: localhost" https://target/
 
 - 案例:
     - [一亩田交易网逻辑漏洞(木桶原理)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-094545)
-    - [短信轰炸之空格或 \n 绕过](https://laucyun.com/4677c709d3aa2126dec5a91be191a112.html)
-    - [一次有趣的短信轰炸限制绕过](https://blog.m1kh.com/index.php/archives/229/)
+    - [短信轰炸之空格或 \n 绕过](https://cloud.tencent.com/developer/article/1541148)
+    - [一次有趣的短信轰炸限制绕过](https://web.archive.org/web/20210811054855/https://blog.m1kh.com/index.php/archives/229/)
 
 **内容编辑**
 
@@ -642,7 +642,7 @@ wget -d --header="Host: localhost" https://target/
 
 - 相关文章
     - [Regular expression Denial of Service - ReDoS](https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS)
-    - [ReDOS初探](http://th1e.com/article/26)
+    - [ReDOS初探](http://www.lmxspace.com/2019/02/16/ReDOS%E5%88%9D%E6%8E%A2/)
     - [深度分析PCRE回溯次数限制](http://www.lmxspace.com/2019/02/16/ReDOS%E5%88%9D%E6%8E%A2/)
     - [ReDoS-Attacks](https://www.checkmarx.com/wp-content/uploads/2015/03/ReDoS-Attacks.pdf)
 

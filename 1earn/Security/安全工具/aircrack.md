@@ -22,7 +22,7 @@ aircrack 是一个比较出名的用于破解 WEP 和 WPA 加密的无线网络�
 5. airodump-ng 捕获被 aircrack-ng 用于破解 WEP 密钥的 802.11 帧
 6. tools 为微调提供分类工具箱
 
-**文章**
+**相关文章**
 - [记一次曲折的WIFI测试之路](https://www.secpulse.com/archives/96964.html)
 
 ---

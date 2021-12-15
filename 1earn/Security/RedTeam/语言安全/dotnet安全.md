@@ -366,5 +366,5 @@ allow_ext.xml
 
 ### 反序列化
 
-**工具**
+**相关工具**
 - [pwntester/ysoserial.net](https://github.com/pwntester/ysoserial.net)

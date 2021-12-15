@@ -8,7 +8,7 @@
 **模板库**
 - [projectdiscovery/nuclei-templates](https://github.com/projectdiscovery/nuclei-templates) - 由社区维护的 POC 库
 
-**文章**
+**相关文章**
 - [安利一款还不错的开源工具—Nuclei](https://mp.weixin.qq.com/s/C_-FRZMqF4ifzlx-ij4iIQ)
 - [projectdiscovery之nuclei源码阅读](https://mp.weixin.qq.com/s/zedeOp8ywOohqogCOWTpbA)
 - [Automate Cache Poisoning Vulnerability - Nuclei](https://blog.melbadry9.xyz/fuzzing/nuclei-cache-poisoning)

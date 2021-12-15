@@ -14,7 +14,8 @@
 
 **相关工具**
 - [epinna/tplmap](https://github.com/epinna/tplmap) - ssti 检测工具
-- [mez-0/ssti-payload](https://github.com/mez-0/ssti-payload) - SSTI Payload Generator
+- https://github.com/VikasVarshney/ssti-payload - SSTI Payload Generator
+- [payloadbox/ssti-payloads](https://github.com/payloadbox/ssti-payloads) - Server Side Template Injection Payloads
 
 **靶场**
 - [s4n7h0/xvwa](https://github.com/s4n7h0/xvwa) - 存在 SSTI 的环境

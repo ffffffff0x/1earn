@@ -364,7 +364,7 @@ ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ffmpeg.exe -i in.mp4 -r 10 -b:a 32k out.mp4
 ```
 
-推荐用法
+其他用法
 ```bash
 ffmpeg -y -i /mnt/sdcard/demo1.mp4 -strict -2 -vcodec libx264 -preset ultrafast -crf 24 -acodec aac -ar 44100 -ac 2 -b:a 96k -s 360x640 -aspect 16:9 /mnt/sdcard/democompress.mp4
 ```
@@ -392,7 +392,7 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 # -acodec aac 音频编码用 AAC
 # -ac 2 声道数 1 或 2
 # -ar 48000 声音的采样频率
-# -ab 128 音频数据流量, 一般选择 32、64、96、128 # -vol 200 200% 的音量, 可更改 (如果源文件声音很小, 可以提升 10 到 20 倍 (1000%~2000%), 我试过, 效果还行! 但不能太大, 200000% 我也试验过, 但嘈杂声太大了)
+# -ab 128 音频数据流量, 一般选择 32、64、96、128 # -vol 200 200% 的音量, 可更改 (如果源文件声音很小, 可以提升 10 到 20 倍 (1000%~2000%))
 ```
 
 ---

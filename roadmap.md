@@ -41,7 +41,7 @@
     - 略
 
 - Markdown 语法 - 学会记笔记也很重要
-    - [Markdown语法学习](./1earn/Develop/标记语言/Markdown/Markdown语法学习.md)
+    - 略
 
 ---
 

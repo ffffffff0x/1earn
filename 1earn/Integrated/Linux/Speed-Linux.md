@@ -143,6 +143,7 @@ env
 
 cat /proc/1/environ
 cat /proc/$PID/environ
+cat /proc/self/environ
 ```
 
 - 图形模式登录时,顺序读取 : `/etc/profile` 和 `~/.profile`

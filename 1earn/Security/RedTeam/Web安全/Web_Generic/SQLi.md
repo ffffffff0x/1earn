@@ -450,7 +450,7 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 #### UA注入
 
 **相关文章**
-- [User Agent注入攻击及防御](https://www.freebuf.com/articles/web/105124.html)
+- [User Agent注入攻击及防御](https://www.jianshu.com/p/99fbb931c4b4)
 
 **案例**
 - [m.17u.cn一处SQL注入](https://sec.ly.com/bugdetail?id=009063229194078153174131073236159115161105151152)

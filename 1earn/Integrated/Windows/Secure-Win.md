@@ -189,11 +189,11 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 系统日志基本知识见 [日志](./笔记/日志.md)
 
 **导出日志**
-- 文章
+- 相关文章
     - [Export corrupts Windows Event Log files](https://blog.fox-it.com/2019/06/04/export-corrupts-windows-event-log-files/) - 导出损坏的 Windows 事件日志文件
 
 **恢复 eventlogedit 删除的记录**
-- 文章
+- 相关文章
     - [Detection and recovery of NSA’s covered up tracks](https://blog.fox-it.com/2017/12/08/detection-and-recovery-of-nsas-covered-up-tracks/)
 
 - 工具
@@ -211,7 +211,7 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 
 `logparser` 是一款 windows 日志分析工具，访问这里下载 https://www.microsoft.com/en-us/download/details.aspx?id=24659
 
-- 文章
+- 相关文章
     - [windows安全日志分析之logparser篇](https://wooyun.js.org/drops/windows%E5%AE%89%E5%85%A8%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E4%B9%8Blogparser%E7%AF%87.html)
 
 - 使用
@@ -371,7 +371,7 @@ qprocess            显示有关在远程桌面会话主机服务器上运行的
 - **[dnsdataview](https://www.nirsoft.net/utils/dns_records_viewer.html)** - 记录 DNS 记录
 
 **DNS cache log**
-- 文章
+- 相关文章
     - [开启DNS Client Service日志](http://blog.nsfocus.net/open-dns-client-service-log/)
 
 - 开启命令
@@ -396,7 +396,7 @@ windows 8.1 和 windows server 2012 R2 及以上版本的操作系统，可以�
 微软官方文档 : https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn800669(v=ws.11)
 
 **DNS Client Cached**
-- 文章
+- 相关文章
     - [Getting DNS Client Cached Entries with CIM/WMI](https://www.darkoperator.com/blog/2020/1/14/getting-dns-client-cached-entries-with-cimwmi)
 
 - 工具

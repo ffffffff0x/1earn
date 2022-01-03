@@ -538,10 +538,12 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关文章**
 - [【技术分享】针对SOAP的渗透测试与防护](https://www.anquanke.com/post/id/85410)
+- [Web Service渗透测试](https://www.mi1k7ea.com/2021/01/16/Web-Service%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/)
 
 **相关工具**
 - [SmartBear/soapui](https://github.com/SmartBear/soapui#build-and-run)
 - [NetSPI/Wsdler](https://github.com/NetSPI/Wsdler) - 用于帮助测试 wsdl 接口的 burp 插件
+- [ReadyAPI](https://smartbear.com/product/ready-api/api-functional-testing/free-trial/)
 
 ---
 

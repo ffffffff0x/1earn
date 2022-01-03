@@ -22,16 +22,29 @@
 - https://webhook.site
 - http://www.dnslog.cn/
 - https://iplogger.org/
+- https://log.xn--9tr.com/
 
 **相关工具**
-- [uknowsec/SharpNetCheck](https://github.com/uknowsec/SharpNetCheck) - 该工具可以在 dnslog 中回显内网 ip 地址和计算机名，可实现内网中的快速定位可出网机器。
-- [Buzz2d0/Hyuga](https://github.com/Buzz2d0/Hyuga) - 一个用来检测带外(Out-of-Band)流量(DNS查询和HTTP请求)的监控工具。
+- [uknowsec/SharpNetCheck](https://github.com/uknowsec/SharpNetCheck) - 该工具可以在 dnslog 中回显内网 ip 地址和计算机名，可实现内网中的快速定位可出网机器
+- [Buzz2d0/Hyuga](https://github.com/Buzz2d0/Hyuga) - 一个用来检测带外(Out-of-Band)流量(DNS查询和HTTP请求)的监控工具
 - [ztgrace/mole](https://github.com/ztgrace/mole) - 识别和利用out-of-band (OOB)漏洞的burp扩展
 
 **平台搭建**
-- [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具。
+- [十分钟快速自建DNSlog服务器](https://mp.weixin.qq.com/s/m_UXJa0imfOi721bkBpwFg)
+- [DNSLOG的快速搭建攻略](https://www.yinxiang.com/everhub/note/471fd1c4-7885-4b67-aa39-41dc36102b43)
+- [安全技术|DNSLOG平台搭建从0到1](https://www.4hou.com/posts/VoJ9)
+
+**平台**
+- [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具
 - [lanyi1998/DNSlog-GO](https://github.com/lanyi1998/DNSlog-GO) - DNSLog-GO 是一款 golang 编写的监控 DNS 解析记录的工具，自带 WEB 界面
 - [chennqqi/godnslog](https://github.com/chennqqi/godnslog)
+    ```bash
+    docker pull "sort/godnslog"
+    docker run -p80:8080 -p53:53/udp "sort/godnslog" serve -domain yourdomain.com -4 100.100.100.100
+    # yourdomain.com 替换为你的域名 100.100.100.100 替换为你的公网IP
+    ```
+- [yumusb/DNSLog-Platform-Golang](https://github.com/yumusb/DNSLog-Platform-Golang) - DNSLOG平台 golang 一键启动版
+- [phith0n/conote-community](https://github.com/phith0n/conote-community) - Conote 综合安全测试平台社区版
 
 ---
 

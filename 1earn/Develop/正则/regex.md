@@ -12,11 +12,11 @@
     - https://tool.oschina.net/regex
 
 - **正则分析**
+    - https://regex101.com/
+    - https://regexr.com/
     - https://regexper.com/
     - https://ihateregex.io/
     - https://www.sojson.com/regex/generate
-    - https://regex101.com/
-    - https://regexr.com/
     - https://jex.im/regulex/#!flags=
 
 **表达式资源**

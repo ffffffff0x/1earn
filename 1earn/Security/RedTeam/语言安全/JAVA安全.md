@@ -225,7 +225,8 @@ public class AntObjectInputStream extends ObjectInputStream{
 - [welk1n/JNDI-Injection-Exploit](https://github.com/welk1n/JNDI-Injection-Exploit)
 - [mbechler/marshalsec](https://github.com/mbechler/marshalsec)
 - [wh1t3p1g/ysomap](https://github.com/wh1t3p1g/ysomap)
-- [0x727/JNDIExploit](https://github.com/0x727/JNDIExploit)
+- [pimps/JNDI-Exploit-Kit](https://github.com/pimps/JNDI-Exploit-Kit) - JNDI-Exploitation-Kit
+- [r00tSe7en/JNDIMonitor/](https://github.com/r00tSe7en/JNDIMonitor/) - 一个LDAP请求监听器，摆脱dnslog平台
 
 #### RMI反序列化
 

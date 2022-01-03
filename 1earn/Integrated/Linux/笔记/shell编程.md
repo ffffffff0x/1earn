@@ -47,6 +47,7 @@
 - [10分钟学会Bash调试](https://mp.weixin.qq.com/s/MQjqu55BN6LqSsIAvevRQA)
 - [如何并发执行Linux命令](https://mp.weixin.qq.com/s/L3u2e-GKl_yL3saJMMFazA)
 - [终于知道 Shell 中单引号双引号的区别了](https://mp.weixin.qq.com/s/tyHIlRsg1rYjw-E_h-C2rA)
+- [Bash编程基础知识](https://mp.weixin.qq.com/s/tSWnoO3IAET3C7iYY7ns6Q)
 
 ---
 
@@ -1015,6 +1016,8 @@ fi
 至少有一个文件存在!
 ```
 
+---
+
 ## 流程控制
 
 和 Java、PHP 等语言不一样，sh 的流程控制不可为空，如(以下为 PHP 流程控制写法)：
@@ -1511,6 +1514,8 @@ funWithParam 1 2 3 4 5 6 7 8 9 34 73
 - `$-` 显示 Shell 使用的当前选项，与 set 命令功能相同。
 - `$?` 显示最后命令的退出状态。0 表示没有错误，其他任何值表明有错误。
 
+---
+
 ## 输入输出重定向
 
 大多数 UNIX 系统命令从你的终端接受输入并将所产生的输出发送回到你的终端。一个命令通常从一个叫标准输入的地方读取输入，默认情况下，这恰好是你的终端。同样，一个命令通常将其输出写入到标准输出，默认情况下，这也是你的终端。
@@ -1718,9 +1723,92 @@ vim test.sh
 bash -xv test.sh
 ```
 
+**trap**
+
+trap命令用来在 Bash 脚本中响应系统信号。
+
+最常见的系统信号就是 SIGINT（中断），即按 Ctrl + C 所产生的信号。trap命令的-l参数，可以列出所有的系统信号。
+```
+trap -l
+```
+
+“动作”是一个 Bash 命令，“信号”常用的有以下几个：
+```
+HUP：编号1，脚本与所在的终端脱离联系。
+INT：编号2，用户按下 Ctrl + C，意图让脚本终止运行。
+QUIT：编号3，用户按下 Ctrl + 斜杠，意图退出脚本。
+KILL：编号9，该信号用于杀死进程。
+TERM：编号15，这是kill命令发出的默认信号。
+EXIT：编号0，这不是系统信号，而是 Bash 脚本特有的信号，不管什么情况，只要退出脚本就会产生。
+```
+
+trap命令响应EXIT信号的写法如下
+```bash
+trap 'rm -f "$TMPFILE"' EXIT
+# 脚本遇到EXIT信号时，就会执行rm -f "$TMPFILE"
+```
+
+trap 命令的常见使用场景，就是在 Bash 脚本中指定退出时执行的清理命令。
+```bash
+trap 'rm -f "$TMPFILE"' EXIT
+
+TMPFILE=$(mktemp) || exit 1
+ls /etc > $TMPFILE
+if grep -qi "kernel" $TMPFILE; then
+  echo 'find'
+fi
+
+# 不管是脚本正常执行结束，还是用户按 Ctrl + C 终止，都会产生EXIT信号，从而触发删除临时文件。
+```
+
+注意，trap 命令必须放在脚本的开头。否则，它上方的任何命令导致脚本退出，都不会被它捕获。
+
+如果 trap 需要触发多条命令，可以封装一个 Bash 函数。
+```bash
+function egress {
+  command1
+  command2
+  command3
+}
+
+trap egress EXIT
+```
+
+---
+
+## 错误处理
+
+如果脚本里面有运行失败的命令(返回值非0),bash默认会继续执行后面的命令。
+
+实际开发中，如果某个命令失败，往往需要脚本停止执行，防止错误累积。
+```bash
+command || exit 1
+
+# 只要command有非零返回值，脚本就会停止执行。
+```
+
+如果停止执行之前需要完成多个操作，就要采用以下写法：
+```bash
+# 写法一
+command || { echo "command failed"; exit 1; }
+
+# 写法二
+if ! command; then echo "command failed"; exit 1; fi
+
+# 写法三
+command
+if [ "$?" -ne 0 ]; then echo "command failed"; exit 1; fi
+```
+
+另外，除了停止执行，还有一种情况。如果两个命令有继承关系，只有第一个命令成功了，才能继续执行第二个命令，那么就要采用下面的写法。
+```bash
+command1 && command2
+```
+
 ---
 
 ## Source & Reference
 
 - [Shell脚本编程30分钟入门](https://github.com/qinjx/30min_guides/blob/master/shell.md)
 - [Shell 教程](https://www.runoob.com/linux/linux-shell.html)
+- [Bash编程基础知识](https://mp.weixin.qq.com/s/tSWnoO3IAET3C7iYY7ns6Q)

@@ -357,6 +357,11 @@ filelist.txt
 ffmpeg -f concat -i filelist.txt -c copy output.mkv
 ```
 
+**TS 格式转 MP4 格式**
+```bash
+ffmpeg -i target.ts -c:v libx264 -c:a copy -bsf:a aac_adtstoasc output.mp4
+```
+
 **视频压缩**
 
 常规用法

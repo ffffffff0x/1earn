@@ -78,7 +78,7 @@ https://github.com/digistump/DigistumpArduino/releases/download/1.6.7/Digistump.
 
 > 注:再次强调,如果速度慢可以配置代理
 
-最后，打开 Tools -> Board，然后选择 Digispark (Default — 16.5mhz)并将其设置为默认值。
+最后，打开 Tools -> Board，然后选择 Digispark (Default—16.5mhz)并将其设置为默认值。
 
 ![](../../../../../assets/img/Security/IOT/硬件安全/HID/HID-Digispark/7.png)
 

@@ -584,6 +584,7 @@ wget -d --header="Host: localhost" https://target/
 **相关文章**
 - [刷点赞、刷关注、刷收藏漏洞](https://blog.m1kh.com/index.php/archives/539/)
 - [邮箱炸弹及绕过](https://blog.m1kh.com/index.php/archives/324/)
+- [SRC另类思路分享：不受限制的资源调用](https://mp.weixin.qq.com/s/wwkAaRauMfIKVERd0-ZCfQ)
 
 **恶意注册**
 

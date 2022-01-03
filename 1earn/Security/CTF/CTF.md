@@ -192,6 +192,11 @@ AWD
 
 ### 虎符杯
 
+**2021**
+- [虎符CTF Writeup by X1cT34m](http://wh1sper.com/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/)
+- [2021虎符CTF逆向WP](https://www.cxyzjd.com/article/jxnu_666/115448655)
+- [CTF | 2021 数字中国创新大赛虎符网络安全赛道 WriteUp](https://miaotony.xyz/2021/04/04/CTF_2021HFCTF/)
+
 **2020**
 - [虎符杯两道NodeJS题目的分析](https://xz.aliyun.com/t/7714)
 - [数字中国创新大赛-虎符网络安全赛道Write up](https://mp.weixin.qq.com/s/ih2X8IXVFmrMVwJYuf5gng)
@@ -211,6 +216,10 @@ AWD
 - [2021广东强网杯｜Reverse及PWN方向WP](https://mp.weixin.qq.com/s/TWKQKMpV_UvJuVjHXywXzA)
 - [2021广东强网杯｜MISC方向WP](https://mp.weixin.qq.com/s/kQtqYLlsuaEvr7-iEv9mBg)
 - [“强网”拟态防御国际精英挑战赛 WP](https://mp.weixin.qq.com/s/2RErninC7_C_SzKEYfuUJw)
+
+**2020**
+- [强网杯部分题目WriteUp](https://l1near.top/index.php/2020/08/24/65.html)
+- [强网杯 WRITEUP](https://mp.weixin.qq.com/s/5btNvwbuySvn_2h_3irvWQ)
 
 **2019**
 - [2019 第三届强网杯 Web 部分 WriteUp + 复现环境](https://www.zhaoj.in/read-5873.html)
@@ -350,9 +359,13 @@ AWD
 
 **2020**
 - [湖湘杯-WriteUp](https://mp.weixin.qq.com/s/MEX8eJ6LqO0ubnLMGN3K9w)
+- [2020湖湘杯部分WriteUp](https://nosec.org/home/detail/4599.html)
 
 **2019**
 - [2019 湖湘杯Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/10/2019%E6%B9%96%E6%B9%98%E6%9D%AFwp/)
+
+**2018**
+- [湖湘杯线下AWD记录](https://mp.weixin.qq.com/s/yv8Lsc1WqWqeH-GtWnXA5Q)
 
 ---
 
@@ -410,6 +423,7 @@ AWD
 **2021**
 - [长城杯线上赛WP](https://mp.weixin.qq.com/s/LxPQDJ8xvBq4Qc-89td1_A)
 - [第一届"长城杯"网络安全大赛WP](https://mp.weixin.qq.com/s/CUJDx3x7nXpDYU8UdVOXfQ)
+- [2021 第一届 长城杯ctf wp](https://mp.weixin.qq.com/s/xAn7QLmS2bNd0Iql59rsPQ)
 
 ---
 
@@ -461,12 +475,18 @@ AWD
 
 **2020 西湖论剑**
 - [西湖论剑-WriteUp](https://mp.weixin.qq.com/s/dCi4n8lGhfxvPIdRn67reA)
+- [“西湖论剑” 2020 WriteUp By NepNep](http://www.qfrost.com/CTF/%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91_2020/)
 
 ### 2019
 
 **2019 西湖论剑**
 - [从西湖论剑2019Storm_note看largebin attack](https://www.anquanke.com/post/id/176194)
 - [杭州"西湖论剑"ctf-Web](https://nikoeurus.github.io/2019/04/11/%E6%9D%AD%E5%B7%9E%E2%80%9C%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E2%80%9Dctf-Web/)
+- [2019西湖论剑杯writeup](https://ab-alex.github.io/2019/04/11/2019%E8%A5%BF%E6%B9%96%E8%AE%BA%E5%89%91%E6%9D%AFwriteup/)
+- [西湖论剑2019 WriteUp](https://mp.weixin.qq.com/s/rlSyABoulRKygPmwfcUuXA)
+
+**2019 第五空间**
+- [“第五空间”网络安全线下赛PWN部分WRITEUP](https://xz.aliyun.com/t/6431)
 
 ---
 
@@ -484,10 +504,14 @@ AWD
 - [CISCN 2019 华东北赛区 Web2 WriteUp](https://www.zhaoj.in/read-6100.html)
 - [全国第十二届大学生信息安全竞赛 线上初赛 Web 部分 WriteUp](https://www.zhaoj.in/read-5417.html)
 - [CISCN 华北赛区 Day1 Web2 WriteUp](https://www.zhaoj.in/read-5946.html)
+- [ciscn线下部分题解](https://ab-alex.github.io/2019/06/05/ciscn%E7%BA%BF%E4%B8%8B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/)
 
 ---
 
 ### 2021
+
+**2021 hackergame**
+- [USTC-Hackergame/hackergame2021-writeups](https://github.com/USTC-Hackergame/hackergame2021-writeups)
 
 **2021 河南省第三届金盾信安杯**
 - [河南省第三届“金盾信安杯”网络安全大赛Writeup](https://mp.weixin.qq.com/s/B6WWQ8aVe3Fb2D9dLWmMZA)
@@ -512,6 +536,13 @@ AWD
 
 ### 2020
 
+**2020 安洵杯**
+- [安洵杯2020 官方Writeup(Web/Misc/Crypto) - D0g3](https://xz.aliyun.com/t/8581)
+
+**2020重庆市教育系统网络安全攻防竞赛**
+- [2020重庆市教育局网络安全攻防比赛](https://my.oschina.net/u/4411210/blog/4602798)
+- [2020重庆市教育系统网络安全攻防竞赛决赛 - Web Writeup](https://www.0x002.com/2020/2020%E9%87%8D%E5%BA%86%E5%B8%82%E6%95%99%E8%82%B2%E7%B3%BB%E7%BB%9F%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AB%9E%E8%B5%9B%E5%86%B3%E8%B5%9B%20-%20Web%20Writeup/)
+
 **2020 NUAACTF**
 - [CTF | 2020 NUAACTF 吸喵喵队 Writeup](https://miaotony.xyz/2020/05/30/CTF_2020NUAACTF/)
 
@@ -533,9 +564,16 @@ AWD
 
 ### 2019
 
+**2019 浙江省大学生网络与信息安全竞赛**
+- [2019浙江省大学生网络与信息安全竞赛决赛部分WriteUp](https://xz.aliyun.com/t/6458)
+
+**2019 虎鲸杯**
+- [2019 虎鲸杯电子取证大赛赛后复盘总结](https://www.anquanke.com/post/id/177714)
+
 **2019 安洵杯**
 - [2019 安洵杯Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/30/2019%E5%AE%89%E8%AF%A2%E6%9D%AF-Web/)
 - [2019 安洵杯线下赛awd-Web题解WriteUp](https://nikoeurus.github.io/2019/12/11/2019%E5%AE%89%E6%B4%B5%E6%9D%AF%E7%BA%BF%E4%B8%8B%E8%B5%9Bawd-Web%E9%A2%98%E8%A7%A3/)
+- [2019安洵杯+2019广外比赛web部分题解](https://ab-alex.github.io/2019/12/01/2019%E5%AE%89%E6%B4%B5%E6%9D%AF-2019%E5%B9%BF%E5%A4%96%E6%AF%94%E8%B5%9Bweb%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/)
 
 **2019 百越杯**
 - [2019 百越杯Web题解WriteUp](https://nikoeurus.github.io/2019/11/11/2019%E7%99%BE%E8%B6%8A%E6%9D%AF-Web/)
@@ -563,17 +601,22 @@ AWD
 - [HCTF 2018 Official Writeup](https://www.secpulse.com/archives/82690.html)
 - [HCTF 2018 WriteUp](https://impakho.com/post/hctf-2018-writeup)
 - [HCTF 2018 Writeup](https://xz.aliyun.com/t/3242)
+- [hctf2018web](https://ab-alex.github.io/2018/11/12/hctf2018web/)
 
 **2018 ISCC**
 - [ISCC 2018线上赛 writeup](https://www.cnblogs.com/semishigure/archive/2018/06/06/9013131.html)
 
 **2018“骇极杯”上海大学生网络安全大赛**
 - [2018“骇极杯”上海大学生网络安全大赛 Web题解](https://blog.szfszf.top/article/13/)
+- [“骇极杯”全国大学生网络安全邀请赛WriteUp](https://cloud.tencent.com/developer/article/1369854?from=article.detail.1515395)
 
 ### 2016
 
 **2016 HCTF**
 - [HCTF 2016网络攻防大赛官方Writeup](https://www.freebuf.com/articles/web/121778.html)
+
+**2016 第二届上海市大学生网络安全大赛**
+- [【CTF攻略】第二届上海市大学生网络安全大赛Writeup](https://www.anquanke.com/post/id/84924)
 
 ---
 
@@ -603,7 +646,6 @@ AWD
 
 **2020 高校战“疫”**
 - [CTF | XCTF高校战“疫”网络安全分享赛 WriteUp](https://miaotony.xyz/2020/03/15/CTF_2020XCTF_gxzy/)
-- [i春秋2020新春战“疫”网络安全公益赛GYCTF 两个 NodeJS 题 WriteUp](https://www.zhaoj.in/read-6462.html)
 
 **2020 De1CTF**
 - [CTF | 2020 De1CTF Misc Chowder WriteUp](https://miaotony.xyz/2020/05/04/CTF_2020De1CTF/)
@@ -633,6 +675,9 @@ AWD
 
 **2019 N1CTF**
 - [分析N1CTF 2019中Crypto方向题目](https://www.anquanke.com/post/id/186525)
+
+**2018 N1CTF**
+- [2018n1ctf-esay-php复现](https://ab-alex.github.io/2019/08/06/2018n1ctf-esay-php%E5%A4%8D%E7%8E%B0/)
 
 **2018 赛博地球杯工业互联网安全大赛**
 - [“赛博地球杯”工业互联网安全大赛线上赛Writeup](https://www.xctf.org.cn/library/details/cyberearth-writeup/)
@@ -669,6 +714,7 @@ AWD
 - [每日一练之"DASCTF 2020 6th Wp"](https://www.zrzz.site/2020/08/02/DASCTF-2020-6th-Wp/)
 - [DASCTF 六月团队赛](https://lazzzaro.github.io/2020/06/26/match-DASCTF-%E5%85%AD%E6%9C%88%E5%9B%A2%E9%98%9F%E8%B5%9B/)
 - [DASCTF六月团队赛(2020)-部分WP](https://blog.csdn.net/hiahiachang/article/details/106974553)
+- [DASCTF_六月赛MISC部分wp](http://www.ga1axy.top/index.php/archives/42/)
 
 **20.5**
 - [ [CTF]DASCTF五月三道逆向题](https://www.buaq.net/go-27321.html)
@@ -712,8 +758,12 @@ AWD
 
 ### 2021
 
+**2021 创安杯**
+- [2021创安杯智能汽车信息公开赛-知识赛](https://mp.weixin.qq.com/s/M5cyp-mdVor8Ppb_xKtDZA)
+
 **2021 美团CTF**
 - [美团CTF-WriteUp](https://mp.weixin.qq.com/s/UKkneDKoFBmmUIlbC6bwvA)
+- [第四届2021美团网络安全 MT-CTF writeup](https://mp.weixin.qq.com/s/tPI_c-Finz_6OP9WQJMrtQ)
 
 **江西省2021年工业互联网安全技术技能大赛**
 - [某省工业互联网安全技术技能大赛Writeup](https://mp.weixin.qq.com/s/W7EQQ8e9j3L-W4Wgmtf5gA)
@@ -801,6 +851,17 @@ AWD
 
 ### 2019
 
+**2019 NSCTF**
+- [NSCTF 2019 TechWorld 信息安全挑战赛 WriteUp by impakho](https://impakho.com/post/nsctf-2019-techworld-writeup)
+
+**2019年工业信息安全技能大赛**
+- [2019工业信息安全技能大赛个人线上赛第一场(前5道)writeup](https://xz.aliyun.com/t/5960)
+- [2019工业信息安全技能大赛个人线上赛第二场(5道) writeup](https://xz.aliyun.com/t/6445)
+- [2019工业信息安全技能大赛个人线上赛第一场writeup](https://login546.github.io/2019/07/29/2019%E5%B7%A5%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B%E4%B8%AA%E4%BA%BA%E7%BA%BF%E4%B8%8A%E8%B5%9BNO-1writeup/)
+
+**2019 RealWorld CTF**
+- [v8 exploit - RealWorld CTF2019 accessible](https://xz.aliyun.com/t/6507)
+
 **2019 D^3 CTF**
 - [2019 D^3 CTF-Web部分复现记录](https://nikoeurus.github.io/2019/11/26/D%5E3ctf-Web/)
 - [2019 D^3 CTF-easyweb预期解复现](https://nikoeurus.github.io/2019/12/12/D%5E3ctf-easyweb/)
@@ -808,6 +869,8 @@ AWD
 
 **2019 OPPO OGeek CTF**
 - [OPPO OGeek CTF 2019 部分题目 WriteUp](https://www.zhaoj.in/read-6251.html)
+- [OGeek CTF 2019 线下决赛 pwn 题解](https://www.anquanke.com/post/id/187516)
+- [OGeek CTF 2019-Enjoy You Self](https://ab-alex.github.io/2019/09/04/OGeek-CTF-2019-Enjoy-You-Self/)
 
 **2019 ByteCTF CTF**
 - [字节跳动 ByteCTF 2019 Web RSS WriteUp](https://www.zhaoj.in/read-6310.html)
@@ -830,8 +893,12 @@ AWD
 - [RoarCTF2019 Web WriteUp](https://blog.szfszf.top/article/38/)
 - [berTrAM888/RoarCTF-Writeup-some-Source-Code](https://github.com/berTrAM888/RoarCTF-Writeup-some-Source-Code)
 - [Carry955/RoarCTF-Writeup-2019](https://github.com/Carry955/RoarCTF-Writeup-2019)
+- [RoarCTF2019 Writeup](https://paper.seebug.org/1059/)
 
 ### 2018
+
+**2018工业信息安全技能大赛**
+- [2018工业信息安全技能大赛华东赛区初赛 第2题 writeup](https://www.bbsmax.com/A/gVdngBANzW/)
 
 **金融业网络安全攻防比赛**
 - [金融业网络安全攻防比赛热身赛writeup](https://www.secpulse.com/archives/74096.html)
@@ -859,6 +926,9 @@ AWD
 
 **2021 ractf**
 - [Ractf 2021 解题思路分享](https://mp.weixin.qq.com/s/5qWO6Sw2uEjeqfcz-ydDkQ)
+
+**2021 hxp CTF**
+- [hxp CTF 2021 - A New Novel LFI](https://tttang.com/archive/1384/)
 
 ### 2020
 
@@ -916,3 +986,21 @@ AWD
 
 **2019**
 - [2019 极客挑战-Web部分题解WriteUp](https://nikoeurus.github.io/2019/11/20/2019%E6%9E%81%E5%AE%A2%E6%8C%91%E6%88%98Web/)
+- [2019极客大挑战RCE ME](https://ab-alex.github.io/2019/11/20/2019%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98RCE-ME/)
+
+### 掘安杯
+
+**2019**
+- [2019掘安杯writeup](https://ab-alex.github.io/2019/04/09/2019%E6%8E%98%E5%AE%89%E6%9D%AFwriteup/)
+
+### 嘉韦思杯
+
+**2019**
+- [2019“嘉韦思杯”上海市网络安全邀请赛WriteUp](https://cloud.tencent.com/developer/article/1515395)
+- [2019年上海嘉韦思杯writeup](https://ab-alex.github.io/2019/04/01/2019%E5%B9%B4%E4%B8%8A%E6%B5%B7%E5%98%89%E9%9F%A6%E6%80%9D%E6%9D%AFwriteup/)
+
+### i春秋
+
+**2020新春战“疫”**
+- [i春秋2020新春战“疫”网络安全公益赛GYCTF 两个 NodeJS 题 WriteUp](https://www.zhaoj.in/read-6462.html)
+- [i春秋2020新春战“疫”网络安全公益赛 web Writeup](https://ab-alex.github.io/2020/02/24/i%E6%98%A5%E7%A7%8B2020%E6%96%B0%E6%98%A5%E6%88%98%E2%80%9C%E7%96%AB%E2%80%9D%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E5%85%AC%E7%9B%8A%E8%B5%9B-web-Writeup/)

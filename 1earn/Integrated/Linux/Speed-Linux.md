@@ -140,6 +140,7 @@ bash xxx.sh								# 运行 xxx.sh 脚本
 ```bash
 set
 env
+printenv
 
 cat /proc/1/environ
 cat /proc/$PID/environ
@@ -207,6 +208,76 @@ set PATH (你想要加入的路径) $PATH
 ```
 ```bash
 souce ~/.config/fish/config.fish
+```
+
+**特殊变量**
+
+bash 存在一些特殊变量，这些变量的值由shell提供，用户不能进行赋值。
+```bash
+$?   		# 为上一个命令的退出码，用来判断上一个命令是否执行成功。返回值是0，表示上一个命令执行成功；如果是非零，上一个命令执行失败。
+$$   		# 为当前shell的进程ID。
+$_   		# 为上一个命令的最后一个参数。
+$!   		# 为最后一个后台执行的异步命令的进程ID。
+$0   		# 为当前shell的名称(在命令行直接执行时)或者脚本名(在脚本中执行时)。
+$-   		# 为当前shell的启动参数。
+$@ 和 $#   	# $#表示脚本的参数数量，$@表示脚本的参数值。
+```
+
+**变量的默认值**
+
+bash提供四个特殊语法，跟变量的默认值有关，目的是保证变量不为空。
+```
+{varname:-wore}
+如果变量varname存在且不为空，则返回它的值，否则返回word。它的目的是返回一个默认值，比如${count:-0}表示变量count不存在时返回0。
+```
+```
+{varname:=word}
+如果变量varname存在且不为空，则返回它的值，否则将它设为word，并且返回word。它的目的是设置变量的默认值，比如${count:=0}表示变量count不存在时返回0，且将count设为0。
+```
+```
+{varname:?message}
+如果变量varname存在且不为空，则返回它的值，否则打印出varname: message，并中断脚本的执行。如果省略了message，则输出默认的信息“parameter null or not set.”。它的目的是防止变量未定义，比如${count:?"undefined!"}
+表示变量count未定义时就中断执行，抛出错误，返回给定的报错信息undefined!。
+```
+```
+{carnage:+word}
+如果变量名存在且不为空，则返回word，否则返回空值。它的目的是测试变量是否存在，比如${count:+1}表示变量count存在时返回1（表示true），否则返回空值。
+```
+
+例如
+```bash
+filename=${1:?"filename missing."}
+
+# 1 表示脚本的第一个参数。如果该参数不存在，就退出脚本并报错。
+```
+
+**declare**
+
+declare 命令可以声明一些特殊类型的变量，为变量设置一些限制，比如声明只读类型的变量和整数类型的变量。
+
+declare 命令如果用在函数中，声明的变量只在函数内部有效，等同于 local 命令。不带任何参数时，declare 命令输出当前环境的所有变量，包括函数在内，等同于不带有任何参数的 set 命令。
+
+```
+declare -i aaaaaa=1 bbbbbb=2
+declare -i result
+result=aaaaaa+bbbbbb
+echo $result
+```
+
+**readonly**
+
+readonly 命令等同于 declare -r，用来声明只读变量，不能改变变量值，也不能 unset 变量。
+
+```bash
+-f	# 声明的变量为函数名。
+-p	# 打印出所有的只读变量。
+-a	# 声明的变量为数组
+```
+
+```bash
+readonly foo=1
+foo=2
+echo $?
 ```
 
 ---
@@ -472,6 +543,7 @@ cd	# 切换工作目录
 ```bash
 ls			# 查看目录下文件
 	ls -a						# 查看目录隐藏文件
+	ls -lah						# 查看的内容更新详细
 
 pwd			# 以绝对路径的方式显示用户当前工作目录
 	pwd -P						# 目录链接时,显示实际路径而非 link 路径
@@ -769,6 +841,35 @@ Ctrl-K Q				# 退出
 Ctrl-K H				# 查看帮助
 ```
 
+**split**
+
+`对文件进行分割`
+
+```bash
+# 按文件大小切割
+split -b 2M test 		# 把 test 文件分割成若干个小文件，每个文件大小为 2M
+
+# 按文件行数切割
+split -l 100 test out_	# 把 numfile 文件切割成若干文件，每个文件 100 行, 并且新生成的文件名字前缀为 "out_"
+
+# 按文件数量切割
+split -d -n 5 test 		# 是把 test 文件切割成 5 个小文件
+```
+
+**fallocate**
+
+```bash
+fallocate -l 10G allocatefile	# 创建一个 10G 大小的文件
+```
+
+**truncate**
+
+`缩小或者扩展文件至指定大小`
+
+```bash
+truncate -s 1G testfile
+```
+
 ### 比较
 
 - diff
@@ -882,6 +983,11 @@ ln file1 file2
 	```bash
 	tar -jxvf FileName.tar.bz					# 解压
 	tar -jcvf FileName.tar.bz DirName			# 压缩
+	```
+
+- .tar.bz2
+	```bash
+	tar -jxvf test.tar.bz2						# 解压
 	```
 
 - .gz
@@ -1046,8 +1152,8 @@ fuser -v 22/tcp			# 查询进程使用的文件和网络套接字
 
 **路由表**
 ```bash
-route					# 查看路由表
-ip route				# 显示核心路由表
+route					# 显示/操作IP路由表
+ip route				# 显示/操纵路由，设备，策略路由和隧道
 ip neigh				# 显示邻居表
 ```
 

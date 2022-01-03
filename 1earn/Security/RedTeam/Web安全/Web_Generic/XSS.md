@@ -26,6 +26,8 @@
 - [通过XSS窃取localStorage中的JWT](http://www.arkteam.net/?p=4453)
 - [坑死我的HTTPOnly](http://gv7.me/articles/2017/Session-Cookie-without-Secure-flag-set/)
 - [WAF攻防实践(4)](https://mp.weixin.qq.com/s/AS1cpMqr1WkuoLmRld_p0w)
+- [实战|通过恶意 pdf 执行 xss 漏洞](https://mp.weixin.qq.com/s/D1XFNR-4qg9GUkZeyMZsyw)
+- [SVG based Stored XSS](https://prashantbhatkal2000.medium.com/svg-based-stored-xss-ee6e9b240dee)
 
 **相关案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)

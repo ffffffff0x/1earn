@@ -49,6 +49,7 @@
     pip install finger_sdk
     Copy plugin/finger_plugin.py to your IDA_PATH/plugins path.
     ```
+- [REhints/HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer) - Hex-Rays Decompiler plugin for better code navigation
 
 ---
 

@@ -447,6 +447,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关案例**
 - [从JS信息泄露到Webshell](http://r3start.net/index.php/2019/07/15/546)
+- [一次有意思的js未授权访问](https://mp.weixin.qq.com/s/E9PqzhNHYOC8pRJ7FQonfg)
 
 **相关工具**
 - [m4ll0k/SecretFinder](https://github.com/m4ll0k/SecretFinder) - 通过正则在 JS 中发现敏感数据，如 apikeys、accesstoken、authorizations、jwt，..等等
@@ -491,6 +492,8 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关案例**
 - [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)
+- [Flickr Account Takeover using AWS Cognito API](https://hackerone.com/reports/1342088)
+    - [Flickr Account Takeover](https://security.lauritz-holtmann.de/advisories/flickr-account-takeover/)
 
 ---
 
@@ -533,6 +536,9 @@ WEB-INF 主要包含一下文件或目录:
 'JWT':'[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*',
 'ALL_JWT':'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
 ```
+
+**正则资源**
+- https://github.com/databricks/security-bucket-brigade/blob/3f25fe0908a3969b325542906bae5290beca6d2f/Tools/s3-secrets-scanner/rules.json
 
 ## SOAP泄露
 
@@ -648,6 +654,7 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 - [陌陌web服务器Path处理不当可以正向代理(idc机器/打不到办公网)](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0191121)
 - [挖洞经验之代理不当日进内网](https://mp.weixin.qq.com/s/EtUmfMxxJjYNl7nIOKkRmA)
 - [价值1万美金的谷歌内部主机信息泄露漏洞](https://mp.weixin.qq.com/s/hYZr6EjwE99uTQpzoJRp0g)
+- [Cloud Penetration Testing the Capital One Breach](https://cloudsecurityalliance.org/blog/2019/10/10/cloud-penetration-testing-the-capital-one-breach/)
 
 ---
 

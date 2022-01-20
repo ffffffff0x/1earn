@@ -2288,7 +2288,7 @@ I have deposited in the county of Bedford...
 
 ---
 
-# 其他编码
+# 其他编码/语言
 #### Brainfuck/Ook
 
 **在线工具**
@@ -2387,3 +2387,13 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 
 **在线工具**
 - [Dissection Font](http://erikdemaine.org/fonts/dissect/)
+
+#### 文言文编程语言
+
+- [wenyan-lang/wenyan](https://github.com/wenyan-lang/wenyan)
+- https://ide.wy-lang.org/
+
+#### 威妥玛拼音
+
+**在线工具**
+- [威妥玛拼音转换](https://www.chineseconverter.com/zh-cn/convert/wade-giles-to-chinese)

@@ -56,6 +56,9 @@ Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展
 - [helpsystems/nanodump](https://github.com/helpsystems/nanodump) - Dumping LSASS has never been so stealthy
 - [optiv/Registry-Recon](https://github.com/optiv/Registry-Recon) - Cobalt Strike Aggressor Script that Performs System/AV/EDR Recon
 
+**插件资源**
+- [mgeeky/cobalt-arsenal](https://github.com/mgeeky/cobalt-arsenal) - My collection of battle-tested Aggressor Scripts for Cobalt Strike 4.0+
+
 **beacon 解析**
 
 由于 beacon 中存在 C2 的信息,部分工具可以直接解析 beacon 中的 C2 信息,甚至模拟上线干扰服务器

@@ -190,3 +190,48 @@ server {
 service nginx restart
 service firewalld stop
 ```
+
+---
+
+## 流媒体服务
+
+```
+apt install nginx
+```
+
+获取 RTMP 模块
+```
+add-apt-repository universe
+apt install libnginx-mod-rtmp
+```
+
+```diff
+vim /etc/nginx/nginx.conf
+
+++ rtmp {
+++    server {
+++     listen 1935;
+++     chunk_size 4096;
+++     application live {
+++       live on;
+++       record off;
+++     }
+++   }
+++ }
+```
+
+```
+systemctl restart nginx
+```
+
+obs 上设置
+
+![](../../../../assets/img/Integrated/Linux/实验/nginx/1.png)
+
+然后开始推流即可
+
+---
+
+## Source & Reference
+
+- https://linux.cn/article-14159-1.html

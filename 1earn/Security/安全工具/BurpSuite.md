@@ -33,6 +33,7 @@
 - [每天一个BP小技巧](https://mp.weixin.qq.com/s/j6x28xHln3guULkPLdat5w)
 - [减少Burpsuite抓包过程中的‘噪音’](https://mp.weixin.qq.com/s/GGpojt445WrBlZw1BzQfCQ_)
 - [[基础入门] - BurpSuite的常用Tips](https://mp.weixin.qq.com/s/Qlr1-VOUyOzjnHzx6CTJWw)
+- [Burp Suite Pro real-life tips & tricks: Authentication engine for command-line tools](https://blog.z-labs.eu/2022/01/12/burp-suite-pro-authn-for-cli-tools.html)
 
 ---
 
@@ -157,6 +158,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - JSON Beautifier - 格式化查看 json 数据
 - [whwlsfb/BurpCrypto](https://github.com/whwlsfb/BurpCrypto) - 支持多种加密算法或直接执行JS代码的用于爆破前端加密的BurpSuite插件
 - [federicodotta/Brida](https://github.com/federicodotta/Brida) - 用于 Burp Suite 与 Frida 协作的插件
+- [hvqzao/burp-wildcard](https://github.com/hvqzao/burp-wildcard) - Burp extension intended to compact Burp extension tabs by hijacking them to own tab.
 
 ### 漏洞检测
 
@@ -166,6 +168,9 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [ozzi-/JWT4B](https://github.com/ozzi-/JWT4B) - 即时操作 JWT，自动执行针对 JWT 的常见攻击
 - [doyensec/inql](https://github.com/doyensec/inql) - 用于 GraphQL 安全测试的扩展
 - Wsdler - 解析 WSDL 请求，以便使用 repeater 和 scanner 对 WSDL 请求进行测试。
+- [API-Security/APIKit](https://github.com/API-Security/APIKit) - Discovery, Scan and Audit APIs Toolkit All In One.
+- [wagiro/BurpBounty](https://github.com/wagiro/BurpBounty) - Burp Bounty (Scan Check Builder in BApp Store) is a extension of Burp Suite that allows you, in a quick and simple way, to improve the active and passive scanner by means of personalized rules through a very intuitive graphical interface.
+    - [Sy3Omda/burp-bounty](https://github.com/Sy3Omda/burp-bounty) - Burp Bounty is extension of Burp Suite that improve Burp scanner.
 
 **shiro**
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件

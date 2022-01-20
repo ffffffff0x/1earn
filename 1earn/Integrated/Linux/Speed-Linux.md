@@ -1635,6 +1635,12 @@ rm /var/lib/dpkg/updates/*
 apt-get update
 ```
 
+**debconf: DbDriver "config": /var/cache/debconf/config.dat is locked by another process: Resource temporarily unavailable**
+```bash
+rm /var/cache/debconf/*.dat
+apt --fix-broken install
+```
+
 **禁用 Ubuntu 自动更新**
 ```bash
 nano /etc/apt/apt.conf.d/20auto-upgrades
@@ -1821,7 +1827,10 @@ yum install -y dnf
 ```bash
 dpkg -i xxxxx.deb  			# 安装软件
 dpkg -R /usr/local/src		# 安装路径下所有包
-dpkg -L 					# 查看软件安装位置
+dpkg -L xxxx				# 查看软件安装位置
+
+dpkg -l						# 查看已经安装的软件
+dpkg -r xxxx				# 卸载
 ```
 
 ### Pacman
@@ -2676,8 +2685,8 @@ Linux 中每个硬件都被当做一个文件，包括磁盘。磁盘以磁盘�
 
 **分区**
 ```bash
-fdisk -l			# 查看磁盘情况
-fdisk /dev/sdb		# 创建系统分区
+fdisk -l			# 查看磁盘情况
+fdisk /dev/sdb		# 创建系统分区
 	n	# 添加一个分区
 	p	# 建立主分区
 	1	# 分区号
@@ -2739,10 +2748,10 @@ shred -zvu -n  5 <File>	# 主要用于文件覆盖内容,也可以删除
 	du [options] [arguments ...]
 
 	# e.g.
-		du -h . | sort			# 以人类可读的格式进行显示,排序显示
-		du -hd 1 / | sort -hr
-		du -sh /etc/yum			# 特定目录的总使用量
-		du --max-depth=1 -h		# 查看文件夹下各个文件夹的磁盘占用
+		du -H . | sort			# 以人类可读的格式进行显示,排序显示
+		du -Hd 1 / | sort -hr
+		du -sH /etc/yum			# 特定目录的总使用量
+		du --max-depth=1 -H		# 查看文件夹下各个文件夹的磁盘占用
 	```
 
 **dd**

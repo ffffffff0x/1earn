@@ -16,6 +16,38 @@ httpd 是 apache 开源项目的一部分，如果只需要 web 服务器，现�
 
 ---
 
+## 安装
+
+**centos 安装**
+
+```bash
+yum -y install httpd
+```
+
+**debian 下安装**
+
+```bash
+apt-get install apache2
+
+systemctl status apache2
+
+# 删除
+apt-get remove apache2
+```
+
+默认配置在 `/etc/apache2/` 目录下
+
+配置文件说明:
+- apache2.conf - apache2服务器的主配置文件
+- conf.d - 配置文件的附加片断
+- magic - 是有关mod_mime_magic模块的数据
+- ports.conf - 服务器监听IP和端口设置的配置文件
+- mods-available - 一些.conf和.load 文件
+- sites-available - 站点的配置文件
+- /var/www - 默认情况下发布的网页文件的目录
+
+---
+
 ## 案例1
 
 - 配置 http 服务，以虚拟主机的方式建立一个 web 站点;
@@ -438,6 +470,8 @@ firewall-cmd --reload
 
 访问 `机器相应ip/1.php`
 
+---
+
 ## 泛解析
 
 ```bash
@@ -446,6 +480,24 @@ firewall-cmd --reload
     ServerAlias *.ffffffff0x.com          # 用*表示泛域名
 </VirtualHost>
 ```
+
+---
+
+## 修改 header 头
+
+以 debian 为例,修改 /etc/apache2/conf-available/security.conf
+
+将內容中 ServerTokens 对应的值改为 Prod
+```diff
+-- ServerTokens OS
+++ ServerTokens Prod
+```
+
+前后区别
+
+![](../../../../assets/img/Integrated/Linux/实验/httpd/1.png)
+
+![](../../../../assets/img/Integrated/Linux/实验/httpd/2.png)
 
 ---
 

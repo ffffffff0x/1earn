@@ -2180,17 +2180,6 @@ firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --reload
 ```
 
-**ab**
-
-> ab 是 apache 的压力测试工具
-
-安装
-```bash
-apt install -y apache2-utils
-
-yum install -y httpd-tools
-```
-
 **更多配置案例**
 
 见 [httpd.md](./实验/httpd.md)
@@ -2337,6 +2326,20 @@ ln -s /home/node-v12.17.0-linux-x64/bin/npm /usr/local/bin/npm
 npm install --unsafe-perm=true --allow-root
 ```
 
+**模块安装和卸载**
+```bash
+# 安装
+npm i -g [xxx模块]
+
+# clone 到本地安装
+git clone https://github.com/xxx/[xxx模块]
+cd [xxx模块]
+npm i -g
+
+# 卸载
+npm uninstall [xxx模块]
+```
+
 **forever**
 
 > forever 是一个简单的命令式 nodejs 的守护进程，能够启动，停止，重启 App 应用。forever 完全基于命令行操作，在forever进程之下，创建 node 的子进程，通过 monitor 监控 node 子进程的运行情况，一旦文件更新或进程挂掉，forever 会自动重启 node 服务器，确保应用正常运行。
@@ -2470,6 +2473,7 @@ server {
         }
 }
 ```
+
 `nginx -t ` 检测文件是否有误
 
 ```bash

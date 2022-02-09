@@ -41,6 +41,7 @@ server {
 ---
 
 ## 添加https
+
 ```bash
 openssl req -new -x509 -nodes -days 365 -newkey rsa:1024  -out httpd.crt -keyout httpd.key    # 生成自签名证书,信息不要瞎填,Common Name一定要输你的网址
 

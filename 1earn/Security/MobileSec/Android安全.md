@@ -192,6 +192,9 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 ## ADB调试
 
+**相关资源**
+- [mzlogin/awesome-adb](https://github.com/mzlogin/awesome-adb)
+
 **相关文章**
 - [How to hack Android device with ADB (Android debugging bridge)](https://www.hackeracademy.org/how-to-hack-android-device-with-adb-android-debugging-bridge/)
 - [[渗透测试]记一次5555端口渗透实战](https://www.cnblogs.com/Ky1226/p/14198581.html)

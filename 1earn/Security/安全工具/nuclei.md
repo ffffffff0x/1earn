@@ -438,35 +438,6 @@ requests:
     stop-at-first-match: true
 ```
 
-#### self-contained
-
-A new attribute to HTTP requests that marks all the HTTP Requests in that template as self-sufficient, meaning they do not require any input to be executed.
-
-这个用的比较局限,一般就是用于批量检测 API 可用性的,举个例子,你通过信息泄露获得了一个 API_Key 但你不知道这个是哪个服务的 APIkey,没有特征,那么就只能找哪些官方API接口一个一个试,看哪一个平台可以生效,就是这个意思。
-
-国内环境用的不多,我对这块也没研究过.
-
-```yaml
-id: example-self-contained-input
-
-info:
-  name: example-self-contained
-  author: pdteam
-  severity: info
-
-self-contained: true
-requests:
-  - raw:
-      - |
-        GET https://example.com:443/gg HTTP/1.1
-        Host: example.com:443
-
-    matchers:
-      - type: status
-        status:
-          - 302
-```
-
 #### OOB
 
 自 Nuclei v2.3.6 发行以来，Nuclei 支持使用 interact.sh API 内置自动请求关联来实现基于 OOB 的漏洞扫描。就像 `{{interactsh-url}}` 在请求中的任何位置编写并为添加匹配器一样简单 interact_protocol。Nuclei 将处理交互作用与模板的相关性，以及通过允许轻松进行 OOB 扫描而生成的请求的相关性。
@@ -917,6 +888,80 @@ requests:
         48: {{url_decode("https:%2F%2Fprojectdiscovery.io%3Ftest=1")}}
         49: {{url_encode("https://projectdiscovery.io/test?a=1")}}
         50: {{wait_for(1)}}
+```
+
+### self-contained
+
+A new attribute to HTTP requests that marks all the HTTP Requests in that template as self-sufficient, meaning they do not require any input to be executed.
+
+这个用的比较局限,一般就是用于批量检测 API 可用性的,举个例子,你通过信息泄露获得了一个 API_Key 但你不知道这个是哪个服务的 APIkey,没有特征,那么就只能找哪些官方API接口一个一个试,看哪一个平台可以生效,就是这个意思。
+
+国内环境用的不多,我对这块也没研究过.
+
+- https://blog.projectdiscovery.io/nuclei-v2-5-3-release/
+
+```yaml
+id: example-self-contained-input
+
+info:
+  name: example-self-contained
+  author: pdteam
+  severity: info
+
+self-contained: true
+requests:
+  - raw:
+      - |
+        GET https://example.com:443/gg HTTP/1.1
+        Host: example.com:443
+
+    matchers:
+      - type: status
+        status:
+          - 302
+```
+
+### 文件协议
+
+The default file size of the file template read is 1GB
+
+文件模板默认读取的文件大小1GB
+
+- https://github.com/projectdiscovery/nuclei/pull/1577
+
+```yaml
+file:
+  - extensions:
+      - all
+
+    extractors:
+      - type: regex
+        regex:
+          - "\"type\": \"service_account\""
+```
+
+### 网络层
+
+```yaml
+network:
+  - host:
+      - '{{Hostname}}'
+      - '{{Host}}:22'
+
+    inputs:
+      - data: "\n"
+
+    matchers-condition: and
+    matchers:
+      - type: regex
+        part: body
+        regex:
+          - 'SSH\-([0-9.-A-Za-z_ ]+)'
+
+      - type: word
+        words:
+          - Invalid SSH identification string
+
 ```
 
 ---

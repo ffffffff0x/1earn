@@ -85,5 +85,5 @@ IO 复用模型在第二阶段与阻塞 IO 和非阻塞 IO 是完全一致的。
 
 ## Source & Reference
 
-- https://shuyi.tech/archives/head-first-of-linux-io-model
-- https://cloud.tencent.com/developer/article/1684951
+* https://shuyi.tech/archives/head-first-of-linux-io-model
+* https://cloud.tencent.com/developer/article/1684951

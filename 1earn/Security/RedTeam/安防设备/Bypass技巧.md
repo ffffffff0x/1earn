@@ -295,3 +295,21 @@ OpenResty 通过ngx.req.get_uri_args、ngx.req.get_post_args获取参数，只�
 urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种方式是使用 urlencode 的方式提交,第二种方式是使用 form-data 的方式提交.当我们在测试站点的时候,如果发现 POST 提交的数据被过滤掉了,此时可以考虑使用 form-data 的方式去提交.
 
 ![](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/8.png)
+
+---
+
+## SQLinj
+
+- [SQLi 绕过技巧](../Web安全/Web_Generic/SQLi.md#绕过技巧)
+
+---
+
+## XSS
+
+- [XSS 绕过技巧](../Web安全/Web_Generic/XSS.md#绕过技巧)
+
+---
+
+## SSRF
+
+- [SSRF 绕过技巧](../Web安全/Web_Generic/SSRF.md#绕过技巧)

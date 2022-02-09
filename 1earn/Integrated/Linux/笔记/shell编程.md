@@ -42,12 +42,20 @@
 
 **资源教程**
 - [dylanaraps/pure-bash-bible](https://github.com/dylanaraps/pure-bash-bible#get-the-username-of-the-current-user)
+- [wangdoc/bash-tutorial](https://github.com/wangdoc/bash-tutorial) - Bash 教程
+- [穷佐罗的Linux书](https://zorrozou.github.io/)
 
 **相关文章**
 - [10分钟学会Bash调试](https://mp.weixin.qq.com/s/MQjqu55BN6LqSsIAvevRQA)
 - [如何并发执行Linux命令](https://mp.weixin.qq.com/s/L3u2e-GKl_yL3saJMMFazA)
 - [终于知道 Shell 中单引号双引号的区别了](https://mp.weixin.qq.com/s/tyHIlRsg1rYjw-E_h-C2rA)
 - [Bash编程基础知识](https://mp.weixin.qq.com/s/tSWnoO3IAET3C7iYY7ns6Q)
+- [SHELL编程之执行过程](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-zhi-xing-guo-cheng.html)
+- [SHELL编程之语法基础](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-yu-fa-ji-chu.html)
+- [SHELL编程之执行环境](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-zhi-xing-huan-jing.html)
+- [SHELL编程之特殊符号](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-te-shu-fu-hao.html)
+- [SHELL编程之内建命令](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-nei-jian-ming-ling.html)
+- [SHELL编程之常用技巧](https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-chang-yong-ji-qiao.html)
 
 ---
 
@@ -1112,6 +1120,51 @@ fi
 两个数字相等!
 ```
 
+> 以下部分来自 : https://zorrozou.github.io/docs/books/shellbian-cheng-zhi-yu-fa-ji-chu.html
+
+```bash
+#!/bin/bash
+
+DIR="/etc"
+＃第一种写法
+ls -l $DIR &> /dev/null
+ret=$?
+
+if [ $ret -eq 0 ]
+then
+		echo "$DIR is exist!"
+else
+    	echo "$DIR is not exist!"
+fi
+
+#第二种写法
+if ls -l $DIR &> /dev/null
+then
+        echo "$DIR is exist!"
+else
+        echo "$DIR is not exist!"
+fi
+```
+
+我曾经在无数的脚本中看到这里的第一种写法，先执行某个命令，然后记录其返回值，再使用 `[]` 进行分支判断。我想，这样写的人应该都是没有真正理解if语法的语义，导致做出了很多脱了裤子再放屁的事情。当然，if语法中后面最常用的命令就是`[]`。请注意我的描述中就是说`[]`是一个命令，而不是别的。实际上这也是bash编程新手容易犯错的地方之一，尤其是有其他编程经验的人，在一开始接触bash编程的时候都是将`[]`当成if语句的语法结构，于是经常在写`[]`的时候里面不写空格，即：
+
+```bash
+#正确的写法
+if [ $ret -eq 0 ]
+＃错读的写法
+if [$ret -eq 0]
+```
+
+同样的，当我们理解清楚了`[]`本质上是一个shell命令的时候，大家就知道这个错误是为什么了：命令加参数要用空格分隔。我们可以用type命令去检查一个命令：
+```bash
+[zorro@zorrozou-pc0 bash]$ type [
+[ is a shell builtin
+```
+所以，实际上`[]`是一个内建命令，等同于test命令。所以上面的if语句也可以写成：
+```bash
+if test $ret -eq 0
+```
+
 ### for
 
 for 循环一般格式为：
@@ -1670,6 +1723,26 @@ command > /dev/null 2>&1
 
 ---
 
+## 交互
+
+如想在脚本中使用fdisk命令新建一个分区
+
+```bash
+#!/bin/bash
+
+fdisk /dev/sdb << EOF
+n
+p
+
+
+w
+EOF
+```
+
+注意,仅作演示,不要执行
+
+---
+
 ## 文件包含
 
 和其他语言一样，Shell 也可以包含外部脚本。这样可以很方便的封装一些公用的代码作为一个独立的文件。
@@ -1809,6 +1882,6 @@ command1 && command2
 
 ## Source & Reference
 
-- [Shell脚本编程30分钟入门](https://github.com/qinjx/30min_guides/blob/master/shell.md)
-- [Shell 教程](https://www.runoob.com/linux/linux-shell.html)
-- [Bash编程基础知识](https://mp.weixin.qq.com/s/tSWnoO3IAET3C7iYY7ns6Q)
+* [Shell脚本编程30分钟入门](https://github.com/qinjx/30min_guides/blob/master/shell.md)
+* [Shell 教程](https://www.runoob.com/linux/linux-shell.html)
+* [Bash编程基础知识](https://mp.weixin.qq.com/s/tSWnoO3IAET3C7iYY7ns6Q)

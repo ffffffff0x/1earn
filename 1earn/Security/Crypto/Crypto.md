@@ -168,6 +168,13 @@
     pip3 install xortool
     xortool -c 20 file
     ```
+- [dhondta/python-codext](https://github.com/dhondta/python-codext) - Python codecs extension featuring CLI tools for encoding/decoding anything
+    ```bash
+    pip3 install codext
+    echo -en "test" | codext encode morse
+    echo -en "test" | codext encode braille
+    echo -en "test" | codext encode base100
+    ```
 
 **在线工具**
 - http://tool.bugku.com/
@@ -1005,6 +1012,7 @@ RIPEMD-160("") = 9c1185a5c5e9fc54612808977ee8f548b2258d31
 - [SHA256哈希 - 在线SHA256哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA256)
 - [SHA384哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
 - [SHA512哈希 - 在线SHA512哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA512)
+- [Sha256 Algorithm Explained](https://sha256algorithm.com/)
 
 ---
 

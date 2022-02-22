@@ -112,12 +112,12 @@ DHCPv6 协议中，客户端通过向组播地址发送 Solicit 报文来定位 
     - [mitm6：通过IPv6攻破IPv4网络](https://www.anquanke.com/post/id/94689)
 
 **mitm6**
-- https://github.com/fox-it/mitm6
+- https://github.com/dirkjanm/mitm6
     ```bash
     pip install mitm6
 
     # 或
-    https://github.com/fox-it/mitm6.git
+    git clone https://github.com/dirkjanm/mitm6.git
     cd mitm6
     pip install -r requirements.txt
     python setup.py install

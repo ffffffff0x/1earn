@@ -283,18 +283,9 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 wget -r --no-pare target.com/dir
 ```
 
-## 目录遍历
+## Fileread
 
-**相关案例**
-- [京东商城两处任意目录遍历下载漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0214222)
-- [2 Path Traversal Cases](https://jlajara.gitlab.io/web/2020/03/29/Path_Traversal.html)
-- [电信某分站配置不当导致敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-095088)
-
-## 任意文件读取
-
-**相关案例**
-- [一个任意文件读取漏洞记录](https://toutiao.io/posts/423535/app_preview)
-- [南方周末邮件服务器任意文件读取漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-045426)
+- [Fileread](./Fileread.md)
 
 ---
 
@@ -498,6 +489,10 @@ WEB-INF 主要包含一下文件或目录:
 - [Flickr Account Takeover using AWS Cognito API](https://hackerone.com/reports/1342088)
     - [Flickr Account Takeover](https://security.lauritz-holtmann.de/advisories/flickr-account-takeover/)
 
+**相关资源**
+- [daffainfo/all-about-apikey](https://github.com/daffainfo/all-about-apikey)
+- https://github.com/databricks/security-bucket-brigade/blob/3f25fe0908a3969b325542906bae5290beca6d2f/Tools/s3-secrets-scanner/rules.json
+
 ---
 
 以下正则来自 <sup>[[一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)]</sup>
@@ -540,9 +535,6 @@ WEB-INF 主要包含一下文件或目录:
 'ALL_JWT':'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
 ```
 
-**正则资源**
-- https://github.com/databricks/security-bucket-brigade/blob/3f25fe0908a3969b325542906bae5290beca6d2f/Tools/s3-secrets-scanner/rules.json
-
 **Google Maps API**
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://ozguralp.medium.com/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
     - [谷歌地图API密钥未授权利用造成的危害](https://nosec.org/home/detail/4036.html)
@@ -554,6 +546,7 @@ WEB-INF 主要包含一下文件或目录:
 
     # Staticmap、Streetview、Embed API's 有可能会误报
     ```
+- [Google API key leaked to Public](https://hackerone.com/reports/1065041)
 
 ## SOAP泄露
 

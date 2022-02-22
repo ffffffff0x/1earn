@@ -50,6 +50,7 @@
     Copy plugin/finger_plugin.py to your IDA_PATH/plugins path.
     ```
 - [REhints/HexRaysCodeXplorer](https://github.com/REhints/HexRaysCodeXplorer) - Hex-Rays Decompiler plugin for better code navigation
+- [gaasedelen/patching](https://github.com/gaasedelen/patching) - An Interactive Binary Patching Plugin for IDA Pro
 
 ---
 

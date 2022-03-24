@@ -8,10 +8,28 @@
 
 ---
 
+**案例**
+- [Attacking the attackers  Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
+- [如何攻击智能汽车远程启动系统（Part 1）](https://www.anquanke.com/post/id/153373)
+- [对恶意Android应用Bangle Android App Packer的分析](http://www.freebuf.com/vuls/178919.html)
+- [怀揣情怀的提醒：及时修复！(某智能门锁二度分析感悟)](https://paper.seebug.org/343/)
+- [[Onls丶辜釉]无码分享渗透某社交APP](https://bbs.ichunqiu.com/thread-27421-1-22.html)
+- [技术讨论 | 看我如何破解一台自动售货机 ](https://www.freebuf.com/articles/terminal/186804.html)
+- [一个色播APP逆向——初窥千万灰色直播产业](https://evilpan.com/2019/01/05/reverse-live-porn-app/)
+- [Telegram App Store Secret-Chat Messages in Text Database](https://blog.zimperium.com/telegram-hack/)
+- [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
+- [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
+- [BountyHunterInChina/重生之我是赏金猎人(二)-逆向app破解数据包sign值实现任意数据重放添加.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%BA%8C)-%E9%80%86%E5%90%91app%E7%A0%B4%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%8C%85sign%E5%80%BC%E5%AE%9E%E7%8E%B0%E4%BB%BB%E6%84%8F%E6%95%B0%E6%8D%AE%E9%87%8D%E6%94%BE%E6%B7%BB%E5%8A%A0.pdf)
+
+**CTF writeup**
+- [BUUCTF Reverse helloword、findit](https://blog.csdn.net/qq_42967398/article/details/96877555)
+
+---
+
 ## 抓包方法
 
 **相关文章**
-- [太干了，Android 抓包姿势总结！](ProxyToken)
+- [太干了，Android 抓包姿势总结！](https://mp.weixin.qq.com/s/EB0MAJQs1CIEUHezmTFxtg)
 
 ---
 
@@ -117,24 +135,7 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 ---
 
-## APK渗透
-
-**案例**
-- [Attacking the attackers  Hacking like it's 1999](https://asaf.me/2018/07/23/attacking-the-attackers/)
-- [如何攻击智能汽车远程启动系统（Part 1）](https://www.anquanke.com/post/id/153373)
-- [对恶意Android应用Bangle Android App Packer的分析](http://www.freebuf.com/vuls/178919.html)
-- [怀揣情怀的提醒：及时修复！(某智能门锁二度分析感悟)](https://paper.seebug.org/343/)
-- [[Onls丶辜釉]无码分享渗透某社交APP](https://bbs.ichunqiu.com/thread-27421-1-22.html)
-- [技术讨论 | 看我如何破解一台自动售货机 ](https://www.freebuf.com/articles/terminal/186804.html)
-- [一个色播APP逆向——初窥千万灰色直播产业](https://evilpan.com/2019/01/05/reverse-live-porn-app/)
-- [Telegram App Store Secret-Chat Messages in Text Database](https://blog.zimperium.com/telegram-hack/)
-- [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
-- [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
-
-**CTF writeup**
-- [BUUCTF Reverse helloword、findit](https://blog.csdn.net/qq_42967398/article/details/96877555)
-
-### 信息收集
+## APK 信息收集
 
 **在线检测**
 
@@ -167,18 +168,6 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
     ```
 - [s0md3v/Diggy](https://github.com/s0md3v/Diggy)
 - [kelvinBen/AppInfoScanner](https://github.com/kelvinBen/AppInfoScanner)
-
----
-
-### APK-Exploits
-
-**CVE-2019-6447 ESFileExplorers 任意文件读取**
-- 简介
-
-    基于 Android 平台的 ES File Explorer File Manager application 4.1.9.7.4 及之前版本中存在安全漏洞，该漏洞源于 ES 应用程序在运行一次之后，TCP 59777 端口并未关闭依旧可以通过 HTTP 协议接收 JSON 数据。攻击者可通过向 TCP 59777 端口发送请求利用该漏洞读取任意文件或执行应用程序。
-
-- POC | Payload | exp
-    - [fs0c131y/ESFileExplorerOpenPortVuln](https://github.com/fs0c131y/ESFileExplorerOpenPortVuln)
 
 ---
 

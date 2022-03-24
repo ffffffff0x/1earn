@@ -150,6 +150,7 @@
 **相关工具**
 - [ffffffff0x/BerylEnigma](https://github.com/ffffffff0x/BerylEnigma) - 一个为渗透测试与CTF而制作的工具集，主要实现一些加解密的功能。
 - [gchq/CyberChef](https://github.com/gchq/CyberChef) - 一个用于加密、编码、压缩和数据分析的网络应用
+    - https://gchq.github.io/CyberChef/
 - [Snowming04/Cipher_Encryption_Type_Identification:.](https://github.com/Snowming04/Cipher_Encryption_Type_Identification) - 对密文的加密类型进行判断的命令行工具
 - [guyoung/CaptfEncoder](https://github.com/guyoung/CaptfEncoder) - 一款跨平台网络安全工具套件
 - [lockedbyte/cryptovenom](https://github.com/lockedbyte/cryptovenom) - 密码学的瑞士军刀
@@ -291,9 +292,11 @@ ASCII编码对应十进制:
 
 ### Base64
 
-base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位.16,32,64 分别表示用多少个字符来编码,这里我注重介绍 base64.Base64 常用于在通常处理文本数据的场合,表示、传输、存储一些二进制数据.包括 MIME 的 email,email via MIME,在 XML 中存储复杂数据.
+base64、base32、base16 可以分别编码转化8位字节为6位、5位、4位.16,32,64 分别表示用多少个字符来编码.
 
-编码原理:Base64 编码要求把3个8位字节转化为4个6位的字节,之后在6位的前面补两个0,形成8位一个字节的形式,6位2进制能表示的最大数是2的6次方是64,这也是为什么是64个字符(A-Z,a-z,0-9,+,/这64个编码字符,=号不属于编码字符,而是填充字符)的原因,这样就需要一张映射表,如下:
+Base64 常用于在通常处理文本数据的场合,表示、传输、存储一些二进制数据.包括 MIME 的 email,email via MIME,在 XML 中存储复杂数据.
+
+Base64 编码要求把3个8位字节转化为4个6位的字节,之后在6位的前面补两个0,形成8位一个字节的形式,6位2进制能表示的最大数是2的6次方是64,这也是为什么是64个字符(A-Z,a-z,0-9,+,/这64个编码字符,=号不属于编码字符,而是填充字符)的原因,这样就需要一张映射表,如下:
 
 ![](../../../assets/img/Security/Crypto/Crypto/jiIR3yZ.png)
 
@@ -544,7 +547,7 @@ url 编码又叫百分号编码, 是统一资源定位 (URL) 编码方式. URL �
 
 > 编码后:
 
->%54%68%65%20%71%75%69%63%6b%20%62%72%6f%77%6e%20%66%6f%78%20%6a%75%6d%70%73%20%6f%76%65%72%20%74%68%65%20%6c%61%7a%79%20%64%6f%67
+> %54%68%65%20%71%75%69%63%6b%20%62%72%6f%77%6e%20%66%6f%78%20%6a%75%6d%70%73%20%6f%76%65%72%20%74%68%65%20%6c%61%7a%79%20%64%6f%67
 
 **在线工具**
 - http://web.chacuo.net/charseturlencode
@@ -772,6 +775,7 @@ N 进制就是逢 N 进 1，最小值为 0，最大值为 N-1
 **相关文章**
 - [曼彻斯特编码](https://zh.wikipedia.org/wiki/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81)
 - [crypto 曼彻斯特编码](https://blog.csdn.net/Yu_csdnstory/article/details/102975604)
+- [crypto之曼彻斯特编码](https://mp.weixin.qq.com/s/wSDmE5JjSSwQtAuzf8sypA)
 
 **在线工具**
 - https://eleif.net/manchester.html
@@ -1683,6 +1687,7 @@ M  --    |Z  --..  |=  -...-
 当密文数据足够多时这种密码我们可以通过字频分析方法破解或其他方法破解
 
 - http://www.practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-simple-substitution-cipher/
+- https://quipqiup.com
 
 **在线工具**
 - https://www.wishingstarmoye.com/ctf/simple-substitution
@@ -1720,6 +1725,7 @@ M  --    |Z  --..  |=  -...-
 
 **在线工具**
 - https://www.wishingstarmoye.com/ctf/polybius-square
+- https://www.dcode.fr/polybius-cipher
 
 ---
 
@@ -1857,7 +1863,11 @@ THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG 和密钥 CULTURE 为例来讲解.�
 
 ### 仿射密码
 
-仿射密码(`Affine Cipher`)是一种单表代换密码,字母表中的每个字母相应的值使用一个简单的数学函数映射到对应的数值,再把对应数值转换成字母.这个公式意味着每个字母加密都会返回一个相同的字母,意义着这种加密方式本质上是一种标准替代密码.因此,它具有所有替代密码的弱点.每一个字母都是通过函数(ax + b)mod m加密,其中B是位移量,为了保证仿射密码的可逆性,a和m需要满足gcd(a , m)=1,一般m为设置为26
+仿射密码 (`Affine Cipher`) 是一种单表代换密码, 字母表中的每个字母相应的值使用一个简单的数学函数映射到对应的数值, 再把对应数值转换成字母.
+
+每一个字母都是通过函数(ax + b)mod m 加密, 其中 B 是位移量, 为了保证仿射密码的可逆性, a 和 m 需要满足 gcd(a , m)=1, 一般 m 为设置为 26
+
+这意味着每个字母加密都会返回一个相同的字母, 意义着这种加密方式本质上是一种标准替代密码. 因此, 它具有所有替代密码的弱点.
 
 常见的字母对应关系:
 
@@ -1896,6 +1906,7 @@ H = aabbb | Q = abbbb   | Z = babbb
 
 **在线工具**
 - http://rumkin.com/tools/cipher/baconian.php
+- https://www.wishingstarmoye.com/ctf/bacon
 
 ---
 

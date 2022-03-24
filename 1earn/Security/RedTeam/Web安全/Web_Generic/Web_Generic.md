@@ -483,6 +483,7 @@ WEB-INF 主要包含一下文件或目录:
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
 - [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
 - [企业微信Secret Token利用思路](https://mp.weixin.qq.com/s/LMZVcZk7_1r_kOKRau5tAg)
+- [企业微信Token-Secret利用思路](https://mp.weixin.qq.com/s/MyIUhkxmyw-msCPnhUi92A)
 
 **相关案例**
 - [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)
@@ -554,6 +555,9 @@ WEB-INF 主要包含一下文件或目录:
 - [【技术分享】针对SOAP的渗透测试与防护](https://www.anquanke.com/post/id/85410)
 - [Web Service渗透测试](https://www.mi1k7ea.com/2021/01/16/Web-Service%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/)
 
+**相关案例**
+- [BountyHunterInChina/重生之我是赏金猎人(四)—记一次有趣的客户端RCE+服务端XXE挖掘.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E5%9B%9B)%E2%80%94%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%9C%89%E8%B6%A3%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AFRCE%2B%E6%9C%8D%E5%8A%A1%E7%AB%AFXXE%E6%8C%96%E6%8E%98.pdf)
+
 **相关工具**
 - [SmartBear/soapui](https://github.com/SmartBear/soapui#build-and-run)
 - [NetSPI/Wsdler](https://github.com/NetSPI/Wsdler) - 用于帮助测试 wsdl 接口的 burp 插件
@@ -624,6 +628,14 @@ SSI 就是在 HTML 文件中，可以通过注释行调用的命令或指针，�
 
 **相关文章**
 - [服务器端包含注入SSI分析总结](https://www.secpulse.com/archives/66934.html)
+- [Apache SSI 远程命令执行漏洞（SSI注入漏洞）](https://blog.csdn.net/qq_45521281/article/details/107576959)
+
+**payload**
+
+xxx.shtml
+```shtml
+<!--#exec cmd="id" -->
+```
 
 ---
 
@@ -765,6 +777,9 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
     </script>
     ```
 
+**相关工具**
+- [merttasci/csrf-poc-generator](https://github.com/merttasci/csrf-poc-generator) - This HTML file creates a CSRF PoC form to any HTTP request.
+
 **Bypass 技巧**
 
 - 尝试 fuzz token
@@ -806,6 +821,7 @@ JSON 实际应用的时候会有两种传输数据的方式：
 **相关文章**
 - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
 - [JSONP 安全攻防技术](https://blog.knownsec.com/2015/03/jsonp_security_technic/)
+- [浏览网页就能泄露手机号的小秘密](https://mp.weixin.qq.com/s/_bTunF9TXBUze8ewCM--Fg)
 
 **相关案例**
 - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)
@@ -934,3 +950,5 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 **相关案例**
 - [Uber XSS + clickjacking](https://www.youtube.com/watch?v=5Gg4t3clwys)
 - [Stealing your private documents through a bug in Google Docs](https://savebreach.com/stealing-private-documents-through-a-google-docs-bug/)
+- [Twitter Periscope Clickjacking Vulnerability](https://hackerone.com/reports/591432)
+- [Clickjacking at ylands.com](https://hackerone.com/reports/405342)

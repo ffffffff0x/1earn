@@ -11,6 +11,7 @@ Windows PowerShell 需要用于管理 .NET 对象的语言.该语言需要为使
 ---
 
 **学习资源**
+- https://www.pstips.net/
 - [specterops/at-ps](https://github.com/specterops/at-ps)
 
 ---
@@ -28,11 +29,11 @@ Windows PowerShell 需要用于管理 .NET 对象的语言.该语言需要为使
 
 ---
 
-# 安装Powershell
+## 安装Powershell
 
-https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows
+- https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powershell-on-windows
 
-## 支持的 Windows 版本
+### 支持的 Windows 版本
 
 * ✅ 指示仍支持 OS 或 PowerShell 版本
 * ❌ 指示不支持 OS 或 PowerShell 版本
@@ -62,21 +63,24 @@ https://docs.microsoft.com/zh-cn/powershell/scripting/install/installing-powersh
 
 ---
 
-# 使用
+## 使用
 
 **PS1文件**
 
 一个 PowerShell 脚本其实就是一个简单的文本文件， 这个文件包含了一系列 PowerShell 命令，每个命令显示为独立的一行，对于被视为 PowerShell 脚本的文本文件，它的文件名需要加上 .PS1 的扩展名。
 
-**PowerShell的执行策略**
+**PowerShell 的执行策略**
 
-为防止恶意脚本的执行，PowerShell有一个执行策略，默认情况下，这个执行策略被设置为受限。
+为防止恶意脚本的执行，PowerShell 有一个执行策略，默认情况下，这个执行策略被设置为受限。
 
-我们可以使用：Get-ExecutionPolicy 命令查看PowerShell当前的执行策略。它有4个策略。
-* Restricted：脚本不能运行(默认设置)
-* RemoteSigned：本地创建的脚本可以运行，但是从网上下载的脚本不能运行(拥有数字证书签名的除外)
-* AllSigned：仅当脚本由受信任的发布者签名时才能运行；
-* Unrestricted：允许所有的脚本执行
+我们可以使用: Get-ExecutionPolicy 命令查看 PowerShell 当前的执行策略。它有多个策略。
+* AllSigned: 仅当脚本由受信任的发布者签名时才能运行.
+* Bypass: 没有任何内容被阻止，也没有警告或提示.
+* Default: 设置默认执行策略。 受限于 Windows 客户端或 RemoteSigned 受限于 Windows 服务器。
+* RemoteSigned: 本地创建的脚本可以运行，但是从网上下载的脚本不能运行 (拥有数字证书签名的除外)
+* Restricted: 不加载配置文件或运行脚本。 Windows 客户端计算机的默认执行策略。
+* Undefined: 没有为范围设置执行策略。 从不是由组策略设置的范围中删除分配的执行策略。 如果所有范围内的执行策略为 Undefined，则有效的执行策略为 Restricted。
+* Unrestricted: 允许所有的脚本执行.
 
 ```
 Set-ExecutionPolicy 策略名(如：Unrestricted)
@@ -84,11 +88,11 @@ Set-ExecutionPolicy 策略名(如：Unrestricted)
 
 ---
 
-# 常用命令
+## 常用命令
 
 > 本部分内容由 [xidaner](https://github.com/xidaner) 提供,在此只做排版修改
 
-## 基础入门
+### 基础入门
 
 像文件系统那样操作 Windows Registry
 ```powershell
@@ -132,7 +136,7 @@ Remove-Item C:\tobedeleted -Recurse
 
 ---
 
-## 收集信息
+### 收集信息
 
 查看当前Powershell版本
 ```powershell
@@ -191,7 +195,7 @@ Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter IPEnabled=true -C
 
 ---
 
-## 软件管理
+### 软件管理
 
 在远程计算机上安装 MSI 包
 ```powershell
@@ -210,7 +214,7 @@ Get-WmiObject -Class Win32_NetworkAdapterConfiguration -Filter IPEnabled=true -C
 
 ---
 
-## 机器管理
+### 机器管理
 
 一分钟后远程关闭另一台机器
 ```powershell
@@ -234,7 +238,7 @@ invoke-command -computername machine1, machine2 -filepath c:\Script\script.ps1
 
 ---
 
-## 远程桌面
+### 远程桌面
 
 `以下操作,PS 命令窗口,必须都以管理员身份执行.`
 
@@ -273,3 +277,39 @@ invoke-command -computername machine1, machine2 -filepath c:\Script\script.ps1
     ```
     PS >> Enter-PSSession -ComputerName IP地址
     ```
+
+---
+
+## 语法
+
+### 输出
+
+**Write-Host**
+- https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/write-host?view=powershell-7.2
+
+```powershell
+Write-Host "no newline test " -NoNewline
+Write-Host "second string"
+
+no newline test second string
+```
+
+### 函数
+
+```powershell
+function print-some
+{
+    Write-Host "printsome"
+}
+
+print-some
+```
+
+```powershell
+function Get-DateTime()
+{
+    return Get-Date
+}
+
+Get-DateTime
+```

@@ -35,21 +35,30 @@ Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级�
 - [silenceshell/docker_mirror](https://github.com/silenceshell/docker_mirror) - 查找最快的 docker 镜像
 - [jesseduffield/lazydocker](https://github.com/jesseduffield/lazydocker) - 快速管理 docker
 
+**学习教程**
+- [Docker — 从入门到实践](https://yeasy.gitbook.io/docker_practice/)
+
 ---
 
-# 安装与使用
+## 安装与使用
 
 - [Docker安装使用](../../Linux/Power-Linux.md#docker)
 
 ---
 
-# 安全
+## 容器网络管理
+
+- [Docker](../../Linux/实验/Docker.md#容器网络管理)
+
+---
+
+## 安全
 
 安全部分内容来自 <sup>[[Docker容器安全性分析](https://www.freebuf.com/articles/system/221319.html)]</sup><sup>
 
 ---
 
-## 容器虚拟化安全
+### 容器虚拟化安全
 
 在传统虚拟化技术架构中，Hypervisor 虚拟机监视器是虚拟机资源的管理与调度模块。而在容器架构中，由于不含有 Hypervisor 层，因此需要依靠操作系统内核层面的相关机制对容器进行安全的资源管理。
 
@@ -151,7 +160,7 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 
 ---
 
-## 容器安全管理
+### 容器安全管理
 
 **镜像仓库安全**
 
@@ -203,6 +212,22 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
     trivy [镜像名]
     ```
 
+**容器逆向分析**
+
+分析镜像,提取出镜像的构建过程和镜像构建过程中引用的文件。
+
+- [LanikSJ/dfimage](https://github.com/LanikSJ/dfimage) - Reverse-engineer a Dockerfile from a Docker image.
+    ```bash
+    alias dfimage="docker run -v /var/run/docker.sock:/var/run/docker.sock --rm alpine/dfimage"
+    dfimage [镜像名]
+    ```
+
+- [wagoodman/dive](https://github.com/wagoodman/dive) - A tool for exploring each layer in a docker image
+    ```bash
+    docker pull wagoodman/dive
+    docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest [镜像名]
+    ```
+
 **容器运行时监控**
 
 为了在系统运维层面保证容器运行的安全性，实现安全风险的即时告警与应急响应，需要对 Docker 容器运行时的各项性能指标进行实时监控。
@@ -238,7 +263,7 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
     在安全审计方面，对于运行 Docker 容器的宿主机而言，除需对主机 Linux 文件系统等进行审计外，还需对 Docker 守护进程的活动进行审计。由于系统默认不会对 Docker 守护进程进行审计，需要通过主动添加审计规则或修改规则文件进行。
 
     命令示例
-    ```
+    ```bash
     auditctl -w /usr/bin/docker -k docker
     或
     修改 /etc/audit/audit.rules 文件
@@ -263,7 +288,7 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 
 ---
 
-## 容器网络安全
+### 容器网络安全
 
 **容器间流量限制**
 
@@ -312,3 +337,7 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 如需控制宿主机外部到内部容器应用的访问，可通过在宿主机 iptables 中的 DOCKER-INGRESS 链手动添加 ACL 访问控制规则以控制宿主机的 eth0 到容器的访问，或者在宿主机外部部署防火墙等方法实现。
 
 然而，在大型的容器云环境中，由于存在频繁的微服务动态变化更新，通过手动的方式配置 iptables 或更新防火墙是不现实的。因此，可通过微分段（Micro-Segmentation）实现面向容器云环境中的容器防火墙。微分段是一种细粒度的网络分段隔离机制，与传统的以网络地址为基本单位的网络分段机制不同，微分段可以以单个容器、同网段容器、容器应用为粒度实现分段隔离，并通过容器防火墙对实现微分段间的网络访问控制。
+
+### 更多
+
+- [docker 安全](../../../Security/RedTeam/软件服务安全/CS-Exploits.md#docker)

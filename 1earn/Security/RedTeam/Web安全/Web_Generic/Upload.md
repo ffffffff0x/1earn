@@ -24,6 +24,7 @@
 - [实战渗透-从FCkeditor敏感信息泄露到Getshell](https://www.websecuritys.cn/archives/szst-1.html) - 利用 fck 的目录遍历找到上传点,fuzz 上传点的参数进行上传
 - [简单记录一次有趣的上传](https://www.t00ls.net/articles-58979.html) - bypass 反代小技巧
 - [一次任意文件读取的getshell](https://www.t00ls.net/thread-59330-1-1.html) - 在函数调用获取文件的上传点,通过任意文件读找路径
+- [BountyHunterInChina/重生之我是赏金猎人(三)—无脑挖掘某SRC getshell.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%B8%89)%E2%80%94%E6%97%A0%E8%84%91%E6%8C%96%E6%8E%98%E6%9F%90SRC%20getshell.pdf)
 
 **相关工具**
 - [almandin/fuxploider](https://github.com/almandin/fuxploider) - File upload vulnerability scanner and exploitation tool.

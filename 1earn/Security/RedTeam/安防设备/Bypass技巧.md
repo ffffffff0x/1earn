@@ -298,12 +298,6 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 
 ---
 
-## SQLinj
-
-- [SQLi 绕过技巧](../Web安全/Web_Generic/SQLi.md#绕过技巧)
-
----
-
 ## XSS
 
 - [XSS 绕过技巧](../Web安全/Web_Generic/XSS.md#绕过技巧)

@@ -3652,6 +3652,13 @@ use [数据库]
 source /tmp/dbname.sql
 ```
 
+**docker 部署**
+```bash
+docker login
+docker run -d -p 3306:3306 --name mariadb-test -e MYSQL_ROOT_PASSWORD=root1234 mariadb:latest
+# 这里密码里不能带 !
+```
+
 ---
 
 #### MySQL
@@ -5320,7 +5327,7 @@ setenforce 0    # 关闭 selinux
 
 - 拉取镜像
   ```bash
-  docker images                   # 检查一下系统中已经有了哪些镜像
+  docker images ls                # 检查一下系统中已经有了哪些镜像
   docker pull nginx               # 拉取一个镜像
   docker search nginx             # 搜索 Docker Hub 中的所有 Nginx 镜像
   docker pull jwilder/nginx-proxy # 从非官方源拉取镜像
@@ -5356,73 +5363,14 @@ setenforce 0    # 关闭 selinux
 
   docker cp xxx.txt [docker_id]:/home               # 复制 xxx.txt 到容器的 /home 目录下
 
-  docker search [keyword]                           # 搜索镜像
-  docker image ls                                   # 查看已下载的镜像列表
-  docker image rm [docker_image_id]                 # 删除本地的 docker 镜像
-  docker rmi -f [docker_image_id]                   # 删除本地的 docker 镜像
-  ```
-
-- 打包上传
-  ```bash
-  # 容器打包镜像
-  docker commit -a "作者" -m "备注" 容器ID <image-name>:<tag>
-
-  # 将容器打包成规范的镜像
-  docker commit -m <exiting-Container> <hub-user>/<repo-name>[:<tag>]
-
-  # 登录 Docker Hub
-  docker login
-
-  # 上传推送镜像到公共仓库
-  docker push <hub-user>/<repo-name>:<tag>
-
-  # 当前目录的 Dockerfile 创建镜像
-  docker build -t <image-name>:<tag> .
-
-  # 指定文件构建镜像
-  docker build -f /path/to/a/Dockerfile -t <image-name>:<tag> .
-
-  # 将镜像保存 tar 包
-  docker save -o image-name.tar <image-name>:<tag>
-
-  # 导入 tar 镜像
-  docker load --input image-name.tar
-  ```
-
-- 默认情况下,只有管理员权限能够运行 docker 命令.考虑到安全问题,你不会想用 root 用户或使用 sudo 来运行 Docker 的.要解决这个问题,你需要将自己的用户加入到 docker 组中.
-  ```bash
-  usermod -a -G docker $USER
-  ```
-
-- 完成操作后,登出系统然后再重新登录,应该就搞定了.不过若你的平台是 Fedora,则添加用户到 docker 组时会发现这个组是不存在的.那该怎么办呢？你需要首先创建这个组.命令如下:
-  ```bash
-  groupadd docker && gpasswd -a ${USER} docker && systemctl restart docker
-  newgrp docker
+  docker hisotry [docker_name/docker_id]            # 查看指定镜像的创建历史
   ```
 
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
 
-**实验**
+**更多**
 - [Docker](./实验/Docker.md)
-
-**常见报错**
-- Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
-  ```bash
-  systemctl daemon-reload
-  service docker restart
-  ```
-
-- docker timeout
-  ```bash
-  echo "nameserver 8.8.8.8" > /etc/resolv.conf
-  sudo systemctl daemon-reload
-  sudo systemctl restart docker
-  ```
-
-- 容器 "Exited (0)" 自动退出
-  - 有时镜像内置的执行命令无法正确执行，于是容器就 Exited 了
-  - 尝试在 docker run 命令最后加上或删除 /bin/bash 选项
 
 #### Docker-Compose
 
@@ -5486,6 +5434,9 @@ docker-compose exec [service] sh  # 进入容器内
 
   python 版本的问题, 换 python3.7 以上或用 pip 安装即可
 
+**更多**
+- [Docker-Compose](./实验/Docker-Compose.md)
+
 #### Docker-Portainer
 
 <p align="center">
@@ -5504,6 +5455,26 @@ docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce   # 部署
 ```
 访问 ip:9000 进入到设置密码界面.
+
+---
+
+### Kubernetes
+
+#### kubectl
+
+**显示和查找资源**
+```bash
+kubectl get services                          # 列出所有 namespace 中的所有 service
+kubectl get pods -A                           # 列出所有 namespace 中的所有 pod
+kubectl get pods -o wide                      # 列出所有 pod 并显示详细信息
+kubectl get deployment -A                     # 列出所有 deployment
+```
+
+**与运行中的 Pod 交互**
+```bash
+kubectl logs my-pod                           # dump 输出 pod 的日志（stdout）
+kubectl exec my-pod -- ls /                   # 在已存在的容器中执行命令（只有一个容器的情况下）
+```
 
 ---
 

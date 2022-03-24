@@ -2,6 +2,12 @@
 
 ---
 
+## 免责声明
+
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
+
+---
+
 ## 代码混淆
 
 - [Hnfull/Intensio-Obfuscator: Obfuscate a python code 2.x and 3.x](https://github.com/Hnfull/Intensio-Obfuscator)

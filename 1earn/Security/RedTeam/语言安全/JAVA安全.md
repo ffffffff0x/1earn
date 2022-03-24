@@ -244,6 +244,15 @@ use exploit/multi/misc/java_rmi_server
 java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 127.0.0.1 8999 CommonsCollections1  "whoami"
 ```
 
+#### JDBC反序列化
+
+**相关文章**
+- [JDBC Connection URL 攻击](https://paper.seebug.org/1832/)
+- [PostgreSQL JDBC Driver RCE](https://mp.weixin.qq.com/s/jb7mbPWdMp1vlgF8F1mshg)
+
+**相关工具**
+- [fnmsd/MySQL_Fake_Server](https://github.com/fnmsd/MySQL_Fake_Server) - 用于渗透测试过程中的假MySQL服务器，纯原生python3实现，不依赖其它包。
+
 ---
 
 ### SSRF

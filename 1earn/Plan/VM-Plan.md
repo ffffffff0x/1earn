@@ -6,7 +6,7 @@
 
 ---
 
-# VMware 常见问题
+## VMware 常见问题
 
 **关闭虚拟内存**
 
@@ -58,7 +58,9 @@ yum install -y open-vm-tools-devel -y
 
   出现此问题的错误是因为网络问题,连通网络,安装 ifconfig 即可
 
-# VirtualBox
+---
+
+## VirtualBox
 
 **常见报错**
 - **Implementation of the USB 2.0 controller not found!**

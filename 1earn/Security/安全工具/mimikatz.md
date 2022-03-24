@@ -117,6 +117,12 @@ privilege::debug
 lsadump::cache
 ```
 
+**rdp**
+```
+privilege::debug
+vault::cred /patch
+```
+
 ---
 
 # 离线抓取

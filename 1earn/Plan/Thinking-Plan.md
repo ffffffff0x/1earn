@@ -2,9 +2,9 @@
 
 ---
 
-# 系统思维 - SYSTEMS THINKING
+## 系统思维 - SYSTEMS THINKING
 
-## 冰山模型 - Iceberg Model
+### 冰山模型 - Iceberg Model
 
 <img src="../../assets/img/Plan/Thinking-Plan/19.png" width="15%" align="right">
 
@@ -68,7 +68,7 @@
 
 ---
 
-## 反馈循环 - Feedback loop
+### 反馈循环 - Feedback loop
 
 <img src="../../assets/img/Plan/Thinking-Plan/4.png" width="13%" align="right">
 
@@ -119,7 +119,7 @@
 
 ---
 
-## 关系环 - Connection circles
+### 关系环 - Connection circles
 
 <img src="../../assets/img/Plan/Thinking-Plan/16.png" width="15%" align="right">
 
@@ -141,7 +141,7 @@
 
 ---
 
-## 不做清单 - Not-To-Do list
+### 不做清单 - Not-To-Do list
 
 <img src="../../assets/img/Plan/Thinking-Plan/22.png" width="15%" align="right">
 
@@ -155,17 +155,17 @@
 
 ---
 
-# 决策制定 - DECISION MAKING
+## 决策制定 - DECISION MAKING
 
 <img src="../../assets/img/Plan/Thinking-Plan/21.png" width="15%" align="right">
 
-## 速度质量成本关系
+### 速度质量成本关系
 
 ![](../../assets/img/Plan/Thinking-Plan/6.png)
 
 ---
 
-## 二阶思维 - Second-order thinking
+### 二阶思维 - Second-order thinking
 
 <img src="../../assets/img/Plan/Thinking-Plan/20.png" width="15%" align="right">
 
@@ -194,7 +194,7 @@
 
 ---
 
-## 决策矩阵 - Decision matrix
+### 决策矩阵 - Decision matrix
 
 <img src="../../assets/img/Plan/Thinking-Plan/17.png" width="15%" align="right">
 
@@ -212,7 +212,7 @@
 
 ---
 
-## 选择模型 - choice model
+### 选择模型 - choice model
 
 <img src="../../assets/img/Plan/Thinking-Plan/18.png" width="15%" align="right">
 
@@ -230,7 +230,7 @@
 
 ---
 
-## 沉没成本 - Sunk Cost
+### 沉没成本 - Sunk Cost
 
 <img src="../../assets/img/Plan/Thinking-Plan/23.png" width="35%" align="right">
 
@@ -244,9 +244,9 @@
 
 ---
 
-# 问题处理 - PROBLEM SOLVING
+## 问题处理 - PROBLEM SOLVING
 
-## Issue trees
+### Issue trees
 
 <img src="../../assets/img/Plan/Thinking-Plan/12.png" width="15%" align="right">
 
@@ -262,7 +262,7 @@ Issue 树基本上是问题的地图。它们为你提供了一种清晰而系�
 
 ---
 
-## 抽象阶梯式 - Abstraction laddering
+### 抽象阶梯式 - Abstraction laddering
 
 <img src="../../assets/img/Plan/Thinking-Plan/15.png" width="15%" align="right">
 

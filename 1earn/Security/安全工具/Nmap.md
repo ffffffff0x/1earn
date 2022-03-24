@@ -22,7 +22,7 @@
 - [Nmap在VMware NAT网络下探测主机存活误报的分析](https://www.freebuf.com/articles/terminal/199711.html)
 
 **zenmap**
-- [Zenmap - 跨平台的 GUI 版 nmap bug 较多,不宜使用](https://nmap.org/zenmap/)
+- [Zenmap](https://nmap.org/zenmap/) - 跨平台的 GUI 版 nmap bug 较多,不宜使用
 
 **脚本**
 - [smb-enum-users](https://nmap.org/nsedoc/scripts/smb-enum-users.html)

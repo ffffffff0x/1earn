@@ -203,7 +203,7 @@ npm config delete proxy  # 取消代理
 
 - 永久修改,一劳永逸:
 
-    1. Linux 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
+    1. Linux 和 Mac 下,修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件.文件夹要加".",表示是隐藏文件夹)
         ```bash
         mkdir -p ~/.pip/
         tee ~/.pip/pip.conf <<-'EOF'
@@ -284,6 +284,13 @@ npm config delete proxy  # 取消代理
 **GoLand**
 
 > Setting-->Appearance & Behavior-->System Setting-->HTTP Proxy
+
+### Chocolatey
+
+- https://docs.chocolatey.org/en-us/guides/usage/proxy-settings-for-chocolatey#system-proxy-settings
+    ```
+    choco config set proxy <locationandport>
+    ```
 
 ---
 
@@ -424,4 +431,16 @@ ffmpeg -y -i in.out -vcodec xvid -s 176x144 -r 29.97 -b 1500 -acodec aac -ac 2 -
 psexec.exe -accepteula -s -i -d cmd.exe
 net stop audiosrv
 net start audiosrv
+```
+
+**安装 chocolatey**
+
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+```
+
+如果没有报错就可以用 choch 进行软件的安装了
+```
+choco install notepadplusplus.install
+choco install 7zip
 ```

@@ -34,6 +34,7 @@
 - [减少Burpsuite抓包过程中的‘噪音’](https://mp.weixin.qq.com/s/GGpojt445WrBlZw1BzQfCQ_)
 - [[基础入门] - BurpSuite的常用Tips](https://mp.weixin.qq.com/s/Qlr1-VOUyOzjnHzx6CTJWw)
 - [Burp Suite Pro real-life tips & tricks: Authentication engine for command-line tools](https://blog.z-labs.eu/2022/01/12/burp-suite-pro-authn-for-cli-tools.html)
+- [武装你的Burpsuite](https://mp.weixin.qq.com/s/V6ejFDAoEbh3QsNdLMQ2og)
 
 ---
 
@@ -200,6 +201,10 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 安装过程见 [Power-Linux](../../Integrated/Linux/Power-Linux.md##JDK)
 
 没问题就直接运行即可 `java -jar <burp文件名>.jar`
+
+**mac**
+
+- [macOS 下如何优雅的使用 Burp Suite](https://www.sqlsec.com/2019/11/macbp.html)
 
 ## 证书配置
 

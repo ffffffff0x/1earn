@@ -14,13 +14,13 @@
 
 ---
 
-# 团队建设
+## 团队建设
 
 - [安全实验室的发展及展望](https://www.freebuf.com/articles/es/211571.html)
 
 ---
 
-# 任务分配 & 项目管理
+## 任务分配 & 项目管理
 
 **看板**
 - [Trello](https://trello.com/) - `强烈推荐`
@@ -45,7 +45,7 @@
 
 ---
 
-# 群聊
+## 群聊
 
 - [钉钉](https://www.dingtalk.com)
     - 好用,但只建议公司内团队使用,非企业类型的团队建议使用其他工具
@@ -62,7 +62,7 @@
 
 ---
 
-# 文件共享
+## 文件共享
 
 - [坚果云](https://www.jianguoyun.com) - `强烈推荐`
     - 好用,速度可以跑满带宽,免费不够用,团队版价格适中
@@ -91,7 +91,7 @@
 
 ---
 
-# 知识库-Wiki
+## 知识库-Wiki
 
 - [GitBook](https://www.gitbook.com/) - `强烈推荐`
 - [为知笔记](https://www.wiz.cn/) - `推荐`
@@ -103,7 +103,7 @@
 
 ---
 
-# 在线编辑
+## 在线编辑
 
 - [石墨文档](https://shimo.im/) - `强烈推荐`
 - [腾讯文档](https://docs.qq.com/)
@@ -111,7 +111,7 @@
 
 ---
 
-# 远程访问
+## 远程访问
 
 - [GotoHTTP](http://gotohttp.com/) - `不推荐`
     - 可以 web 访问的远程控制平台
@@ -120,6 +120,6 @@
 
 ---
 
-# DNS
+## DNS
 
 - [AdguardTeam](https://github.com/AdguardTeam/AdGuardHome)

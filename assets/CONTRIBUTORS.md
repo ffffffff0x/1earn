@@ -45,7 +45,34 @@
     - SQLi 笔记大部分参考其 [MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI) 项目
 * [奇安信 A-TEAM](https://blog.ateam.qianxin.com/)
     - Cobalt Strike 笔记大部分参考其翻译的 [Cobalt Strike 4.0 手册](https://blog.ateam.qianxin.com/post/cobalt-strike-40-shou-ce-fan-yi-2019-nian-12-yue-2-ri-geng-xin-ban-ben/)
+* [docker_practice](https://github.com/yeasy/docker_practice)
+    - docker 笔记大部分参考其内容
 * 雷神众测 公众号
     * ida 笔记大部分参考其文章内容 https://mp.weixin.qq.com/s/qaHEUW1uybkHhTAdzC96Hw
     * 取证部分很多也是参考其文章内容
 * 及其他一堆作者,我都记录在笔记文件末尾的 Source & reference 中
+
+---
+
+一些推荐的技术公众号
+- pandasec
+- A9 Team
+- chamd5sec
+- anfu-360
+- 弥天安全实验室
+- 鸿鹄实验室
+- m01nteam
+- hee_tian
+- bounty_team
+- nsfocus_research
+- HSN_LAB
+- VLab Team
+- TideSec
+- qtcyber
+- XG_WEB
+- Netlab_360
+- Skaysec
+- awkwardfish1
+- Or4ng3_Ki11er
+- 清河六点下班
+- huoxian_zone

@@ -69,7 +69,6 @@
             * [固件安全](./1earn/Security/IOT/固件安全/固件安全.md) - 记录 IOT 固件分析的知识点,包括固件提取、固件分析、固件解密等
             * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E5%9B%BA%E4%BB%B6%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C) - 分析固件实验
         * 无线电安全
-            * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E6%97%A0%E7%BA%BF%E7%94%B5%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C)
             * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Security/IOT/%E6%97%A0%E7%BA%BF%E7%94%B5%E5%AE%89%E5%85%A8/%E5%AE%9E%E9%AA%8C) - 无线电安全实验
         * 硬件安全
             * [Device-Exploits](./1earn/Security/IOT/硬件安全/Device-Exploits.md) - 嵌入式设备相关漏洞利用,不太熟悉这一块,内容不多
@@ -227,7 +226,7 @@ git clone --depth 1 https://github.com/ffffffff0x/1earn.git
 
 ---
 
-## Attributions&Thanks
+## CONTRIBUTORS & Thanks
 
 - [CONTRIBUTORS](./assets/CONTRIBUTORS.md)
 

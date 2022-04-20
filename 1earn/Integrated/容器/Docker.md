@@ -1,7 +1,7 @@
-# Speed-Docker
+# Docker
 
 <p align="center">
-    <img src="../../../../assets/img/banner/Docker.png">
+    <img src="../../../assets/img/banner/Docker.png">
 </p>
 
 ---
@@ -40,21 +40,72 @@ Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级�
 
 ---
 
+## Docker 原理
+
+Docker 是目前最具代表性的容器平台之一，它模糊了传统的 IaaS 和 PaaS 的边界，具有持续部署与测试、跨云平台支持等优点。在基于 Kubernetes 等容器编排工具实现的容器云环境中，通过对跨主机集群资源的调度，容器云可提供资源共享与隔离、容器编排与部署、应用支撑等功能。
+
+Docker 容器技术以宿主机中的容器为管理单元，但各容器共用宿主机内核资源，分别通过 Linux 系统的 Namespaces 和 CGroups 机制实现资源的隔离与限制。
+
+**相关文章**
+- [Docker原理第二话--Namespace](https://blog.csdn.net/m0_37552052/article/details/78344607)
+- [Docker原理第三话--CGroups](https://blog.csdn.net/m0_37552052/article/details/78480266)
+
+**Namespaces**
+
+为了保证容器进程之间的资源隔离，避免相互影响和干扰，Linux 内核的 Namespaces（命名空间）机制提供了 UTS、User、Mount、Network、PID、IPC 等命名空间实现了主机名、用户权限、文件系统、网络、进程号、进程间通信等六项资源隔离功能。通过调用 clone() 函数并传入相应的系统调用参数创建容器进程，可实现对应资源内容的隔离，如表所示。
+
+| 命名空间 	  |  系统调用参数 	   |   隔离内容 	                   |  Linux内核版本 |
+| - | - | - | - |
+| UTS         | CLONE_NEWUTS       | 主机名和域名                    |   2.6.19 |
+| IPC         | CLONE_NEWIPC       | 信号量、信息队列和共享内	       |   2.6.19 |
+| PID         | CLONE_NEWPID       | 进程编号            	         |  2.6.24 |
+| Network     | CLONE_NEWNET       | 网络设备、网络栈、端口等           |  2.6.29 |
+| Mount       | CLONE_NEWNS        | 挂载点（文件系统）                |  2.4.19 |
+| User        | CLONE_NEWUSER      | 用户和用户组                     |  3.8 |
+
+对于某个进程而言，可通过查看 `/proc/[PID]/ns` 文件，获取该进程下的命名空间隔离情况。其中，每一项命名空间都拥有一个编号对其进行唯一标识，如果宿主机中两个进程指向的命名空间编号相同，则表示他们同在一个命名空间之下。
+
+![image](../../../assets/img/Integrated/容器/docker/1.png)
+
+**CGroups**
+
+CGroups（Control Groups，控制组）机制最早于 2006 年由 Google 提出，目前是 Linux 内核的一种机制，可以实现对任务组（进程组或线程组）使用的物理资源（CPU、内存、I/O等）进行限制和记录，通过多种度量标准为各个容器相对公平地分配资源，以防止资源滥用的情况。
+
+在实际应用中，CGroups 会为每个执行任务创建一个钩子，在任务执行的过程中涉及到资源分配使用时，就会触发钩子上的函数并对相应的资源进行检测，从而对资源进行限制和优先级分配。
+
+CGroups 提供了资源限制（Resource Limitation）、优先级分配（Prioritization）、资源统计（Accounting）、任务控制（Control）四个功能，包含 blkio、cpu、cpuacct、cpuset、devices、freezer、memory、perf_event、net_cls、net_prio、ns、hugetl b等子系统，每种子系统独立地控制一种资源，可分别实现块设备输入/输出限制、CPU 使用控制、生成 CPU 资源使用情况报告、内存使用量限制等功能。几个主要子系统的具体功能如表所示。
+
+| 子系统 	| 功能 |
+| - | - |
+| blkio       | 为块设备（如磁盘、固态硬盘等物理驱动设备）设定输入/输出限制 |
+| cpu         | 通过调度程序控制任务对CPU的使用 |
+| cpuacct     | 生成任务对CPU资源使用情况的报告 |
+| cpuset      | 为任务分配独立的CPU和内存 |
+| devices     | 开启或关闭任务对设备的访问 |
+| freezer     | 挂起或恢复任务 |
+| memory      | 设定任务对内存的使用量限制，生成任务对内存资源使用情况的报告 |
+
+---
+
 ## 安装与使用
 
-- [Docker安装使用](../../Linux/Power-Linux.md#docker)
+- [Docker安装使用](../Linux/Power-Linux.md#docker)
 
 ---
 
 ## 容器网络管理
 
-- [Docker](../../Linux/实验/Docker.md#容器网络管理)
+- [Docker](../Linux/实验/Docker.md#容器网络管理)
 
 ---
 
 ## 安全
 
 安全部分内容来自 <sup>[[Docker容器安全性分析](https://www.freebuf.com/articles/system/221319.html)]</sup><sup>
+
+**相关文章**
+- [Docker容器安全性分析](https://www.freebuf.com/articles/system/221319.html)
+- [Docker安全第一话--镜像安全](https://blog.csdn.net/m0_37552052/article/details/78907296)
 
 ---
 
@@ -162,7 +213,7 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 
 ### 容器安全管理
 
-**镜像仓库安全**
+#### 镜像仓库安全
 
 - 内容信任机制
 
@@ -181,38 +232,53 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 
     在 Docker 容器场景中，Notary 可支持 Docker 内容信任机制。因此，可使用 Notary 构建镜像仓库服务器，实现对容器镜像的签名，对镜像源认证、镜像完整性等安全需求提供更好的支持。
 
-**镜像安全扫描**
+#### 镜像安全扫描
 
 为了保证容器运行的安全性，在从公共镜像仓库获取镜像时需要对镜像进行安全检查，防止存在安全隐患甚至恶意漏洞的镜像运行，从源头端预防安全事故的发生。镜像漏洞扫描工具是一类常用的镜像安全检查辅助工具，可检测出容器镜像中含有的 CVE 漏洞。
 
 针对 Docker 镜像的漏洞扫描，目前已经有许多相关工具与解决方案，包括 Docker Security Scanning、Clair、Anchore、Trivy、Aqua 等等。
 
-- Docker Security Scanning 服务
+**Docker Security Scanning 服务**
 
-    Docker Security Scanning 是 Docker 官方推出的不开源镜像漏洞扫描服务，用于检测 Docker Cloud 服务中私有仓库和 Docker Hub 官方仓库中的镜像是否安全。
+Docker Security Scanning 是 Docker 官方推出的不开源镜像漏洞扫描服务，用于检测 Docker Cloud 服务中私有仓库和 Docker Hub 官方仓库中的镜像是否安全。
 
-    Docker Security Scanning 包括扫描触发、扫描器、数据库、附加元件框架以及 CVE 漏洞数据库比对等服务。当仓库中有镜像发生更新时，会自动启动漏洞扫描；当 CVE 漏洞数据库发生更新时，也会实时更新镜像漏洞扫描结果。
+Docker Security Scanning 包括扫描触发、扫描器、数据库、附加元件框架以及 CVE 漏洞数据库比对等服务。当仓库中有镜像发生更新时，会自动启动漏洞扫描；当 CVE 漏洞数据库发生更新时，也会实时更新镜像漏洞扫描结果。
 
-- Clair 工具
+**Clair 工具**
 
-    Clair 是一款开源的 Docker 镜像漏洞扫描工具。与 Docker Security Scanning 类似，Clair 通过对 Docker 镜像进行静态分析并与公共漏洞数据库关联，得到相应的漏洞分析结果。Clair 主要包括以下模块：
-    ```
-    Fetcher（获取器）：从公共的 CVE 漏洞源收集漏洞数据；
-    Detector（检测器）：对镜像的每一个 Layer 进行扫描，提取镜像特征；
-    Notifier（通知器）：用于接收 WebHook 从公开 CVE 漏洞库中的最新漏洞信息并进行漏洞库更新；
-    Databases（数据库）：PostSQL 数据库存储容器中的各个层和 CVE 漏洞；
-    ```
+- https://github.com/quay/clair
 
-- Trivy 工具
+Clair 是一款开源的 Docker 镜像漏洞扫描工具。与 Docker Security Scanning 类似，Clair 通过对 Docker 镜像进行静态分析并与公共漏洞数据库关联，得到相应的漏洞分析结果。Clair 主要包括以下模块：
+```
+Fetcher（获取器）：从公共的 CVE 漏洞源收集漏洞数据；
+Detector（检测器）：对镜像的每一个 Layer 进行扫描，提取镜像特征；
+Notifier+WebHook（通知钩子）- 当新的漏洞被发现时或者已经存在的漏洞发生改变时通知用户/机器
+Databases（数据库）：PostSQL 数据库存储容器中的各个层和 CVE 漏洞；
+Worker（主进程） - 每个Post Layer都会启动一个worker进行Layer Detect
+```
 
-    Trivy 是一个简单而全面的开源容器漏洞扫描程序。Trivy 可检测操作系统软件包（Alpine、RHEL、CentOS等）和应用程序依赖项（Bundler、Composer、npm、yarn等）的漏洞。此外，Trivy 具有较高的易用性，只需安装二进制文件并指定扫描容器的镜像名称即可执行扫描。Trivy 提供了丰富的功能接口，相比于其他容器镜像漏洞扫描工具更适合自动化操作，可更好地满足持续集成的需求。
+clair 使用时的辅助工具
+- https://github.com/jgsqware/clairctl
 
-    命令示例
-    ```bash
-    trivy [镜像名]
-    ```
+**Anchore**
 
-**容器逆向分析**
+- https://github.com/anchore/anchore-engine
+
+Anchore侧重于对镜像的审计，其有强大的对镜像的解析能力
+```
+anchore analyze --image test
+```
+
+**Trivy 工具**
+
+Trivy 是一个简单而全面的开源容器漏洞扫描程序。Trivy 可检测操作系统软件包（Alpine、RHEL、CentOS等）和应用程序依赖项（Bundler、Composer、npm、yarn等）的漏洞。此外，Trivy 具有较高的易用性，只需安装二进制文件并指定扫描容器的镜像名称即可执行扫描。Trivy 提供了丰富的功能接口，相比于其他容器镜像漏洞扫描工具更适合自动化操作，可更好地满足持续集成的需求。
+
+命令示例
+```bash
+trivy [镜像名]
+```
+
+#### 容器逆向分析
 
 分析镜像,提取出镜像的构建过程和镜像构建过程中引用的文件。
 
@@ -228,35 +294,44 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
     docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive:latest [镜像名]
     ```
 
-**容器运行时监控**
+#### 容器运行时监控
 
 为了在系统运维层面保证容器运行的安全性，实现安全风险的即时告警与应急响应，需要对 Docker 容器运行时的各项性能指标进行实时监控。
 
 针对 Docker 容器监控的工具与解决方案包括 docker stats、cAdvisor、Scout、DataDog、Sensu 等等，其中最常见的是 Docker 原生的 docker stats 命令和 Google 的 cAdvisor 开源工具。
 
-- docker stats 命令
+**docker stats 命令**
 
-    docker stats 是 Docker 自带的容器资源使用统计命令，可用于对宿主机上的 Docker 容器的资源使用情况进行手动监控，具体内容包括容器的基本信息、容器的 CPU 使用率、内存使用率、内存使用量与限制、块设备 I/O 使用量、网络 I/O 使用量、进程数等信息。用户可根据自身需求设置 --format 参数控制 docker stats 命令输出的内容格式。
+docker stats 是 Docker 自带的容器资源使用统计命令，可用于对宿主机上的 Docker 容器的资源使用情况进行手动监控，具体内容包括容器的基本信息、容器的 CPU 使用率、内存使用率、内存使用量与限制、块设备 I/O 使用量、网络 I/O 使用量、进程数等信息。用户可根据自身需求设置 --format 参数控制 docker stats 命令输出的内容格式。
 
-    命令示例
-    ```bash
-    docker stats [容器名]
-    ```
+命令示例
+```bash
+docker stats [容器名]
+```
 
-- cAdvisor 工具
+**cAdvisor 工具**
 
-    由于 docker stats 只是简单的容器资源查看命令，其可视化程度不高，同时不支持监控数据的存储。cAdvisor 是由 Google 开源的容器监控工具，优化了docker stats 在可视化展示与数据存储方面的缺陷。
+由于 docker stats 只是简单的容器资源查看命令，其可视化程度不高，同时不支持监控数据的存储。cAdvisor 是由 Google 开源的容器监控工具，优化了docker stats 在可视化展示与数据存储方面的缺陷。
 
-    cAdvisor 在宿主机上以容器方式运行，通过挂载在本地卷，可对同一台宿主机上运行的所有容器进行实时监控和性能数据采集，具体包括 CPU 使用情况、内存使用情况、网络吞吐量、文件系统使用情况等信息，并提供本地基础查询界面和 API 接口，方便与其他第三方工具进行搭配使用。cAdvisor 默认将数据缓存在内存中，同时也提供不同的持久化存储后端支持，可将监控数据保存 Google BigQuery、InfluxD B或 Redis 等数据库中。
+cAdvisor 在宿主机上以容器方式运行，通过挂载在本地卷，可对同一台宿主机上运行的所有容器进行实时监控和性能数据采集，具体包括 CPU 使用情况、内存使用情况、网络吞吐量、文件系统使用情况等信息，并提供本地基础查询界面和 API 接口，方便与其他第三方工具进行搭配使用。cAdvisor 默认将数据缓存在内存中，同时也提供不同的持久化存储后端支持，可将监控数据保存 Google BigQuery、InfluxD B或 Redis 等数据库中。
 
-    cAdvisor 基于 Go 语言开发，利用 CGroups 获取容器的资源使用信息，目前已被集成在 Kubernetes 中的 Kubelet 组件里作为默认启动项。
+cAdvisor 基于 Go 语言开发，利用 CGroups 获取容器的资源使用信息，目前已被集成在 Kubernetes 中的 Kubelet 组件里作为默认启动项。
 
-    命令示例
-    ```bash
-    docker run -v /var/run:/var/run:rw -v/sys:/sys:ro -v/var/lib/docker:/var/lib/docker:ro -p8080:8080 -d --name cadvisor google/cadvisor
-    ```
+命令示例
+```bash
+docker run -v /var/run:/var/run:rw -v/sys:/sys:ro -v/var/lib/docker:/var/lib/docker:ro -p8080:8080 -d --name cadvisor google/cadvisor
+```
 
-**容器安全审计**
+**falco**
+
+- https://github.com/falcosecurity/falco
+
+Falco是一款开源的行为监视器，旨在检测应用程序中的异常活动。 Falco由一系列规则组成，这些规则基于应用程序执行的系统调用来识别可疑行为。 Falco可以应用于容器环境、虚拟化环境、Linux物理主机环境
+
+- 相关文章
+    - [Docker安全第二话--安全监控](https://blog.csdn.net/m0_37552052/article/details/78909631)
+
+#### 容器安全审计
 
 - Docker 守护进程审计
 
@@ -338,6 +413,6 @@ docker run --rm -it --security-opt seccomp:/path/to/seccomp/profile.json hello-w
 
 然而，在大型的容器云环境中，由于存在频繁的微服务动态变化更新，通过手动的方式配置 iptables 或更新防火墙是不现实的。因此，可通过微分段（Micro-Segmentation）实现面向容器云环境中的容器防火墙。微分段是一种细粒度的网络分段隔离机制，与传统的以网络地址为基本单位的网络分段机制不同，微分段可以以单个容器、同网段容器、容器应用为粒度实现分段隔离，并通过容器防火墙对实现微分段间的网络访问控制。
 
-### 更多
+### 更多内容
 
-- [docker 安全](../../../Security/RedTeam/软件服务安全/CS-Exploits.md#docker)
+- [Docker 安全](../../Security/RedTeam/软件服务安全/实验/Docker.md)

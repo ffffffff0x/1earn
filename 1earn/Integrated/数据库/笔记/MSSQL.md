@@ -54,3 +54,26 @@ SQL Server 补丁相关概念
 - Hotfix：需要修复的某个问题，每年 SQL Server 会出现许多 bug 或漏洞，这些问题的修复则被定义为 Hotfix。
 - Cumulative Update（CU）：累计更新包，由 Hotfix 组成。CU 每 8 个星期发布一次，每个最新的 CU 版本都包含之前的 CU 中的 Hotfix。
 - Service Package（SP）： SP 是集成 Hotfix 最多的包，这些 Hotfix 是经过官方完整测试过的。
+
+---
+
+## 审计
+
+审计（Audit）用于追踪和记录SQL Server实例，或者单个数据库中发生的事件（Event），审计运作的机制是通过捕获事件（Event），把事件包含的信息写入到事件日志（Event Log）或审计文件（Audit File）中，为review提供最真实详细的数据。
+
+审计主要包含服务器审计对象（Server Audit，简称审计对象）、服务器级别的审计规范（Server Audit Specification）、数据库级别的审计规范（Database Audit Specification）和目标（Target）。
+- 审计对象是在服务器级别上创建的对象，必须启用，用于指定审计数据的存储方式和存储路径，并提供工具查看审计数据。
+- 服务器级别的审计规范用于记录服务器级别的事件（Event），
+- 数据库级别的审计规范用于记录数据库级别的事件，
+- Target是指用于存储Audit数据的媒介，可以是File、Windows Security Event Log 或 Windows Application Event Log，常用的Target是File。
+SQL Server使用 Extended Events来帮助创建审计，也就是说，审计是在扩展事件的基础上设计的功能，专门用于审核数据库的安全。为了启用审计，首先需要创建一个SQL Server 实例级的审计对象，然后创建从属于它的“服务器审计规范”或“数据库审计规范”，审计输出的结果数据可以存储到审计文件（File）、安全日志（Security Log）和应用程序日志（Application Log）中。
+
+---
+
+## Source & Reference
+
+- [理解SQL Server中的权限体系(上)----主体](https://www.cnblogs.com/CareySon/archive/2012/04/10/mssql-security-principal.html)
+- [理解SQL Server中的权限体系(下)----安全对象和权限](https://www.cnblogs.com/CareySon/archive/2012/04/12/SQL-Security-SecurableAndPermission.html)
+- [SQL Server 审计 第一篇：介绍（Audit）](https://www.cnblogs.com/ljhdo/p/14085487.html)
+- [SQL Server 审计 第二篇： 创建审计](https://www.cnblogs.com/ljhdo/p/5721668.html)
+- [SQL Server 审计 第三篇：查看审计数据](https://www.cnblogs.com/ljhdo/p/13232283.html)

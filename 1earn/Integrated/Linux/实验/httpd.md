@@ -162,7 +162,7 @@ openssl genrsa 2048 > cakey.pem
 openssl req -new -x509 -key cakey.pem > /etc/pki/CA/cacert.pem
 
 cd /etc/pki/CA
-touch index.txt	# 索引问文件
+touch index.txt	# 索引文件
 touch serial	# 给客户发证编号存放文件
 echo 01 > serial
 
@@ -321,21 +321,21 @@ firewall-cmd --reload
 4. 配置 https 服务使原站点能使用 https 访问.
 ```bash
 # 查看证书密钥位置
-sed -n '/^SSLCertificateFile/p;/^SSLCertificateKeyFile/p '/etc/httpd/conf.d/ssl.conf
+sed -n '/^SSLCertificateFile/p;/^SSLCertificateKeyFile/p '/etc/httpd/conf.d/ssl.conf
 
 # 删除原来的密钥
-cd /etc/pki/tls/private/
-rm -f localhost.key
+cd /etc/pki/tls/private/
+rm -f localhost.key
 
 # 新建密钥文件
-openssl genrsa 1024 > localhost.key
+openssl genrsa 1024 > localhost.key
 
 # 删除原来的证书
-cd ../certs
-rm -rf localhost.crt
+cd ../certs
+rm -rf localhost.crt
 
 # 新建证书文件
-openssl req -new -x509 -days 365 -key ../private/localhost.key -out localhost.crt
+openssl req -new -x509 -days 365 -key ../private/localhost.key -out localhost.crt
 
 防火墙放行 https，重启服务，测试
 ```

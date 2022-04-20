@@ -2499,6 +2499,31 @@ less /var/log/nginx/error.log
 
 ---
 
+### php-cli
+
+**交互式 shell**
+```bash
+php -a
+
+php > echo "hello";
+hello
+php > $x = 3;
+php > $y = 2;
+php > echo ($x + $y);
+```
+
+**运行 PHP 文件**
+```bash
+php -f test.php
+```
+
+**运行 web 服务器**
+```bash
+php -S 0.0.0.0:8080
+```
+
+---
+
 ### phpMyAdmin
 
 <p align="center">
@@ -3528,6 +3553,18 @@ shutdown
 ```
 
 整个启动和关闭的过程都会记录在 alert 日志文件中。
+
+**docker 部署**
+
+```bash
+# https://github.com/wnameless/docker-oracle-xe-11g
+docker pull wnameless/oracle-xe-11g-r2
+docker run -d -p 1521:1521 -e ORACLE_ALLOW_REMOTE=true wnameless/oracle-xe-11g-r2
+
+# https://hub.docker.com/r/gvenzl/oracle-xe
+docker pull gvenzl/oracle-xe:11
+docker run -d -p 1521:1521 -e ORACLE_PASSWORD=123123123 gvenzl/oracle-xe:11
+```
 
 ---
 

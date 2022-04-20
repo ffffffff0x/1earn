@@ -529,10 +529,10 @@ auditctl -w /bin/rm -p x -k removefile
 
 ## SELinux
 
-**关闭 SELinux**
+**关闭 SELinux**
 - 需要重启
 	```vim
-	vim /etc/selinux/config
+	vim /etc/selinux/config
 
 	SELINUX=disabled
 	```

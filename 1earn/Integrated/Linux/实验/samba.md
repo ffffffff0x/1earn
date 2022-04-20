@@ -15,13 +15,13 @@ yum -y install samba
 ```
 
 ```vim
-vim /etc/samba/smb.conf
+vim /etc/samba/smb.conf
 
 [smbshare]
-	path = /smbshare
-	public = yes
+	path = /smbshare
+	public = yes
 	writeable=yes
-	hosts allow = 192.168.xx.
+	hosts allow = 192.168.xx.
 	hosts deny = all
 ```
 
@@ -29,29 +29,29 @@ vim /etc/samba/smb.conf
 
 添加用户,设置密码
 ```bash
-useradd smb1
-smbpasswd -a smb1(密码:smb123456)
+useradd smb1
+smbpasswd -a smb1(密码:smb123456)
 ```
 
-将用户添加到 samba 服务器中，并设置密码
+将用户添加到 samba 服务器中，并设置密码
 ```bash
-pdbedit -a smb1(密码:smb123456)
+pdbedit -a smb1(密码:smb123456)
 ```
 
-查看 samba 数据库用户
+查看 samba 数据库用户
 ```bash
-pdbedit -L
+pdbedit -L
 ```
 
 创建共享目录，设置所有者和所属组
 ```bash
-mkdir /smbshare
-chown smb1:smb1 /smbshare
+mkdir /smbshare
+chown smb1:smb1 /smbshare
 ```
 
-关闭 selinux(需要重启)
+关闭 selinux(需要重启)
 ```vim
-vim /etc/selinux/config
+vim /etc/selinux/config
 
 SELINUX=disabled
 ```
@@ -59,7 +59,7 @@ SELINUX=disabled
 firewall-cmd --zone=public --add-service=samba --permanent
 firewall-cmd --reload
 
-systemctl restart smb
+systemctl restart smb
 ```
 
 ---
@@ -79,27 +79,27 @@ systemctl restart smb
 yum -y install samba
 ```
 ```vim
-vim /etc/samba/smb.conf
+vim /etc/samba/smb.conf
 
 [global]
 	workgroup = WORKGROUP
 
 [webdata]
-	path = /data/web_data
-	public = yes
+	path = /data/web_data
+	public = yes
 	writable=yes
-	hosts allow = 192.168.1xx.33/32
+	hosts allow = 192.168.1xx.33/32
 	hosts deny = all
 ```
 
 ```bash
 testparm
 useradd -s /sbin/nologin apache
-smbpasswd -a apache(密码:smb123456)
-pdbedit -a apache(密码:smb123456)
-pdbedit -L
+smbpasswd -a apache(密码:smb123456)
+pdbedit -a apache(密码:smb123456)
+pdbedit -L
 
-mkdir /data/web_data
+mkdir /data/web_data
 cd /data/web_data/
 setfacl -m u:apache:rwx .
 getfacl /deta/web_data/
@@ -111,7 +111,7 @@ setenforce 0
 firewall-cmd --zone=public --add-service=samba --permanent
 firewall-cmd --reload
 
-systemctl start smb
+systemctl start smb
 ```
 
 
@@ -121,7 +121,7 @@ systemctl start smb
 ```bash
 yum -y install samba
 
-mkdir /data/web_data
+mkdir /data/web_data
 mount -t cifs -o username=apache,password='123' //192.168.xx+1.xx/webdata /data/web_data
 ```
 
@@ -144,28 +144,28 @@ mount -t cifs -o username=apache,password='123' //192.168.xx+1.xx/webdata /data/
 yum -y install samba
 ```
 ```vim
-vim /etc/samba/smb.conf
+vim /etc/samba/smb.conf
 
 [global]
 	workgroup = WORKGROUP
 
 [webdata]
-	path = /data/web_data
-	public = yes
+	path = /data/web_data
+	public = yes
 	writable=yes
-	hosts allow = 192.168.xx+1.
+	hosts allow = 192.168.xx+1.
 	hosts deny = all
-	create mask = 0770
+	create mask = 0770
 ```
 
 ```bash
 testparm
 useradd apache
-smbpasswd -a apache(密码:123)
-pdbedit -a apache(密码:123)
-pdbedit -L
+smbpasswd -a apache(密码:123)
+pdbedit -a apache(密码:123)
+pdbedit -L
 
-mkdir /data/web_data
+mkdir /data/web_data
 cd /data/web_data/
 
 ```
@@ -174,7 +174,7 @@ cd /data/web_data/
 setenforce 0
 firewall-cmd --zone=public --add-service=samba --permanent
 firewall-cmd --reload
-systemctl start smb
+systemctl start smb
 ```
 
 **客户端**
@@ -183,6 +183,6 @@ systemctl start smb
 ```bash
 yum -y install samba
 
-mkdir /data/web_data
+mkdir /data/web_data
 mount -t cifs -o username=apache,password='123' //192.168.xx+1.xx/webdata /data/web_data
 ```

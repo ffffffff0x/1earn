@@ -1208,6 +1208,14 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	resolvconf -u
 	```
 
+- 如果可以 ping 通 ip，但 ping 不通域名, 那么有以下几种原因
+	- 没有配置好 /etc/resolv.conf
+	- /etc/nsswitch.conf 文件删除 DNS 解析记录
+		```bash
+		grep hosts /etc/nsswitch.conf
+		# 一般只有 files host 如果没有就添加 host
+		```
+
 **修改 IP**
  - Ubuntu
 	```bash
@@ -1272,6 +1280,7 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 	```
 	```bash
 	service network restart
+	systemctl restart NetworkManager.service
 	systemctl restart NetworkManager	# 重启网络管理
 	systemctl enable NetworkManager
 	```
@@ -1978,6 +1987,17 @@ curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
 ```
 
+### opkg
+
+> opkg 工具 (一个 ipkg 变种) 是一个用来从本地软件仓库或互联网软件仓库上下载并安装 OpenWrt 软件包的轻量型软件包管理器。
+
+**基础使用**
+```bash
+opkg update			# 更新可用软件包列表
+opkg install xxxx	# 安装一个或多个软件包
+opkg remove xxxx	# 移除一个或多个软件包
+```
+
 ### 常用软件
 
 **bash-insulter**
@@ -2324,10 +2344,10 @@ getenforce							# 查看 selinux 状态
 /usr/sbin/sestatus					# 查看安全策略
 ```
 
-**关闭 SELinux**
+**关闭 SELinux**
 - 需要重启
 	```vim
-	vim /etc/selinux/config
+	vim /etc/selinux/config
 
 	SELINUX=disabled
 	```

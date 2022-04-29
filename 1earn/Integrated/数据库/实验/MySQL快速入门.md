@@ -14,7 +14,7 @@
 - 一条记录称为一个元组。
 - 用于构建数据库的脚本称为架构。
 
-# 构建架构
+## 构建架构
 
 要构建数据库，使用 `CREATE TABLE <表名>`  命令，然后定义每个字段的名称和数据类型。数据库使用 `VARCHAR(n)` （字符串）和 `INT(n)` （整数），其中 n 表示可以存储的值的长度。例如 `INT(2)` 可以是 01。
 
@@ -38,7 +38,7 @@ CREATE TABLE dbo_courses
 
 `NOT NULL` 意味着字段不能为空，`AUTO_INCREMENT` 意味着当一个新的元组被添加时，ID 号将自动生成，是对先前存储的 ID 号加 1，以强化各实体之间的完整参照性。 `PRIMARY KEY` 是每个表的惟一标识符属性。这意味着每个元组都有自己的不同的标识。
 
-# 关系作为一种约束
+## 关系作为一种约束
 
 就目前来看，这两张表格是独立存在的，没有任何联系或关系。要连接它们，必须标识一个外键。
 
@@ -56,7 +56,7 @@ FOREIGN KEY (course_studied) REFERENCES dbo_courses(course_id);
 
 使用 `CONSTRAINT` 命令实际上并不是必要的，但这是一个好习惯，因为它意味着约束可以被命名并且使维护更容易。现在数据库已经完成了，是时候添加一些数据了。
 
-# 将数据添加到数据库
+## 将数据添加到数据库
 
 `INSERT INTO <表名>`  是用于直接选择要添加哪些属性（即字段）数据的命令。
 
@@ -83,7 +83,7 @@ VALUES(004,'student4',003);
 
 现在数据库架构已经完成并添加了数据，现在是时候在数据库上运行查询了。
 
-# 查询
+## 查询
 
 查询遵循使用以下命令的集合结构：
 ```sql
@@ -111,5 +111,8 @@ SELECT * FROM dbo_courses
 SELECT a.*,b.course_name FROM dbo_students a , dbo_courses b WHERE a.course_studied = b.course_id ;
 ```
 
-**Source & Reference**
+---
+
+## Source & Reference
+
 - [SQL 入门](https://linux.cn/article-9537-1.html)

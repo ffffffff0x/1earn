@@ -2,7 +2,7 @@
 
 ---
 
-# Vary 的作用
+## Vary 的作用
 
 Vary 一般出现在 HTTP 请求的响应信息头部，比如像下面这样
 ```
@@ -64,5 +64,6 @@ Vary 存在于响应头中，它的内容来自于请求头中相关字段，Var
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [HTTP请求的响应头部Vary的理解](https://blog.csdn.net/qq_29405933/article/details/84315254)

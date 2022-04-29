@@ -2,12 +2,28 @@
 
 ---
 
+## 什么是 Redis
+
+Redis是一个开源、支持网络、基于内存、分布式、可选持久性的键值对存储数据库。
+
+Redis 与其他 key - value 缓存产品有以下三个特点：
+- Redis 支持数据的持久化，可以将内存中的数据保持在磁盘中，重启的时候可以再次加载进行使用。
+- Redis 不仅仅支持简单的 key-value 类型的数据，同时还提供 list，set，zset，hash 等数据结构的存储。
+- Redis 支持数据的备份，即 master-slave 模式的数据备份。
+
+---
+
 ## 安装
 
-```bash
-bash f8x-dev -redis3
+**使用包管理器或者编译安装**
 
-bash f8x-dev -redis5
+- [Redis安装](../../Linux/Power-Linux.md#redis)
+
+**通过 docker 搭建环境**
+
+```bash
+wget -O f8x-dev https://f8x.io/dev
+bash f8x-dev -redis
 ```
 
 ---
@@ -58,7 +74,7 @@ redis-server /etc/redis.conf
 
 可以修改 redis 配置文件 /etc/redis.conf 中添加本地地址来解决，修改完之后重新启动 redis 服务，可以发现可以连接了
 ```
-bind 127.0.0.1 192.168.245.128
+bind 127.0.0.1 192.168.1.1
 ```
 
 **常见报错**
@@ -116,7 +132,7 @@ redis 127.0.0.1:6379> SAVE
 CONFIG GET dir
 ```
 
-### Redis 安全
+### Redis 安全配置
 
 可以通过 redis 的配置文件设置密码参数，这样客户端连接到redis服务就需要密码验证。可以通过以下命令查看是否进行了密码设置
 ```

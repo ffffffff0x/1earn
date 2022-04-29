@@ -23,15 +23,15 @@
 
 ---
 
-# 基础配置
+## 基础配置
 
 - [kali基础配置](https://github.com/ffffffff0x/AboutSecurity/blob/master/VPS/Kali.md)
 
 ---
 
-# 软件配置
+## 软件配置
 
-## apt
+### apt
 
 **换源**
 ```bash
@@ -63,7 +63,7 @@ apt update && apt -y full-upgrade
 [ -f /var/run/reboot-required ] && reboot -f
 ```
 
-## 谷歌输入法
+### 谷歌输入法
 
 ```bash
 apt-get update && apt-get upgrade
@@ -74,7 +74,7 @@ reboot
 # 所有应用程序中选中 fcitx 输入法配置即可
 ```
 
-## ncat
+### ncat
 
 ```bash
 apt install -y ncat
@@ -82,7 +82,7 @@ update-alternatives --config nc
 1
 ```
 
-## Nessus
+### Nessus
 
 以安装 sc 版本为例,访问 https://www.tenable.com/downloads/nessus 下载安装包
 
@@ -120,7 +120,7 @@ docker run -d -p 3443:3443 -p 8834:8834  --name bobohacker -it yakoazz/bobohacke
 
 ---
 
-## rdesktop
+### rdesktop
 
 kali 自带
 ```bash
@@ -129,7 +129,7 @@ rdesktop <目标IP>
 
 ---
 
-# 显示配置
+## 显示配置
 
 **切换 undercover 模式**
 ```bash
@@ -170,11 +170,11 @@ Kali 最新版本 2021 的默认 shell 是 zsh，如果要回退到 bash。可�
 
 ---
 
-# 设备配置
+## 设备配置
 
-## 虚拟机驱动
+### 虚拟机驱动
 
-### vmtools
+#### vmtools
 
 ```bash
 tar zxvf vmtools.tar.gz -C /root
@@ -182,7 +182,7 @@ cd /root/wmtools/
 ./vmware-install.pl
 ```
 
-### virtualbox additions
+#### virtualbox additions
 
 ```bash
 mkdir /media/VBox
@@ -195,8 +195,8 @@ sh VBoxLinuxAdditions.run
 
 ---
 
-## 英伟达显卡驱动(物理机)
-### 官方教程
+### 英伟达显卡驱动(物理机)
+#### 官方教程
 
 网址 : https://www.kali.org/docs/general-use/install-nvidia-drivers-on-kali-linux/
 
@@ -228,7 +228,7 @@ glxinfo | grep -i "direct rendering"
 direct rendering: Yes   # 出现 yes 成功
 ```
 
-### 第二种方法
+#### 第二种方法
 
 ```bash
 apt-get update
@@ -254,7 +254,7 @@ cd /usr/share/oclhashcat-plus/
 
 ---
 
-## 配置网卡
+### 配置网卡
 
 - WM Ware(开机后)
 
@@ -275,7 +275,7 @@ cd /usr/share/oclhashcat-plus/
 
 ---
 
-## 配置蓝牙
+### 配置蓝牙
 
 查看usb设备
 ```bash
@@ -295,7 +295,7 @@ hciconfig hci0		# 查看属性
 
 ---
 
-# 用户管理
+## 用户管理
 
 **kali 2020 版后使用 root 账号**
 
@@ -306,7 +306,7 @@ sudo passwd root
 
 ---
 
-# 常见报错处理
+## 常见报错处理
 
 - **W: 校验数字签名时出错。此仓库未被更新，所以仍然使用此前的索引文件。GPG 错误**
     ```

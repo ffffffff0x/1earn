@@ -1231,3 +1231,73 @@ def tamper(payload, **kwargs):
 **相关文章**
 - [sqlmap注入access数据库](https://www.jianshu.com/p/258d7014f84c)
 - [使用SQLMap进行Access注入](https://4hou.win/wordpress/?p=17495)
+
+---
+
+## API接口
+
+**相关文章**
+- [SQLMAPAPI-一个被遗忘的API接口《第一章：初识SQLMAP API和命令行中调用》](https://mp.weixin.qq.com/s/8Im5PxG8j1lKh4jefs9d3A)
+- [SQLMAPAPI-一个被遗忘的API接口《第二章：从代码层面去分析API接口的强大》](https://mp.weixin.qq.com/s/v-VccG2Tay5A3L_v0SnxoA)
+
+**使用方式**
+```bash
+python3 sqlmapapi.py -s -H 0.0.0.0  # 开启服务端,监听本地 8775 端口
+```
+
+开启服务端后我们可以访问 url 进行调用，也可以在命令行进行调用
+```bash
+python3 sqlmapapi.py -c             # 默认连接本机的 api
+```
+
+没有问题就可以进入我们的命令行了
+
+![](../../../assets/img/Security/安全工具/Sqlmap/1.png)
+
+命令行下可以使用以下命令
+```
+help           显示帮助信息
+new ARGS       开启一个新的扫描任务 (e.g. 'new -u "http://testphp.vulnweb.com/artists.php?artist=1"')
+use TASKID     切换taskid (e.g. 'use c04d8c5c7582efb4')
+data           获取当前任务返回的数据
+log            获取当前任务的扫描日志
+status         获取当前任务的扫描状态
+option OPTION  获取当前任务的选项
+options        获取当前任务的所有配置信息
+stop           停止当前任务
+kill           杀死当前任务
+list           显示所有任务列表
+version        查看版本信息
+flush          清空所有任务
+exit           退出客户端
+```
+
+开始扫描新的任务
+```bash
+new -u 'http://testphp.vulnweb.com/artists.php?artist=1'
+```
+
+![](../../../assets/img/Security/安全工具/Sqlmap/2.png)
+
+可以看到已经切换到我们这个任务的 ID.
+
+每一个任务只能是一个单独测试点，每个任务对应一个 ID
+
+创建成功后就会这样，之后我们可以通过输入 status 来获取当前的一个运行情况
+```
+status
+```
+
+![](../../../assets/img/Security/安全工具/Sqlmap/3.png)
+
+SQLMAP API 扫描完成后，不会进行主动推送完成信息
+
+returncode 如果返回的是 0，那么我们的注入就是成功的。我们可以输入 data 来获取我们的详细的信息。
+
+```
+data
+```
+
+![](../../../assets/img/Security/安全工具/Sqlmap/4.png)
+
+返回的数据都是 JSON 格式的数据

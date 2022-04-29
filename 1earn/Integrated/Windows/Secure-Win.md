@@ -8,7 +8,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * **[文件](#文件)**
     * [可疑文件](#可疑文件)
@@ -35,8 +35,8 @@
 
 ---
 
-# 文件
-## 可疑文件
+## 文件
+### 可疑文件
 
 - 回收站
 - 浏览器下载目录
@@ -58,7 +58,7 @@ findstr /s /m /I “UploadFiles” *.log
 
 ---
 
-# 系统
+## 系统
 
 开启组策略编辑器 `gpedit.msc`
 
@@ -68,7 +68,7 @@ findstr /s /m /I “UploadFiles” *.log
 
 系统信息: cmd 输入 `systeminfo`
 
-## 开机启动
+### 开机启动
 
 开始-运行，输入 `msconfig`
 
@@ -102,7 +102,7 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\RunonceEx
     schtasks
     ```
 
-## 账号
+### 账号
 
 开始-运行，输入 `lusrmgr.msc`
 
@@ -130,7 +130,7 @@ REG query HKEY_LOCAL_MACHINE/SAM/SAM/Domains/Account/Users
 - Microsoft本地管理员密码解决方案（LAPS）
     - 参考文章:[Microsoft Local Administrator Password Solution (LAPS)](https://adsecurity.org/?p=1790)
 
-## 进程
+### 进程
 
 开始-运行，输入 `msinfo32` ，依次点击“软件环境→正在运行任务”就可以查看到进程的详细信息，比如进程路径、进程 ID、文件创建日期、启动时间等。
 
@@ -170,7 +170,7 @@ Get-WmiObject -Query "select * from win32_service where name='WinRM'" -ComputerN
 
 如果想清除假冒令牌，重启服务器即可。
 
-## 注册表
+### 注册表
 
 开始-运行，输入 `regedit`
 
@@ -182,9 +182,9 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 
 ---
 
-## 日志
+### 日志
 
-### 系统日志
+#### 系统日志
 
 系统日志基本知识见 [日志](./笔记/日志.md)
 
@@ -202,7 +202,7 @@ REG query HKLM\Software\Microsoft\Windows\CurrentVersion\Run\ HKEY_CLASSES_ROOT\
 **Windows Defender 日志**
 - Windows Defender 应用程序使用 `MpCmdRun.log` 和 `MpSigStub.log` 两个日志文件，在 `C:\Windows\Temp` 文件夹下。该文件夹为默认的 SYSTEM 账户临时文件夹，但是每一个用户都拥有写权限。Administrators （管理员）和 SYSTEM 账户拥有这个文件夹的所有权限，一般用户甚至没有读的权限。
 
-### 日志工具
+#### 日志工具
 
 **Sysmon**
 - [Sysmon](../../Security/工具/Sysmon.md)
@@ -272,7 +272,7 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 
 项目地址 : https://github.com/JPCERTCC/LogonTracer
 
-### 第三方程序日志
+#### 第三方程序日志
 
 **web日志**
 - 内容见 [取证](../../Security/笔记/BlueTeam/取证.md#中间件服务器程序日志) 中间件服务器程序日志部分
@@ -283,15 +283,15 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 **应用程序日志**
 - 内容见 [取证](../../Security/笔记/BlueTeam/取证.md#应用程序取证) 应用程序取证部分
 
-## 安全设置
+### 安全设置
 
-### 安全策略
+#### 安全策略
 
 开始-运行，输入 `secpol.msc`
 
-## 设备
+### 设备
 
-### 磁盘管理
+#### 磁盘管理
 
 - win7
 
@@ -303,9 +303,9 @@ Python 开发的解析 windows 日志文件的工具，可采用手动添加文�
 
 ---
 
-# 网络
+## 网络
 
-## 端口
+### 端口
 
 查看目前的网络连接，定位可疑的 ESTABLISHED
 ```
@@ -332,7 +332,7 @@ tasklist  | findstr “PID”
 
 ---
 
-## RDP
+### RDP
 
 ```
 quser               显示有关客户端服务器上用户远程桌面会话主机的信息
@@ -348,7 +348,7 @@ qprocess            显示有关在远程桌面会话主机服务器上运行的
 
 ---
 
-## DNS
+### DNS
 
 很多时候需要通过某个恶意域名来判断主机失陷情况。
 
@@ -408,7 +408,7 @@ windows 8.1 和 windows server 2012 R2 及以上版本的操作系统，可以�
 
 ---
 
-## windows系统共享
+### windows系统共享
 
 参考文章: [关键证据检索提取-系统共享检查](https://mp.weixin.qq.com/s/5nVnXMTPIpAu59bycwu5Iw)
 
@@ -479,7 +479,7 @@ reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Param
 
 ---
 
-## 防火墙
+### 防火墙
 
 **查询所有防火墙配置**
 
@@ -501,7 +501,7 @@ netsh advfirewall firewall show rule name=all
 
 ---
 
-# 防御密码抓取
+## 防御密码抓取
 
 **WDigest 禁用缓存**
 
@@ -610,13 +610,13 @@ Add-ADGroupMember -Identity 'Protected Users' -Members administrator
 
 ---
 
-# 防御Responder欺骗
+## 防御Responder欺骗
 
-**禁用NetBIOS服务**
+**禁用 NetBIOS 服务**
 
 ![](../../../assets/img/Integrated/Windows/Secure-Win/1.png)
 
-**禁用LLMNR**
+**禁用 LLMNR**
 
 ![](../../../assets/img/Integrated/Windows/Secure-Win/2.png)
 

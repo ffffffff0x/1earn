@@ -10,7 +10,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * [认证绕过](#认证绕过)
     * [未授权访问](#未授权访问)
@@ -66,12 +66,12 @@
 
 ---
 
-# 认证绕过
+## 认证绕过
 
 **相关资源**
 - [任意用户密码重置的10种常见姿势](https://www.jianshu.com/p/63c005f9ce83)
 
-## 未授权访问
+### 未授权访问
 
 非授权访问是指用户在没有通过认证授权的情况下能够直接访问需要通过认证才能访问到的页面或文本信息.可以尝试在登录某网站前台或后台之后,将相关的页面链接复制于其他浏览器或其他电脑上进行访问,看是否能访问成功.
 
@@ -81,7 +81,7 @@
 
 ---
 
-## 身份认证绕过
+### 身份认证绕过
 
 **相关文章**
 - [一个FW-TOKEN鉴权绕过漏洞](https://blog.m1kh.com/index.php/archives/730/)
@@ -140,7 +140,7 @@
 
 ---
 
-## 密码重置
+### 密码重置
 
 **相关文章**
 - [换一种姿势挖掘任意用户密码重置漏洞](https://mp.weixin.qq.com/s/asnyHi_CfkRVBtB1Cd1i7Q)
@@ -291,7 +291,7 @@
 
 ---
 
-## 验证码突破
+### 验证码突破
 
 **相关文章**
 - [挖洞技巧:绕过短信&邮箱轰炸限制以及后续](https://www.secpulse.com/archives/67077.html)
@@ -333,7 +333,7 @@
 
 ---
 
-## Ticket_Trick
+### Ticket_Trick
 
 **相关案例**
 - [How I hacked hundreds of companies through their helpdesk](https://medium.com/intigriti/how-i-hacked-hundreds-of-companies-through-their-helpdesk-b7680ddc2d4c)
@@ -341,9 +341,9 @@
 
 ---
 
-# 授权绕过
+## 授权绕过
 
-## 越权测试
+### 越权测试
 
 越权漏洞的成因主要是因为开发人员在对数据进行增、删、改、查询时对客户端请求的数据过分相信而遗漏了权限的判定.
 
@@ -390,7 +390,7 @@
 
 ---
 
-## 执行顺序绕过
+### 执行顺序绕过
 
 1. 部分网站逻辑可能是先 A 过程后 B 过程然后 C 过程最后 D 过程.
 
@@ -402,7 +402,7 @@
 
 ---
 
-## race_condition
+### race_condition
 
 **相关文章**
 - [Race Condition in Web Applications](https://lab.wallarm.com/race-condition-in-web-applications/)
@@ -410,9 +410,9 @@
 
 ---
 
-# 限制绕过
+## 限制绕过
 
-## IP限制绕过
+### IP限制绕过
 
 如果登录系统设置了 IP 地址白名单,我们可以通过修改 http 头字段伪造 IP 地址
 - [Fuzz_head](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/http/Fuzz_head.txt)
@@ -425,7 +425,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-## 时间限制绕过
+### 时间限制绕过
 
 **时间刷新缺陷**
 - 案例:
@@ -437,7 +437,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-## JS绕过
+### JS绕过
 
 **相关案例**
 - [某搞笑管理系统逻辑漏洞的挖掘](https://www.t00ls.net/thread-55395-1-2.html)
@@ -452,7 +452,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-# 接口利用
+## 接口利用
 
 **相关文章**
 - [安全建设-攻防思路与实践（一）](https://mp.weixin.qq.com/s/mnHGLZ_e3tWkxCL-DPAAvQ)
@@ -464,7 +464,7 @@ wget -d --header="Host: localhost" https://target/
 - [inonshk/31-days-of-API-Security-Tips](https://github.com/inonshk/31-days-of-API-Security-Tips)
 - [31 Days of API Security](https://docs.google.com/spreadsheets/d/1jn3JnWzQFZW41gKo5Fhxwf2ke2w-pvrpCGhBmKhyIBE/edit#gid=0)
 
-## BOLA
+### BOLA
 
 > Broken Object Level Authorization
 
@@ -545,7 +545,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-## 数据篡改
+### 数据篡改
 
 **商品编号更改**
 
@@ -577,7 +577,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-## 重放攻击
+### 重放攻击
 
 在短信、邮件调用业务或生成业务数据环节中(类:短信验证码,邮件验证码,订单生成,评论提交等),对其业务环节进行调用(重放)测试.如果业务经过调用(重放)后被多次生成有效的业务或数据结果.
 
@@ -605,7 +605,7 @@ wget -d --header="Host: localhost" https://target/
 
 ---
 
-## DoS
+### DoS
 
 **相关文章**
 - [Web层面上的那些拒绝服务攻击(DoS)](https://www.sec-in.com/article/445)

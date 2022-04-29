@@ -82,9 +82,11 @@ User options -Display - Character Sets,选择 UTF-8 编码
 - 响应包设置
     - Proxy - Options - Intercept Server Responses - Add
 
-**自动替换 cookie**
+**自动替换数据包中的内容**
 
 Proxy - Options - Match and Replace - Add
+
+![](../../../assets/img/Security/安全工具/BurpSuite/53.png)
 
 **不断提示连接超时**
 
@@ -110,9 +112,9 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 
 ---
 
-## 插件
+### 插件
 
-### 信息收集
+#### 信息收集
 
 - [x41sec/BeanStack](https://github.com/x41sec/beanstack) - 使用堆栈跟踪进行 Java 指纹识别,实用性一般
 - [bit4woo/domain_hunter_pro](https://github.com/bit4woo/domain_hunter_pro) - 信息收集神器
@@ -128,7 +130,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - Active Scan++ - 主动扫描器,其实效果不是很理想
 - [gh0stkey/CaA](https://github.com/gh0stkey/CaA) - BurpSuite 流量收集和分析插件
 
-### 功能增强
+#### 功能增强
 
 - [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar) - 顾名思义,这是 burp 中的 hackbar
 - [bit4woo/knife](https://github.com/bit4woo/knife) - 添加一些右键菜单让 burp 用起来更顺畅
@@ -161,7 +163,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [federicodotta/Brida](https://github.com/federicodotta/Brida) - 用于 Burp Suite 与 Frida 协作的插件
 - [hvqzao/burp-wildcard](https://github.com/hvqzao/burp-wildcard) - Burp extension intended to compact Burp extension tabs by hijacking them to own tab.
 
-### 漏洞检测
+#### 漏洞检测
 
 - Authz - 快速探测越权
 - [wuntee/BurpAuthzPlugin](https://github.com/wuntee/BurpAuthzPlugin) - 探测越权漏洞的插件
@@ -172,6 +174,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [API-Security/APIKit](https://github.com/API-Security/APIKit) - Discovery, Scan and Audit APIs Toolkit All In One.
 - [wagiro/BurpBounty](https://github.com/wagiro/BurpBounty) - Burp Bounty (Scan Check Builder in BApp Store) is a extension of Burp Suite that allows you, in a quick and simple way, to improve the active and passive scanner by means of personalized rules through a very intuitive graphical interface.
     - [Sy3Omda/burp-bounty](https://github.com/Sy3Omda/burp-bounty) - Burp Bounty is extension of Burp Suite that improve Burp scanner.
+- [smxiazi/xia_sql](https://github.com/smxiazi/xia_sql) - xia SQL (瞎注) burp 插件 ，在每个参数后面填加一个单引号，两个单引号，一个简单的判断注入小插件。
 
 **shiro**
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件
@@ -186,13 +189,13 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 **Log4j**
 - [whwlsfb/Log4j2Scan](https://github.com/whwlsfb/Log4j2Scan) - Log4j2 远程代码执行漏洞，BurpSuite被动扫描插件。
 
-### 插件开发
+#### 插件开发
 
 - [rsrdesarrollo/generator-burp-extension](https://github.com/rsrdesarrollo/generator-burp-extension) - 帮助 burp 插件开发的工具
 
 ---
 
-# 安装及维护
+## 安装及维护
 
 **linux**
 
@@ -206,7 +209,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 
 - [macOS 下如何优雅的使用 Burp Suite](https://www.sqlsec.com/2019/11/macbp.html)
 
-## 证书配置
+### 证书配置
 
 对于 HTTPS 的包需要在浏览器中导入证书进行解密
 
@@ -230,11 +233,11 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 
 ---
 
-# Target
+## Target
 
 Burp Target 组件主要包含站点地图、目标域、Target 工具三部分组成,他们帮助渗透测试人员更好地了解目标应用的整体状况、当前的工作涉及哪些目标域、分析可能存在的攻击面等信息
 
-## Site map
+### Site map
 
 Site Map 的左边为访问的 URL,按照网站的层级和深度,树形展示整个应用系统的结构和关联其他域的 url 情况;右边显示的是某一个 url 被访问的明细列表,共访问哪些 url,请求和应答内容分别是什么,都有着详实的记录. 基于左边的树形结构,我们可以选择某个分支,对指定的路径进行扫描和抓取.
 
@@ -292,7 +295,7 @@ Site Map 1 我们默认为当前会话.
 
     在使用攻击面分析功能时,需要注意,此功能主要是针对站点地图中的请求 URL 进行分析,如果某些 URL 没有记录,则不会被分析到.同时,在实际使用中,存在很多站点使用伪静态,如果请求的 URL 中不带有参数,则分析时无法区别,只能当做静态 URL 来分析.
 
-## Scope
+### Scope
 
 Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个产品进行渗透测试时,可以通过域名或者主机名去限制拦截内容,这里域名或主机名就是我们说的作用域;如果我们想限制得更为细粒度化,比如,你只想拦截 login 目录下的所有请求,这时我们也可以在此设置,此时,作用域就是目录.总体来说,Target Scope 主要使用于下面几种场景中:
 - 限制站点地图和 Proxy 历史中的显示结果
@@ -315,9 +318,9 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 
 ---
 
-# Proxy
+## Proxy
 
-## intercept
+### intercept
 
 **右键--Don't intercept requests**
 
@@ -331,7 +334,7 @@ Target Scope 中作用域的定义比较宽泛,通常来说,当我们对某个�
 
 解码：ctrl+shift+u
 
-## Options
+### Options
 
 **Proxy listeners**
 
@@ -419,17 +422,17 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 
 ---
 
-# Intruder
+## Intruder
 
 `爆破模块`
 
 它的工作原理是:Intruder 在原始请求数据的基础上,通过修改各种请求参数,以获取不同的请求应答.每一次请求中,Intruder 通常会携带一个或多个有效攻击载荷 (Payload),在不同的位置进行攻击重放,通过应答数据的比对分析来获得需要的特征数据.
 
-## Target
+### Target
 
 目标设定
 
-## Positions
+### Positions
 
 确定要爆破的参数,爆破类型
 
@@ -443,7 +446,7 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 
 - 集束炸弹模式 (Cluster bomb)  它可以使用多组 Payload 集合,在每一个不同的 Payload 标志位置上 (最多 20 个) ,依次遍历所有的 Payload.它与草叉模式的主要区别在于,执行的 Payload 数据 Payload 组的乘积.举例来说,如果有两个 Payload 标志位置,第一个 Payload 值为 A 和 B,第二个 Payload 值为 C 和 D,则发起攻击时,将共发起四次攻击,第一次使用的 Payload 分别为 A 和 C,第二次使用的 Payload 分别为 A 和 D,第三次使用的 Payload 分别为 B 和 C,第四次使用的 Payload 分别为 B 和 D.
 
-## Payloads
+### Payloads
 
 **Payload Sets 配置 payload 规则**
 
@@ -644,7 +647,7 @@ SSL 直连的设置主要用于指定的目的服务器直接通过 SSL 连接,�
 
 配置字典进行 URL 编码
 
-## Options
+### Options
 
 **请求消息头设置 (Request Headers)**
 
@@ -684,7 +687,7 @@ Match type 表示匹配表达式还是简单的字符串,Case sensitive match �
 
 ---
 
-# Repeater
+## Repeater
 
 `中继模块`
 
@@ -716,7 +719,7 @@ Burp Repeater 作为 Burp Suite 中一款手工验证 HTTP 消息的测试工具
 
 ---
 
-# Sequencer
+## Sequencer
 
 `随机数分析`
 
@@ -790,7 +793,7 @@ Burp Sequencer 作为一款随机数分析的工具,在分析过程中,可能会
 
 ---
 
-# Decoder
+## Decoder
 
 `编码解码工具`
 
@@ -802,7 +805,7 @@ Burp Decoder 的功能比较简单,作为 Burp Suite 中一款编码解码工具
 
 ---
 
-# Comparer
+## Comparer
 
 `差异比对模块`
 
@@ -823,7 +826,7 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 
 ---
 
-# Extender
+## Extender
 
 `插件模块`
 
@@ -841,7 +844,7 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 
 ---
 
-# Project options
+## Project options
 
 **Macro**
 
@@ -854,7 +857,7 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 
 ---
 
-# User options
+## User options
 
 **Plaform Authentication**
 
@@ -880,7 +883,7 @@ Burp Comparer 在 Burp Suite 中主要提供一个可视化的差异比对功能
 
 ---
 
-# 通过 proxifier 分流 burp
+## 通过 proxifier 分流 burp
 
 在渗透测试时，我们常遇到出现浏览器自己本身的包，以及一些不相干的网站流量的情况，如何避免，或者一劳永逸的解决呢？
 
@@ -932,3 +935,27 @@ google 命中规则，发向 1080
 freebug 未命中规则，发向 8080
 
 完美, 一劳永逸的解决了所有问题, 更换 burp 版本也不受影响
+
+---
+
+## linux 命令行抓包
+
+按教程测试一些poc，突然有抓脚本流量的需求，想到linux可以用 proxychains 把流量代理到 burp,测试下
+```
+vim /etc/proxychains.conf
+
+http 192.168.1.xxx 8080
+```
+改成宿主机的地址,端口指向 burp 的端口
+
+![](../../../assets/img/Security/安全工具/BurpSuite/50.webp)
+
+在 burp 里修改默认监听的网卡,不然虚拟机无法访问到
+
+运行脚本测试下
+
+![](../../../assets/img/Security/安全工具/BurpSuite/51.png)
+
+可以在 burp 中查看相应的流量了
+
+![](../../../assets/img/Security/安全工具/BurpSuite/52.png)

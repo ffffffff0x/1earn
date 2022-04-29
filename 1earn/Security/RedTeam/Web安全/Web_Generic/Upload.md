@@ -8,6 +8,10 @@
 
 ---
 
+**描述**
+
+文件上传过程中，通常因为未校验上传文件后缀类型，导致用户可上传一些 webshell 文件。
+
 **相关文章**
 - [简单粗暴的文件上传漏洞](https://paper.seebug.org/560/)
 - [BookFresh Tricky File Upload Bypass to RCE](https://secgeek.net/bookfresh-vulnerability/)
@@ -38,7 +42,7 @@
 
 ---
 
-# 检测方法
+## 检测方法
 
 waf、rasp 对上传文件的检测方法有这几种
 - 后缀检测(黑白名单)
@@ -48,7 +52,7 @@ waf、rasp 对上传文件的检测方法有这几种
 
 ---
 
-# 利用方式
+## 利用方式
 
 - 网站脚本文件
 
@@ -79,28 +83,32 @@ waf、rasp 对上传文件的检测方法有这几种
         <x>&xxe;</x>
         ```
     4. 重新压缩为 zip 文件，更改后缀为 xlsx。上传 xlsx 文档到目标服务器，如果没有禁用外部实体，就会存在 XXE 漏洞，burp 接收到请求。
+- 路径穿越写 shell
+
+    1. 例如可以上传文件名为 ../../../../var/spool/cron/root ,通过这种方式执行命令
+    2. 如果做了白名单后缀,只允许 jpg ,可以传到 /etc/cron.d/ 目录下,这里文件可以任意后缀命名,上传文件名为 …/…/…/…/…/…/etc/cron.d/test.jpg 绕过对应的安全检查
 
 ---
 
-# Bypass
+## Bypass
 
-## 信息泄露
+### 信息泄露
 
 - 云平台 API key 泄露
 
-## 解析漏洞
+### 解析漏洞
 
 - IIS 解析漏洞
 - Nginx 解析漏洞
 - Apache 解析漏洞
 - CGI 解析漏洞
 
-## 恶意上传
+### 恶意上传
 
 - zip、mp4 占用资源
 - HTML XSS
 
-## 后缀检测
+### 后缀检测
 
 - 后缀名Fuzz
     - [AboutSecurity/Dic/Web/Upload/](https://github.com/ffffffff0x/AboutSecurity/tree/master/Dic/Web/Upload)
@@ -198,7 +206,7 @@ waf、rasp 对上传文件的检测方法有这几种
 
 ---
 
-## 文件内容检测
+### 文件内容检测
 
 - 免杀
 - 添加图片头
@@ -208,27 +216,27 @@ waf、rasp 对上传文件的检测方法有这几种
 
 ---
 
-## 恶意覆盖
+### 恶意覆盖
 
 - 覆盖资源文件造成全局 XSS
 - 覆盖配置文件修改配置
 
 ---
 
-## Content-Type 检测
+### Content-Type 检测
 
 - Content-Type Fuzz
     - [Fuzz_content-type.txt](https://github.com/ffffffff0x/AboutSecurity/blob/master/Dic/Web/Upload/Fuzz_content-type.txt)
 
 ---
 
-## 后端二次渲染
+### 后端二次渲染
 
 - 图片马
 
 ---
 
-## 访问拦截
+### 访问拦截
 
 - 路径
     - `xxx.com/test/img/1.png/../../shell.php`
@@ -237,6 +245,13 @@ waf、rasp 对上传文件的检测方法有这几种
 
 ---
 
-## 软链接
+### 软链接
 
 如果攻击者上传了一个软链文件，软链描述对应的是 /etc/passwd 的话，攻击者利用程序可以直接读取到服务器的关键文件内容
+
+---
+
+## 修复方案
+
+* 使用白名单校验上传文件类型、大小限制
+* 随机重命名上传的文件

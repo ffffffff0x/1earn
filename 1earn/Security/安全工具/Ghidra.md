@@ -14,13 +14,13 @@
 
 ---
 
-# 简介
+## 简介
 
 Ghidra 是由美国国家安全局（NSA）研究部门开发的软件逆向工程（SRE）套件，用于支持网络安全任务。包括一套功能齐全的高端软件分析工具，使用户能够在各种平台 (Windows、Mac OS 和 Linux) 分析编译后的代码。功能包括反汇编，汇编，反编译，绘图和脚本，以及数百个其他功能。和 IDA 一样，Ghidra 支持各种处理器指令集和可执行格式，用户还可以使用公开的 API 开发自己的 Ghidra 插件和脚本。不同的是，IDA 是收费的，而 Ghidra 是免费开源的。
 
 ---
 
-# 环境配置
+## 环境配置
 
 Ghidra 的压缩包可以在 [官网](https://ghidra-sre.org/) 上下载到，截至目前最新版本为 9.2，官方推荐使用的 JDK 版本为 11+。配置好 JAVA 环境后，解压压缩包即可。如电脑上有多个 JAVA 环境，可以在 Ghidra 文件夹下的 support/launch.properties 文件中修改 JAVA_HOME_OVERRIDE 的值。
 
@@ -32,7 +32,7 @@ Ghidra 启动示意图：
 
 ---
 
-# 基础介绍
+## 基础介绍
 
 IDA 只要把要分析的文件拖进去即可，而 Ghidra 则不同，Ghidra 是基于项目 (Project) 设计的，个人感觉这一点应该是为了方便团队协作而设计的。要开始使用 Ghidra 需先创建一个项目，点击 File->New Project->Non-Shared Project->next->选择项目文件夹并填写项目名称 ->Finish。
 
@@ -62,7 +62,7 @@ Ghidra 在加载完成后，会显示该文件的基础信息，如架构、大�
 
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/7.png)
 
-## Listing
+### Listing
 
 也就是中间那块最大的窗口，我们一般把这样的窗口叫做反汇编窗口，主要用来展示地址、opcode、汇编语句等。通过鼠标滚轮或者右边的滑动条来控制上下移动。
 
@@ -78,7 +78,7 @@ Ghidra 在加载完成后，会显示该文件的基础信息，如架构、大�
 
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/10.png)
 
-## Program Tree
+### Program Tree
 
 这个位于左上角的窗口，主要显示了程序头部以及各个段。我们可以在相应的文件夹上右击 ->Create Folder/Create Fragment，来创建文件夹或者分段。这个功能在用来分析大型项目的时候，效果比较显著。同样的，在文件夹上右击还能够进行排序 (Sort) 功能，提供了 by Address、by Name 两种功能可供选择。
 
@@ -86,7 +86,7 @@ Ghidra 在加载完成后，会显示该文件的基础信息，如架构、大�
 
 我们可以通过选中 Listing 窗口中的代码块拖动到该窗口中来创建分段。也可以在不想要的时候，将相应的分段或者文件夹删除。需要注意的是，只有当删除的分段 / 文件夹包含于其他分段 / 文件夹中或者删除的分段 / 文件夹为空时，才能成功删除。
 
-## Symbol Tree
+### Symbol Tree
 
 符号树窗口位于左侧的中间位置，主要显示导入表 (Imports)、导出表(Exports)、函数(Function)、标签(Labels)、类(Classes) 以及命名空间(Namespaces)。
 
@@ -95,7 +95,7 @@ Ghidra 在加载完成后，会显示该文件的基础信息，如架构、大�
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/12.png)
 
 
-## Data Type Manager
+### Data Type Manager
 
 数据类型管理器窗口位于左下角，用来展示各种数据类型。可以让用户定位、组织数据类型，也能够将数据类型应用于程序。Ghidra 的一个长期目标，就是让用户能够搭建数据类型的库，并在不同的程序、项目甚至用户之间分享使用。
 
@@ -111,7 +111,7 @@ Ghidra 支持三类数据类型: Built-in、user defined、derived
 
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/13.png)
 
-## Decompile
+### Decompile
 
 反编译窗口，位于右侧。在Listing窗口中浏览到函数时，反编译窗口会显示将其反编译成C/C++语言后的结果，功能上类似于IDA的F5。
 
@@ -119,7 +119,7 @@ Ghidra 支持三类数据类型: Built-in、user defined、derived
 
 ![](https://gitee.com/asdasdasd123123/pic/raw/master/img/42/14.png)
 
-## Console
+### Console
 
 控制台窗口，位于最下方，用来显示各种脚本的输出等。脚本管理器位于 Window->Script Manager ，里面有很多 Ghidra  自带的脚本。
 
@@ -133,7 +133,7 @@ Ghidra 支持三类数据类型: Built-in、user defined、derived
 
 ---
 
-# CTF实例
+## CTF实例
 
 我这里选择的是[BugKuCTF平台](https://ctf.bugku.com/challenges)的逆向题的[RE_Cirno](https://ctf.bugku.com/files/3c8bece7183bf76637d12d214d0809ec/RE_Cirno.jpg)题目。这个题目的附件是个 .jpg文件，使用010打开该文件，会发现下方有个未知填充块。
 
@@ -163,40 +163,40 @@ Windows->Function Graph 可以看到该函数地图形化显示
 在右侧的反编译窗口，将关键的代码段拷贝下来
 
 ```plain
-  uint local_70;
-  uint local_6c;
-  int local_68;
-  int local_64 [24]; 
+  uint local_70;
+  uint local_6c;
+  int local_68;
+  int local_64 [24];
   local_64[0] = 0x73;
-  local_64[1] = 0x5e;
-  local_64[2] = 0x61;
-  local_64[3] = 0x72;
-  local_64[4] = 0x67;
-  local_64[5] = 0x2f;
-  local_64[6] = 0x6b;
-  local_64[7] = 0x72;
-  local_64[8] = 0x41;
-  local_64[9] = 0x30;
-  local_64[10] = 0x31;
-  local_64[11] = 0x69;
-  local_64[12] = 0x75;
-  local_64[13] = 0x76;
-  local_64[14] = 0x65;
-  local_64[15] = 0x30;
-  local_64[16] = 0x71;
-  local_64[17] = 0x5f;
-  local_64[18] = 99;
-  local_64[19] = 0x2f;
-  local_64[20] = 0x5c;
-  local_64[21] = 0x74;
-  local_64[22] = 0x5d;
-  local_64[23] = 0x66;
-  local_68 = 0;
-  while (local_68 < 0x18) {
-    local_70 = local_64[local_68] + 9U ^ 9;
-    local_68 = local_68 + 1;
-    local_6c = local_70;
-  }
+  local_64[1] = 0x5e;
+  local_64[2] = 0x61;
+  local_64[3] = 0x72;
+  local_64[4] = 0x67;
+  local_64[5] = 0x2f;
+  local_64[6] = 0x6b;
+  local_64[7] = 0x72;
+  local_64[8] = 0x41;
+  local_64[9] = 0x30;
+  local_64[10] = 0x31;
+  local_64[11] = 0x69;
+  local_64[12] = 0x75;
+  local_64[13] = 0x76;
+  local_64[14] = 0x65;
+  local_64[15] = 0x30;
+  local_64[16] = 0x71;
+  local_64[17] = 0x5f;
+  local_64[18] = 99;
+  local_64[19] = 0x2f;
+  local_64[20] = 0x5c;
+  local_64[21] = 0x74;
+  local_64[22] = 0x5d;
+  local_64[23] = 0x66;
+  local_68 = 0;
+  while (local_68 < 0x18) {
+    local_70 = local_64[local_68] + 9U ^ 9;
+    local_68 = local_68 + 1;
+    local_6c = local_70;
+  }
 ```
 
 只需简单修改下，即可编译运行。

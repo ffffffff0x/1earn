@@ -4,7 +4,7 @@
 
 ---
 
-# 安装
+## 安装
 
 **windows**
 
@@ -15,9 +15,9 @@
 
 ---
 
-# 常量、操作符和函数
+## 常量、操作符和函数
 
-## 数字
+### 数字
 
 gnuplot 表示数字可分成整数、实数及复数三类：
 
@@ -43,7 +43,7 @@ print 1.23e300 * 2e8
 
 ---
 
-## 操作符
+### 操作符
 
 gnuplot 的操作符与 C 语言基本相同。 所有的操作均可做用在整数、实数或复数上。
 
@@ -71,7 +71,7 @@ gnuplot 的操作符与 C 语言基本相同。 所有的操作均可做用在�
 | `||` | `a||b`  | logical OR |
 | `?:` | `a?b:c` | ternary operation |
 
-## 函数
+### 函数
 
 在 gnuplot 中函数的参数可以是整数，实数或是复数。下表是 gnuplot 所提供的函数。
 
@@ -169,7 +169,7 @@ plot f(x) = sin(x*a), a = 0.2, f(x), a = 0.4, f(x)
 
 ---
 
-# 简单使用
+## 简单使用
 
 gnuplot 绘制数学函数或数值资料的步骤大体如：
 
@@ -308,7 +308,7 @@ reset
 
 ---
 
-# 读取文件
+## 读取文件
 
 **空格分隔**
 ```
@@ -408,7 +408,7 @@ plot 'sample.csv' using 1:2 "%lf,%lf"
 
 ---
 
-# 输出文件
+## 输出文件
 
 在启动时，终端类型设置为 X11。gnuplot 采用标准设计，可以在多个终端设备上绘图。这包括直接打印到多种打印机中，包括 Epson、HP 和 Imagen 打印机。它甚至可以在伪设备中绘图，如 postscript 和 png。这主要涉及生成输出文件，而不是可查看文件或打印输出。这是将你的图表包含在其他报表中的一种技巧。
 
@@ -439,7 +439,7 @@ plot sin(x)**2
 
 ---
 
-# 3D绘图
+## 3D绘图
 
 **以纵横各 10 条线组成的网格画出 sin(x)*cos(y) 的图形**
 ```
@@ -492,7 +492,7 @@ reset
 
 ---
 
-# 绘制时间序列图
+## 绘制时间序列图
 
 通常我们利用数据文件绘图时，XY 坐标的值都是实数，也就是我们要绘制图形的函数是 R 到 R 的映射。可有时横轴或纵轴的数据是时间值，时间的格式每次可能还都不太一样。这时我们就需要特殊设置一下 gnuplot 了。
 
@@ -538,7 +538,7 @@ replot
 
 ---
 
-# 数据平滑
+## 数据平滑
 
 gnuplot 中可以利用 smooth 关键字实现数据的平滑，平滑的方法有多种，最主要的几种如下：
 - unique : unique 的作用是首先将数据点按照 x 的大小关系排序。如果有多个数据点的 x 值相同的话则取这些数据点的平均值。
@@ -588,13 +588,14 @@ plot [1975:1995][40:160] "price.dat" using 1:2 with points title "price.dat", ""
 
 ![](../../../../assets/img/Develop/可视化/gnuplot/17.png)
 
-# 绘图环境参数
+## 绘图环境参数
 
 - 参考 : https://blog.csdn.net/liyuanbhu/article/details/8502461
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [win10下gnuplot的安装和使用](https://blog.csdn.net/qq_39516859/article/details/82108976)
 - [gnuplot 入门教程](https://blog.csdn.net/liyuanbhu/article/details/8502383)
 - [有逼格的画图从gnuplot说起](https://xijunlee.github.io/2016/12/24/2016-12-24-you-bi-ge-de-hua-tu-cong-gnuplotshuo-qi/)

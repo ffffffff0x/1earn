@@ -1,4 +1,8 @@
-# HTML ASCII
+# HTML字符实体
+
+---
+
+## HTML ASCII
 
 **可显示的 ASCII 代码**
 
@@ -142,7 +146,7 @@ ASCII 设备控制代码最初被设计为用来控制诸如打印机和磁带�
 
 ---
 
-# HTML ISO-8859-1
+## HTML ISO-8859-1
 
 HTML 4.01 支持 ISO 8859-1 (Latin-1) 字符集。
 
@@ -270,7 +274,7 @@ ISO-8859-1 的较高部分（从 160 到 255 之间的代码）全都有实体�
 | `þ`	| small thorn, Icelandic	    | `&thorn;`	    | `&#254;` |
 | `ÿ`	| small y, umlaut mark	        | `&yuml;`	    | `&#255;` |
 
-# 符号
+## 符号
 
 **HTML 支持的数学符号**
 

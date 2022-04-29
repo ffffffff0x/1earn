@@ -34,5 +34,6 @@ JPEG 文件大体上可以分成两个部分：标记码(Tag)和压缩数据。
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [misc-stegaBasic](https://www.jianshu.com/p/fe7a5fff2a95)

@@ -32,11 +32,11 @@ NTLM Relay 中，我们就是要将截获的 Net-NTLM Hash 重放来进行攻击
 
 ---
 
-# 获得 hash(发起 NTLM 请求)
+## 获得 hash(发起 NTLM 请求)
 
 由于 SMB、HTTP、LDAP、MSSQL 等协议都可以携带 NTLM 认证的三类消息，所以只要是使用 SMB、HTTP、LDAP、MSSQL 等协议来进行 NTLM 认证的程序，都可以尝试向攻击者发送 Net-NTLMhash 从而让攻击者截获用户的 Net-NTLMhash，也就是说我们可以通过这些协议来进行攻击。
 
-## LLMNR 和 NetBIOS 欺骗
+### LLMNR 和 NetBIOS 欺骗
 
 Windows系统名称解析顺序为：
 1. 本地 hosts 文件（%windir%\System32\drivers\etc\hosts）
@@ -53,7 +53,7 @@ Windows系统名称解析顺序为：
 
 - [Responder欺骗](./Responder欺骗.md)
 
-## WPAD 劫持
+### WPAD 劫持
 
 wpad 全称是 Web Proxy Auto-Discovery Protocol ，通过让浏览器自动发现代理服务器，定位代理配置文件 PAC(在下文也叫做 PAC 文件或者 wpad.dat)，下载编译并运行，最终自动使用代理访问网络。
 
@@ -73,7 +73,7 @@ WPAD 网络代理自动发现协议是一种客户端使用 DCHP、DNS、LLMNR�
     - LLMNR
     - NBNS
 
-### 配合 LLMNR/NBNS 投毒
+#### 配合 LLMNR/NBNS 投毒
 
 一个典型的劫持方式是利用 LLMNR/NBNS 欺骗来让受害者从攻击者获取 PAC 文件，PAC 文件指定攻击者就是代理服务器，然后攻击者就可以劫持受害者的 HTTP 流量，在其中插入任意 HTML 标签从而获得用户的 Net-NTLMHash。
 
@@ -91,7 +91,7 @@ Responder 可以创建一个假 WPAD 服务器，并响应客户端的 WPAD 名�
 1. 系统再也无法通过广播协议来解析 WPAD 文件的位置，只能通过使用 DHCP 或 DNS 协议完成该任务。
 2. 更改了 PAC 文件下载的默认行为，以便当 WinHTTP 请求 PAC 文件时，不会自动发送客户端的域凭据来响应 NTLM 或协商身份验证质询。
 
-### 配合 DHCPv6
+#### 配合 DHCPv6
 
 MS16-077 以后更改了 PAC 文件下载的默认行为，以便当 WinHTTP 请求 PAC 文件时，不会自动发送客户端的域凭据来响应 NTLM 或协商身份验证质询。
 
@@ -141,9 +141,9 @@ impacket-ntlmrelayx -6 -wh test.local -t smb://192.168.141.129 -l ~/tmp/ -socks 
 
 ---
 
-# 利用
+## 利用
 
-## signing
+### signing
 
 签名的原理参考笔记 [认证](../../../../Integrated/Windows/笔记/认证.md)
 
@@ -164,7 +164,7 @@ nmap --script smb-security-mode,smb-os-discovery.nse -p445 192.168.141.0/24 --op
 
 ---
 
-## SMB中继
+### SMB中继
 
 SMB 中继是最直接最有效的方法。可以直接控制该服务器 (包括但不限于在远程服务器上执行命令、上传 exe 到远程主机上执行、dump 服务器的用户 hash 等等)。
 
@@ -188,7 +188,7 @@ SMB 中继是最直接最有效的方法。可以直接控制该服务器 (包�
 
 ---
 
-### responder MultiRelay
+#### responder MultiRelay
 
 利用 MultiRelay.py 攻击，获得目标主机的 shell：
 ```
@@ -227,7 +227,7 @@ net use \\whoami
 
 ---
 
-### Impacket smbrelayx
+#### Impacket smbrelayx
 
 ```
 impacket-smbrelayx -h <被攻击ip> -c whoami
@@ -253,7 +253,7 @@ impacket-smbrelayx -h <被攻击ip> -e shell.exe
 
 ---
 
-### Metasploit smb_relay(08-068)
+#### Metasploit smb_relay(08-068)
 
 ```
 use exploit/windows/smb/smb_relay
@@ -264,7 +264,7 @@ run
 
 ---
 
-### Impcaket ntlmrelayx
+#### Impcaket ntlmrelayx
 
 ntlmrelayx 脚本可以直接用现有的 hash 去尝试重放指定的机器
 ```
@@ -316,7 +316,7 @@ get-aduser -filter * -server 192.168.141.129
 
 ---
 
-## Exchange中继
+### Exchange中继
 
 Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而收发邮件，代理等等。
 
@@ -329,7 +329,7 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 - [Arno0x/NtlmRelayToEWS](https://github.com/Arno0x/NtlmRelayToEWS)
 - [quickbreach/ExchangeRelayX](https://github.com/quickbreach/ExchangeRelayX)
 
-### CVE-2018-8581
+#### CVE-2018-8581
 
 这个漏洞最早是一个 SSRF 漏洞。可以访问任意用户的邮件。
 
@@ -351,9 +351,9 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 
 ---
 
-## LDAP 中继
+### LDAP 中继
 
-### LDAP签名
+#### LDAP签名
 
 在默认情况底下，ldap 服务器就在域控里面，而且默认策略就是协商签名。而不是强制签名。是否签名是有客户端决定的。服务端跟客户端协商是否签名。
 
@@ -361,7 +361,7 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 
 微软公司于 2019-09-11 日发布相关通告称微软计划于 2020 年 1 月发布安全更新。为了提升域控制器的安全性，该安全更新将强制开启所有域控制器上 LDAP channel binding 与 LDAP signing 功能。
 
-### Impcaket ntlmrelayx
+#### Impcaket ntlmrelayx
 
 **高权限用户**
 
@@ -391,9 +391,9 @@ acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync
 
 ---
 
-## 绕过
+### 绕过
 
-### CVE-2015-0005
+#### CVE-2015-0005
 
 在签名的情况底下。对于攻击者，由于没有用户 hash，也就没办法生成 keyexchangekey，虽然在流量里面能够拿到 encryptedrandomsessionkey，但是没有 keyexchangekey，也就没办法算出 exportedsession_key，也就没法对流量进行加解密。从而进行 Relay。
 
@@ -409,7 +409,7 @@ acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync
 
 ---
 
-### CVE-2019-1040
+#### CVE-2019-1040
 
 `Drop the MIC`
 
@@ -420,9 +420,9 @@ impacket-ntlmrelayx -t ldaps://192.168.141.132 --remove-mic -smb2support
 
 ---
 
-## NTLM 反射
+### NTLM 反射
 
-### MS08-068
+#### MS08-068
 
 > MS08-068 修复的是，无法再将 Net-NTLM 哈希值传回到发起请求的机器上，除非进行跨协议转发
 
@@ -438,7 +438,7 @@ impacket-ntlmrelayx -t ldaps://192.168.141.132 --remove-mic -smb2support
 
 ---
 
-### MS16-075
+#### MS16-075
 
 `Hot Potato`
 
@@ -462,7 +462,7 @@ impacket-ntlmrelayx -t ldaps://192.168.141.132 --remove-mic -smb2support
 
 ---
 
-### CVE-2019-1384
+#### CVE-2019-1384
 
 `Ghost potato`
 

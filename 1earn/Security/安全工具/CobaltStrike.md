@@ -70,13 +70,6 @@ Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展
 - [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
 - [jas502n/CS_mock](https://github.com/jas502n/CS_mock)
 
-**C2 Profile**
-
-C2 Profile 可以调整传输过程中的流量, 一定程度上可以隐蔽 C2 服务器
-
-- [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
-- [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
-
 **爆破 cobaltstrike teamserver 密码**
 ```bash
 git clone https://github.com/ryanohoro/csbruter
@@ -86,7 +79,7 @@ cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
 
 ---
 
-# 使用及维护
+## 使用及维护
 
 **目录结构**
 ```bash
@@ -166,9 +159,9 @@ Cobalt Strike 的数据模型将其所有的状态和状态元数据存储在 da
 
 ---
 
-# 用户界面
+## 用户界面
 
-## 菜单栏功能
+### 菜单栏功能
 
 **Cobalt Strike**
 
@@ -276,7 +269,7 @@ Session         # 会话管理，删除，心跳时间，退出，备注
 
 ---
 
-## 工具条功能
+### 工具条功能
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/13.png)
 
@@ -302,7 +295,7 @@ Session         # 会话管理，删除，心跳时间，退出，备注
 
 ---
 
-## 可视化管理
+### 可视化管理
 
 Cobalt Strike 有多种可视化展示，这些不同的设计是为了帮助你的行动中的不同部分。
 
@@ -312,7 +305,7 @@ Cobalt Strike 有多种可视化展示，这些不同的设计是为了帮助你
 
 Session Table 和 Target Table 都没什么好说的,介绍一下 Pivot Graph
 
-### Pivot Graph
+#### Pivot Graph
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/15.jpg)
 
@@ -326,7 +319,7 @@ Session Table 和 Target Table 都没什么好说的,介绍一下 Pivot Graph
 
 ---
 
-# Listeners & payload
+## Listeners & payload
 
 你需要为 Cobalt Strike 的 Beacon payload 配置监听器。Beacon 是 Cobalt Strike的 payload，用于建模高级攻击者。使用 Beacon 来通过 HTTP，HTTPS 或 DNS 出口网络。你也可以通过控制经由命名管道和 TCP sockets 的对等（peer-to-peer）Beacon 从而限制出口网络，只允许部分主机直接回连。
 
@@ -367,7 +360,7 @@ Cobalt Strike 中它的心跳默认是 60s 这会让我们执行的命令响应�
 sleep 1
 ```
 
-## 监听器管理
+### 监听器管理
 
 Cobalt Strike → Listeners 。这会打开一个标签页，列举出所有你的配置的 payload 和监听器。
 
@@ -382,7 +375,7 @@ Cobalt Strike → Listeners 。这会打开一个标签页，列举出所有你�
 
 ---
 
-## Beacon
+### Beacon
 
 Beacon 很灵活，支持异步通信模式和交互式通信模式。异步通信效率缓慢：Beacon 会回连团队服务器、下载其任务，然后休眠。交互式通信是实时发生的。
 
@@ -396,7 +389,7 @@ spawn 的功能就是可以派生出更多的 Beacon 让一个团队分布式渗
 
 ---
 
-### HTTP Beacon 和 HTTPS Beacon
+#### HTTP Beacon 和 HTTPS Beacon
 
 
 
@@ -405,7 +398,7 @@ spawn 的功能就是可以派生出更多的 Beacon 让一个团队分布式渗
 
 ---
 
-### DNS Beacon
+#### DNS Beacon
 
 DNS Beacon 使用 DNS 请求来将 Beacon 返回给你。DNS 响应告诉 Beacon 休眠或是连接到团队服务器来下载任务。DNS 响应也告诉 Beacon 如何从你的团队服务器下载任务。DNS Beacon 在绕过防火墙权限维持上非常有效.
 
@@ -452,7 +445,7 @@ mode dns-txt
 
 ---
 
-### SMB Beacon
+#### SMB Beacon
 
 SMB Beacon 使用命名管道通过父级 Beacon 进行通讯，当两个 Beacons 链接后，子 Beacon 从父 Beacon 获取到任务并发送。因为链接的 Beacons 使用 Windows 命名管道进行通信，此流量封装在 SMB 协议中，所以 SMB Beacon 相对隐蔽。
 
@@ -482,16 +475,16 @@ SMB Beacon 使用命名管道通过父级 Beacon 进行通讯，当两个 Beacon
 
 ---
 
-### TCP Beacon
+#### TCP Beacon
 
 
 
 
 ---
 
-## Attacks Payload
+### Attacks Payload
 
-### Pachages
+#### Pachages
 
 **HTML Application**
 
@@ -569,7 +562,7 @@ HTA 是 HTML Application 的缩写（HTML 应用程序），是软件开发的�
 
 ---
 
-### Web Drive-by
+#### Web Drive-by
 
 **Manage**
 
@@ -609,7 +602,7 @@ HTA 是 HTML Application 的缩写（HTML 应用程序），是软件开发的�
 
 ---
 
-### Spear Phish
+#### Spear Phish
 
 `鱼叉式网络钓鱼`
 
@@ -629,7 +622,7 @@ preview             # 预览我们的模板文件
 
 ---
 
-# 后渗透
+## 后渗透
 
 **Beacon 控制台**
 
@@ -734,9 +727,9 @@ jobs            # 查看进程
 jobkill [JID]   # 杀掉指定的进程
 ```
 
-## Access
+### Access
 
-### Hash
+#### Hash
 
 ```bash
 hashdump
@@ -751,7 +744,7 @@ view > credentials
 logonpasswords
 ```
 
-### 权限提升
+#### 权限提升
 
 **Elevate**
 
@@ -795,7 +788,7 @@ Cobalt Strike 附带了一些绕过 UAC 的攻击。但如果当前用户不是�
 steal_token <PID>
 ```
 
-### argue
+#### argue
 
 **绕过杀软添加用户**
 
@@ -818,7 +811,7 @@ beacon> run net1 localgroup administrators what /add
 
 ---
 
-## Explore
+### Explore
 
 **Browser Pivoting**
 
@@ -888,7 +881,7 @@ screenshot 2640 x64 90
 
 ---
 
-## Pivoting
+### Pivoting
 
 速度很慢
 
@@ -970,7 +963,7 @@ Cobalt Strike 将基于你选择的 Local Port （本地端口） 和 Channel �
 
 ---
 
-## Spawn
+### Spawn
 
 > 以下部分内容来自 <sup>[Cobalt_Strike_wiki/第十六节[MSF与CS会话互转].md](https://github.com/aleenzz/Cobalt_Strike_wiki/blob/master/%E7%AC%AC%E5%8D%81%E5%85%AD%E8%8A%82%5BMSF%E4%B8%8ECS%E4%BC%9A%E8%AF%9D%E4%BA%92%E8%BD%AC%5D.md)</sup>
 
@@ -1014,7 +1007,7 @@ msf exploit(multi/handler) > exploit
 
 ---
 
-# 横向
+## 横向
 
 一旦你有了域管理员或者是目标机器上的本地管理员域用户的令牌，你可以通过滥用这种信任关系来控制目标。
 
@@ -1053,7 +1046,7 @@ Cobalt Strike 也提供一个 GUI 来使得横向移动更加简单。切换到�
 
 点击 Launch （启动）。Cobalt Strike 将激活选定 Beacon 的标签页并对其发出命令。攻击的反馈会展现在 Beacon 的控制台中。
 
-## SSH
+### SSH
 
 当内网有 Linux 时 Cobalt Strike 也是考虑到的提供了 ssh 连接, 只需要用目标机的 beacon 去连接就可以了。
 
@@ -1069,7 +1062,7 @@ ssh [target:port] [user] [/path/to/key.pem]
 
 ---
 
-# 脚本
+## 脚本
 
 Cobalt Strike 可通过它的 Aggressor Script 语言来为其编写脚本。Aggressor Script 是 Armitage 的 Cortana 脚本语言的精神继任者，虽然这两者并不兼容。
 
@@ -1077,7 +1070,7 @@ Cobalt Strike 可通过它的 Aggressor Script 语言来为其编写脚本。Agg
 
 ![](../../../assets/img/Security/安全工具/CobaltStrike/12.png)
 
-## CrossC2
+### CrossC2
 
 地址 : https://github.com/gloxec/CrossC2
 
@@ -1116,7 +1109,7 @@ genCrossC2.Win.exe 192.168.141.151 443 ./.cobaltstrike.beacon_keys null Linux x6
 
 ---
 
-# CS样本
+## CS样本
 
 目录中有一个 CobaltStrike.jar 文件，直接解压，这里面有一个名为 resources 的文件夹，就是 CobaltStrike 的配置信息，我们在 CobaltStrike 控制台生成的木马都来源于这个文件夹。
 
@@ -1126,9 +1119,17 @@ genCrossC2.Win.exe 192.168.141.151 443 ./.cobaltstrike.beacon_keys null Linux x6
 
 ---
 
-# 通信扩展
+## 通信扩展
 
 Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 Cobalt Strike 提出的一套规范 / 框架，它允许黑客根据需要对框架提供的默认 HTTP(S)/DNS/SMB C2 通信通道进行扩展。
+
+**C2 Profile**
+
+C2 Profile 可以调整传输过程中的流量, 一定程度上可以隐蔽 C2 服务器
+
+- [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
+- [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
+- [HuskyHacks/CobaltNotion](https://github.com/HuskyHacks/CobaltNotion) - A spin-off research project. Cobalt Strike x Notion collab 2022
 
 **Malleable C2**
 
@@ -1140,7 +1141,7 @@ chmod +x c2lint
 ./c2lint [/path/to/my.profile]
 ```
 
-## profile 语法
+### profile 语法
 
 **简单举例**
 ```

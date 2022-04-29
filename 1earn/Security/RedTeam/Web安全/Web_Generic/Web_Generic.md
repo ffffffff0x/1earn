@@ -8,7 +8,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * **[文件包含](#文件包含)**
     * [日志中毒攻击](#日志中毒攻击)
@@ -69,7 +69,7 @@
 
 ---
 
-# 文件包含
+## 文件包含
 
 文件包含，是一个功能。在各种开发语言中都提供了内置的文件包含函数，其可以使开发人员在一个代码文件中直接包含（引入）另外一个代码文件。 比如 在 PHP 中，提供了：`include()`,`include_once()`,`require()`,`require_once()` 这些文件包含函数，这些函数在代码设计中被经常使用到。
 
@@ -128,7 +128,7 @@
 
     `Payload:http://www.test.com/test.php?file=php://filter/read=convert.base64-encode/resource=upload/shell.php`
 
-## 日志中毒攻击
+### 日志中毒攻击
 
 `log poisoning`
 
@@ -140,12 +140,12 @@
 
 ---
 
-# 文件解析
+## 文件解析
 
 **相关文章**
 - [解析漏洞总结 - erevus](http://www.vuln.cn/7070)
 
-## IIS
+### IIS
 
 **5.x/6.0 解析漏洞**
 
@@ -180,7 +180,7 @@ IIS 6.0 解析利用方法有两种
 
 ---
 
-## Nginx
+### Nginx
 
 **IIS 7.0/IIS 7.5/Nginx <8.03 畸形解析漏洞**
 
@@ -203,7 +203,7 @@ Nginx 在图片中嵌入 PHP 代码然后通过访问 `xxx.jpg%00.php` 来执行
 
 ---
 
-## Apache
+### Apache
 
 Apache 是从右到左开始判断解析,如果为不可识别解析,就再往左判断.
 
@@ -232,7 +232,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-## 其他
+### 其他
 
 在 windows 环境下,`xx.jpg[空格]` 或 `xx.jpg.` 这两类文件都是不允许存在的,若这样命名,windows 会默认除去空格或点,黑客可以通过抓包,在文件名后加一个空格或者点绕过黑名单.若上传成功,空格和点都会被 windows 自动消除,这样也可以 getshell.
 
@@ -242,13 +242,13 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-# 文件上传
+## 文件上传
 
 - [Upload](./Upload.md)
 
 ---
 
-# 信息泄露
+## 信息泄露
 
 **相关文章**
 - [谈谈源码泄露](https://blog.csdn.net/GitChat/article/details/79014538)
@@ -274,7 +274,7 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 
 ---
 
-## 目录浏览
+### 目录浏览
 
 **Tips**
 
@@ -283,15 +283,15 @@ Apache 是从右到左开始判断解析,如果为不可识别解析,就再往�
 wget -r --no-pare target.com/dir
 ```
 
-## Fileread
+### Fileread
 
 - [Fileread](./Fileread.md)
 
 ---
 
-## 源码泄露
+### 源码泄露
 
-### GIT
+#### GIT
 
 **简介**
 
@@ -317,7 +317,7 @@ wget -r --no-pare target.com/dir
 
 ---
 
-### SVN
+#### SVN
 
 - `/.svn/entries`
 
@@ -330,7 +330,7 @@ wget -r --no-pare target.com/dir
 
 ---
 
-### bzr
+#### bzr
 
 **相关工具**
 - [kost/dvcs-ripper](https://github.com/kost/dvcs-ripper) - SVN/GIT/HG 等版本控制系统的扫描工具
@@ -340,7 +340,7 @@ wget -r --no-pare target.com/dir
 
 ---
 
-## DS_Store文件泄漏
+### DS_Store文件泄漏
 
 **简介**
 
@@ -360,7 +360,7 @@ wget -r --no-pare target.com/dir
 
 ---
 
-## SWP文件泄露
+### SWP文件泄露
 
 **简介**
 
@@ -370,7 +370,7 @@ swp 即 swap 文件，在编辑文件时产生的临时文件，它是隐藏文�
 
 ---
 
-## gedit备份文件
+### gedit备份文件
 
 **简介**
 
@@ -378,7 +378,7 @@ linux 下，gedit 保存后当前目录会生成后缀为 “~” 的文件，�
 
 ---
 
-## 网站备份压缩文件
+### 网站备份压缩文件
 
 **简介**
 
@@ -403,7 +403,7 @@ linux 下，gedit 保存后当前目录会生成后缀为 “~” 的文件，�
 
 ---
 
-## WEB-INF/web.xml信息泄露
+### WEB-INF/web.xml信息泄露
 
 **简介**
 
@@ -424,14 +424,14 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## idea文件夹泄露
+### idea文件夹泄露
 
 **相关工具**
 - [lijiejie/idea_exploit](https://github.com/lijiejie/idea_exploit) - 一个 `.idea` 文件泄漏利用脚本
 
 ---
 
-## JS敏感信息泄露
+### JS敏感信息泄露
 
 **相关文章**
 - [JS 敏感信息泄露:不容忽视的 WEB 漏洞](https://www.secpulse.com/archives/35877.html)
@@ -440,6 +440,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关案例**
 - [从JS信息泄露到Webshell](http://r3start.net/index.php/2019/07/15/546)
 - [一次有意思的js未授权访问](https://mp.weixin.qq.com/s/E9PqzhNHYOC8pRJ7FQonfg)
+- [JS 接口导致信息泄露](https://mp.weixin.qq.com/s/_dqdpBqEXELQNE2kqUq6xQ)
 
 **相关工具**
 - [m4ll0k/SecretFinder](https://github.com/m4ll0k/SecretFinder) - 通过正则在 JS 中发现敏感数据，如 apikeys、accesstoken、authorizations、jwt，..等等
@@ -465,7 +466,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## Swagger_REST_API信息泄露
+### Swagger_REST_API信息泄露
 
 **相关文章**
 - [关于Swagger-UI下的渗透实战](https://blog.m1kh.com/index.php/archives/403/)
@@ -477,13 +478,14 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## 各类APIkey泄露
+### 各类APIkey泄露
 
 **相关文章**
 - [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
 - [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
 - [企业微信Secret Token利用思路](https://mp.weixin.qq.com/s/LMZVcZk7_1r_kOKRau5tAg)
 - [企业微信Token-Secret利用思路](https://mp.weixin.qq.com/s/MyIUhkxmyw-msCPnhUi92A)
+- [企业微信+腾讯IM密钥泄漏利用](https://r0fus0d.blog.ffffffff0x.com/post/workwx-and-txim/)
 
 **相关案例**
 - [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)
@@ -549,7 +551,7 @@ WEB-INF 主要包含一下文件或目录:
     ```
 - [Google API key leaked to Public](https://hackerone.com/reports/1065041)
 
-## SOAP泄露
+### SOAP泄露
 
 **相关文章**
 - [【技术分享】针对SOAP的渗透测试与防护](https://www.anquanke.com/post/id/85410)
@@ -565,13 +567,13 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-# 不安全的输入
+## 不安全的输入
 
-## RCE
+### RCE
 
 - [RCE 笔记](./RCE.md)
 
-## HTTP参数污染
+### HTTP参数污染
 
 **相关文章**
 - [Web 应用里的 HTTP 参数污染 (HPP) 漏洞](https://blog.csdn.net/eatmilkboy/article/details/6761407)
@@ -583,7 +585,7 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## CRLF_Injection
+### CRLF_Injection
 
 **相关案例**
 - [新浪某站CRLF Injection导致的安全问题](https://www.leavesongs.com/PENETRATION/Sina-CRLF-Injection.html)
@@ -591,7 +593,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关工具**
 - [dwisiswant0/crlfuzz](https://github.com/dwisiswant0/crlfuzz)
 
-## HOST_Injection
+### HOST_Injection
 
 **相关文章**
 - [检测到目标url存在框架注入漏洞_HOST注入攻击剖析](https://blog.csdn.net/weixin_39609500/article/details/111349436)
@@ -600,25 +602,25 @@ WEB-INF 主要包含一下文件或目录:
 
 ---
 
-## SQL_inje
+### SQL_inje
 
 - [SQLi 笔记](./SQLi.md)
 
 ---
 
-## XSS
+### XSS
 
 - [XSS 笔记](./XSS.md)
 
 ---
 
-## XXE
+### XXE
 
 - [XXE 笔记](./XXE.md)
 
 ---
 
-## SSI
+### SSI
 
 `Server Side Includes 服务器端包含`
 
@@ -639,13 +641,13 @@ xxx.shtml
 
 ---
 
-## SSRF
+### SSRF
 
 - [SSRF 笔记](./SSRF.md)
 
 ---
 
-## SSTI
+### SSTI
 
 `服务器端模板注入`
 
@@ -653,21 +655,24 @@ xxx.shtml
 
 ---
 
-## 表达式注入
+### 表达式注入
 
 **相关文章**
 - [表达式注入](https://misakikata.github.io/2018/09/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%B3%A8%E5%85%A5/)
 
+**SpEL注入**
+- [SpEL注入](../../语言安全/JAVA安全/SpEL注入.md)
+
 ---
 
-## WebSocket安全
+### WebSocket安全
 
 **相关文章**
 - [利用WebSocket接口中转注入渗透实战](https://www.freebuf.com/articles/web/281451.html) - 通过脚本中转 websocket 让 sqlmap 可以注入
 
 ---
 
-## 业务模板注入
+### 业务模板注入
 
 `pdf 生成、html 模板生成的功能点`
 
@@ -683,9 +688,9 @@ xxx.shtml
 
 ---
 
-# 配置不当
+## 配置不当
 
-## 代理配置不当
+### 代理配置不当
 
 **相关文章**
 - [Abusing Reverse Proxies, Part 1: Metadata](https://blog.projectdiscovery.io/abusing-reverse-proxies-metadata/)
@@ -701,7 +706,7 @@ xxx.shtml
 
 ---
 
-## CORS
+### CORS
 
 **简介**
 
@@ -736,11 +741,11 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 ---
 
-## CSRF
+### CSRF
 
-**简介**
+**描述**
 
-跨站请求伪造（CSRF/XSRF）攻击，攻击者通过钓鱼或其他手段欺骗用户在他们目前已认证的网络应用程序上执行不需要的行动。
+跨站请求伪造（Cross-Site Request Forgery，CSRF）是一种使已登录用户在不知情的情况下执行某种动作的攻击。因为攻击者看不到伪造请求的响应结果，所以 CSRF 攻击主要用来执行动作，而非窃取用户数据。当受害者是一个普通用户时，CSRF 可以实现在其不知情的情况下转移用户资金、发送邮件等操作；但是如果受害者是一个具有管理员权限的用户时 CSRF 则可能威胁到整个 Web 系统的安全。
 
 **验证方法**
 
@@ -794,11 +799,21 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 - POST 转 GET
 
+**修复方案**
+
+* Referer 校验，对 HTTP 请求的 Referer 校验，如果请求 Referer 的地址不在允许的列表中，则拦截请求。
+* Token 校验，服务端生成随机 token，并保存在本次会话 cookie 中，用户发起请求时附带 token 参数，服务端对该随机数进行校验。如果不正确则认为该请求为伪造请求拒绝该请求。
+* Formtoken 校验，Formtoken 校验本身也是 Token 校验，只是在本次表单请求有效。
+* 对于高安全性操作则可使用验证码、短信、密码等二次校验措施
+* 增删改请求使用 POST 请求
+
 ---
 
-## jsonp劫持
+### jsonp劫持
 
 **简介**
+
+JSONP（JSON with Padding）是 json 的一种 "使用模式"，可以让网页从别的域名（网站）那获取资料，即跨域读取数据；它利用的是 script 标签的 src 属性不受同源策略影响的特性，使网页可以得到从其他来源动态产生的 json 数据，因此可以用来实现跨域读取数据。
 
 JSONP 劫持实际上也算是 CSRF 的一种。当某网站使用 JSONP 的方式来跨域传递一些敏感信息时，攻击者可以构造恶意的 JSONP 调用页面，诱导被攻击者访问来达到截取用户敏感信息的目的。
 
@@ -822,6 +837,7 @@ JSON 实际应用的时候会有两种传输数据的方式：
 - [jsonp 原理详解——终于搞清楚 jsonp 是啥了](https://blog.csdn.net/hansexploration/article/details/80314948)
 - [JSONP 安全攻防技术](https://blog.knownsec.com/2015/03/jsonp_security_technic/)
 - [浏览网页就能泄露手机号的小秘密](https://mp.weixin.qq.com/s/_bTunF9TXBUze8ewCM--Fg)
+- [渗透测试-JSONP数据劫持漏洞](https://mp.weixin.qq.com/s/Ww-ubc4VxpOyZvAyu49UhQ)
 
 **相关案例**
 - [中国联通某站 jsonp 接口跨域导致信息泄漏并可开通某些套餐 (运营商额外插入功能带来的风险) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0172305)
@@ -836,18 +852,41 @@ JSON 实际应用的时候会有两种传输数据的方式：
 - [新浪微博 JSONP 劫持之点我链接开始微博蠕虫+刷粉丝](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0171499)
 - [fanwe O2O 用户密码可劫持 (通用/开源软件 jsonp 劫持案例) ](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124949)
 
-**简单 POC**
-```html
-＜script＞
-function jsonph(json){
-alert(JSON.stringify(json))
-  }
-＜/script＞
+**相关工具**
+- [p1g3/JSONP-Hunter](https://github.com/p1g3/JSONP-Hunter) - JSONP Hunter in burpsuite.
 
-＜script src="https://target.com?callback=jsonph"＞＜/script＞
+**场景模拟**
+
+```php
+<?php
+//test.php
+header('Content-type: application/json');
+$callback = $_GET['callback'];
+print $callback.'({"username" : "test","phone" : "13888888888"});';
+?>
 ```
 
-### SOME
+```bash
+# 服务器上运行这个简易的服务
+php -S 0.0.0.0:9999
+```
+
+举例,存在信息泄漏的 JSONP 接口 http://127.0.0.1:9999/test.php?callback=xxx ，攻击者构造 POC 后诱导用户访问 POC，然后就会调用这个接口获取到敏感数据，获取到的敏感数据被攻击者截获了。
+
+```html
+<script>
+    function xxx(data)
+    {
+      alert(data.username);
+    }
+</script>
+
+<script src="http://127.0.0.1:9999/test.php?callback=xxx"></script>
+```
+
+保存为 html，诱导受害者访问.
+
+#### SOME
 
 > 同源方式执行
 
@@ -863,21 +902,26 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 
 ---
 
-# 钓鱼欺骗
+## 钓鱼欺骗
 
 **相关案例**
 - [$7.5k Google Cloud Platform organization issue](https://www.ezequiel.tech/2019/01/75k-google-cloud-platform-organization.html)
 - [从微信群不良广告到酷我音乐存储型XSS再到乐视url跳转](https://darkless.cn/2019/12/23/kuwomusic-xss/)
 
-## URL跳转漏洞
+### URL跳转漏洞
 
 `Open Redirect`
+
+**描述**
+
+由于 Web 站点有时需要根据不同的逻辑将用户引向到不同的页面，如典型的登录接口就经常需要在认证成功之后将用户引导到登录之前的页面，整个过程中如果实现不好就可能导致 URL 重定向问题，攻击者构造恶意跳转的链接，可以向用户发起钓鱼攻击。
 
 **相关文章**
 - [URL 重定向及跳转漏洞](http://www.pandan.xyz/2016/11/15/url%20%E9%87%8D%E5%AE%9A%E5%90%91%E5%8F%8A%E8%B7%B3%E8%BD%AC%E6%BC%8F%E6%B4%9E/)
 - [分享几个绕过 URL 跳转限制的思路](https://www.anquanke.com/post/id/94377)
 - [浅析渗透实战中url跳转漏洞 ](https://xz.aliyun.com/t/5189)
 - [Open Redirect and Its Bypasses - Bug Bounty](https://www.cyberick.com/post/open-redirect-and-its-bypasses)
+- [浅谈URL跳转漏洞的绕过与修复](https://mp.weixin.qq.com/s/pEjWuEO98VoOq7CKAk-c4A)
 
 **相关工具**
 - [devanshbatham/OpenRedireX](https://github.com/devanshbatham/OpenRedireX)
@@ -934,16 +978,21 @@ SOME（Same Origin Method Execution），同源方式执行，不同于 XSS 盗�
 - Right to Left Override
     - `/?ref=%40%E2%80%AE@moc.live`
 
+**通用修复方案**
+
+* 使用白名单校验重定向的 url 地址
+* 给用户展示安全风险提示，并由用户再次确认是否跳转
+
 ---
 
-## 二维码劫持
+### 二维码劫持
 
 **相关案例**
 - [二维码劫持案例分析](https://www.freebuf.com/vuls/234121.html)
 
 ---
 
-## 点击劫持
+### 点击劫持
 
 - [click-jacking](https://www.hacksplaining.com/exercises/click-jacking) - 一个简单的讲解关于点击劫持的网站
 

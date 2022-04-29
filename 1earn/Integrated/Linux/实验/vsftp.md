@@ -219,7 +219,8 @@ systemctl enable vsftpd
 
 ---
 
-# 案例
+## 案例
+
 ### 案例 1
 
 - 使用虚拟用户认证方式,创建用户 virtftp,该用户的家目录为 `/data/ftp_data` ,shell 为 `/sbin/nologin` ,并将虚拟用户映射至 virtftp 用户;

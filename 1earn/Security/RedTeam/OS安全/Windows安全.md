@@ -8,7 +8,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * **[漏洞利用](#漏洞利用)**
 
@@ -57,19 +57,19 @@
 
 ---
 
-# 漏洞利用
+## 漏洞利用
 
 - [OS-Exploits](./OS-Exploits.md#Windows)
 
 ---
 
-# LOL
+## LOL
 
 - [Windows-LOL](./实验/Windows-LOL.md)
 
 ---
 
-# RDP
+## RDP
 
 **第三方连接工具**
 - [rdesktop/rdesktop](https://github.com/rdesktop/rdesktop)
@@ -77,7 +77,7 @@
 - [Remmina](https://remmina.org/)
 - [FreeRDP/FreeRDP](https://github.com/FreeRDP/FreeRDP)
 
-## 命令行开启RDP
+### 命令行开启RDP
 
 **相关文章**
 - [开启 RDP](https://b404.xyz/2017/12/27/open-RDP/)
@@ -202,7 +202,7 @@ netstat -ano | findstr "xxx"
 
 ---
 
-## 多开
+### 多开
 
 **相关文章**
 - [Win7 双开 3389](https://blog.csdn.net/SysProgram/article/details/11810889)
@@ -228,7 +228,7 @@ netstat -ano | findstr "xxx"
 
 ---
 
-## 连接记录
+### 连接记录
 
 **查看远程连接信息**
 
@@ -254,7 +254,7 @@ reg query "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Servers" 
 
 ---
 
-## 凭据窃取
+### 凭据窃取
 
 **相关文章**
 - [获取远程主机保存的 RDP 凭据密码](https://0x20h.com/p/bf1f.html)
@@ -267,7 +267,7 @@ reg query "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Servers" 
 
 ---
 
-## 绕过组策略限制
+### 绕过组策略限制
 
 **相关文章**
 - [组策略限制3389登录的绕过方式](https://mp.weixin.qq.com/s/4eDNmiiXp7afLKdYzHeb3Q)
@@ -316,7 +316,7 @@ gpupdate /force                                             //更新组策略
 
 ---
 
-## 绕过本地安全策略限制限制
+### 绕过本地安全策略限制限制
 
 **相关文章**
 - [IP安全策略限制3389登录的绕过方式](https://mp.weixin.qq.com/s/FMGqJx0GbhxXfdnFS929zQ)
@@ -330,7 +330,7 @@ gpupdate /force                                             //更新组策略
 
 ---
 
-# 认证
+## 认证
 
 关于 windows 认证的基本知识点可见笔记 [认证](../../../Integrated/Windows/笔记/认证.md)
 
@@ -338,7 +338,7 @@ gpupdate /force                                             //更新组策略
 - [daikerSec/windows_protocol](https://github.com/daikerSec/windows_protocol)
 - [The NTLM Authentication Protocol and Security Support Provider](http://davenport.sourceforge.net/ntlm.html)
 
-## 本地
+### 本地
 
 **相关文章**
 - [几种windows本地hash值获取和破解详解](https://www.secpulse.com/archives/65256.html)
@@ -369,13 +369,13 @@ gpupdate /force                                             //更新组策略
 - [impacket](https://github.com/SecureAuthCorp/impacket)
 - [evilmog/ntlmv1-multi](https://github.com/evilmog/ntlmv1-multi) - NTLMv1 Multitool
 
-### mimikatz
+#### mimikatz
 
 - [mimikatz](../../安全工具/mimikatz.md)
 
 ---
 
-### 加密降级攻击
+#### 加密降级攻击
 
 `NetNTLM Downgrade Attacks`
 
@@ -394,7 +394,7 @@ gpupdate /force                                             //更新组策略
 
 ---
 
-### SAM & LSA Secrets
+#### SAM & LSA Secrets
 
 在 Windows 系统中本机的用户密码以 hash 形式存储在 `%SystemRoot%\system32\config\sam` 数据库文件中。
 
@@ -444,7 +444,7 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 
 ---
 
-### Bypass LSA Protection
+#### Bypass LSA Protection
 
 1. 从磁盘上的 SAM 读取凭据
 2. mimikatz 其中的 mimidrv.sys 驱动程序，可从 lsass.exe 进程中删除 LSA 保护，成功 pypass LSA Protection。
@@ -459,7 +459,7 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 
 ---
 
-### Bypass Credential Guard
+#### Bypass Credential Guard
 
 1. 从磁盘上的 SAM 读取凭据
 2. SSP 是参与用户身份验证的 Microsoft 软件包，如在用户登录时被调用，并接收该用户的凭据。在系统启动时 SSP 会被加载到进程 lsass.exe 中。,Mimikatz 可通过内存安装自定义的 ssp，修改 lsass 进程的内存，实现从 lsass 进程中提取凭据，mimikatz 执行 misc::memssp 后，如果再输入了新的凭据 (如用户锁屏后重新登录)，将会在 c:\windows\system32 下生成文件 mimilsa.log，其中保存有用户明文密码。
@@ -470,7 +470,7 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 
 ---
 
-### DPAPI
+#### DPAPI
 
 由于功能需求，Dpapi 采用的加密类型为对称加密，所以只要找到了密钥，就能解开物理存储的加密信息了。
 
@@ -515,9 +515,9 @@ int main(void)
 
 ---
 
-## 工作组
+### 工作组
 
-### IPC$
+#### IPC$
 
 关于 IPC$ 应用的基本知识点可见笔记 [IPC$](../../../Integrated/Windows/笔记/IPC$.md)
 
@@ -547,7 +547,7 @@ csript.exe wmiexec.vbs /shell 192.168.1.1 administrator 123456
 
 ---
 
-### WinRM
+#### WinRM
 
 关于 WinRM 的基本知识点可见笔记 [WinRM](../../../Integrated/Windows/笔记/WinRM.md)
 
@@ -562,7 +562,7 @@ winrs -r:http://192.168.1.1:5985 -u:administrator -p:Abcd12345 ipconfig
 
 ---
 
-### PTH
+#### PTH
 
 path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常用的攻击方式。
 
@@ -696,7 +696,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 - [cube0x0/SharpMapExec](https://github.com/cube0x0/SharpMapExec) - c#版本的cme
 - [ShawnDEvans/smbmap](https://github.com/ShawnDEvans/smbmap) - SMBMap is a handy SMB enumeration tool
 
-#### kb2871997
+##### kb2871997
 
 > 以下部分内容来自 <sup>[Windows内网协议学习NTLM篇之NTLM基础介绍](https://www.anquanke.com/post/id/193149)、[KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)</sup>
 
@@ -739,13 +739,13 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
     默认情况下这个注册表项是不存在的，我们可以用以留作后门，但是有意思的是，在配置 Windows Remoting 的时候，有大量的 Microsoft 文档，建议将 LocalAccountTokenFilterPolicy 设置为 1，以解决或解决各种问题，于是有些运维在搜寻了一堆文章后，会开启该注册表项。
 
-#### PTH with RDP
+##### PTH with RDP
 
 ![](../../../../assets/img/才怪.png)
 
 ---
 
-### PTK
+#### PTK
 
 对于 8.1/2012r2，安装补丁 kb2871997 的 Win 7/2008r2/8/2012，可以使用 AES keys 代替 NT hash
 
@@ -754,20 +754,20 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
     mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#ptk)
 
-### NTLM中继
+#### NTLM中继
 
 - [NTLM中继](./实验/NTLM中继.md)
 
 ---
 
-## 域
+### 域
 
 **相关文章**
 - [横向渗透-域渗透 PTT、PTH、PTK](http://1984-0day.com/2020/04/05/%E6%A8%AA%E5%90%91%E6%B8%97%E9%80%8F-%E5%9F%9F%E6%B8%97%E9%80%8F-PTT%E3%80%81PTH%E3%80%81PTK/)
 - [我所了解的内网渗透——内网渗透知识大总结](https://www.anquanke.com/post/id/92646#h2-10)
 - [域渗透之IPC MS14068 Pth Ptt Ptk Kerberoating](https://www.chabug.org/web/686.html)
 
-### NTDS.DIT
+#### NTDS.DIT
 
 在域内 HASH 是存在 NTDS.DIT 中的， NTDS.DIT 是一个二进制文件，就等同于本地计算机的 SAM 文件，它的存放位置是 `%SystemRoot%\ntds\NTDS.DIT` 。这里面包含的不只是 Username 和 HASH，还有 OU、Group 等信息。
 
@@ -782,7 +782,7 @@ ntds.dit 文件由三个主表组成：数据表，链接表和SD表。
 - [导出域密码哈希值的多种方法介绍](https://www.freebuf.com/articles/system/177764.html)
 - [How Attackers Dump Active Directory Database Credentials](https://adsecurity.org/?p=2398)
 
-#### NTDS转储
+##### NTDS转储
 
 **Impacket**
 
@@ -848,7 +848,7 @@ python setup.py build && python setup.py install
 dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.6 data --syshive /root/Desktop/NTDS/SYSTEM --passwordhashes --pwdformat john --ntoutfile nthash.txt --lmoutfile lmhash.txt
 ```
 
-#### Dcsync
+##### Dcsync
 
 DCSync 是 mimikatz 在 2015 年添加的一个功能，能够用来导出域内所有用户的 hash
 
@@ -899,7 +899,7 @@ DCSync 的利用条件：获得以下任一用户的权限：
 **检测方法**
 - [cyberark/ACLight](https://github.com/cyberark/ACLight) - 枚举 Active Directory 中所有用户的 ACL，标记出特权帐户
 
-#### 卷影复制
+##### 卷影复制
 
 卷影副本，也称为快照，是存储在 Data Protection Manager (DPM) 服务器上的副本的时间点副本。副本是文件服务器上单个卷的受保护共享、文件夹和文件的完整时间点副本。
 
@@ -999,7 +999,7 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 
 ---
 
-### mscash
+#### mscash
 
 **相关文章**
 - [你并不懂 Mimikatz Part 2 - MSCACHE](https://mp.weixin.qq.com/s/mTpYcHebvlERj9ek2_Pu8Q)
@@ -1016,7 +1016,7 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\System32\config\SYS
 
 ---
 
-### GPP
+#### GPP
 
 关于 windows 组策略的基本知识点可见笔记 [组策略](../../../Integrated/Windows/笔记/组策略.md)
 
@@ -1095,7 +1095,7 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 
 ---
 
-### PTT
+#### PTT
 
 票据传递攻击（PtT）是一种使用 Kerberos 票据代替明文密码或 NTLM 哈希的方法。PtT 最常见的用途可能是使用黄金票据和白银票据，通过 PtT 访问主机相当简单。
 
@@ -1106,11 +1106,17 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 - [如何通过 SSH 隧道进行域渗透的 PtT 攻击](https://paper.seebug.org/321/)
 - [How Attackers Use Kerberos Silver Tickets to Exploit Systems ](https://adsecurity.org/?p=2011)
 - [Kerberos Golden Tickets are Now More Golden](https://adsecurity.org/?p=1640)
+- [golden ticket和sliver ticket的区别是什么？](https://blog.csdn.net/Ping_Pig/article/details/121228886)
+- [Kerberos协议之黄金票据和白银票据](https://y4er.com/post/kerberos-golden-ticket-and-silver-ticket/)
 
 **相关工具**
 - [gentilkiwi/kekeo](https://github.com/gentilkiwi/kekeo) - A little toolbox to play with Microsoft Kerberos in C
 
-#### Silver_Tickets
+##### Silver_Tickets
+
+**描述**
+
+白银票据是出现在 TGS_REQ & TGS_REP 过程中的。在 TGS_REP 中，不管 Client 是否有权限访问特殊服务，只要 Client 发送的 TGT 票据是正确的，那么就会返回服务 hash 加密的 tgs 票据。如果我们有了服务 hash，就可以签发 tgs 票据。
 
 **原理**
 
@@ -1182,7 +1188,11 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 ---
 
-#### Golden_Tickets
+##### Golden_Tickets
+
+**描述**
+
+在 AS_REQ & AS_REP 中，用户使用自身 hash 加密时间戳发送给 KDC，KDC 验证成功后返回用 krbtgt hash 加密的 TGT 票据。如果攻击者有 krbtgt 的 hash，就可以自己给自己签发任意用户的 tgt 票据。
 
 **原理**
 
@@ -1243,22 +1253,26 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具
 2. mimikatz 可以在域控的本地安全认证(Local Security Authority)上直接读取 `mimikatz.exe "privilege::debug" "lsadump::lsa /inject /name:krbtgt"`
 3. 将域控中的 ntds.dit 复制出来，使用其他工具解析
 
-**白银票据与黄金票据的不同点**
+##### 白银票据与黄金票据的不同点
 
-- 访问权限不同
-    - Golden Ticket: 伪造 TGT,可以获取任何 Kerberos 服务权限
-    - Silver Ticket: 伪造 TGS,只能访问指定的服务
+**访问权限不同**
+- Golden Ticket: 伪造 TGT,可以获取任何 Kerberos 服务权限
+- Silver Ticket: 伪造 TGS,只能访问指定的服务
 
-- 加密方式不同
-    - Golden Ticket 由 Kerberos 的 Hash 加密
-    - Silver Ticket 由服务账号(通常为计算机账户)Hash 加密
+**加密方式不同**
+- Golden Ticket 由 Kerberos 的 Hash 加密
+- Silver Ticket 由服务账号(通常为计算机账户)Hash 加密
 
-- 认证流程不同
-    - Golden Ticket 的利用过程需要访问域控,而 Silver Ticket 不需要
+**认证流程不同**
+- Golden Ticket 的利用过程需要访问域控,而 Silver Ticket 不需要
+
+**生成的票据**
+- Golden Ticket 生成 TGT 票据
+- Silver Ticket 生成 TGS 票据
 
 ---
 
-### Kerberoast
+#### Kerberoast
 
 `Kerberos TGS 票据离线破解`
 
@@ -1356,7 +1370,7 @@ kerberos::ptt test.kirbi
 
 ---
 
-### Kerberoasting
+#### Kerberoasting
 
 > 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoasting)]</sup>
 
@@ -1403,9 +1417,9 @@ hashcat -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l   # 使用掩�
 
 ---
 
-### 委派
+#### 委派
 
-#### 查找域中委派主机或账户
+##### 查找域中委派主机或账户
 
 > 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#%E6%9F%A5%E6%89%BE%E5%9F%9F%E4%B8%AD%E5%A7%94%E6%B4%BE%E4%B8%BB%E6%9C%BA%E6%88%96%E8%B4%A6%E6%88%B7)]</sup>
 
@@ -1453,9 +1467,9 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 
 ---
 
-# 对抗
+## 对抗
 
-## AMSI
+### AMSI
 
 **相关文章**
 - [初探Powershell与AMSI检测对抗技术](https://www.anquanke.com/post/id/168210)
@@ -1467,7 +1481,7 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 
 ---
 
-# BitLocker
+## BitLocker
 
 **相关工具**
 - [e-ago/bitcracker](https://github.com/e-ago/bitcracker) - BitCracker is the first open source password cracking tool for memory units encrypted with BitLocker

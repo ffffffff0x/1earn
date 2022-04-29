@@ -12,7 +12,7 @@
 
 ---
 
-# 获得固件
+## 获得固件
 
 访问 Dlink 的 ftp 服务器
 - ftp://ftp.dlink.eu/
@@ -24,7 +24,7 @@
 
 ---
 
-# 提取固件
+## 提取固件
 
 解压,得到 DWR-932_B1_FW v.02.02EU.zip , 无法直接解压缩，会发现该固件被加了密，这是厂商对该固件做了保护，防止逆向分析固件。
 
@@ -52,7 +52,7 @@ chmod +x unyaffs
 
 ---
 
-# 信息挖掘
+## 信息挖掘
 
 接下来,在提取的文件中挖掘一些有用的信息
 ```bash
@@ -94,7 +94,7 @@ git clone https://github.com/craigz28/firmwalker.git
 
 ---
 
-# 查看启动项
+## 查看启动项
 
 ```bash
 cd etc/init.d
@@ -174,7 +174,7 @@ less start_appmgr
 
 ---
 
-# appmgr 分析
+## appmgr 分析
 
 用 IDA 打开 `/bin/appmgr` 程序看看
 
@@ -200,7 +200,7 @@ main 函数下 F5,可以发现有一个线程会持续监听 0.0.0.0:39889（UDP
 
 ---
 
-# fotad 分析
+## fotad 分析
 
 路由器与 FOTA 服务器进行通信时的凭证数据硬编码在 `/sbin/fotad` 代码中，我们用 IDA 进行分析
 
@@ -217,7 +217,7 @@ cWRwOnFkcA==        qdp:qdp
 
 ---
 
-# UPnP 安全问题
+## UPnP 安全问题
 
 UPnP 允许用户动态添加防火墙规则。因为这种做法会带来一定的安全风险，因此设备通常都会对这种操作进行限制，以避免不受信任的客户端添加不安全的防火墙规则。
 
@@ -248,7 +248,8 @@ upnp_nat_chain=MINIUPNPD
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [【技术分享】Dlink DWR-932B路由器被爆多个安全漏洞](https://www.anquanke.com/post/id/84671)
 - [IoT_Sec_Tutorial/02-静态分析IoT固件/README.md](https://github.com/G4rb3n/IoT_Sec_Tutorial/blob/master/02-%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90IoT%E5%9B%BA%E4%BB%B6/README.md)
 - [Rooting Dlink DWR-932 (4G router) | LinkedIn](https://www.linkedin.com/pulse/rooting-dlink-dwr-923-4g-router-gianni-carabelli/)

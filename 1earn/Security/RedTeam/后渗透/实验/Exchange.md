@@ -21,14 +21,18 @@
 - [深入Exchange Server在网络渗透下的利用方法](https://www.freebuf.com/articles/web/193132.html)
 - [Exchange在渗透测试中的利用](https://evi1cg.me/archives/Exchange_Hack.html)
 - [Exchange EWS接口的利用](https://www.t00ls.net/thread-62442-1-3.html)
+- [针对Exchange的攻击方式](https://tttang.com/archive/1487/)
 
 **状况检查**
 - [dpaulson45/HealthChecker](https://github.com/dpaulson45/HealthChecker) - Exchange Server 运行状况检查脚本
 - [microsoft/CSS-Exchange](https://github.com/microsoft/CSS-Exchange) - Exchange Server支持工具和脚本,用于检测各类问题
 
+**环境搭建**
+- [Exchange搭建](../../../../Integrated/Windows/实验/Exchange搭建.md)
+
 ---
 
-# Dork
+## Dork
 
 ```
 microsoft exchange 2013：
@@ -48,7 +52,7 @@ app="Microsoft-Exchange-2010-POP3-server-version-03.1"||app="Microsoft-Exchange-
 
 ---
 
-# 查看版本号
+## 查看版本号
 
 在登录界面查看网页源代码：
 
@@ -59,22 +63,28 @@ app="Microsoft-Exchange-2010-POP3-server-version-03.1"||app="Microsoft-Exchange-
 
 ---
 
-# 域内定位 Exchange 服务器
+## 域内定位 Exchange 服务器
+
+**ldap 定位**
 
 在域内可以使用 ldap 定位, 过滤规则
 ```
 "(objectCategory=msExchExchangeServer)"
 ```
 
+**spn 定位**
+
 通过 spn 来定位
 ```
+setspn -q */*
+
 setspn -Q IMAP/*
 nslookup.exe -type=srv _autodiscover._tcp
 ```
 
 ---
 
-# 信息泄露
+## 信息泄露
 
 **IP**
 - 访问以下接口,HTTP 协议版本修改成 1.0，去掉 http 头里面的 HOST 参数
@@ -105,7 +115,81 @@ nslookup.exe -type=srv _autodiscover._tcp
     nmap x.x.x.x -p 443 --script http-ntlm-info --script-args http-ntlm-info.root=/rpc/rpcproxy.dll
     ```
 
-**导出邮箱列表 GlobalAddressList**
+---
+
+## 爆破
+
+通常情况下,Exchange 系统是不对邮箱登录次数做限制,利用大字典来进行爆破,是最为常见的突破方法。
+
+![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/1.png)
+
+Exchange 邮箱的登录账号分为三种形式, 分别为 “domain\username”、“username” 和“user@domain（邮件地址）”, 这三种方式可以并存使用, 也可以限制具体一种或两种使用。
+
+具体使用哪一种用户名登录可以根据登录口的提示确定, 但这并不百分百准确, 管理员通过修改配置或者登录页面, 可以自行设置登录方式, 和提示说明。因此如果直接使用 owa 页面爆破, 用户名需要尝试全部三种方式。
+
+爆破方式使用 burp 即可, 通过返回包长短即可判断成功与否。
+
+对于某些限制登录次数的网站, 还可以尝试对其 NTLM 验证接口进行爆破, 最常见的就是 ews 接口, 但除此之外，还有以下接口地址。
+```
+/Autodiscover/Autodiscover.xml  # 自 Exchange Server 2007 开始推出的一项自动服务,用于自动配置用户在Outlook中邮箱的相关设置,简化用户登录使用邮箱的流程。
+/Microsoft-Server-ActiveSync/default.eas
+/Microsoft-Server-ActiveSync    # 用于移动应用程序访问电子邮件
+/Autodiscover
+/Rpc/                           # 早期的 Outlook 还使用称为 Outlook Anywhere 的 RPC 交互
+/EWS/Exchange.asmx
+/EWS/Services.wsdl
+/EWS/                           # Exchange Web Service,实现客户端与服务端之间基于HTTP的SOAP交互
+/OAB/                           # 用于为Outlook客户端提供地址簿的副本,减轻 Exchange 的负担
+/owa                            # Exchange owa 接口,用于通过web应用程序访问邮件、日历、任务和联系人等
+/ecp                            # Exchange 管理中心,管理员用于管理组织中的Exchange 的Web控制台
+/Mapi                           # Outlook连接 Exchange 的默认方式,在2013和2013之后开始使用,2010 sp2同样支持
+/powershell                     # 用于服务器管理的 Exchange 管理控制台
+```
+
+可以利用以下工具进行爆破
+
+- [APT34 Exchange 爆破工具](https://github.com/blackorbird/APT_REPORT/blob/master/APT34/Jason.zip)
+- [grayddq/EBurst](https://github.com/grayddq/EBurst) - 这个脚本主要提供对 Exchange 邮件服务器的账户爆破功能，集成了现有主流接口的爆破方式。
+- [sensepost/ruler](https://github.com/sensepost/ruler) - 爆破 Exchange
+    ```
+    ./ruler --domain https://targetdomain.com/autodiscover/autodiscover.xml -k brute --users /path/to/user.txt --passwords /path/to/passwords.txt -v --threads 5 --delay 0
+    ```
+
+---
+
+### ecp
+
+exchange server 默认将其管理页面入口 Exchange Admin Center（ecp）和其正常邮箱登录口 Outlook Web Access（owa）一同发布。默认登录地址为 https://domain/ecp/
+
+![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/5.png)
+
+**权限**
+
+![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/6.png)
+
+域管 administrator 默认为邮箱管理员,但邮箱管理员和域管其实并无关系。添加邮箱管理员不会修改用户域内权限。
+
+**搜索**
+
+合规性管理 ——> 就地电子数据展示和保留 ——> 添加规则
+
+![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/7.png)
+
+**委托**
+
+设置权限将邮箱委托给指定用户管理使用。
+
+ecp ——> 收件人 ——> 目标用户 ——> 邮件委托 ——> 完全访问添加指定用户
+
+![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/8.png)
+
+---
+
+## Post Exchange
+
+### 导出邮箱列表
+
+**GlobalAddressList**
 - 直接导出
     ```
     登录后,选择联系人->All Users。
@@ -199,76 +283,7 @@ nslookup.exe -type=srv _autodiscover._tcp
     python exchanger.py DOMAIN/test:密码@MAIL nspi dump-tables -guid xxxx
     ```
 
----
-
-# 爆破
-
-通常情况下,Exchange 系统是不对邮箱登录次数做限制,利用大字典来进行爆破,是最为常见的突破方法。
-
-![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/1.png)
-
-Exchange 邮箱的登录账号分为三种形式, 分别为 “domain\username”、“username” 和“user@domain（邮件地址）”, 这三种方式可以并存使用, 也可以限制具体一种或两种使用。
-
-具体使用哪一种用户名登录可以根据登录口的提示确定, 但这并不百分百准确, 管理员通过修改配置或者登录页面, 可以自行设置登录方式, 和提示说明。因此如果直接使用 owa 页面爆破, 用户名需要尝试全部三种方式。
-
-爆破方式使用 burp 即可, 通过返回包长短即可判断成功与否。
-
-对于某些限制登录次数的网站, 还可以尝试对其 NTLM 验证接口进行爆破, 最常见的就是 ews 接口, 但除此之外，还有以下接口地址。
-```
-/Autodiscover/Autodiscover.xml  # 自 Exchange Server 2007 开始推出的一项自动服务,用于自动配置用户在Outlook中邮箱的相关设置,简化用户登录使用邮箱的流程。
-/Microsoft-Server-ActiveSync/default.eas
-/Microsoft-Server-ActiveSync    # 用于移动应用程序访问电子邮件
-/Autodiscover
-/Rpc/                           # 早期的 Outlook 还使用称为 Outlook Anywhere 的 RPC 交互
-/EWS/Exchange.asmx
-/EWS/Services.wsdl
-/EWS/                           # Exchange Web Service,实现客户端与服务端之间基于HTTP的SOAP交互
-/OAB/                           # 用于为Outlook客户端提供地址簿的副本,减轻 Exchange 的负担
-/owa                            # Exchange owa 接口,用于通过web应用程序访问邮件、日历、任务和联系人等
-/ecp                            # Exchange 管理中心,管理员用于管理组织中的Exchange 的Web控制台
-/Mapi                           # Outlook连接 Exchange 的默认方式,在2013和2013之后开始使用,2010 sp2同样支持
-/powershell                     # 用于服务器管理的 Exchange 管理控制台
-```
-
-可以利用以下工具进行爆破
-
-- [APT34 Exchange 爆破工具](https://github.com/blackorbird/APT_REPORT/blob/master/APT34/Jason.zip)
-- [grayddq/EBurst](https://github.com/grayddq/EBurst) - 这个脚本主要提供对 Exchange 邮件服务器的账户爆破功能，集成了现有主流接口的爆破方式。
-- [sensepost/ruler](https://github.com/sensepost/ruler) - 爆破 Exchange
-
----
-
-## ecp
-
-exchange server 默认将其管理页面入口 Exchange Admin Center（ecp）和其正常邮箱登录口 Outlook Web Access（owa）一同发布。默认登录地址为 https://domain/ecp/
-
-![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/5.png)
-
-**权限**
-
-![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/6.png)
-
-域管 administrator 默认为邮箱管理员,但邮箱管理员和域管其实并无关系。添加邮箱管理员不会修改用户域内权限。
-
-**搜索**
-
-合规性管理 ——> 就地电子数据展示和保留 ——> 添加规则
-
-![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/7.png)
-
-**委托**
-
-设置权限将邮箱委托给指定用户管理使用。
-
-ecp ——> 收件人 ——> 目标用户 ——> 邮件委托 ——> 完全访问添加指定用户
-
-![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/8.png)
-
----
-
-# Post Exchange
-
-## ACL
+### ACL
 
 **相关文章**
 - [域渗透——使用Exchange服务器中特定的ACL实现域提权](https://3gstudent.github.io/3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-%E4%BD%BF%E7%94%A8Exchange%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%AD%E7%89%B9%E5%AE%9A%E7%9A%84ACL%E5%AE%9E%E7%8E%B0%E5%9F%9F%E6%8F%90%E6%9D%83/)
@@ -292,21 +307,34 @@ ecp ——> 收件人 ——> 目标用户 ——> 邮件委托 ——> 完全�
 
 ---
 
-## PTH
+### PTH
 
 - [pentest-tools-public/Pass-to-hash-EWS](https://github.com/pentest-tools-public/Pass-to-hash-EWS)
 
 ---
 
-## relay
+### relay
 
 - [Exchange 中继](../../OS安全/实验/NTLM中继.md#exchange中继)
 
 ---
 
-# 漏洞
+### OUTLOOK 命令执行
 
-## CVE-2018-8581 任意用户伪造漏洞
+OUTLOOK 客户端有一个 规则与通知 的功能，通过该功能可以使 outlook 客户端在指定情况下执行指定的指令。若我们获得某用户的凭证，可以通过此功能设置 “用户收到含指定字符的邮件时 执行指定的指令比如 clac.exe”，当用户登录 outlook 客户端并访问到此邮件时，它的电脑便会执行 calc.exe。
+
+但是，当触发动作为启动应用程序时，只能直接调用可执行程序，如启动一个 exe 程序，但无法为应用程序传递参数，想要直接上线，我们可以将 EXE 放到某共享目录下，或者直接上传到用户的机器。
+
+具体步骤为打开规则与通知功能，然后新建功能，在接收到某条件邮件时启动指定应用程序
+- 可参考 : https://tttang.com/archive/1487/#toc_outlook
+
+实战中不太好利用
+
+---
+
+## 漏洞
+
+### CVE-2018-8581 任意用户伪造漏洞
 - https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2018-8581
 
 **简介**
@@ -331,7 +359,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 
 ---
 
-## CVE-2020-0688 远程代码执行漏洞
+### CVE-2020-0688 远程代码执行漏洞
 
 **简介**
 
@@ -353,7 +381,7 @@ Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
 
 ---
 
-## CVE-2020-16875 远程代码执行漏洞
+### CVE-2020-16875 远程代码执行漏洞
 
 **简介**
 
@@ -376,7 +404,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ---
 
-## CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞
+### CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞
 
 **相关文章**
 - [CVE-2020-17083 Microsoft Exchange Server任意代码执行漏洞 POC](https://mp.weixin.qq.com/s/LMUMmuGfT3nmKN88O5hBAA)
@@ -386,14 +414,14 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ---
 
-## CVE-2020-17143 Microsoft Exchange 信息泄露漏洞
+### CVE-2020-17143 Microsoft Exchange 信息泄露漏洞
 
 **POC | Payload | exp**
 - https://srcincite.io/pocs/cve-2020-17143.py.txt
 
 ---
 
-## CVE-2020-17144 登录后反序列化漏洞
+### CVE-2020-17144 登录后反序列化漏洞
 
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2020-17144
 
@@ -409,7 +437,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ---
 
-## Proxylogon && CVE-2021-26855 && 27065
+### Proxylogon && CVE-2021-26855 && 27065
 
 - https://proxylogon.com/
 - https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-26855
@@ -451,7 +479,7 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ---
 
-## Proxyshell
+### Proxyshell
 
 **相关文章**
 - [Exchange SSRF漏洞从proxylogon到proxyshell(一)](https://mp.weixin.qq.com/s/B_5WWNjG110PCS_gHcpR-A)
@@ -467,14 +495,14 @@ use exploit/windows/http/exchange_ecp_dlp_policy
 
 ---
 
-## ProxyToken
+### ProxyToken
 
 **相关文章**
 - [PROXYTOKEN: AN AUTHENTICATION BYPASS IN MICROSOFT EXCHANGE SERVER](https://www.zerodayinitiative.com/blog/2021/8/30/proxytoken-an-authentication-bypass-in-microsoft-exchange-server)
 
 ---
 
-## ProxyOracle && CVE-2021-31195 && CVE-2021-31196
+### ProxyOracle && CVE-2021-31195 && CVE-2021-31196
 
 **影响版本**
 
@@ -497,7 +525,7 @@ CVE-2021-31196
 
 ---
 
-## CVE-2021-41349 Exchange XSS 漏洞
+### CVE-2021-41349 Exchange XSS 漏洞
 
 **相关文章**
 - [微软补丁日Poc｜Exchange XSS 漏洞（CVE-2021-41349）【含Python Poc】](https://mp.weixin.qq.com/s/WX95lcy7_PZvSIG0SALtFA)
@@ -509,7 +537,7 @@ CVE-2021-31196
 
 ---
 
-## CVE-2021-42321
+### CVE-2021-42321
 
 **相关文章**
 - [CVE-2021-42321-天府杯Exchange 反序列化漏洞分析](https://mp.weixin.qq.com/s/qLOIyMlodeq8uOLEAJIzEA)

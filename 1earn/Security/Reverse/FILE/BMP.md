@@ -87,6 +87,7 @@ bmp 文件头 BM
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [misc-stegaBasic](https://www.jianshu.com/p/fe7a5fff2a95)
 - [BMP位图隐写](https://payloads.online/archivers/2019-01-31/1)

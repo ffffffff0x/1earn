@@ -2,7 +2,7 @@
 
 ---
 
-# 什么是 ACL
+## 什么是 ACL
 
 windows 系统中的 ACL(Access Control List)，用来表示组与用户权限的列表。比如文件、注册表的权限都包括 ACL，它用来表示哪些组与用户具有操作权限，其实主要是一组规则，定义哪些组与用户等对特定 AD 对象具有哪些权限。
 
@@ -39,9 +39,9 @@ System Access Control List，用来记录对安全对象访问的日志；
 
 ---
 
-# 针对 ACL 的操作
+## 针对 ACL 的操作
 
-## icacls 操作 ACL
+### icacls 操作 ACL
 
 查看指定文件的 ACL
 ```
@@ -76,7 +76,7 @@ icacls C:\test.txt /remove test1 /t
 
 ---
 
-## powershell 操作 ACL
+### powershell 操作 ACL
 
 查看指定路径的ACL
 ```
@@ -198,7 +198,7 @@ Foreach($file in $fileList)
 
 ---
 
-## 注册表操作 ACL
+### 注册表操作 ACL
 
 查看指定路径的ACL：
 ```

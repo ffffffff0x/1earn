@@ -47,5 +47,6 @@ ALTER TABLE xxxxxxxxx DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [Mysql查询英文如何严格区分大小写？](http://www.imooc.com/article/14190)

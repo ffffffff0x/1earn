@@ -30,6 +30,35 @@
 
 **相关文章**
 - [太干了，Android 抓包姿势总结！](https://mp.weixin.qq.com/s/EB0MAJQs1CIEUHezmTFxtg)
+- [Android Pentesting Setup On Macbook M1](https://infosecwriteups.com/android-pentesting-setup-on-macbook-m1-d2f1f0a8db4b)
+
+**mac + Android studio 抓包**
+```bash
+cd
+cd Library/Android/sdk/emulator
+./emulator -list-avds
+./emulator -avd test -writable-system
+
+# 导出 burp 的证书 cacert.der
+openssl x509 -inform DER -in cacert.der -out cacert.pem
+openssl x509 -inform PEM -subject_hash_old -in cacert.pem | head -1
+
+mv cacert.pem 9a5ba575.0
+
+cd
+cd Library/Android/sdk/platform-tools
+./adb devices
+
+./adb root
+./adb remount
+./adb push 9a5ba575.0 /sdcard/
+
+./adb shell
+mv /sdcard/9a5ba575.0 /system/etc/security/cacerts/
+chmod 644 /system/etc/security/cacerts/9a5ba575.0
+exit
+./adb reboot
+```
 
 ---
 
@@ -123,6 +152,11 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 **在线反编译器**
 - [APK decompiler - decompile Android .apk ✓ ONLINE ✓](http://www.javadecompilers.com/apk)
 
+**查壳**
+- apktool box
+- PKID
+- https://bbs.pediy.com/thread-223248.htm
+
 **反编译工具**
 - [Apktool](https://ibotpeaches.github.io/Apktool/)
     - 参考文章 : [使用apktool反编译apk文件](https://blog.csdn.net/ruancoder/article/details/51924179)
@@ -187,3 +221,6 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 **相关文章**
 - [How to hack Android device with ADB (Android debugging bridge)](https://www.hackeracademy.org/how-to-hack-android-device-with-adb-android-debugging-bridge/)
 - [[渗透测试]记一次5555端口渗透实战](https://www.cnblogs.com/Ky1226/p/14198581.html)
+
+**Payload**
+- https://www.exploit-db.com/exploits/39328

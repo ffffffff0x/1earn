@@ -16,6 +16,7 @@
 ## 代理
 
 ```bash
+# 请根据自己的代理软件进行调整!!!!
 export https_proxy=http://127.0.0.1:7890;export http_proxy=http://127.0.0.1:7890;export all_proxy=socks5://127.0.0.1:7890
 ```
 
@@ -53,7 +54,7 @@ sudo xattr -r -d com.apple.quarantine /Applications/xxxxxxxx.app
 
 ---
 
-解锁
+解锁文件夹
 ```
 chflags -R nouchg *
 ```
@@ -93,6 +94,7 @@ softwareupdate --install-rosetta
 **homebrew**
 
 - https://brew.sh/index_zh-cn
+- https://gitee.com/cunkai/HomebrewCN
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -104,6 +106,11 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ```bash
 brew install git
+```
+
+**ffmpeg**
+```bash
+brew install ffmpeg
 ```
 
 **motrix**
@@ -155,7 +162,89 @@ brew services start code-server
 **java**
 
 - https://oracle.com/java/technologies/downloads/#java8-mac
+- https://www.azul.com/downloads/?os=macos&architecture=arm-64-bit
 
 **javafx**
-
+- https://openjfx.io/
 - https://openjfx.cn/dl/
+
+```
+export PATH_TO_FX=/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/javafx-sdk-17.0.2/lib
+```
+
+**php**
+
+先查询有哪些 php 的版本，M1 目前只支持部分版本
+```bash
+brew search php
+```
+
+这里我安装 php7.3,参考 stackoverflow 的回答 https://stackoverflow.com/questions/70417377/error-php7-3-has-been-disabled-because-it-is-a-versioned-formula
+```bash
+brew tap shivammathur/php
+brew install shivammathur/php/php@7.3
+```
+
+安装完毕后应该就可以在 `/opt/homebrew/etc/php/7.3/` 目录下看到 php 了
+
+运行以下命令加入到环境变量中
+```
+echo 'export PATH="/opt/homebrew/opt/php@7.3/bin:$PATH"' >> ~/.zshrc
+echo 'export PATH="/opt/homebrew/opt/php@7.3/sbin:$PATH"' >> ~/.zshrc
+```
+
+`brew info php` 可以查看我们安装的 php 信息
+
+**jenv**
+
+- https://github.com/jenv/jenv
+
+```bash
+brew install jenv
+
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(jenv init -)"' >> ~/.zshrc
+
+jenv add /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/jdk-11.0.14.jdk/Contents/Home
+jenv add /Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home
+jenv versions
+jenv global 1.8
+jenv local 1.8
+```
+
+**miniforge**
+
+- https://github.com/conda-forge/miniforge
+
+```bash
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-MacOSX-arm64.sh
+mv Miniforge3-MacOSX-arm64.sh ~/
+cd
+bash Miniforge3-MacOSX-arm64.sh
+```
+
+**CotEditor**
+
+- https://github.com/coteditor/CotEditor
+
+---
+
+## 环境变量
+
+和 linux 是一样的,比如装 maven ,下载解压放到 Library 下,添加环境变量
+```
+export maven_HOME=/Library/apache-maven-3.8.4
+export PATH=$PATH:$maven_HOME/bin
+```
+
+可以长期修改
+```diff
+vim ~/.zshrc
+
+++ export maven_HOME=/Library/apache-maven-3.8.4
+++ export PATH=$PATH:$maven_HOME/bin
+
+source ~/.zshrc
+mvn -v
+```

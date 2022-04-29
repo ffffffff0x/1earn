@@ -68,36 +68,36 @@ nuclei -update-templates
 
 | 命令                   | 描述                             | 例子                                            |
 | ---------------------- | -------------------------------- | ----------------------------------------------- |
-| bulk-size              | 每个模板最大并行的主机数(默认25) | nuclei -bulk-size 25                            |
-| burp-collaborator-biid | 使用burp-collaborator插件        | nuclei -burp-collaborator-biid XXXX             |
-| c                      | 并行的最大模板数量(默认10)       | nuclei -c 10                                    |
-| l                      | 对URL列表进行测试                | nuclei -l urls.txt                              |
+| bulk-size              | 每个模板最大并行的主机数 (默认 25) | nuclei -bulk-size 25                            |
+| burp-collaborator-biid | 使用 burp-collaborator 插件        | nuclei -burp-collaborator-biid XXXX             |
+| c                      | 并行的最大模板数量 (默认 10)       | nuclei -c 10                                    |
+| l                      | 对 URL 列表进行测试                | nuclei -l urls.txt                              |
 | target                 | 对目标进行测试                   | nuclei -target hxxps://example.com              |
 | t                      | 要检测的模板种类                 | nuclei -t git-core.yaml -t cves/                |
 | no-color               | 输出不显示颜色                   | nuclei -no-color                                |
 | no-meta                | 不显示匹配的元数据               | nuclei -no-meta                                 |
-| json                   | 输出为json格式                   | nuclei -json                                    |
-| include-rr             | json输出格式中包含请求和响应数据 | nuclei -json -include-rr                        |
+| json                   | 输出为 json 格式                   | nuclei -json                                    |
+| include-rr             | json 输出格式中包含请求和响应数据 | nuclei -json -include-rr                        |
 | o                      | 输出为文件                       | nuclei -o output.txt                            |
 | project                | 避免发送相同的请求               | nuclei -project                                 |
 | stats                  | 使用进度条                       | nuclei -stats                                   |
 | silent                 | 只输出测试成功的结果             | nuclei -silent                                  |
 | retries                | 失败后的重试次数                 | nuclei -retries 1                               |
-| timeout                | 超时时间(默认为5秒)              | nuclei -timeout 5                               |
-| trace-log              | 输出日志到log文件                | nuclei -trace-log logs                          |
-| rate-limit             | 每秒最大请求数(默认150)          | nuclei -rate-limit 150                          |
+| timeout                | 超时时间 (默认为 5 秒)              | nuclei -timeout 5                               |
+| trace-log              | 输出日志到 log 文件                | nuclei -trace-log logs                          |
+| rate-limit             | 每秒最大请求数 (默认 150)          | nuclei -rate-limit 150                          |
 | severity               | 根据严重性选择模板               | nuclei  -severity critical,high                 |
-| stop-at-first-match    | 第一次匹配不要处理HTTP请求       | nuclei -stop-at-frst-match                      |
+| stop-at-first-match    | 第一次匹配不要处理 HTTP 请求       | nuclei -stop-at-frst-match                      |
 | exclude                | 排除的模板或文件夹               | nuclei -exclude panels -exclude tokens          |
 | debug                  | 调试请求或者响应                 | nuclei -debug                                   |
 | update-templates       | 下载或者升级模板                 | nuclei -update-templates                        |
-| update-directory       | 选择储存模板的目录(可选)         | nuclei -update-directory templates              |
+| update-directory       | 选择储存模板的目录 (可选)         | nuclei -update-directory templates              |
 | tl                     | 列出可用的模板                   | nuclei -tl                                      |
 | templates-version      | 显示已安装的模板版本             | nuclei -templates-version                       |
 | v                      | 显示发送请求的详细信息           | nuclei -v                                       |
-| version                | 显示nuclei的版本号               | nuclei -version                                 |
+| version                | 显示 nuclei 的版本号               | nuclei -version                                 |
 | proxy-url              | 输入代理地址                     | nuclei -proxy-url hxxp://127.0.0.1:8080         |
-| proxy-socks-url        | 输入socks代理地址                | nuclei -proxy-socks-url socks5://127.0.0.1:8080 |
+| proxy-socks-url        | 输入 socks 代理地址                | nuclei -proxy-socks-url socks5://127.0.0.1:8080 |
 | H                      | 自定义请求头                     | nuclei -H "x-bug-bounty:hacker"                 |
 
 ---
@@ -380,7 +380,7 @@ info:
 
 ---
 
-### Web
+### 请求
 
 #### Get
 
@@ -761,7 +761,7 @@ requests:
 ```yaml
       - type: regex
         regex:
-          - "root:.*:0:0"
+          - "root:.*:0:0:"
         part: body
 ```
 
@@ -789,6 +789,14 @@ expr 12333 \* 32111
 ---
 
 ### 进阶用法
+
+#### 全局请求头
+
+当目标采用 Basic Auth , 可以直接在调用的命令中加上全局请求头,而不用修改每个模板
+
+```
+nuclei -u https://target.com -H "Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
+```
 
 #### Reusing dynamically extracted values as iterators in http request
 
@@ -896,7 +904,21 @@ requests:
         50: {{wait_for(1)}}
 ```
 
-### self-contained
+#### 嵌套表达式
+
+```
+❌ {{urldecode({{base64_decode('SGVsbG8=')}})}}
+✔ {{url_decode(base64_decode('SGVsbG8='))}}
+```
+
+在 extractor 中使用
+- https://github.com/projectdiscovery/nuclei/discussions/1622
+
+```
+{{url_decode(base64_decode('{{SGVsbG8=}}'))}}
+```
+
+#### self-contained
 
 A new attribute to HTTP requests that marks all the HTTP Requests in that template as self-sufficient, meaning they do not require any input to be executed.
 
@@ -927,11 +949,11 @@ requests:
           - 302
 ```
 
-### 文件协议
+#### 文件协议
 
 The default file size of the file template read is 1GB
 
-文件模板默认读取的文件大小1GB
+文件模板默认读取的文件大小 1GB
 
 - https://github.com/projectdiscovery/nuclei/pull/1577
 
@@ -946,7 +968,7 @@ file:
           - "\"type\": \"service_account\""
 ```
 
-### 网络层
+#### 网络层
 
 ```yaml
 network:
@@ -970,6 +992,25 @@ network:
 
 ```
 
+#### 自定义模版变量
+
+自 2.6.9 版本开始支持
+
+```yaml
+variables:
+  a1: "{{to_lower(rand_base(5))}}"
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}/?test={{a1}}"
+
+    matchers:
+      - type: word
+        words:
+          - "{{a1}}"
+```
+
 ---
 
 ### 需要验证的问题
@@ -986,5 +1027,3 @@ network:
   * 单模板内可传递,多模板之间不可传递
 * BS版本 nuclei/api
   * 目前不支持
-* 扫描错误日志的输出
-* 扫描结果日志的输出

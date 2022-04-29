@@ -26,7 +26,7 @@ NoSQL 数据库在存储速度与灵活性方面有优势，也常用于缓存�
 
 ---
 
-# MySQL
+## MySQL
 
 **概要**
 
@@ -66,7 +66,7 @@ MySQL 数据库根据应用的需要准备了不同的引擎，不同的引擎�
 
 ---
 
-# 常用 SQL 语句
+## 常用 SQL 语句
 
 **SQL 查询重复出现次数最多的记录,按出现频率排序**
 ```sql
@@ -101,8 +101,3 @@ from tab1 a left join tab2 b
 on a.name = b.name
 where b.name is null
 ```
-
----
-
-**Source & Reference**
-- [MySQL数据库](https://www.cnblogs.com/tester-l/p/8191750.html)

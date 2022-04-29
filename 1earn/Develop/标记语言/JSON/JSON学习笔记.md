@@ -56,7 +56,7 @@ JSON 文本的 MIME 类型是 "application/json"
 
 ---
 
-# 语法
+## 语法
 
 JSON 语法是 JavaScript 语法的子集。
 - 数据在名称/值对中
@@ -171,7 +171,7 @@ sites[0].name="test";
 
 ---
 
-# 对象
+## 对象
 
 **对象语法**
 ```json
@@ -334,7 +334,7 @@ document.getElementById("demo").innerHTML = x;
 delete myObj.sites["site1"]
 ```
 
-# JSON.parse()
+## JSON.parse()
 
 JSON 通常用于与服务端交换数据。
 
@@ -500,7 +500,7 @@ document.getElementById("demo").innerHTML = obj.name + " Alexa 排名：" + obj.
 
 ---
 
-# JSON.stringify()
+## JSON.stringify()
 
 JSON 通常用于与服务端交换数据。
 
@@ -622,7 +622,7 @@ document.getElementById("demo").innerHTML = myJSON;
 
 ---
 
-# JSON 使用
+## JSON 使用
 
 JSON 最常见的用法之一，是从 web 服务器上读取 JSON 数据（作为文件或作为 HttpRequest），将 JSON 数据转换为 JavaScript 对象，然后在网页中使用该数据。
 
@@ -675,7 +675,7 @@ document.getElementById("url").innerHTML=obj.sites[0].url
 
 ---
 
-# JSONP 教程
+## JSONP 教程
 
 Jsonp(JSON with Padding) 是 json 的一种"使用模式"，可以让网页从别的域名（网站）那获取资料，即跨域读取数据。
 
@@ -759,5 +759,6 @@ Jsonp(JSON with Padding) 是 json 的一种"使用模式"，可以让网页从�
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [JSON 教程](https://www.runoob.com/json/json-tutorial.html)

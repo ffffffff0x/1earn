@@ -34,6 +34,7 @@ KeepAlive=On 时，每次用户访问，打开一个 TCP 连接，Apache 都会�
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [Connection: close和keep-alive之间的区别](https://developer.aliyun.com/article/277977)
 - [关于设置http响应头connection的作用](https://blog.csdn.net/minghaitang/article/details/83567259)

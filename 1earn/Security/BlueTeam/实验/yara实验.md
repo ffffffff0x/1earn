@@ -2,7 +2,23 @@
 
 ---
 
-# 安装
+## 免责声明
+
+`本文档仅供学习和研究使用,请勿使用文中的技术源码用于非法用途,任何人造成的任何负面影响,与本人无关.`
+
+---
+
+## 什么是 yara
+
+YARA 是一款旨在帮助恶意软件研究人员识别和分类恶意软件样本的开源工具，使用 YARA 可以基于文本或二进制模式创建恶意软件家族描述信息，当然也可以是其他匹配信息。
+
+这款工具配备一个短小精悍的命令行搜索引擎，它由纯Ｃ语言编写，优化了执行的效率。该引擎可以跨平台使用，能够运行 Windows,Linux 及Ｍac OS X 系统上。同时，这款工具提供 python 扩展，允许通过 python 脚本访问搜索引擎。
+
+YARA 的功能非常丰富，尤其是与模块的集成。模块可以在保持规则可读性的基础上开启了非常精细的扫描。
+
+---
+
+## 安装
 
 linux 下可以直接用包管理器进行安装
 ```bash
@@ -23,7 +39,7 @@ yara.exe --help
 
 ---
 
-# 语法
+## 语法
 
 ```
        --atom-quality-table=FILE        path to a file with the atom quality table
@@ -57,7 +73,7 @@ yara.exe --help
 
 ---
 
-# 示例
+## 示例
 
 **基本使用**
 ```
@@ -141,9 +157,9 @@ nocase 关键字代表不区分大小写
 
 ---
 
-# 匹配 CS
+## 匹配 CS
 
-## Win32_PE
+### Win32_PE
 
 这里生成多个 cs 马,分析提取一些特征。
 
@@ -239,7 +255,7 @@ rule CS : win32
 
 ---
 
-## powershell
+### powershell
 
 生成不同位数下的 powershell 后门
 
@@ -273,7 +289,7 @@ rule powershell
 
 ---
 
-## html_pe
+### html_pe
 
 CobaltStrike 提供 3 种生成 html 木马的方式 exe,powershell,vba,依次生成如下
 

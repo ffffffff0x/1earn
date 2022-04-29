@@ -6,7 +6,7 @@
 
 ---
 
-# 大纲
+## 大纲
 
 * **[原理](#原理)**
 
@@ -31,7 +31,7 @@
 
 ---
 
-# 原理
+## 原理
 
 ![](../../../assets/img/Develop/版本控制/git/1.jpg)
 
@@ -81,7 +81,7 @@ Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或
 
 - description
 
-    被 gitweb(github 之前）用来描述 repository 内容。
+    被 gitweb(github 之前) 用来描述 repository 内容。
 
 - hooks
 
@@ -101,7 +101,7 @@ Git 的版本库里存了很多东西，其中最重要的就是称为 stage(或
 
 ---
 
-# 基本操作
+## 基本操作
 
 <p align="center">
     <img src="../../../assets/img/logo/git.svg" width="25%">
@@ -162,7 +162,7 @@ git push -f
 
 ---
 
-## 分支管理
+### 分支管理
 
 ![](../../../assets/img/Develop/版本控制/git/2.png)
 ```bash
@@ -182,7 +182,7 @@ git stash pop               # 恢复的同时把 stash 内容也删了
 
 ---
 
-## 标签管理
+### 标签管理
 
 ```bash
 # 注意，标签不是按时间顺序列出，而是按字母排序的.可以用 git show <tagname> 查看标签信息
@@ -199,7 +199,7 @@ git push origin :refs/tags/<tagname> 可以删除一个远程标签.
 
 ---
 
-## 忽略文件
+### 忽略文件
 
 一个名为 `.gitignore` 的文件，列出要忽略的文件模式.
 配置语法:
@@ -220,7 +220,7 @@ git push origin :refs/tags/<tagname> 可以删除一个远程标签.
 
 ---
 
-## 别名
+### 别名
 
 ```bash
 以下2条都是对 git lg 的 alias
@@ -231,7 +231,7 @@ git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(ye
 
 ---
 
-## 撤销Git操作
+### 撤销Git操作
 
 **撤销提交**
 
@@ -323,7 +323,7 @@ $ git checkout feature
 
 ---
 
-## 跳转
+### 跳转
 
 ```bash
 git log     # 查看 commit 历史
@@ -333,7 +333,7 @@ git checkout xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  # 跳转到指定的 commit 版�
 
 ---
 
-## 子模块
+### 子模块
 
 有种情况经常会遇到：某个工作中的项目需要包含并使用另一个项目。也许是第三方库，或者你独立开发的，用于多个父项目的库。
 
@@ -387,7 +387,7 @@ $ git push origin master
 
 ---
 
-## 大小写
+### 大小写
 
 git 默认对于文件名大小写是不敏感的,所以你修改了首字母大写,但是 git 并没有发现代码任何改动.
 
@@ -398,9 +398,10 @@ git config core.ignorecase false
 
 ---
 
-# 远程操作
+## 远程操作
 
 ![](../../../assets/img/Develop/版本控制/git/3.png)
+
 多人协作的工作模式通常是这样:
 - 首先，可以试图用 `git push origin branch-name` 推送自己的修改;
 - 如果推送失败，则因为远程分支比你的本地更新，需要先用 `git pull` 试图合并;
@@ -410,13 +411,13 @@ git config core.ignorecase false
 
 ---
 
-## clone
+### clone
 
 `git clone <版本库的网址> <本地目录名>`
 
 ---
 
-## remote
+### remote
 
 ```bash
 git remote          # 命令列出所有远程主机
@@ -432,7 +433,7 @@ git remote rename <原主机名> <新主机名> # 用于远程主机的改名
 
 ---
 
-## fetch
+### fetch
 
 git fetch 会使你与另一仓库同步，提取你本地所没有的数据，为你在同步时的该远端的每一分支提供书签. 这些分支被叫做 "远端分支"，除了 Git 不允许你检出(切换到该分支)之外，跟本地分支没区别 —— 你可以将它们合并到当前分支，与其他分支作比较差异，查看那些分支的历史日志，等等.同步之后你就可以在本地操作这些.
 ```bash
@@ -460,7 +461,7 @@ git rebase origin/master
 
 ---
 
-## pull
+### pull
 
 基本上，该命令就是在 `git fetch` 之后紧接着 `git merge` 远端分支到你所在的任意分支.
 ```bash
@@ -494,7 +495,7 @@ git pull
 
 ---
 
-## push
+### push
 
 ```bash
 git push <远程主机名> <本地分支名>:<远程分支名>     # 将本地分支的更新，推送到远程主机
@@ -507,7 +508,7 @@ git push --force origin
 
 ---
 
-## github
+### github
 
 <p align="center">
     <img src="../../../assets/img/logo/github.png" width="25%">
@@ -583,7 +584,7 @@ git push --force origin
 
 ---
 
-## Git_LFS
+### Git_LFS
 
 > Git Large File Storage (Git LFS) 是 Git 的开源扩展，使你能够像处理其他文本文件一样处理大文件。
 
@@ -627,7 +628,8 @@ git lfs push --all origin
 
 ---
 
-**Source & Reference**
+## Source & Reference
+
 - [521xueweihan/git-tips: Git的奇技淫巧](https://github.com/521xueweihan/git-tips)
 - [git配置代理命令](https://www.cnblogs.com/gx1069/p/6840413.html)
 - [git操作及fatal: Authentication failed for错误解决](https://blog.csdn.net/u011394598/article/details/80256896)

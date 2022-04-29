@@ -16,7 +16,7 @@
 
 ---
 
-# 使用
+## 使用
 
 **爬虫爬取**
 
@@ -32,7 +32,7 @@ xray ws --listen 127.0.0.1:7777 --html-output proxy.html
 
 ---
 
-# 漏洞扫描
+## 漏洞扫描
 
 **漏洞扫描**
 ```bash
@@ -56,7 +56,7 @@ xray webscan --plugins shiro --url-file target.txt --html-output x.html
 
 ---
 
-# 代理
+## 代理
 
 **burp 转发给 xray**
 

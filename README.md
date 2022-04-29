@@ -99,7 +99,7 @@
         * 语言安全
             * [语言安全](https://github.com/No-Github/1earn/tree/master/1earn/Security/RedTeam/%E8%AF%AD%E8%A8%80%E5%AE%89%E5%85%A8)
         * 云安全
-            * [云安全](./1earn/Security/RedTeam/云安全/云安全.md) - 云主机利用工具,渗透案例,相关知识点
+            * [公有云安全](./1earn/Security/RedTeam/云安全/公有云安全.md) - 云主机利用工具,渗透案例,相关知识点
         * OS安全
             * [Linux安全](./1earn/Security/RedTeam/OS安全/Linux安全.md) - 包含 Linux 口令破解，漏洞利用、获取Shell
             * [OS-Exploits](./1earn/Security/RedTeam/OS安全/OS-Exploits.md) - 收集操作系统的 cve 漏洞
@@ -160,7 +160,6 @@
 
     * **Network**
         * [不同厂商](./1earn/Integrated/Network/不同厂商.md) - 记录不同厂商配置服务命令的区别
-        * [方向实验](./1earn/Integrated/Network/方向实验.md) - 按方向分类记录配置
         * [速查](./1earn/Integrated/Network/速查.md) - 速查各类帧、报文格式、掩码等
         * [SDN笔记](./1earn/Integrated/Network/SDN笔记.md) - 记录以前比赛时 SDN 的题目和命令
         * [TCP-IP](./1earn/Integrated/Network/TCP-IP.md) - 记录 TCP/IP 协议栈的协议
@@ -171,7 +170,7 @@
         * [Speed-Win](./1earn/Integrated/Windows/Speed-Win.md) - 记录 windows 下 CMD 常用命令
         * [笔记](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/%E7%AC%94%E8%AE%B0)
         * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/%E5%AE%9E%E9%AA%8C) -涉及域环境搭建、基础服务搭建
-        * [Powershell](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Windows/PowerShell)
+        * [Powershell](./1earn/Integrated/Windows/PowerShell/PowerShell笔记.md)
 
 * **Plan**
 

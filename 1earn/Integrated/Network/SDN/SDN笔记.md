@@ -72,7 +72,7 @@ sudo mn --arp --topo single,3 --mac --switch ovsk --controller remote
 - controller:使用远程控制器，可以指定远程控制器的 IP 地址和端口号，如果不指定则默认为 127.0.0.1 和 6633
 ```
 
-![](../../../assets/img/Integrated/Network/sdn/1.png)
+![](../../../../assets/img/Integrated/Network/sdn/1.png)
 
 创建完拓扑后即可使用 ping 命令进行测试:h1 ping h2
 (注意:如果没有指定控制器的话，是 ping 不通的)

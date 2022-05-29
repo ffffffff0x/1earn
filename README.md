@@ -44,7 +44,7 @@
     * **BlueTeam**
         * [分析](./1earn/Security/BlueTeam/分析.md) - 分析工具与分析案例
         * [加固](./1earn/Security/BlueTeam/加固.md) - 系统、应用加固的方法和工具资源
-        * [监察](./1earn/Security/BlueTeam/监察.md) - 有关查杀、监控、蜜罐的资源
+        * [监测](./1earn/Security/BlueTeam/监测.md) - 有关查杀、监控、蜜罐的资源
         * [取证](./1earn/Security/BlueTeam/取证.md) - 内容涉及操作系统的取证、web 的取证、文件的取证
         * [应急](./1earn/Security/BlueTeam/应急.md) - 应急资源、溯源案例
         * [笔记](https://github.com/No-Github/1earn/blob/master/1earn/Security/BlueTeam/%E7%AC%94%E8%AE%B0) - 涉及磁盘取证、内存取证、USB取证等内容
@@ -159,11 +159,8 @@
         * [实验](https://github.com/No-Github/1earn/tree/master/1earn/Integrated/Linux/%E5%AE%9E%E9%AA%8C) - 各种 linux 服务的搭建过程和案例
 
     * **Network**
-        * [不同厂商](./1earn/Integrated/Network/不同厂商.md) - 记录不同厂商配置服务命令的区别
-        * [速查](./1earn/Integrated/Network/速查.md) - 速查各类帧、报文格式、掩码等
-        * [SDN笔记](./1earn/Integrated/Network/SDN笔记.md) - 记录以前比赛时 SDN 的题目和命令
-        * [TCP-IP](./1earn/Integrated/Network/TCP-IP.md) - 记录 TCP/IP 协议栈的协议
-        * [VPN-Security](./1earn/Integrated/Network/VPN-Security.md) - 记录 VPN 领域的协议
+        * [Speed-Net](./1earn/Integrated/Network/Speed-Net.md) - 各类帧、报文格式、掩码等
+        * [Power-Net](./1earn/Integrated/Network/Power-Net.md) - 记录 TCP/IP 协议栈的协议
 
     * **Windows**
         * [Secure-Win](./1earn/Integrated/Windows/Secure-Win.md) - Windows 加固+维护+应急响应参考

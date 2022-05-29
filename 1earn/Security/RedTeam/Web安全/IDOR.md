@@ -603,6 +603,9 @@ wget -d --header="Host: localhost" https://target/
 
 点击"获取短信验证码",并抓取数据包内容,通过分析数据包,可以发现参数的内容有客户端控制,可以修改为攻击者想要发送的内容
 
+- 案例:
+    - [Lack of URL normalization renders Blocked-Previews feature ineffectual](https://hackerone.com/reports/1102764)
+
 ---
 
 ### DoS

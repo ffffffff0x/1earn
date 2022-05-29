@@ -83,10 +83,10 @@ ESI/EDI
 
 ### linux的保护机制
 
-* RELRO: Full RELRO – 重定向，RELRO会有Partial RELRO和FULL RELRO，如果开启FULL RELRO，意味着我们无法修改got表
-* Stack: No canary found – 栈canary检查
-* NX: NX enabled – 栈不可执行
-* PIE: PIE enabled – 程序地址随机化
+* RELRO: Full RELRO - 重定向，RELRO会有Partial RELRO和FULL RELRO，如果开启FULL RELRO，意味着我们无法修改got表
+* Stack: No canary found - 栈canary检查
+* NX: NX enabled - 栈不可执行
+* PIE: PIE enabled - 程序地址随机化
 * ASLR：Address space layout randomization - 内存地址随机化
 
 ---

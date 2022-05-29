@@ -4,7 +4,9 @@
 
 ## 什么是 Redis
 
-Redis是一个开源、支持网络、基于内存、分布式、可选持久性的键值对存储数据库。
+Redis 是一个 key-value 存储系统。和 Memcached 类似，它支持存储的 value 类型相对更多，包括 string(字符串)、list(链表)、set(集合)、zset(sorted set -- 有序集合) 和 hash（哈希类型）。这些数据类型都支持 push/pop、add/remove 及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis 支持各种不同方式的排序。与 memcached 一样，为了保证效率，数据都是缓存在内存中。区别的是 redis 会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，并且在此基础上实现了 master-slave(主从) 同步。
+
+Redis 的出现，很大程度补偿了 memcached 这类 key/value 存储的不足，在部分场合可以对关系数据库起到很好的补充作用。
 
 Redis 与其他 key - value 缓存产品有以下三个特点：
 - Redis 支持数据的持久化，可以将内存中的数据保持在磁盘中，重启的时候可以再次加载进行使用。
@@ -47,14 +49,14 @@ Redis CONFIG 查看配置命令格式如下:
 CONFIG GET CONFIG_SETTING_NAME
 ```
 
-使用 * 号获取所有配置项
+使用 `*` 号获取所有配置项
 ```
 CONFIG GET *
 ```
 
 **编辑配置**
 
-可以通过修改 redis.conf 文件或使用 CONFIG set 命令来修改配置
+可以通过修改 redis.conf 文件或使用 `CONFIG set` 命令来修改配置
 
 ```
 CONFIG SET CONFIG_SETTING_NAME NEW_CONFIG_VALUE
@@ -113,7 +115,7 @@ Redis Get 命令用于获取指定 key 的值。如果 key 不存在，返回 ni
 redis 127.0.0.1:6379> GET KEY_NAME
 ```
 
-### Flushall命令
+### Flushall 命令
 
 Redis Flushall 命令用于清空整个 Redis 服务器的数据(删除所有数据库的所有 key )。
 ```
@@ -134,14 +136,14 @@ CONFIG GET dir
 
 ### Redis 安全配置
 
-可以通过 redis 的配置文件设置密码参数，这样客户端连接到redis服务就需要密码验证。可以通过以下命令查看是否进行了密码设置
+配置文件中的参数 `requirepass` 是配置 redis 访问密码的参数,可以通过以下命令查看是否进行了密码设置
 ```
 CONFIG get requirepass
 ```
 
-默认情况下 requirepass 参数为空，这就意味着可以无需通过密码验证就可以连接到redis服务
+默认情况下 requirepass 参数为空，这就意味着可以无需通过密码验证就可以连接到 redis 服务
 
-然后可以通过以下命令来修改参数，设置密码之后，客户端连接redis服务就需要密码验证，否则无法执行命令( 但是命令行修改了密码之后，配置文件的requirepass字段后面的密码是不会随之修改的 )
+然后可以通过以下命令来修改参数，设置密码之后，客户端连接 redis 服务就需要密码验证，否则无法执行命令 (但是命令行修改了密码之后，配置文件的 requirepass 字段后面的密码是不会随之修改的)
 ```
 CONFIG set requirepass "123123"
 CONFIG get requirepass

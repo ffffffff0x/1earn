@@ -13,10 +13,18 @@
 - [java审计基础](https://mp.weixin.qq.com/s/cHMNjKDSjK5aSoMHjRWUcg)
 - [简单java代码审计？](https://mp.weixin.qq.com/s/88Tsr8NBX03sFlG1Vfz-aw)
 - [代码审计_Sylon的博客-CSDN博客_代码审计](https://blog.csdn.net/qq_41770175/article/details/93486383)
+- [记一次对“天猫”商城系统的漏洞挖掘](https://mp.weixin.qq.com/s/fNAis5Da9ae2OI3ZUJ9zjw)
+- [【Java 代码审计入门-01】审计前的准备](https://www.cnpanda.net/codeaudit/588.html)
+- [ofCMS代码审计](https://xz.aliyun.com/t/10509)
 
 **相关资源**
 - [Cryin/JavaID](https://github.com/Cryin/JavaID) - java source code static code analysis and danger function identify prog
 - [j3ers3/Hello-Java-Sec](https://github.com/j3ers3/Hello-Java-Sec) - ☕️ Java Security，安全编码和代码审计
+- [JoyChou93/java-sec-code](https://github.com/JoyChou93/java-sec-code) - Java web common vulnerabilities and security code which is base on springboot and spring security
+- [cn-panda/JavaCodeAudit](https://github.com/cn-panda/JavaCodeAudit) - Getting started with java code auditing 代码审计入门的小项目
+- [proudwind/javasec_study](https://github.com/proudwind/javasec_study)
+- [javaweb-rasp/javaweb-vuln](https://github.com/javaweb-rasp/javaweb-vuln) - RASP 测试靶场
+- [ffffffff0x/JVWA](https://github.com/ffffffff0x/JVWA) - java 代码审计学习靶场
 
 ---
 
@@ -34,7 +42,7 @@
 
 ## Autobinding
 
-**简介**
+**描述**
 
 Autobinding-自动绑定漏洞，根据不同语言/框架，该漏洞有几个不同的叫法，如下：
 
@@ -109,6 +117,14 @@ Spring MVC 中可以使用 @InitBinder 注解，通过 WebDataBinder 的方法 s
 
 ## SSRF
 
+**描述**
+
+相对于 php，在 java 中 SSRF 的利用局限较大，一般利用 http 协议来探测端口，利用 file 协议读取任意文件。常见的类中如 HttpURLConnection，URLConnection，HttpClients 中只支持 sun.net.www.protocol (java 1.8) 里的所有协议: http，https，file，ftp，mailto，jar，netdoc。
+
+**相关文章**
+- [SSRF in JAVA](https://joychou.org/java/javassrf.html)
+- [九维团队-绿队（改进）| Java代码审计之SSRF](https://mp.weixin.qq.com/s/bF7wJpbN4BmvT8viWGW7hw)
+
 **漏洞示例**
 
 此处以 HttpURLConnection 为例，示例代码片段如下:
@@ -131,7 +147,76 @@ modelMap.put("resp",response.toString());
 return "getimg.htm";
 ```
 
+URLConnection类
+```java
+//urlConnection ssrf vul
+String url = request.getParameter("url");
+URL u = new URL(url);
+URLConnection urlConnection = u.openConnection();
+BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream())); //发起请求,触发漏洞
+String inputLine;
+StringBuffer html = new StringBuffer();
+while ((inputLine = in.readLine()) != null) {
+     html.append(inputLine);
+}
+System.out.println("html:" + html.toString());
+in.close();
+```
+
+ImageIO类
+```java
+// ImageIO ssrf vul
+String url = request.getParameter("url");
+URL u = new URL(url);
+BufferedImage img = ImageIO.read(u); // 发起请求,触发漏洞
+```
+
+其他类
+```java
+// Request漏洞示例
+String url = request.getParameter("url");
+return Request.Get(url).execute().returnContent().toString();//发起请求
+
+// openStream漏洞示例
+String url = request.getParameter("url");
+URL u = new URL(url);
+inputStream = u.openStream();  //发起请求
+
+
+// OkHttpClient漏洞示例
+String url = request.getParameter("url");
+OkHttpClient client = new OkHttpClient();
+com.squareup.okhttp.Request ok_http = new com.squareup.okhttp.Request.Builder().url(url).build();
+client.newCall(ok_http).execute();  //发起请求
+
+// HttpClients漏洞示例
+String url = request.getParameter("url");
+CloseableHttpClient client = HttpClients.createDefault();
+HttpGet httpGet = new HttpGet(url);
+HttpResponse httpResponse = client.execute(httpGet); //发起请求
+```
+
 **审计函数**
+
+Java 中能发起网络请求的类：
+- HttpClient 类
+- HttpURLConnection 类
+- URLConnection 类
+- URL 类
+- OkHttp 类
+- ImageIO 类
+- Request 类 (Request 是对 HttpClient 类进行了封装的类，类似于 Python 的 requests 库。)
+
+其中，仅支持 HTTP/HTTPS 协议的类（即类名或封装的类名带 http）：
+- HttpClient 类
+- HttpURLConnection 类
+- OkHttp 类
+- Request 类
+
+支持 sun.net.www.protocol 所有协议的类：
+- URLConnection 类
+- URL 类
+- ImageIO 类
 
 程序中发起 HTTP 请求操作一般在获取远程图片、页面分享收藏等业务场景, 在代码审计时可重点关注一些 HTTP 请求操作函数，如下：
 
@@ -141,7 +226,18 @@ HttpClient.executeMethod
 HttpURLConnection.connect
 HttpURLConnection.getInputStream
 URL.openStream
-...
+URLConnection.getInputStream
+Request.Get.execute
+Request.Post.execute
+ImageIO.read
+OkHttpClient.newCall.execute
+HttpServletRequest
+BasicHttpRequest
+```
+
+**搜索正则**
+```
+HttpClient\.execute|HttpClient\.executeMethod|HttpURLConnection\.connect|HttpURLConnection\.getInputStream|URL\.openStream
 ```
 
 **更多内容**
@@ -151,7 +247,13 @@ URL.openStream
 
 ## SQLi
 
+**相关文章**
+- [【Java 代码审计入门-02】SQL 漏洞原理与实际案例介绍](https://www.cnpanda.net/codeaudit/600.html)
+- [简单谈一谈 Java 中的预编译](https://www.cnpanda.net/sec/589.html)
+
 **漏洞示例**
+
+以 Mybatis 为例
 
 ```sql
 select * from books where id= ${id}
@@ -159,10 +261,50 @@ select * from books where id= ${id}
 
 **修复方案**
 
-Mybatis 框架 SQL 语句安全写法应使用 `#{}` , 避免使用动态拼接形式 `${}` ，ibatis 则使用 `#` 变量 `#` 。安全写法如下:
+Mybatis 框架 SQL 语句安全写法应使用 `#{}` , 避免使用动态拼接形式 `${}`。安全写法如下:
 
 ```sql
 select * from books where id= #{id}
+```
+
+使用预编译，也可以预防 SQL 注入，例如
+```java
+public UserInfo UserInfoFoundDao(String id){
+
+            Connection conn = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            UserInfo userinfo = null;
+            try{
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sql","root","root");
+                String sql = "select * from userinfo where id = ?";
+                ps = conn.prepareStatement(sql);
+
+                ps.setInt(1,id);
+
+                rs = ps.executeQuery();
+
+                while(rs.next()){
+                    userinfo = new UserInfo();
+                    userinfo.setId(rs.getString("id"));
+                    userinfo.setName(rs.getString("name"));
+                    userinfo.setAge(rs.getInt("age"));
+                    userinfo.setContent(rs.getString("content"));
+                    userinfo.setAddress(rs.getString("address"));
+                }
+                ...
+
+            return userinfo;
+        }
+}
+```
+
+**搜索正则**
+```
+Mybatis
+order by \$\{.*\}|like \$\{.*\}
+\$\{.*\}
 ```
 
 **更多内容**
@@ -170,7 +312,75 @@ select * from books where id= #{id}
 
 ---
 
+## SSTI
+
+**相关文章**
+- [从ofcms的模板注入漏洞（CVE-2019-9614）浅析SSTI漏洞](https://blog.csdn.net/Alexz__/article/details/116400913)
+- [服务器端模版注入SSTI分析与归纳](https://tttang.com/archive/1412/)
+
+**更多内容**
+- [SSTI](../../Web安全/Web_Generic/SSTI.md)
+
+### FreeMarker SSTI
+
+**描述**
+
+模板文件存放在 Web 服务器上，当访问指定模版文件时， FreeMarker 会动态转换模板，用最新的数据内容替换模板中 `${...}` 的部分，然后返回渲染结果。
+
+**FreeMarker 基础**
+- [FreeMarker](../../../../Develop/Java/笔记/Web/模版引擎/FreeMarker.md)
+
+**FreeMarker SSTI POC**
+```
+<#assign value="freemarker.template.utility.Execute"?new()>${value("calc.exe")}
+<#assign value="freemarker.template.utility.Execute"?new()>${value("open /Applications/Calculator.app")}
+<#assign value="freemarker.template.utility.Execute"?new()>${value("id")}
+<#assign value="freemarker.template.utility.ObjectConstructor"?new()>${value("java.lang.ProcessBuilder","calc.exe").start()}
+<#assign value="freemarker.template.utility.JythonRuntime"?new()><@value>import os;os.system("calc.exe")</@value>
+```
+
+### Velocity SSTI
+
+
+
+
+
+
+
+
+### Thymeleaf SSTI
+
+**描述**
+
+Thymeleaf 具有预处理表达式的功能，预处理是在正常表达式之前完成的表达式的执行，允许修改最终将执行的表达式。
+
+预处理的表达式与普通表达式完全一样，但被双下划线符号（如 `__${expression}__` ）包围。
+
+预处理可以解析执行表达式，也就是说找到一个可以控制预处理表达式的地方，让其解析执行我们的 payload 即可达到任意代码执行
+
+**Thymeleaf 基础**
+- [Thymeleaf](../../../../Develop/Java/笔记/Web/模版引擎/Thymeleaf.md)
+
+**相关文章**
+- [Thymeleaf 模板漏洞分析](http://x2y.pw/2020/11/15/Thymeleaf-%E6%A8%A1%E6%9D%BF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/)
+- [Java安全之Thymeleaf SSTI分析](https://www.anquanke.com/post/id/254519)
+
+**调试样本**
+- https://github.com/hex0wn/learn-java-bug/tree/master/thymeleaf-ssti
+
+**thymeleaf SSTI POC**
+
+其实就是 SpEL 注入的 payload
+```
+${T(java.lang.Runtime).getRuntime().exec("open -a Calculator")}
+```
+
+---
+
 ## 文件上传漏洞
+
+**相关文章**
+- [Java文件上传漏洞](https://zhuanlan.zhihu.com/p/431392700)
 
 **漏洞示例**
 
@@ -195,8 +405,10 @@ newStandardMultipartFile
 getOriginalFilename
 ```
 
-**相关文章**
-- [Java文件上传漏洞](https://zhuanlan.zhihu.com/p/431392700)
+**搜索正则**
+```
+file\.getOriginalFilename\(\)|文件上传|文件|上传|uploadfile|upload
+```
 
 **更多内容**
 - [文件上传漏洞](../../Web安全/Web_Generic/Upload.md)
@@ -247,6 +459,11 @@ sendRedirect
 setHeader
 forward
 ...
+```
+
+**搜索正则**
+```
+redirect\:|sendRedirect|setHeader|forward|getHost\(\)
 ```
 
 **更多内容**
@@ -335,6 +552,11 @@ GroovyShell.evaluate
 ...
 ```
 
+**搜索正则**
+```
+Runtime\.exec|ProcessBuilder\.start|GroovyShell\.evaluate
+```
+
 **更多内容**
 - [命令执行](../../Web安全/Web_Generic/RCE.md)
 
@@ -342,7 +564,7 @@ GroovyShell.evaluate
 
 ## 权限控制
 
-**简介**
+**描述**
 
 越权漏洞可以分为水平、垂直越权两种,程序在处理用户请求时未对用户的权限进行校验，使的用户可访问、操作其他相同角色用户的数据，这种情况是水平越权；如果低权限用户可访问、操作高权限用户则的数据，这种情况为垂直越权。
 
@@ -372,7 +594,7 @@ public String getUserInfo(Model model, HttpServletRequest request) throws IOExce
 
 ## 批量请求
 
-**简介**
+**描述**
 
 业务中经常会有使用到发送短信校验码、短信通知、邮件通知等一些功能，这类请求如果不做任何限制，恶意攻击者可能进行批量恶意请求轰炸，大量短信、邮件等通知对正常用户造成困扰，同时也是对公司的资源造成损耗。
 
@@ -396,18 +618,6 @@ public String ifUserExit(Model model, HttpServletRequest request) throws IOExcep
 **修复方案**
 
 * 对同一个用户发起这类请求的频率、每小时及每天发送量在服务端做限制，不可在前端实现限制
-
----
-
-## 第三方组件安全
-
-**简介**
-
-这个比较好理解，诸如 Struts2、不安全的编辑控件、XML 解析器以及可被其它漏洞利用的如 commons-collections:3.1 等第三方组件，这个可以在程序 pom 文件中查看是否有引入依赖。即便在代码中没有应用到或很难直接利用，也不应该使用不安全的版本，一个产品的周期很长，很难保证后面不会引入可被利用的漏洞点。
-
-**修复方案**
-
-* 使用最新或安全版本的第三方组件
 
 ---
 
@@ -457,3 +667,19 @@ javax.xml.xpath.XPathExpression
 
 **更多内容**
 - [XXE](../../Web安全/Web_Generic/XXE.md)
+
+---
+
+## 第三方组件安全
+
+**描述**
+
+这个比较好理解，诸如 Struts2、不安全的编辑控件、XML 解析器以及可被其它漏洞利用的如 commons-collections:3.1 等第三方组件，这个可以在程序 pom 文件中查看是否有引入依赖。即便在代码中没有应用到或很难直接利用，也不应该使用不安全的版本，一个产品的周期很长，很难保证后面不会引入可被利用的漏洞点。
+
+**相关工具**
+- [墨菲安全](https://www.murphysec.com/)
+    - https://github.com/murphysecurity/murphysec - 墨菲安全的 CLI 工具，用于在命令行检测指定目录代码的依赖安全问题，也可以基于 CLI 工具实现在 CI 流程的检测。
+
+**修复方案**
+
+* 使用最新或安全版本的第三方组件

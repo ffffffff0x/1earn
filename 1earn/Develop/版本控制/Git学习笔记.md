@@ -119,6 +119,8 @@ git config --global --unset https.proxy                     # 删除 proxy
 
 git init                    # 初始化仓库
 git config --list           # 检查配置信息
+git config user.name        # 查看用户名
+git config user.email       # 查看邮箱
 
 git status                  # 查看状态
 git diff                    # 查看已暂存和未暂存的修改

@@ -98,6 +98,9 @@ ipconfig /flushdns
 ---
 
 ## 各种代理/源
+
+- https://github.com/eryajf/Thanks-Mirror
+
 ### Git
 
 <p align="center">
@@ -182,7 +185,7 @@ nrm ls
 nrm use taobao
 nrm test
 或
-npm config set proxy=http://127.0.0.1:8087
+npm config set proxy=http://127.0.0.1:7890
 npm config delete proxy  # 取消代理
 ```
 
@@ -291,6 +294,39 @@ npm config delete proxy  # 取消代理
     ```
     choco config set proxy <locationandport>
     ```
+
+### java
+
+**命令行挂Socks5代理**
+
+```
+java -DsocksProxyHost=127.0.0.1 -DsocksProxyPort=1080 -jar test.jar
+
+# 其中socksProxyHost是Socks5代理的IP地址，socksProxyPort是Socks5代理的端口号。socksProxyVersion版本号是5或者是4，默认是5版本，也就是Socks5代理，这里也可以指定。
+```
+
+**命令行挂HTTP代理**
+
+```
+java -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=8080 -Dhttp.nonProxyHosts="*.example.com|localhost" -jar test.jar
+
+# 如果想使用代理访问HTTP的URL，则必须使用http.proxyHost，http.proxyPort。如果想用代理访问HTTPS的URL，则必须使用https.proxyHost，https.proxyPort。如果想同时抓HTTP、HTTPS的url访问的话，以上4项是必须设置的，缺一不可
+
+# http.proxyHost是HTTP代理的IP地址，http.proxyPort是HTTP代理的端口，https.proxyHost是HTTPS代理的IP地址，https.proxyPort是HTTPS代理的端口
+
+# http.nonProxyHosts，用于指定哪些IP地址可以直连网络，不走HTTP/HTTPS代理，*是IP地址的通配符，按照|分割每个IP段，前后加上双引号包裹起来。
+```
+
+HTTPS代理设置如下：
+```
+java -Dhttps.proxyHost=host -Dhttps.proxyPort=port -Dhttps.proxyUser=user -Dhttps.proxyPassword="password" -Djavax.net.ssl.trustStore=c:/cacerts -Djavax.net.ssl.trustStorePassword=changeit -jar test.jar
+```
+
+**jar使用系统代理**
+
+```
+java -Djava.net.useSystemProxies=true -jar test.jar
+```
 
 ---
 

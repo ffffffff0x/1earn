@@ -1519,12 +1519,7 @@ systemctl stop firewalld		# 关闭服务
 #### Iptables
 
 ```bash
-iptables-save > /root/firewall_rules.backup		# 先备份一下策略
-iptables -A OUTPUT -p tcp -d bigmart.com -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 80 -j DROP
-iptables -A INPUT -p tcp -s 10.0.3.1 --dport 22 -j ACCEPT
-iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 22 -j DROP
-
+iptables-save > /root/firewall_rules.backup		# 备份策略
 iptables -L			# 查看防火墙规则
 iptables-restore </root/firewall_rules.backup	# 恢复规则
 
@@ -2130,7 +2125,7 @@ end
 	cat /etc/ntp.conf		# 查看 ntp 服务配置
 
 
-	ntpq –p     			# 查看本机和上层服务器的时间同步结果
+	ntpq -p     			# 查看本机和上层服务器的时间同步结果
 	ntptrace     			# 可以用來追踪某台时间服务器的时间对应关系
 	ntpdate IP   			# 客户端要和 NTP server 进行时钟同步。
 	/var/log/ntp/ntp.log	# 查看 ntp 日志

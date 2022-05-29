@@ -12,7 +12,6 @@
 - `Linux 下各种常见服务的搭建/配置指南`
 - `大部分环境在 Centos7,少部分 Ubuntu`
 - `主要以安装搭建为主,更深一步的配置请自行研究`
-- `如果你的服务器不在国外,请你一定要学习一下给服务器加速的方法🤣😂🤣`
 
 ---
 
@@ -5355,7 +5354,7 @@ setenforce 0    # 关闭 selinux
 
 - 拉取镜像
   ```bash
-  docker images ls                # 检查一下系统中已经有了哪些镜像
+  docker image ls                # 检查一下系统中已经有了哪些镜像
   docker pull nginx               # 拉取一个镜像
   docker search nginx             # 搜索 Docker Hub 中的所有 Nginx 镜像
   docker pull jwilder/nginx-proxy # 从非官方源拉取镜像

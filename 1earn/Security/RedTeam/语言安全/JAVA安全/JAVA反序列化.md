@@ -74,6 +74,15 @@ JSON.parseObject
 ...
 ```
 
+**搜索正则**
+```
+log4j
+logger.info\(".*\{\}.*\)
+
+fastjson
+JSON.parse
+```
+
 **修复方案**
 
 如果可以明确反序列化对象类的则可在反序列化时设置白名单，对于一些只提供接口的库则可使用黑名单设置不允许被反序列化类或者提供设置白名单的接口，可通过 Hook 函数 `resolveClass` 来校验反序列化的类从而实现白名单校验，示例如下：
@@ -113,6 +122,7 @@ public class AntObjectInputStream extends ObjectInputStream{
 - [wh1t3p1g/ysomap](https://github.com/wh1t3p1g/ysomap)
 - [pimps/JNDI-Exploit-Kit](https://github.com/pimps/JNDI-Exploit-Kit) - JNDI-Exploitation-Kit
 - [r00tSe7en/JNDIMonitor/](https://github.com/r00tSe7en/JNDIMonitor/) - 一个LDAP请求监听器，摆脱dnslog平台
+- [wyzxxz/jndi_tool](https://github.com/wyzxxz/jndi_tool) - JNDI服务利用工具 RMI/LDAP，支持部分场景回显、内存shell，高版本JDK场景下利用等，fastjson rce命令执行，log4j rce命令执行 漏洞检测辅助工具
 
 ---
 
@@ -146,3 +156,4 @@ java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit 127.0.0.1 8999 Commo
 ## 漏洞类型案例
 
 - [fastjson](../../Web安全/实验/fastjson.md)
+- [log4j](../../Web安全/实验/Log4j.md)

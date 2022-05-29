@@ -395,7 +395,7 @@ ISO-8859-1 的较高部分（从 160 到 255 之间的代码）全都有实体�
 | `‍`	| zero width joiner	                    | `&zwj;`	    | `&#8205;` |
 | `‎`	| left-to-right mark	                | `&lrm;`	    | `&#8206;` |
 | `‏`	| right-to-left mark	                | `&rlm;`	    | `&#8207;` |
-| `–`	| en dash	                            | `&ndash;`	    | `&#8211;` |
+| `-`	| en dash	                            | `&ndash;`	    | `&#8211;` |
 | `—`	| em dash	                            | `&mdash;`	    | `&#8212;` |
 | `‘`	| left single quotation mark	        | `&lsquo;`	    | `&#8216;` |
 | `’`	| right single quotation mark	        | `&rsquo;`	    | `&#8217;` |

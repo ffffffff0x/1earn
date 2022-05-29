@@ -24,17 +24,6 @@
 
 ---
 
-## 技巧
-
-### 判断框架
-
-* web.xml
-    - 看 filter
-* pom.xml
-    - 看依赖,找关键词 fastjson、strust2、spring
-
----
-
 ## JAVA代码审计
 
 - [JAVA代码审计](./JAVA安全/JAVA代码审计.md)

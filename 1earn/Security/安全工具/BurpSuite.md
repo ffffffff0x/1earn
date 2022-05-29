@@ -175,6 +175,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [wagiro/BurpBounty](https://github.com/wagiro/BurpBounty) - Burp Bounty (Scan Check Builder in BApp Store) is a extension of Burp Suite that allows you, in a quick and simple way, to improve the active and passive scanner by means of personalized rules through a very intuitive graphical interface.
     - [Sy3Omda/burp-bounty](https://github.com/Sy3Omda/burp-bounty) - Burp Bounty is extension of Burp Suite that improve Burp scanner.
 - [smxiazi/xia_sql](https://github.com/smxiazi/xia_sql) - xia SQL (瞎注) burp 插件 ，在每个参数后面填加一个单引号，两个单引号，一个简单的判断注入小插件。
+- [ethicalhackingplayground/ssrf-king](https://github.com/ethicalhackingplayground/ssrf-king) - SSRF plugin for burp Automates SSRF Detection in all of the Request
 
 **shiro**
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件

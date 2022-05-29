@@ -12,6 +12,9 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 - [3种攻击手段教你拿下k8s集群](https://mp.weixin.qq.com/s/KBuU0JLgr20wAenzGAHjlQ)
 - [K8s 安全策略最佳实践](https://mp.weixin.qq.com/s/ZDqchROixZT4enVYH6UIfw)
 
+**相关案例**
+- [Cloudflare Pages, part 3: The return of the secrets](https://blog.assetnote.io/2022/05/06/cloudflare-pages-pt3/)
+
 ---
 
 ## 未授权

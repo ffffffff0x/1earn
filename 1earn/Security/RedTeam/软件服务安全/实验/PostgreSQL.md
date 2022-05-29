@@ -32,6 +32,7 @@ bash f8x-dev -postgres
 - [记一次pgsql数据库漏洞利用](https://xz.aliyun.com/t/10202)
 - [Postgresql Superuser SQL注入 RCE之旅](https://www.yulegeyu.com/2020/11/16/Postgresql-Superuser-SQL%E6%B3%A8%E5%85%A5-RCE%E4%B9%8B%E6%97%85/)
 - [又记一次安服仔薅洞实战-未授权之发现postgresql注入](https://forum.butian.net/share/1344)
+- [Wiz Research discovers "ExtraReplica"— a cross-account database vulnerability in Azure PostgreSQL](https://www.wiz.io/blog/wiz-research-discovers-extrareplica-cross-account-database-vulnerability-in-azure-postgresql/)
 
 **相关工具**
 - [No-Github/postgresql_udf_help](https://github.com/No-Github/postgresql_udf_help) - PostgreSQL 提权辅助脚本

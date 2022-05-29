@@ -1,4 +1,4 @@
-# 速查
+# Speed-Net
 
 > 注 : 笔记中拓扑图 drawio 与 xmind 源文件在其图片目录下
 
@@ -6,39 +6,39 @@
 
 ## 各种帧、报文格式
 
-<p align="center"><b>IP报文</b></p>
+<p align="center"><b>IP 报文</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/1.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/1.png">
 </p>
 
-<p align="center"><b>UDP报文格式</b></p>
+<p align="center"><b>UDP 报文格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/2.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/2.png">
 </p>
 
-<p align="center"><b>TCP报文格式</b></p>
+<p align="center"><b>TCP 报文格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/3.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/3.png">
 </p>
 
-<p align="center"><b>MAC帧格式</b></p>
+<p align="center"><b>MAC 帧格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/4.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/4.png">
 </p>
 
-<p align="center"><b>PPP帧格式</b></p>
+<p align="center"><b>PPP 帧格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/5.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/5.png">
 </p>
 
 <p align="center"><b>帧中继的帧格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/6.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/6.png">
 </p>
 
-<p align="center"><b>ARP协议的格式</b></p>
+<p align="center"><b>ARP 协议的格式</b></p>
 <p align="center">
-    <img src="../../../assets/img/Integrated/Network/速查/7.png">
+    <img src="../../../assets/img/Integrated/Network/Speed-Net/7.png">
 </p>
 
 ---
@@ -114,23 +114,21 @@ IPv6 是互联网协议的最新版本,用于数据包交换互联网络的网�
 
 ### 子网掩码
 
-命令:ip subnet - zero 能在网络设计中使用第一个和最后一个子网
-
 - A 类 /8~/15
 - B 类 /8~/23
 - C 类 /8~/30
 
 ```
-255.0.0.0                /8
-255.128.0.0            /9
-255.192.0.0            /10
-255.224.0.0            /11
-255.240.0.0            /12
-255.248.0.0            /13
-255.252.0.0            /14
-255.254.0.0            /15
+255.0.0.0           /8
+255.128.0.0         /9
+255.192.0.0         /10
+255.224.0.0         /11
+255.240.0.0         /12
+255.248.0.0         /13
+255.252.0.0         /14
+255.254.0.0         /15
 
-255.255.0.0           /16
+255.255.0.0         /16
 255.255.128.0       /17
 255.255.192.0       /18
 255.255.224.0       /19
@@ -140,43 +138,43 @@ IPv6 是互联网协议的最新版本,用于数据包交换互联网络的网�
 255.255.254.0       /23
 
 255.255.255.0       /24
-255.255.255.128   /25
-255.255.255.192   /26
-255.255.255.224   /27
-255.255.255.240   /28
-255.255.255.248   /29
-255.255.255.252   /30
+255.255.255.128     /25
+255.255.255.192     /26
+255.255.255.224     /27
+255.255.255.240     /28
+255.255.255.248     /29
+255.255.255.252     /30
 ```
 
 ---
 
-### 二进制
+### 主机位
 
 ```
-1=2
-22=4
-23=8
-24=16
-25=32
-26=64
-27=128
-28=256
-29=512
-210=1024
-211=2048
-212=4096
-213=8192
-214=16384
-215=32768
-216=65536
-217=131072
-218=262144
-219=524288
-220=1048576
-221=2097152
-222=4194304
-223=8388608
-224=16777216
+2 1=2
+2 2=4
+2 3=8
+2 4=16
+2 5=32
+2 6=64
+2 7=128
+2 8=256
+2 9=512
+2 10=1024
+2 11=2048
+2 12=4096
+2 13=8192
+2 14=16384
+2 15=32768
+2 16=65536
+2 17=131072
+2 18=262144
+2 19=524288
+2 20=1048576
+2 21=2097152
+2 22=4194304
+2 23=8388608
+2 24=16777216
 ```
 
 ---

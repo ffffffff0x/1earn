@@ -227,7 +227,7 @@ RUN set -x; buildDeps='gcc libc6-dev make wget' \
 此外，还可以看到这一组命令的最后添加了清理工作的命令，删除了为了编译构建所需要的软件，清理了所有下载、展开的文件，并且还清理了 apt 缓存文件。这是很重要的一步，我们之前说过，镜像是多层存储，每一层的东西并不会在下一层被删除，会一直跟随着镜像。因此镜像构建时，一定要确保每一层只添加真正需要添加的东西，任何无关的东西都应该清理掉。
 
 现在到之前 nginx 的 Dockerfile 文件所在目录执行 docker build
-```bash
+```
 root@debian-gnu-linux-10:~/mynginx# docker build -t nginx:v3 .
 Sending build context to Docker daemon  2.048kB
 Step 1/2 : FROM nginx
@@ -387,7 +387,27 @@ docker commit -m <exiting-Container> <hub-user>/<repo-name>[:<tag>]
 
 # 上传推送镜像到公共仓库
 docker push <hub-user>/<repo-name>:<tag>
-docker psuh xxxx/ubuntu:18.04
+docker push xxxx/ubuntu:18.04
+
+# 报错 : denied: requested access to the resource is denied
+docker tag nginx zhang3/nginx:latest
+docker push zhang3/nginx:latest
+# tag 修改为 zhang3/xxxxx 就 push 成功。需要注意的是 zhang3 需要是本人的 docker 用户名。
+```
+
+---
+
+## docker remote api
+
+> ⚠️ 注意: 监听 0.0.0.0 有安全风险,生产环境下请监听 127.0.0.1
+
+```bash
+vim /usr/lib/systemd/system/docker.service
+
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
+
+systemctl daemon-reload
+systemctl restart docker
 ```
 
 ---
@@ -400,11 +420,11 @@ Docker 安装完成存在多种原生网络模式 bridge、host、none。
 
 **bridge 模式（桥接模式）**
 
-> –net=bridge(默认)
+> -net=bridge(默认)
 
 这是dokcer网络的默认设置，为容器创建独立的网络命名空间，容器具有独立的网卡等所有单独的网络栈，是最常用的使用方式。
 
-在 docker run 启动容器的时候，如果不加 –net 参数，就默认采用这种网络模式。
+在 docker run 启动容器的时候，如果不加 -net 参数，就默认采用这种网络模式。
 
 安装完 docker，系统会自动添加一个供 docker 使用的网桥 docker0，我们创建一个新的容器时，容器通过 DHCP 获取一个与 docker0 同网段的 IP 地址，并默认连接到 docker0 网桥，以此实现容器与宿主机的网络互通。
 
@@ -412,7 +432,7 @@ Docker 安装完成存在多种原生网络模式 bridge、host、none。
 
 **host 模式（主机模式）**
 
-> –net=host
+> -net=host
 
 host 模式的容器跟宿主机共用一个 namespace，拥有一样的 IP 和路由，因此容器内的服务端口不能跟宿主机相同。
 
@@ -420,13 +440,13 @@ host 模式的容器跟宿主机共用一个 namespace，拥有一样的 IP 和�
 
 **none 模式（禁用网络模式）**
 
-> –net=none
+> -net=none
 
 为容器创建独立网络命名空间，但不为它做任何网络配置，容器中只有lo，用户可以在此基础上，对容器网络做任意定制。这个模式下，dokcer不为容器进行任何网络配置。需要我们自己为容器添加网卡，配置IP。因此，若想使用pipework配置docker容器的ip地址，必须要在none模式下才可以。
 
 **其他容器模式（即container模式，join模式）**
 
-–net=container:NAME_or_ID 与host模式类似，只是容器将与指定的容器共享网络命名空间。这个模式就是指定一个已有的容器，共享该容器的IP和端口。除了网络方面两个容器共享，其他的如文件系统，进程等还是隔离开的。
+-net=container:NAME_or_ID 与host模式类似，只是容器将与指定的容器共享网络命名空间。这个模式就是指定一个已有的容器，共享该容器的IP和端口。除了网络方面两个容器共享，其他的如文件系统，进程等还是隔离开的。
 
 **用户自定义**
 

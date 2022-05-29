@@ -4,10 +4,8 @@ push.sh
 /1earn/Develop/*
 /1earn/Security/Reverse/
 /1earn/Security/PWN/笔记/
-/1earn/Security/RedTeam/Web安全/靶场/sqli-labs-WalkThrough.md
+/1earn/Security/RedTeam/Web安全/靶场/*
 /1earn/Security/安全资源/靶机/VulnHub/symfonos/symfonos6-WalkThrough.md
 /1earn/Security/RedTeam/语言安全/dotnet安全/*
-/1earn/Security/RedTeam/语言安全/PHP安全/*
 /assets/img/Develop/*
-/assets/img/Security/RedTeam/语言安全/PHP安全
 /assets/img/Security/PWN/*

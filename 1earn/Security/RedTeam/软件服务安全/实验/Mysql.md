@@ -5,17 +5,11 @@ MySQL 是一个关系型数据库管理系统，由瑞典 MySQL AB 公司开发�
 > shodan : "product:MySQL"
 > fofa : app="Oracle-MySQL"
 
-**注入**
+**Mysql 基础**
+- [Mysql](../../../../Integrated/数据库/笔记/Mysql.md)
+
+**Mysql 注入**
 - [Mysql数据库注入笔记](../../Web安全/Web_Generic/SQLi.md#Mysql)
-
-**MySQL 文件读**
-- 相关文章
-    - [通过MySQL LOAD DATA特性来达到任意文件读取](https://xz.aliyun.com/t/3973)
-    - [Mysql Read Client's File](https://y4er.com/post/mysql-read-client-file/)
-
-- 相关工具
-    - [Gifts/Rogue-MySql-Server](https://github.com/Gifts/Rogue-MySql-Server)
-    - [BeichenDream/MysqlT](https://github.com/BeichenDream/MysqlT) - 伪造Myslq服务端,并利用Mysql逻辑漏洞来获取客户端的任意文件反击攻击者
 
 **MSF 爆破**
 ```bash
@@ -68,6 +62,26 @@ exploit
 - POC | Payload | exp
     - [MySQL - Remote User Enumeration](https://www.exploit-db.com/exploits/23081)
     - [MySQL 5.1/5.5 (Windows) - 'MySQLJackpot' Remote Command Execution](https://www.exploit-db.com/exploits/23073)
+
+**CVE-2016-6662**
+- 描述
+
+    Oracle MySQL 中的配置文件（my.cnf）存在远程代码执行漏洞。攻击者（本地或远程）可通过授权访问 MySQL 数据库（网络连接或类似 phpMyAdmin 的 Web 接口）或 SQL 注入方式，利用该漏洞向配置文件中注入恶意的数据库配置，导致以 root 权限执行任意代码，完全控制受影响的服务器。以下版本受到影响：Oracle MySQL 5.5.52 及之前的版本，5.6.x 至 5.6.33 版本，5.7.x 至 5.7.15 版本；MariaDB 5.5.51 之前的版本，10.0.27 之前的 10.0.x 版本，10.1.17 之前的 10.1.x 版本；Percona Server 5.5.51-38.1 之前的版本，5.6.32-78.0 之前的 5.6.x 版本，5.7.14-7 之前的 5.7.x 版本。
+
+- 相关文章
+    - [【技术分享】CVE-2016-6662：Mysql远程代码执行/权限提升技术分析正式版](https://www.anquanke.com/post/id/84557)
+
+---
+
+## MySQL 文件读
+
+**相关文章**
+- [通过MySQL LOAD DATA特性来达到任意文件读取](https://xz.aliyun.com/t/3973)
+- [Mysql Read Client's File](https://y4er.com/post/mysql-read-client-file/)
+
+**相关工具**
+- [Gifts/Rogue-MySql-Server](https://github.com/Gifts/Rogue-MySql-Server)
+- [BeichenDream/MysqlT](https://github.com/BeichenDream/MysqlT) - 伪造 Myslq 服务端, 并利用 Mysql 逻辑漏洞来获取客户端的任意文件反击攻击者
 
 ---
 

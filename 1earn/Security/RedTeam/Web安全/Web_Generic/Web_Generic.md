@@ -747,6 +747,12 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 跨站请求伪造（Cross-Site Request Forgery，CSRF）是一种使已登录用户在不知情的情况下执行某种动作的攻击。因为攻击者看不到伪造请求的响应结果，所以 CSRF 攻击主要用来执行动作，而非窃取用户数据。当受害者是一个普通用户时，CSRF 可以实现在其不知情的情况下转移用户资金、发送邮件等操作；但是如果受害者是一个具有管理员权限的用户时 CSRF 则可能威胁到整个 Web 系统的安全。
 
+**相关文章**
+- [CSRF 漏洞的末日？关于 Cookie SameSite 那些你不得不知道的事](https://mp.weixin.qq.com/s/YqSxIvbgq1DkAlUL5rBtqA)
+
+**相关工具**
+- [merttasci/csrf-poc-generator](https://github.com/merttasci/csrf-poc-generator) - This HTML file creates a CSRF PoC form to any HTTP request.
+
 **验证方法**
 
 - GET
@@ -781,9 +787,6 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
     xhr.send('{"role":admin}');
     </script>
     ```
-
-**相关工具**
-- [merttasci/csrf-poc-generator](https://github.com/merttasci/csrf-poc-generator) - This HTML file creates a CSRF PoC form to any HTTP request.
 
 **Bypass 技巧**
 

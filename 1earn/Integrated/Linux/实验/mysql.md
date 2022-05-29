@@ -115,9 +115,9 @@ query_cache_min_res_unit = 2K
 # 查询缓存分配的最小块大小. 默认是 4KB，设置值大对大数据查询有好处，但如果你的查询都是小数据查询，就容易造成内存碎片和浪费
 # 查询缓存碎片率 = Qcache_free_blocks / Qcache_total_blocks * 100%
 # 如果查询缓存碎片率超过 20%，可以用 FLUSH QUERY CACHE 整理缓存碎片，或者试试减小 query_cache_min_res_unit，如果你的查询都是小数据量的话。
-# 查询缓存利用率 = (query_cache_size – Qcache_free_memory) / query_cache_size *100%
+# 查询缓存利用率 = (query_cache_size - Qcache_free_memory) / query_cache_size *100%
 # 查询缓存利用率在 25% 以下的话说明 query_cache_size 设置的过大，可适当减小; 查询缓存利用率在 80% 以上而且 Qcache_lowmem_prunes > 50 的话说明 query_cache_size 可能有点小，要不就是碎片太多。
-# 查询缓存命中率 = (Qcache_hits – Qcache_inserts) / Qcache_hits * 100%
+# 查询缓存命中率 = (Qcache_hits - Qcache_inserts) / Qcache_hits * 100%
 
 query_cache_size = 64M
 # 指定 MySQL 查询缓冲区的大小。可以通过在 MySQL 控制台执行以下命令观察：
@@ -328,7 +328,7 @@ innodb_data_home_dir =  /usr/local/mysql/var/
 # 设置此选项如果你希望 InnoDB 表空间文件被保存在其他分区. 默认保存在 MySQL 的 datadir 中.
 
 innodb_data_file_path = ibdata1:500M;ibdata2:2210M:autoextend
-#InnoDB 将数据保存在一个或者多个数据文件中成为表空间. 如果你只有单个逻辑驱动保存你的数据, 一个单个的自增文件就足够好了. 其他情况下. 每个设备一个文件一般都是个好的选择. 你也可以配置 InnoDB 来使用裸盘分区 – 请参考手册来获取更多相关内容
+#InnoDB 将数据保存在一个或者多个数据文件中成为表空间. 如果你只有单个逻辑驱动保存你的数据, 一个单个的自增文件就足够好了. 其他情况下. 每个设备一个文件一般都是个好的选择. 你也可以配置 InnoDB 来使用裸盘分区 - 请参考手册来获取更多相关内容
 
 innodb_file_io_threads = 4
 # 用来同步 IO 操作的 IO 线程的数量. 此值在 Unix 下被硬编码为 4, 但是在 Windows 磁盘 I/O 可能在一个大数值下表现的更好.

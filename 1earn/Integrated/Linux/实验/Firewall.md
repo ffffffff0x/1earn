@@ -87,7 +87,7 @@ firewall-cmd --permanent --zone=drop --add-source=172.28.13.0/24    # 添加 172
 firewall-cmd --reload
 firewall-cmd --zone=drop --list-all
 
-firewall-cmd --permanent --zone=drop --remove-source=172.28.13.0/24 # 从zone drop中删除172.28.13.0/24
+firewall-cmd --permanent --zone=drop --remove-source=172.28.13.0/24 # 从zone drop 中删除 172.28.13.0/24
 ```
 
 - 使用命令的时候加上 --permanent 是永久生效的意思，在重启防火墙服务后依然生效.否则，只对重启服务之前有效.
@@ -103,8 +103,47 @@ firewall-cmd --new-zone game --permanent
 firewall-cmd --reload
 ```
 
+## 配置案例
+
+**只允许 1.1.1.1 和 2.2.2.2 访问**
+```bash
+systemctl start firewalld
+# 配置 IP 白名单
+firewall-cmd --permanent --zone=trusted --add-source=1.1.1.1
+firewall-cmd --permanent --zone=trusted --add-source=2.2.2.2
+# 与此同时，你也要加入你自己的 IP 地址，否则白名单一旦生效，可能会将你阻挡在外而无法连接。
+firewall-cmd --reload
+# 确认 trusted 区域是否设置正确
+firewall-cmd --zone=trusted --list-all
+
+# 因为此时已经设置了 trusted 区域，所以还需要切换默认区域从 public 到 drop，以达到无视所有接入连接的目的
+firewall-cmd --set-default-zone=drop
+
+# 将默认网卡 ens33 分配给 drop 区域
+firewall-cmd --permanent --zone=drop --change-interface=ens33
+firewall-cmd --reload
+```
+
+**配置端口白名单**
+```bash
+# 查询端口是否开放
+firewall-cmd --query-port=8080/tcp
+# 新建永久规则，开放8080端口（TCP协议）,任何ip都可以访问
+firewall-cmd --permanent --add-port=8080/tcp
+# 移除上述规则
+firewall-cmd --permanent --remove-port=8080/tcp
+# 新建永久规则，批量开放一段端口（TCP协议）
+firewall-cmd --permanent --add-port=9001-9100/tcp
+
+# 添加或者移除规则后重新加载firewall后配置才会生效
+firewall-cmd --reload
+```
+
 ---
 
 ## Source & Reference
 
 - [使用防火墙让你的 Linux 更加强大](https://linux.cn/article-11093-1.html)
+- https://teddysun.com/566.html
+- https://blog.csdn.net/avatar_2009/article/details/112512819
+- https://blog.csdn.net/jnloverll/article/details/120333488

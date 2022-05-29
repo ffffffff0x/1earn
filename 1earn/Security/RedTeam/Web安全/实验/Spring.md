@@ -21,7 +21,7 @@
 - [Spring Boot Actuators配置不当导致RCE漏洞复现](https://jianfensec.com/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/Spring%20Boot%20Actuators%E9%85%8D%E7%BD%AE%E4%B8%8D%E5%BD%93%E5%AF%BC%E8%87%B4RCE%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/)
 - [Spring Boot Actuator 漏洞利用](https://www.jianshu.com/p/8c18f1e05c94)
 - [Spring Boot Actuator H2 RCE复现](https://www.cnblogs.com/cwkiller/p/12829974.html)
-- [BRING YOUR OWN SSRF – THE GATEWAY ACTUATOR](https://wya.pl/2021/12/20/bring-your-own-ssrf-the-gateway-actuator/)
+- [BRING YOUR OWN SSRF - THE GATEWAY ACTUATOR](https://wya.pl/2021/12/20/bring-your-own-ssrf-the-gateway-actuator/)
 
 **学习资源**
 - [LandGrey/SpringBootVulExploit](https://github.com/LandGrey/SpringBootVulExploit) - SpringBoot 相关漏洞学习资料
@@ -69,6 +69,9 @@
 **相关文章**
 - [获取spring boot脱敏属性明文](https://www.jianshu.com/p/ae4be3af5231)
 - [使用 MAT 查找 spring heapdump 中的密码明文](https://landgrey.me/blog/16/)
+
+**相关工具**
+- [whwlsfb/JDumpSpider](https://github.com/whwlsfb/JDumpSpider) - HeapDump敏感信息提取工具
 
 **复现**
 
@@ -246,7 +249,7 @@ curl "vulnerablemachine:port/..%252F..%252F..%252F..%252F..%252F..%252F..%252F..
 
 ---
 
-## CVE-2022-22965
+## CVE-2022-22965 Spring4Shell
 
 **相关文章**
 - [CVE-2022-22965 Spring核心框架Spring4Shell远程命令执行漏洞原理与修复方式分析](https://mp.weixin.qq.com/s/G1z7mydl4nc9SxcZjwUQwg)
@@ -261,3 +264,4 @@ curl http://localhost:8082
 **POC | Payload | exp**
 - [TheGejr/SpringShell](https://github.com/TheGejr/SpringShell)
 - [lunasec-io/Spring4Shell-POC](https://github.com/lunasec-io/Spring4Shell-POC)
+- [reznok/Spring4Shell-POC](https://github.com/reznok/Spring4Shell-POC)

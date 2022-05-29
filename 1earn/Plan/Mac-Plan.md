@@ -102,6 +102,16 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/f0x/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
+然后使用 `brew install xxx` 就可以安装应用了,也可以使用 `brew uninstall xxx` 卸载软件
+
+**nodejs**
+```bash
+brew install nodejs
+
+# 按需给权限,可以不用这条
+sudo chmod -R 777 /usr/local/lib/node_modules/
+```
+
 **git**
 
 ```bash
@@ -227,6 +237,75 @@ bash Miniforge3-MacOSX-arm64.sh
 **CotEditor**
 
 - https://github.com/coteditor/CotEditor
+
+**nginx**
+
+```
+brew install nginx
+brew info nginx
+```
+
+管理 nginx 运行状态
+```bash
+# 开启
+nginx
+
+# 关闭
+nginx -s stop
+/opt/homebrew/opt/nginx/bin/nginx -s stop
+```
+
+默认 www 目录
+```
+/opt/homebrew/var/www
+```
+
+配置文件所在目录
+```
+/opt/homebrew/etc/nginx/
+```
+
+---
+
+## 一些依赖
+
+**libpq.5.dylib**
+
+搜索发现这个应该是 postgresql 相关功能依赖的文件
+
+一种方法是直接安装 postgresql,不过我测试了没成功
+```bash
+brew install postgresql
+```
+
+我在本地用 fzf 搜索发现 System/Volumes/Data/opt/homebrew/lib/libpq.5.dylib 路径有这个文件,那么复制一个好了,建立个软连接也行
+```bash
+mkdir -p /usr/local/lib/
+sudo cp /System/Volumes/Data/opt/homebrew/lib/libpq.5.dylib /usr/local/lib/libpq.5.dylib
+```
+
+参考
+- https://github.com/PostgresApp/PostgresApp/issues/83
+- https://blog.csdn.net/yutianyue126/article/details/106911948
+
+**libssl.1.1.dylib**
+
+```
+brew install openssl@1.1
+sudo cp /opt/homebrew/opt/openssl@1.1/lib/libssl.1.1.dylib /usr/local/lib/libssl.1.1.dylib
+```
+
+参考
+- https://www.v2ex.com/t/666738
+- https://pavcreations.com/dyld-library-not-loaded-libssl-1-1-dylib-fix-on-macos/
+- https://stackoverflow.com/questions/59006602/dyld-library-not-loaded-usr-local-opt-openssl-lib-libssl-1-0-0-dylib
+
+**libcrypto.1.1.dylib**
+
+```
+brew install openssl@1.1
+sudo cp /opt/homebrew/opt/openssl@1.1/lib/libcrypto.1.1.dylib /usr/local/lib/libcrypto.1.1.dylib
+```
 
 ---
 

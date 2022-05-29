@@ -44,10 +44,10 @@ iptables -X     # 删除用户定义链
 iptables -P     # 修改链的默认设置，如将 iptables -P INPUT DROP (将 INPUT 链设置为 DROP)
 ```
 
-## 常见设置参数**
+## 常见设置参数
 
-* --dport       指定目标 TCP/IP 端口 如 –dport 80
-* --sport       指定源 TCP/IP 端口 如 –sport 80
+* --dport       指定目标 TCP/IP 端口 如 -dport 80
+* --sport       指定源 TCP/IP 端口 如 -sport 80
 * -p tcp        指定协议为 tcp
 * -p icmp       指定协议为 ICMP
 * -p udp        指定协议为 UDP
@@ -55,8 +55,8 @@ iptables -P     # 修改链的默认设置，如将 iptables -P INPUT DROP (将 
 * -j ACCEPT     允许
 * -j REJECT     拒绝并向发出消息的计算机发一个消息
 * -j LOG        在 / var/log/messages 中登记分组匹配的记录
-* -m mac –mac                   绑定 MAC 地址
-* -m limit –limit 1/s 1/m       设置时间策列
+* -m mac -mac                   绑定 MAC 地址
+* -m limit -limit 1/s 1/m       设置时间策列
 * -s 10.10.0.0 或 10.10.0.0/16  指定源地址或地址段
 * -d 10.10.0.0 或 10.10.0.0/16  指定目标地址或地址段
 * -s ! 10.10.0.0                指定源地址以外的
@@ -88,7 +88,55 @@ iptables 默认有 4 个表
 
 ---
 
+## 配置案例
+
+**关闭端口 4444**
+```bash
+iptables -A INPUT -p tcp --dport 4444 -j DROP
+iptables -A OUTPUT -p tcp --dport 4444 -j DROP
+iptables -L -n		# 看一下规则
+
+# 删除INPUT链的第一条规则
+iptables -D INPUT 1
+# 删除OUTPUT链的第一条规则
+iptables -D OUTPUT 1
+```
+
+**通过iptables实现ICMP包的过滤**
+```bash
+iptables -A INPUT -p icmp -j REJECT
+iptables -L -n
+iptables -D INPUT 1
+```
+
+**只允许 10.211.55.5 访问本机的 4444 端口**
+```bash
+iptables -I INPUT -p tcp --dport 4444 -j DROP                   # 首先拒绝所有
+iptables -I INPUT -s 10.211.55.5 -p tcp --dport 4444 -j ACCEPT  # 配置单一白名单
+iptables -L -n
+
+# 注意这里要用 -I ,不要用 -A ,因为这样规则顺序是不一样的,用 -A 拒绝的条件在前
+
+# 然后删除
+iptables -D INPUT 1
+iptables -D INPUT 1
+```
+
+**只允许 10.211.55.5 访问,其他全部拒绝**
+```bash
+iptables -A INPUT -s 10.211.55.5 -p tcp -j ACCEPT
+iptables -A INPUT -p tcp -j REJECT
+iptables -L -n
+
+# 顺序很重要!!!!!,先删除第二条,在删除第一条
+iptables -D INPUT 2
+iptables -D INPUT 1
+```
+
+---
+
 ## Source & Reference
 
 - https://www.jianshu.com/p/586da7c8fd42
 - https://wsgzao.github.io/post/iptables/
+- https://blog.csdn.net/weixin_45744814/article/details/121514701

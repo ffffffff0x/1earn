@@ -11,7 +11,7 @@
 
 - `Linux 下各种常见服务的搭建/配置指南`
 - `大部分环境在 Centos7,少部分 Ubuntu`
-- `主要以安装搭建为主,更深一步的配置请自行研究`
+- `主要以安装搭建为主,近一步的配置请参考官方教程`
 
 ---
 
@@ -114,6 +114,10 @@
     * [PhpLdapAdmin](#phpldapadmin)
   * [Snort](#snort)
   * [Suricata](#suricata)
+
+* **[🍷 设施配置](#设施配置)**
+  * [f8x](#f8x)
+  * [Terraform](#terraform)
 
 * **[🍥 各种依赖和报错](#各种依赖和报错)**
   * [LuaJIT](#luajit)
@@ -1027,6 +1031,22 @@ firewall-cmd --reload
 **更多配置案例**
 
 见 [dns.md](./实验/dns.md)
+
+---
+
+### focalboard
+
+> Focalboard 是一个开源的、自托管的 Trello、concept 和 Asana 的替代品。
+
+**项目地址**
+- https://github.com/mattermost/focalboard
+
+**自托管 Mattermost 服务器**
+```bash
+docker run --name mattermost-preview -d --publish 8065:8065 mattermost/mattermost-preview
+```
+
+启动完毕后访问 127.0.0.1:8065
 
 ---
 
@@ -5293,7 +5313,7 @@ setenforce 0    # 关闭 selinux
     <img src="../../../assets/img/logo/Docker.png" width="30%">
 </p>
 
-> 更多 Docker 相关知识参考 [docker学习笔记](../虚拟化/Docker/Speed-Docker.md)
+> 更多 Docker 相关知识参考 [Docker笔记](../容器/Docker.md)
 
 **官网**
 - https://www.docker.com
@@ -5363,7 +5383,7 @@ setenforce 0    # 关闭 selinux
 - 常用命令
   ```bash
   docker version                              # 查看 docker 版本
-  docker run -it [docker_id] bash             # 运行一个容器实例
+  docker run -it [docker_image_id] bash       # 运行一个容器实例
   docker run -d -p 物理端口1:容器端口1 -p 物理端口2:物理端口2 --name 容器名 <image-name>:<tag>
     docker run --name=test -p 1234:1234 -itd ubuntu /bin/bash
     # 使用本地 1234 端口连接 docker 的 1234 端口运行 ubuntu 镜像，并将其临时命名为 test
@@ -5377,6 +5397,8 @@ setenforce 0    # 关闭 selinux
   docker exec -it [docker_id] bash                  # 获取容器的 shell
   docker kill                                       # 杀死容器
   docker commit [docker_id] [docker_image_id]       # 提交并保存容器状态
+
+  docker log [options] [docker_name/docker_id]      # 查看docker容器日志
 
   docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]  # 标记本地镜像，将其归入某一仓库。
     docker tag centos centos:v1                     # 给 centos 镜像打标签
@@ -5396,7 +5418,7 @@ setenforce 0    # 关闭 selinux
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)
 
-**更多**
+**更多内容**
 - [Docker](./实验/Docker.md)
 
 #### Docker-Compose
@@ -5461,7 +5483,7 @@ docker-compose exec [service] sh  # 进入容器内
 
   python 版本的问题, 换 python3.7 以上或用 pip 安装即可
 
-**更多**
+**更多内容**
 - [Docker-Compose](./实验/Docker-Compose.md)
 
 #### Docker-Portainer
@@ -5499,8 +5521,51 @@ kubectl get deployment -A                     # 列出所有 deployment
 
 **与运行中的 Pod 交互**
 ```bash
-kubectl logs my-pod                           # dump 输出 pod 的日志（stdout）
-kubectl exec my-pod -- ls /                   # 在已存在的容器中执行命令（只有一个容器的情况下）
+kubectl logs my-pod                                 # 获取 pod 日志（标准输出）
+kubectl logs -l name=myLabel                        # 获取含 name=myLabel 标签的 Pods 的日志（标准输出）
+kubectl logs my-pod --previous                      # 获取上个容器实例的 pod 日志（标准输出）
+kubectl logs my-pod -c my-container                 # 获取 Pod 容器的日志（标准输出, 多容器场景）
+kubectl logs -l name=myLabel -c my-container        # 获取含 name=myLabel 标签的 Pod 容器日志（标准输出, 多容器场景）
+kubectl logs my-pod -c my-container --previous      # 获取 Pod 中某容器的上个实例的日志（标准输出, 多容器场景）
+kubectl logs -f my-pod                              # 流式输出 Pod 的日志（标准输出）
+kubectl logs -f my-pod -c my-container              # 流式输出 Pod 容器的日志（标准输出, 多容器场景）
+kubectl logs -f -l name=myLabel --all-containers    # 流式输出含 name=myLabel 标签的 Pod 的所有日志（标准输出）
+kubectl run -i --tty busybox --image=busybox:1.28 -- sh  # 以交互式 Shell 运行 Pod
+kubectl run nginx --image=nginx -n mynamespace      # 在 “mynamespace” 命名空间中运行单个 nginx Pod
+kubectl run nginx --image=nginx                     # 运行 ngins Pod 并将其规约写入到名为 pod.yaml 的文件
+  --dry-run=client -o yaml > pod.yaml
+
+kubectl attach my-pod -i                            # 挂接到一个运行的容器中
+kubectl port-forward my-pod 5000:6000               # 在本地计算机上侦听端口 5000 并转发到 my-pod 上的端口 6000
+kubectl exec my-pod -- ls /                         # 在已有的 Pod 中运行命令（单容器场景）
+kubectl exec --stdin --tty my-pod -- /bin/sh        # 使用交互 shell 访问正在运行的 Pod (一个容器场景)
+kubectl exec my-pod -c my-container -- ls /         # 在已有的 Pod 中运行命令（多容器场景）
+kubectl top pod POD_NAME --containers               # 显示给定 Pod 和其中容器的监控数据
+kubectl top pod POD_NAME --sort-by=cpu              # 显示给定 Pod 的指标并且按照 'cpu' 或者 'memory' 排序
+```
+
+**从容器中复制文件和目录**
+```bash
+kubectl cp /tmp/foo_dir my-pod:/tmp/bar_dir            # 将 /tmp/foo_dir 本地目录复制到远程当前命名空间中 Pod 中的 /tmp/bar_dir
+kubectl cp /tmp/foo my-pod:/tmp/bar -c my-container    # 将 /tmp/foo 本地文件复制到远程 Pod 中特定容器的 /tmp/bar 下
+kubectl cp /tmp/foo my-namespace/my-pod:/tmp/bar       # 将 /tmp/foo 本地文件复制到远程 “my-namespace” 命名空间内指定 Pod 中的 /tmp/bar
+kubectl cp my-namespace/my-pod:/tmp/foo /tmp/bar       # 将 /tmp/foo 从远程 Pod 复制到本地 /tmp/bar
+```
+
+> kubectl cp 要求容器镜像中存在 “tar” 二进制文件。如果 “tar” 不存在，kubectl cp 将失败
+
+**与节点和集群进行交互**
+```bash
+kubectl cordon my-node                                                # 标记 my-node 节点为不可调度
+kubectl drain my-node                                                 # 对 my-node 节点进行清空操作，为节点维护做准备
+kubectl uncordon my-node                                              # 标记 my-node 节点为可以调度
+kubectl top node my-node                                              # 显示给定节点的度量值
+kubectl cluster-info                                                  # 显示主控节点和服务的地址
+kubectl cluster-info dump                                             # 将当前集群状态转储到标准输出
+kubectl cluster-info dump --output-directory=/path/to/cluster-state   # 将当前集群状态输出到 /path/to/cluster-state
+
+# 如果已存在具有指定键和效果的污点，则替换其值为指定值。
+kubectl taint nodes foo dedicated=special-user:NoSchedule
 ```
 
 ---
@@ -6186,6 +6251,8 @@ Suricata 搭建与使用内容访问 [安防设施搭建使用](../../Security/B
 
 ### tripwire
 
+**描述**
+
 当服务器遭到黑客攻击时，在多数情况下，黑客可能对系统文件等等一些重要的文件进行修改。对此，我们用 Tripwire 建立数据完整性监测系统。虽然 它不能抵御黑客攻击以及黑客对一些重要文件的修改，但是可以监测文件是否被修改过以及哪些文件被修改过，从而在被攻击后有的放矢的策划出解决办法。
 
 Tripwire 的原理是 Tripwire 被安装、配置后，将当前的系统数据状态建立成数据库，随着文件的添加、删除和修改等等变化，通过系统数据现 状与不断更新的数据库进行比较，来判定哪些文件被添加、删除和修改过。正因为初始的数据库是在 Tripwire 本体被安装、配置后建立的原因，我们务必应 该在服务器开放前，或者说操作系统刚被安装后用 Tripwire 构建数据完整性监测系统。
@@ -6351,6 +6418,68 @@ tripwire --init
 
 ---
 
+## 设施配置
+
+### f8x
+
+**描述**
+
+大多数场景下，在不同的云购买一些 vps 服务器用于部署红 / 蓝队设施，不能做到开箱即用，使用 f8x 可以快速部署所需要的各类服务。同时兼顾到本地 VM 虚拟机的需求，可以选择走 socket 代理进行安装部署，Proxychains-ng 也会自动安装，只需做好 Proxychains-ng 配置即可。
+
+**项目地址**
+- https://github.com/ffffffff0x/f8x
+
+**安装**
+```bash
+wget -O f8x https://f8x.io/ && mv --force f8x /usr/local/bin/f8x && chmod +x /usr/local/bin/f8x
+f8x -h
+```
+
+**安装基础工具**
+```bash
+f8x -b
+```
+
+**安装渗透环境**
+```bash
+f8x -k
+```
+
+**安装python3.9**
+```bash
+f8x -py39
+```
+
+**安装 oraclejdk11**
+```
+f8x -oracle11
+```
+
+**更多内容**
+- https://github.com/ffffffff0x/f8x/blob/main/README.zh-cn.md
+
+### terraform
+
+**描述**
+
+Terraform 是一个 IT 基础架构自动化编排工具。具体的说就是可以用代码来管理维护 IT 资源，比如针对 AWS，我们可以用它创建，修改，删除 S3 Bucket, Lambda, EC2 实例，Kinesis， VPC 等各种资源。并且在真正运行之前可以看到执行计划(即干运行-dryrun)。由于状态保存到文件中，因此能够离线方式查看资源情况。
+
+**项目地址**
+- https://github.com/hashicorp/terraform
+
+**安装**
+```bash
+wget https://releases.hashicorp.com/terraform/1.2.1/terraform_1.2.1_linux_amd64.zip
+unzip terraform_1.2.1_linux_amd64.zip
+mv --force terraform /usr/local/bin/terraform > /dev/null 2>&1 && chmod +x /usr/local/bin/terraform
+terraform -h
+```
+
+**更多内容**
+- [terraform](./实验/terraform.md)
+
+---
+
 ## 各种依赖和报错
 
 **libboost-program-options1.58.0**
@@ -6396,7 +6525,9 @@ ln -s /usr/src/kernels/3.10.0-1160.6.1.el7.x86_64/ build
 
 ### LuaJIT
 
-> LuaJIT 是采用 C 语言写的 Lua 代码的解释器，LuaJIT 试图保留 Lua 的精髓--轻量级,高效和可扩展。
+**描述**
+
+LuaJIT 是采用 C 语言写的 Lua 代码的解释器，LuaJIT 试图保留 Lua 的精髓--轻量级,高效和可扩展。
 
 **官网地址**
 - https://luajit.org/

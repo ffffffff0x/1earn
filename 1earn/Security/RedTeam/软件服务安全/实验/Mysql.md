@@ -1,9 +1,11 @@
 # Mysql
 
-MySQL 是一个关系型数据库管理系统，由瑞典 MySQL AB 公司开发，目前属于 Oracle 公司。MySQL 是一种关联数据库管理系统，MySQL 的 SQL 语言是用于访问数据库的最常用标准化语言。MySQL 软件采用了双授权政策，它分为社区版和商业版，一般中小型网站的开发选择 MySQL 作为网站数据库。
-
 > shodan : "product:MySQL"
 > fofa : app="Oracle-MySQL"
+
+**描述**
+
+MySQL 是一个关系型数据库管理系统，由瑞典 MySQL AB 公司开发，目前属于 Oracle 公司。MySQL 是一种关联数据库管理系统，MySQL 的 SQL 语言是用于访问数据库的最常用标准化语言。MySQL 软件采用了双授权政策，它分为社区版和商业版，一般中小型网站的开发选择 MySQL 作为网站数据库。
 
 **Mysql 基础**
 - [Mysql](../../../../Integrated/数据库/笔记/Mysql.md)
@@ -45,7 +47,7 @@ exploit
 ```
 
 **CVE-2012-2122 Mysql 身份认证绕过漏洞**
-- 描述
+- 漏洞描述
 
     当连接 MariaDB/MySQL 时，输入的密码会与期望的正确密码比较，由于不正确的处理，会导致即便是 memcmp() 返回一个非零值，也会使 MySQL 认为两个密码是相同的。也就是说只要知道用户名，不断尝试就能够直接登入 SQL 数据库。
 
@@ -55,7 +57,7 @@ exploit
     ```
 
 **CVE-2012-5615 Oracle MySQL Server 5.5.19 用户名枚举漏洞**
-- 描述
+- 漏洞描述
 
     MySQL 5.5.19 以及其他版本和 MariaDB 5.5.28a，5.3.11，5.2.13，5.1.66 以及其他版本中存在漏洞，该漏洞源于不同时间延迟产生不同错误消息取决于用户名是否存在。远程攻击者利用该漏洞枚举有效的用户名。
 
@@ -64,7 +66,7 @@ exploit
     - [MySQL 5.1/5.5 (Windows) - 'MySQLJackpot' Remote Command Execution](https://www.exploit-db.com/exploits/23073)
 
 **CVE-2016-6662**
-- 描述
+- 漏洞描述
 
     Oracle MySQL 中的配置文件（my.cnf）存在远程代码执行漏洞。攻击者（本地或远程）可通过授权访问 MySQL 数据库（网络连接或类似 phpMyAdmin 的 Web 接口）或 SQL 注入方式，利用该漏洞向配置文件中注入恶意的数据库配置，导致以 root 权限执行任意代码，完全控制受影响的服务器。以下版本受到影响：Oracle MySQL 5.5.52 及之前的版本，5.6.x 至 5.6.33 版本，5.7.x 至 5.7.15 版本；MariaDB 5.5.51 之前的版本，10.0.27 之前的 10.0.x 版本，10.1.17 之前的 10.1.x 版本；Percona Server 5.5.51-38.1 之前的版本，5.6.32-78.0 之前的 5.6.x 版本，5.7.14-7 之前的 5.7.x 版本。
 

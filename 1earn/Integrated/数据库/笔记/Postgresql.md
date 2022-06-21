@@ -1,5 +1,11 @@
 # Postgresql
 
+---
+
+**简介**
+
+PostgreSQL是一种先进的对象-关系数据库管理系统（ORDBMS），它不仅支持关系数据库的各种功能，而且还具备类、继承等对象数据库的特征。
+
 **cli连接**
 ```bash
 psql postgres://账户:密码@地址:5432/数据库名称
@@ -46,17 +52,17 @@ ALTER USER postgres WITH PASSWORD 'Abcd1234';
 
 **导出单表数据**
 ```
-pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -t t1 –inserts > bak.sql
+pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -t t1 -inserts > bak.sql
 ```
 
 **导出多个表数据**
 ```
-pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -t t1 -t t2 –inserts > bak.sql
+pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -t t1 -t t2 -inserts > bak.sql
 ```
 
 **导出整个数据库**
 ```
-pg_dump -h 127.0.0.1 -U admin -p 5432 -W db –inserts > bak.sql
+pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -inserts > bak.sql
 ```
 
 **只导出表结构，不导出数据**
@@ -66,7 +72,7 @@ pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -s > bak.sql
 
 **只导出数据，不导出表结构**
 ```
-pg_dump -h 127.0.0.1 -U admin -p 5432 -W db –inserts -a > bak.sql
+pg_dump -h 127.0.0.1 -U admin -p 5432 -W db -inserts -a > bak.sql
 ```
 
 **postgresql 导入数据源**

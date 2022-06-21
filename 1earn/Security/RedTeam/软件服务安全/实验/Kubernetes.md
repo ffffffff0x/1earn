@@ -20,7 +20,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 ## 未授权
 
 **Kubernetes Api Server 未授权访问**
-- 描述
+- 漏洞描述
 
     Kubernetes API Server 可以在两个端口上提供了对外服务：8080（insecure-port，非安全端口）和 6443（secure-port，安全端口），其中 8080 端口提供 HTTP 服务且无需身份认证，6443 端口提供 HTTPS 服务且支持身份认证 (8080 和 6443 端口并不是固定的，是通过配置文件来控制的)。
 
@@ -32,7 +32,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - [Kubernetes Api Server 未授权访问漏洞](https://www.jianshu.com/p/e443b3171253)
 
 **Kubernetes Dashboard 未授权访问**
-- 描述
+- 漏洞描述
 
     Kubernetes Dashboard 是一个通用的，基于 Web 的 Kubernetes 集群用户界面。它允许用户管理集群中运行的应用程序，并对其进行故障排除，以及管理集群本身。在其早期版本中（v1.10.1 之前）存在未授权访问风险，用户在按照官方文档所给方式部署完成后，默认下，需要先执行 kubectl proxy，然后才能通过本地 8001 端口访问 Dashboard。但是，如果直接将 Dashboard 端口映射在宿主机节点上，或者在执行 kubectl proxy 时指定了额外地址参数，如：
     ```bash
@@ -43,7 +43,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     默认情况下 Dashboard 需要登录认证，但是，如果用户在 Dashboard 的启动参数中添加了 `--enable-skip-login` 选项，那么攻击者就能够直接点击 Dashboard 界面的 “跳过” 按钮，无需登录便可直接进入 Dashboard。关于如何设置 `--enable-skip-login` ，在 v1.10.1 前，实则是无需配置的，通过在 Kubernetes Dashboard 的 Web 登录界面点击 “跳过” 按钮即可访问，也是因为这个原因，安全意识较为薄弱的用户直接将早期版本以默认的配置方式部署在互联网上使得攻击者无需花费丝毫力气就可以轻易浏览到 Kubernetes 集群的运行状态，因而在 v1.10.1 版本后，开发团队增加了显式配置的功能，需要用户在相应部署的 yaml 文件中指定 `--enable-skip-login` 参数配置才能开启未授权访问。
 
 **kubelet 未授权访问**
-- 描述
+- 漏洞描述
 
     kubelet 是在 Node 上用于管理本机 Pod 的，kubectl 是用于管理集群的。kubectl 向集群下达指令，Node 上的 kubelet 收到指令后以此来管理本机 Pod。
 
@@ -78,8 +78,14 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     /containerLogs/
     ```
 
+- kubeconfig 泄露
+
+    ```
+    kubectl --kubeconfig=config --insecure-skip-tls-verify=true get pods --all-namespaces -o wide
+    ```
+
 **etcd 未授权**
-- 描述
+- 漏洞描述
 
     etcd 是 k8s 集群中的数据库组件，默认监听在 2379 端口. 如果 2379 存在未授权，那么就可以通过 etcd 查询集群内管理员的 token，然后用这个 token 访问 api server 接管集群。
 
@@ -87,11 +93,11 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 
     下载 https://github.com/etcd-io/etcd/releases/
     ```bash
-    etcdctl --endpoints=https://etcd_ip:2375/ get / --prefix --keys-only
+    etcdctl --endpoints=https://etcd_ip:2379/ get / --prefix --keys-only
     # 查询管理员 token
-    etcdctl --endpoints=https://etcd_ip:2375/ get / --prefix --keys-only | grep /secrets/
+    etcdctl --endpoints=https://etcd_ip:2379/ get / --prefix --keys-only | grep /secrets/
     # 在 etcd 里查询管理员的 token，然后使用该 token 配合 kubectl 指令接管集群
-    etdctl --endpoints=https://etcd_ip:2375/ get /registry/secrets/default/admin-token-xxxxx
+    etdctl --endpoints=https://etcd_ip:2379/ get /registry/secrets/default/admin-token-xxxxx
     # 拿到 token 以后，用 kubectl 接管集群
     kubectl --insecure-skip-tls-verify -s https://master_ip:6443/ --token="xxxxxx" get nodes
 
@@ -106,7 +112,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 ## 中间人攻击
 
 **CVE-2020-8554**
-- 描述
+- 漏洞描述
 
     如果攻击者可以创建或编辑服务和容器，则此安全问题使攻击者能够拦截来自群集中其他容器（或节点）的流量。攻击者可利用该漏洞通过 Kubernetes 上的 LoadBalancer 或 ExternalIP 充当中间人，以便在会话中读取或写入数据。
 
@@ -125,7 +131,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - https://tttang.com/archive/1465/#toc__6
 
 **挂载 /var/log 导致容器逃逸**
-- 描述
+- 漏洞描述
 
     当 pod 以可写权限挂载了宿主机的 `/var/log` 目录，而且 pod 里的 service account 有权限访问该 pod 在宿主机上的日志时，攻击者可以通过在容器内创建符号链接来完成简单逃逸。
 
@@ -133,7 +139,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - [挂载/var/log导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/mount-var-log)
 
 **滥用CAP_DAC_READ_SEARCH（shocker攻击）导致容器逃逸**
-- 描述
+- 漏洞描述
 
     在早期的 docker 中，容器内是默认拥有 CAP_DAC_READ_SEARCH 的权限的，拥有该 capability 权限之后，容器内进程可以使用 open_by_handle_at 系统调用来爆破宿主机的文件内容。
 
@@ -145,7 +151,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
         ```
 
 **CVE-2017-1002101**
-- 描述
+- 漏洞描述
 
     Kubernetes 在宿主机文件系统上解析了 Pod 滥用 subPath 机制创建的符号链接，故而宿主机上任意路径（如根目录）能够被挂载到攻击者可控的恶意容器中，导致容器逃逸。
 
@@ -157,7 +163,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - [逃逸风云再起：从CVE-2017-1002101到CVE-2021-25741](https://mp.weixin.qq.com/s/RqaWvzXZR6sLPzBI8ljoxg)
 
 **CVE-2021-30465**
-- 描述
+- 漏洞描述
 
     该漏洞是由于挂载卷时，runC 不信任目标参数，并将使用 “filepath-securejoin” 库来解析任何符号链接并确保解析的目标在容器根目录中，但是如果用符号链接替换检查的目标文件时，可以将主机文件挂载到容器中。黑客可利用该漏洞能将宿主机目录挂载到容器中，来实现容器逃逸。
 
@@ -166,7 +172,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - [runC漏洞导致容器逃逸（CVE-2021-30465）](https://github.com/Metarget/metarget/tree/master/writeups_cnv/docker-runc-cve-2021-30465)
 
 **CVE-2022-0811 容器逃逸漏洞**
-- 描述
+- 漏洞描述
 
     CrowdStrike 的云威胁研究团队在 CRI-O(一个支撑 Kubernetes 的容器运行时引擎) 中发现了一个新的漏洞 (CVE-2022-0811)，被称为 “cr8escape”。攻击者在创建容器时可以从 Kubernetes 容器中逃离，并获得对主机的根访问权，从而可以在集群中的任何地方移动。调用 CVE-2022-0811 可以让攻击者对目标执行各种操作，包括执行恶意软件、数据外溢和跨 pod 的横向移动。
 
@@ -183,7 +189,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 ## 提权
 
 **CVE-2018-1002105**
-- 描述
+- 漏洞描述
 
     Kubernetes 特权升级漏洞（CVE-2018-1002105）由 Rancher Labs 联合创始人及首席架构师 Darren Shepherd 发现。该漏洞通过经过详细分析评估，主要可以实现提升 k8s 普通用户到 k8s api server 的权限（默认就是最高权限），注意点是，普通用户至少需要具有一个 pod 的 exec/attach/portforward 等权限。
 
@@ -196,7 +202,7 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
     - [gravitational/cve-2018-1002105](https://github.com/gravitational/cve-2018-1002105)
 
 **CVE-2020-8559**
-- 描述
+- 漏洞描述
 
     CVE-2020-8559 是一个针对 Kubernetes 的权限提升漏洞，攻击者可以截取某些发送至节点 kubelet 的升级请求，通过请求中原有的访问凭据转发请求至其他目标节点，从而造成节点的权限提升.
 

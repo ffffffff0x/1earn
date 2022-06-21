@@ -49,6 +49,12 @@ Volatility 是一个用于事件响应和恶意软件分析的开源内存取证
 
 ## 安装及维护
 
+**利用 f8x 进行安装**
+```
+wget -O f8x https://f8x.io/
+bash f8x -vol
+```
+
 **Ubuntu 下安装**
 
 ```bash
@@ -686,6 +692,12 @@ python vol.py -f tmp.vmem --profile=Linuxcentos7x64 linux_proc_maps
 ## volatility3
 
 Volatility3 是对 Volatility2 的重写，它基于 Python3 编写，对 Windows 10 的内存取证很友好，且速度比 Volatility2 快很多。对于用户而言，新功能的重点包括：大幅提升性能，消除了对 --profile 的依赖，以便框架确定需要哪个符号表（配置文件）来匹配内存示例中的操作系统版本，在 64 位系统（例如 Window 的 wow64）上正确评估 32 位代码，自动评估内存中的代码，以避免对分析人员进行尽可能多的手动逆向工程。对于开发人员：更加轻松地集成到用户的第三方接口和库中，广泛的 API 文档，插件可以直接调用其他插件的能力，插件版本控，直接集成自定义符号表和数据结构。
+
+**利用 f8x 进行安装**
+```
+wget -O f8x https://f8x.io/
+bash f8x -vol3
+```
 
 **安装**
 

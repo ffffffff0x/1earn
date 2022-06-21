@@ -35,8 +35,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
 ## 内核漏洞导致的逃逸
 
 **[Dirty COW(CVE-2016-5195)](../../OS安全/OS-Exploits.md#linux)**
-
-- 描述
+- 漏洞描述
 
     通过 Dirty Cow 漏洞，结合 EXP，就可以返回一个宿主机的高权限 Shell，并拿到宿主机的 root 权限，可以直接操作宿主机的文件。
 
@@ -56,7 +55,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     - [Linux内核漏洞导致容器逃逸（CVE-2017-1000112）](https://github.com/Metarget/metarget/tree/master/writeups_cnv/kernel-cve-2017-1000112)
 
 **CVE-2018-18955 Broken uid/gid Mapping for Nested User Namespaces**
-- 描述
+- 漏洞描述
 
     CVE-2018-18955 漏洞涉及到 User 命名空间中的嵌套用户命名空间，用户命名空间中针对 uid（用户ID）和 gid（用户组ID）的 ID 映射机制保证了进程拥有的权限不会逾越其父命名空间的范畴。该漏洞利用创建用户命名空间的子命名空间时损坏的 ID 映射实现提权。
 
@@ -84,16 +83,13 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
 
 ## 配置不当
 
-**前提**
+**利用条件**
 - root 权限启动 docker
 - 主机上有镜像,或自己下载镜像
 - API 版本大于 1.5
 
 **docker.sock 挂载到容器内部**
-- 相关文章
-    - [挂载docker.sock导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/mount-docker-sock)
-
-- 描述
+- 漏洞描述
 
     Docker 采用 C/S 架构，我们平常使用的 Docker 命令中，docker 即为 client，Server 端的角色由 docker daemon 扮演，二者之间通信方式有以下3种：
     1. unix:///var/run/docker.sock
@@ -105,6 +101,9 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     本质上而言，能够访问 docker socket 或连接 HTTPS API 的进程可以执行 Docker 服务能够运行的任意命令，以 root 权限运行的 Docker 服务通常可以访问整个主机系统。
 
     因此，当容器访问 docker socket 时，我们可通过与 docker daemonv 的通信对其进行恶意操纵完成逃逸。若容器A可以访问 docker socket，我们便可在其内部安装 client（docker），通过 docker.sock 与宿主机的 server（docker daemon）进行交互，运行并切换至不安全的容器 B，最终在容器 B 中控制宿主机。
+
+- 相关文章
+    - [挂载docker.sock导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/mount-docker-sock)
 
 1. 首先运行一个挂载 `/var/run/` 的容器
     ```bash
@@ -154,16 +153,16 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     成功接收到宿主机反弹的 shell
 
 **privileged 特权模式**
-- 相关文章
-    - [特权容器导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/config-privileged-container)
-
-- 描述
+- 漏洞描述
 
     特权模式于版本 0.6 时被引入 Docker，允许容器内的 root 拥有外部物理机 root 权限，而此前容器内 root 用户仅拥有外部物理机普通用户权限。
 
     使用特权模式启动容器，可以获取大量设备文件访问权限。因为当管理员执行 `docker run --privileged` 时，Docker 容器将被允许访问主机上的所有设备，并可以执行 mount 命令进行挂载。
 
     当控制使用特权模式启动的容器时，docker 管理员可通过 mount 命令将外部宿主机磁盘设备挂载进容器内部，获取对整个宿主机的文件读写权限，此外还可以通过写入计划任务等方式在宿主机执行命令。
+
+- 相关文章
+    - [特权容器导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/config-privileged-container)
 
 1. 首先以特权模式运行一个 docker 容器
     ```bash
@@ -190,13 +189,13 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
 - 相关文章
     - [Understanding Docker container escapes](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/)
 
-- 前提
+- 利用条件
     - 在容器内 root 用户
     - 容器必须使用 SYS_ADMIN Linux capability 运行
     - 容器必须缺少 AppArmor 配置文件，否则将允许 mount syscall
     - cgroup v1 虚拟文件系统必须以读写方式安装在容器内部
 
-- 描述
+- 复现测试
 
     我们需要一个 cgroup，可以在其中写入 notify_on_release 文件(for enable cgroup notifications)，挂载 cgroup 控制器并创建子 cgroup，创建 `/bin/sh` 进程并将其 PID 写入 cgroup.procs 文件，sh 退出后执行 release_agent 文件。
 
@@ -227,7 +226,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     ```
 
 **挂载宿主机 Procfs 系统导致容器逃逸**
-- 描述
+- 漏洞描述
 
     procfs 是一个伪文件系统，它动态反映着系统内进程及其他组件的状态，其中有许多十分敏感重要的文件。因此，将宿主机的 procfs 挂载到不受控的容器中也是十分危险的，尤其是在该容器内默认启用 root 权限，且没有开启 User Namespace 时. 有些业务为了实现某些特殊需要，会将该文件系统挂载进来
 
@@ -237,7 +236,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     - [挂载宿主机Procfs系统导致容器逃逸](https://github.com/Metarget/metarget/tree/master/writeups_cnv/mount-host-procfs)
 
 **Docker Remote API 未授权访问漏洞**
-- 描述
+- 漏洞描述
 
     Docker Remote API 是一个取代远程命令行界面（rcli）的 REST API。存在问题的版本分别为 1.3 和 1.6 因为权限控制等问题导致可以通过 docker client 或者 http 直接请求就可以访问这个 API，通过这个接口，我们可以新建 container，删除已有 container，甚至是获取宿主机的 shell。
 
@@ -287,7 +286,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
 ## 容器服务缺陷
 
 **CVE-2019-5736 漏洞逃逸**
-- 描述
+- 漏洞描述
 
     Docker、containerd 或者其他基于 runc 的容器在运行时存在安全漏洞，runC 是用于创建和运行 Docker 容器的 CLI 工具,runC 18.09.2版本前的 Docker 允许恶意容器覆盖宿主机上的 runC 二进制文件。攻击者可以通过特定的容器镜像或者 exec 操作获取到宿主机 runc 执行时的文件句柄并修改掉 runc 的二进制文件，从而获取到宿主机的 root 执行权限。
 
@@ -303,7 +302,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     - [Frichetten/CVE-2019-5736-PoC](https://github.com/Frichetten/CVE-2019-5736-PoC)
 
 **CVE-2019-13139 Docker build code execution**
-- 描述
+- 漏洞描述
 
     在 18.09.4 之前的 Docker 中，能够提供或操纵 `docker build` 命令的构建路径的攻击者将能够获得命令执行。在 `docker build` 处理远程 git URL 的方式中存在一个问题，并导致命令注入到底层的 `git clone` 命令中，从而导致用户在执行 `docker build` 命令的上下文中执行代码。出现这种情况是因为 git ref 可能被误解为标志。
 
@@ -321,7 +320,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     ```
 
 **CVE-2019-14271 Docker cp**
-- 描述
+- 漏洞描述
 
     在在与 GNU C 库（也称为 glibc）链接的 19.03.1 之前的 Docker 19.03.x 中，当 nsswitch 工具动态地在包含容器内容的 chroot 内加载库时，可能会发生代码注入。
 
@@ -334,7 +333,7 @@ Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量�
     - [Docker copy漏洞导致容器逃逸（CVE-2019-14271）](https://github.com/Metarget/metarget/tree/master/writeups_cnv/docker-cve-2019-14271)
 
 **CVE-2020-15257**
-- 描述
+- 漏洞描述
 
     Containerd 是一个控制 runC 的守护进程，提供命令行客户端和 API，用于在一个机器上管理容器。
 

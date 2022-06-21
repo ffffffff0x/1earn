@@ -64,7 +64,7 @@ run
 ```
 
 **CVE-2010-3600 Oracle Enterprise Manager Grid Control JSP 代码执行漏洞**
-- 描述
+- 漏洞描述
 
     Oracle Database Server 11.1.0.7 和 11.2.0.1 版本，以及 Enterprise Manager Grid Control 10.2.0.5 版本的 Client System Analyzer 组件中存在未明漏洞。远程攻击者可借助未知向量影响机密性、完整性和可用性。
 
@@ -79,7 +79,7 @@ run
     ```
 
 **CVE-2012-1675 Oracle TNS Listener Remote Poisoning**
-- 描述
+- 漏洞描述
 
     Oracle Database Server 在实现上存在可允许攻击者向远程“TNS Listener”组件处理的数据投毒的漏洞。攻击者可利用此漏洞将数据库服务器的合法“TNS Listener”组件中的数据转向到攻击者控制的系统，导致控制远程组件的数据库实例，造成组件和合法数据库之间的攻击者攻击、会话劫持或拒绝服务攻击。
 

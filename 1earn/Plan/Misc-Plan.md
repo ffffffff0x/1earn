@@ -297,6 +297,8 @@ npm config delete proxy  # 取消代理
 
 ### java
 
+> 来自文章 : https://mp.weixin.qq.com/s/pVAZvKADFVwPOC4CwrCooQ
+
 **命令行挂Socks5代理**
 
 ```

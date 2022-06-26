@@ -2,6 +2,14 @@
 
 ---
 
+**项目地址**
+- https://www.nginx.com/
+
+**配置生成**
+- https://github.com/digitalocean/nginxconfig.io
+
+---
+
 ## 反向代理
 
 反向代理(Reverse Proxy)方式是指以代理服务器来接受 internet 上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给 internet 上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器.

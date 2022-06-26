@@ -1833,6 +1833,18 @@ dpkg -l						# 查看已经安装的软件
 dpkg -r xxxx				# 卸载
 ```
 
+**常见问题**
+- dpkg: error processing package python3-software-properties (--configure):  package is in a very bad inconsistent state; you should  reinstall it before attempting configuration
+
+    ```bash
+    dpkg --remove --force-remove-reinstreq --force-depends python3-software-properties
+    apt-get autoclean
+    apt-get update
+    dpkg --configure -a
+    apt autoremove
+	apt --fix-broken install
+    ```
+
 #### Pacman
 
 > pacman 是 Arch 的包管理工具.

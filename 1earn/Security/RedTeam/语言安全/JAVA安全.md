@@ -19,8 +19,8 @@
 - [Java decompiler online](http://www.javadecompilers.com/)
 
 **反编译工具**
-- [skylot/jadx](https://github.com/skylot/jadx)
-- [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui)
+- [skylot/jadx](https://github.com/skylot/jadx) - Dex to Java decompiler
+- [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui) - A standalone Java Decompiler GUI
 
 ---
 

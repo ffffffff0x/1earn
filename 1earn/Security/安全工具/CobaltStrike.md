@@ -77,6 +77,22 @@ cd csbruter
 cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
 ```
 
+**相关资源**
+- [Twi1ight/CSAgent](https://github.com/Twi1ight/CSAgent) - CobaltStrike 4.x 通用白嫖及汉化加载器
+    ```
+    下载 CSAgent.zip 解压，将原版 cobaltstrike.jar 放到解压目录中，确保 CSAgent.jar、resources 文件夹、scripts 文件夹和 cobaltstrike.jar 处于同级目录
+    替换 cobaltstrike、teamserver、agscript、c2lint、cobaltstrike.bat 文件中的解密 key
+    4.0 1be5be52c6255c33558e8a1cb667cb06
+    4.1 80e32a742060b884419ba0c171c9aa76
+    4.2 b20d487addd4713418f2d5a3ae02a7a0
+    4.3 3a4425490f389aeec312bdd758ad2b99
+    4.4 5e98194a01c6b48fa582a6a9fcbb92d6
+    4.5 f38eb3d1a335b252b58bc2acde81b542
+    使用 teamserver 和 cobaltstrike 脚本启动即可
+
+    只需删除 resources 文件夹和 scripts 文件夹即可去除汉化
+    ```
+
 ---
 
 ## 使用及维护
@@ -103,6 +119,8 @@ third-party         # 第三方工具
 **使用**
 
 Cobalt Strike 需要团队服务器才能使用，也就是 teamserver。 需要文件 teamserver 与 cobaltstrike.jar 可以选择把他放在公网上面
+
+> 可以对比官方提供的sha256值来确保是否是原包 https://verify.cobaltstrike.com/
 
 - 服务端 teamserver
     ```bash

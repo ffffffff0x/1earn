@@ -109,6 +109,12 @@ iptables -L -n
 iptables -D INPUT 1
 ```
 
+**放开 4444 端口**
+```
+iptables -I INPUT -p tcp --dport 4444 -j ACCEPT
+iptables -L -n
+```
+
 **只允许 10.211.55.5 访问本机的 4444 端口**
 ```bash
 iptables -I INPUT -p tcp --dport 4444 -j DROP                   # 首先拒绝所有

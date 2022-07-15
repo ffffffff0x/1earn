@@ -190,6 +190,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 
 **Log4j**
 - [whwlsfb/Log4j2Scan](https://github.com/whwlsfb/Log4j2Scan) - Log4j2 远程代码执行漏洞，BurpSuite被动扫描插件。
+- [f0ng/log4j2burpscanner](https://github.com/f0ng/log4j2burpscanner) - CVE-2021-44228 Log4j2 BurpSuite Scanner,Customize ceye.io api or other apis,including internal networks
 
 #### 插件开发
 

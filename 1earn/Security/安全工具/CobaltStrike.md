@@ -33,49 +33,11 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 - [cobalt strike 快速上手 [ 一 ] - FreeBuf专栏·攻防之路](https://www.freebuf.com/column/149236.html)
 - [教你修改cobalt strike的50050端口 - 3HACK](https://www.3hack.com/note/96.html)
 - [ryanohoro/csbruter: Cobalt Strike team server password brute force tool](https://github.com/ryanohoro/csbruter)
-- [踩坑记录-DNS Beacon](https://xz.aliyun.com/t/7938)
 - [CS通过CDN上线](https://0x20h.com/p/8dee.html)
 - [渗透利器 Cobalt Strike 在野利用情况专题分析](https://paper.seebug.org/1190/)
 - [为 CobaltStrike TeamServer 加上谷歌二次验证](https://mp.weixin.qq.com/s/AePKPUDnBUr4WbJqvPCleg)
 - [Cobalt Strike: Using Known Private Keys To Decrypt Traffic - Part 2](https://blog.nviso.eu/2021/10/27/cobalt-strike-using-known-private-keys-to-decrypt-traffic-part-2/)
     - [破解版密钥相同，部分CobaltStrike加密流量可解](https://mp.weixin.qq.com/s/AcIFSjyqn9gzyRkyx3sRIQ)
-
-**插件**
-
-Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展菜单栏，Beacon 命令行，提权脚本等
-
-- [rmikehodges/cs-ssl-gen](https://github.com/rmikehodges/cs-ssl-gen) sslgen 将安装一个 letsencrypt 证书并从中创建一个 Cobalt Strike 密钥库.
-- [uknowsec/SharpToolsAggressor](https://github.com/uknowsec/SharpToolsAggressor) - 内网渗透中常用的 c# 程序整合成 cs 脚本, 直接内存加载.
-- [DeEpinGh0st/Erebus](https://github.com/DeEpinGh0st/Erebus) CobaltStrike 后渗透测试插件
-- [QAX-A-Team/EventLogMaster](https://github.com/QAX-A-Team/EventLogMaster) - RDP 日志取证 & 清除插件
-- [outflanknl/Spray-AD](https://github.com/outflanknl/Spray-AD) - Cobalt Strike工具，用于审核 AD 用户帐户中的弱密码
-- [gloxec/CrossC2](https://github.com/gloxec/CrossC2) - generate CobaltStrike's cross-platform payload
-- [lintstar/LSTAR](https://github.com/lintstar/LSTAR) - LSTAR - CobaltStrike 综合后渗透插件
-- [AttackTeamFamily/cobaltstrike-bof-toolset](https://github.com/AttackTeamFamily/cobaltstrike-bof-toolset) - 在cobaltstrike中使用的bof工具集，收集整理验证好用的bof。
-- [outflanknl/PrintNightmare](https://github.com/outflanknl/PrintNightmare)
-- [helpsystems/nanodump](https://github.com/helpsystems/nanodump) - Dumping LSASS has never been so stealthy
-- [optiv/Registry-Recon](https://github.com/optiv/Registry-Recon) - Cobalt Strike Aggressor Script that Performs System/AV/EDR Recon
-
-**插件资源**
-- [mgeeky/cobalt-arsenal](https://github.com/mgeeky/cobalt-arsenal) - My collection of battle-tested Aggressor Scripts for Cobalt Strike 4.0+
-
-**beacon 解析**
-
-由于 beacon 中存在 C2 的信息,部分工具可以直接解析 beacon 中的 C2 信息,甚至模拟上线干扰服务器
-
-- [Sentinel-One/CobaltStrikeParser](https://github.com/Sentinel-One/CobaltStrikeParser) - Python parser for CobaltStrike Beacon's configuration
-    ```
-    python parse_beacon_config.py beacon.exe
-    ```
-- [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
-- [jas502n/CS_mock](https://github.com/jas502n/CS_mock)
-
-**爆破 cobaltstrike teamserver 密码**
-```bash
-git clone https://github.com/ryanohoro/csbruter
-cd csbruter
-cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
-```
 
 **相关资源**
 - [Twi1ight/CSAgent](https://github.com/Twi1ight/CSAgent) - CobaltStrike 4.x 通用白嫖及汉化加载器
@@ -174,6 +136,28 @@ Cobalt Strike 的数据模型将其所有的状态和状态元数据存储在 da
 如果你想要存档数据模型，请停止团队服务器，然后使用你喜欢的程序来将 data/ 文件夹及其文件存储在其他位置。要还原数据模型，请停止团队服务器，然后将旧内容还原到 data/ 文件夹。
 
 通过 Reporting → Reset Data 可以在不重启团队服务器的情况下重置 Cobalt Strike 的数据模型。
+
+### tls 兼容问题
+
+**相关文章**
+- [解决 Cobalt Strike HTTPS Listener 无法在 Win7 运行问题](https://www.ch1ng.com/blog/253.html)
+    ```bash
+    # 修改 jdk.tls.disabledAlgorithms 关键字
+    cat /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security | sed 's/\jdk.tls.disabledAlgorithms=SSLv3\, TLSv1\, TLSv1.1\, RC4/jdk.tls.disabledAlgorithms=RC4/g' > /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security.bak
+    mv /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security.bak2
+    mv /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security.bak /usr/local/java/jdk1.8.0_321/jre/lib/security/java.security
+    ```
+
+### 上线提醒
+
+**相关文章**
+- [实现CobaltStrike上线短信提醒](https://www.freebuf.com/articles/web/321010.html)
+- [CobaltStrike-机器上线微信提醒](https://hackergu.com/cobaltstrike-wechat-alert/)
+- [Cobalt Strike 上线微信提醒](http://www.nmd5.com/posts/2020-04-20-22/)
+- [Cobalt Strike的多种上线提醒方法](https://xz.aliyun.com/t/10698)
+
+**相关项目**
+- [evi1ox/cobalt_strike_bot](https://github.com/evi1ox/cobalt_strike_bot) - cobaltstrike 上线提醒
 
 ---
 
@@ -409,9 +393,9 @@ spawn 的功能就是可以派生出更多的 Beacon 让一个团队分布式渗
 
 #### HTTP Beacon 和 HTTPS Beacon
 
-
-
-
+**相关文章**
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/malleable-c2_self-signed-ssl-certificates.htm
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/malleable-c2_valid-ssl-certificates.htm
 
 
 ---
@@ -423,6 +407,12 @@ DNS Beacon 使用 DNS 请求来将 Beacon 返回给你。DNS 响应告诉 Beacon
 ![](../../../assets/img/Security/安全工具/CobaltStrike/31.png)
 
 在 Cobalt Strike 4.0 及之后的版本中，DNS Beacon 是一个仅 DNS 的 payload。在这个 payload 中，没有 HTTP 通信模式。这是与之前的版本的产品不同的地方。
+
+**相关文章**
+- [踩坑记录-DNS Beacon](https://xz.aliyun.com/t/7938)
+- [cobaltstrike dns beacon知多少](https://xz.aliyun.com/t/7488)
+- [CS上线之DNS隧道踩坑记](https://www.freebuf.com/articles/web/256032.html)
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/malleable-c2_dns-beacons.htm
 
 **数据通道**
 
@@ -1137,16 +1127,43 @@ genCrossC2.Win.exe 192.168.141.151 443 ./.cobaltstrike.beacon_keys null Linux x6
 
 ---
 
+## CNA 扩展
+
+Cobalt Strike 可以使用 AggressorScripts 脚本来加强自身，能够扩展菜单栏，Beacon 命令行，提权脚本等
+
+**相关文章**
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/agressor_script.htm
+
+**CS插件资源**
+- [rmikehodges/cs-ssl-gen](https://github.com/rmikehodges/cs-ssl-gen) sslgen 将安装一个 letsencrypt 证书并从中创建一个 Cobalt Strike 密钥库.
+- [uknowsec/SharpToolsAggressor](https://github.com/uknowsec/SharpToolsAggressor) - 内网渗透中常用的 c# 程序整合成 cs 脚本, 直接内存加载.
+- [DeEpinGh0st/Erebus](https://github.com/DeEpinGh0st/Erebus) CobaltStrike 后渗透测试插件
+- [QAX-A-Team/EventLogMaster](https://github.com/QAX-A-Team/EventLogMaster) - RDP 日志取证 & 清除插件
+- [outflanknl/Spray-AD](https://github.com/outflanknl/Spray-AD) - Cobalt Strike工具，用于审核 AD 用户帐户中的弱密码
+- [gloxec/CrossC2](https://github.com/gloxec/CrossC2) - generate CobaltStrike's cross-platform payload
+- [lintstar/LSTAR](https://github.com/lintstar/LSTAR) - LSTAR - CobaltStrike 综合后渗透插件
+- [AttackTeamFamily/cobaltstrike-bof-toolset](https://github.com/AttackTeamFamily/cobaltstrike-bof-toolset) - 在cobaltstrike中使用的bof工具集，收集整理验证好用的bof。
+- [outflanknl/PrintNightmare](https://github.com/outflanknl/PrintNightmare) - CVE-2021-1675 / CVE-2021-34527 exploit.
+- [helpsystems/nanodump](https://github.com/helpsystems/nanodump) - Dumping LSASS has never been so stealthy
+- [optiv/Registry-Recon](https://github.com/optiv/Registry-Recon) - Cobalt Strike Aggressor Script that Performs System/AV/EDR Recon
+- [mgeeky/cobalt-arsenal](https://github.com/mgeeky/cobalt-arsenal) - My collection of battle-tested Aggressor Scripts for Cobalt Strike 4.0+
+
+---
+
 ## 通信扩展
 
-Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 Cobalt Strike 提出的一套规范 / 框架，它允许黑客根据需要对框架提供的默认 HTTP(S)/DNS/SMB C2 通信通道进行扩展。
+Cobalt Strike 可以引用其他的通讯框架 ExternalC2，ExternalC2 是由 Cobalt Strike 提出的一套规范/框架，它允许黑客根据需要对框架提供的默认 HTTP(S)/DNS/SMB C2 通信通道进行扩展。
 
-**C2 Profile**
+**相关文章**
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/malleable-c2_main.htm
+- https://hstechdocs.helpsystems.com/manuals/cobaltstrike/current/userguide/content/topics/malleable-c2-extend_main.htm
+
+**Profile 资源**
 
 C2 Profile 可以调整传输过程中的流量, 一定程度上可以隐蔽 C2 服务器
 
-- [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles)
-- [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2)
+- [rsmudge/Malleable-C2-Profiles](https://github.com/rsmudge/Malleable-C2-Profiles) - This repository is a collection of Malleable C2 profiles that you may use. These profiles work with Cobalt Strike 3.x.
+- [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2) - Cobalt Strike Malleable C2 Design and Reference Guide
 - [HuskyHacks/CobaltNotion](https://github.com/HuskyHacks/CobaltNotion) - A spin-off research project. Cobalt Strike x Notion collab 2022
 
 **Malleable C2**
@@ -1491,3 +1508,29 @@ Option | Example | Description
 min_alloc  |   4096    |  Minimum amount of memory to request for injected content
 startrwx   |   true  |    Use RWX as initial permissions for injected content. Alternative is RW.
 userwx  |  false |  Use RWX as final permissions for injected content. Alternative is RX.
+
+---
+
+## 蓝队反制
+
+**特征分析**
+- 相关文章
+    - [CobaltStrike WebServer特征分析](https://mp.weixin.qq.com/s/hNFVTRINKbBiOQiOf0WTMA)
+
+**beacon 解析**
+
+由于 beacon 中存在 C2 的信息,部分工具可以直接解析 beacon 中的 C2 信息,甚至模拟上线干扰服务器
+
+- [Sentinel-One/CobaltStrikeParser](https://github.com/Sentinel-One/CobaltStrikeParser) - Python parser for CobaltStrike Beacon's configuration
+    ```
+    python parse_beacon_config.py beacon.exe
+    ```
+- [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
+- [jas502n/CS_mock](https://github.com/jas502n/CS_mock) - 模拟cobalt strike beacon上线包.
+
+**爆破 cobaltstrike teamserver 密码**
+```bash
+git clone https://github.com/ryanohoro/csbruter
+cd csbruter
+cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
+```

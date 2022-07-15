@@ -20,6 +20,7 @@
 - [对某某加速器逆向抓包破解提取线路分析](https://www.52pojie.cn/thread-1175677-1-1.html)
 - [APP硬编码密钥渗透测试](https://www.t00ls.net/articles-58594.html) - dexdump 脱壳,AES,OSS 利用
 - [BountyHunterInChina/重生之我是赏金猎人(二)-逆向app破解数据包sign值实现任意数据重放添加.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E4%BA%8C)-%E9%80%86%E5%90%91app%E7%A0%B4%E8%A7%A3%E6%95%B0%E6%8D%AE%E5%8C%85sign%E5%80%BC%E5%AE%9E%E7%8E%B0%E4%BB%BB%E6%84%8F%E6%95%B0%E6%8D%AE%E9%87%8D%E6%94%BE%E6%B7%BB%E5%8A%A0.pdf)
+- [对小绵羊的轰炸APP逆向分析](https://mp.weixin.qq.com/s/fUCGRL-25vLoAPXUd4ZiWw)
 
 **CTF writeup**
 - [BUUCTF Reverse helloword、findit](https://blog.csdn.net/qq_42967398/article/details/96877555)

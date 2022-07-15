@@ -139,6 +139,36 @@ iptables -D INPUT 2
 iptables -D INPUT 1
 ```
 
+**只允许 1.14.5.14/1.9.1.9 对 8888 的访问**
+```bash
+iptables -L
+iptables -I INPUT -p tcp --dport 8888 -j DROP
+iptables -I INPUT -s 1.14.5.14 -p tcp --dport 8888 -j ACCEPT
+iptables -I INPUT -s 1.9.1.9 -p tcp --dport 8888 -j ACCEPT
+```
+
+---
+
+## docker 与 firewalld/iptable 的冲突
+
+由于docker在启动容器时，会向iptables注⼊一些端口映射的规则，当使用 firewalld 时会产生冲突
+- https://wenku.baidu.com/view/3d8b2fe85cbfc77da26925c52cc58bd6318693c4.html
+- https://blog.csdn.net/qq_31927797/article/details/109454314
+- https://blog.csdn.net/rookie23rook/article/details/120297212
+
+```bash
+iptables -t nat -nL
+
+# 删除对应的 docker 规则
+iptables -t nat -D DOCKER 13
+# 手动加个转发
+iptables -t nat -A DOCKER -d 127.0.0.1 -p tcp -m tcp --dport 19000 -j DNAT --to-destination 192.168.16.2:80
+
+iptables -A INPUT -p tcp --dport 19000 -j DROP
+iptables -I INPUT -s 1.14.5.14 -p tcp --dport 19000 -j ACCEPT
+iptables -I INPUT -s 1.9.1.9 -p tcp --dport 19000 -j ACCEPT
+```
+
 ---
 
 ## Source & Reference

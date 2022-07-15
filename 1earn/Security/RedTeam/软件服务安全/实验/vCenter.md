@@ -352,7 +352,13 @@ python3 vcenter_saml_login.py -p data.mdb -t <目标机器内网ip>
 
 和 pe 也一个套路,通过上传 KonBoot 镜像，然后克隆一台出来，修改引导，免密进入，抓取 hash
 
+**挂载VMDK**
+- https://mp.weixin.qq.com/s/JI3YlyComDViFX31UE8ddA
+
+克隆一个域控机器, 将克隆的目标域控机器的 vmdk 文件挂载到一台我们能够正常登录的机器上, 然后本地抓取 hash
+
 **内存取证**
+- https://mp.weixin.qq.com/s/DbXxm6vWgtL8uGjO_z-ocA
 
 进后台，找 windows 主机，创建快照。
 

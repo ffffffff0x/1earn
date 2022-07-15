@@ -360,3 +360,54 @@ terraform apply
 ```
 terraform destroy
 ```
+
+---
+
+## Tips
+
+**随机密码**
+```conf
+# main.tf
+
+provider "random" {}
+
+resource "random_password" "password" {
+  length = 16
+  special = true
+  override_special = "_%@"
+}
+
+resource "aws_db_instance" "example" {
+  password = random_password.password.result
+}
+```
+
+**json 输出**
+```
+terraform output -json
+```
+
+**变量**
+- https://lonegunmanb.github.io/introduction-terraform/3.3.%E8%BE%93%E5%85%A5%E5%8F%98%E9%87%8F.html
+
+```conf
+variable "test_ip" {
+  type        = string
+  description = "test server ip"
+}
+
+resource "alicloud_instance" "instance" {
+  ....
+  user_data                  = <<EOF
+#!/bin/bash
+...
+sudo echo "${var.cs_ip}" > /tmp/ip.txt
+....
+EOF
+  .....
+}
+```
+
+```bash
+terraform apply -var="test_ip=1.14.5.14"
+```

@@ -1480,6 +1480,12 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 - [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader) - Loads any C# binary in mem, patching AMSI + ETW.
 - [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack) - SharpPack is a toolkit for insider threat assessments that lets you defeat application whitelisting to execute arbitrary DotNet and PowerShell tools.
 
+### Bypass UAC
+
+**相关文章**
+- [Advanced Windows Task Scheduler Playbook - Part.2 UAC](https://mp.weixin.qq.com/s/3H6krW59Sci5SsA_5fyOzw)
+    - https://github.com/zcgonvh/TaskSchedulerMisc
+
 ---
 
 ## BitLocker

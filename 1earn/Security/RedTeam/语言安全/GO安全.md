@@ -9,11 +9,26 @@
 ---
 
 **基础语法**
-- [Speed-GO](../../../Develop/Golang/Speed-GO.md)
+- [GO.md](../../../Develop/Golang/GO.md)
 
-**代码混淆**
+---
+
+## 代码混淆
 - [burrowers/garble](https://github.com/burrowers/garble)
 - [unixpickle/gobfuscate](https://github.com/unixpickle/gobfuscate)
+
+---
+
+## 特征清除
+
+**相关文章**
+- [如何消除Go的编译特征](https://mp.weixin.qq.com/s/Z0SpYJBikdwA_foPkxnWFQ)
+
+**相关工具**
+- [boy-hack/go-strip](https://github.com/boy-hack/go-strip) - 清除 Go 编译时自带的信息
+    ```bash
+    go-strip -f binary.exe -a -output new.exe
+    ```
 
 **禁用符号表和调试信息**
 
@@ -39,3 +54,8 @@ export GOROOT_FINAL = $GOPATH
 [ ! -d $GOPATH ] && ln -s "$ACTUAL_GOPATH" "$GOPATH"
 [[ ! $PATH =~ $GOPATH ]] && export PATH=$PATH:$GOPATH/bin
 ```
+
+## GO代码审计
+
+**相关工具**
+- [madneal/sec-dog](https://github.com/madneal/sec-dog)

@@ -78,16 +78,16 @@ firewall-cmd --zone=internal --remove-port=443/tcp  # 从 zone 中移除 443 端
 
 **设置黑/白名单**
 ```bash
-firewall-cmd --permanent --zone=trusted --add-source=172.28.129.0/24 # 增加 172.28.129.0/24 网段到 zone trusted
-firewall-cmd --permanent --zone=trusted --list-sources              # 列出 zone truste 的白名单
+firewall-cmd --permanent --zone=trusted --add-source=172.28.129.0/24    # 增加 172.28.129.0/24 网段到 zone trusted
+firewall-cmd --permanent --zone=trusted --list-sources                  # 列出 zone truste 的白名单
 firewall-cmd --reload
 firewall-cmd --get-active-zones
 
-firewall-cmd --permanent --zone=drop --add-source=172.28.13.0/24    # 添加 172.28.13.0/24 到 zone drop
+firewall-cmd --permanent --zone=drop --add-source=172.28.13.0/24        # 添加 172.28.13.0/24 到 zone drop
 firewall-cmd --reload
 firewall-cmd --zone=drop --list-all
 
-firewall-cmd --permanent --zone=drop --remove-source=172.28.13.0/24 # 从zone drop 中删除 172.28.13.0/24
+firewall-cmd --permanent --zone=drop --remove-source=172.28.13.0/24     # 从zone drop 中删除 172.28.13.0/24
 ```
 
 - 使用命令的时候加上 --permanent 是永久生效的意思，在重启防火墙服务后依然生效.否则，只对重启服务之前有效.
@@ -128,15 +128,72 @@ firewall-cmd --reload
 ```bash
 # 查询端口是否开放
 firewall-cmd --query-port=8080/tcp
-# 新建永久规则，开放8080端口（TCP协议）,任何ip都可以访问
+# 新建永久规则，开放 8080 端口（TCP 协议）, 任何 ip 都可以访问
 firewall-cmd --permanent --add-port=8080/tcp
 # 移除上述规则
 firewall-cmd --permanent --remove-port=8080/tcp
-# 新建永久规则，批量开放一段端口（TCP协议）
+# 新建永久规则，批量开放一段端口（TCP 协议）
 firewall-cmd --permanent --add-port=9001-9100/tcp
 
-# 添加或者移除规则后重新加载firewall后配置才会生效
+# 添加或者移除规则后重新加载 firewall 后配置才会生效
 firewall-cmd --reload
+```
+
+**只允许 123.123.123.123/1.2.3.4/1.14.5.14/1.9.1.9 对 8888 的访问**
+```
+
+firewall-cmd --zone=public --add-port=1-18999/tcp --permanent
+firewall-cmd --zone=public --add-port=19001-65535/tcp --permanent
+
+firewall-cmd --zone=public --add-port=1-18999/udp --permanent
+firewall-cmd --zone=public --add-port=19001-65535/udp --permanent
+
+
+firewall-cmd --zone=public --remove-port=19000/tcp --permanent
+firewall-cmd --zone=public --remove-port=19000/udp --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="123.123.123.123" port port=19000 protocol=tcp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="123.123.123.123" port port=19000 protocol=udp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.2.3.4" port port=19000 protocol=tcp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.2.3.4" port port=19000 protocol=udp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.14.5.14" port port=19000 protocol=tcp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.14.5.14" port port=19000 protocol=udp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.9.1.9" port port=19000 protocol=tcp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1.9.1.9" port port=19000 protocol=udp accept' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="0.0.0.0/32" port port=19000 protocol=tcp reject' --permanent
+firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="0.0.0.0/32" port port=19000 protocol=udp reject' --permanent
+
+firewall-cmd --reload
+firewall-cmd --zone=public --list-all
+
+firewall-cmd --get-active-zones
+firewall-cmd --get-default-zone
+
+firewall-cmd --set-default-zone=public
+firewall-cmd --permanent --zone=public --change-interface=ens33
+
+firewall-cmd --reload
+```
+
+---
+
+## docker 与 firewalld/iptable 的冲突
+
+由于docker在启动容器时，会向iptables注⼊一些端口映射的规则，当使用 firewalld 时会产生冲突
+- https://wenku.baidu.com/view/3d8b2fe85cbfc77da26925c52cc58bd6318693c4.html
+- https://blog.csdn.net/qq_31927797/article/details/109454314
+- https://blog.csdn.net/rookie23rook/article/details/120297212
+
+```bash
+iptables -t nat -nL
+
+# 删除对应的 docker 规则
+iptables -t nat -D DOCKER 13
+# 手动加个转发
+iptables -t nat -A DOCKER -d 127.0.0.1 -p tcp -m tcp --dport 19000 -j DNAT --to-destination 192.168.16.2:80
+
+iptables -A INPUT -p tcp --dport 19000 -j DROP
+iptables -I INPUT -s 1.14.5.14 -p tcp --dport 19000 -j ACCEPT
+iptables -I INPUT -s 1.9.1.9 -p tcp --dport 19000 -j ACCEPT
 ```
 
 ---

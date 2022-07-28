@@ -28,6 +28,7 @@ Java 程序使用 `ObjectOutputStream` 类的 `writeObject()` 方法可以实现
     git clone https://github.com/frohoff/ysoserial.git && cd ysoserial
     mvn clean package -DskipTests
     ```
+- [su18/ysoserial](https://github.com/su18/ysoserial)
 
 **漏洞示例**
 

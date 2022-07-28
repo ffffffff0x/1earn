@@ -1862,6 +1862,41 @@ socks5 127.0.0.1 1080   # 改成你懂的
 
 ---
 
+### ss5
+
+> Socks5 代理服务器
+
+**centos7**
+```bash
+yum -y install gcc gcc-c++ automake make pam-devel openldap-devel cyrus-sasl-devel openssl-devel vim
+wget http://jaist.dl.sourceforge.net/project/ss5/ss5/3.8.9-8/ss5-3.8.9-8.tar.gz
+tar -vzx -f ss5-3.8.9-8.tar.gz
+cd ss5-3.8.9/
+./configure && make && make install
+
+chmod +x /etc/init.d/ss5
+
+echo "auth 0.0.0.0/0 - u" > /etc/opt/ss5/ss5.conf
+echo "permit u 0.0.0.0/0 - 0.0.0.0/0 - - - - -" >> /etc/opt/ss5/ss5.conf
+cat /etc/opt/ss5/ss5.conf
+
+# 自定义用户名密码
+echo "test1 123456" > /etc/opt/ss5/ss5.passwd
+
+# 自定义端口
+echo 'SS5_OPTS=" -u root -b 0.0.0.0:1080"' > /etc/sysconfig/ss5
+
+cd /root
+service ss5 start
+ss -tnlp
+```
+
+```
+curl https://ipinfo.io --proxy socks5://test1:123456@ip:port
+```
+
+---
+
 ### SSH
 
 > Secure Shell 是一種加密的網路傳輸協定，可在不安全的網路中為網路服務提供安全的傳輸環境。
@@ -4987,7 +5022,7 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 
 **安装**
 
-> 以下部分内容来自 <sup>[[官方文档](https://docs.jumpserver.org/zh/master/install/docker_install/)]</sup> 在此只记录重点
+> 以下部分内容来自 <sup>[[官方文档](https://docs.jumpserver.org/zh/master/)]</sup> 在此只记录重点
 
 `注:鉴于国内环境,下面步骤运行中还是会出现 docker pull 镜像超时的问题,你懂的,不要问我怎么解决`
 
@@ -5398,7 +5433,10 @@ setenforce 0    # 关闭 selinux
   docker kill                                       # 杀死容器
   docker commit [docker_id] [docker_image_id]       # 提交并保存容器状态
 
-  docker log [options] [docker_name/docker_id]      # 查看docker容器日志
+  docker logs [options] [docker_name/docker_id]     # 查看docker容器日志
+  docker logs [options] [docker_name/docker_id] --tail 100  # 日志最后的100行
+
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}' [docker_name/docker_id]  # 查看容器 ip 地址
 
   docker tag SOURCE_IMAGE[:TAG] TARGET_IMAGE[:TAG]  # 标记本地镜像，将其归入某一仓库。
     docker tag centos centos:v1                     # 给 centos 镜像打标签
@@ -5414,6 +5452,14 @@ setenforce 0    # 关闭 selinux
 
   docker hisotry [docker_name/docker_id]            # 查看指定镜像的创建历史
   ```
+
+**容器保活**
+```
+tail
+top
+tail -f /var/log/cron.log
+init
+```
 
 **加速**
 - [Docker 镜像加速](../../Plan/Misc-Plan.md#Docker)

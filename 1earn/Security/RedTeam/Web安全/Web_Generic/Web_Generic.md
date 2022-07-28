@@ -391,7 +391,9 @@ linux 下，gedit 保存后当前目录会生成后缀为 “~” 的文件，�
 - [乐友商城 24GB 代码与数据库敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-0124051)
 
 **相关工具**
-- [oscommonjs/scan-backup-langzi-](https://github.com/oscommonjs/scan-backup-langzi-) - 扫描备份文件和敏感信息泄漏的扫描器，速度快，器大活好
+- [bufsnake/blueming](https://github.com/bufsnake/blueming) - 备份文件扫描，并自动进行下载
+- [oscommonjs/scan-backup-langzi-](https://github.com/oscommonjs/scan-backup-langzi-) - 扫描备份文件和敏感信息泄漏的扫描器
+- [VMsec/ihoneyBakFileScan_Modify](https://github.com/VMsec/ihoneyBakFileScan_Modify) - 批量网站备份文件扫描器，增加文件规则，优化内存占用
 
 **Tips**
 - 有时候文件太大,想先确认一下文件结构和部分内容,这时可以使用 remotezip,直接列出远程 zip 文件的内容，而无需完全下载,甚至可以远程解压,仅下载部分内容
@@ -557,6 +559,7 @@ WEB-INF 主要包含一下文件或目录:
 **相关文章**
 - [【技术分享】针对SOAP的渗透测试与防护](https://www.anquanke.com/post/id/85410)
 - [Web Service渗透测试](https://www.mi1k7ea.com/2021/01/16/Web-Service%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/)
+- [WSDL测试webservice接口指南](https://mp.weixin.qq.com/s/UTClGLSvQ3rdUoGeRlvp4w)
 
 **相关案例**
 - [BountyHunterInChina/重生之我是赏金猎人(四)—记一次有趣的客户端RCE+服务端XXE挖掘.pdf](https://github.com/J0o1ey/BountyHunterInChina/blob/main/%E9%87%8D%E7%94%9F%E4%B9%8B%E6%88%91%E6%98%AF%E8%B5%8F%E9%87%91%E7%8C%8E%E4%BA%BA(%E5%9B%9B)%E2%80%94%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%9C%89%E8%B6%A3%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AFRCE%2B%E6%9C%8D%E5%8A%A1%E7%AB%AFXXE%E6%8C%96%E6%8E%98.pdf)

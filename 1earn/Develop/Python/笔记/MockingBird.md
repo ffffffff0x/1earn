@@ -2,6 +2,8 @@
 
 - https://github.com/babysor/MockingBird
 
+---
+
 **安装 ffmpeg**
 ```bash
 brew install ffmpeg

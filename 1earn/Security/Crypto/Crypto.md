@@ -185,6 +185,7 @@
 - https://www.sojson.com/encrypt/
 - https://cryptii.com/
 - https://www.ssleye.com/
+- https://www.jisuan.mobi/index.php?catid=70
 
 **相关文章**
 - [为什么要在密码里加点"盐" | Libuchao's blog](https://libuchao.com/2013/07/05/password-salt)
@@ -1017,6 +1018,11 @@ RIPEMD-160("") = 9c1185a5c5e9fc54612808977ee8f548b2258d31
 - [SHA384哈希 - 在线SHA384哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA384)
 - [SHA512哈希 - 在线SHA512哈希发生器](http://www.convertstring.com/zh_CN/Hash/SHA512)
 - [Sha256 Algorithm Explained](https://sha256algorithm.com/)
+
+#### HmacSHA1
+
+**在线工具**
+- [HmacSHA1算法加密计算器](https://www.jisuan.mobi/pmbN3zbN3H6uBXSU.html)
 
 ---
 

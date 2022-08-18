@@ -72,6 +72,10 @@
 
 **相关工具**
 - [whwlsfb/JDumpSpider](https://github.com/whwlsfb/JDumpSpider) - HeapDump 敏感信息提取工具
+    ```bash
+    # 需要使用Oracle JDK 1.8版本
+    java -jar JDumpSpider-1.0-SNAPSHOT-full.jar heapdump
+    ```
 
 **复现**
 

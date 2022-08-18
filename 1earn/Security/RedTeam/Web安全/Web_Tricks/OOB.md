@@ -28,13 +28,14 @@
 
 **相关工具**
 - [uknowsec/SharpNetCheck](https://github.com/uknowsec/SharpNetCheck) - 该工具可以在 dnslog 中回显内网 ip 地址和计算机名，可实现内网中的快速定位可出网机器
-- [Buzz2d0/Hyuga](https://github.com/Buzz2d0/Hyuga) - 一个用来检测带外(Out-of-Band)流量(DNS查询和HTTP请求)的监控工具
 - [ztgrace/mole](https://github.com/ztgrace/mole) - 识别和利用out-of-band (OOB)漏洞的burp扩展
 
 **平台搭建**
 - [十分钟快速自建DNSlog服务器](https://mp.weixin.qq.com/s/m_UXJa0imfOi721bkBpwFg)
 - [DNSLOG的快速搭建攻略](https://www.yinxiang.com/everhub/note/471fd1c4-7885-4b67-aa39-41dc36102b43)
 - [安全技术|DNSLOG平台搭建从0到1](https://www.4hou.com/posts/VoJ9)
+- [自建DNSLog平台](https://www.mi1k7ea.com/2021/03/29/%E8%87%AA%E5%BB%BADNSLog%E5%B9%B3%E5%8F%B0/)
+- [快速搭建自用dnslog](https://blog.csdn.net/m0_58434634/article/details/124315127)
 
 **平台**
 - [BugScanTeam/DNSLog](https://github.com/BugScanTeam/DNSLog) - DNSLog 是一款监控 DNS 解析记录和 HTTP 访问记录的工具
@@ -48,6 +49,10 @@
 - [yumusb/DNSLog-Platform-Golang](https://github.com/yumusb/DNSLog-Platform-Golang) - DNSLOG平台 golang 一键启动版
 - [phith0n/conote-community](https://github.com/phith0n/conote-community) - Conote 综合安全测试平台社区版
 - [projectdiscovery/interactsh](https://github.com/projectdiscovery/interactsh) - An OOB interaction gathering server and client library
+- [Buzz2d0/Hyuga](https://github.com/Buzz2d0/Hyuga) - 一个用来检测带外(Out-of-Band)流量(DNS查询和HTTP请求)的监控工具
+- [AbelChe/cola_dnslog](https://github.com/AbelChe/cola_dnslog)
+- [AlphabugX/Alphalog](https://github.com/AlphabugX/Alphalog)
+- [Li4n0/revsuit](https://github.com/Li4n0/revsuit) - RevSuit is a flexible and powerful reverse connection platform designed for receiving connection from target host in penetration.
 
 ---
 

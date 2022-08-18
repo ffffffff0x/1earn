@@ -537,6 +537,11 @@ ls			# 查看目录下文件
 	ls -lah						# 查看的内容更新详细
 	ls -l | grep "^-" | wc -l	# 查看文件目录下的文件数
 
+	ls -lR| grep "^-" | wc -l	# 统计当前目录下文件的个数
+	ls -lR | grep "^d" | wc -l	# 统计当前目录下文件夹的个数
+
+	ls -lR | wc -l	# 查看 / 文件+文件夹个数
+
 pwd			# 以绝对路径的方式显示用户当前工作目录
 	pwd -P						# 目录链接时,显示实际路径而非 link 路径
 
@@ -666,6 +671,8 @@ cat /dev/null > access.log
 **搜索命令**
 ```bash
 which <Command>		# 指令搜索,查找并显示给定命令的绝对路径
+where <Command>		# 指令搜索,查找并显示给定命令的绝对路径
+whereis <Command>	# 指令搜索,查找并显示给定命令的绝对路径
 ```
 
 **搜索文件**

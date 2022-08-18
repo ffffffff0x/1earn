@@ -13,6 +13,7 @@
 - [Wind4/vlmcsd](https://github.com/Wind4/vlmcsd) - kms 服务器
 - [TGSAN/CMWTAT_Digital_Edition](https://github.com/TGSAN/CMWTAT_Digital_Edition) - 数字权利激活工具
 - [kkkgo/KMS_VL_ALL](https://github.com/kkkgo/KMS_VL_ALL) - kms 激活脚本
+- [massgravel/Microsoft-Activation-Scripts](https://github.com/massgravel/Microsoft-Activation-Scripts) - A collection of scripts for activating Microsoft products using HWID / KMS38 / Online KMS activation methods with a focus on open-source code, fewer antivirus detections and user-friendliness.
 
 **激活 Windows**
 
@@ -100,6 +101,7 @@ ipconfig /flushdns
 ## 各种代理/源
 
 - https://github.com/eryajf/Thanks-Mirror
+- https://github.com/comwrg/package-manager-proxy-settings
 
 ### Git
 
@@ -301,7 +303,7 @@ npm config delete proxy  # 取消代理
 
 **命令行挂Socks5代理**
 
-```
+```bash
 java -DsocksProxyHost=127.0.0.1 -DsocksProxyPort=1080 -jar test.jar
 
 # 其中socksProxyHost是Socks5代理的IP地址，socksProxyPort是Socks5代理的端口号。socksProxyVersion版本号是5或者是4，默认是5版本，也就是Socks5代理，这里也可以指定。
@@ -309,7 +311,7 @@ java -DsocksProxyHost=127.0.0.1 -DsocksProxyPort=1080 -jar test.jar
 
 **命令行挂HTTP代理**
 
-```
+```bash
 java -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=8080 -Dhttp.nonProxyHosts="*.example.com|localhost" -jar test.jar
 
 # 如果想使用代理访问HTTP的URL，则必须使用http.proxyHost，http.proxyPort。如果想用代理访问HTTPS的URL，则必须使用https.proxyHost，https.proxyPort。如果想同时抓HTTP、HTTPS的url访问的话，以上4项是必须设置的，缺一不可
@@ -320,13 +322,13 @@ java -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=127.0.0.
 ```
 
 HTTPS代理设置如下：
-```
+```bash
 java -Dhttps.proxyHost=host -Dhttps.proxyPort=port -Dhttps.proxyUser=user -Dhttps.proxyPassword="password" -Djavax.net.ssl.trustStore=c:/cacerts -Djavax.net.ssl.trustStorePassword=changeit -jar test.jar
 ```
 
 **jar使用系统代理**
 
-```
+```bash
 java -Djava.net.useSystemProxies=true -jar test.jar
 ```
 

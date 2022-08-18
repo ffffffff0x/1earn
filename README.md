@@ -44,7 +44,7 @@
     * **BlueTeam**
         * [分析](./1earn/Security/BlueTeam/分析.md) - 分析工具与分析案例
         * [加固](./1earn/Security/BlueTeam/加固.md) - 系统、应用加固的方法和工具资源
-        * [监测](./1earn/Security/BlueTeam/监测.md) - 有关查杀、监控、蜜罐的资源
+        * [安全建设](./1earn/Security/BlueTeam/安全建设.md) - 有关查杀、监控、蜜罐的资源
         * [取证](./1earn/Security/BlueTeam/取证.md) - 内容涉及操作系统的取证、web 的取证、文件的取证
         * [应急](./1earn/Security/BlueTeam/应急.md) - 应急资源、溯源案例
         * [笔记](https://github.com/No-Github/1earn/blob/master/1earn/Security/BlueTeam/%E7%AC%94%E8%AE%B0) - 涉及磁盘取证、内存取证、USB取证等内容

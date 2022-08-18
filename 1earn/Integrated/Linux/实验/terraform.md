@@ -411,3 +411,17 @@ EOF
 ```bash
 terraform apply -var="test_ip=1.14.5.14"
 ```
+
+**插件缓存**
+
+- linux
+  ```
+  echo 'plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"' > $HOME/.terraformrc
+  ```
+
+- windows
+
+  %APPDATA% 目录下 `terraform.rc` 文件
+  ```
+  plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
+  ```

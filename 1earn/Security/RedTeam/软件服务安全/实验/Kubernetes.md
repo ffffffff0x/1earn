@@ -6,11 +6,18 @@ kubernetes，简称 K8s,是 Google 开源的一个容器编排引擎，它支持
 
 > Fofa : app="kubernetes"
 
+**kubectl使用**
+- [kubectl](../../../../Integrated/Linux/Power-Linux.md#kubectl)
+
 **相关文章**
 - [K8s安全入门学习扫盲贴](https://tttang.com/archive/1465/)
 - [云安全 | k8s 所面临的风险学习](https://mp.weixin.qq.com/s/UAtvPnduvZ_tcmdn_RupCg)
 - [3种攻击手段教你拿下k8s集群](https://mp.weixin.qq.com/s/KBuU0JLgr20wAenzGAHjlQ)
 - [K8s 安全策略最佳实践](https://mp.weixin.qq.com/s/ZDqchROixZT4enVYH6UIfw)
+- [kubernetes集群渗透测试](https://www.freebuf.com/vuls/196993.html)
+- [华为云CTF cloud非预期解之k8s渗透实战](https://www.cnblogs.com/backlion/p/15824545.html)
+- [浅谈云上攻防——Etcd风险剖析](https://cloud.tencent.com/developer/article/1988635)
+- [浅析K8S各种未授权攻击方法](https://www.freebuf.com/articles/web/333225.html)
 
 **相关案例**
 - [Cloudflare Pages, part 3: The return of the secrets](https://blog.assetnote.io/2022/05/06/cloudflare-pages-pt3/)

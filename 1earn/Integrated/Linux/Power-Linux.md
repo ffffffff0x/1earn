@@ -29,9 +29,12 @@
   * [butterfly](#butterfly)
   * [Cacti](#cacti)
   * [Chrony](#chrony)
+  * [clash](#clash)
   * [cloud-torrent](#cloud-torrent)
+  * [code-server](#code-server)
   * [DHCP](#dhcp)
   * [DNS](#dns)
+  * [focalboard](#focalboard)
   * [frp](#frp)
   * [Kicktart](#kicktart)
   * [nps](#nps)
@@ -39,6 +42,7 @@
   * [PowerDNS](#powerdns)
     * [PowerDNS-Admin](#powerdns-admin)
   * [proxychains-ng](#proxychains-ng)
+  * [ss5](#ss5)
   * [SSH](#ssh)
   * [ttyd](#ttyd)
   * [vnc4server](#vnc4server)
@@ -50,6 +54,7 @@
   * [npm & Node](#npmnode)
   * [Nexus](#nexus)
   * [Nginx](#nginx)
+  * [php-cli](#php-cli)
   * [phpMyAdmin](#phpmyadmin)
   * [RabbitMQ](#rabbitmq)
   * [searx](#searx)
@@ -83,6 +88,7 @@
   * [Go](#go)
   * [JDK](#jdk)
   * [Perl](#perl)
+  * [PHP](#php)
   * [Python3](#python3)
     * [pip](#pip)
     * [jupyterlab](#jupyterlab)
@@ -102,6 +108,8 @@
   * [Docker](#docker)
     * [Docker-Compose](#docker-compose)
     * [Docker-Portainer](#docker-portainer)
+  * [Kubernetes](#kubernetes)
+    * [kubectl](#kubectl)
   * [QEMU](#qemu)
 
 * **[🥕 分布式](#分布式)**
@@ -114,6 +122,7 @@
     * [PhpLdapAdmin](#phpldapadmin)
   * [Snort](#snort)
   * [Suricata](#suricata)
+  * [tripwire](#tripwire)
 
 * **[🍷 设施配置](#设施配置)**
   * [f8x](#f8x)
@@ -462,6 +471,19 @@ ctl+b
 **增加回滚缓冲区的大小**
 ```bash
 echo "set-option -g history-limit 3000" >> ~/.tmux.conf   # 默认值为2000
+```
+
+**保存指定输出**
+```bash
+# 第 3 个会话 1000 行到 6000 行
+tmux capture-pane -S -6000 -E -1000 -t 3
+tmux save-buffer output.log
+```
+
+```bash
+# 保存所有历史输出
+tmux capture-pane -S -
+tmux save-buffer output.log
 ```
 
 ---
@@ -835,6 +857,47 @@ chronyc sources -v  # 检查 ntp 详细同步状态
 chronyc             # 进入交互模式
   activity
 ```
+
+---
+
+### clash
+
+**项目地址**
+- https://github.com/Dreamacro/clash
+
+**部署**
+```bash
+wget https://github.com/Dreamacro/clash/releases/download/v1.11.4/clash-linux-amd64-v1.11.4.gz
+gzip -d clash-linux-amd64-v1.11.4.gz
+mv clash-linux-amd64-v1.11.4 /usr/local/bin/clash
+chmod +x /usr/local/bin/clash
+
+wget https://raw.githubusercontent.com/wp-statistics/GeoLite2-Country/master/GeoLite2-Country.mmdb.gz
+gzip -d GeoLite2-Country.mmdb.gz
+mv GeoLite2-Country.mmdb ~/.config/clash/Country.mmdb
+
+vim ~/.config/clash/config.yaml
+```
+
+**负载均衡配置**
+```yaml
+proxy-groups:
+  - name: "test"
+    type: load-balance
+    proxies:
+      - ss1
+      - ss2
+      - vmess1
+      - vmess2
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    strategy: round-robin
+```
+
+**辅助项目**
+- [yichengchen/clashX](https://github.com/yichengchen/clashX)
+- [Fndroid/clash_for_windows_pkg](https://github.com/Fndroid/clash_for_windows_pkg)
+- [ccg2018/ClashA](https://github.com/ccg2018/ClashA)
 
 ---
 
@@ -1283,7 +1346,7 @@ clearpart --all --initlabel
 ```bash
 mkdir nps
 cd nps
-wget https://github.com/ehang-io/nps/releases/download/v0.26.7/linux_amd64_server.tar.gz
+wget https://github.com/ehang-io/nps/releases/download/v0.26.10/linux_amd64_server.tar.gz
 tar -zxvf linux_amd64_server.tar.gz
 ./nps install
 nps start
@@ -1894,6 +1957,10 @@ ss -tnlp
 ```
 curl https://ipinfo.io --proxy socks5://test1:123456@ip:port
 ```
+
+**一键安装脚本**
+- [wyx176/Socks5](https://github.com/wyx176/Socks5)
+- [Lozy/danted](https://github.com/Lozy/danted)
 
 ---
 
@@ -5444,6 +5511,8 @@ setenforce 0    # 关闭 selinux
     docker run -itd centos:v1                       # 运行 centos:v1 镜像
 
   docker rm [docker_name/docker_id]                 # 删除容器
+  docker rmi $(docker images -f "dangling=true" -q) # 删除 docker 悬空镜像
+
   docker ps                                         # 查看当前运行的 docker 容器的进程信息
     docker ps -a                                    # 查看当前容器
   docker stats                                      # 统计信息
@@ -5567,35 +5636,35 @@ kubectl get deployment -A                     # 列出所有 deployment
 
 **与运行中的 Pod 交互**
 ```bash
-kubectl logs my-pod                                 # 获取 pod 日志（标准输出）
-kubectl logs -l name=myLabel                        # 获取含 name=myLabel 标签的 Pods 的日志（标准输出）
-kubectl logs my-pod --previous                      # 获取上个容器实例的 pod 日志（标准输出）
-kubectl logs my-pod -c my-container                 # 获取 Pod 容器的日志（标准输出, 多容器场景）
-kubectl logs -l name=myLabel -c my-container        # 获取含 name=myLabel 标签的 Pod 容器日志（标准输出, 多容器场景）
-kubectl logs my-pod -c my-container --previous      # 获取 Pod 中某容器的上个实例的日志（标准输出, 多容器场景）
-kubectl logs -f my-pod                              # 流式输出 Pod 的日志（标准输出）
-kubectl logs -f my-pod -c my-container              # 流式输出 Pod 容器的日志（标准输出, 多容器场景）
-kubectl logs -f -l name=myLabel --all-containers    # 流式输出含 name=myLabel 标签的 Pod 的所有日志（标准输出）
-kubectl run -i --tty busybox --image=busybox:1.28 -- sh  # 以交互式 Shell 运行 Pod
-kubectl run nginx --image=nginx -n mynamespace      # 在 “mynamespace” 命名空间中运行单个 nginx Pod
-kubectl run nginx --image=nginx                     # 运行 ngins Pod 并将其规约写入到名为 pod.yaml 的文件
+kubectl logs my-pod                                     # 获取 pod 日志（标准输出）
+kubectl logs -l name=myLabel                            # 获取含 name=myLabel 标签的 Pods 的日志（标准输出）
+kubectl logs my-pod --previous                          # 获取上个容器实例的 pod 日志（标准输出）
+kubectl logs my-pod -c my-container                     # 获取 Pod 容器的日志（标准输出, 多容器场景）
+kubectl logs -l name=myLabel -c my-container            # 获取含 name=myLabel 标签的 Pod 容器日志（标准输出, 多容器场景）
+kubectl logs my-pod -c my-container --previous          # 获取 Pod 中某容器的上个实例的日志（标准输出, 多容器场景）
+kubectl logs -f my-pod                                  # 流式输出 Pod 的日志（标准输出）
+kubectl logs -f my-pod -c my-container                  # 流式输出 Pod 容器的日志（标准输出, 多容器场景）
+kubectl logs -f -l name=myLabel --all-containers        # 流式输出含 name=myLabel 标签的 Pod 的所有日志（标准输出）
+kubectl run -i --tty busybox --image=busybox:1.28 -- sh # 以交互式 Shell 运行 Pod
+kubectl run nginx --image=nginx -n mynamespace          # 在 “mynamespace” 命名空间中运行单个 nginx Pod
+kubectl run nginx --image=nginx                         # 运行 ngins Pod 并将其规约写入到名为 pod.yaml 的文件
   --dry-run=client -o yaml > pod.yaml
 
-kubectl attach my-pod -i                            # 挂接到一个运行的容器中
-kubectl port-forward my-pod 5000:6000               # 在本地计算机上侦听端口 5000 并转发到 my-pod 上的端口 6000
-kubectl exec my-pod -- ls /                         # 在已有的 Pod 中运行命令（单容器场景）
-kubectl exec --stdin --tty my-pod -- /bin/sh        # 使用交互 shell 访问正在运行的 Pod (一个容器场景)
-kubectl exec my-pod -c my-container -- ls /         # 在已有的 Pod 中运行命令（多容器场景）
-kubectl top pod POD_NAME --containers               # 显示给定 Pod 和其中容器的监控数据
-kubectl top pod POD_NAME --sort-by=cpu              # 显示给定 Pod 的指标并且按照 'cpu' 或者 'memory' 排序
+kubectl attach my-pod -i                                # 挂接到一个运行的容器中
+kubectl port-forward my-pod 5000:6000                   # 在本地计算机上侦听端口 5000 并转发到 my-pod 上的端口 6000
+kubectl exec my-pod -- ls /                             # 在已有的 Pod 中运行命令（单容器场景）
+kubectl exec --stdin --tty my-pod -- /bin/sh            # 使用交互 shell 访问正在运行的 Pod (一个容器场景)
+kubectl exec my-pod -c my-container -- ls /             # 在已有的 Pod 中运行命令（多容器场景）
+kubectl top pod POD_NAME --containers                   # 显示给定 Pod 和其中容器的监控数据
+kubectl top pod POD_NAME --sort-by=cpu                  # 显示给定 Pod 的指标并且按照 'cpu' 或者 'memory' 排序
 ```
 
 **从容器中复制文件和目录**
 ```bash
-kubectl cp /tmp/foo_dir my-pod:/tmp/bar_dir            # 将 /tmp/foo_dir 本地目录复制到远程当前命名空间中 Pod 中的 /tmp/bar_dir
-kubectl cp /tmp/foo my-pod:/tmp/bar -c my-container    # 将 /tmp/foo 本地文件复制到远程 Pod 中特定容器的 /tmp/bar 下
-kubectl cp /tmp/foo my-namespace/my-pod:/tmp/bar       # 将 /tmp/foo 本地文件复制到远程 “my-namespace” 命名空间内指定 Pod 中的 /tmp/bar
-kubectl cp my-namespace/my-pod:/tmp/foo /tmp/bar       # 将 /tmp/foo 从远程 Pod 复制到本地 /tmp/bar
+kubectl cp /tmp/foo_dir my-pod:/tmp/bar_dir             # 将 /tmp/foo_dir 本地目录复制到远程当前命名空间中 Pod 中的 /tmp/bar_dir
+kubectl cp /tmp/foo my-pod:/tmp/bar -c my-container     # 将 /tmp/foo 本地文件复制到远程 Pod 中特定容器的 /tmp/bar 下
+kubectl cp /tmp/foo my-namespace/my-pod:/tmp/bar        # 将 /tmp/foo 本地文件复制到远程 “my-namespace” 命名空间内指定 Pod 中的 /tmp/bar
+kubectl cp my-namespace/my-pod:/tmp/foo /tmp/bar        # 将 /tmp/foo 从远程 Pod 复制到本地 /tmp/bar
 ```
 
 > kubectl cp 要求容器镜像中存在 “tar” 二进制文件。如果 “tar” 不存在，kubectl cp 将失败
@@ -6523,6 +6592,18 @@ terraform -h
 
 **更多内容**
 - [terraform](./实验/terraform.md)
+
+---
+
+### pulumi
+
+**项目地址**
+- https://github.com/pulumi/pulumi
+
+**安装**
+```bash
+curl -fsSL https://get.pulumi.com | sh -s -- --version 3.37.2
+```
 
 ---
 

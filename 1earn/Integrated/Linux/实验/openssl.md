@@ -102,6 +102,14 @@ openssl x509 -in ca.crt -noout -text
 
 ---
 
+## 随机数
+
+```bash
+openssl rand -base64 16
+```
+
+---
+
 ## Source & Reference
 
 - https://blog.csdn.net/Michaelwubo/article/details/113736166

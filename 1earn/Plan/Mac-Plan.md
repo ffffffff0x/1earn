@@ -73,6 +73,12 @@ defaults write com.apple.dock autohide-time-modifier -float 0.5 && killall Dock
 defaults write com.apple.dock autohide-delay -int 0 && killall Dock
 ```
 
+**左右光标移动速度**
+
+系统偏好设置 -> 键盘 -> 键盘
+- 按键重复：对应的是移动速度；
+- 重复前延迟：对应的是移动前的反应时间。
+
 ---
 
 ## 软件
@@ -154,6 +160,10 @@ brew update && brew install --cask motrix
 **edge**
 
 - https://www.microsoft.com/en-us/edge
+
+**Alfred**
+
+- https://www.alfredapp.com/
 
 **code-server**
 

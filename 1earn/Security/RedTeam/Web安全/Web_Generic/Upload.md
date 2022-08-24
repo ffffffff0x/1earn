@@ -33,8 +33,6 @@
 **相关工具**
 - [almandin/fuxploider](https://github.com/almandin/fuxploider) - File upload vulnerability scanner and exploitation tool.
 - [PortSwigger/upload-scanner](https://github.com/PortSwigger/upload-scanner) - HTTP file upload scanner for Burp Proxy
-- [ptoomey3/evilarc](https://github.com/ptoomey3/evilarc)
-- [Rvn0xsy/zipcreater](https://github.com/Rvn0xsy/zipcreater) - 应用于跨目录的文件上传漏洞的利用，它能够快速进行压缩包生成。
 
 **靶场**
 - [upload-labs](https://github.com/c0ny1/upload-labs)
@@ -111,6 +109,15 @@ XXE
 
 1. 例如可以上传文件名为 `../../../../var/spool/cron/root` ,通过这种方式执行命令
 2. 如果做了白名单后缀,只允许 jpg ,可以传到 `/etc/cron.d/` 目录下,这里文件可以任意后缀命名,上传文件名为 `…/…/…/…/…/…/etc/cron.d/test.jpg` 绕过对应的安全检查
+
+---
+
+### 跨目录解压
+
+**相关工具**
+- [ptoomey3/evilarc](https://github.com/ptoomey3/evilarc)
+- [Rvn0xsy/zipcreater](https://github.com/Rvn0xsy/zipcreater) - 应用于跨目录的文件上传漏洞的利用，它能够快速进行压缩包生成。
+- [TheKingOfDuck/evilzip](https://github.com/TheKingOfDuck/evilzip) - evilzip lets you create a zip file(with password) that contains files with directory traversal characters in their embedded path.
 
 ---
 
@@ -271,7 +278,7 @@ XXE
 
 ### 软链接
 
-如果攻击者上传了一个软链文件，软链描述对应的是 /etc/passwd 的话，攻击者利用程序可以直接读取到服务器的关键文件内容
+如果攻击者上传了一个软链文件，软链描述对应的是 /etc/passwd 的话，攻击者可利用程序读取到服务器的关键文件内容
 
 ---
 

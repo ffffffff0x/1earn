@@ -603,7 +603,7 @@ hashcat -b --force
 
 ### hashtopolis分布式服务
 
-项目地址 : https://github.com/s3inlc/hashtopolis
+项目地址 : https://github.com/hashtopolis/server
 
 #### Server
 

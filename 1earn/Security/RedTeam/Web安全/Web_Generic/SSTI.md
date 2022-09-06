@@ -25,6 +25,9 @@
 - [服务端模板注入攻击 (SSTI) 之浅析](https://tttang.com/archive/962/)
 - [服务端模板注入：现代WEB远程代码执行（补充翻译和扩展）](https://tttang.com/archive/945/)
 
+**相关案例**
+- [Uber 遠端代碼執行- Uber.com Remote Code Execution via Flask Jinja2 Template Injection](https://blog.orange.tw/2016/04/bug-bounty-uber-ubercom-remote-code_7.html)
+
 **相关工具**
 - [epinna/tplmap](https://github.com/epinna/tplmap) - ssti 检测工具
 - https://github.com/VikasVarshney/ssti-payload - SSTI Payload Generator

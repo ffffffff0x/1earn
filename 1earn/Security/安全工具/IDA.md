@@ -14,16 +14,19 @@
 - [ida字符串存储的小端序陷阱](https://blog.csdn.net/amber_o0k/article/details/120659054)
 - [恶意样本分析精要及实践8-IDA使用（一）](https://mp.weixin.qq.com/s/qaHEUW1uybkHhTAdzC96Hw)
 
+**相关资源 & 教程**
+- [VulnTotal-Team/IDA-Pro-tips](https://github.com/VulnTotal-Team/IDA-Pro-tips) - IDA Pro 每周小技巧
+
 **相关扩展**
 - [lcq2/riscv-ida](https://github.com/lcq2/riscv-ida) - risc-v 插件
     ```
     Just copy riscv.py into procs folder of IDA. Start ida.exe and not ida64.exe, 64bit support is still missing
     ```
-- [hackflame/ida_python_extractCode](https://github.com/hackflame/ida_python_extractCode) - ida提取特征码脚本
+- [hackflame/ida_python_extractCode](https://github.com/hackflame/ida_python_extractCode) - ida 提取特征码脚本
     ```
     1. 把 tq.py 放到 ida/python 目录下
-    2. 在 ida/python 中找到 init.py ，打开此初始化脚本，然后拖到最下边 找到
-
+    2. 在 ida/python 中找到 init.py ，打开此初始化脚本，然后拖到最下边
+        找到
         from idc import *
         from idautils import *
         import idaapi
@@ -31,13 +34,13 @@
         #在下面加一行
         import tq
 
-    3. 打开ida测试。快捷键为 ALT+Z
+    3. 打开 ida 测试。快捷键为 ALT+Z
     ```
 - [SentineLabs/AlphaGolang](https://github.com/SentineLabs/AlphaGolang) - go 逆向插件
     ```
     Requirements: IDA Pro (ideally v7.6+) and Python3 (ew) The first two steps (recreate_pclntab and function_discovery_and_renaming) will work on IDA v7.5- but scripts beyond that require IDAv7.6+. Newer versions are the ideal target for newer scripts going forward.
     ```
-- [t3ls/mipsAudit](https://github.com/t3ls/mipsAudit) - IDA MIPS静态扫描脚本，汇编审计辅助脚本
+- [t3ls/mipsAudit](https://github.com/t3ls/mipsAudit) - IDA MIPS 静态扫描脚本，汇编审计辅助脚本
     ```
     将 mipsAudit.py 拷贝到 \IDA 7.5\plugins 目录
     启动后在 Edit - Plugins 下点击 mipsAudit 即可（快捷键 Ctrl+Alt+M）
@@ -84,7 +87,7 @@ IDA 会像 windows 一样加载文件到内存中。IDA 可以通过判断文件
 
 ### 反汇编窗口
 
-当二进制文件被加载，IDA展示的窗口就是反汇编编辑窗口（也叫做IDA-view窗口），这是个主要窗口，用于分析和展示反汇编代码，并且可以用于分析反汇编二进制。
+当二进制文件被加载，IDA 展示的窗口就是反汇编编辑窗口（也叫做IDA-view窗口），这是个主要窗口，用于分析和展示反汇编代码，并且可以用于分析反汇编二进制。
 
 ![](../../../assets/img/Security/安全工具/IDA/1.png)
 
@@ -281,7 +284,7 @@ IDA 保持跟踪导航历史；任何时候被重定向到另外一个地址，�
 通过点击这5个不同的视图，可以分别展示不同的展示方式
 
 从左到右依次是:
-* 展示当前函数的外部流图表。展示的图形与IDA的交互视角很像。
+* 展示当前函数的外部流图表。展示的图形与 IDA 的交互视角很像。
 * 展示当前函数的调用视图；这可以用来快速查看程序中函数调用关系情况；但如果程序的函数很多的话，这个视图就会显得非常大，被塞满。
 * 这个视图显示一个函数的被交叉引用情况；如果想看一个程序的访问某个函数的不同路径，这个视图就相对比较清晰。
 * 这个视图展示的是一个函数的交叉引用其他函数的情况；可以很清晰的展示函数调用所有其他函数。

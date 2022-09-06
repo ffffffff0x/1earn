@@ -80,6 +80,7 @@
 - **开源平台**
     - [firesunCN/BlueLotus_XSSReceiver](https://github.com/firesunCN/BlueLotus_XSSReceiver) - XSS 平台 CTF 工具 Web 安全工具
     - [keyus/xss](https://github.com/keyus/xss) - php 写的个人研究测试用的 xss cookie 攻击管理平台
+    - [ssl/ezXSS](https://github.com/ssl/ezXSS) - ezXSS is an easy way for penetration testers and bug bounty hunters to test (blind) Cross Site Scripting.
 
 - **在线平台**
     - http://xssye.com/index.php

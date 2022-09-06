@@ -50,6 +50,7 @@
 - [密码找回中的套路](https://xz.aliyun.com/t/7977)
 - [登录点测试的那些事](https://xz.aliyun.com/t/8185)
 - [基于业务场景的漏洞挖掘](https://mp.weixin.qq.com/s/a6QvgLFCO4rCS3FRYZ3lug)
+- [针对医疗系统的快速漏洞挖掘思路](https://mp.weixin.qq.com/s/Y_JF-LyvEEW_In_HdtHbFg)
 
 **案例**
 - [挖洞经验 | 连接多个漏洞获取管理员访问权限](https://www.freebuf.com/articles/web/177461.html)

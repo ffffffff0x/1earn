@@ -24,6 +24,7 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 - [shiro反序列化绕WAF之未知HTTP请求方法](https://mp.weixin.qq.com/s/1BuMtOTGIFdXrNtkUMm82g)
 - [Shiro高版本默认密钥的漏洞利用](https://mp.weixin.qq.com/s/Su5VwfynSVx-PEPxSR_6iw)
 - [Shiro反序列化漏洞利用笔记](https://www.cnblogs.com/Yang34/p/14122843.html)
+- [Shiro权限验证绕过史](https://s31k31.github.io/2020/08/20/Shiro_Authentication_Bypass/)
 
 **相关工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4 反序列化,一键检测工具
@@ -73,10 +74,14 @@ shiro 默认使用了 CookieRememberMeManager, 其处理 cookie 的流程是: �
 
 **描述**
 
-Apache Shiro 是企业常见的 Java 安全框架, 由于 Shiro 的拦截器和 spring(Servlet)拦截器对于 URI 模式匹配的差异, 导致出现鉴权问题.
+Apache Shiro 是企业常见的 Java 安全框架, 由于 Shiro 的拦截器和 spring(Servlet)拦截器对于 URI 模式匹配的差异, 导致出现鉴权问题。
 
 **相关文章**
 - [Shiro 权限绕过漏洞分析（CVE-2020-1957）](https://blog.riskivy.com/shiro-%e6%9d%83%e9%99%90%e7%bb%95%e8%bf%87%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90%ef%bc%88cve-2020-1957%ef%bc%89/)
+
+**修复建议**
+1. 升级 1.5.2 版本及以上。
+2. 尽量避免使用 * 通配符作为动态路由拦截器的 URL 路径表达式。
 
 ---
 

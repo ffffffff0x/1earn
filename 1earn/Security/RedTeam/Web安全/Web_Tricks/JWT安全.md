@@ -48,11 +48,15 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
 
 ---
 
-# 绕过思路
+## 攻击思路
+
+**爆破 jwt 密钥**
+
+通过工具爆破目标 jwt 密钥,尝试伪造具备有效签名的新 JWT 值
 
 **加密算法置空**
 1. 捕获 JWT.
-2. 修改 algorithm 为 None.
+2. 修改 algorithm 为 `None`.
 3. 在正⽂中⽤任何你想要的内容改变原本的内容，如: email: attacker@gmail.com
 4. 使⽤修改后的令牌发送请求并检查结果。
 

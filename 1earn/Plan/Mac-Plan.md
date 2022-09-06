@@ -65,12 +65,19 @@ chflags -R nouchg *
 
 **减少程序坞的响应时间**
 
-```
+```bash
 # 设置启动坞动画时间设置为 0.5 秒
 defaults write com.apple.dock autohide-time-modifier -float 0.5 && killall Dock
 
 # 设置启动坞响应时间最短
 defaults write com.apple.dock autohide-delay -int 0 && killall Dock
+
+# 恢复启动坞默认动画时间
+defaults delete com.apple.dock autohide-time-modifier && killall Dock
+
+# 恢复默认启动坞响应时间
+defaults delete com.apple.Dock autohide-delay && killall Dock
+
 ```
 
 **左右光标移动速度**

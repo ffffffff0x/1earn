@@ -177,6 +177,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
     - [Sy3Omda/burp-bounty](https://github.com/Sy3Omda/burp-bounty) - Burp Bounty is extension of Burp Suite that improve Burp scanner.
 - [smxiazi/xia_sql](https://github.com/smxiazi/xia_sql) - xia SQL (瞎注) burp 插件 ，在每个参数后面填加一个单引号，两个单引号，一个简单的判断注入小插件。
 - [ethicalhackingplayground/ssrf-king](https://github.com/ethicalhackingplayground/ssrf-king) - SSRF plugin for burp Automates SSRF Detection in all of the Request
+- [ilmila/J2EEScan](https://github.com/ilmila/J2EEScan) - J2EEScan is a plugin for Burp Suite Proxy. The goal of this plugin is to improve the test coverage during web application penetration tests on J2EE applications.
 
 **shiro**
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件

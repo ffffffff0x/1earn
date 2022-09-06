@@ -1218,6 +1218,9 @@ C2 Profile 可以调整传输过程中的流量, 一定程度上可以隐蔽 C2 
 - [threatexpress/malleable-c2](https://github.com/threatexpress/malleable-c2) - Cobalt Strike Malleable C2 Design and Reference Guide
 - [HuskyHacks/CobaltNotion](https://github.com/HuskyHacks/CobaltNotion) - A spin-off research project. Cobalt Strike x Notion collab 2022
 
+**辅助项目**
+- [CodeXTF2/Burp2Malleable](https://github.com/CodeXTF2/Burp2Malleable) - Quick python utility I wrote to turn HTTP requests from burp suite into Cobalt Strike Malleable C2 profiles
+
 **Malleable C2**
 
 Beacon 中的 http 通讯由 Malleable-C2 配置文件定义，在启动 teamserver 时来指定我们的配置文件, 每个 CS 只能载入一个配置文件, 多个文件需要启动多个 teamserver

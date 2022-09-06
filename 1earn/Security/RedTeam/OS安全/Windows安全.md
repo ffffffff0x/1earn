@@ -145,7 +145,7 @@ netstat -ano | findstr "xxx"
 
     2. Enable the firewall rule : `Enable-NetFirewallRule -DisplayGroup "Remote Desktop"`
 
-- MSSQL xp_regwrite开启3389端口
+- MSSQL xp_regwrite 开启 3389 端口
 
     1. 查询3389开启状态 : `exec master.dbo.xp_regread 'HKEY_LOCAL_MACHINE','SYSTEM\CurrentControlSet\Control\Terminal Server' ,'fDenyTSConnections'`
 
@@ -190,7 +190,7 @@ netstat -ano | findstr "xxx"
     netsh advfirewall set allprofiles state off
     ```
 
-- 关闭Denfnder
+- 关闭 Denfnder
     ```
     net stop windefend
     ```
@@ -368,29 +368,27 @@ gpupdate /force                                             //更新组策略
 - [SterJo Key Finder](https://www.sterjosoft.com/key-finder.html) - 找出系统中软件的序列号
 - [impacket](https://github.com/SecureAuthCorp/impacket)
 - [evilmog/ntlmv1-multi](https://github.com/evilmog/ntlmv1-multi) - NTLMv1 Multitool
-
-#### mimikatz
-
 - [mimikatz](../../安全工具/mimikatz.md)
 
----
+#### lsass dump
 
-#### 加密降级攻击
+**直接转储(Task Manager)**
+- [直接转储(Task Manager)](../../安全工具/mimikatz.md#直接转储task-manager)
 
-`NetNTLM Downgrade Attacks`
+**ProcDump**
+- [ProcDump](../../安全工具/mimikatz.md#procdump)
 
-**相关文章**
-- [Post Exploitation Using NetNTLM Downgrade Attacks](https://www.optiv.com/explore-optiv-insights/blog/post-exploitation-using-netntlm-downgrade-attacks)
+**ComSvcs.dll**
+- [ComSvcs.dll](../../安全工具/mimikatz.md#comsvcsdll)
 
-**相关工具**
-- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks, 通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
-    ```
-    InternalMonologue -Downgrade False -Restore False -Impersonate True -Verbose False -Challenge 1122334455667788
-    ```
+**ProcDump**
+- [ProcDump](../../安全工具/mimikatz.md#procdump)
 
-    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/3.png)
+**windbg 中载入 mimilib 模块**
+- [windbg 中载入 mimilib 模块](../../安全工具/mimikatz.md#windbg-中载入-mimilib-模块)
 
-    如果以普通用户权限执行 InternalMonologue，能够获得当前用户权限的 Net-NTLMv2 数据包，通过 hashcat 进行破解，能获得当前用户的明文口令
+**LSASS Shtinkering**
+- [LSASS Shtinkering](../../安全工具/mimikatz.md#lsass-shtinkering)
 
 ---
 
@@ -412,14 +410,23 @@ lsadump::secrets
 ```
 
 **注册表 dump**
+
+> 注意：本地复原机器必须与目标机器一致，且需要在系统权限下执行
+
 ```
 reg save HKLM\SYSTEM system
 reg save HKLM\SAM sam
 reg save HKLM\SECURITY security
+```
 
+使用 impacket
+```
 impacket-secretsdump -sam sam -security security -system system LOCAL
-或
-lsadump::secrets /system:system /security:security
+```
+
+或mimikatz 获取用户 hash
+```bash
+lsadump::sam /system:system.hiv /sam:sam.hiv /security:security.hiv
 ```
 
 ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/4.png)
@@ -441,6 +448,25 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 ```
 
 ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/5.png)
+
+---
+
+#### 加密降级攻击
+
+`NetNTLM Downgrade Attacks`
+
+**相关文章**
+- [Post Exploitation Using NetNTLM Downgrade Attacks](https://www.optiv.com/explore-optiv-insights/blog/post-exploitation-using-netntlm-downgrade-attacks)
+
+**相关工具**
+- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks, 通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
+    ```
+    InternalMonologue -Downgrade False -Restore False -Impersonate True -Verbose False -Challenge 1122334455667788
+    ```
+
+    ![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/3.png)
+
+    如果以普通用户权限执行 InternalMonologue，能够获得当前用户权限的 Net-NTLMv2 数据包，通过 hashcat 进行破解，能获得当前用户的明文口令
 
 ---
 

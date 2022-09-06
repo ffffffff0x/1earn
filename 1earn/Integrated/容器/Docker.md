@@ -278,6 +278,29 @@ Trivy 是一个简单而全面的开源容器漏洞扫描程序。Trivy 可检�
 trivy [镜像名]
 ```
 
+**veinmind-tools**
+
+- https://github.com/chaitin/veinmind-tools
+
+veinmind-tools 是由长亭科技自研，基于 veinmind-sdk 打造的容器安全工具集
+
+1. 确保机器上正确安装 docker
+    ```bash
+    docker info
+    ```
+2. 安装 veinmind-runner 镜像
+    ```bash
+    docker pull veinmind/veinmind-runner:latest
+    ```
+3. 下载 veinmind-runner 平行容器启动脚本
+    ```bash
+    wget -q https://download.veinmind.tech/scripts/veinmind-runner-parallel-container-run.sh -O run.sh && chmod +x run.sh
+    ```
+4. 快速扫描本地镜像
+    ```bash
+    ./run.sh scan-host
+    ```
+
 #### 容器逆向分析
 
 分析镜像,提取出镜像的构建过程和镜像构建过程中引用的文件。

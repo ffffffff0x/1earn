@@ -414,6 +414,7 @@ tmux list-keys                # 列出所有快捷键，及其对应的 Tmux 命
 **新建会话**
 ```bash
 tmux new -s test
+tmux new-session -s 'test'
 ```
 
 **分离会话**
@@ -468,6 +469,11 @@ ctl+b
 
 然后按 `[`
 
+**水平分隔**
+```bash
+tmux split-window -h
+```
+
 **增加回滚缓冲区的大小**
 ```bash
 echo "set-option -g history-limit 3000" >> ~/.tmux.conf   # 默认值为2000
@@ -484,6 +490,12 @@ tmux save-buffer output.log
 # 保存所有历史输出
 tmux capture-pane -S -
 tmux save-buffer output.log
+```
+
+**发送按键**
+```bash
+# 给的 1 号窗格（第二个）发送 ls + 回车
+tmux send-keys -t test.1 ls Enter
 ```
 
 ---
@@ -927,8 +939,19 @@ cloud-torrent -o
 **项目地址**
 - https://github.com/cdr/code-server
 
-**运行**
+**安装**
+```bash
+# debian
+wget https://github.com/cdr/code-server/releases/download/v4.5.2/code-server_4.5.2_amd64.deb
+dpkg -i code-server_4.5.2_amd64.deb
+
+# centos
+wget https://github.com/cdr/code-server/releases/download/v4.5.2/code-server-4.5.2-amd64.rpm
+rpm -i code-server-4.5.2-amd64.rpm
 ```
+
+**运行**
+```bash
 export PASSWORD=123456
 code-server --port 8080 --host 0.0.0.0 --auth password
 ```
@@ -6603,6 +6626,17 @@ terraform -h
 **安装**
 ```bash
 curl -fsSL https://get.pulumi.com | sh -s -- --version 3.37.2
+```
+
+---
+
+### aliyun-cli
+
+**下载**
+```
+https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-amd64.tgz?file=aliyun-cli-linux-latest-amd64.tgz
+
+https://github.com/aliyun/aliyun-cli/releases
 ```
 
 ---

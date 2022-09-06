@@ -1083,6 +1083,14 @@ AES 加密的模式主要有五种：ECB (电子密码本模式)、CBC（密码�
 **tips**
 - 加密数据存在 `U2Fsd` 头，可能是 aes 加盐
 
+##### Padding Oracle
+
+**相关文章**
+- [Padding Oracle原理深度解析&CBC字节翻转攻击原理解析](https://mp.weixin.qq.com/s/OtGw-rALwpBkERfvqdZ4kQ)
+
+**相关工具**
+- [AonCyberLabs/PadBuster](https://github.com/AonCyberLabs/PadBuster) - Automated script for performing Padding Oracle attacks
+
 ---
 
 #### DES

@@ -28,6 +28,9 @@ Exchange Server 是微软公司的一套电子邮件服务组件，是个消息�
 - [针对Exchange的攻击方式](https://tttang.com/archive/1487/)
 - [各个阶段 Exchange 的利用手法](https://mp.weixin.qq.com/s/6rPQD6zTVrqwOIREMAavpQ)
 - [『红蓝对抗』Exchange的渗透流程（一）](https://mp.weixin.qq.com/s/yU0LGNI-D30VZ3A89p1x-A)
+- [Exchange 暴力破解与防范](https://mp.weixin.qq.com/s/WF2kHt4MKvjwnj92W4f8Xw)
+- [渗透基础——获得Exchange服务器的内网IP](https://3gstudent.github.io//%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80-%E8%8E%B7%E5%BE%97Exchange%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%86%85%E7%BD%91IP)
+- [【技术原创】渗透基础——Exchange版本探测的优化](https://www.4hou.com/posts/WBwx)
 
 **状况检查**
 - [dpaulson45/HealthChecker](https://github.com/dpaulson45/HealthChecker) - Exchange Server 运行状况检查脚本
@@ -58,7 +61,7 @@ app="Microsoft-Exchange-2010-POP3-server-version-03.1"||app="Microsoft-Exchange-
 
 ---
 
-## 查看版本号
+## 版本识别
 
 1. 在登录界面查看网页源代码：
 
@@ -70,6 +73,9 @@ app="Microsoft-Exchange-2010-POP3-server-version-03.1"||app="Microsoft-Exchange-
 2. 请求 /owa、/owa/service 等路径，在返回头 X-OWA-Version： 中查看完整的内部版本号，比如 15.1.2375.7
 
 3. 直接访问 /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application，下载下来的 xml 文档中会包含完整的内部版本号
+
+**相关工具**
+- https://github.com/3gstudent/Homework-of-Python/blob/master/Exchange_GetVersion_ParseFromWebsite.py
 
 ---
 
@@ -105,31 +111,26 @@ nslookup.exe -type=srv _autodiscover._tcp
 **IP**
 - 访问以下接口,HTTP 协议版本修改成 1.0，去掉 http 头里面的 HOST 参数
     ```
-    /Microsoft-Server-ActiveSync/default.eas
-    /Microsoft-Server-ActiveSync
-    /Autodiscover/Autodiscover.xml
+    /OWA
     /Autodiscover
     /Exchange
-    /Rpc
-    /EWS/Exchange.asmx
-    /EWS/Services.wsdl
-    /EWS
     /ecp
-    /OAB
-    /OWA
     /aspnet_client
-    /PowerShell
     ```
 
 - msf
     ```bash
-    use auxiliary/scanner/http/owa_iis_internal_ip  # 脚本里面限定了内网IP范围,如果企业是自定义的内网IP,可能无法获取到IP,https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/owa_iis_internal_ip.rb#L79
+    use auxiliary/scanner/http/owa_iis_internal_ip
+    # 脚本里面限定了内网IP范围,如果企业是自定义的内网IP,可能无法获取到IP,https://github.com/rapid7/metasploit-framework/blob/master/modules/auxiliary/scanner/http/owa_iis_internal_ip.rb#L79
     ```
 
 - nmap
     ```bash
     nmap x.x.x.x -p 443 --script http-ntlm-info --script-args http-ntlm-info.root=/rpc/rpcproxy.dll
     ```
+
+- python
+    - https://3gstudent.github.io//%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80-%E8%8E%B7%E5%BE%97Exchange%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E5%86%85%E7%BD%91IP
 
 ---
 
@@ -695,41 +696,26 @@ Remove-DomainGroupMember -Identity "Exchange Windows Permissions" -Members "zhan
 
 ### OUTLOOK 命令执行
 
+**描述**
+
 OUTLOOK 客户端有一个 规则与通知 的功能，通过该功能可以使 outlook 客户端在指定情况下执行指定的指令。若我们获得某用户的凭证，可以通过此功能设置 “用户收到含指定字符的邮件时 执行指定的指令比如 clac.exe”，当用户登录 outlook 客户端并访问到此邮件时，它的电脑便会执行 calc.exe。
 
 但是，当触发动作为启动应用程序时，只能直接调用可执行程序，如启动一个 exe 程序，但无法为应用程序传递参数，想要直接上线，我们可以将 EXE 放到某共享目录下，或者直接上传到用户的机器。
 
 具体步骤为打开规则与通知功能，然后新建功能，在接收到某条件邮件时启动指定应用程序
-- 可参考 : https://tttang.com/archive/1487/#toc_outlook
 
 实战中不太好利用,微软在 2017 年陆续修复了这些攻击面：默认禁止规则启动应用程序和运行脚本；默认禁止自定义表单执行脚本且需要将每一个自定义表单消息类注册为受信任的表单消息类；默认关闭主页功能。
+
+**相关文章**
+- https://tttang.com/archive/1487/#toc_outlook
+- [利用Outlook规则，实现RCE](https://mp.weixin.qq.com/s/hrWONscsYn9TX0L3sLleyA)
 
 ---
 
 ## 漏洞
 
 ### CVE-2018-8581 任意用户伪造漏洞
-- https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2018-8581
-
-**简介**
-
-Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
-
-1. 通过 HTTP 使用 NTLM 向攻击者进行交换身份验证
-2. 与 NTLM 中继攻击相结合，使得用户可以低权限 (任意拥有邮箱的用户) 提权到域管理员。
-
-**相关文章**
-- [微软Exchange爆出0day漏洞，来看POC和技术细节](https://www.freebuf.com/vuls/195162.html)
-- [Microsoft Exchange 任意用户伪造漏洞（CVE-2018-8581）分析](https://paper.seebug.org/804/)
-- [MICROSOFT EXCHANGE漏洞分析 - CVE-2018-8581](https://0kee.360.cn/blog/microsoft-exchange-cve-2018-8581/)
-- [分析CVE-2018-8581：在Microsoft Exchange上冒充用户](https://www.anquanke.com/post/id/168337)
-- [船新版本的Exchange Server提权漏洞分析](https://www.anquanke.com/post/id/170199)
-- [利用 Exchange SSRF 漏洞和 NTLM 中继沦陷域控](https://paper.seebug.org/833/)
-
-**POC | Payload | exp**
-- [Ridter/Exchange2domain](https://github.com/Ridter/Exchange2domain)
-- [WyAtu/CVE-2018-8581](https://github.com/WyAtu/CVE-2018-8581)
-- [dirkjanm/PrivExchange](https://github.com/dirkjanm/PrivExchange)
+- [PushSubscription abuse (CVE-2018-8581)](../../OS安全/实验/NTLM中继.md#pushsubscription-abuse-cve-2018-8581)
 
 ---
 

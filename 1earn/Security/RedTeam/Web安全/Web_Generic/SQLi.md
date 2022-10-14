@@ -31,6 +31,7 @@
 
 **payload**
 - [trietptm/SQL-Injection-Payloads](https://github.com/trietptm/SQL-Injection-Payloads)
+- [payloadbox/sql-injection-payload-list](https://github.com/payloadbox/sql-injection-payload-list)
 
 **在线 SQLi 测试**
 - http://demo.testfire.net/

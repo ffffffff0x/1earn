@@ -31,7 +31,9 @@
 
 * **[防御密码抓取](#防御密码抓取)**
 
-* **[防御Responder欺骗](#防御responder欺骗)**
+* **[防御Responder欺骗](#防御-responder-欺骗)**
+
+* **[阻止非 PPL 进程修改 PPL 进程的 token](#阻止非-ppl-进程修改-ppl-进程的-token)**
 
 ---
 
@@ -340,11 +342,42 @@ qwinsta             显示有关服务器中会话远程桌面会话主机的信
 qprocess            显示有关在远程桌面会话主机服务器上运行的进程的信息
 ```
 
+**文章**
+- [RDP 登录日志取证与清除](https://paper.seebug.org/1043/)
+
 **防爆破**
 - [y11en/BlockRDPBrute](https://github.com/y11en/BlockRDPBrute) - [HIPS]RDP(3389)爆破防护
 
 **连接记录**
 - [Windows RDP 连接记录](../../Security/RedTeam/OS安全/Windows安全.md#连接记录)
+
+**LogParser 分析**
+
+这里 4624 为登录成功的id，对于登录失败的记录分析，替换为 4625 即可
+
+```
+LogParser.exe -stats:OFF -i:EVT "SELECT TimeGenerated AS Date, EXTRACT_TOKEN(Strings, 8, '|') as LogonType, EXTRACT_TOKEN(Strings, 18, '|') AS SourceIP, EXTRACT_TOKEN(Strings, 19, '|') AS Sport INTO RdpLoginSuccess.csv FROM Security WHERE EventID = '4624' AND SourceIP NOT IN ('';'-') AND LogonType = '10' ORDER BY timegenerated DESC" -o:CSV
+```
+
+也可以导出安全日志为 Security.evtx 进行本地分析
+
+```
+LogParser.exe -stats:OFF -i:EVT "SELECT TimeGenerated AS Date, EXTRACT_TOKEN(Strings, 8, '|') as LogonType, EXTRACT_TOKEN(Strings, 18, '|') AS SourceIP ,EXTRACT_TOKEN(Strings, 19, '|') AS Sport INTO RdpLoginSuccess.csv FROM Security.evtx WHERE EventID = '4624' AND SourceIP NOT IN ('';'-') AND LogonType = '10' ORDER BY timegenerated DESC" -o:CSV
+```
+
+**wevtutil**
+
+这里 4624 为登录成功的id，对于登录失败的记录分析，替换为 4625 即可
+
+```
+wevtutil qe Security /q:"*[System[Provider[@Name='Microsoft-Windows-Security-Auditing'] and (EventID=4624)] and EventData[(Data[@Name='LogonType']='10')]]"
+```
+
+导出安全日志为 Security.evtx 进行本地分析
+
+```
+wevtutil qe ./Security.evtx /q:"*[System[(EventRecordID=1024)]]"  /e:root /f:xml
+```
 
 ---
 
@@ -610,7 +643,7 @@ Add-ADGroupMember -Identity 'Protected Users' -Members administrator
 
 ---
 
-## 防御Responder欺骗
+## 防御 Responder 欺骗
 
 **禁用 NetBIOS 服务**
 
@@ -627,3 +660,27 @@ Add-ADGroupMember -Identity 'Protected Users' -Members administrator
 **VindicateTool**
 
 - https://github.com/Rushyo/VindicateTool
+
+## 防御 NTLM 中继
+
+- https://support.microsoft.com/en-gb/topic/kb5005413-mitigating-ntlm-relay-attacks-on-active-directory-certificate-services-ad-cs-3612b773-4043-4aa9-b23d-b87910cd3429
+
+---
+
+## 阻止非 PPL 进程修改 PPL 进程的 token
+
+- https://github.com/elastic/PPLGuard
+
+---
+
+## kerberoast 缓解措施
+
+> 本段来自文章: https://3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Kerberoasting
+
+站在防御的角度，不可能阻止 kerberoast，但可以对有攻击价值的 SPN(注册在域用户帐户下，权限高)，增加密码长度，能够提高破解难度，并且定期修改关联的域用户口令
+
+管理员可在域内一台主机上使用 Invoke-Kerberoast 检查是否存在危险的 SPN
+- https://github.com/PowerShellMafia/PowerSploit/blob/dev/Recon/PowerView.ps1
+    ```
+    Get-NetUser -spn -AdminCount|Select name,whencreated,pwdlastset,lastlogon
+    ```

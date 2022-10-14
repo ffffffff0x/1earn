@@ -42,3 +42,9 @@ Unblock-File .\f8x.ps1
 ![](../../../../assets/img/Integrated/Windows/实验/MSSQL搭建/5.png)
 
 确认可以访问
+
+---
+
+有大神分享过精简版的 Microsoft SQL Server 2008 R2，会强制安装到D:\XIUMU.ORG目录
+- https://xiumu.org/technology/microsoft-sql-server-2008-r2-portable.shtml
+    - `下载完成打开自解压包，程序会自动解压到D:\XIUMU.ORG目录，执行注册服务或进程模式就可以了。需要说明的是执行卸载时候系统会清理SQL Server相关的服务和注册表信息，如果系统因为折腾SQL Server而无法正常安装的情况可以先执行卸载，再启动服务。默认sa密码为www.xiumu.org`

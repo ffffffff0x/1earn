@@ -17,6 +17,7 @@
 - [电信某分站配置不当导致敏感文件泄露](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2015-095088)
 - [一个任意文件读取漏洞记录](https://toutiao.io/posts/423535/app_preview)
 - [南方周末邮件服务器任意文件读取漏洞](http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2013-045426)
+- [一次文件读取漏洞的“危害升级”历程](https://www.freebuf.com/vuls/257629.html)
 
 ---
 

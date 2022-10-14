@@ -19,6 +19,9 @@ Vcenter 一般指 VMware vCenter Server，其提供了一个可伸缩、可扩�
 - [获取vCenter权限后的利用方式](https://www.djhons.com/2022/03/11/77.html)
 - [Vmware ESXI Virtual Machine Hacking (Linux, Windows) (Pass to Hash, Mimikatz, Windbg, Volatility)](https://vvhack.org/t/vmware-esxi-virtual-machine-hacking-linux-windows-pass-to-hash-mimikatz-windbg-volatility/353)
 
+**相关工具**
+- [Schira4396/VcenterKiller](https://github.com/Schira4396/VcenterKiller) - 一款针对 Vcenter 的综合利用工具，包含目前最主流的 CVE-2021-21972、CVE-2021-21985 以及 CVE-2021-22005 以及 log4j，提供一键上传 webshell，命令执行或者上传公钥使用 SSH 免密连接
+
 **思路和 tips**
 - 拿下 vCenter 滚雪球扩大战果，获取 windows 机器的 hash，或者直接进入虚拟机进行信息搜集，收集内网密码策略
 - vCenter 运行在 vmware 自家的 photonOS 上,这个系统开源在 https://github.com/vmware/photon 使用方法可以参考 https://vmware.github.io/photon/assets/files/html/3.0/photon_admin/
@@ -205,6 +208,7 @@ VMware vCenter Server 插件中对用户提供的输入验证不当，未经过�
 - [CVE-2021-22005-VMware VCenter Server 从目录穿越到命令执行（需CEIP开启）](https://mp.weixin.qq.com/s/gVsxziLqRQzb7QVOfyuBKw)
 - [vCenter CVE-2021-22005](https://www.o2oxy.cn/3773.html)
 - [VMware vCenter漏洞之CVE-2021-22005追踪记](https://web.archive.org/web/20211122052252/https://p0rz9.github.io/2021/10/vmware-vcenter-lou-dong-zhi-cve-2021-22005-zhui-zong-ji/)
+- [CVE-2021-22005-VMware vCenter漏洞学习](https://mp.weixin.qq.com/s/EfmNK7Hb4rdm0L9mdz_bwg)
 
 **POC | Payload | exp**
 - [r0ckysec/CVE-2021-22005](https://github.com/r0ckysec/CVE-2021-22005)
@@ -346,6 +350,8 @@ python3 vcenter_saml_login.py -p data.mdb -t <目标机器内网ip>
 进入 bios 后在 boot 中按 -+ 调整顺序，将 CD-ROM Drive 设置为第一启动项，进入 PE 后在 windows/system32 中将 sethc.exe 改为 sethc.bak，复制一个 cmd 并重命名为 sethc.exe，然后重新勾选强制进入 bios，重启后将 CD-ROM Drive 改回去，然后按五次 shift 弹出 cmd
 
 或者把后门放到启动项里也是一样
+
+- https://mp.weixin.qq.com/s/-cEf0bG8j_8VdoSEeMsNGw
 
 **KonBoot**
 - https://mp.weixin.qq.com/s/Okxc4CdFRPe82UHN4UXQHQ

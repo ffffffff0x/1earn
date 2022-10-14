@@ -3067,6 +3067,37 @@ tomcat 默认的发布 web 项目的目录是:webapps
 
 然后调用路径查询是否安装成功
 
+**隐藏 tomcat 版本号**
+
+需要反编译后修改 catalina.jar
+
+```
+cd lib
+```
+
+使用 `unzip catalina.jar` 解压jar包
+
+进入org/apache/catalina/util 编辑配置文件ServerInfo.properties
+```
+cd org/apache/catalina/util
+vim ServerInfo.properties
+```
+
+修改以下几个配置项
+```
+server.info=Apache Tomcat
+server.number=0.0.0.0
+server.built=Mar 9 2099 00:00:00 UTC
+```
+
+将修改后的信息压缩回jar包
+```
+cd ../../../../
+jar uvf catalina.jar org/apache/catalina/util/ServerInfo.properties
+```
+
+重启Tomcat
+
 ---
 
 ### Wordpress
@@ -5034,7 +5065,8 @@ cargo clean               # 清理目录
 ---
 
 ## 系统监管
-### BaoTa
+
+### aaPanel/BaoTa
 
 **官网**
 - https://www.bt.cn/
@@ -5055,6 +5087,32 @@ cargo clean               # 清理目录
 
 - web: 安装完后会随机生成8位的管理路径,账号和密码,访问即可
 - shell: 使用 `bt` 命令
+
+**卸载**
+
+```bash
+wget http://download.bt.cn/install/bt-uninstall.sh
+sh bt-uninstall.sh
+```
+
+**国际版本**
+
+- https://www.aapanel.com/
+
+- Centos/Fedora
+  ```bash
+  yum install -y wget && wget -O install.sh http://www.aapanel.com/script/install_6.0_en.sh && bash install.sh aapanel
+  ```
+
+- Ubuntu/Deepin
+  ```bash
+  wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && sudo bash install.sh aapanel
+  ```
+
+- Debian
+  ```bash
+  wget -O install.sh http://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh aapanel
+  ```
 
 ---
 
@@ -5541,6 +5599,7 @@ setenforce 0    # 关闭 selinux
   docker stats                                      # 统计信息
 
   docker cp xxx.txt [docker_id]:/home               # 复制 xxx.txt 到容器的 /home 目录下
+  docker cp [docker_id]:/home/test.txt /tmp/xxx.txt # 复制容器 /home/text.txt 文件到宿主机 /tmp 目录
 
   docker hisotry [docker_name/docker_id]            # 查看指定镜像的创建历史
   ```
@@ -5642,6 +5701,13 @@ docker volume create portainer_data
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce   # 部署
 ```
 访问 ip:9000 进入到设置密码界面.
+
+#### ctop
+
+> 用于 docker 版的 top
+
+**仓库地址**
+- https://github.com/bcicen/ctop
 
 ---
 

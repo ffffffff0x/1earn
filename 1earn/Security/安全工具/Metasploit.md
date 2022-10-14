@@ -14,6 +14,10 @@
 
 ---
 
+**简介**
+
+Metasploit 是一个漏洞框架,拥有超过 1700 个漏洞利用程序,大大简化了渗透测试的工作,同时具有模块化的体系结构，渗透测试人员可以很方便的添加或修改exploit.
+
 **项目地址**
 - https://github.com/rapid7/metasploit-framework
 

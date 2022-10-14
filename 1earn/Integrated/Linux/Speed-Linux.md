@@ -875,6 +875,9 @@ truncate -s 1G testfile
 	```bash
 	diff [options] <file1> <file2>
 		e.g. : diff -w name_list.txt name_list_new.txt
+
+	# 对比两个文件夹
+	diff -r <directory1> <directory2>
 	```
 
 - vimdiff
@@ -1214,6 +1217,7 @@ hostnamectl set-hostname test	# 修改 hostname 立即生效且重启也生效
 		grep hosts /etc/nsswitch.conf
 		# 一般只有 files host 如果没有就添加 host
 		```
+	- 上面2个都不行的话,就重启一下试试
 
 **修改 IP**
  - Ubuntu
@@ -1986,6 +1990,12 @@ sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
 **RHEL 7**
 ```bash
 curl -o /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+```
+
+huaweicloud epel
+```bash
+yum install https://mirrors.huaweicloud.com/epel/epel-release-latest-7.noarch.rpm
+rpm --import https://mirrors.huaweicloud.com/epel/RPM-GPG-KEY-EPEL-7
 ```
 
 **RHEL 6**

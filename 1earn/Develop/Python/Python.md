@@ -441,3 +441,6 @@ python3中的`input()`函数:获取当前输入的内容,并将其作为字符�
 * [lxneng/xpinyin](https://github.com/lxneng/xpinyin) - 汉字转拼音,比较旧了,不推荐
 * [letiantian/Pinyin2Hanzi](https://github.com/letiantian/Pinyin2Hanzi) - 拼音转汉字， 拼音输入法引擎， pin yin -> 拼音
 * [fxsjy/jieba](https://github.com/fxsjy/jieba) - 结巴中文分词
+
+**正则**
+- [asweigart/humre](https://github.com/asweigart/humre) - A human-readable regular expression module for Python.

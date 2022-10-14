@@ -64,3 +64,17 @@ sys.stderr = open("/dev/null", 'w')
     pip3 install bandit
     bandit -r path/to/your/code
     ```
+
+### 硬编码
+
+**通用关键词**
+- [APIkey/密钥信息通用关键词](../信息收集/信息收集.md#通用关键词)
+
+### 命令执行
+
+**审计函数**
+```
+os.system
+os.popen
+commands.getstatusoutput
+```

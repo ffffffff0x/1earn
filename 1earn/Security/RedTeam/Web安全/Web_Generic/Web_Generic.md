@@ -97,6 +97,14 @@
 **相关案例**
 - [IKEA官网本地文件包含(LFI)漏洞分析](https://blog.51cto.com/u_15127538/2714257)
 
+**rfi payload**
+- https://github.com/infosec-au/fuzzdb/blob/master/attack-payloads/rfi/
+
+**lfi payload**
+- https://github.com/danielmiessler/SecLists/tree/master/Fuzzing/LFI
+- https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion/Intruders
+- https://github.com/infosec-au/fuzzdb/blob/master/attack-payloads/rfi/rfi.txt
+
 **几种利用方法**
 - 常规利用
 
@@ -482,77 +490,9 @@ WEB-INF 主要包含一下文件或目录:
 
 ### 各类APIkey泄露
 
-**相关文章**
-- [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://medium.com/@ozguralp/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
-- [一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)
-- [企业微信Secret Token利用思路](https://mp.weixin.qq.com/s/LMZVcZk7_1r_kOKRau5tAg)
-- [企业微信Token-Secret利用思路](https://mp.weixin.qq.com/s/MyIUhkxmyw-msCPnhUi92A)
-- [企业微信+腾讯IM密钥泄漏利用](https://r0fus0d.blog.ffffffff0x.com/post/workwx-and-txim/)
-    - https://mp.weixin.qq.com/debug/cgi-bin/apiinfo?t=index&type=%E5%9F%BA%E7%A1%80%E6%94%AF%E6%8C%81&form=%E8%8E%B7%E5%8F%96access_token%E6%8E%A5%E5%8F%A3%20/token
-
-**相关案例**
-- [WooYun-2015-141929 - 神器之奇虎360某命令执行导致网站卫士等多个重要业务官网可getshell（可能影响接入站长）](https://php.mengsec.com/bugs/wooyun-2015-0141929.html)
-- [Flickr Account Takeover using AWS Cognito API](https://hackerone.com/reports/1342088)
-    - [Flickr Account Takeover](https://security.lauritz-holtmann.de/advisories/flickr-account-takeover/)
-
-**相关资源**
-- [daffainfo/all-about-apikey](https://github.com/daffainfo/all-about-apikey)
-- https://github.com/databricks/security-bucket-brigade/blob/3f25fe0908a3969b325542906bae5290beca6d2f/Tools/s3-secrets-scanner/rules.json
+- [APIkey/密钥信息](../../信息收集/信息收集.md#apikey密钥信息)
 
 ---
-
-以下正则来自 <sup>[[一些提取api key的正则表达式](https://bacde.me/post/Extract-API-Keys-From-Regex/)]</sup>
-```re
-'aliyun_oss_url': '[\\w-.]\\.oss.aliyuncs.com',
-'azure_storage': 'https?://[\\w-\.]\\.file.core.windows.net',
-'access_key': '[Aa](ccess|CCESS)_?[Kk](ey|EY)|[Aa](ccess|CCESS)_?[sS](ecret|ECRET)|[Aa](ccess|CCESS)_?(id|ID|Id)',
-'secret_key': '[Ss](ecret|ECRET)_?[Kk](ey|EY)',
-'slack_token': '(xox[p|b|o|a]-[0-9]{12}-[0-9]{12}-[0-9]{12}-[a-z0-9]{32})',
-'slack_webhook': 'https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}',
-'facebook_oauth': '[f|F][a|A][c|C][e|E][b|B][o|O][o|O][k|K].{0,30}['\'\\s][0-9a-f]{32}['\'\\s]',
-'twitter_oauth': '[t|T][w|W][i|I][t|T][t|T][e|E][r|R].{0,30}['\'\\s][0-9a-zA-Z]{35,44}['\'\\s]',
-'heroku_api': '[h|H][e|E][r|R][o|O][k|K][u|U].{0,30}[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}',
-'mailgun_api': 'key-[0-9a-zA-Z]{32}',
-'mailchamp_api': '[0-9a-f]{32}-us[0-9]{1,2}',
-'picatic_api': 'sk_live_[0-9a-z]{32}',
-'google_api': 'AIza[0-9A-Za-z-_]{35}',
-'google_captcha': '6L[0-9A-Za-z-_]{38}',
-'google_oauth': 'ya29\\.[0-9A-Za-z\\-_]+',
-'amazon_aws_access_key_id': 'AKIA[0-9A-Z]{16}',
-'amazon_mws_auth_token': 'amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
-'amazonaws_url': 's3\\.amazonaws.com[/]+|[a-zA-Z0-9_-]*\\.s3\\.amazonaws.com',
-'facebook_access_token': 'EAACEdEose0cBA[0-9A-Za-z]+',
-'mailgun_api_key': 'key-[0-9a-zA-Z]{32}',
-'twilio_api_key': 'SK[0-9a-fA-F]{32}',
-'twilio_account_sid': 'AC[a-zA-Z0-9_\\-]{32}',
-'twilio_app_sid': 'AP[a-zA-Z0-9_\\-]{32}',
-'paypal_braintree_access_token': 'access_token\\$production\\$[0-9a-z]{16}\\$[0-9a-f]{32}',
-'square_oauth_secret': 'sq0csp-[ 0-9A-Za-z\\-_]{43}',
-'square_access_token': 'sqOatp-[0-9A-Za-z\\-_]{22}',
-'stripe_standard_api': 'sk_live_[0-9a-zA-Z]{24}',
-'stripe_restricted_api': 'rk_live_[0-9a-zA-Z]{24}',
-'github_access_token': '[a-zA-Z0-9_-]*:[a-zA-Z0-9_\\-]+@github\\.com*',
-'rsa_private_key' : '-----BEGIN RSA PRIVATE KEY-----',
-'ssh_dsa_private_key' : '-----BEGIN DSA PRIVATE KEY-----',
-'ssh_dc_private_key' : '-----BEGIN EC PRIVATE KEY-----',
-'pgp_private_block' : '-----BEGIN PGP PRIVATE KEY BLOCK-----',
-'json_web_token' : 'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$',
-'JWT':'[= ]ey[A-Za-z0-9_-]*\.[A-Za-z0-9._-]*',
-'ALL_JWT':'[= ]ey[A-Za-z0-9_\/+-]*\.[A-Za-z0-9._\/+-]*',
-```
-
-**Google Maps API**
-- [Unauthorized Google Maps API Key Usage Cases, and Why You Need to Care](https://ozguralp.medium.com/unauthorized-google-maps-api-key-usage-cases-and-why-you-need-to-care-1ccb28bf21e)
-    - [谷歌地图API密钥未授权利用造成的危害](https://nosec.org/home/detail/4036.html)
-- [Google Maps API (Not the Key) Bugs That I Found Over the Years](https://ozguralp.medium.com/google-maps-api-not-the-key-bugs-that-i-found-over-the-years-781840fc82aa)
-- [ozguralp/gmapsapiscanner](https://github.com/ozguralp/gmapsapiscanner) - Used for determining whether a leaked/found Google Maps API Key is vulnerable to unauthorized access by other applications or not.
-    ```bash
-    python3 maps_api_scanner_python3.py
-    python3 maps_api_scanner_python3.py --api-key API_KEY
-
-    # Staticmap、Streetview、Embed API's 有可能会误报
-    ```
-- [Google API key leaked to Public](https://hackerone.com/reports/1065041)
 
 ### SOAP泄露
 
@@ -738,7 +678,8 @@ CSRF 一般使用 form 表单提交请求，而浏览器是不会对 form 表单
 
 **相关工具**
 - [chenjj/CORScanner](https://github.com/chenjj/CORScanner) - 一个旨在发现网站的 CORS 错误配置漏洞的 python 工具
-- [Santandersecurityresearch/corsair_scan](https://github.com/Santandersecurityresearch/corsair_scan)
+- [Santandersecurityresearch/corsair_scan](https://github.com/Santandersecurityresearch/corsair_scan) - Corsair_scan is a security tool to test Cross-Origin Resource Sharing (CORS).
+- [s0md3v/Corsy](https://github.com/s0md3v/Corsy) - CORS Misconfiguration Scanner
 
 **相关靶场**
 - [incredibleindishell/CORS_vulnerable_Lab-Without_Database](https://github.com/incredibleindishell/CORS_vulnerable_Lab-Without_Database)

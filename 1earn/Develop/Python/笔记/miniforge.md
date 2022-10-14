@@ -22,6 +22,9 @@ conda --version     # 测试一下conda是否安装完成
 # 用Python 3.9创建一个名为 f0x 的虚拟环境
 conda create -n f0x python=3.9
 
+# 查看所有环境
+conda info --envs
+
 # 激活虚拟环境
 conda activate f0x
 

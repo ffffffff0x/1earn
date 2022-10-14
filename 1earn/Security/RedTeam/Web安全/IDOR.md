@@ -69,8 +69,9 @@
 
 ## 认证绕过
 
-**相关资源**
+**相关文章**
 - [任意用户密码重置的10种常见姿势](https://www.jianshu.com/p/63c005f9ce83)
+- [这45个账号安全风险，你check了吗？](https://mp.weixin.qq.com/s/RzDHjRbw6DnQxig_QFxV7Q)
 
 ### 未授权访问
 

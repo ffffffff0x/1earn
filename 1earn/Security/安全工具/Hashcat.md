@@ -22,6 +22,7 @@ Hashcat 自称是世界上最快的密码恢复工具。它在2015年之前拥�
 **文章 & Reference**
 - [Hashcat的使用手册总结](https://xz.aliyun.com/t/4008)
 - [hashcat rule的使用](https://darkless.cn/2019/12/26/hashcat-rule/)
+- [Password Cracking in the Cloud with Hashcat and Vast.ai](https://adamsvoboda.net/password-cracking-in-the-cloud-with-hashcat-vastai/)
 
 **相关工具**
 - [nccgroup/hashcrack](https://github.com/nccgroup/hashcrack) - 解包一些散列类型，选择合理的选项并调用 hashcat,hashcat 辅助工具
@@ -529,6 +530,32 @@ hashcat -a 0 hash.txt password.txt -o result.txt
 破解一个原文8个字符的sha256，已知前5个字符。
 ```
 hashcat64 -a 3 --hex-salt -m 1420 b9f5a36134ba3b3b9a41c3ee519899f39fd85f231d9cb2d6c34415fcebe0aa8c:13a03f1f32 --potfile-disable ?b?b?b  -o res3.txt --outfile-format=2 --force
+```
+
+---
+
+### 爆破jwt
+
+> 16500
+
+```bash
+echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.y3kjst36zujMF4HssVk3Uqxf_3bzumNAvOB9N0_uRV4" > hash.txt
+echo "secret123" > pass1.txt
+
+hashcat -m 16500 hash.txt pass1.txt
+```
+
+---
+
+### 爆破 BCrypt
+
+> 3200
+
+```bash
+echo '$2a$05$LhayLxezLhK1LhWvKxCyLOj0j1u.Kj0jZ0pEmm134uzrQlFvQJLF6' > hash.txt
+echo "hashcat" > pass1.txt
+
+hashcat -m 3200 hash.txt pass1.txt
 ```
 
 ---

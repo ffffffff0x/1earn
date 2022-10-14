@@ -29,6 +29,7 @@ PLC 的关键技术在于其内部固化了一个能解释梯形图语言的程�
 - [【工控安全】大工PLC-远程启停攻击实验](https://mp.weixin.qq.com/s/k9tSpQaaeJ7QKSa9cb_bWg)
 - [当PLC偶遇老旧但不乏经典的高级组包工具Hping3](https://www.freebuf.com/vuls/230453.html)
 - [PLC攻击类型研究分析](https://www.freebuf.com/articles/ics-articles/238351.html)
+- [博智工控漏洞挖掘平台实战-西门子PLC漏洞挖掘](https://mp.weixin.qq.com/s/DTxqFzwlTN9OQgHGfp705g)
 
 **漏洞利用框架**
 - [dark-lbp/isf](https://github.com/dark-lbp/isf) - 基于 Python 开发的工控方面漏洞利用框架,类似 MetaSploit

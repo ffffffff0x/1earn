@@ -8,12 +8,8 @@
 
 ---
 
-**基础语法**
-- [GO.md](../../../Develop/Golang/GO.md)
-
----
-
 ## 代码混淆
+
 - [burrowers/garble](https://github.com/burrowers/garble)
 - [unixpickle/gobfuscate](https://github.com/unixpickle/gobfuscate)
 
@@ -27,6 +23,9 @@
 **相关工具**
 - [boy-hack/go-strip](https://github.com/boy-hack/go-strip) - 清除 Go 编译时自带的信息
     ```bash
+    # 打印出读取的信息
+    go-strip -f binary.exe
+    # 消除Go的编译信息
     go-strip -f binary.exe -a -output new.exe
     ```
 
@@ -55,7 +54,6 @@ export GOROOT_FINAL = $GOPATH
 [[ ! $PATH =~ $GOPATH ]] && export PATH=$PATH:$GOPATH/bin
 ```
 
-## GO代码审计
+## Go代码审计
 
-**相关工具**
-- [madneal/sec-dog](https://github.com/madneal/sec-dog)
+- [Go代码审计](./Go安全/Go代码审计.md)

@@ -90,6 +90,16 @@ NFA 是按着正则式去比文本，吃掉一个字符，就把它跟正则式�
 
 ---
 
+## 正则生成
+
+**相关文章**
+- https://houbb.github.io/2021/09/05/Generex
+
+**相关工具**
+- [asciimoo/exrex](https://github.com/asciimoo/exrex) - Irregular methods on regular expressions
+
+---
+
 ## Source & Reference
 
 - [正则表达式](https://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F)

@@ -31,6 +31,7 @@
 - [从shiro-550漏洞品阿里云waf规则引擎](https://mp.weixin.qq.com/s/qF7Jgiev5B7zLEHwGXry3A)
 - [你的扫描器可以绕过防火墙么？（一）](https://paper.seebug.org/1600/)
 - [CTF中的命令执行绕过](https://mp.weixin.qq.com/s/fs-IKJuDptJeZMRDCtbdkw)
+- [WAF的识别、检测、绕过原理与实战案例](https://www.freebuf.com/articles/web/336869.html)
 
 **导图**
 - WAF绕过思路 [png](../../../../assets/img/Security/RedTeam/安防设备/Bypass技巧/WAF绕过思路.png)
@@ -307,3 +308,10 @@ urlencode 和 form-data POST 在提交数据的时候有两种方式,第一种�
 ## SSRF
 
 - [SSRF 绕过技巧](../Web安全/Web_Generic/SSRF.md#绕过技巧)
+
+---
+
+## RASP
+
+**相关文章**
+- [RASP的安全攻防研究实践](https://mp.weixin.qq.com/s/21WHqN4F68z_O3ju0QFVrg)

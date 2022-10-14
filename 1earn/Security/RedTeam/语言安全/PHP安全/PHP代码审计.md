@@ -2,15 +2,17 @@
 
 ---
 
-**PHP代码审计环境搭建**
+**环境搭建**
 
-推荐用 phpstudy 搭建 php 代码审计的环境 ，简单快捷，切换 php 版本也很方便，再配置好 Xdebug 在 PHPstorm 即可远程调试。
+推荐用 phpstudy 搭建 php 代码审计的环境，简单快捷，切换 php 版本也很方便，再配置好 Xdebug 在 PHPstorm 即可远程调试。
 - 下载地址: https://www.xp.cn/download.html
 
 相关文章
 - [PHP代码审计_搭建及其环境配置](https://www.modb.pro/db/184384)
 
-**PHP代码审计相关工具**
+如果是云服务器,推荐使用 aapanel 部署 lnmp 环境,很方便
+
+**相关工具**
 - [LoRexxar/Kunlun-M](https://github.com/LoRexxar/Kunlun-M)
     ```bash
     git clone --depth 1 https://github.com/LoRexxar/Kunlun-M.git
@@ -24,7 +26,7 @@
     ```
 - [ecriminal/phpvuln](https://github.com/ecriminal/phpvuln)
 
-**PHP代码审计相关文章**
+**相关文章**
 - [PHP WebShell代码后门的一次检查](https://www.freebuf.com/articles/web/182156.html)
 - [记一次渗透测试](https://www.t00ls.net/articles-58440.html)
 - [webshell8.com 最新过waf大马分析。继续分析级去后门方法！](https://www.t00ls.net/thread-44654-1-1.html)
@@ -33,11 +35,18 @@
 - [代码审计-常见php威胁函数（上）](https://mp.weixin.qq.com/s/DdhiHBdOMLIOsa8qMXURHA)
 - [代码快速审计详解](https://mp.weixin.qq.com/s/ki-aVPU4FtmjtkZFuK4v-A)
 
-**PHP代码审计相关靶场**
+**相关靶场**
 - [yaofeifly/PHP_Code_Challenge](https://github.com/yaofeifly/PHP_Code_Challenge)
 
 **php代码解密**
 - [php免费在线解密-PHP在线解密](http://dezend.qiling.org/free.html)
+
+---
+
+## 硬编码
+
+**通用关键词**
+- [APIkey/密钥信息通用关键词](../../信息收集/信息收集.md#通用关键词)
 
 ---
 
@@ -68,6 +77,18 @@ PHP 的配置文件 allow_url_fopen 和 allow_url_include 设置为 ON
 
 ## 文件操作
 
+**相关文章**
+- [The End of AFR](https://blog.zeddyu.info/2022/09/27/2022-09-28-TheEndOfAFR/)
+
+**相关工具**
+- [wupco/PHP_INCLUDE_TO_SHELL_CHAR_DICT](https://github.com/wupco/PHP_INCLUDE_TO_SHELL_CHAR_DICT)
+
+**相关案例**
+- https://github.com/Taiwan-Tech-WebSec/Bug-Report/issues/91
+
+**ctf writeup**
+- [Solving "includer's revenge" from hxp ctf 2021 without controlling any files](https://gist.github.com/loknop/b27422d355ea1fd0d90d6dbc1e278d4d)
+
 **文件操作类威胁函数**
 ```
 file_put_contents
@@ -81,6 +102,16 @@ fgets()
 parse_ini_file()
 show_source()
 file()
+file_get_contents
+```
+
+**关键词**
+```
++filename+
++file+
+&file_name=
+&filename=
+&file=
 ```
 
 ---
@@ -167,6 +198,11 @@ fsockopen()
 curl_exec()
 ```
 
+**关键词**
+```
+file_get_contents($
+```
+
 **更多内容**
 - [SSRF](../../Web安全/Web_Generic/SSRF.md)
 
@@ -207,3 +243,35 @@ file_get_contents 的 gopher 协议不能 UrlEncode
 ## PHP反序列化
 
 - [PHP反序列化](./PHP反序列化.md)
+
+---
+
+## 命令执行
+
+**审计函数**
+```
+exec()
+system()
+shell_exec()
+passthru()
+pcntl_exec()
+popen()
+proc_open()
+```
+
+---
+
+## 代码执行
+
+**审计函数**
+```
+eval()
+assert()
+create_function()
+array_map()
+call_user_func()
+call_user_func_array()
+array_filter()
+usort()
+uasort()
+```

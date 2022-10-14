@@ -12,6 +12,10 @@
 
 ---
 
+**简介**
+
+Burp Suite 是进行 Web 应用安全测试的一个集成平台，无缝融合各种安全工具并提供全面的接口适配，支持完整的 Web 应用测试流程，从最初的映射和应用程序的攻击面分析到发现和利用安全漏洞等领域均适用。
+
 **官网**
 - https://portswigger.net/
 
@@ -110,6 +114,11 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 
 ![](../../../assets/img/Security/安全工具/BurpSuite/49.png)
 
+**SwitchyOmega+Burpsuite+Chrome无法抓取127.0.0.1/localhost问题**
+
+- https://syunaht.com/p/1006188223.html
+    - 在 SwitchyOmega 插件的不代理地址列表加个<-loopback>强制让谷歌浏览器代理本地回环
+
 ---
 
 ### 插件
@@ -163,6 +172,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [federicodotta/Brida](https://github.com/federicodotta/Brida) - 用于 Burp Suite 与 Frida 协作的插件
 - [hvqzao/burp-wildcard](https://github.com/hvqzao/burp-wildcard) - Burp extension intended to compact Burp extension tabs by hijacking them to own tab.
 - [sleeyax/burp-awesome-tls](https://github.com/sleeyax/burp-awesome-tls) - Fix Burp Suite's horrible TLS stack & spoof any browser fingerprint
+- [KagamigawaMeguri/burp-UnicodeAutoDecode](https://github.com/KagamigawaMeguri/burp-UnicodeAutoDecode) - Unicode自动转码为中文
 
 #### 漏洞检测
 
@@ -963,3 +973,11 @@ http 192.168.1.xxx 8080
 可以在 burp 中查看相应的流量了
 
 ![](../../../assets/img/Security/安全工具/BurpSuite/52.png)
+
+---
+
+## 蓝队反制
+
+**相关文章**
+- [【技术分享】反制爬虫之Burp Suite RCE](https://mp.weixin.qq.com/s/FHvvUOLskvQ9QqVMboU8ng)
+- [HTML Injection in Swing can disclose netNTLM hash or cause DoS](https://hackerone.com/reports/1054382)

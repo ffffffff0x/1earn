@@ -91,8 +91,6 @@ nmap 192.168.17.130
 目测可以注入,尝试了简单 payload,下面选择直接跑 sqlmap
 
 ---
----
----
 
 # 中期-漏洞利用
 ## sql注入
@@ -113,8 +111,6 @@ sqlmap -u http://192.168.17.130/checklogin.php
 | 2  | robert   | ADGAdsafdfwt4gadfga== |
 ```
 
----
----
 ---
 
 # 后期-拿shell-提权

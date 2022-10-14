@@ -20,6 +20,31 @@ DNS(Domain Name System，域名管理系统) 是因特网的重要基础。它�
 
 ---
 
+## CAA 记录
+
+**相关文章**
+- [证书颁发机构授权（CAA）](https://letsencrypt.org/zh-cn/docs/caa/)
+
+**支持设置 CAA 记录的 DNS 提供商列表**
+- https://sslmate.com/caa/support
+
+**辅助工具**
+- [CAA 记录生成器](https://sslmate.com/caa/)
+
+**什么是 CAA 记录?**
+
+CAA是一种 DNS 记录，它允许站点所有者指定允许哪些证书颁发机构（CA）颁发包含其域名的证书。
+
+该记录在 2013 年由 RFC 6844标准化，以允许 CA “降低意外颁发证书的风险”。默认情况下，每个公共 CA 在验证申请者的域名控制权后可以为任何在公共 DNS 中的域名颁发证书。 这意味着如果某个 CA 的验证流程出现错误，所有域名都有可能受到影响。 CAA 记录为域名持有者提供了降低这类风险的方法。
+
+**放置 CAA 记录的位置**
+
+可以在主域名或任何深度的子域名上设置 CAA 记录。 例如，如果你有 `www.community.example.com` 这个域名，你可以在该域名、`community.example.com` 或 `example.com` 上设置 CAA 记录。 CA 将从左到右检查每个版本，并在看到任何 CAA 记录后立即停止。 因此，`community.example.com` 上的 CAA 记录优先于 `example.com` 上的记录。 大多数添加 CAA 记录的人都希望将它们添加到注册域名（`example.com`），这样它们对所有子域名均有效。 此外请注意，子域名的 CAA 记录优先于其父域名，无论该记录相比于主域更宽松或更具限制性。 因此，子域名可以放松父域名所施加的限制。
+
+与所有其他 DNS 请求一样，CAA 验证遵循 CNAME 记录。 如果 `www.community.example.com` 被设置为 `web1.example.net` 的 CNAME，CA 将首先请求 `www.community.example.com` 的 CAA 记录，然后发现该域名有一个 CNAME 而不是 CAA 记录后，将请求 `web1.example.net` 的 CAA 记录。 请注意，如果域名具有 CNAME 记录，则根据 DNS 标准它不能拥有任何其他记录。
+
+---
+
 ## DNS安全
 
 **相关文章**

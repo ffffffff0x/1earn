@@ -13,6 +13,14 @@
 
 ---
 
+## 启动项
+
+```bash
+ls /Library/LaunchAgents
+```
+
+---
+
 ## 代理
 
 ```bash
@@ -77,7 +85,6 @@ defaults delete com.apple.dock autohide-time-modifier && killall Dock
 
 # 恢复默认启动坞响应时间
 defaults delete com.apple.Dock autohide-delay && killall Dock
-
 ```
 
 **左右光标移动速度**
@@ -85,6 +92,19 @@ defaults delete com.apple.Dock autohide-delay && killall Dock
 系统偏好设置 -> 键盘 -> 键盘
 - 按键重复：对应的是移动速度；
 - 重复前延迟：对应的是移动前的反应时间。
+
+**mac 下 sudo 用 touchid 代替密码输入**
+
+```
+sudo vim /etc/pam.d/sudo
+
+在第二行添加
+auth sufficient pam_tid.so
+```
+
+保存的时候可能要用 `:wq!`
+
+来自文章: https://sixcolors.com/post/2020/11/quick-tip-enable-touch-id-for-sudo/
 
 ---
 
@@ -199,6 +219,12 @@ brew services start code-server
 export PATH_TO_FX=/Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/javafx-sdk-17.0.2/lib
 ```
 
+**go**
+
+```
+brew install go
+```
+
 **php**
 
 先查询有哪些 php 的版本，M1 目前只支持部分版本
@@ -251,6 +277,15 @@ cd
 bash Miniforge3-MacOSX-arm64.sh
 ```
 
+**pyenv**
+
+```bash
+brew install pyenv
+
+pyenv init
+# 会提示你修改 ~/.zshrc 文件,复制进去即可
+```
+
 **CotEditor**
 
 - https://github.com/coteditor/CotEditor
@@ -280,6 +315,18 @@ nginx -s stop
 配置文件所在目录
 ```
 /opt/homebrew/etc/nginx/
+```
+
+**cloudflared**
+
+```bash
+brew install cloudflared
+```
+
+**cmake**
+
+```bash
+brew install cmake
 ```
 
 ---

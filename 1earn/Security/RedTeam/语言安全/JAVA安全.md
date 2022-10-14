@@ -13,6 +13,13 @@
 
 ---
 
+## 代码混淆
+
+- https://allatori.com/
+    - [lqs1848/AllatoriCrack](https://github.com/lqs1848/AllatoriCrack) - 破解 Java 混淆工具 Allatori
+
+---
+
 ## 反编译
 
 **在线反编译工具**
@@ -21,6 +28,7 @@
 **反编译工具**
 - [skylot/jadx](https://github.com/skylot/jadx) - Dex to Java decompiler
 - [java-decompiler/jd-gui](https://github.com/java-decompiler/jd-gui) - A standalone Java Decompiler GUI
+- [deathmarine/Luyten](https://github.com/deathmarine/Luyten) - An Open Source Java Decompiler Gui for Procyon
 
 ---
 

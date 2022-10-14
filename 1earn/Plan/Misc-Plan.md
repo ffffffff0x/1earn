@@ -68,8 +68,12 @@ CSCRIPT OSPP.VBS /DSTATUS
 ## DNS
 
 **快速刷新 DNS 缓存**
-```
+```bash
+# windows
 ipconfig /flushdns
+
+# macOS 12
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 ```
 
 **软件方案**
@@ -483,4 +487,31 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 ```
 choco install notepadplusplus.install
 choco install 7zip
+```
+
+**家庭版开启 rdp 功能**
+- https://github.com/stascorp/rdpwrap
+    - https://github.com/asmtron/rdpwrap/blob/master/binary-download.md
+- 运行 autoupdate.bat 时, 如果一直卡在网络检测的地方, 直接修改脚本 282 行 `ping google.com`, 改为 `ping 127.0.0.1` 就行,顺便吧几个下载的地址转为国内可以访问的地址
+- 如果检查项全部ok，还是连接不了，打开管理员cmd
+    ```
+    net stop termService
+    net start termService
+    ```
+    重启在尝试
+
+---
+
+## .NET Framework
+
+```
+Microsoft .NET Framework 4.6.1
+https://www.microsoft.com/en-us/download/details.aspx?id=49982
+
+Microsoft .NET Framework 3.5
+https://dotnet.microsoft.com/en-us/download/dotnet-framework/net35-sp1
+
+Microsoft .NET Framework 3.5(在线包)
+https://www.microsoft.com/zh-cn/download/details.aspx?id=21
+https://www.microsoft.com/zh-cn/download/confirmation.aspx?id=25150
 ```

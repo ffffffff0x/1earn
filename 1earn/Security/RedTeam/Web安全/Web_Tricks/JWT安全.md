@@ -45,6 +45,10 @@ jwt.encode({'字段1':'test','字段2':'123456'},algorithm='none',key='')
     ```
 - [aress31/jwtcat](https://github.com/aress31/jwtcat) - A CPU-based JSON Web Token (JWT) cracker and - to some extent - scanner.
 - [ahwul/jwt-hack](https://github.com/hahwul/jwt-hack) - jwt-hack is tool for hacking / security testing to JWT. Supported for En/decoding JWT, Generate payload for JWT attack and very fast cracking(dict/brutefoce)
+- hashcat
+    ```
+    hashcat -m 16500 hash.txt pass1.txt
+    ```
 
 ---
 

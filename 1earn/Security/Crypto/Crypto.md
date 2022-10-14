@@ -926,7 +926,9 @@ MD5("")= d41d8cd98f00b204e9800998ecf8427e
 md5sum xxx.txt
 ```
 
-**hash 碰撞**
+#### hash 碰撞
+
+**fastcoll**
 
 下载地址
 - http://www.win.tue.nl/hashclash/fastcoll_v1.0.0.5.exe.zip
@@ -966,6 +968,15 @@ url编码 test%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00
 ```
 
 可以看到，1.txt 和 2.txt 文件二进制 md5 加密后的结果完全相同。
+
+**monomorph**
+
+- https://github.com/DavidBuchanan314/monomorph
+    ```bash
+    git clone https://github.com/DavidBuchanan314/monomorph.git
+    cd monomorph
+    python3 monomorph.py bin/monomorph.linux.x86-64.benign bin/monomorph.linux.x86-64.meterpreter sample_payloads/bin/linux.x64.meterpreter.bind_tcp.bin
+    ```
 
 ---
 
@@ -2439,3 +2450,4 @@ PPEncode可以把Perl代码转换成只有英文字母的字符串。
 
 **在线工具**
 - [时间戳(Unix timestamp)转换工具](https://tool.lu/timestamp/)
+- https://www.bejson.com/convert/unix/

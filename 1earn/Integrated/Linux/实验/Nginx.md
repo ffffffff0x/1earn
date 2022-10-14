@@ -241,6 +241,27 @@ obs 上设置
 
 ---
 
+## 隐藏 Nginx 版本号
+
+编辑 `nginx.conf`
+
+在 `http{}` 段中加入 `server_tokens off;`
+
+---
+
+## 413 Request Entity Too Large
+
+nginx 默认上传文件的大小是 1M，可 nginx 的设置中修改
+
+编辑 `nginx.conf`
+
+在 `http{}` 段中加入 `client_max_body_size 20m`
+
+将允许最大上传的大小设为 20m
+
+---
+
 ## Source & Reference
 
 - https://linux.cn/article-14159-1.html
+- https://blog.csdn.net/fdipzone/article/details/45544497

@@ -86,8 +86,6 @@ dirhunt http://192.168.141.138/
 
 没啥有用的东西,用 joomscan 试试,这个是 OWASP 的一个专门扫描 Joomla 漏洞的工具
 
-> 注: 如果 git速度太慢，请参考 [Misc-Plan](../../../../Plan/Misc-Plan.md#git) 中给 git 或终端走代理的方法
-
 ```bash
 git clone https://github.com/rezasp/joomscan.git
 cd joomscan

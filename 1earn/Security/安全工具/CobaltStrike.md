@@ -55,6 +55,10 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
     只需删除 resources 文件夹和 scripts 文件夹即可去除汉化
     ```
 - [ca3tie1/CrackSleeve](https://github.com/ca3tie1/CrackSleeve)
+- [darkr4y/geacon](https://github.com/darkr4y/geacon) - Practice Go programming and implement CobaltStrike's Beacon in Go
+- [TheKingOfDuck/geacon](https://github.com/TheKingOfDuck/geacon) - 修改自geacon的多功能linux运维管理工具
+    - [Geacon代码学习&上线指南](https://xz.aliyun.com/t/7259)
+- [linshaoSec/csdroid](https://github.com/linshaoSec/csdroid) - cobaltstrike手机客户端,cobaltstrike手机版,cs手机版，cobaltstrike android
 
 ---
 
@@ -1167,6 +1171,9 @@ gcc test.c -fPIC -shared -o lib_rebind_test.so
 
 另外，mac m1 下生成的 shell ，x86 机器是用不了的，所以建议 cs 全套都在 x86 的机器上弄
 
+**mac 🐎**
+- [Macos钓鱼上线CS踩坑流程](https://mp.weixin.qq.com/s/ZptprvkNXRP0PNpmoXpbFg)
+
 ---
 
 ## CS 样本
@@ -1564,30 +1571,68 @@ min_alloc  |   4096    |  Minimum amount of memory to request for injected conte
 startrwx   |   true  |    Use RWX as initial permissions for injected content. Alternative is RW.
 userwx  |  false |  Use RWX as final permissions for injected content. Alternative is RX.
 
+**compile_time参数**
+- [CS4.5修复C2Profile中本地时间不一致问题【增加convertDate】](https://mp.weixin.qq.com/s/Ta2TBrJSWpaZ4J4b4fL8vA)
+
 ---
 
 ## 蓝队反制
 
-**特征分析**
-- 相关文章
-    - [CobaltStrike WebServer特征分析](https://mp.weixin.qq.com/s/hNFVTRINKbBiOQiOf0WTMA)
+### 服务端特征分析
 
-**beacon 解析**
+**相关文章**
+- [CobaltStrike WebServer特征分析](https://mp.weixin.qq.com/s/hNFVTRINKbBiOQiOf0WTMA)
+
+### beacon检测
+
+**相关文章**
+- [Yara入门——如何通过Yara规则匹配CobaltStrike恶意样本](https://www.anquanke.com/post/id/211501)
+- [Decoding Cobalt Strike: Understanding Payloads](https://decoded.avast.io/threatintel/decoding-cobalt-strike-understanding-payloads/)
+
+**相关工具**
+- [huoji120/CobaltStrikeDetected](https://github.com/huoji120/CobaltStrikeDetected) - 40 行代码检测到大部分 CobaltStrike 的 shellcode
+- [CCob/BeaconEye](https://github.com/CCob/BeaconEye) - Hunts out CobaltStrike beacons and logs operator command output
+
+**检测规则**
+- https://github.com/avast/ioc/tree/master/CobaltStrike
+
+**Hook Heap**
+- [Hook Heaps and Live Free](https://www.arashparsa.com/hook-heaps-and-live-free/)
+
+**Sleep Mask Kit**
+- [Sleeping with a Mask On (Cobalt Strike)](https://adamsvoboda.net/sleeping-with-a-mask-on-cobaltstrike/)
+- [Detecting Cobalt Strike with memory signatures](https://www.elastic.co/blog/detecting-cobalt-strike-with-memory-signatures)
+
+### beacon分析
 
 由于 beacon 中存在 C2 的信息,部分工具可以直接解析 beacon 中的 C2 信息,甚至模拟上线干扰服务器
 
+**相关工具**
 - [Sentinel-One/CobaltStrikeParser](https://github.com/Sentinel-One/CobaltStrikeParser) - Python parser for CobaltStrike Beacon's configuration
     ```
     python parse_beacon_config.py beacon.exe
     ```
+- https://blog.didierstevens.com/2021/12/21/update-1768-py-version-0-0-11/ - Beacon 进程 Dump 分析工具
+
+### 上线包干扰
+
+**相关工具**
 - [hariomenkel/CobaltSpam](https://github.com/hariomenkel/CobaltSpam) - can be used to spam a CobaltStrike server with fake beacons
 - [jas502n/CS_mock](https://github.com/jas502n/CS_mock) - 模拟cobalt strike beacon上线包.
-- [huoji120/CobaltStrikeDetected](https://github.com/huoji120/CobaltStrikeDetected) - 40 行代码检测到大部分 CobaltStrike 的 shellcode
-- [CCob/BeaconEye](https://github.com/CCob/BeaconEye) - Hunts out CobaltStrike beacons and logs operator command output
+- [LiAoRJ/CS_fakesubmit](https://github.com/LiAoRJ/CS_fakesubmit) - 一个可以伪装上线Cobaltstrike的脚本
 
-**爆破 cobaltstrike teamserver 密码**
-```bash
-git clone https://github.com/ryanohoro/csbruter
-cd csbruter
-cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
-```
+### 爆破 cobaltstrike teamserver 密码
+
+- [ryanohoro/csbruter](https://github.com/ryanohoro/csbruter)
+    ```bash
+    git clone https://github.com/ryanohoro/csbruter
+    cd csbruter
+    cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
+    ```
+
+### CVE-2022-39197
+
+- https://www.cobaltstrike.com/blog/out-of-band-update-cobalt-strike-4-7-1/
+- https://github.com/TomAPU/poc_and_exp/tree/master/CVE-2022-39197
+- [CS4.5粗略预防CVE-2022-39197 XSS RCE](https://mp.weixin.qq.com/s/vF7DPPCpr299ENudiFgDjQ)
+- [最新CS RCE曲折的复现路](https://mp.weixin.qq.com/s/l5e2p_WtYSCYYhYE0lzRdQ)

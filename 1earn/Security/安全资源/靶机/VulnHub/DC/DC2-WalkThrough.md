@@ -170,8 +170,6 @@ Hope you found another entry point.
 
 flag 提示,如果 wordpress 打不下来,就得换一个入口
 
-![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC2/6.png)
-
 上面使用了 wpscan 进行了扫描和爆破,但是漏洞扫描没有任何结果,因为现在 wpscan 扫描漏洞需要 API Token 的支持,所以需要访问 https://wpvulndb.com/users/sign_up 注册一个账号,获得 API Token
 ```bash
 wpscan --url http://dc-2/ --api-token 这边填你的APIToken

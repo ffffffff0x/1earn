@@ -104,8 +104,6 @@ Staff 库跑出了个 hash `856f5de590ef37314e7c3bdf6f8a66dc` transorbital1 ,use
 
 参数 `file` 和 DC5 一样
 
-![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC9/10.jpg)
-
 看看 passwd
 
 ![](../../../../../../assets/img/Security/安全资源/靶机/VulnHub/DC/DC9/11.png)

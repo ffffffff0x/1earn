@@ -45,9 +45,6 @@
 - [How to hack a company by circumventing its WAF through the abuse of a different security appliance and win bug bounties](https://www.redtimmy.com/how-to-hack-a-company-by-circumventing-its-waf-through-the-abuse-of-a-different-security-appliance-and-win-bug-bounties/)
 - [挖到这个高危SSRF漏洞，小伙伴们都惊呆了！](https://www.freebuf.com/vuls/265163.html)
 
-**payload**
-- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
-
 **相关工具**
 - [In3tinct/See-SURF](https://github.com/In3tinct/See-SURF) - python 写的 ssrf 参数扫描工具
 - [swisskyrepo/SSRFmap](https://github.com/swisskyrepo/SSRFmap) - 自动化 Fuzz SSRF 开发工具
@@ -57,6 +54,10 @@
 
 **相关靶场**
 - [incredibleindishell/SSRF_Vulnerable_Lab](https://github.com/incredibleindishell/SSRF_Vulnerable_Lab) - This Lab contain the sample codes which are vulnerable to Server-Side Request Forgery attack
+
+**payload**
+- [bugbounty-cheatsheet/cheatsheets/ssrf.md](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/ssrf.md)
+- https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery
 
 **相关资源**
 - [cujanovic/SSRF-Testing](https://github.com/cujanovic/SSRF-Testing) - SSRF (Server Side Request Forgery) testing resources
@@ -564,6 +565,10 @@ python2 test.py
 当第一次访问时，解析为外网 ip 通过 ssrf 检测，
 
 第二次访问时，也即业务访问时，ip 会指向 127.0.0.1，从而达到了绕过目的。
+
+**修复方案**
+
+在 Check 时获取 IP 地址，后面的请求绑定此 IP
 
 #### TLS Poison
 

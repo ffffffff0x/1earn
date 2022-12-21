@@ -225,3 +225,10 @@ SSL/TLS Pinning 提供了两种锁定方式： Certificate Pinning 和 Public Ke
 
 **Payload**
 - https://www.exploit-db.com/exploits/39328
+
+---
+
+## 绕过ROOT检测
+
+**相关文章**
+- [How Development Skills Translate to Reverse Engineering: Using LLDB to Reverse Engineer an Android App](https://www.guardsquare.com/blog/how-development-skills-translate-to-reverse-engineering)

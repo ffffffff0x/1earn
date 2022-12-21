@@ -61,6 +61,7 @@
 - [quentinhardy/msdat](https://github.com/quentinhardy/msdat) - Microsoft SQL Database Attacking Tool
 - [uknowsec/SharpSQLTools](https://github.com/uknowsec/SharpSQLTools) - 可上传下载文件，xp_cmdshell与sp_oacreate执行命令回显和clr加载程序集执行相应操作。
 - [evi1ox/MSSQL_BackDoor](https://github.com/evi1ox/MSSQL_BackDoor)
+- [Ridter/PySQLTools](https://github.com/Ridter/PySQLTools) - Mssql利用工具
 
 ---
 

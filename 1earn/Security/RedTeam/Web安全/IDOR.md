@@ -51,6 +51,7 @@
 - [登录点测试的那些事](https://xz.aliyun.com/t/8185)
 - [基于业务场景的漏洞挖掘](https://mp.weixin.qq.com/s/a6QvgLFCO4rCS3FRYZ3lug)
 - [针对医疗系统的快速漏洞挖掘思路](https://mp.weixin.qq.com/s/Y_JF-LyvEEW_In_HdtHbFg)
+- [通过响应时间爆破用户名](https://mp.weixin.qq.com/s/k5cNM73_UA1kvBPzVaXoug)
 
 **案例**
 - [挖洞经验 | 连接多个漏洞获取管理员访问权限](https://www.freebuf.com/articles/web/177461.html)
@@ -565,6 +566,7 @@ wget -d --header="Host: localhost" https://target/
     - [大疆某处支付逻辑漏洞可1元买无人机](https://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2016-0194751)
     - [挖掘网站支付漏洞中突然想到的一个骚思路](https://www.t00ls.net/thread-53256-1-2.html)
     - http://www.0dayhack.net/index.php/634/
+    - [当我尝试半价预定特斯拉汽车](https://mp.weixin.qq.com/s/iolYdCb9GX44HJD4inkuQA)
 
 - Tips:
     - 数量改为小数、负数、0

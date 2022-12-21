@@ -2,6 +2,19 @@
 
 ---
 
+**Error: Error acquiring the state lock**
+
+```
+terraform force-unlock -force xxxxx-xxxx-xxx-xxxxx
+```
+
+```
+ps aux | grep terraform
+sudo kill -9 <process_id>
+```
+
+---
+
 ## vultr providers
 
 ### vps
@@ -89,7 +102,7 @@ terraform destroy
 
 ### ecs
 
-- https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/auto_provisioning_group
+- https://registry.terraform.io/providers/aliyun/alicloud/latest/docs/resources/instance
 
 **main.tf**
 ```conf
@@ -221,7 +234,7 @@ terraform {
   required_providers {
     alicloud = {
       source  = "aliyun/alicloud"
-      version = "1.171.0"
+      version = "1.190.0"
     }
   }
 }
@@ -363,9 +376,25 @@ terraform destroy
 
 ---
 
-## Tips
+## huaweiyun providers
 
-**随机密码**
+### ecs
+
+- https://registry.terraform.io/providers/huaweicloud/huaweicloud/latest/docs/resources/compute_instance
+
+---
+
+## aws providers
+
+### ec2
+
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
+
+---
+
+
+## 随机密码
+
 ```conf
 # main.tf
 
@@ -382,12 +411,14 @@ resource "aws_db_instance" "example" {
 }
 ```
 
-**json 输出**
+## json 输出
+
 ```
 terraform output -json
 ```
 
-**变量**
+## 变量
+
 - https://lonegunmanb.github.io/introduction-terraform/3.3.%E8%BE%93%E5%85%A5%E5%8F%98%E9%87%8F.html
 
 ```conf
@@ -412,7 +443,7 @@ EOF
 terraform apply -var="test_ip=1.14.5.14"
 ```
 
-**插件缓存**
+## 插件缓存
 
 - linux
   ```
@@ -425,3 +456,40 @@ terraform apply -var="test_ip=1.14.5.14"
   ```
   plugin_cache_dir = "$HOME/.terraform.d/plugin-cache"
   ```
+
+## providers 镜像
+
+- https://juejin.cn/post/7103449491524550664
+
+terraform v0.13 或者更高的版本中提供了一个 providers mirror 命令，可以下载当前配置的 provider 到本地的目录中。然后可以通过下载的目录配置 network mirror 等。
+
+在命令行配置文件可以定义 provider_installation 块配置来修改 terraform 默认的插件安装行为。所以可以指定为从本地/network mirror 安装初始化 provider。
+
+在模版的目录下执行下载命令
+```
+terraform.exe providers mirror "."
+```
+
+下载完成后会生成类似一个如下结构的目录，这个目录结构可以直接当作本地filesystem mirror使用。如果要配置network mirror,使用此目录结构为站点目录。
+```
+└─registry.terraform.io
+    ├─hashicorp
+    │  └─local
+    └─tencentcloudstack
+        └─tencentcloud
+```
+
+将下载的目录移动到 /tmp
+
+编辑 ~/.terraformrc
+```
+provider_installation {
+    filesystem_mirror {
+        path = "/tmp/terraform/mirror"
+    }
+}
+```
+
+此时再次 init,就会从 /tmp 去加载 providers
+
+对于不同的 providers ,需要手动去一个个下载,然后移动到指定目录下,虽然麻烦,但是可以有效提高init的速度.

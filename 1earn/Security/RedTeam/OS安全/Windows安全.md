@@ -47,8 +47,8 @@
         * [mscash](#mscash)
         * [GPP](#gpp)
         * [PTT](#ptt)
-            * [Silver_Tickets](#silver_tickets)
-            * [Golden_Tickets](#golden_tickets)
+            * [Silver_Tickets](#silver-tickets)
+            * [Golden_Tickets](#golden-tickets)
         * [NTLM中继](#NTLM中继)
         * [NTLMv1 攻击面](#ntlmv1-攻击面)
         * [Kerberoasting](#kerberoasting)
@@ -405,6 +405,9 @@ gpupdate /force                                             //更新组策略
 
 **ProcDump**
 - [ProcDump](../../安全工具/mimikatz.md#procdump)
+
+**PPLdump**
+- [PPLdump](../../安全工具/mimikatz.md#PPLdump)
 
 **windbg 中载入 mimilib 模块**
 - [windbg 中载入 mimilib 模块](../../安全工具/mimikatz.md#windbg-中载入-mimilib-模块)
@@ -1211,7 +1214,7 @@ Get-DecryptedCpassword "9XLcz+Caj/kyldECku6lQ1QJX3fe9gnshWkkWlgAN1U"
 **相关工具**
 - [gentilkiwi/kekeo](https://github.com/gentilkiwi/kekeo) - A little toolbox to play with Microsoft Kerberos in C
 
-##### Silver_Tickets
+##### Silver Tickets
 
 **描述**
 
@@ -1287,7 +1290,7 @@ PS : Server Session Key 在未发送 Ticket 之前，服务器是不知道 Serve
 
 ---
 
-##### Golden_Tickets
+##### Golden Tickets
 
 **描述**
 
@@ -1369,6 +1372,14 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具
 - Golden Ticket 生成 TGT 票据
 - Silver Ticket 生成 TGS 票据
 
+##### Diamond Ticket
+
+**相关文章**
+- [A DIAMOND IN THE RUFF](https://www.trustedsec.com/blog/a-diamond-in-the-ruff/)
+
+**利用手段**
+- https://github.com/GhostPack/Rubeus#diamond
+
 ---
 
 #### NTLM中继
@@ -1395,6 +1406,8 @@ mimikatz 的 Golden_Tickets 相关操作见 [mimikatz 笔记](../../安全工具
 - https://b404.xyz/2019/07/23/Study-Windows-Authentication/#kerberoasting
 - [域渗透——Kerberoasting](https://3gstudent.github.io/%E5%9F%9F%E6%B8%97%E9%80%8F-Kerberoasting)
 - [Kerberos协议之Kerberoasting和SPN](https://y4er.com/posts/kerberos-kerberoasting-spn/)
+- [SPN的相关利用](https://xz.aliyun.com/t/10106)
+- [New Attack Paths? AS Requested Service Tickets](https://www.semperis.com/blog/new-attack-paths-as-requested-sts/)
 
 **描述**
 
@@ -1713,6 +1726,7 @@ AMSI 内置于 Powershell 中，所以会经常见到很多 Powershell 恶意利
 **相关工具**
 - [Flangvik/NetLoader](https://github.com/Flangvik/NetLoader) - Loads any C# binary in mem, patching AMSI + ETW.
 - [mdsecactivebreach/SharpPack](https://github.com/mdsecactivebreach/SharpPack) - SharpPack is a toolkit for insider threat assessments that lets you defeat application whitelisting to execute arbitrary DotNet and PowerShell tools.
+- [D1rkMtr/PatchAMSI](https://github.com/D1rkMtr/PatchAMSI) - Bypass AMSI by patching AmsiScanBuffer api memory
 
 **改变调查结果**
 
@@ -1758,6 +1772,7 @@ ETW(Event Trace for Windows) 是一个高效的内核级别的事件追踪机制
 - [两种最新Bypass ETW的方法](https://www.anquanke.com/post/id/202797)
 - [基于内存补丁ETW的绕过](https://idiotc4t.com/defense-evasion/memory-pacth-bypass-etw)
 - [Hiding your .NET - ETW](https://blog.xpnsec.com/hiding-your-dotnet-etw/)
+- [ETW的攻与防](http://tttang.com/archive/1612/)
 
 ### UAC
 
@@ -1767,6 +1782,7 @@ ETW(Event Trace for Windows) 是一个高效的内核级别的事件追踪机制
 
 **相关项目**
 - [zha0gongz1/iscsicpl_bypassUAC](https://github.com/zha0gongz1/iscsicpl_bypassUAC) - UAC bypass for x64 Windows 7 - 11（无弹窗版）
+- [Wh04m1001/IFaultrepElevatedDataCollectionUAC](https://github.com/Wh04m1001/IFaultrepElevatedDataCollectionUAC)
 
 ### DLL 劫持
 
@@ -1792,6 +1808,13 @@ ETW(Event Trace for Windows) 是一个高效的内核级别的事件追踪机制
 **相关工具**
 - [everdox/InfinityHook](https://github.com/everdox/InfinityHook) - Hook system calls, context switches, page faults and more.
 - [hfiref0x/UPGDSED](https://github.com/hfiref0x/UPGDSED) - Universal PatchGuard and Driver Signature Enforcement Disable
+
+---
+
+### PPL
+
+**相关文章**
+- [PPL利用](http://tttang.com/archive/1743/)
 
 ---
 
@@ -1984,3 +2007,4 @@ Windows Defender 签名/规则存储在 VDM 容器中。其中许多只是 Lua �
 **相关工具**
 - [hfiref0x/WDExtract](https://github.com/hfiref0x/WDExtract) - Extract Windows Defender database from vdm files and unpack it
 - https://github.com/commial/experiments/tree/master/windows-defender/lua
+- [crisprss/Extracted_WD_VDM](https://github.com/crisprss/Extracted_WD_VDM)

@@ -54,6 +54,8 @@ export GOROOT_FINAL = $GOPATH
 [[ ! $PATH =~ $GOPATH ]] && export PATH=$PATH:$GOPATH/bin
 ```
 
+---
+
 ## Go代码审计
 
 - [Go代码审计](./Go安全/Go代码审计.md)

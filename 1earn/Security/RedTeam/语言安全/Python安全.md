@@ -52,29 +52,10 @@ sys.stderr = open("/dev/null", 'w')
 
 ## flask 安全
 
-- [flask安全](./Python安全/flask安全.md)
+- [flask安全](../Web安全/实验/flask.md)
 
 ---
 
 ## Python 代码审计
 
-**相关工具**
-- [PyCQA/bandit](https://github.com/PyCQA/bandit) - Bandit is a tool designed to find common security issues in Python code.
-    ```bash
-    pip3 install bandit
-    bandit -r path/to/your/code
-    ```
-
-### 硬编码
-
-**通用关键词**
-- [APIkey/密钥信息通用关键词](../信息收集/信息收集.md#通用关键词)
-
-### 命令执行
-
-**审计函数**
-```
-os.system
-os.popen
-commands.getstatusoutput
-```
+- [Python代码审计](./Python安全/Python代码审计.md)

@@ -684,3 +684,9 @@ Add-ADGroupMember -Identity 'Protected Users' -Members administrator
     ```
     Get-NetUser -spn -AdminCount|Select name,whencreated,pwdlastset,lastlogon
     ```
+
+### Kerberos FAST
+
+**相关文章**
+- [Kerberos FAST Armoring](https://syfuhs.net/kerberos-fast-armoring)
+- [I WANNA GO FAST, REALLY FAST, LIKE (KERBEROS) FAST](https://www.trustedsec.com/blog/i-wanna-go-fast-really-fast-like-kerberos-fast/)

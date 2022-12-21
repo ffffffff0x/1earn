@@ -11,6 +11,9 @@
 **JSONPath 在线查询工具**
 - http://jsonpath.com/
 
+**文章**
+- [WORKING WITH DATA IN JSON FORMAT](https://www.trustedsec.com/blog/working-with-data-in-json-format/)
+
 ---
 
 **什么是 JSON ？**
@@ -677,90 +680,15 @@ document.getElementById("url").innerHTML=obj.sites[0].url
 
 ---
 
-## JSONP 教程
+## jsonl
 
-Jsonp(JSON with Padding) 是 json 的一种"使用模式"，可以让网页从别的域名（网站）那获取资料，即跨域读取数据。
+`jsonlines`
 
-为什么我们从不同的域（网站）访问数据需要一个特殊的技术( JSONP )呢？这是因为同源策略。
-
-同源策略，它是由 Netscape 提出的一个著名的安全策略，现在所有支持 JavaScript 的浏览器都会使用这个策略。
-
-**JSONP 应用**
-
-- 服务端 JSONP 格式数据
-
-    如客户想访问 : localhost/jsonp.php?jsoncallback=callbackFunction。
-
-    假设客户期望返回数据：`["customername1","customername2"]`。
-
-    真正返回到客户端的数据显示为: `callbackFunction(["customername1","customername2"])`。
-
-    服务端文件 jsonp.php 代码为：
-    ```php
-    <?php
-    header('Content-type: application/json');
-    //获取回调函数名
-    $jsoncallback = htmlspecialchars($_REQUEST ['jsoncallback']);
-    //json数据
-    $json_data = '["customername1","customername2"]';
-    //输出jsonp格式的数据
-    echo $jsoncallback . "(" . $json_data . ")";
-    ?>
-    ```
-
-- 客户端实现 callbackFunction 函数
-
-    ```html
-    <script type="text/javascript">
-    function callbackFunction(result, methodName)
-    {
-        var html = '<ul>';
-        for(var i = 0; i < result.length; i++)
-        {
-            html += '<li>' + result[i] + '</li>';
-        }
-        html += '</ul>';
-        document.getElementById('divCustomers').innerHTML = html;
-    }
-    </script>
-    ```
-
-- 页面展示
-
-    ```html
-    <div id="divCustomers"></div>
-    ```
-
-- 客户端页面完整代码
-
-    ```html
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <title>JSONP 实例</title>
-    </head>
-    <body>
-    <div id="divCustomers"></div>
-    <script type="text/javascript">
-    function callbackFunction(result, methodName)
-    {
-        var html = '<ul>';
-        for(var i = 0; i < result.length; i++)
-        {
-            html += '<li>' + result[i] + '</li>';
-        }
-        html += '</ul>';
-        document.getElementById('divCustomers').innerHTML = html;
-    }
-    </script>
-    <script type="text/javascript" src="jsonp.php?jsoncallback=callbackFunction"></script>
-    </body>
-    </html>
-    ```
+- https://jsonlines.org/examples/
 
 ---
 
 ## Source & Reference
 
 - [JSON 教程](https://www.runoob.com/json/json-tutorial.html)
+- [.jsonl，jsonlines比json格式更好用的文件格式](https://blog.csdn.net/ykf173/article/details/107351057)

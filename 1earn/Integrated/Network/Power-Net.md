@@ -12,6 +12,14 @@
 
 - [DNS 笔记](./应用层/DNS.md)
 
+### WebSocket
+
+**相关文章**
+- https://github.com/halfrost/Halfrost-Field/blob/master/contents/iOS/WebSocket/iOS_WebSocket.md
+
+**WebSockets over SSL/TLS**
+- [WebSocket Security](https://devcenter.heroku.com/articles/websocket-security)
+
 ---
 
 ## 会话层
@@ -30,11 +38,24 @@ SSL protocol 是美国网景（Netscape）公司研发的安全套接层协议�
 
 ### TCP
 
+**简介**
+
 TCP 是面向连接的
 
 ### UDP
 
+**简介**
+
 UDP 是无连接的
+
+### QUIC
+
+**简介**
+
+QUIC是传输层协议，对标TCP+TLS。HTTP/3，HTTP/2等是应用层协议， HTTP/3为了实现0/1 RTT，所以传输层需要用到QUIC。
+
+**相关文章**
+- [QUIC with TLS1.3 简介](https://blog.csdn.net/weixin_41262316/article/details/118088751)
 
 ---
 
@@ -124,6 +145,13 @@ ICMP 协议是 Internet 控制报文协议。它属于网络层协议，是 TCP/
 
 **相关文章**
 - [浅析GRE协议（通用路由封装协议）](https://blog.csdn.net/mary19920410/article/details/72303641)
+
+### Wireguard
+
+**相关文章**
+- [Wireguard 全互联模式（full mesh）配置指南](https://www.jianshu.com/p/f60ce8eb2d2b)
+- [被Linux创始人称做艺术品的组网神器——WireGuard](https://zhuanlan.zhihu.com/p/447375895)
+- [WireGuard 教程：使用 DNS-SD 进行 NAT-to-NAT 穿透](https://icloudnative.io/posts/wireguard-endpoint-discovery-nat-traversal/)
 
 ---
 

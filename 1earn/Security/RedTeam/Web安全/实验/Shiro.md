@@ -25,6 +25,7 @@ shiro 的漏洞参考 https://issues.apache.org/jira/projects/SHIRO/issues
 - [Shiro高版本默认密钥的漏洞利用](https://mp.weixin.qq.com/s/Su5VwfynSVx-PEPxSR_6iw)
 - [Shiro反序列化漏洞利用笔记](https://www.cnblogs.com/Yang34/p/14122843.html)
 - [Shiro权限验证绕过史](https://s31k31.github.io/2020/08/20/Shiro_Authentication_Bypass/)
+- [Shiro复现以及一点小思考](https://www.yuque.com/iceqaq/rtn9q7/fvgodk)
 
 **相关工具**
 - [sv3nbeast/ShiroScan](https://github.com/sv3nbeast/ShiroScan) - Shiro<=1.2.4 反序列化,一键检测工具

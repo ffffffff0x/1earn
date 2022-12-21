@@ -258,12 +258,15 @@ brew install jenv
 echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(jenv init -)"' >> ~/.zshrc
 
-jenv add /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home
-jenv add /Library/Java/JavaVirtualMachines/jdk-11.0.14.jdk/Contents/Home
-jenv add /Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home
+# 根据自己安装的版本添加
+# jenv add /Library/Java/JavaVirtualMachines/zulu-8.jdk/Contents/Home
+# jenv add /Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home
+# jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_351.jdk/Contents/Home
+# jenv add /Library/Java/JavaVirtualMachines/jdk-11.0.14.jdk/Contents/Home
+# jenv add /Library/Java/JavaVirtualMachines/jdk-17.0.2.jdk/Contents/Home
 jenv versions
-jenv global 1.8
-jenv local 1.8
+# jenv global 1.8
+# jenv local 1.8
 ```
 
 **miniforge**
@@ -329,6 +332,28 @@ brew install cloudflared
 brew install cmake
 ```
 
+**ip**
+```
+brew install iproute2mac
+```
+
+**tiles**
+
+- https://freemacsoft.net/tiles/
+
+**alt-tab-macos**
+
+- https://github.com/lwouis/alt-tab-macos
+
+**espanso**
+
+- https://github.com/espanso/espanso
+- https://espanso.org/docs/get-started/
+
+```
+espanso path
+```
+
 ---
 
 ## 一些依赖
@@ -369,6 +394,12 @@ sudo cp /opt/homebrew/opt/openssl@1.1/lib/libssl.1.1.dylib /usr/local/lib/libssl
 ```
 brew install openssl@1.1
 sudo cp /opt/homebrew/opt/openssl@1.1/lib/libcrypto.1.1.dylib /usr/local/lib/libcrypto.1.1.dylib
+```
+
+**xcrun: error: invalid active developer path**
+
+```
+xcode-select --install
 ```
 
 ---

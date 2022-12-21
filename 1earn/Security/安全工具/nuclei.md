@@ -27,6 +27,7 @@
 - [Automate Cache Poisoning Vulnerability - Nuclei](https://blog.melbadry9.xyz/fuzzing/nuclei-cache-poisoning)
 - [Exploiting Race conditions with Nuclei](https://blog.projectdiscovery.io/exploiting-race-conditons/)
 - [Writing Network Templates with Nuclei](https://blog.projectdiscovery.io/writing-network-templates-with-nuclei/)
+- [The Ultimate Guide to Finding Bugs With Nuclei](https://blog.projectdiscovery.io/ultimate-nuclei-guide/)
 
 ---
 

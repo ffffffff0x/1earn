@@ -415,6 +415,8 @@ tmux list-keys                # 列出所有快捷键，及其对应的 Tmux 命
 ```bash
 tmux new -s test
 tmux new-session -s 'test'
+
+tmux new-session -s 'test' -d # 使用 -s 开关指定会话的名字为 test，使用 -d 开关使得创建后立即与其脱离。
 ```
 
 **分离会话**
@@ -497,6 +499,10 @@ tmux save-buffer output.log
 # 给的 1 号窗格（第二个）发送 ls + 回车
 tmux send-keys -t test.1 ls Enter
 ```
+
+**tmux 下使用 rz/sz 卡死的解决方案**
+
+按住Ctrl键, 再按五次x键 (强行终断传输)
 
 ---
 
@@ -1202,7 +1208,7 @@ use_compression = true
 
 [DSM]
 type = tcp
-local_ip = 192.168.1.1 # 群晖 NAS 在局域网中的内网 IP
+local_ip = 192.168.1.1 # NAS 在局域网中的内网 IP
 local_port = 5000
 remote_port = 10002
 ```
@@ -6747,6 +6753,22 @@ rm -r build
 # 重新链接
 ln -s /usr/src/kernels/3.10.0-1160.6.1.el7.x86_64/ build
 ```
+
+**error while loading shared libraries: libnss3.so: cannot open shared object file: No such file or directory**
+
+```bash
+apt install libnss3-dev
+```
+
+**error while loading shared libraries: libdrm.so.2: cannot open shared object file: No such file or directory**
+
+```bash
+apt install libdrm-dev
+```
+
+**linux-/usr/lib64/libm.so.6: version `GLIBC_2.29' not found**
+
+安装glibc-2.29
 
 ---
 

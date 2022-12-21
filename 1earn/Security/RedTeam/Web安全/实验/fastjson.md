@@ -17,6 +17,7 @@
 - [fastjson漏洞时间线](https://mp.weixin.qq.com/s/f2scum8wWcCeOOOR7nKHaQ)
 - [某json 绕墙的Tips](https://xz.aliyun.com/t/7568)
 - [浅谈fastjson waf Bypass思路](https://sec-in.com/article/950)
+- [fastjson的一些小学习](https://www.yuque.com/iceqaq/rtn9q7/ap14yz)
 
 **相关工具**
 - [wyzxxz/fastjson_rce_tool](https://github.com/wyzxxz/fastjson_rce_tool) - fastjson rce 命令执行综合利用工具，一键操作,fastjson remote code execute poc
@@ -83,6 +84,9 @@ java -cp /pentest/marshalsec/marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.R
 ---
 
 ## 探测
+
+**相关文章**
+- [第18篇：fastjson反序列化漏洞区分版本号的方法总结](https://mp.weixin.qq.com/s/5mO1L5o8j_m6RYM6nO-pAA)
 
 **如何区分 fastjson 与 jackson**
 

@@ -38,6 +38,9 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 - [为 CobaltStrike TeamServer 加上谷歌二次验证](https://mp.weixin.qq.com/s/AePKPUDnBUr4WbJqvPCleg)
 - [Cobalt Strike: Using Known Private Keys To Decrypt Traffic - Part 2](https://blog.nviso.eu/2021/10/27/cobalt-strike-using-known-private-keys-to-decrypt-traffic-part-2/)
     - [破解版密钥相同，部分CobaltStrike加密流量可解](https://mp.weixin.qq.com/s/AcIFSjyqn9gzyRkyx3sRIQ)
+- [CobaltStrike beacon二开指南](https://tttang.com/archive/1789/)
+- [第19篇：关于近期cs服务端被反打的原因分析](https://mp.weixin.qq.com/s/i8eBT8O2IwCotf7wqnveEw)
+- [CobaltStrike4.5 分析总结](https://mp.weixin.qq.com/s/K47FXTMEWfB_474aHAGU5g)
 
 **相关资源**
 - [Twi1ight/CSAgent](https://github.com/Twi1ight/CSAgent) - CobaltStrike 4.x 通用白嫖及汉化加载器
@@ -59,6 +62,7 @@ cert="73:6B:5E:DB:CF:C9:19:1D:5B:D0:1F:8C:E3:AB:56:38:18:9F:02:4F"
 - [TheKingOfDuck/geacon](https://github.com/TheKingOfDuck/geacon) - 修改自geacon的多功能linux运维管理工具
     - [Geacon代码学习&上线指南](https://xz.aliyun.com/t/7259)
 - [linshaoSec/csdroid](https://github.com/linshaoSec/csdroid) - cobaltstrike手机客户端,cobaltstrike手机版,cs手机版，cobaltstrike android
+- [H4de5-7/geacon_pro](https://github.com/H4de5-7/geacon_pro)
 
 ---
 
@@ -1588,6 +1592,7 @@ userwx  |  false |  Use RWX as final permissions for injected content. Alternati
 **相关文章**
 - [Yara入门——如何通过Yara规则匹配CobaltStrike恶意样本](https://www.anquanke.com/post/id/211501)
 - [Decoding Cobalt Strike: Understanding Payloads](https://decoded.avast.io/threatintel/decoding-cobalt-strike-understanding-payloads/)
+- [再探BeaconEye](https://mp.weixin.qq.com/s/D7mZTmL8DlqZ8YYYoygudw)
 
 **相关工具**
 - [huoji120/CobaltStrikeDetected](https://github.com/huoji120/CobaltStrikeDetected) - 40 行代码检测到大部分 CobaltStrike 的 shellcode
@@ -1595,6 +1600,7 @@ userwx  |  false |  Use RWX as final permissions for injected content. Alternati
 
 **检测规则**
 - https://github.com/avast/ioc/tree/master/CobaltStrike
+- https://github.com/elastic/protections-artifacts/blob/main/yara/rules/Windows_Trojan_CobaltStrike.yar
 
 **Hook Heap**
 - [Hook Heaps and Live Free](https://www.arashparsa.com/hook-heaps-and-live-free/)
@@ -1630,9 +1636,28 @@ userwx  |  false |  Use RWX as final permissions for injected content. Alternati
     cat wordlist.txt | python3 csbruter.py xxx.xxx.xxx.xxx
     ```
 
+### mysql蜜罐读取配置文件
+
+> 参考: https://mp.weixin.qq.com/s/i8eBT8O2IwCotf7wqnveEw
+
+1. mysql 中的 load data local infile 函数能够读取本地文件到 mysql 数据库中。当攻击者用爆破 mysql 密码的扫描器扫描到我们的 mysql 并连接上的时候，客户端（攻击者）会自动发起一个查询，我们（服务端）会给与一个回应，我们在回应的数据包中加入 load data local infile 读取攻击者的本地文件到我们数据库中，达到反制的目的。
+
+2. 只要是使用 cs 客户端连接过 cs 服务端的电脑，cs 客户端都会在固定的文件夹下生成一个 `.aggressor.prop` 配置文件。如果是 Windows 系统，那么文件位置是：`C:\Users\Administrator\.aggressor.prop`，这个配置文件里面就包含了 cs 远控的 ip 地址、端口、用户名及密码，而且都是明文的.
+
+3. 搭建一个mysql蜜罐，一旦攻击者连接这个蜜罐，那么这个蜜罐利用msyql本地文件读取漏洞去自动读取 `C:\Users\Administrator\.aggressor.prop` 这个文件内容，蜜罐就可以成功得到攻击者的cs服务端ip地址、端口、用户名密码。
+
+mac 的配置文件位置在 `~/.aggressor.prop`
+
 ### CVE-2022-39197
 
 - https://www.cobaltstrike.com/blog/out-of-band-update-cobalt-strike-4-7-1/
 - https://github.com/TomAPU/poc_and_exp/tree/master/CVE-2022-39197
 - [CS4.5粗略预防CVE-2022-39197 XSS RCE](https://mp.weixin.qq.com/s/vF7DPPCpr299ENudiFgDjQ)
 - [最新CS RCE曲折的复现路](https://mp.weixin.qq.com/s/l5e2p_WtYSCYYhYE0lzRdQ)
+- [CS RCE（CVE-2022-39197）复现心得分享](https://mp.weixin.qq.com/s/89wXyPaSn3TYn4pmVdr-Mw)
+- [its-arun/CVE-2022-39197](https://github.com/its-arun/CVE-2022-39197)
+- [burpheart/CVE-2022-39197-patch](https://github.com/burpheart/CVE-2022-39197-patch) - CVE-2022-39197 漏洞补丁
+    ```
+    在cobaltstrike启动参数中加入javaagent 启用补丁
+    -javaagent:patch.jar
+    ```

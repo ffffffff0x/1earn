@@ -271,15 +271,7 @@ npm config delete proxy  # 取消代理
 
 - *linux*
     ```bash
-    # Go version >= 1.13 (RECOMMENDED)
-    go env -w GO111MODULE=on
-    go env -w GOPROXY="https://goproxy.io,direct"
-
-    # Go version <= 1.12
-    # Enable the go modules feature
-    export GO111MODULE="on"
-    # Set the GOPROXY environment variable
-    export GOPROXY="https://goproxy.io"
+    export GOPROXY=https://proxy.golang.com.cn,direct
     ```
 
 - *windows*

@@ -905,3 +905,14 @@ CVE-2021-31196
 **POC | Payload | exp**
 - [testanull/CVE-2021-42321_poc.py](https://gist.github.com/testanull/0188c1ae847f37a70fe536123d14f398)
 - [DarkSprings/CVE-2021-42321](https://github.com/DarkSprings/CVE-2021-42321)
+
+---
+
+### ProxyNotShell
+
+**相关文章**
+- [ProxyNotShell— the story of the claimed zero days in Microsoft Exchange](https://doublepulsar.com/proxynotshell-the-story-of-the-claimed-zero-day-in-microsoft-exchange-5c63d963a9e9)
+- [Threat Brief: CVE-2022-41040 and CVE-2022-41082: Microsoft Exchange Server (ProxyNotShell)](https://unit42.paloaltonetworks.com/proxynotshell-cve-2022-41040-cve-2022-41082/)
+
+**POC | Payload | exp**
+- [testanull/ProxyNotShell-PoC](https://github.com/testanull/ProxyNotShell-PoC)

@@ -119,11 +119,15 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - https://syunaht.com/p/1006188223.html
     - 在 SwitchyOmega 插件的不代理地址列表加个<-loopback>强制让谷歌浏览器代理本地回环
 
+**改 ja3 特征**
+
+Project options -- TLS 选择 Use custom protocols and ciphers ,随便修改下 Cipher ,这样通过自定义 Cipher Suites 可以简单快速的修改 ja3 特征
+
 ---
 
-### 插件
+## 插件
 
-#### 信息收集
+### 信息收集
 
 - [x41sec/BeanStack](https://github.com/x41sec/beanstack) - 使用堆栈跟踪进行 Java 指纹识别,实用性一般
 - [bit4woo/domain_hunter_pro](https://github.com/bit4woo/domain_hunter_pro) - 信息收集神器
@@ -139,7 +143,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - Active Scan++ - 主动扫描器,其实效果不是很理想
 - [gh0stkey/CaA](https://github.com/gh0stkey/CaA) - BurpSuite 流量收集和分析插件
 
-#### 功能增强
+### 功能增强
 
 - [d3vilbug/HackBar](https://github.com/d3vilbug/HackBar) - 顾名思义,这是 burp 中的 hackbar
 - [bit4woo/knife](https://github.com/bit4woo/knife) - 添加一些右键菜单让 burp 用起来更顺畅
@@ -173,8 +177,10 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [hvqzao/burp-wildcard](https://github.com/hvqzao/burp-wildcard) - Burp extension intended to compact Burp extension tabs by hijacking them to own tab.
 - [sleeyax/burp-awesome-tls](https://github.com/sleeyax/burp-awesome-tls) - Fix Burp Suite's horrible TLS stack & spoof any browser fingerprint
 - [KagamigawaMeguri/burp-UnicodeAutoDecode](https://github.com/KagamigawaMeguri/burp-UnicodeAutoDecode) - Unicode自动转码为中文
+- [nccgroup/AutoRepeater](https://github.com/nccgroup/AutoRepeater)
+- [winezer0/passive-scan-client-plus](https://github.com/winezer0/passive-scan-client-plus) - Burp被动扫描流量转发插件
 
-#### 漏洞检测
+### 漏洞检测
 
 - Authz - 快速探测越权
 - [wuntee/BurpAuthzPlugin](https://github.com/wuntee/BurpAuthzPlugin) - 探测越权漏洞的插件
@@ -188,6 +194,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [smxiazi/xia_sql](https://github.com/smxiazi/xia_sql) - xia SQL (瞎注) burp 插件 ，在每个参数后面填加一个单引号，两个单引号，一个简单的判断注入小插件。
 - [ethicalhackingplayground/ssrf-king](https://github.com/ethicalhackingplayground/ssrf-king) - SSRF plugin for burp Automates SSRF Detection in all of the Request
 - [ilmila/J2EEScan](https://github.com/ilmila/J2EEScan) - J2EEScan is a plugin for Burp Suite Proxy. The goal of this plugin is to improve the test coverage during web application penetration tests on J2EE applications.
+- [F6JO/RouteVulScan](https://github.com/F6JO/RouteVulScan) - 递归式被动检测脆弱路径的burp插件
 
 **shiro**
 - [pmiaowu/BurpShiroPassiveScan](https://github.com/pmiaowu/BurpShiroPassiveScan) - 一款基于 BurpSuite 的被动式 shiro 检测插件
@@ -203,7 +210,7 @@ Proxy - Options - Miscellaneous - Disable web interface at http://burp
 - [whwlsfb/Log4j2Scan](https://github.com/whwlsfb/Log4j2Scan) - Log4j2 远程代码执行漏洞，BurpSuite被动扫描插件。
 - [f0ng/log4j2burpscanner](https://github.com/f0ng/log4j2burpscanner) - CVE-2021-44228 Log4j2 BurpSuite Scanner,Customize ceye.io api or other apis,including internal networks
 
-#### 插件开发
+### 插件开发
 
 - [rsrdesarrollo/generator-burp-extension](https://github.com/rsrdesarrollo/generator-burp-extension) - 帮助 burp 插件开发的工具
 
@@ -981,3 +988,70 @@ http 192.168.1.xxx 8080
 **相关文章**
 - [【技术分享】反制爬虫之Burp Suite RCE](https://mp.weixin.qq.com/s/FHvvUOLskvQ9QqVMboU8ng)
 - [HTML Injection in Swing can disclose netNTLM hash or cause DoS](https://hackerone.com/reports/1054382)
+
+### 特征识别
+
+**相关文章**
+- [Burpsuite 特征识别及其对抗措施](https://rmb122.com/2022/08/14/burpsuite-%E7%89%B9%E5%BE%81%E8%AF%86%E5%88%AB%E5%8F%8A%E5%85%B6%E5%AF%B9%E6%8A%97%E6%8E%AA%E6%96%BD/)
+
+**favicon**
+
+```html
+<h2 id='indicator'>Loading...</h2>
+<script>
+    function burp_found() {
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp FOUND !!!';
+    }
+
+    function burp_not_found() {
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp not found.';
+    }
+</script>
+<img style="display: none;" src='http://burp/favicon.ico' onload='burp_found()' onerror='burp_not_found()'/>
+```
+
+**导出证书接口**
+
+```html
+<h2 id='indicator'>Loading...</h2>
+<script>
+    function burp_found() {
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp FOUND !!!';
+    }
+
+    function burp_not_found() {
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp not found.';
+    }
+</script>
+<script style="display: none;" src='http://127.0.0.1:8080/cert' onload='burp_found()' onerror='burp_not_found()'></script>
+```
+
+在 Proxy -> Options -> Miscellaneous 中勾选 Disable web interface at http://burp
+
+**报错页面**
+
+```html
+<h2 id='indicator'>Loading...</h2>
+<script>
+    function burp_found() {
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp FOUND !!!';
+    }
+
+    function burp_not_found() {
+        is_burp_not_found = true;
+        let e = document.getElementById('indicator');
+        e.innerText = 'Burp not found.';
+    }
+</script>
+<script>
+    fetch('http://not_exists_domain/not_exist', {method: 'GET', mode: 'no-cors'}).then((r)=>{burp_found();}).catch((e)=>{burp_not_found();});
+    // 200 -> fetch 成功, 触发 then, burp 存在. 超时 -> fetch 失败, 触发 catch, burp 不存在.
+</script>
+```
+
+在 Proxy -> Options -> Miscellaneous 中勾选 Suppress Burp error messages in browser

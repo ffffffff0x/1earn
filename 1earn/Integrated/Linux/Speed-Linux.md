@@ -1087,7 +1087,10 @@ tar -xzvf xxx.tgz			# 如果是 gzip 格式，也支持用 tar 解压
 
 **主机名**
 ```bash
-hostname				# 查看本机的hostname
+hostname				# 查看本机的主机名
+hostname test			# 设置主机名为 test (临时,重启失效)
+hostnamectl				# 查看本机的主机名
+hostnamectl set-hostname test	# 设置主机名为 test (长期生效)
 ```
 
 **IP 地址**

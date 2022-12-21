@@ -28,6 +28,7 @@
 **相关文章**
 - [trojan多用户管理部署程序审计学习](https://r0fus0d.blog.ffffffff0x.com/post/trojan-case/)
 - [mayfly-go审计学习](https://r0fus0d.blog.ffffffff0x.com/post/mayfly-go/)
+- [Go代码审计 - gitea 远程命令执行漏洞链](https://www.leavesongs.com/PENETRATION/gitea-remote-command-execution.html)
 
 **相关靶场**
 - [Hardw01f/Vulnerability-goapp](https://github.com/Hardw01f/Vulnerability-goapp)

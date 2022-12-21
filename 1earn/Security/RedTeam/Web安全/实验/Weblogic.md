@@ -34,6 +34,7 @@ Oracle Fusion Middleware（Oracle 融合中间件）是美国甲骨文（Oracle�
 - [Oracle WebLogic RCE反序列化漏洞分析](https://www.anquanke.com/post/id/162390)
 - [[漏洞预警]WebLogic T3 反序列化绕过漏洞 & 附检测POC](https://www.secfree.com/a/957.html)
 - [Weblogic 常见漏洞分析](https://hellohxk.com/blog/weblogic/)
+- [weblogic一些小学习](https://www.yuque.com/iceqaq/rtn9q7/yme3we)
 
 **版本判断**
 - [第21篇：判断Weblogic详细版本号的方法总结](https://mp.weixin.qq.com/s/z6q1sBYcHYgzvak98QQmeA)

@@ -27,6 +27,8 @@
 - [SSRF 攻击内网服务](http://diego.team/2020/05/27/ssrf-%E6%94%BB%E5%87%BB%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1/)
 - [SSRF检测的一些思考](https://xz.aliyun.com/t/11050)
 - [SSRF Tricks小结](https://www.mi1k7ea.com/2020/02/29/SSRF-Tricks%E5%B0%8F%E7%BB%93/)
+- [IPv6 三个访问本地地址的小Tips](https://tttang.com/archive/1293/)
+- [WEB非实用之SSRF的挖掘与利用](https://www.yuque.com/pmiaowu/bomi9w/mbs0gw)
 
 **相关案例**
 - [My First SSRF Using DNS Rebinding](https://geleta.eu/2019/my-first-ssrf-using-dns-rebinfing/)
@@ -197,6 +199,8 @@ http://[::1]
 http://[::]
 http://[::]:80/
 http://0000::1:80/
+ip6-localhost
+0--1.ipv6-literal.net (windows)
 ```
 
 ### Enclosed alphanumerics

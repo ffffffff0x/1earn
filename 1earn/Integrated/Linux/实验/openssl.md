@@ -110,6 +110,23 @@ openssl rand -base64 16
 
 ---
 
+## 升级openssl版本
+
+- https://www.openssl.org/source/
+
+以 openssl-1.1.1q 为例
+```bash
+wget https://www.openssl.org/source/openssl-1.1.1q.tar.gz
+tar -zxvf openssl-1.1.1q.tar.gz
+cd openssl-1.1.1q/
+./config
+make && make install
+```
+
+新开启一个 bash 输入 `openssl version` 查看 openssl 版本
+
+---
+
 ## Source & Reference
 
 - https://blog.csdn.net/Michaelwubo/article/details/113736166

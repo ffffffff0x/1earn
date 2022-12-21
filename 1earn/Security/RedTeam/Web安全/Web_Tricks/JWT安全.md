@@ -16,6 +16,7 @@
 - [攻击JWT的一些方法 ](https://xz.aliyun.com/t/6776)
 - [JWT攻击手册：如何入侵你的Token](https://mp.weixin.qq.com/s/x43D718Tw3LZ4QGFxjLjuw)
 - [JSON Web Token Validation Bypass in Auth0 Authentication API](https://insomniasec.com/blog/auth0-jwt-validation-bypass)
+- [对一个使用JWT验证的系统渗透纪实](https://blog.wanghw.cn/security/fake-jwt.html)
 
 **Tips**
 

@@ -26,3 +26,6 @@ ModSecurity 是一款开源的跨平台 Web 应用程序防火墙（WAF）引擎
 
 **规则语法手册**
 - [ModSecurity中文手册](http://www.modsecurity.cn/chm/index.html)
+
+**元规则拼接器**
+- https://coreruleset.org/docs/development/regexp_assemble/ - 将多条正则拼接

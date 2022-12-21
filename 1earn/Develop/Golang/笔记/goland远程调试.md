@@ -19,6 +19,7 @@ f8x -go
 **dlv**
 
 装一个delve
+- https://github.com/go-delve/delve/tree/master/Documentation/installation
 
 ```bash
 export GO111MODULE=on && export GOPROXY=https://goproxy.io

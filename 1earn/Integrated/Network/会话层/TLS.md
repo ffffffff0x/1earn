@@ -3,9 +3,9 @@
 > 注 : 笔记中拓扑图 drawio 源文件在其图片目录下
 
 **相关文章 & 参考链接**
-- https://blog.zeddyu.info/2021/04/20/tls-poison/
-- http://blog.nsfocus.net/tls1-3protocol/
-- https://mp.weixin.qq.com/s/uPe5YRIOqWcr4qYors1rFw
+- [一篇文章带你读懂 TLS Poison 攻击](https://blog.zeddyu.info/2021/04/20/tls-poison/)
+- [TLS1.3握手流程以及参数详解](http://blog.nsfocus.net/tls1-3protocol/)
+- [深入浅出 SSL/TLS 协议](https://mp.weixin.qq.com/s/uPe5YRIOqWcr4qYors1rFw)
 
 ---
 
@@ -101,13 +101,13 @@ TLS 握手流程如下
 TLS 1.3 可以说是 TLS 1.2 的升级版本，它在 RFC 8446 中定义，于 2018 年 8 月发表。
 
 改进有:
-- 减少握手等待时间，将握手时间从 2-RTT 降低到 1-RTT，并且增加 0-RTT 模式。
-- 废除 Session ID 和 Session Ticket 会话恢复方式，统一通过 PSK 的方式进行会话恢复，并在 NewSessionTicket 消息中添加过期时间和用于混淆时间的偏移值。
+- 减少握手等待时间，将握手时间从 `2-RTT` 降低到 `1-RTT`，并且增加 `0-RTT` 模式。
+- 废除 `Session ID` 和 `Session Ticket` 会话恢复方式，统一通过 PSK 的方式进行会话恢复，并在 `NewSessionTicket` 消息中添加过期时间和用于混淆时间的偏移值。
 
 在握手时相对于 TLS 1.2 发生了比较明显的改动：
-1. 与 TLS 1.2 握手类似，TLS 1.3 握手以 Client Hello 消息开始，但有一个重要的变化就是客户端发送支持的加密套件列表，并猜测服务器可能选择的密钥协议协议，也会发送它对该特定密钥协议协议的密钥共享。
-2. Server 在回复 Server Hello 时，服务器回复它所选择的密钥协议协议，其中也包括服务器的密钥共享、证书以及 Server Finished 。
-3. 现在，客户端检查服务器证书，生成密钥，并发送 Client Finished ，之后就可以发送加密数据了。
+1. 与 TLS 1.2 握手类似，TLS 1.3 握手以 `Client Hello` 消息开始，但有一个重要的变化就是客户端发送支持的加密套件列表，并猜测服务器可能选择的密钥协议协议，也会发送它对该特定密钥协议协议的密钥共享。
+2. Server 在回复 `Server Hello` 时，服务器回复它所选择的密钥协议协议，其中也包括服务器的密钥共享、证书以及 `Server Finisheds`。
+3. 现在，客户端检查服务器证书，生成密钥，并发送 `Client Finished`，之后就可以发送加密数据了。
 
 这样一来，TLS 1.3 握手就节省了整整一个来回和数百毫秒的时间，比 TLS 1.2 握手有了很大的改进。RFC 8446 提供的简要流程图如下：
 ```

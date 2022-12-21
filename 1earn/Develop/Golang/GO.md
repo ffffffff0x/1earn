@@ -394,6 +394,28 @@ Go 的源码文件有 3 个种类,即命令源码文件、库源码文件和测�
 
     同一个代码包中可以存在多个代码包初始化函数,甚至代码包内的每一个源码文件都可以定义多个代码包初始化函数.Go 不会保证同一个代码包中多个代码包初始化函数的执行顺序.此外,被导入的代码包的初始化函数总是会先执行.在上例中,fmt 和 runtime 包中的 init 函数(如果有的话)会先执行,然后当前文件中的 init 函数才会执行.
 
+### 跨平台编译
+
+Windows下编译Mac平台64位可执行程序：
+```bash
+SET CGO_ENABLED=0
+SET GOOS=darwin
+SET GOARCH=amd64
+go build
+```
+
+Mac 下编译 Linux 和 Windows平台 64位 可执行程序：
+```bash
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build
+```
+
+Linux 下编译 Mac 和 Windows 平台64位可执行程序：
+```bash
+CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build
+```
+
 ---
 
 ## 一些项目

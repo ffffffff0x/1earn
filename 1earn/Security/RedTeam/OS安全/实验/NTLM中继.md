@@ -318,7 +318,7 @@ get-aduser -filter * -server 192.168.141.129
 
 ### Exchange中继
 
-Exchange 的认证也支持 NTLM SSP。我们可以 relay 的 Exchange，从而收发邮件，代理等等。
+Exchange 的认证也支持 NTLM SSP。我们可以 relay Exchange，从而收发邮件，代理等等。
 
 #### outlook abuse
 
@@ -460,6 +460,11 @@ python3 privexchange.py win2012-ex2016.island.com -d island.com -ah 192.168.123.
 python3 ntlmrelayx.py -t ldap://WIN2012-DC1.island.com --escalate-user zhangsan --no-dump
 ```
 
+#### ProxyRelay
+
+**相关文章**
+- [A New Attack Surface on MS Exchange Part 4 - ProxyRelay!](https://blog.orange.tw/2022/10/proxyrelay-a-new-attack-surface-on-ms-exchange-part-4.html)
+
 ---
 
 ### LDAP中继
@@ -570,6 +575,8 @@ acl 的受托人可以是任意用户，从而使得该用户可以具备 dcsync
 ### MS-RPRN abuse
 
 > Microsoft’s Print Spooler
+
+- https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-rprn/d42db7d5-f141-4466-8f47-0a4be14e2fc1
 
 利用 Windows 打印系统远程协议（MS-RPRN）中的一种旧的但是默认启用的方法，在该方法中，域用户可以使用 MS-RPRN RpcRemoteFindFirstPrinterChangeNotification(Ex) 方法强制任何运行了 Spooler 服务的计算机以通过 Kerberos 或 NTLM 对攻击者选择的目标进行身份验证。
 

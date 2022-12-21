@@ -14,6 +14,9 @@
 **官方文档**
 - https://docs.xray.cool/
 
+**相关文章**
+- [对5.6w条xray结果的简单分析](https://mp.weixin.qq.com/s/vhNGTBq8owncjlWyPJ0XGA)
+
 ---
 
 ## 使用

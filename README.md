@@ -17,7 +17,6 @@
 
 * **简介** : 本项目的初衷是分享知识资源,让更多人接触和了解安全、运维领域,但受限于本人能力有限,难免会有错误和借鉴的地方,对于内容中有疑问或建议请提交 issue.
 * **定位** : ffffffff0x 团队维护的安全知识框架
-* **更新时间** : 不定期
 * **项目地址** : https://github.com/ffffffff0x/1earn
 * **学习线路图** : 初学者或想快速构建知识结构请访问 [roadmap](roadmap.md)
 
@@ -91,7 +90,6 @@
             * [DesktopApps-Exploits](./1earn/Security/RedTeam/软件服务安全/DesktopApps-Exploits.md) - 收集桌面软件的渗透手段和 cve 漏洞
         * 协议安全
             * [Protocol-Exploits](./1earn/Security/RedTeam/协议安全/Protocol-Exploits.md) - 按照协议归类各种漏洞、攻击手段
-            * [笔记](https://github.com/No-Github/1earn/tree/master/1earn/Security/RedTeam/%E5%8D%8F%E8%AE%AE%E5%AE%89%E5%85%A8/%E7%AC%94%E8%AE%B0)
         * 信息收集
             * [端口安全](./1earn/Security/RedTeam/信息收集/端口安全.md) - 记录端口渗透时的方法和思路
             * [空间测绘](./1earn/Security/RedTeam/信息收集/空间测绘.md) - 收集搜索引擎语法资源

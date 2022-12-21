@@ -394,7 +394,7 @@ Shell 传递参数实例！
 
 传递的参数中如果包含空格，应该使用单引号或者双引号将该参数括起来，以便于脚本将这个参数作为整体来接收。
 
-**$* 与 $@ 区别**
+**`$*` 与 `$@` 区别**
 - 相同点：都是引用所有参数。
 - 不同点：只有在双引号中体现出来。假设在脚本运行时写了三个参数 1、2、3，，则 " * " 等价于 "1 2 3"（传递了一个参数），而 "@" 等价于 "1" "2" "3"（传递了三个参数）。
 
@@ -761,6 +761,7 @@ fi
 ---
 
 ## 基础命令
+
 ### echo命令
 
 Shell 的 echo 指令与 PHP 的 echo 指令类似，都是用于字符串的输出。命令格式：
@@ -1876,6 +1877,32 @@ if [ "$?" -ne 0 ]; then echo "command failed"; exit 1; fi
 另外，除了停止执行，还有一种情况。如果两个命令有继承关系，只有第一个命令成功了，才能继续执行第二个命令，那么就要采用下面的写法。
 ```bash
 command1 && command2
+```
+
+一个案例
+```bash
+echo "1" && whoamm && echo "2" || { echo "3"; ( echo "4" && whamm || echo "5" ); }
+```
+```
+1
+test.sh: line 1: whoamm: command not found
+3
+4
+test.sh: line 1: whamm: command not found
+5
+```
+
+另一个案例
+```bash
+echo "1" && whoamm && echo "2" || { echo "3"; idddddd || exit 1; }
+
+echo "5"
+```
+```
+1
+test.sh: line 1: whoamm: command not found
+3
+test.sh: line 1: echo1: command not found
 ```
 
 ---

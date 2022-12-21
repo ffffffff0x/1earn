@@ -26,6 +26,9 @@
 - [javaweb-rasp/javaweb-vuln](https://github.com/javaweb-rasp/javaweb-vuln) - RASP 测试靶场
 - [ffffffff0x/JVWA](https://github.com/ffffffff0x/JVWA) - java 代码审计学习靶场
 
+**相关工具**
+- [wh1t3p1g/tabby](https://github.com/wh1t3p1g/tabby) - A CAT called tabby (Code Analysis Tool)
+
 ---
 
 ## 硬编码
@@ -556,7 +559,6 @@ java 程序中执行系统命令的函数如下：
 Runtime.exec
 ProcessBuilder.start
 GroovyShell.evaluate
-...
 ```
 
 **搜索正则**

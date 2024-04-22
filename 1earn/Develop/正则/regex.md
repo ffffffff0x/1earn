@@ -18,6 +18,7 @@
     - https://ihateregex.io/
     - https://www.sojson.com/regex/generate
     - https://jex.im/regulex/#!flags=
+    - https://pythonium.net/regex
 
 **表达式资源**
 - [cdoco/common-regex](https://github.com/cdoco/common-regex)

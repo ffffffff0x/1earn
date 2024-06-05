@@ -348,7 +348,7 @@ win7 执行命令
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/11.png)
 
-可以直接用 https://crack.sh/netntlm/ 秒破,当然 hashcat 也可以爆破试试
+可以直接用 https://crack.sh/netntlm/ 秒破（现在已经用不了了）, https://ntlmv1.com/ 也可以，稍微慢一点，当然 hashcat 也可以爆破试试
 
 ![](../../../../../assets/img/Security/RedTeam/OS安全/实验/Responder欺骗/12.png)
 
@@ -379,7 +379,7 @@ win7 执行命令
 
 当 ntlm type2 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 1 的时候, 加密的内容不是 server challenge，而是 md5 hash 运算过的 server challeng+client challent 的前 8 位。也就是说是第二种加密方式。
 
-把 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 0，那么客户端就会选择加密方式 1. 并且 Server Challenge 为 1122334455667788 的情况下。我们用 crack.sh 快速免费有效得破解。获取到用户的 NTLM Hash。
+把 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 位置为 0，那么客户端就会选择加密方式 1. 并且 Server Challenge 为 1122334455667788 的情况下。我们用 crack.sh/ntlmv1.com 快速免费有效得破解。获取到用户的 NTLM Hash。
 
 Resonder 加上 `-lm` , 调用的模块就是 SMB1LM, 版本的实现是在 smb 协商版本的时候就将 challenge 返回，并且将 `NTLMSSPNEGOTIATEEXTENDED_SESSIONSECURITY` 置为 0.
 
